@@ -1,0 +1,328 @@
+<?php
+
+namespace App\Http\Controllers;
+use \App\User as User;
+use \Redirect as Redirect;
+use Illuminate\Http\Request;
+use URL;
+use App\Test as Test;
+use App\Video as Video;
+use App\VideoCategory as VideoCategory;
+use App\VideoResolution as VideoResolution;
+use App\VideosSubtitle as VideosSubtitle;
+use App\Setting as Setting;
+use App\Menu as Menu;
+use App\Language as Language;
+use App\VideoLanguage as VideoLanguage;
+use App\Subtitle as Subtitle;
+use App\Tag as Tag;
+use App\Audio as Audio;
+use App\AudioCategory as AudioCategory;
+use App\Page as Page;
+use Auth;
+use Hash;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
+use View;
+use Validator;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use FFMpeg\FFProbe;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
+use App\Http\Requests\StoreVideoRequest;
+use App\Jobs\ConvertVideoForStreaming;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use FFMpeg\Filters\Video\VideoFilters;
+use Illuminate\Support\Str;
+
+class AdminAudioController extends Controller
+{
+   /**
+     * Display a listing of audios
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+
+      $search_value = $request->get('s');
+        
+        if(!empty($search_value)):
+            $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
+        else:
+            $audios = Audio::orderBy('created_at', 'DESC')->paginate(9);
+        endif;
+        
+        $user = Auth::user();
+
+        $data = array(
+            'audios' => $audios,
+            'user' => $user,
+            'admin_user' => Auth::user()
+            );
+
+        return View::make('admin.audios.index', $data);
+    }
+
+    /**
+     * Show the form for creating a new audio
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $data = array(
+            'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
+            'post_route' => URL::to('admin/audios/store'),
+            'button_text' => 'Add New Audio',
+            'admin_user' => Auth::user(),
+            'languages' => Language::all(),
+            'audio_categories' => AudioCategory::all(),
+            );
+        return View::make('admin.audios.create_edit', $data);
+    }
+
+    /**
+     * Store a newly created audio in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+       
+        $validator = Validator::make($data = $request->all(), Audio::$rules);
+        
+        if ($validator->fails())
+        {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+         /*Slug*/
+        if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+        }
+
+        if($request->slug == ''){
+            $data['slug'] = $this->createSlug($data['title']);    
+        }
+        
+        $image = (isset($data['image'])) ? $data['image'] : '';
+        if(!empty($image)){
+            $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+        } else {
+            $data['image'] = 'placeholder.jpg';
+        }
+        
+
+        
+        if(empty($data['active'])){
+            $data['active'] = 0;
+        }
+
+        if(empty($data['featured'])){
+            $data['featured'] = 0;
+        }
+
+        if(isset($data['duration'])){
+                //$str_time = $data
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $data['duration'] = $time_seconds;
+        }
+
+        $audio = Audio::create($data);
+        $audio_id = $audio->id;
+        
+        $audio_upload = $request->file('audio_upload');
+
+        if($audio_upload){
+            $ffmpeg = FFMpeg\FFMpeg::create();
+            $audioupload = $ffmpeg->open($data['audio_upload']);
+
+            $audioupload
+            ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$audio->id.'.mp3');
+
+            $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$audio->id.'.mp3'; 
+
+            $update_url = Audio::find($audio_id);
+
+            $update_url->mp3_url = $data['mp3_url'];
+
+            $update_url->save();  
+        }
+       
+
+        return Redirect::to('admin/audios')->with(array('note' => 'New Audio Successfully Added!', 'note_type' => 'success') );
+    
+    }
+
+    /**
+     * Show the form for editing the specified audio.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $audio = Audio::find($id);
+
+        $data = array(
+            'headline' => '<i class="fa fa-edit"></i> Edit Audio',
+            'audio' => $audio,
+            'post_route' => URL::to('admin/audios/update'),
+            'button_text' => 'Update Audio',
+            'admin_user' => Auth::user(),
+            'languages' => Language::all(),
+            'audio_categories' => AudioCategory::all(),
+            );
+
+        return View::make('admin.audios.create_edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        $input = $request->all();
+        $id = $request->id;
+        $audio = Audio::findOrFail($id);
+
+        $validator = Validator::make($data = $input, Audio::$rules);
+
+        if ($validator->fails())
+        {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        /*Slug*/
+        if ($audio->slug != $request->slug) {
+            $data['slug'] = $this->createSlug($request->slug, $id);
+        }
+
+        if($request->slug == '' || $audio->slug == ''){
+            $data['slug'] = $this->createSlug($data['title']);    
+        }
+        if(isset($data['duration'])){
+                //$str_time = $data
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $data['duration'] = $time_seconds;
+        }
+
+        if(empty($data['image'])){
+            unset($data['image']);
+        } else {
+            $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+        }
+
+        if(empty($data['active'])){
+            $data['active'] = 0;
+        }
+
+        if(empty($data['featured'])){
+            $data['featured'] = 0;
+        }
+
+        $audio->update($data);
+
+        if(empty($data['audio_upload'])){
+            unset($data['audio_upload']);
+        } else {
+        
+        $audio_upload = $request->file('audio_upload');
+
+        if($audio_upload){
+            $ffmpeg = FFMpeg\FFMpeg::create();
+            $audio = $ffmpeg->open($data['audio_upload']);
+
+            $audio
+            ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$id.'.mp3');
+
+            $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$id.'.mp3'; 
+
+            $update_url = Audio::find($id);
+
+            $update_url->mp3_url = $data['mp3_url'];
+
+            $update_url->save();  
+        }
+
+        }
+
+
+        return Redirect::to('admin/audios/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Audio!', 'note_type' => 'success') );
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $audio = Audio::find($id);
+
+        $this->deleteAudioImages($audio);
+
+        Audio::destroy($id);
+
+        return Redirect::to('admin/audios')->with(array('note' => 'Successfully Deleted Audio', 'note_type' => 'success') );
+    }
+
+
+    private function deleteAudioImages($audio){
+        $ext = pathinfo($audio->image, PATHINFO_EXTENSION);
+        if(file_exists(Config::get('site.uploads_dir') . 'images/' . $audio->image) && $audio->image != 'placeholder.jpg'){
+            @unlink(Config::get('site.uploads_dir') . 'images/' . $audio->image);
+        }
+
+        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) );
+        }
+
+        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) );
+        }
+
+        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) );
+        }
+    }
+
+    public function createSlug($title, $id = 0)
+    {
+        // Normalize the title
+        $slug = str_slug($title);
+
+        // Get any that could possibly be related.
+        // This cuts the queries down by doing it once.
+        $allSlugs = $this->getRelatedSlugs($slug, $id);
+
+        // If we haven't used it before then we are all good.
+        if (! $allSlugs->contains('slug', $slug)){
+            return $slug;
+        }
+
+        // Just append numbers like a savage until we find not used.
+        for ($i = 1; $i <= 10; $i++) {
+            $newSlug = $slug.'-'.$i;
+            if (! $allSlugs->contains('slug', $newSlug)) {
+                return $newSlug;
+            }
+        }
+
+        throw new \Exception('Can not create a unique slug');
+    }
+
+    protected function getRelatedSlugs($slug, $id = 0)
+    {
+        return Audio::select('slug')->where('slug', 'like', $slug.'%')
+            ->where('id', '<>', $id)
+            ->get();
+    }
+}

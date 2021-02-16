@@ -1,0 +1,576 @@
+<?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Redirect,Response,Stripe;
+use App\Setting as Setting;
+use App\PpvPurchase as PpvPurchase;
+use App\Plan as Plan;
+use App\PaypalPlan as PaypalPlan;
+use Carbon\Carbon;
+use Auth;
+use DB;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Image;
+use Illuminate\Support\Facades\Notification;
+use Laravel\Cashier\Exceptions\IncompletePayment;
+
+class SignupController extends Controller
+{
+    
+    use RegistersUsers;
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+    
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+    
+    public function index1()
+    {
+        $user = Auth::user();
+        if (Auth::user()->stripe_id == NULL)
+        {
+          $stripeCustomer = $user->createAsStripeCustomer();
+
+      }
+      return view('stripe', [
+        'intent' => $user->createSetupIntent()
+    ]);
+
+  }
+   /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upgrade(Request $request) {
+        
+        $uid = Auth::user();
+        $user = User::where('id',$uid)->first();
+        if ($user->stripe_id == NULL)
+        {
+            $stripeCustomer = $user->createAsStripeCustomer();
+        }
+
+        return view('register.upgrade', [
+            'intent' => $user->createSetupIntent()
+            ,compact('register')
+        ]);
+    }
+    
+    
+    
+         public function saveSubscription(Request $request) {
+        
+               $user_email = Auth::user()->email;
+                $user = User::where('email',$user_email)->first();
+
+                $paymentMethod = $request->get('py_id');
+                $plan = $request->get('plan');
+                $plandetail = Plan::where('plans_name',$plan)->first();
+                $stripe_plan = SubscriptionPlan();
+                $paymentMethods = $user->paymentMethods();
+
+                $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+
+                $input['role'] = 'subscriber';
+                $user->update($input);    
+                $response = array(
+                    'status' => 'success'
+                );
+                return response()->json($response);
+    }
+    
+    
+    public function store123(Request $request)
+    {
+       
+        $setting = Setting::first();   
+        $user = Auth::user();
+        $user_id = Auth::user()->id;
+        $paymentMethod = $request->get('py_id');
+        $paymentMethods = $user->paymentMethods();
+        //print_r($paymentMethod);exit;
+        $user->newSubscription('default', 'monthly')->create($paymentMethod);
+    }
+    
+    public function index(Request $request)
+    {
+        $request->session()->forget('register');
+
+        $products = \App\Register::all();
+
+        return view('register.index',compact('products'));
+    }
+
+    public function createStep1(Request $request)
+    {
+            $signup_status = FreeRegistration();
+//            if ( $signup_status == 1 ) {
+//                return redirect('/signup');
+//            }
+            if ($request->has('ref')) {
+                session(['referrer' => $request->query('ref')]);
+            }
+            $register = $request->session()->get('register');
+            $settings = \App\Setting::first();
+            if($settings->free_registration == 1) {
+                return view('auth.register',compact('register'));
+            } else {
+                return view('register.step1',compact('register'));
+            }
+    }
+    
+    
+    
+    public function Verify($activation_code){
+        $user = User::where('activation_code', '=', $activation_code)->first();
+        $fetch_user = User::where('activation_code', '=', $activation_code)->first();
+        if($user){
+            $user = User::where('activation_code', $activation_code)
+                      ->update(['activation_code' => null,'active' => 1]);
+
+            $mobile = $fetch_user->mobile;
+            session()->put('register.email',$fetch_user->email);
+              return redirect('/register2')->with('message', 'You have successfully verified your account. Please login below.');
+          } else {
+            // print_r('expression');
+            // exit;
+             return redirect('/')->with('message', 'Invalid Activation.');
+        }
+       
+    }
+
+    public function PostcreateStep1(Request $request)
+    {
+//        echo "asd";
+//        exit;
+        
+        if ($request->has('ref')) {
+            session(['referrer' => $request->query('ref')]);
+        }
+        
+        $ref = Request::get('ref');
+
+        $validatedData = $request->validate([
+            'username' =>  ['required', 'string'],
+            'email' =>  ['required', 'string', 'email', 'unique:users'],
+            'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+            'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
+            'password_confirmation' => 'required',
+        ]);
+        
+    $free_registration = FreeRegistration();
+    $email = $request->session()->get('register.email');
+    $name = $request->session()->get('register.username');
+    $ccode_session = $request->get('ccode');
+    $ccode = $request->session()->put('ccode', $ccode_session);
+    $mobile_session = $request->get('mobile');
+    $mobiles = $request->session()->put('mobile',$mobile_session); 
+    $get_mobile = $request->session()->get('mobile');
+    
+    $get_password = $request->get('password');
+    $password = $request->session()->put('password', $get_password);
+    $get_password = $request->session()->get('password');
+    $path = public_path().'/uploads/avatars/';    
+    $logo = $request->file('avatar');
+    
+    if($logo != '') {   
+                  //code for remove old file
+      if($logo != ''  && $logo != null){
+       $file_old = $path.$logo;
+       if (file_exists($file_old)){
+           unlink($file_old);
+       }
+   }
+                  //upload new file
+   $file = $logo;
+   $avatar  = $file->getClientOriginalName();
+   $file->move($path, $avatar);
+
+} else {
+ $avatar  = 'default.png';
+} 
+
+
+if(empty($request->session()->get('register'))){
+    
+    $register = new \App\User();
+    $register->fill($validatedData);
+    $request->session()->put('register', $register);
+    $email = $request->session()->get('register.email');
+    $name = $request->session()->get('register.username');
+    $password = $request->session()->get('register.password');
+    $avatars = $request->session()->put('avatar',$avatar);
+    
+    $ccode_session = $request->get('ccode');
+    $ccode = $request->session()->put('ccode', $ccode_session);
+    $get_ccode = $request->session()->get('ccode');
+    $mobile_session = $request->get('mobile');
+    $mobiles = $request->session()->put('mobile',$mobile_session); 
+    $get_mobile = $get_ccode.$request->session()->get('mobile');
+    $avatars = $request->session()->put('avatar',$avatar);
+    
+    
+    
+} else {
+
+         $register = $request->session()->get('register');
+         $register->fill($validatedData);
+         $request->session()->put('register', $register);
+         $email = $request->session()->get('register.email');
+         $name = $request->session()->get('register.username');
+         $password = $request->session()->get('password');
+         $avatars = $request->session()->put('avatar',$avatar);
+         $ccode_session = $request->get('ccode');
+         $ccode = $request->session()->put('ccode', $ccode_session);
+         $get_ccode = $request->session()->get('ccode');
+         $mobile_session = $request->get('mobile');
+         $mobiles = $request->session()->put('mobile',$mobile_session); 
+         $get_mobile = $request->session()->get('mobile');
+         $ccode = $get_ccode;
+         $user_email = User::where('email',$email)->count();
+                    //$epass = Hash::make($password2); 
+
+     if ($user_email == 0) {
+      User::create([
+        'name' => $name,
+        'username' => $name,
+        'mobile' => $get_mobile,
+        'ccode' => $ccode,
+        'avatar' => $avatars,
+        'role' => 'registered',
+        'email' => $email,
+        'password' => $get_password,
+    ]);
+    }
+    }
+
+if ($free_registration == 1) {
+    if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        return redirect('/');
+    }
+} 
+
+else {
+ if ($request->has('ref')) {
+                           //session(['referrer' => $request->query('ref')]);
+  return redirect('/register2?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
+}
+else {
+                        // return redirect('/register2');
+ return redirect('/register2');
+}
+
+}
+}
+
+
+    public function SaveAsRegisterUser(Request $request)
+            {
+             $register = session()->get('register');
+             $email = session()->get('register.email');
+              $user_email = User::where('email',$email)->count();
+              $user = User::where('email',$email)->first();
+              $password2 = $user->password;
+        
+                if (Auth::attempt(['email' => $email, 'password' => $password2])) {
+                    return redirect('/');
+                }
+                return redirect('/');
+            }
+
+
+
+
+
+public function createStep2(Request $request)
+    {
+            if ($request->has('ref')) {
+                session(['referrer' => $request->query('ref')]);
+            }
+    
+
+            
+
+            $user_mail = session()->get('register.email');
+            $user_count = User::where("email","=",$user_mail)->where("active","=",1)->count();
+
+            if ($user_count == 0 ) {
+                  return redirect('/')->with('message', 'You have successfully verified your account. Please login below.');
+            }elseif(!isset($user_mail)){
+                 return redirect('/')->with('message', 'You have successfully verified your account. Please login below.');
+            }else{
+                $register = $request->session()->get('register');
+                return view('register.step2',compact('register'));
+            }
+
+    }
+
+
+public function PostcreateStep2(Request $request)
+{
+   $validatedData = $request->validate([
+    'plan_name' => 'required'
+    ]);
+
+       $request->session()->put('planname', $request['plan_name']);
+       $register = $request->session()->get('register');
+               //$register->fill($validatedData);
+       $plan_name = $request->get('register.email');
+       if ($request->has('ref')) {
+        session(['referrer' => $request->query('ref')]);
+    }
+
+    if ($request->has('ref')) {
+                               //session(['referrer' => $request->query('ref')]);
+      return redirect('/register3?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
+    }
+    else {
+     return redirect('/register3');
+    }
+}
+    
+    
+
+
+public function createStep3(Request $request)
+{  
+    
+    if ($request->has('ref')) {
+        session(['referrer' => $request->query('ref')]);
+    }
+    
+    $uemail = $request->session()->get('register.email');
+    $uname = $request->session()->get('register.username');
+    $upassword = $request->session()->get('password');
+    $avatars = $request->session()->get('avatar');
+    $ccode = $request->session()->get('ccode');
+    if ($avatars!=='') {
+        $avatar = $request->session()->get('avatar');
+
+    } else {
+
+        $avatar  = 'default.png'; 
+    }
+    
+             //$mobiles = $request->session()->put('mobile',$mobile_session); 
+    $get_mobile = $request->session()->get('mobile');
+              //  $ccode = $get_ccode;
+             $user = User::where('email',$uemail)->first();
+             if ($user->stripe_id == NULL)
+             {
+              $stripeCustomer = $user->createAsStripeCustomer();
+
+            }
+           return view('register.step3', [
+                        'intent' => $user->createSetupIntent()
+                        ,compact('register')
+                    ]);
+
+
+            }
+
+    public function PostcreateStep3(Request $request)
+    {
+        if ($request->has('ref')) {
+            session(['referrer' => $request->query('ref')]);
+        }
+        $avatars = $request->session()->get('avatar');
+        if ($avatars!=='') {
+            $avatar = $request->session()->get('avatar');
+        } else {
+            $avatar  = 'default.png'; 
+        }
+        
+        $user_email = $request->session()->get('register.email');
+        $user = User::where('email',$user_email)->first();
+        $paymentMethod = $request->get('py_id');
+        $plan = $request->get('plan');
+        $paymentMethods = $user->paymentMethods();
+        $apply_coupon = NewSubscriptionCouponCode();
+        $stripe_plan = SubscriptionPlan();
+        $plandetail = Plan::where('plan_id',$plan)->first();
+        if ( NewSubscriptionCoupon() == 1 ) {
+                    // $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+            try {
+                            //$subscription = $user->newSubscription('default', $planId) //                                                    ->create($paymentMethod);
+                 $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+            } catch (IncompletePayment $exception) {
+                return redirect()->route(
+                    'cashier.payment',
+                    [$exception->payment->id, 'redirect' => route('home')]
+                );
+            }
+                //     $customerId = $user->asStripeCustomer()->id;
+                //     $upcomingInvoice = \Stripe\Invoice::upcoming(["customer" => $customerId]);
+                //     $nextPaymentAttemptTimestamp = $upcomingInvoice->next_payment_attempt;
+                //     $nextPaymentAttemptDate = Carbon::createFromTimeStamp($nextPaymentAttemptTimestamp)->format('F jS, Y');
+
+        \Mail::send('emails.subscriptionmail', array(
+            'name' => $user->username,
+            'paymentMethod' => $paymentMethod,
+            'plan' => ucfirst($plandetail->plans_name),
+            'price' => $plandetail->price,
+            'billing_interval' => $plandetail->billing_interval,
+            /*'next_billing' => $nextPaymentAttemptDate,*/
+        ), function($message) use ($request,$user){
+            $message->from(AdminMail(),'Eliteclub');
+            $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+        });
+            $user->role = 'subscriber';
+            $user->active = 1;
+            $user->save();
+
+    } else {
+
+        try {
+            $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+        } catch (IncompletePayment $exception) {
+            return redirect()->route(
+                'cashier.payment',
+                [$exception->payment->id, 'redirect' => route('home')]
+            );
+        }
+
+                     //$user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+    //                 $customerId = $user->asStripeCustomer()->id;
+    //                        $upcomingInvoice = \Stripe\Invoice::upcoming(["customer" => $customerId]);
+    //                        $nextPaymentAttemptTimestamp = $upcomingInvoice->next_payment_attempt;
+    //                        $nextPaymentAttemptDate = Carbon::createFromTimeStamp($nextPaymentAttemptTimestamp)->format('F jS, Y');
+
+        \Mail::send('emails.subscriptionmail', array(
+            'name' => $user->username,
+            'paymentMethod' => $paymentMethod,
+            'plan' => ucfirst($plandetail->plans_name),
+            'price' => $plandetail->price,
+            'billing_interval' => $plandetail->billing_interval,
+    //                                'next_billing' => $nextPaymentAttemptDate,
+        ), function($message) use ($request,$user){
+            $message->from(AdminMail(),'Eliteclub');
+            $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+        });
+        $user->role = 'subscriber';
+        $user->active = 1;
+        $user->avatar = $avatar;
+        $user->save();
+    }
+    $response = array(
+      'status' => 'success'
+    );
+        if ($response)
+            {   $referrer = User::whereUsername(session()->pull('referrer'))->first();
+        $data = array(
+          'referrer_id' => $referrer ? $referrer->id : null,
+        );
+        $user->update($data);
+        }
+        return response()->json($response);
+
+    } 
+
+    protected function registered(Request $request, $user)
+    {
+        if ($user->referrer !== null) {
+            Notification::send($user->referrer, new ReferrerBonus($user));
+        }
+
+        return redirect($this->redirectPath());
+    }  
+
+    public function PayWithPapal(Request $request)
+        {
+        
+            $plan_id = $request->get('name');
+                $plan_details = PaypalPlan::where('plan_id','=',$plan_id)->first();
+                $data = array(
+                        'plan_name' => $plan_details->name,
+                        'plan_price' => $plan_details->price,
+                        'plan_id' => $plan_details->plan_id
+                    );
+            
+            return view('register.paypal',$data);
+        }
+    
+    public function submitpaypal(Request $request)
+        {
+                $register = $request->session()->get('register');
+                $email = $request->email;
+                $user_email = User::where('email','=',$email)->count();
+                $user_first = User::where('email','=',$email)->first();
+                $id = $user_first->id;  
+            
+                if ( $user_email > 0 ) {
+                   // $subIds = $request->get('subId');           
+                    $subId = $request->subId;        
+                    $new_user = User::find($id);
+                    $new_user->role = 'subscriber';
+                    $new_user->paypal_id = $subId;
+                    $new_user->payment_type ='paypal';
+                    $new_user->save();
+                    $response = array(
+                          'status' => 'success'
+                    );
+                } else {
+                     $response = array(
+                          'status' => 'failed'
+                     );
+                  }
+             return response()->json($response);
+            
+        }   
+    public function subscribepaypal(Request $request)
+        {
+                $user_email = Auth::user()->email;
+                $subId = $request->get('subId');
+                $user = User::where('email',$user_email)->first();
+                $user->role = 'subscriber';
+                $user->active = 1;
+                $user->paypal_id = $subId;
+                $user->save();
+                $response = array(
+                      'status' => 'success'
+                );
+                return response()->json($response);
+        }
+    
+    
+
+    public function stripesubscription(Request $request){
+            //$user = Auth::User();
+    
+            print_r("asdasd");
+            exit;
+             if ($user->stripe_id == NULL)
+             {
+              $stripeCustomer = $user->createAsStripeCustomer();
+
+             }
+            $data = array(
+                "plan_name" => "plan"
+            );
+            return view('register.become', [
+                                'intent' => $user->createSetupIntent()
+                                ,$data
+            ]);
+}
+    
+    
+    public function CancelSubscription()
+        {
+              echo "kljl";  
+        }
+
+}
