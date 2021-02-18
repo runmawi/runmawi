@@ -67,7 +67,7 @@ $cat = App\VideoCategory::all();
 ?>
   <li class="dropdown menu-item">
     <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-      <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+      <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
     </a>
     <ul class="dropdown-menu categ-head">
       <?php foreach ( $cat as $category) { ?>
@@ -88,7 +88,7 @@ $cat = App\VideoCategory::all();
   <?php } } ?>
   <li class="nav-item dropdown menu-item">
     <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-      Movies <i class="fa fa-angle-down"></i>
+      Movies <!--<i class="fa fa-angle-down"></i>-->
     </a>
       <ul class="dropdown-menu categ-head">
           <?php foreach ( $languages as $language) { ?>
@@ -119,7 +119,7 @@ $cat = App\VideoCategory::all();
                            <div class="more-menu" aria-labelledby="dropdownMenuButton">
                               <div class="navbar-right position-relative">
                                  <ul class="d-flex align-items-center justify-content-end list-inline m-0">
-                                    <li>
+                                    <!--<li>
                                        <a href="#" class="search-toggle">
                                        <i class="ri-search-line"></i>
                                        </a>
@@ -231,7 +231,21 @@ $cat = App\VideoCategory::all();
                                              </div>
                                           </div>
                                        </div>
-                                    </li>
+                                    </li>-->
+                                             <li class="hidden-xs">
+          <div id="navbar-search-form">
+            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+              <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
+              <div>
+                <i class="fa fa-search">
+                </i>
+                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+              </div>
+            </form>
+          </div>
+          <div id="search_list" class="search_list" style="position: absolute;">
+          </div> 
+        </li>
                                  </ul>
                               </div>
                            </div>
@@ -1470,7 +1484,53 @@ function about(evt , id) {
                                );
   }
 </script>
-         
+         <script type="text/javascript">
+  $(document).ready(function () {
+    $('.searches').on('keyup',function() {
+      var query = $(this).val();
+      //alert(query);
+      // alert(query);
+       if (query !=''){
+      $.ajax({
+        url:"<?php echo URL::to('/search');?>",
+        type:"GET",
+        data:{
+          'country':query}
+        ,
+        success:function (data) {
+          $('.search_list').html(data);
+        }
+      }
+            )
+       } else {
+            $('.search_list').html("");
+       }
+    }
+                     );
+    $(document).on('click', 'li', function(){
+      var value = $(this).text();
+      $('.search').val(value);
+      $('.search_list').html("");
+    }
+                  );
+  }
+                   );
+</script>
+<script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
+    
 
    </body>
 </html>
