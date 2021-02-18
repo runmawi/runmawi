@@ -45,7 +45,7 @@
                         <a class="navbar-brand" href="index.html"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
-                              <ul id="top-menu" class="navbar-nav ml-auto">
+<!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
                                     <a href="index.html">Home</a>
                                  </li>
@@ -55,7 +55,60 @@
                                  <li class="menu-item">
                                     <a href="movie-category.html">Movies</a>
                                  </li>
-                              </ul>
+                              </ul>-->
+                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+  <?php
+$stripe_plan = SubscriptionPlan();
+$menus = App\Menu::all();
+$languages = App\Language::all();
+foreach ($menus as $menu) { 
+if ( $menu->in_menu == "video") { 
+$cat = App\VideoCategory::all();
+?>
+  <li class="dropdown menu-item">
+    <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+      <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <?php foreach ( $cat as $category) { ?>
+      <li>
+        <a class="dropdown-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+          <?php echo $category->name;?> 
+        </a>
+      </li>
+      <?php } ?>
+    </ul>
+  </li>
+  <?php } else { ?>
+  <li class="menu-item">
+    <a href="<?php echo URL::to('/').$menu->url;?>">
+      <?php echo __($menu->name);?>
+    </a>
+  </li>
+  <?php } } ?>
+  <li class="nav-item dropdown menu-item">
+    <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+      Movies <i class="fa fa-angle-down"></i>
+    </a>
+      <ul class="dropdown-menu" id="top-menu">
+          <?php foreach ( $languages as $language) { ?>
+          <li>
+            <a class="dropdown-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
+              <?php echo $language->name;?> 
+            </a>
+          </li>
+        
+        <?php } ?>
+        </ul>
+    </li>
+  <li class="blink_me">
+    <a href="<?php echo URL::to('refferal') ?>" style="color: #fd1b04;list-style: none;
+                                                       font-weight: bold;
+                                                       font-size: 16px;">
+      <?php echo __('Refer and Earn');?>
+    </a>
+  </li>
+</ul>
                            </div>
                         </div>
                         <div class="mobile-more-menu">
@@ -474,20 +527,20 @@ foreach($latest_videos as $watchlater_video): ?>
 		                   <?php } ?>  
 			            <div class="play-button-trail" >
 				
-			<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+<!--			<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
                 <div class="play-block">
                     <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-				</div></a>
+				</div></a>-->
                 <div class="detail-block">
-					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+<!--					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <p class="movie-title"><?php echo __($watchlater_video->title); ?></p>
-					</a>
+					</a>-->
 					
-                <p class="movie-rating">
+                <!--<p class="movie-rating">
                     <span class="star-rate"><i class="fa fa-star"></i><?= $watchlater_video->rating;?></span>
                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-					</p>
+					</p>-->
 
 				</div>
 		</div>
@@ -507,20 +560,22 @@ foreach($latest_videos as $watchlater_video): ?>
 
     </div>
 	</div>
-	<ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
-    </li>
-     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
-    </li>
-  </ul>
+    <div align="center">
+            <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
+                    </li>
+                     <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
+                    </li>
+              </ul>
+        </div>
 
 
 	
@@ -1394,6 +1449,28 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-       
+       <script>
+  // Prevent closing from click inside dropdown
+  $(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
+    
+  // make it as accordion for smaller screens
+  if ($(window).width() < 992) {
+    $('.dropdown-menu a').click(function(e){
+      e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.submenu').hide();
+      }
+                       )
+    }
+                               );
+  }
+</script>
+         
+
    </body>
 </html>
