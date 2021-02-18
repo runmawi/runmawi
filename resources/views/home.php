@@ -69,10 +69,10 @@ $cat = App\VideoCategory::all();
     <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
       <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
     </a>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu categ-head">
       <?php foreach ( $cat as $category) { ?>
       <li>
-        <a class="dropdown-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+        <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
           <?php echo $category->name;?> 
         </a>
       </li>
@@ -90,10 +90,10 @@ $cat = App\VideoCategory::all();
     <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
       Movies <i class="fa fa-angle-down"></i>
     </a>
-      <ul class="dropdown-menu" id="top-menu">
+      <ul class="dropdown-menu categ-head">
           <?php foreach ( $languages as $language) { ?>
           <li>
-            <a class="dropdown-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
+            <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
               <?php echo $language->name;?> 
             </a>
           </li>

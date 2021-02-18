@@ -602,3 +602,13 @@ a.title-dec{
       opacity: 0;
     }
   }
+.categ-head{
+    color: #fff !important;
+    background-color: #000 !important;
+    padding: 0px !important;
+}
+.cont-item:hover{
+    color: #fff !important;
+    background-color: #000 !important;
+    padding: 0px !important;
+}
