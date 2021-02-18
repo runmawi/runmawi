@@ -433,7 +433,103 @@
                   </div>
                </div>
             </div>
-         </section>
+         
+          <?php if(isset($latest_videos)) :
+foreach($latest_videos as $watchlater_video): ?>
+<div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+	<div class="img-black-back">
+	</div>
+	<div align="right">
+	<button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
+		</div>
+<div class="tab-sec">
+	<div class="tab-content">
+    <div id="overview<?= $watchlater_video->id;?>" class="container tab-pane active"><br>
+           <h1 class="movie-title-thumb"><?php echo __($watchlater_video->title); ?></h1>
+                   <p class="movie-rating">
+                    <span class="thumb-star-rate"><i class="fa fa-star fa-w-18"></i><?= $watchlater_video->rating;?></span>
+                    <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
+                    <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+					</p>
+	              <p>Welcome</p>
+			<a class="" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+						<div class="btn btn-danger btn-right-space br-0">
+                    <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
+				</div></a>
+    </div>
+    <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
+
+         <div class="block expand">
+		
+		<a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+
+		
+				<?php if (!empty($watchlater_video->trailer)) { ?>
+                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
+								 </video>
+                            <?php } else { ?>
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
+			
+		                   <?php } ?>  
+			            <div class="play-button-trail" >
+				
+			<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                <div class="play-block">
+                    <i class="fa fa-play flexlink" aria-hidden="true"></i> 
+				</div></a>
+                <div class="detail-block">
+					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                <p class="movie-title"><?php echo __($watchlater_video->title); ?></p>
+					</a>
+					
+                <p class="movie-rating">
+                    <span class="star-rate"><i class="fa fa-star"></i><?= $watchlater_video->rating;?></span>
+                    <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
+                    <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+					</p>
+
+				</div>
+		</div>
+		</a>
+		<div class="block-contents">
+			<!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
+        </div>
+	</div> 
+	            
+    </div>
+    <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
+     
+           <h2>More Like This</h2>
+    </div>
+     <div id="details<?= $watchlater_video->id;?>" class="container tab-pane "><br>
+        <h2>Description</h2>
+
+    </div>
+	</div>
+	<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
+    </li>
+     <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
+    </li>
+  </ul>
+
+
+	
+	</div></div>
+
+<?php endforeach; 
+endif; ?>
+</section>
+          
          <section id="iq-upcoming-movie">
             <div class="container-fluid">
                <div class="row">
@@ -1265,5 +1361,39 @@
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+       <script>
+    $(document).ready(function () {
+      $(".thumb-cont").hide();
+      $(".show-details-button").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).show();
+      });
+		$(".closewin").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).hide();
+      });
+    });
+  </script>
+<script>
+function about(evt , id) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    
+  }
+	
+  document.getElementById(id).style.display = "block";
+ 
+}
+// Get the element with id="defaultOpen" and click on it
+//document.getElementById("defaultOpen").click();
+</script>
+       
    </body>
 </html>
