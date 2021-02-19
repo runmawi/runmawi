@@ -21,7 +21,7 @@ return [
     |
     */
     
-    'name' => env('APP_NAME', 'Eliteclub'),
+    'name' => env('APP_NAME', 'Flicknexs'),
     //'site' => config('settings.logo'),
     /*
     |--------------------------------------------------------------------------
