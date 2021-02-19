@@ -2,6 +2,8 @@
 <html lang="<?php echo Session::get('locale');?>" >  
   <head>
     <meta charset="utf-8">
+            <!-- Favicon -->
+      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
     <?php include('head.php'); ?>
     <style>
       .list-group-item:hover{

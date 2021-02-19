@@ -8,6 +8,17 @@
 		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+              <!-- Favicon -->
+        <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
+              <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+      <!-- Typography CSS -->
+      <link rel="stylesheet" href="assets/css/typography.css" />
+      <!-- Style -->
+      <link rel="stylesheet" href="assets/css/style.css" />
+      <!-- Responsive -->
+      <link rel="stylesheet" href="assets/css/responsive.css" />
 		
 <style>
 	.land{
@@ -26,6 +37,7 @@
 		float: right;
 		width: 90px;
 		margin-right: 50px;
+        padding: 7px;
 	}
 	.inway:visited{
 		color: #fff;
@@ -192,7 +204,7 @@
 	.subbut{
 		width: 200px;
 		color: #fff;
-		font-size: 1.625rem;
+		font-size: 1.425rem;
 		background-color: #e50914;
         border-color: #e50914;
 		border-radius: .07rem !important;
@@ -258,6 +270,12 @@
 	}
 		</style>
 </head>
+          <!-- loader Start -->
+      <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>
+      <!-- loader END -->
 <div class="land">
 	<section >
 		<div class="landing-page" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;
@@ -268,7 +286,7 @@
         $settings = App\Setting::find(1);
       ?>
         <!--<img class="logo" src="<?php echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>">-->
-                    <img class="logo" src="<?php echo URL::to('/').'/assets/img/home/finexs.png';?>">
+                    <img class="logo" src="<?php echo URL::to('/').'/assets/img/logo.png';?>">
 				</div>
 				<div class="col-sm-4 button">
         <a class="loginbut" href="<?= URL::to('/login')?>"> 
@@ -296,7 +314,7 @@
 				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players and more.</p>
 			</div>
 			<div class="col-md-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="100%" width="100%">
+				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="100%" width="75%">
 			</div>
 		</div>
 		
@@ -305,7 +323,7 @@
 	<section>
 		<div class="row downsec">
 			<div class="col-md-6 downimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>" height="100%" width="100%">
+				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>" height="100%" width="75%">
 			</div>
 			<div class="col-md-6 downdetail">
 				<h2 class="downtag">Download Your Shows to Watch Offline.</h2>
@@ -415,6 +433,24 @@
 	</section>
 	<?php /*include('footer.blade.php');*/ ?>
 	</div>
+          <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="assets/js/popper.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="assets/js/bootstrap.min.js"></script>
+      <!-- Slick JS -->
+      <script src="assets/js/slick.min.js"></script>
+      <!-- owl carousel Js -->
+      <script src="assets/js/owl.carousel.min.js"></script>
+      <!-- select2 Js -->
+      <script src="assets/js/select2.min.js"></script>
+      <!-- Magnific Popup-->
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <!-- Slick Animation-->
+      <script src="assets/js/slick-animation.min.js"></script>
+      <!-- Custom JS-->
+      <script src="assets/js/custom.js"></script>
 	
 </html> 
 

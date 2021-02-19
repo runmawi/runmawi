@@ -1272,7 +1272,7 @@ endif; ?>
                   </div>
                   <div class="col-lg-3 col-md-12 r-mt-15">
                      <div class="d-flex">
-                        <a href="#" class="s-icon">
+                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
                         </a>
                         <a href="#" class="s-icon">
@@ -1283,6 +1283,9 @@ endif; ?>
                         </a>
                         <a href="#" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
+                        </a>
+                         <a href="<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                        <i class="fa fa-google-plus"></i>
                         </a>
                      </div>
                   </div>
