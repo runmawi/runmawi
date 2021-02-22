@@ -18,6 +18,11 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+       <style>
+           .h-100 {
+    height: unset !important;
+}
+       </style>
    </head>
    <body>
       <!-- loader Start -->
