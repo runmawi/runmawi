@@ -2,8 +2,8 @@
 
 if( ! defined ( "THEME_URL" ) ):
 	//define("THEME_URL", 'http://localhost/saka_vod' . '/content/themes/default');
-        //define("THEME_URL", '');
-        define("THEME_URL", 'https://localhost/finexs');
+        define("THEME_URL", '');
+        //define("THEME_URL", 'https://localhost/finexs');
 endif;
     //Enter your Info below to Sign-Up for an Account!
 
@@ -60,8 +60,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://eliteclubco.com/'),
-//    'url' => env('APP_URL', 'http://eliteclubco.com/'),
+    'url' => env('APP_URL', 'http://flicknexui.webnexs.org/'),
+//    'url' => env('APP_URL', 'http://flicknexui.webnexs.org/'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
