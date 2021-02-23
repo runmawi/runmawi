@@ -68,6 +68,7 @@ class ChannelController extends Controller
     
     public function play_videos($slug)
     {
+        echo "Adas";exit;
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time());     
