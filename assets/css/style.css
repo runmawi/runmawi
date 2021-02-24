@@ -659,7 +659,3 @@ footer, .home footer {
     float: left;
 }
 }
-.nav>li {
-    position: relative;
-    display: block;
-}
