@@ -631,3 +631,35 @@ header .navbar ul li.menu-item .dropdown-item{
 a.dropdown-item.cont-item {
     background-color: transparent;
 }
+footer, .home footer {
+    position: relative;
+    height: auto;
+    width: 100%;
+    background: #0a0a0a !important;
+}
+.navbar-nav.navbar-left li a {
+    color: #fff !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    text-transform: capitalize !important;
+    vertical-align: middle !important;
+    padding: 0 !important;
+    /* border-bottom: 2px solid transparent; */
+    font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', Arial !important;
+}
+.nav.navbar-nav.navbar-left {
+    margin-top: 10px !important;
+    margin-left: 5% !important;
+}
+.navbar-nav.navbar-left li {
+    padding: 7px;
+}
+@media (min-width: 768px){
+.navbar-nav>li {
+    float: left;
+}
+}
+.nav>li {
+    position: relative;
+    display: block;
+}

@@ -85,6 +85,17 @@
                   width: 100%;
                   z-index: 1;
                 }
+        .navbar-default {
+    background: #0a0a0a !important;
+    border-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    z-index: 999999 !important;
+    box-shadow: 0 10px 15px #060606 !important;
+    box-shadow: 0 10px 15px rgb(0 0 0 / 20%), 0 10px 15px rgb(0 0 0 / 19%) !important;
+}
+        body{
+            background: #1a1b20 !important;
+        }
     </style> 
       <script>
          /* $(document).ready(function() {  
@@ -132,7 +143,7 @@
       </a>
     </div>
     <div class="collapse navbar-collapse right" id="bs-example-navbar-collapse-1" >
-      <a class="visible-xs" href="<?php echo URL::to('/');?>" style="padding: 10px 5px;border-bottom: 1px solid #e0e0e0;">
+      <!--<a class="visible-xs" href="<?php echo URL::to('/');?>" style="padding: 10px 5px;border-bottom: 1px solid #e0e0e0;">
         <?php $settings = App\Setting::find(1); ?>
         <img src="<?php echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>">
       </a>
@@ -149,7 +160,7 @@
         </div>
         <div id="search_list" class="search_list" style="position: absolute;">
         </div> 
-      </li>
+      </li>-->
       <!-- Left Side Of Navbar -->
       <?php include('menu.php');?>
       <ul class="nav navbar-nav navbar-right">
@@ -233,12 +244,10 @@ $img_file = URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar;
               <a href="<?php echo URL::to('watchlaters') ?>">Watch Later
               </a>
             </li>
-<!--
-            <li>
+<!--            <li>
               <a href="<?php echo URL::to('mywishlists') ?>">My Wishist 
               </a>
--->
-            </li>
+            </li>-->
               <li><a href="<?php echo URL::to('showPayperview') ?>"><?php echo __('Rented Movies');?></a></li>
             <?php if(Auth::user()->role == 'admin' || Auth::user()->role == 'demo' || Auth::user()->role == 'subadmin'): ?>
             <li class="divider">
