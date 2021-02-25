@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-	<meta charset="utf-8">
+	<!--<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +29,23 @@
 	<script src="<?= THEME_URL .'/assets/admin/admin/js/bootstrap-colorpicker.min.js'; ?>" id="script-resource-13"></script>
 	<script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
 	
-	<script>$.noConflict();</script>
+	<script>$.noConflict();</script>-->
+    <!-- Required meta tags -->
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <title>Flicknexs - Responsive Bootstrap 4 Admin Dashboard Template</title>
+   <!-- Favicon -->
+   <link rel="shortcut icon" href="assets/admin/dashassets/images/fl-logo.png" />
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="assets/admin/dashassets/css/bootstrap.min.css">
+   <!--datatable CSS -->
+   <link rel="stylesheet" href="assets/admin/dashassets/css/dataTables.bootstrap4.min.css">
+   <!-- Typography CSS -->
+   <link rel="stylesheet" href="assets/admin/dashassets/css/typography.css">
+   <!-- Style CSS -->
+   <link rel="stylesheet" href="assets/admin/dashassets/css/style.css">
+   <!-- Responsive CSS -->
+   <link rel="stylesheet" href="assets/admin/dashassets/css/responsive.css">
 
 	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
@@ -49,336 +65,438 @@
 </style>
 
 </head>
-<body class="page-body skin-black">
+<body >
 
 
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-	
-	<div class="sidebar-menu page-right-in">
-
-		<div class="sidebar-menu-inner">
-			
-			<header class="logo-env">
-
-
-				<!-- logo collapse icon -->
-				<div class="sidebar-collapse">
-					<a href="#" class="sidebar-collapse-icon"><!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
-						<i class="entypo-menu"></i>
-					</a>
-				</div>
-
-								
-				<!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-				<div class="sidebar-mobile-menu visible-xs">
-					<a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-						<i class="entypo-menu"></i>
-					</a>
-				</div>
-
-			</header>
-							
-			<ul id="main-menu" class="main-menu">
-				<!-- add class "multiple-expanded" to allow multiple submenus to open -->
-				<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-				<li class="active">
-					<a href="{{ URL::to('admin') }}">
-						<i class="entypo-gauge"></i>
-						<span class="title">Dashboard</span>
-					</a>
-				</li>
-				<li class="">
-					<a href="{{ URL::to('admin/videos') }}">
-						<i class="entypo-video"></i>
-						<span class="title">Video Management</span>
-					</a>
-					<ul>
-			           <li>
-							<a href="{{ URL::to('admin/videos') }}">
-								<span class="title">All Videos</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ URL::to('admin/videos/create') }}">
-								<span class="title">Add New Video</span>
-							</a>
-						</li>
-						
+  <!-- Sidebar-->
+      <div class="iq-sidebar">
+         <div class="iq-sidebar-logo d-flex justify-content-between">
+            <a href="index.html" class="header-logo">
+               <img src="assets/admin/dashassets/images/fl-logo.png" class="img-fluid rounded-normal" alt="">
+               <div class="logo-title">
+                  <span class="text-primary text-uppercase">Flicknexs</span>
+               </div>
+            </a>
+            <div class="iq-menu-bt-sidebar">
+               <div class="iq-menu-bt align-self-center">
+                  <div class="wrapper-menu">
+                     <div class="main-circle"><i class="las la-bars"></i></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="sidebar-scrollbar">
+            <nav class="iq-sidebar-menu">
+               <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li><a href="index.html" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="active active-menu"><a href="index.html" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li><a href="rating.html" class="iq-waves-effect"><i class="las la-star-half-alt"></i><span>Rating </span></a></li>
+                  <li><a href="comment.html" class="iq-waves-effect"><i class="las la-comments"></i><span>Comment</span></a></li>
+                  <li><a href="user.html" class="iq-waves-effect"><i class="las la-user-friends"></i><span>User</span></a></li>
+                  <li>
+                     <a href="#category" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Category</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="category" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="add-category.html"><i class="las la-user-plus"></i>Add Category</a></li>
+                        <li><a href="category-list.html"><i class="las la-eye"></i>Category List</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#movie" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Movie</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="add-movie.html"><i class="las la-user-plus"></i>Add Movie</a></li>
+                        <li><a href="movie-list.html"><i class="las la-eye"></i>Movie List</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#show" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Show</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="add-show.html"><i class="las la-user-plus"></i>Add Show</a></li>
+                        <li><a href="show-list.html"><i class="las la-eye"></i>Show List</a></li>
+                     </ul>
+                  </li>
+                  <li><a href="pages-pricing.html" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Pricing</span></a></li>
+                  <li>
+                     <a href="#ui-elements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i><span>UI Elements</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="ui-elements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="elements">
+                           <a href="#sub-menu" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-play-circle-line"></i><span>UI Kit</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="sub-menu" class="iq-submenu collapse" data-parent="#ui-elements">
+                              <li><a href="ui-colors.html"><i class="las la-palette"></i>colors</a></li>
+                              <li><a href="ui-typography.html"><i class="las la-keyboard"></i>Typography</a></li>
+                              <li><a href="ui-alerts.html"><i class="las la-tag"></i>Alerts</a></li>
+                              <li><a href="ui-badges.html"><i class="lab la-atlassian"></i>Badges</a></li>
+                              <li><a href="ui-breadcrumb.html"><i class="las la-bars"></i>Breadcrumb</a></li>
+                              <li><a href="ui-buttons.html"><i class="las la-tablet"></i>Buttons</a></li>
+                              <li><a href="ui-cards.html"><i class="las la-credit-card"></i>Cards</a></li>
+                              <li><a href="ui-carousel.html"><i class="las la-film"></i>Carousel</a></li>
+                              <li><a href="ui-embed-video.html"><i class="las la-video"></i>Video</a></li>
+                              <li><a href="ui-grid.html"><i class="las la-border-all"></i>Grid</a></li>
+                              <li><a href="ui-images.html"><i class="las la-images"></i>Images</a></li>
+                              <li><a href="ui-list-group.html"><i class="las la-list"></i>list Group</a></li>
+                              <li><a href="ui-media-object.html"><i class="las la-ad"></i>Media</a></li>
+                              <li><a href="ui-modal.html"><i class="las la-columns"></i>Modal</a></li>
+                              <li><a href="ui-notifications.html"><i class="las la-bell"></i>Notifications</a></li>
+                              <li><a href="ui-pagination.html"><i class="las la-ellipsis-h"></i>Pagination</a></li>
+                              <li><a href="ui-popovers.html"><i class="las la-eraser"></i>Popovers</a></li>
+                              <li><a href="ui-progressbars.html"><i class="las la-hdd"></i>Progressbars</a></li>
+                              <li><a href="ui-tabs.html"><i class="las la-database"></i>Tabs</a></li>
+                              <li><a href="ui-tooltips.html"><i class="las la-magnet"></i>Tooltips</a></li>
+                           </ul>
+                        </li>
+                        <li class="form">
+                           <a href="#forms" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="lab la-wpforms"></i><span>Forms</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="forms" class="iq-submenu collapse" data-parent="#ui-elements">
+                              <li><a href="form-layout.html"><i class="las la-book"></i>Form Elements</a></li>
+                              <li><a href="form-validation.html"><i class="las la-edit"></i>Form Validation</a></li>
+                              <li><a href="form-switch.html"><i class="las la-toggle-off"></i>Form Switch</a></li>
+                              <li><a href="form-chechbox.html"><i class="las la-check-square"></i>Form Checkbox</a></li>
+                              <li><a href="form-radio.html"><i class="ri-radio-button-line"></i>Form Radio</a></li>
+                           </ul>
+                        </li>
                         <li>
-							<a href="{{ URL::to('admin/videos/categories') }}">
-								<span class="title">Manage Video Categories</span>
-							</a>
-						</li>
-                        
-                    
-					</ul>
-				</li>
-	
-                
-                
-                
-                <li class="">
-					<a href="{{ URL::to('admin/livestream') }}">
-						<i class="fa fa-money"></i>
-						<span class="title"> Manage Live Videos</span>
-					</a>
-					<ul>
-			             <li>
-							<a href="{{ URL::to('admin/livestream') }}">
-								<span class="title">All Live Videos</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ URL::to('admin/livestream/create') }}">
-								<span class="title">Add New Live Video</span>
-							</a>
-						</li>
-						
+                           <a href="#wizard-form" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-archive-drawer-line"></i><span>Forms Wizard</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="wizard-form" class="iq-submenu collapse" data-parent="#ui-elements">
+                              <li><a href="form-wizard.html"><i class="ri-clockwise-line"></i>Simple Wizard</a></li>
+                              <li><a href="form-wizard-validate.html"><i class="ri-clockwise-2-line"></i>Validate Wizard</a></li>
+                              <li><a href="form-wizard-vertical.html"><i class="ri-anticlockwise-line"></i>Vertical Wizard</a></li>
+                           </ul>
+                        </li>
                         <li>
-							<a href="{{ URL::to('admin/livestream/categories') }}">
-								<span class="title">Manage Live Video Categories</span>
-							</a>
-						</li>
-                        
-                        
-                    
-					</ul>
-				</li>
-
-				<li class="">
-					<a href="{{ URL::to('admin/menu') }}">
-						<i class="entypo-list"></i>
-						<span class="title">Menu</span>
-					</a>
-				</li>
-                <li class="">
-					<a href="{{ URL::to('admin/languages') }}">
-						<i class="entypo-list"></i>
-						<span class="title">Manage Languages </span>
-					</a>
-                    
-                    <ul>
-			             <li>
-							<a href="{{ URL::to('admin/admin-languages') }}">
-								<span class="title">Video Languages</span>
-							</a>
-						 </li> 
-                        
-                         <li>
-							<a href="{{ URL::to('admin/languages') }}">
-								<span class="title">Manage Translations</span>
-							</a>
-						 </li>
-                        
+                           <a href="#tables" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-table-line"></i><span>Table</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="tables" class="iq-submenu collapse" data-parent="#ui-elements">
+                              <li><a href="tables-basic.html"><i class="ri-table-line"></i>Basic Tables</a></li>
+                              <li><a href="data-table.html"><i class="ri-database-line"></i>Data Table</a></li>
+                              <li><a href="table-editable.html"><i class="ri-refund-line"></i>Editable Table</a></li>
+                           </ul>
+                        </li>
                         <li>
-							<a href="{{ URL::to('admin/admin-languages-transulates') }}">
-								<span class="title">Manage Transulate Languages</span>
-							</a>
-						</li>
-						
-                    
-					</ul>
-                    
-                    
-				</li>
-                 <li>
-							<a href="{{ URL::to('admin/countries') }}">
-                                <i class="entypo-list"></i>
-								<span class="title">Manage Countries</span>
-							</a>
-				</li>
-				<li> 
-					<a href="{{ URL::to('admin/sliders') }}">
-						<i class="entypo-docs"></i>
-						<span class="title">Manage Sliders</span>
-					</a>
-				</li>
-				<li class="">
-					<a href="{{ URL::to('admin/users') }}">
-						<i class="entypo-users"></i>
-						<span class="title">Users</span>
-					</a>
-					<ul>
-						<li>
-							<a href="{{ URL::to('admin/users') }}">
-								<span class="title">All Users</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ URL::to('admin/user/create') }}">
-								<span class="title">Add New User</span>
-							</a>
-						</li>
-                        
+                           <a href="#icons" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-list-check"></i><span>Icons</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="icons" class="iq-submenu collapse" data-parent="#ui-elements">
+                              <li><a href="icon-dripicons.html"><i class="ri-stack-line"></i>Dripicons</a></li>
+                              <li><a href="icon-fontawesome-5.html"><i class="ri-facebook-fill"></i>Font Awesome 5</a></li>
+                              <li><a href="icon-lineawesome.html"><i class="ri-keynote-line"></i>line Awesome</a></li>
+                              <li><a href="icon-remixicon.html"><i class="ri-remixicon-line"></i>Remixicon</a></li>
+                              <li><a href="icon-unicons.html"><i class="ri-underline"></i>unicons</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-file-alt iq-arrow-left"></i><span>Pages</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li>
-							<a href="{{ URL::to('admin/roles') }}">
-								<span class="title">Add User Roles</span>
-							</a>
-						</li>
-                        
-                       
-					</ul>
-				</li>
-				
-				
-				<li class="">
-					<a href="{{ URL::to('admin/pages') }}">
-						<i class="fa fa-file"></i>
-						<span class="title">Pages</span>
-					</a>
-					<ul>
-						<li>
-							<a href="{{ URL::to('admin/pages') }}">All Pages</a>
-						</li>
-						
-	            	</ul>
-				</li>
-				<li> 
-					<a href="{{ URL::to('admin/plans') }}">
-						<i class="entypo-cc-nd"></i>
-						<span class="title">Plans</span>
-					</a>
-					<ul>
-                        <li> <a href="{{ URL::to('admin/plans') }}">
-								<span class="title">Manage Stripe plans</span>
-							</a>
-						</li>
-                        <li> <a href="{{ URL::to('admin/paypalplans') }}">
-								<span class="title">Manage Paypal plans</span>
-							</a>
-						</li>
-                        
-                        <li> <a href="{{ URL::to('admin/coupons') }}">
-								<span class="title">Manage Stripe Coupons</span>
-							</a>
-						</li>
-					</ul>
-				</li>
-				<li class="">
-					<a href="{{ URL::to('admin/settings') }}">
-						<i class="entypo-cog"></i>
-						<span class="title">Settings</span>
-					</a>
-					<ul>
-                        <li class="">
-							<a href="{{ URL::to('admin/mobileapp') }}">
-								<span class="title">Mobile App Settings</span>
-							</a>
-						</li>
-                        
-						<li class="">
-							<a href="{{ URL::to('admin/settings') }}">
-								<span class="title">Site Settings</span>
-							</a>
-						</li>
-                        
-						<li class="">
-							<a href="{{ URL::to('admin/payment_settings') }}">
-								<span class="title">Payment Settings</span>
-							</a>
-						</li>
-                        
-                        <li class="">
-							<a href="{{ URL::to('admin/home-settings') }}">
-								<span class="title">HomePage Settings</span>
-							</a>
-						</li>
-                        
-                        <li class="">
-							<a href="{{ URL::to('admin/system_settings') }}">
-								<span class="title">System Settings</span>
-							</a>
-						</li>
-<!--
-                        
-                        <li class="">
-							<a href="{{ URL::to('admin/mobile_app') }}">
-								<span class="title">Mobile App</span>
-							</a>
-						</li>
--->
-
-						<li class="">
-							<a href="{{ URL::to('admin/theme_settings') }}">
-								<span class="title">Theme Settings</span>
-							</a>
-						</li>
-					</ul>
-				</li>
-						
-				
-			</ul>
-    
-			
-		</div>
-
-	</div>
+                           <a href="#authentication" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-pages-line"></i><span>Authentication</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="authentication" class="iq-submenu collapse" data-parent="#pages">
+                              <li><a href="sign-in.html"><i class="las la-sign-in-alt"></i>Login</a></li>
+                              <li><a href="sign-up.html"><i class="ri-login-circle-line"></i>Register</a></li>
+                              <li><a href="pages-recoverpw.html"><i class="ri-record-mail-line"></i>Recover Password</a></li>
+                              <li><a href="pages-confirm-mail.html"><i class="ri-file-code-line"></i>Confirm Mail</a></li>
+                              <li><a href="pages-lock-screen.html"><i class="ri-lock-line"></i>Lock Screen</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#extra-pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-pantone-line"></i><span>Extra Pages</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                           <ul id="extra-pages" class="iq-submenu collapse" data-parent="#pages">
+                              <li><a href="pages-timeline.html"><i class="ri-map-pin-time-line"></i>Timeline</a></li>
+                              <li><a href="pages-invoice.html"><i class="ri-question-answer-line"></i>Invoice</a></li>
+                              <li><a href="blank-page.html"><i class="ri-invision-line"></i>Blank Page</a></li>
+                              <li><a href="pages-error.html"><i class="ri-error-warning-line"></i>Error 404</a></li>
+                              <li><a href="pages-error-500.html"><i class="ri-error-warning-line"></i>Error 500</a></li>
+                              
+                              <li><a href="pages-pricing-one.html"><i class="ri-price-tag-2-line"></i>Pricing 1</a></li>
+                              <li><a href="pages-maintenance.html"><i class="ri-archive-line"></i>Maintenance</a></li>
+                              <li><a href="pages-comingsoon.html"><i class="ri-mastercard-line"></i>Coming Soon</a></li>
+                              <li><a href="pages-faq.html"><i class="ri-compasses-line"></i>Faq</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </nav>
+         </div>
+      </div>
 
 	<div class="main-content">
 				
 		<div class="row">
 		
-			<!-- Profile Info and Notifications -->
-			<div class="col-md-6 col-sm-8 clearfix">
-                <!-- logo -->
-                <?php
-                $settings = App\Setting::first();
-                ?>
-				    <a href="{{ URL::to('/') }}">
-	                   <img src="{{ Url::to('/public/uploads/settings') }}/{{ $settings->logo ?? '' }}" />
-					</a>
-		
-			</div>
-
-		
-			<!-- Raw Links -->
-			<div class="col-md-6 col-sm-4 clearfix hidden-xs">
-		
-				<ul class="list-inline links-list pull-right">
-					<li class="profile">
-							<span>Hello, <?php echo Auth::user()->username;?></span>
-					</li>
-
-					<li>
-						<a href="{{ URL::to('/') }}" target="_blank">
-							<span class="label label-info" style="font-size:12px">View My Site <i class="entypo-export right"></i></span>
-						</a>
-					</li>
-
-					<li class="sep"></li>
-		
-					<li>
-						<a href="{{ URL::to('logout') }}">
-							Log Out <i class="entypo-logout right"></i>
-						</a>
-					</li>
-				</ul>
-		
-			</div>
+			<!-- TOP Nav Bar -->
+      <div class="iq-top-navbar">
+         <div class="iq-navbar-custom">
+            <nav class="navbar navbar-expand-lg navbar-light p-0">
+               <div class="iq-menu-bt d-flex align-items-center">
+                  <div class="wrapper-menu">
+                     <div class="main-circle"><i class="las la-bars"></i></div>
+                  </div>
+                  <div class="iq-navbar-logo d-flex justify-content-between">
+                     <a href="index.html" class="header-logo">
+                        <img src="assets/admin/dashassets/images/logo.png" class="img-fluid rounded-normal" alt="">
+                        <div class="logo-title">
+                           <span class="text-primary text-uppercase">Flicknexs</span>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+               <div class="iq-search-bar ml-auto">
+                  <form action="#" class="searchbox">
+                     <input type="text" class="text search-input" placeholder="Search Here...">
+                     <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                  </form>
+               </div>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
+                  <i class="ri-menu-3-line"></i>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav ml-auto navbar-list">
+                     <li class="nav-item nav-icon search-content">
+                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                           <i class="ri-search-line"></i>
+                        </a>
+                        <form action="#" class="search-box p-0">
+                           <input type="text" class="text search-input" placeholder="Type here to search...">
+                           <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                        </form>
+                     </li>
+                     <li class="nav-item nav-icon">
+                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                           <i class="ri-notification-2-line"></i>
+                           <span class="bg-primary dots"></span>
+                        </a>
+                        <div class="iq-sub-dropdown">
+                           <div class="iq-card shadow-none m-0">
+                              <div class="iq-card-body p-0">
+                                 <div class="bg-primary p-3">
+                                    <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">4</small></h5>
+                                 </div>
+                                 <a href="#" class="iq-sub-card" >
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Emma Watson Barry</h6>
+                                          <small class="float-right font-size-12">Just Now</small>
+                                          <p class="mb-0">95 MB</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card" >
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">New customer is join</h6>
+                                          <small class="float-right font-size-12">5 days ago</small>
+                                          <p class="mb-0">Cyst Barry</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card" >
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Two customer is left</h6>
+                                          <small class="float-right font-size-12">2 days ago</small>
+                                          <p class="mb-0">Cyst Barry</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card" >
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">New Mail from Fenny</h6>
+                                          <small class="float-right font-size-12">3 days ago</small>
+                                          <p class="mb-0">Cyst Barry</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                     <li class="nav-item nav-icon dropdown">
+                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                           <i class="ri-mail-line"></i>
+                           <span class="bg-primary dots"></span>
+                        </a>
+                        <div class="iq-sub-dropdown">
+                           <div class="iq-card shadow-none m-0">
+                              <div class="iq-card-body p-0 ">
+                                 <div class="bg-primary p-3">
+                                    <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
+                                 </div>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Barry Emma Watson</h6>
+                                          <small class="float-left font-size-12">13 Jun</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
+                                          <small class="float-left font-size-12">20 Apr</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Why do we use it?</h6>
+                                          <small class="float-left font-size-12">30 Jun</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Variations Passages</h6>
+                                          <small class="float-left font-size-12">12 Sep</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <div class="">
+                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/05.jpg" alt="">
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Lorem Ipsum generators</h6>
+                                          <small class="float-left font-size-12">5 Dec</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                     <li class="line-height pt-3">
+                        <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                           <img src="assets/admin/dashassets/images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
+                        </a>
+                        <div class="iq-sub-dropdown iq-user-dropdown">
+                           <div class="iq-card shadow-none m-0">
+                              <div class="iq-card-body p-0 ">
+                                 <div class="bg-primary p-3">
+                                    <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
+                                    <span class="text-white font-size-12">Available</span>
+                                 </div>
+                                 <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
+                                    <div class="media align-items-center">
+                                       <div class="rounded iq-card-icon iq-bg-primary">
+                                          <i class="ri-file-user-line"></i>
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">My Profile</h6>
+                                          <p class="mb-0 font-size-12">View personal profile details.</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
+                                    <div class="media align-items-center">
+                                       <div class="rounded iq-card-icon iq-bg-primary">
+                                          <i class="ri-profile-line"></i>
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Edit Profile</h6>
+                                          <p class="mb-0 font-size-12">Modify your personal details.</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                    <div class="media align-items-center">
+                                       <div class="rounded iq-card-icon iq-bg-primary">
+                                          <i class="ri-account-box-line"></i>
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Account settings</h6>
+                                          <p class="mb-0 font-size-12">Manage your account parameters.</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                    <div class="media align-items-center">
+                                       <div class="rounded iq-card-icon iq-bg-primary">
+                                          <i class="ri-lock-line"></i>
+                                       </div>
+                                       <div class="media-body ml-3">
+                                          <h6 class="mb-0 ">Privacy Settings</h6>
+                                          <p class="mb-0 font-size-12">Control your privacy parameters.</p>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <div class="d-inline-block w-100 text-center p-3">
+                                    <a class="bg-primary iq-sign-btn" href="sign-in.html" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <!-- TOP Nav Bar END -->
 		
 		</div>
 		
-		<hr />
+		<!--<hr />-->
 
 		<div id="main-admin-content">
 
 			@yield('content')
+            
 
 		</div>
 		
 		<!-- Footer -->
-		<footer class="main">
-			
-			Copyright © <?php echo date("Y"); ?> <strong><?php  echo $settings->website_name;?></strong>, Inc
-		
-		</footer>
+		<footer class="iq-footer">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-lg-6">
+               <ul class="list-inline mb-0">
+                  <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                  <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+               </ul>
+            </div>
+            <div class="col-lg-6 text-right">
+               Copyright 2020 <a href="#">Flicknexs</a> All Rights Reserved.
+            </div>
+         </div>
+      </div>
+   </footer>
 	</div>
 	
 	
 </div>
 
 	<!-- Sample Modal (Default skin) -->
-	<div class="modal fade" id="sample-modal-dialog-1">
+	<!--<div class="modal fade" id="sample-modal-dialog-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
@@ -397,10 +515,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	
 	<!-- Sample Modal (Skin inverted) -->
-	<div class="modal invert fade" id="sample-modal-dialog-2">
+	<!--<div class="modal invert fade" id="sample-modal-dialog-2">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
@@ -419,10 +537,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	
 	<!-- Sample Modal (Skin gray) -->
-	<div class="modal gray fade" id="sample-modal-dialog-3">
+	<!--<div class="modal gray fade" id="sample-modal-dialog-3">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
@@ -441,84 +559,45 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 
 
 
 
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="{{ Url::to('/assets/admin/js/jvectormap/jquery-jvectormap-1.2.2.css') }}">
-	<link rel="stylesheet" href="{{ Url::to('/assets/admin/js/rickshaw/rickshaw.min.css') }}">
-
-	<!-- Bottom scripts (common) -->
-	<script src="{{ Url::to('/assets/admin/js/gsap/main-gsap.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/bootstrap.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/joinable.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/resizeable.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
-
-
-	<!-- Imported scripts on this page -->
-	<script src="{{ Url::to('/assets/admin/js/jvectormap/jquery-jvectormap-europe-merc-en.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/jquery.sparkline.min.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/rickshaw/vendor/d3.v3.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/rickshaw/rickshaw.min.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/raphael-min.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/morris.min.js') }}"></script>
-	<script src="{{ Url::to('/assets/admin/js/toastr.js') }}"></script>
-
-
-	<!-- JavaScripts initializations and stuff -->
-	<script src="{{ Url::to('/assets/admin/js/custom.js') }}"></script>
-
-
-	<!-- Demo Settings -->
-	<script src="{{ Url::to('/assets/admin/js/main.js') }}"></script>
-
-	<!-- Notifications -->
-	<script>
-		var opts = {
-			"closeButton": true,
-			"debug": false,
-			"positionClass": "toast-top-right",
-			"onclick": null,
-			"showDuration": "300",
-			"hideDuration": "1000",
-			"timeOut": "5000",
-			"extendedTimeOut": "1000",
-			"showEasing": "swing",
-			"hideEasing": "linear",
-			"showMethod": "fadeIn",
-			"hideMethod": "fadeOut"
-		};
-
-		<?php if(Session::get('note') != '' && Session::get('note_type') != ''): ?>
-	        
-	        if('<?= Session::get("note_type") ?>' == 'success'){
-	        	toastr.success('<?= Session::get("note") ?>', "Sweet Success!", opts);
-	        } else if('<?= Session::get("note_type") ?>' == 'error'){
-	        	toastr.error('<?= Session::get("note") ?>', "Whoops!", opts);
-	        }
-	        <?php Session::forget('note');
-	              Session::forget('note_type');
-	        ?>
-	    <?php endif; ?>
-
-	    function display_mobile_menu(){
-	    	if($(window).width() < 768){
-	    		$('.sidebar-collapsed').removeClass('sidebar-collapsed');
-	    	}
-	    }
-
-	    $(document).ready(function(){
-	    	display_mobile_menu();
-	    });
-		
-	</script>
+	 <script src="assets/admin/dashassets/js/jquery.min.js"></script>
+   <script src="assets/admin/dashassets/js/popper.min.js"></script>
+   <script src="assets/admin/dashassets/css/bootstrap.min.css"></script>
+   <script src="assets/admin/dashassets/js/jquery.dataTables.min.js"></script>
+   <script src="assets/admin/dashassets/js/dataTables.bootstrap4.min.js"></script>
+   <!-- Appear JavaScript -->
+   <script src="assets/admin/dashassets/js/jquery.appear.js"></script>
+   <!-- Countdown JavaScript -->
+   <script src="assets/admin/dashassets/js/countdown.min.js"></script>
+   <!-- Select2 JavaScript -->
+   <script src="assets/admin/dashassets/js/select2.min.js"></script>
+   <!-- Counterup JavaScript -->
+   <script src="assets/admin/dashassets/js/waypoints.min.js"></script>
+   <script src="assets/admin/dashassets/js/jquery.counterup.min.js"></script>
+   <!-- Wow JavaScript -->
+   <script src="assets/admin/dashassets/js/wow.min.js"></script>
+   <!-- Slick JavaScript -->
+   <script src="assets/admin/dashassets/js/slick.min.js"></script>
+   <!-- Owl Carousel JavaScript -->
+   <script src="assets/admin/dashassets/js/owl.carousel.min.js"></script>
+   <!-- Magnific Popup JavaScript -->
+   <script src="assets/admin/dashassets/js/jquery.magnific-popup.min.js"></script>
+   <!-- Smooth Scrollbar JavaScript -->
+   <script src="assets/admin/dashassets/js/smooth-scrollbar.js"></script>
+   <!-- apex Custom JavaScript -->
+   <script src="assets/admin/dashassets/js/apexcharts.js"></script>
+   <!-- Chart Custom JavaScript -->
+   <script src="assets/admin/dashassets/js/chart-custom.js"></script>
+   <!-- Custom JavaScript -->
+   <script src="assets/admin/dashassets/js/custom.js"></script>
 	<!-- End Notifications -->
 
-	@yield('javascript')
+	<!--@yield('javascript')-->
 
 
 </body>
