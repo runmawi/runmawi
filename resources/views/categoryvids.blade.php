@@ -327,6 +327,7 @@
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                     </div>
+                                     
                                     <div class="block-description">
                                        <h6><?php echo __($watchlater_video->title); ?></h6>
                                        <div class="movie-time d-flex align-items-center my-2">
@@ -469,7 +470,7 @@
 
 <?php endforeach; 
 endif; ?>
-                           <?php echo $data['categoryVideos']->links("pagination::bootstrap-4");?>
+                           <!--<?php echo $data['categoryVideos']->links("pagination::bootstrap-4");?>-->
 </section>
       </div>
       <footer class="mb-0">

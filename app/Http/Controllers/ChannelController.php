@@ -54,7 +54,7 @@ class ChannelController extends Controller
     {
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
-        $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate($vpp);
+        $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate(4);
         $category_title = \App\VideoCategory::where('id',$category_id)->pluck('name');
             
         $data = array(

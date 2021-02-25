@@ -25,7 +25,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	@yield('css')
 
-	<script src="<?= THEME_URL .'/assets/admin/admin/js/jquery-1.11.0.min.js'; ?>"></script>
+	<script src="<?= URL::to('/').'/assets/admin/admin/js/jquery-1.11.0.min.js'; ?>"></script>
 	<script src="<?= THEME_URL .'/assets/admin/admin/js/bootstrap-colorpicker.min.js'; ?>" id="script-resource-13"></script>
 	<script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
 	
@@ -35,17 +35,17 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <title>Flicknexs - Responsive Bootstrap 4 Admin Dashboard Template</title>
    <!-- Favicon -->
-   <link rel="shortcut icon" href="assets/admin/dashassets/images/fl-logo.png" />
+   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" />
    <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="assets/admin/dashassets/css/bootstrap.min.css">
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
    <!--datatable CSS -->
-   <link rel="stylesheet" href="assets/admin/dashassets/css/dataTables.bootstrap4.min.css">
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
    <!-- Typography CSS -->
-   <link rel="stylesheet" href="assets/admin/dashassets/css/typography.css">
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/typography.css';?>" />
    <!-- Style CSS -->
-   <link rel="stylesheet" href="assets/admin/dashassets/css/style.css">
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
    <!-- Responsive CSS -->
-   <link rel="stylesheet" href="assets/admin/dashassets/css/responsive.css">
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
 	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
@@ -565,36 +565,36 @@
 
 
 	<!-- Imported styles on this page -->
-	 <script src="assets/admin/dashassets/js/jquery.min.js"></script>
-   <script src="assets/admin/dashassets/js/popper.min.js"></script>
-   <script src="assets/admin/dashassets/css/bootstrap.min.css"></script>
-   <script src="assets/admin/dashassets/js/jquery.dataTables.min.js"></script>
-   <script src="assets/admin/dashassets/js/dataTables.bootstrap4.min.js"></script>
+	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
    <!-- Appear JavaScript -->
-   <script src="assets/admin/dashassets/js/jquery.appear.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.appear.js';?>"></script>
    <!-- Countdown JavaScript -->
-   <script src="assets/admin/dashassets/js/countdown.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/countdown.min.js';?>"></script>
    <!-- Select2 JavaScript -->
-   <script src="assets/admin/dashassets/js/select2.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/select2.min.js';?>"></script>
    <!-- Counterup JavaScript -->
-   <script src="assets/admin/dashassets/js/waypoints.min.js"></script>
-   <script src="assets/admin/dashassets/js/jquery.counterup.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/waypoints.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.counterup.min.js';?>"></script>
    <!-- Wow JavaScript -->
-   <script src="assets/admin/dashassets/js/wow.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/wow.min.js';?>"></script>
    <!-- Slick JavaScript -->
-   <script src="assets/admin/dashassets/js/slick.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/slick.min.js';?>"></script>
    <!-- Owl Carousel JavaScript -->
-   <script src="assets/admin/dashassets/js/owl.carousel.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/owl.carousel.min.js';?>"></script>
    <!-- Magnific Popup JavaScript -->
-   <script src="assets/admin/dashassets/js/jquery.magnific-popup.min.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.magnific-popup.min.js';?>"></script>
    <!-- Smooth Scrollbar JavaScript -->
-   <script src="assets/admin/dashassets/js/smooth-scrollbar.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/smooth-scrollbar.js';?>"></script>
    <!-- apex Custom JavaScript -->
-   <script src="assets/admin/dashassets/js/apexcharts.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/apexcharts.js';?>"></script>
    <!-- Chart Custom JavaScript -->
-   <script src="assets/admin/dashassets/js/chart-custom.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/chart-custom.js';?>"></script>
    <!-- Custom JavaScript -->
-   <script src="assets/admin/dashassets/js/custom.js"></script>
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
 	<!-- End Notifications -->
 
 	<!--@yield('javascript')-->
