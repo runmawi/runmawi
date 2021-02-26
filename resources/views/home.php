@@ -244,6 +244,16 @@
                                                 </div>
                                              </div>
                                           </a>
+                                           <a href="{{ URL::to('admin/menu') }}" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Admin</h6>
+                                                </div>
+                                             </div>
+                                          </a>
                                           <a href="login.html" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">

@@ -89,32 +89,11 @@
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li><a href="{{ URL::to('admin') }}" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li><a href="index.html" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class="active active-menu"><a href="index.html" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                   
-                  <li><a href="{{ URL::to('admin/videos') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                   <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
-                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                         <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
-                    
-					</ul></li>
-                   <li>
-                     <a href="{{ URL::to('admin/livestream') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                     <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
-                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
-                     </ul>
-                  </li>
-                  <li><a href="{{ URL::to('admin/users') }}" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                       <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
-                        <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
-                         <li><a href="{{ URL::to('admin/roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
-                     </ul>
-                      
-                   </li>
+                  <li><a href="<?= URL::to('/'). '/resources/views/admin/rating.html';?>" class="iq-waves-effect"><i class="las la-star-half-alt"></i><span>Rating </span></a></li>
+                  <li><a href="comment.html" class="iq-waves-effect"><i class="las la-comments"></i><span>Comment</span></a></li>
+                  <li><a href="user.html" class="iq-waves-effect"><i class="las la-user-friends"></i><span>User</span></a></li>
                   <li>
                      <a href="#category" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Category</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="category" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -122,7 +101,13 @@
                         <li><a href="category-list.html"><i class="las la-eye"></i>Category List</a></li>
                      </ul>
                   </li>
-                  
+                  <li>
+                     <a href="#movie" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Movie</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="add-movie.html"><i class="las la-user-plus"></i>Add Movie</a></li>
+                        <li><a href="movie-list.html"><i class="las la-eye"></i>Movie List</a></li>
+                     </ul>
+                  </li>
                   <li>
                      <a href="#show" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                         class="las la-film"></i><span>Show</span><i
@@ -133,7 +118,7 @@
                         <li><a href="show-list.html"><i class="las la-eye"></i>Show List</a></li>
                      </ul>
                   </li>
-                  <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Menu</span></a></li>
+                  <li><a href="pages-pricing.html" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Pricing</span></a></li>
                   <li>
                      <a href="#ui-elements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i><span>UI Elements</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="ui-elements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
