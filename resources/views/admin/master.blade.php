@@ -91,7 +91,7 @@
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li><a href="index.html" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class="active active-menu"><a href="index.html" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                  <li><a href="rating.html" class="iq-waves-effect"><i class="las la-star-half-alt"></i><span>Rating </span></a></li>
+                  <li><a href="<?= URL::to('/'). '/resources/views/admin/rating.html';?>" class="iq-waves-effect"><i class="las la-star-half-alt"></i><span>Rating </span></a></li>
                   <li><a href="comment.html" class="iq-waves-effect"><i class="las la-comments"></i><span>Comment</span></a></li>
                   <li><a href="user.html" class="iq-waves-effect"><i class="las la-user-friends"></i><span>User</span></a></li>
                   <li>
