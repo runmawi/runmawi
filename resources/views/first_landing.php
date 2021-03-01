@@ -31,8 +31,8 @@
 		    padding-left: 60px;
 	}
 	.inway{
-		background-color: #e50914;
-		border-color: #e50914;
+		background-color: #4895d1;
+		border-color: #4895d1;
 		font-size: 1rem;
 		float: right;
 		width: 90px;
@@ -41,24 +41,24 @@
 	}
 	.inway:visited{
 		color: #fff;
-    background-color: #e50914;
-    border-color: #e50914;
+    background-color: #4895d1;
+    border-color: #4895d1;
 		
 	}
 	.btn-primary:hover {
-    color: #e50914;
+    color: #4895d1;
     background-color: #fff;
     border-color: #fff;
 }
 	.btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #e50914;
-    border-color: #e50914;
+    background-color: #4895d1;
+    border-color: #4895d1;
 }
 	.btn-primary.focus, .btn-primary:focus {
     color: #fff;
-    background-color: #e50914;
-    border-color: #e50914;
+    background-color: #4895d1;
+    border-color: #4895d1;
    /* box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);*/
 }
 	.button{
@@ -205,14 +205,14 @@
 		width: 200px;
 		color: #fff;
 		font-size: 1.425rem;
-		background-color: #e50914;
-        border-color: #e50914;
+		background-color: #4895d1;
+        border-color: #4895d1;
 		border-radius: .07rem !important;
 	}
 	.subbut:hover {
     color: #fff;
-    background-color: #e50914;
-    border-color: #e50914;
+    background-color: #4895d1;
+    border-color: #4895d1;
 }
 	.subbut:not(:disabled):not(.disabled):active, .show>.btn-outline-secondary.dropdown-toggle {
     color: #fff;
@@ -265,7 +265,7 @@
 	}
 	.loginbut{
 		padding: 7px 17px;
-       color: #e50914;
+       color: #4895d1;
        text-decoration: none;
 	}
 		</style>
