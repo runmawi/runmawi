@@ -2,139 +2,127 @@
 
 @section('content')
 
-	<div class="admin-section-title">
-		<div class="row">
-			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i> Video Categories</h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
-			</div>
-		</div>
-	</div>
-
-	<!-- Add New Modal -->
-	<div class="modal fade" id="add-new">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Video Category</h4>
-				</div>
-				
-				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/store') }}" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-				      
-				        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-
-                        <label>Name:</label>
-
-                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name">
-                        @if ($errors->has('name'))
-                            <span class="text-red" role="alert">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
-
-                    </div>
-
-                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
-
-                        <label>Slug:</label>
-
-                        <input type="text" id="slug" name="slug" value="" class="form-control" placeholder="Enter Slug">
-                        @if ($errors->has('slug'))
-                            <span class="text-red" role="alert">
-                                <strong>{{ $errors->first('slug') }}</strong>
-                            </span>
-                        @endif
-
-                    </div>  
-                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
-                        <label>Display In Home page:</label>
-                        <input type="radio" id="in_home" name="in_home" value="1">Yes
-                        <input type="radio" id="in_home" name="in_home" value="0">No
-                    </div>
-
-                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                        <label>Image:</label>
-                        <input type="file" multiple="true" class="form-control" name="image" id="image" />
-                    </div>
-
-                        <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
-                                <label>Category:</label>
-                                <select id="parent_id" name="parent_id" class="form-control">
-                                    <option value="0">Select</option>
-                                    @foreach($allCategories as $rows)
-                                            <option value="{{ $rows->id }}">{{ $rows->name }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('parent_id'))
-                                    <span class="text-red" role="alert">
-                                        <strong>{{ $errors->first('parent_id') }}</strong>
-                                    </span>
-                                @endif
+	  <div id="content-page" class="content-page">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Add Show</h4>
                         </div>
-				    </form>
-				</div>
-				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-cat">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Add New Modal -->
-	<div class="modal fade" id="update-category">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-			</div>
-		</div>
-	</div>
-
-	<div class="clear"></div>
-		
-		
-		<div class="panel panel-primary category-panel" data-collapsed="0">
-					
-			<div class="panel-heading">
-				<div class="panel-title">
-					Organize the Categories below: 
-				</div>
-				
-				<div class="panel-options">
-					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-				</div>
-			</div>
-			
-			
-			<div class="panel-body">
-		
-				<div id="nestable" class="nested-list dd with-margins">
-
-            <table class="table table-bordered">
-                <tr class="table-header">
-                    <th>Video Category Name</th>
-                    <th>Operation</th>
-                    @foreach($allCategories as $category)
-                    <tr>
-                        <td valign="bottom"><p>{{ $category->name }}</p></td>
-                        <td>
-                            <div class="actions"><a href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" class="btn btn-black edit">Edit</a> <a href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" class="btn btn-white delete">Delete</a></div>
-                           
-                        </td>
-                    </tr>
-                    @endforeach
-            </table>
-           
-				
-				</div>
-		
-			</div>
-		
-		</div>
+                     </div>
+                     <div class="iq-card-body">
+                        <form action="movie-view.html">
+                           <div class="row">
+                              <div class="col-md-6 form-group">
+                                 <input type="text" class="form-control" placeholder="Title">
+                              </div>
+                              <div class="col-md-6 form-group">
+                                 <select class="form-control" id="exampleFormControlSelect1">
+                                    <option selected disabled="">Choose Language</option>
+                                    <option>English</option>
+                                    <option>Hindi</option>
+                                    <option>Tamil</option>
+                                    <option>Gujarati</option>
+                                 </select>                                 
+                              </div>
+                              <div class="col-md-6 form-group">
+                                 <select class="form-control" id="exampleFormControlSelect2">
+                                    <option selected disabled="">Show Category</option>
+                                    <option>Comedy</option>
+                                    <option>Crime</option>
+                                    <option>Drama</option>
+                                    <option>Horror</option>
+                                    <option>Romance</option>
+                                 </select>
+                              </div>
+                              <div class="col-md-6 form-group">
+                                 <select class="form-control" id="exampleFormControlSelect3">
+                                    <option selected disabled="">Choose quality</option>
+                                    <option>Full HD</option>
+                                    <option>HD</option>
+                                 </select>
+                              </div>
+                              <div class="col-md-6 form_gallery form-group">
+                                 <label id="gallery2" for="form_gallery-upload">Upload Image</label>
+                                 <input data-name="#gallery2" id="form_gallery-upload" name="gallery"
+                                    class="form_gallery-upload" type="file" accept=".png, .jpg, .jpeg">
+                              </div>
+                              <div class="col-md-6 form_gallery form-group">
+                                 <label id="gallery3" for="show2">Upload Show Banner</label>
+                                 <input data-name="#gallery3" id="show2" name="gallery" class="form_gallery-upload"
+                                    type="file" accept=".png, .jpg, .jpeg">
+                              </div>
+                              <div class="col-12 form-group">
+                                 <textarea id="text1" name="text" rows="5" class="form-control"
+                                    placeholder="Description"></textarea>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-12">
+                                 <h5 class="text-white mb-3">Add Seasons</h5>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-7">
+                                 <div class="row">
+                                    <div class="col-md-6 form-group">
+                                       <select class="form-control" id="exampleFormControlSelect5">
+                                          <option disabled="">Select Seasons</option>
+                                          <option>Season 1</option>
+                                          <option>Season 2</option>
+                                          <option>Season 3</option>
+                                          <option>Season 4</option>
+                                          <option>Season 5</option>
+                                       </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                       <input type="text" class="form-control" placeholder="Episode No.">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                       <input type="text" class="form-control" placeholder="Episode Name">
+                                    </div>
+                                    <div class="col-md-6 form_gallery form-group">
+                                       <label id="gallery4" for="show3">Upload Image</label>
+                                       <input data-name="#gallery4" id="show3" name="gallery"
+                                          class="form_gallery-upload" type="file" accept=".png, .jpg, .jpeg">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                       <input type="text" class="form-control" placeholder="Running Time in Minutes">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                       <input class="form-control date-input basicFlatpickr" type="text"
+                                          placeholder="Selete Date">
+                                    </div>
+                                    <div class="col-12 form-group">
+                                       <textarea id="text" name="text" rows="5" class="form-control"
+                                          placeholder="Description"></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-5">
+                                 <div class="d-block position-relative">
+                                    <div class="form_video-upload">
+                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" multiple>
+                                       <p>Upload video</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-12 form-group">
+                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                 <button type="reset" class="btn btn-danger">cancel</button>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 

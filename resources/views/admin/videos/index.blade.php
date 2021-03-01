@@ -6,17 +6,17 @@
 
 @section('content')
 
-      <div id="content-page" class="content-page">
+     <div id="content-page" class="content-page">
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">Category Lists</h4>
+                           <h4 class="card-title">Movie Lists</h4>
                         </div>
                         <div class="iq-card-header-toolbar d-flex align-items-center">
-                           <a href="add-category.html" class="btn btn-primary">Add Category</a>
+                           <a href="add-movie.html" class="btn btn-primary">Add movie</a>
                         </div>
                      </div>
                      <div class="iq-card-body">
@@ -24,24 +24,40 @@
                            <table class="data-tables table movie_table " style="width:100%">
                               <thead>
                                  <tr>
-                                    <th style="width:10%;">No</th>
-                                    <th style="width:20%;">Name</th>
-                                    <th style="width:40%;">Description</th>
-                                    <th style="width:10%;">Movie</th>
-                                    <th style="width:20%;">Action</th>
+                                    <th>Movie</th>
+                                    <th>Quality</th>
+                                    <th>Category</th>
+                                    <th>Release Year</th>
+                                    <th>Language</th>
+                                    <th style="width: 20%;">Description</th>
+                                    <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  <tr>
-                                    <td>1</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/06.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Champions</p>
+                                             <small>2h 15m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>Full HD</td>
                                     <td>Drama</td>
+                                    <td>2019</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat luctus est,
                                           vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>20</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -55,15 +71,29 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>2</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/05.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Last Race</p>
+                                             <small>2h 20m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>HD</td>
                                     <td>Action</td>
+                                    <td>2020</td>
+                                    <td>Hindi</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat luctus
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>10</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -77,15 +107,29 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>3</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/08.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Boop Bitty</p>
+                                             <small>2h 40m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>Full HD</td>
                                     <td>Thriller</td>
+                                    <td>2017</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat luctus
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>40</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -99,8 +143,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>4</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/04.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Dino Land</p>
+                                             <small>1h 40m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>HD</td>
                                     <td>Thriller</td>
+                                    <td>2015</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -108,7 +167,6 @@
                                           vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>40</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -122,8 +180,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>5</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/09.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">The Last Breath</p>
+                                             <small>2h 30m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>FUll HD</td>
                                     <td>Action</td>
+                                    <td>2013</td>
+                                    <td>Hindi</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -131,7 +204,6 @@
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>45</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -144,9 +216,24 @@
                                        </div>
                                     </td>
                                  </tr>
-                                 <tr>                                    
-                                    <td>6</td>
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/01.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Last Night</p>
+                                             <small>3h 15m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>Full HD</td>
                                     <td>Horror</td>
+                                    <td>2019</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -154,7 +241,6 @@
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>50</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -168,8 +254,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>7</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/02.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">1980</p>
+                                             <small>2h 15m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>HD</td>
                                     <td>Action</td>
+                                    <td>2010</td>
+                                    <td>Hndi</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -177,7 +278,6 @@
                                           vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>70</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -191,8 +291,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>8</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/07.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Looters</p>
+                                             <small>2h 30m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>Full HD</td>
                                     <td>Drama</td>
+                                    <td>2014</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -200,7 +315,6 @@
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>80</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -214,8 +328,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>9</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/10.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">The Illusion</p>
+                                             <small>2h 30m</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>Full HD</td>
                                     <td>Drama</td>
+                                    <td>2018</td>
+                                    <td>English</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -223,7 +352,6 @@
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>30</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
@@ -237,8 +365,23 @@
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td>10</td>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="../assets/images/movie-thumb/03.jpg"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">Burning</p>
+                                             <small>3h</small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>HD</td>
                                     <td>Horror</td>
+                                    <td>2020</td>
+                                    <td>Hindi</td>
                                     <td>
                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit
                                           a scelerisque. Etiam feugiat
@@ -246,7 +389,6 @@
                                           est, vel commodo odio rhoncus sit amet
                                        </p>
                                     </td>
-                                    <td>65</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""

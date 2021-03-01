@@ -32,7 +32,7 @@
 			</div>
               <div class="row">
                   <div class="col-md-3 col-xs-12 padding-top-20" >
-                      <p class="copyright text-left">Copyright ©  <?= date('Y'); ?> by FINEXS</p>
+                      <p class="copyright text-left">Copyright ©  <?= date('Y'); ?> by Flicknexs</p>
               </div>
                   </div>
 		<!--	<hr />  -->

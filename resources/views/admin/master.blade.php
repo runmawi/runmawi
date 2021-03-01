@@ -33,11 +33,14 @@
     <!-- Required meta tags -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>Flicknexs - Responsive Bootstrap 4 Admin Dashboard Template</title>
+   <title>Flicknexs</title>
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" />
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
+    
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
+
    <!--datatable CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
    <!-- Typography CSS -->
@@ -89,8 +92,8 @@
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li><a href="{{ URL::to('admin') }}" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class="active active-menu"><a href="index.html" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li><a href="https://flicknexui.webnexs.org/" target="_blank" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="active active-menu"><a href="{{ URL::to('admin') }}" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    
                   <li><a href="{{ URL::to('admin/videos') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -115,26 +118,55 @@
                      </ul>
                       
                    </li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Menu</span></a></li>
                   <li>
-                     <a href="#category" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Category</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="{{ URL::to('admin/languages') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="category" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="add-category.html"><i class="las la-user-plus"></i>Add Category</a></li>
-                        <li><a href="category-list.html"><i class="las la-eye"></i>Category List</a></li>
+                        <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
+                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Transulate Languages</a></li>
                      </ul>
                   </li>
+                    <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
+                   
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Sliders</span></a></li>
                   
                   <li>
-                     <a href="#show" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-film"></i><span>Show</span><i
+                     <a href="{{ URL::to('admin/pages') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                       class="las la-file-alt iq-arrow-left"></i><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="add-show.html"><i class="las la-user-plus"></i>Add Show</a></li>
-                        <li><a href="show-list.html"><i class="las la-eye"></i>Show List</a></li>
+                        <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
                      </ul>
                   </li>
-                  <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Menu</span></a></li>
-                  <li>
+                   
+                    <li>
+                     <a href="{{ URL::to('admin/plans') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Plans</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
+                        <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                         <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                     </ul>
+                  </li>
+                    <li>
+                     <a href="{{ URL::to('admin/settings') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="entypo-cog"></i><span>Settings</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                        <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
+                         <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                          <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                          <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>System Settings</a></li>
+                          <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                     </ul>
+                  </li>
+                  
+                 <!-- <li>
                      <a href="#ui-elements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i><span>UI Elements</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="ui-elements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="elements">
@@ -199,8 +231,8 @@
                            </ul>
                         </li>
                      </ul>
-                  </li>
-                  <li>
+                  </li>-->
+                  <!--<li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-file-alt iq-arrow-left"></i><span>Pages</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li>
@@ -229,7 +261,7 @@
                            </ul>
                         </li>
                      </ul>
-                  </li>
+                  </li>-->
                </ul>
             </nav>
          </div>
