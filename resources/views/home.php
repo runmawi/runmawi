@@ -47,18 +47,18 @@
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="index.html"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
-                                    <a href="index.html">Home</a>
+                                    <a href="<?php echo URL::to('home') ?>">Home</a>
                                  </li>
                                  <li class="menu-item">
-                                    <a href="show-category.html">Tv Shows</a>
+                                    <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
                                  </li>
                                  <li class="menu-item">
-                                    <a href="movie-category.html">Movies</a>
+                                    <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
@@ -106,8 +106,8 @@
                                                 <?php } ?>
                                                 </ul>
                                             </li>
-                                          <li class="blink_me">
-                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #fd1b04;list-style: none;
+                                          <li class="">
+                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1;list-style: none;
                                                                                                font-weight: bold;
                                                                                                font-size: 16px;">
                                               <?php echo __('Refer and Earn');?>
@@ -209,12 +209,12 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="assets/images/user/user.jpg" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="manage-profile.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('home') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -224,7 +224,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="setting.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -234,7 +234,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="pricing-plan.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('home') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -244,7 +244,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                           <a href="{{ URL::to('admin/menu') }}" class="iq-sub-card setting-dropdown">
+                                           <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -254,7 +254,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="login.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-logout-circle-line text-primary"></i>
@@ -352,14 +352,14 @@
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="movie-category.html">Latest Videos</a></h4>                      
+                        <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4>                      
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                              <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
-                              <a href="movie-details.html">
+                              <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
@@ -422,10 +422,12 @@
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                            <a class="" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
-                                                        <div class="btn btn-danger btn-right-space br-0">
+                                           	
+                                                       <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
-                                                </div></a>
+                                                </div>-->
+                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                 aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -507,14 +509,14 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-                        <h4 class="main-title"><a href="movie-category.html">Upcoming Videos</a></h4>
+                        <h4 class="main-title"><a href="href="<?php echo URL::to('home') ?>"">Upcoming Videos</a></h4>
                      </div>
                      <div class="upcoming-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
                                 <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
                            <li class="slide-item">
-                              <a href="movie-details.html">
+                              <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
@@ -573,7 +575,7 @@ endif; ?>
                               <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $watchlater_video): ?>
                            <li>
-                              <a href="movie-details.html">
+                              <a href="<?php echo URL::to('home') ?>">
                               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                               </a>
                            </li> 
@@ -586,7 +588,7 @@ endif; ?>
 			                       foreach($latest_videos as $watchlater_video): ?>
                               <li>
                                  <div class="block-images position-relative">
-                                    <a href="movie-details.html">
+                                    <a href="<?php echo URL::to('home') ?>">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                     </a>
                                     <div class="block-description">
@@ -618,14 +620,14 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">                       
-                        <h4 class="main-title"><a href="show-category.html">Suggested For You</a></h4>                       
+                        <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Suggested For You</a></h4>                       
                      </div>
                      <div class="suggestede-contens">
                         <ul class="list-inline favorites-slider row p-0 mb-0">
                             <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
-                              <a href="movie-details.html">
+                              <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
@@ -699,14 +701,14 @@ endif; ?>
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
                         <div class="parallax-buttons">
                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover">Play Now</a>
-                           <a href="movie-details.html" class="btn btn-link">More details</a>
+                           <a href="<?php echo URL::to('home') ?>" class="btn btn-link">More details</a>
                         </div>
                      </div>
                        
                   </div>
                   <div class="col-lg-8">
                      <div class="parallax-img">
-                        <a href="movie-details.html">
+                        <a href="<?php echo URL::to('home') ?>">
                         	<img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>" class="img-fluid w-100" alt="bailey">
                         </a>
                      </div>
@@ -719,7 +721,7 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">                      
-                        <h4 class="main-title"><a href="show-category.html">Trending</a></h4>                        
+                        <h4 class="main-title"><a href="http://flicknexui.webnexs.org/">Trending</a></h4>                        
                      </div>
                      <div class="trending-contens">
                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
@@ -789,7 +791,7 @@ endif; ?>
                                              </p>
                                              <div class="p-btns">
                                                 <div class="d-flex align-items-center p-0">
-                                                   <a href="show-details.html" class="btn btn-hover mr-2" tabindex="0"><i
+                                                   <a href="http://flicknexui.webnexs.org/" class="btn btn-hover mr-2" tabindex="0"><i
                                                       class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                                    <a href="javascript:void(0);" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My
                                                    List</a>
@@ -811,7 +813,7 @@ endif; ?>
                                        <div id="trending-data2" class="overlay-tab tab-pane fade">
                                           <div
                                              class="trending-info align-items-center w-100 animated fadeInUp">
-                                             <a href="show-details.html" tabindex="0">
+                                             <a href="<?php echo URL::to('home') ?>" tabindex="0">
                                                 <div class="channel-logo">
                                                    <img src="<?php echo URL::to('/').'/assets/img/logo.png' ?>" class="c-logo" alt="Flicknexs">
                                                 </div>
@@ -828,20 +830,20 @@ endif; ?>
                                                 <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/01.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">1</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 1</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 1</a>
                                                             <span class="text-primary">2.25 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -850,20 +852,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/02.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">2</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 2</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 2</a>
                                                             <span class="text-primary">3.23 m</span>
                                                          </div>
                                                          <p class="mb-0">
@@ -873,20 +875,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/03.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">3</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 3</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 3</a>
                                                             <span class="text-primary">2 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -895,20 +897,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/04.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">4</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 4</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 4</a>
                                                             <span class="text-primary">1.12 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -917,20 +919,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/05.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">5</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 5</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 5</a>
                                                             <span class="text-primary">2.54 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -954,20 +956,20 @@ endif; ?>
                                                 <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="watch-video.html" target="_blank">
+                                                         <a href="<?php echo URL::to('home') ?>" target="_blank">
                                                          <img src="assets/images/episodes/01.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">1</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="watch-video.html" target="_blank" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" target="_blank" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="watch-video.html" target="_blank">Trailer 1</a>
+                                                            <a href="<?php echo URL::to('home') ?>" target="_blank">Trailer 1</a>
                                                             <span class="text-primary">2.25 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -976,20 +978,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="watch-video.html" target="_blank">
+                                                         <a href="<?php echo URL::to('home') ?>" target="_blank">
                                                          <img src="assets/images/episodes/02.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">2</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="watch-video.html" target="_blank" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" target="_blank" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="watch-video.html" target="_blank">Trailer 2</a>
+                                                            <a href="<?php echo URL::to('home') ?>" target="_blank">Trailer 2</a>
                                                             <span class="text-primary">3.23 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -998,20 +1000,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="watch-video.html" target="_blank">
+                                                         <a href="<?php echo URL::to('home') ?>" target="_blank">
                                                          <img src="assets/images/episodes/03.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">3</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="watch-video.html" target="_blank" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" target="_blank" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="watch-video.html" target="_blank">Trailer 3</a>
+                                                            <a href="<?php echo URL::to('home') ?>" target="_blank">Trailer 3</a>
                                                             <span class="text-primary">2 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1020,20 +1022,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="watch-video.html" target="_blank">
+                                                         <a href="<?php echo URL::to('home') ?>" target="_blank">
                                                          <img src="assets/images/episodes/04.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">4</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="watch-video.html" target="_blank" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" target="_blank" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="watch-video.html" target="_blank">Trailer 4</a>
+                                                            <a href="<?php echo URL::to('home') ?>" target="_blank">Trailer 4</a>
                                                             <span class="text-primary">1.12 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1042,20 +1044,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="watch-video.html" target="_blank">
+                                                         <a href="<?php echo URL::to('home') ?>" target="_blank">
                                                          <img src="assets/images/episodes/05.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">5</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="watch-video.html" target="_blank" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" target="_blank" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="watch-video.html" target="_blank">Trailer 5</a>
+                                                            <a href="<?php echo URL::to('home') ?>" target="_blank">Trailer 5</a>
                                                             <span class="text-primary">2.54 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1079,20 +1081,20 @@ endif; ?>
                                                 <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/01.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">1</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 1</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 1</a>
                                                             <span class="text-primary">2.25 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1101,20 +1103,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/02.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">2</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 2</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 2</a>
                                                             <span class="text-primary">3.23 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1123,20 +1125,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/03.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">3</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 3</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 3</a>
                                                             <span class="text-primary">2 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1145,20 +1147,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/04.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">4</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 4</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 4</a>
                                                             <span class="text-primary">1.12 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1167,20 +1169,20 @@ endif; ?>
                                                    </div>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
-                                                         <a href="show-details.html">
+                                                         <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/05.jpg" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">5</div>
                                                          <div class="episode-play-info">
                                                             <div class="episode-play">
-                                                               <a href="show-details.html" tabindex="0"><i
+                                                               <a href="<?php echo URL::to('home') ?>" tabindex="0"><i
                                                                   class="ri-play-fill"></i></a>
                                                             </div>
                                                          </div>
                                                       </div>
                                                       <div class="episodes-description text-body mt-2">
                                                          <div class="d-flex align-items-center justify-content-between">
-                                                            <a href="show-details.html">Episode 5</a>
+                                                            <a href="<?php echo URL::to('home') ?>">Episode 5</a>
                                                             <span class="text-primary">2.54 m</span>
                                                          </div>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
@@ -1209,14 +1211,14 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-                        <h4 class="main-title"><a href="show-category.html">TV Thrillers</a></h4>                        
+                        <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">TV Thrillers</a></h4>                        
                      </div>
                      <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
                             <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
-                              <a href="show-details.html">
+                              <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
@@ -1265,9 +1267,9 @@ endif; ?>
                <div class="row">
                   <div class="col-lg-3 col-md-4">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="movie-category.html">Movies</a></li>
-                        <li><a href="show-category.html">Tv Shows</a></li>
-                        <li><a href="#">Coporate Information</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
                      </ul>
                   </div>
                   <!--<div class="col-lg-3 col-md-4">
@@ -1311,7 +1313,7 @@ endif; ?>
                         <a href="#" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
                         </a>
-                         <a href="<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
                         <i class="fa fa-google-plus"></i>
                         </a>
                      </div>
