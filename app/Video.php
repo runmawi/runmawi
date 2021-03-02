@@ -22,7 +22,7 @@ class Video extends Model
 	}
 
 	public function categories(){
-		return $this->belongsTo('VideoCategory','video_category_id','id');
+		return $this->belongsTo('App\VideoCategory','video_category_id','id');
 	}
 
 	public function videoresolutions(){
@@ -34,7 +34,7 @@ class Video extends Model
 	}
 
 	public function languages(){
-		return $this->belongsTo('Language','language','id');
+		return $this->belongsTo('App\Language','language','id');
 	}
     
     public function channelVideo(){
