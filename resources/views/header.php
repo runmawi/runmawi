@@ -19,7 +19,7 @@
       <link rel="stylesheet" href="../assets/admin/dashassets/css/responsive.css" />
         </head>
     <body>
-      <header id="main-header">
+     <header id="main-header">
          <div class="main-header">
             <div class="container-fluid">
                <div class="row">
@@ -34,18 +34,18 @@
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="index.html"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
-                                    <a href="index.html">Home</a>
+                                    <a href="<?php echo URL::to('home') ?>">Home</a>
                                  </li>
                                  <li class="menu-item">
-                                    <a href="show-category.html">Tv Shows</a>
+                                    <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
                                  </li>
                                  <li class="menu-item">
-                                    <a href="movie-category.html">Movies</a>
+                                    <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
@@ -93,8 +93,8 @@
                                                 <?php } ?>
                                                 </ul>
                                             </li>
-                                          <li class="blink_me">
-                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #fd1b04;list-style: none;
+                                          <li class="">
+                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1;list-style: none;
                                                                                                font-weight: bold;
                                                                                                font-size: 16px;">
                                               <?php echo __('Refer and Earn');?>
@@ -196,12 +196,12 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="assets/images/user/user.jpg" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="manage-profile.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('home') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -211,7 +211,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="setting.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -221,7 +221,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="pricing-plan.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('home') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -231,7 +231,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                           <a href="{{ URL::to('admin/menu') }}" class="iq-sub-card setting-dropdown">
+                                           <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -241,7 +241,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="login.html" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-logout-circle-line text-primary"></i>

@@ -92,8 +92,8 @@
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li><a href="https://flicknexui.webnexs.org/" target="_blank" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class="active active-menu"><a href="{{ URL::to('admin') }}" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li><a href="<?php echo URL::to('home') ?>" target="_blank" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="active active-menu"><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    
                   <li><a href="{{ URL::to('admin/videos') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="movie" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -120,7 +120,7 @@
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Menu</span></a></li>
                   <li>
-                     <a href="{{ URL::to('admin/languages') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="{{ URL::to('admin/admin-languages') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="category" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
