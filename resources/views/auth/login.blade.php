@@ -275,7 +275,7 @@
             </div>
          </div>
       </header>
-<div class="container page-height">
+<div class="page-height">
     <div class="row justify-content-center ">	
 <div class="container signcont">
     <div class="row justify-content-center">	
