@@ -71,6 +71,10 @@
                                  </div>
                               </div>
                            </div>
+                             <div class="col-sm-12 form-group">
+                                                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" multiple>
+                                       <p>Upload Trailer video</p>
+                              </div>
                            <div class="row">
                               <div class="col-sm-6 form-group">
                                  <input type="text" class="form-control" placeholder="Release year">
@@ -86,6 +90,7 @@
                               </div>
                               <div class="col-sm-12 form-group">
                                  <input type="text" class="form-control" placeholder="Movie Duration">
+                                   <input type="text" class="form-control" placeholder="Movie Ratings">
                               </div>
                               <div class="col-12 form-group ">
                                  <button type="submit" class="btn btn-primary">Submit</button>
