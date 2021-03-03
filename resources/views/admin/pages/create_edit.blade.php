@@ -6,6 +6,8 @@
 
 
 @section('content')
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -128,7 +130,7 @@
 <!-- This is where now -->
 </div>
 
-	
+    </div></div>
 	
 	
 	@section('javascript')

@@ -669,3 +669,8 @@ footer, .home footer {
     background-color: #45c5e1 !important;
     border-color: #45c5e1 !important;
 }
+.btn-primary {
+    color: #fff;
+    background-color: #45c5e1 !important;
+    border-color: #45c5e1 !important;
+}

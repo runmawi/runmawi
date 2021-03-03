@@ -32,11 +32,13 @@ class AdminPlansController extends Controller
     {
       $slug = Str::slug('Laravel 5 Framework', '-');
         $plans = Plan::all();
+        
          $data = array(
-        	'plans' => $plans
+        	'plans' => $plans,
+             'allplans'=> $plans
         	
         	);
-         return view('admin.plans.index',compact('plans','allplans'));
+         return view('admin.plans.index',$data);
     }   
     
 public function PaypalIndex()
@@ -46,10 +48,11 @@ public function PaypalIndex()
         
         $plans = PaypalPlan::all();
          $data = array(
-        	'plans' => $plans
+        	'plans' => $plans,
+             'allplans'=> $plans
         	
         	);
-         return view('admin.paypal.index',compact('plans','allplans'));
+         return view('admin.paypal.index', $data);
     }
     
      public function edit($id) {

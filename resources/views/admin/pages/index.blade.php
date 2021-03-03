@@ -1,6 +1,8 @@
 @extends('admin.master')
 
 @section('content')
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 
 	<div class="admin-section-title">
 		<div class="row">
@@ -55,6 +57,8 @@
 
 	<div class="pagination-outter"><?= $pages->render(); ?></div>
        </div>
+</div>
+    </div>
 </div>
 	<script>
 

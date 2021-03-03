@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-8">
@@ -77,7 +78,8 @@
 		</div>
 		
 	</div>
-
+    </div>
+</div>
 
 	@section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>

@@ -15,7 +15,8 @@
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -422,11 +423,12 @@
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 		<input type="submit" value="Update Settings" class="btn btn-black pull-right" />
 
-	</form>
+	
 
 	<div class="clear"></div>
 
-</div><!-- admin-container -->
+</div>
+    </div></div><!-- admin-container -->
 
 @section('javascript')
 	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>

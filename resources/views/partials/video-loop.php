@@ -1,4 +1,7 @@
+<?php
 
+$settings = App\Setting::first();
+?>
 
 <?php if(isset($recomended)) :
 foreach($recomended as $video): ?>

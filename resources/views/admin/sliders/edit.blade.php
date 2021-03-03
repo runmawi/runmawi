@@ -1,3 +1,11 @@
+
+
+
+@extends('admin.master')
+
+@section('content')
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h4 class="modal-title">Update Category</h4>
@@ -38,7 +46,11 @@
 	<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-white" id="submit-update-cat">Update</button>
 </div>
+    </div></div>
+	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
+
+	@section('javascript')
 <script>
 	$(document).ready(function(){
 		$('#submit-update-cat').click(function(){
@@ -46,3 +58,54 @@
 		});
 	});
 </script>
+		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
+
+		<script type="text/javascript">
+
+		jQuery(document).ready(function($){
+
+
+			$('#nestable').nestable({ maxDepth: 3 });
+
+			// Add New Category
+			$('#submit-new-cat').click(function(){
+				$('#new-cat-form').submit();
+			});
+
+			$('.actions .edit').click(function(e){
+				$('#update-category').modal('show', {backdrop: 'static'});
+				e.preventDefault();
+				href = $(this).attr('href');
+				$.ajax({
+					url: href,
+					success: function(response)
+					{
+						$('#update-category .modal-content').html(response);
+					}
+				});
+			});
+
+			$('.actions .delete').click(function(e){
+				e.preventDefault();
+				if (confirm("Are you sure you want to delete this category?")) {
+			       window.location = $(this).attr('href');
+			    }
+			    return false;
+			});
+
+			$('.dd').on('change', function(e) {
+    			$('.category-panel').addClass('reloading');
+    			$.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
+    				console.log(data);
+    				$('.category-panel').removeClass('reloading');
+    			});
+
+			});
+
+
+		});
+		</script>
+
+	@stop
+
+@stop

@@ -75,7 +75,7 @@
   <!-- Sidebar-->
       <div class="iq-sidebar">
          <div class="iq-sidebar-logo d-flex justify-content-between">
-            <a href="index.html" class="header-logo">
+            <a href="<?php echo URL::to('home') ?>" target="_blank" class="header-logo">
                <img src="assets/admin/dashassets/images/fl-logo.png" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                   <span class="text-primary text-uppercase">Flicknexs</span>
@@ -153,7 +153,7 @@
                      </ul>
                   </li>
                     <li>
-                     <a href="{{ URL::to('admin/settings') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="entypo-cog"></i><span>Settings</span><i
+                     <a href="{{ URL::to('admin/settings') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"> <i class="ri-settings-4-line"></i><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -443,7 +443,7 @@
                      </li>
                      <li class="line-height pt-3">
                         <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <img src="assets/admin/dashassets/images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
+                            <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                         </a>
                         <div class="iq-sub-dropdown iq-user-dropdown">
                            <div class="iq-card shadow-none m-0">

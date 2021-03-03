@@ -1,7 +1,8 @@
 @extends('admin.master')
 
 @section('content')
-
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-12">
@@ -96,12 +97,12 @@
 					@foreach($menu as $menu_item)
 
 						@if( (isset($previous_item->id) && $menu_item->parent_id == $previous_item->parent_id) || $menu_item->parent_id == NULL )
-							</li>
+							<li>
 						@endif
 
 						@if( (isset($previous_item->parent_id) && $previous_item->parent_id !== $menu_item->parent_id) && $previous_item->id != $menu_item->parent_id )
 							@if($depth == 2)
-								</li></ol>
+								<!--</li></ol>-->
 								<?php $depth -= 1; ?>
 							@endif
 							@if($depth == 1 && $menu_item->parent_id == $first_parent_id)
@@ -138,6 +139,7 @@
 			</div>
 		
 		</div>
+    </div></div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
