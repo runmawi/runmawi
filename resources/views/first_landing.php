@@ -314,7 +314,7 @@
 				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players and more.</p>
 			</div>
 			<div class="col-md-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="100%" width="75%">
+				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="auto" width="auto">
 			</div>
 		</div>
 		
@@ -339,7 +339,7 @@
 				<p class="devicescene">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
 			</div>
 			<div class="col-md-6 deviceimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="80%" width="80%">
+				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="auto" width="auto">
 			</div>
 		</div>
 		

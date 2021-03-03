@@ -49,6 +49,8 @@
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
+     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/magnific-popup.css';?>" />
+    
 
 	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 

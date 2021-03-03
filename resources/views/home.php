@@ -214,7 +214,7 @@
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="<?php echo  URL::to('home') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -224,17 +224,27 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('watchlaters') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Settings</h6>
+                                                   <h6 class="mb-0 ">Watch Later</h6>
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('home') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>

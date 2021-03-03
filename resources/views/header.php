@@ -1,25 +1,38 @@
-<!DOCTYPE html>
-<html lang="<?php echo Session::get('locale');?>" >  
-  <head>
-<meta charset="UTF-8">
+<!doctype html>
+<html lang="en-US">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Flicknexs</title>
-       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/../assets/admin/dashassets/js/jquery.hoverplay.js';?>"></script>-->
+       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
-      <link rel="shortcut icon" href="../assets/admin/dashassets/images/fl-logo.png" />
+      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/typography.css" />
+      <link rel="stylesheet" href="assets/css/typography.css" />
       <!-- Style -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/style.css" />
+      <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/responsive.css" />
-        </head>
-    <body>
-     <header id="main-header">
+      <link rel="stylesheet" href="assets/css/responsive.css" />
+       <style>
+           .h-100 {
+    height: 540px !important;
+}
+       </style>
+   </head>
+   <body>
+      <!-- loader Start -->
+      <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>
+      <!-- loader END -->
+      <!-- Header -->
+      <header id="main-header">
          <div class="main-header">
             <div class="container-fluid">
                <div class="row">
@@ -162,7 +175,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                   alt="streamit" />
+                                                   alt="Flicknexs" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">Boot Bitty</h6>
                                                    <small class="font-size-12"> just now</small>
@@ -172,7 +185,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                   alt="streamit" />
+                                                   alt="Flicknexs" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">The Last Breath</h6>
                                                    <small class="font-size-12">15 minutes ago</small>
@@ -182,7 +195,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                   alt="streamit" />
+                                                   alt="Flicknexs" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">The Hero Camp</h6>
                                                    <small class="font-size-12">1 hour ago</small>
@@ -201,7 +214,7 @@
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="<?php echo  URL::to('home') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -211,17 +224,27 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('watchlaters') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Settings</h6>
+                                                   <h6 class="mb-0 ">Watch Later</h6>
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('home') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>
@@ -264,126 +287,32 @@
             </div>
          </div>
       </header>
-         <!-- back-to-top End -->
+      <!-- Header End -->
+     
+      <!-- back-to-top -->
+      <div id="back-to-top">
+         <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
+      </div>
+      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="../assets/admin/dashassets/js/jquery-3.4.1.min.js"></script>
-      <script src="../assets/admin/dashassets/js/popper.min.js"></script>
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="assets/js/popper.min.js"></script>
       <!-- Bootstrap JS -->
-      <script src="../assets/admin/dashassets/js/bootstrap.min.js"></script>
+      <script src="assets/js/bootstrap.min.js"></script>
       <!-- Slick JS -->
-      <script src="../assets/admin/dashassets/js/slick.min.js"></script>
+      <script src="assets/js/slick.min.js"></script>
       <!-- owl carousel Js -->
-      <script src="../assets/admin/dashassets/js/owl.carousel.min.js"></script>
+      <script src="assets/js/owl.carousel.min.js"></script>
       <!-- select2 Js -->
-      <script src="../assets/admin/dashassets/js/select2.min.js"></script>
+      <script src="assets/js/select2.min.js"></script>
       <!-- Magnific Popup-->
-      <script src="../assets/admin/dashassets/js/jquery.magnific-popup.min.js"></script>
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
       <!-- Slick Animation-->
-      <script src="../assets/admin/dashassets/js/slick-animation.min.js"></script>
+      <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
-      <script src="../assets/admin/dashassets/js/custom.js"></script>
-       <script>
-    $(document).ready(function () {
-      $(".thumb-cont").hide();
-      $(".show-details-button").on("click", function () {
-        var idval = $(this).attr("data-id");
-        $(".thumb-cont").hide();
-        $("#" + idval).show();
-      });
-		$(".closewin").on("click", function () {
-        var idval = $(this).attr("data-id");
-        $(".thumb-cont").hide();
-        $("#" + idval).hide();
-      });
-    });
-  </script>
-<script>
-function about(evt , id) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
+      <script src="assets/js/custom.js"></script>
+     
     
-  }
-	
-  document.getElementById(id).style.display = "block";
- 
-}
-// Get the element with id="defaultOpen" and click on it
-//document.getElementById("defaultOpen").click();
-</script>
-       <script>
-  // Prevent closing from click inside dropdown
-  $(document).on('click', '.dropdown-menu', function (e) {
-    e.stopPropagation();
-  });
-    
-  // make it as accordion for smaller screens
-  if ($(window).width() < 992) {
-    $('.dropdown-menu a').click(function(e){
-      e.preventDefault();
-      if($(this).next('.submenu').length){
-        $(this).next('.submenu').toggle();
-      }
-      $('.dropdown').on('hide.bs.dropdown', function () {
-        $(this).find('.submenu').hide();
-      }
-                       )
-    }
-                               );
-  }
-</script>
-         <script type="text/javascript">
-  $(document).ready(function () {
-    $('.searches').on('keyup',function() {
-      var query = $(this).val();
-      //alert(query);
-      // alert(query);
-       if (query !=''){
-      $.ajax({
-        url:"<?php echo URL::to('/search');?>",
-        type:"GET",
-        data:{
-          'country':query}
-        ,
-        success:function (data) {
-          $('.search_list').html(data);
-        }
-      }
-            )
-       } else {
-            $('.search_list').html("");
-       }
-    }
-                     );
-    $(document).on('click', 'li', function(){
-      var value = $(this).text();
-      $('.search').val(value);
-      $('.search_list').html("");
-    }
-                  );
-  }
-                   );
-</script>
-<script>
-window.onscroll = function() {myFunction()};
 
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
-</script>
-
-        </body>
+   </body>
 </html>
-
-    
