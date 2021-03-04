@@ -288,3 +288,25 @@ function GetTrendingVideoStatus()
      $settings = App\HomeSetting::first();
      return $settings->featured_videos;  
 }
+
+function TotalViewcount(){
+    $sum_view = App\Video::all()->sum('views');
+    
+    return  $sum_view; 
+}
+
+function TotalVisitorcount(){
+    $sum_visitor= App\Visitor::all()->sum('id');
+    
+    return  $sum_visitor; 
+}
+
+function GetWebsiteName(){
+    $setting = App\Setting::first();
+    return  $setting->website_name; 
+}
+
+function GetAllVideoCategory(){
+    $all_category = App\VideoCategory::all();
+    return  $all_category; 
+}

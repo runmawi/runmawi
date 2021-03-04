@@ -9,6 +9,7 @@ use \App\PpvVideo as PpvVideo;
 use \App\Subscription as Subscription;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
+use App\RecentView as RecentView;
 use URL;
 use Carbon\Carbon as Carbon;
 use Auth;
@@ -37,14 +38,18 @@ class AdminDashboardController extends Controller
          $total_ppvvideos = PpvVideo::where('active','=',1)->count();
          
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
-       
-       
+        $top_rated_videos = Video::where("rating",">",7)->get();
+        $recent_views = RecentView::all();
+        $page = 'admin-dashboard';
         $data = array(
-			'settings' => $settings,
-			'total_subscription' => $total_subscription,
-			'total_recent_subscription' => $total_recent_subscription,
-			'total_videos' => $total_videos,
-			'total_ppvvideos' => $total_ppvvideos
+                'settings' => $settings,
+                'total_subscription' => $total_subscription,
+                'total_recent_subscription' => $total_recent_subscription,
+                'total_videos' => $total_videos,
+                'top_rated_videos' => $top_rated_videos,
+                'recent_views' => $recent_views,
+                'page' => $page,
+                'total_ppvvideos' => $total_ppvvideos
         );
         
 		return View::make('admin.dashboard', $data);

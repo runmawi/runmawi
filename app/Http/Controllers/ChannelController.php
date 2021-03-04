@@ -13,6 +13,7 @@ use App\Watchlater as Watchlater;
 use App\Wishlist as Wishlist;
 use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
+use App\RecentView as RecentView;
 use App\Movie;
 use App\Episode;
 use App\ContinueWatching as ContinueWatching;
@@ -71,7 +72,14 @@ class ChannelController extends Controller
         
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
-        $current_date = date('Y-m-d h:i:s a', time());     
+        $current_date = date('Y-m-d h:i:s a', time()); 
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+            $view = new RecentView;
+            $view->video_id = $vid;
+            $view->user_id = Auth::user()->id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
         
          $view_increment = $this->handleViewCount_movies($vid);
         if ( !Auth::guest() ) {

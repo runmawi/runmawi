@@ -649,9 +649,9 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           
+                                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now</span>
+                                          Play Now</span></a>
                                        </div>
                                          <div>
                                             <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
@@ -801,7 +801,7 @@ endif; ?>
                                              </p>
                                              <div class="p-btns">
                                                 <div class="d-flex align-items-center p-0">
-                                                   <a href="http://flicknexui.webnexs.org/" class="btn btn-hover mr-2" tabindex="0"><i
+                                                   <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover mr-2" tabindex="0"><i
                                                       class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                                    <a href="javascript:void(0);" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My
                                                    List</a>
@@ -1221,7 +1221,7 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-                        <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">TV Thrillers</a></h4>                        
+                        <h4 class="main-title"><a href="<?php echo URL::to('category/thrillers') ?>">TV Thrillers</a></h4>                        
                      </div>
                      <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -1240,8 +1240,9 @@ endif; ?>
                                           <span class="text-white">2 Seasons</span>
                                        </div>
                                        <div class="hover-buttons">
+                                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now</span>
+                                          Play Now</span></a>
                                        </div>
                                            <div>
                                             <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
