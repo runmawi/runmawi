@@ -11,18 +11,31 @@
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <!--<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">-->
       <!-- Favicon -->
-      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/typography.css';?>" />
       <!-- Style -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-
-
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+      <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/responsive.css';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/noty.css';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/font-awesome.mim.css
+        ';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/hellovideo-fonts.css';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/rrssb.css';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/style.css';?>" />
+        <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/animate.min.css';?>" />
+         
+  <link href="<?php echo URL::to('/').'/assets/dist/video-js.min.css';?>" rel="stylesheet">
+	<link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
+	<link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
+  <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
+  <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
+      
+       <script src="https://www.paypalobjects.com/api/checkout.js"></script>
  
 
 
@@ -37,13 +50,58 @@ width: 50px !important;
 height: 50px !important;
 border-radius: 25px !important;
 }
+    .social_share {
+    display: inline-block !important;
+    border-radius: 5px !important;
+    vertical-align: middle !important;
+}
+    .rrssb-buttons.tiny-format li {
+    padding-right: 7px;
+}
+    .rrssb-buttons li {
+    float: left;
+    height: 100%;
+    line-height: 13px;
+    list-style: none;
+    margin: 0;
+    padding: 0 2.5px;
+}
+    .video-details {
+    margin: 0 auto !important;
+    padding-bottom: 30px !important;
+        padding-left: 40px !important;
+}
+    .social_share p {
+    display: inline-block;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+    #social_share {
+    display: inline-block;
+    vertical-align: middle;
+}
+    #video_title h1 {
+    color: #fff;
+    font-size: 30px;
+    margin: 20px 0px;
+    line-height: 22px;
+}
+    .btn.watchlater, .btn.mywishlist {
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    background: #000;
+    border: 1px solid #000;
+    color: #fff;
+}
 .vjs-texttrack-settings { display: none; }
 .video-js .vjs-big-play-button{ border: none !important; }
-    #video_container{height: auto;padding: 15px 0 !important;width: 95%;margin: 0 auto;}
+    #video_container{height: auto;padding-top: 120px !important;;width: 95%;margin: 0 auto;}
 /*    #video_bg_dim {background: #1a1b20;}*/
     .video-js .vjs-tech {outline: none;}
     
-    .video-details{margin: 0 auto;padding-bottom: 30px;}
+   
     .video-details h1{margin: 0 0 10px;color: #fff;}
     .vid-details{margin-bottom: 20px;}
     #tags{margin-bottom: 10px;}
@@ -60,11 +118,11 @@ border-radius: 25px !important;
 </style>
 
   
-  <!--<link href="<?php echo URL::to('/').'/assets/dist/video-js.min.css';?>" rel="stylesheet">
+  <link href="<?php echo URL::to('/').'/assets/dist/video-js.min.css';?>" rel="stylesheet">
 	<link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
 	<link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">-->
+  <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
   <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
   <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
@@ -102,7 +160,7 @@ border-radius: 25px !important;
    if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
 
 	<div id="video_bg">
-		<div class="container page-height">
+		<div class=" page-height">
 			<?php 
             $paypal_id = Auth::user()->paypal_id;
             if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
@@ -126,7 +184,7 @@ border-radius: 25px !important;
 							<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 						</video>
 						<div class="playertextbox hide">
-						<h2>Up Next</h2>
+						<!--<h2>Up Next</h2>-->
 						<p><?php if(isset($videonext)){ ?>
 						<?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
 						<?php }elseif(isset($videoprev)){ ?>
@@ -150,7 +208,7 @@ border-radius: 25px !important;
 							
 
 						<div class="playertextbox hide">
-						<h2>Up Next</h2>
+						<!--<h2>Up Next</h2>-->
 						<p><?php if(isset($videonext)){ ?>
 						<?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
 						<?php }elseif(isset($videoprev)){ ?>
@@ -207,7 +265,7 @@ border-radius: 25px !important;
             
 
 	<input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-		<div class="container video-details">
+		<div class="container-fluid video-details">
 			<div id="video_title">
 				<h1><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
 			</div>
@@ -223,12 +281,12 @@ border-radius: 25px !important;
 			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 
 			<!-- Share -->
-			<!--<div class="social_share">
-			  <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
+			<div class="social_share">
+			  <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
 			  <div id="social_share">
-				<?php /*include('partials/social-share.php')*/; ?>
+				<?php include('partials/social-share.php'); ?>
 			  </div>
-			</div>-->
+			</div>
         </div>
 			<div class="col-sm-6 col-md-6 col-xs-12">
 			<!-- Views -->
@@ -972,22 +1030,22 @@ $(document).ready(function () {
    <!-- <script type=”text/javascript” src=”//cdn.jsdelivr.net/afterglow/latest/afterglow.min.js”></script>-->
         <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
-      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
-      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
-      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
-      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+      <script src="<?php echo URL::to('/'). '/assets/js/custom.js';?>"></script>
     </body>
 </html>
 

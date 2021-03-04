@@ -735,8 +735,8 @@ endif; ?>
                      </div>
                      <div class="trending-contens">
                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
-                            <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                            <?php  if(isset($trendings)) :
+			                       foreach($trendings as $watchlater_video): ?>
                            <li>
                               <a href="javascript:void(0);">
                                  <div class="movie-slick position-relative">
@@ -748,8 +748,8 @@ endif; ?>
 		                                   endif; ?>
                         </ul>
                         <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                            <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                            <?php  if(isset($trendings)) :
+			                       foreach($trendings as $watchlater_video): ?>
                            <li>
                               <div class="tranding-block position-relative"
                                  style="background-image: url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>');">
@@ -1225,8 +1225,8 @@ endif; ?>
                      </div>
                      <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
-                            <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                            <?php  if(isset($videos)) :
+			                       foreach($videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">

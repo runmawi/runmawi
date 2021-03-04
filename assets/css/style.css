@@ -629,7 +629,7 @@ a.title-dec{
 .dropdown-item.cont-item {color: #fff !important;}
 
 header .navbar ul li.menu-item .dropdown-item{
-    line-height: 50px !important;
+    line-height: 40px !important;
 }
 a.dropdown-item.cont-item {
     background-color: transparent;
