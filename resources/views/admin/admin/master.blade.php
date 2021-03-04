@@ -49,8 +49,6 @@
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/magnific-popup.css';?>" />
-    
 
 	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
@@ -77,7 +75,7 @@
   <!-- Sidebar-->
       <div class="iq-sidebar">
          <div class="iq-sidebar-logo d-flex justify-content-between">
-            <a href="<?php echo URL::to('home') ?>" target="_blank" class="header-logo">
+            <a href="index.html" class="header-logo">
                <img src="assets/admin/dashassets/images/fl-logo.png" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                   <span class="text-primary text-uppercase">Flicknexs</span>
@@ -155,7 +153,7 @@
                      </ul>
                   </li>
                     <li>
-                     <a href="{{ URL::to('admin/settings') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"> <i class="ri-settings-4-line"></i><span>Settings</span><i
+                     <a href="{{ URL::to('admin/settings') }}" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="entypo-cog"></i><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="show" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -445,7 +443,7 @@
                      </li>
                      <li class="line-height pt-3">
                         <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                            <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                           <img src="assets/admin/dashassets/images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
                         </a>
                         <div class="iq-sub-dropdown iq-user-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -609,8 +607,23 @@
 			</div>
 		</div>
 	</div>-->
-
-
+   <?php 
+   if (isset($page) && $page =='admin-dashboard') {
+            $visitor_count = TotalVisitorcount();
+            $chart_details = "[$total_subscription, $total_recent_subscription, $total_videos, $visitor_count]";
+            $chart_lables = "['Total Subscribers', 'New Subscribers', 'Total Videos', 'Total Visitors']";
+            $all_category = App\VideoCategory::all();
+            $items = array(); 
+            $lastmonth = array();      
+               foreach($all_category as $category) {
+                  $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
+                  $items[] = "'$category->name'";
+                  $lastmonth[] = "'$categoty_sum'";
+               }
+               $cate_chart = implode(',', $items);
+               $last_month_chart = implode(',', $lastmonth);
+   }
+   ?>
 
 
 	<!-- Imported styles on this page -->
@@ -647,6 +660,148 @@
 	<!-- End Notifications -->
 
 	<!--@yield('javascript')-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <?php  if (isset($page) && $page =='admin-dashboard') { ?>
+   <script>
+      $(document).ready(function(){
+         if(jQuery('#view-chart-01').length){
+
+var chart_01_lable = $('#chart_01_lable').val();
+//alert(chart_01_lable);
+   var options = {
+      series: <?php echo $chart_details;?>,
+      chart: {
+      width: 250,
+         type: 'donut',
+      },
+    colors:['#e20e02', '#f68a04', '#007aff','#545e75'],
+    labels: <?php echo $chart_lables;?>,
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+        show: false,
+        width: 0
+    },
+    legend: {
+        show: false,
+    },
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }]
+    };
+    console.log(chart_01_lable);
+    var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
+    chart.render();
+  } 
+
+ if(jQuery('#view-chart-02').length){
+        var options = {
+          series: [44, 30, 20, 43, 22,20],
+          chart: {
+          width: 250,
+          type: 'donut',
+        },
+        colors:['#e20e02','#83878a', '#007aff','#f68a04', '#14e788','#545e75'],
+        labels: <?php echo "[".$cate_chart."]";?>,
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+            show: false,
+            width: 0
+        },
+        legend: {
+            show: false,
+          formatter: function(val, opts) {
+            return val + " - " + opts.w.globals.series[opts.seriesIndex]
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#view-chart-02"), options);
+        chart.render();
+    }
+
+    //category chart 
+
+    
+ if(jQuery('#view-chart-03').length){
+        var options = {
+          series: [{
+          name: 'This Month',
+          data: [44, 55,30,60,7000]
+        }, {
+          name: 'Last Month',
+          data: [35, 41,20,40,100]
+        }],
+        colors:['#e20e02', '#007aff'],
+          chart: {
+          type: 'bar',
+          height: 230,
+          foreColor: '#D1D0CF'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: <?php echo "[".$cate_chart."]";?>,
+        },
+        yaxis: {
+          title: {
+            text: ''
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+            enabled: false,
+          y: {
+            formatter: function (val) {
+              return "$ " + val + " thousands"
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#view-chart-03"), options);
+        chart.render();
+    }
+});
+</script>
+<?php } ?>
 
 
 </body>
