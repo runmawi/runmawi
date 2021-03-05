@@ -298,7 +298,7 @@
                 foreach ($banner as $key => $bannerdetails) { ?>
                 <div class="item <?php if($key == 0){echo 'active';}?> header-image" >
                     <a href="<?=$bannerdetails->link;  ?>">
-            <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/'/*.$bannerdetails->slider*/;  ?>') no-repeat;background-size: cover;">
+            <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>') no-repeat;background-size: cover;">
                <div class="container-fluid position-relative h-100">
                   <div class="slider-inner h-100">
                      <div class="row align-items-center  h-100">
@@ -686,7 +686,7 @@ endif; ?>
                      
                      <div class="text-left">
                         <a href="javascript:void(0);">
-                        <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'/*.$bannerdetails->slider */; ?>" class="img-fluid" alt="bailey">
+                        <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>" class="img-fluid" alt="bailey">
                         </a>
                         <div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
                            <ul
@@ -719,7 +719,7 @@ endif; ?>
                   <div class="col-lg-8">
                      <div class="parallax-img">
                         <a href="<?php echo URL::to('home') ?>">
-                        	<img src="<?php echo URL::to('/').'/public/uploads/videocategory/'/*.$bannerdetails->slider*/;  ?>" class="img-fluid w-100" alt="bailey">
+                        	<img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>" class="img-fluid w-100" alt="bailey">
                         </a>
                      </div>
                   </div>
