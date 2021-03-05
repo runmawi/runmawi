@@ -735,8 +735,8 @@ endif; ?>
                      </div>
                      <div class="trending-contens">
                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
-                            <?php  if(isset($trendings)) :
-			                       foreach($trendings as $watchlater_video): ?>
+                            <?php  if(isset($latest_videos)) :
+			                       foreach($latest_videos as $watchlater_video): ?>
                            <li>
                               <a href="javascript:void(0);">
                                  <div class="movie-slick position-relative">
@@ -748,8 +748,8 @@ endif; ?>
 		                                   endif; ?>
                         </ul>
                         <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                            <?php  if(isset($trendings)) :
-			                       foreach($trendings as $watchlater_video): ?>
+                            <?php  if(isset($latest_videos)) :
+			                       foreach($latest_videos as $watchlater_video): ?>
                            <li>
                               <div class="tranding-block position-relative"
                                  style="background-image: url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>');">
@@ -841,7 +841,7 @@ endif; ?>
                                                    <div class="e-item">
                                                       <div class="block-image position-relative">
                                                          <a href="<?php echo URL::to('home') ?>">
-                                                         <img src="assets/images/episodes/01.jpg" class="img-fluid" alt="">
+                                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                                          </a>
                                                          <div class="episode-number">1</div>
                                                          <div class="episode-play-info">
@@ -860,7 +860,7 @@ endif; ?>
                                                          </p>
                                                       </div>
                                                    </div>
-                                                   <div class="e-item">
+                                                   <!--<div class="e-item">
                                                       <div class="block-image position-relative">
                                                          <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/02.jpg" class="img-fluid" alt="">
@@ -948,7 +948,7 @@ endif; ?>
                                                          <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
                                                          </p>
                                                       </div>
-                                                   </div>
+                                                   </div>-->
                                                 </div>
                                              </div>
                                           </div>

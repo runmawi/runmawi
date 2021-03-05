@@ -275,7 +275,7 @@
             </div>
          </div>
       </header>
-<div class="page-height">
+<!--<div class="page-height">
     <div class="row justify-content-center ">	
 <div class="container signcont">
     <div class="row justify-content-center">	
@@ -363,17 +363,97 @@
 		</div>
     </div>
 </div>
-</div>
+    </div></div>-->
+<section class="sign-in-page">
+   <div class="container">
+      <div class="row justify-content-center align-items-center height-self-center">
+         <div class="col-lg-5 col-md-12 align-self-center">
+            <div class="sign-user_card ">                    
+               <div class="sign-in-page-data">
+                  <div class="sign-in-from w-100 m-auto">
+                     <h3 class="mb-3 text-center">Sign in</h3>
+                       @if (Session::has('message'))
+                       <div class="alert alert-info">{{ Session::get('message') }}</div>
+                    @endif
+                     <form method="POST" action="{{ route('login') }}" class="mt-4" action="index.html">
+                         @csrf
+						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
+						@error('email')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+						
+						@error('password')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+                        <div class="form-group">  
+                          <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail Address') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        </div>
+                        <div class="form-group">                                 
+                           <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
+                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password">
+                        </div>
+                        
+                           <div class="sign-info">
+                              <button type="submit" class="btn btn-hover">Sign in</button>
+                              <div class="custom-control custom-checkbox d-inline-block">
+                                 <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
+                                 
+                                 <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
+                                  <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+								<label class="form-check-label" for="remember">
+									{{ __('Remember Me') }}
+								</label>
+                              </div>                                
+                           </div> 
+                          <h5 class="mb-3 text-center">Sign in by using</h5>
+                         <div class="form-group row mb-0">
+						@if ( config('social.google') == 1 )
+                           
+                            <div class="col-md-3 ">
+                            <a href="{{ url('/auth/redirect/google') }}" style="background-color:#ea4335;border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
+                            </div>
+                        @endif  
+						@if ( config('social.facebook') == 1 )
+                            <div class="col-md-3 offset-md-3">
+                                <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="background-color:#3f5c9a;border:none;color:#fff;"><i class="fa fa-facebook"></i> Facebook</a>
+                            </div>
+						@endif 
+						</div>
+                        
+                     </form>
+                  </div>
+               </div>
+               <div class="mt-3">
+                  <div class="d-flex justify-content-center links">
+                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
+                  </div>
+                  <div class="d-flex justify-content-center links">
+                      @if (Route::has('password.request'))
+                     <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
+                      @endif
+							
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
        <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row">
                   <div class="col-lg-3 col-md-4">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="movie-category.html">Movies</a></li>
-                        <li><a href="show-category.html">Tv Shows</a></li>
-                        <li><a href="#">Coporate Information</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
                      </ul>
                   </div>
                   <!--<div class="col-lg-3 col-md-4">
@@ -417,7 +497,7 @@
                         <a href="#" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
                         </a>
-                         <a href="<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
                         <i class="fa fa-google-plus"></i>
                         </a>
                      </div>
