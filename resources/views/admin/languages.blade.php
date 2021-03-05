@@ -23,7 +23,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 <body>
-
+<div id="content-page" class="content-page">
+            <div class="container-fluid">
 
 <div class="container">
     <h1>Language Translation</h1>
@@ -74,8 +75,8 @@
         </tbody>
     </table>
 </div>
-
-
+    </div></div>
+</body>
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
