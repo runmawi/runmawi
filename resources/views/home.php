@@ -679,7 +679,7 @@ endif; ?>
                </div>
             </div>
          </section>
-         <section id="parallex" class="parallax-window" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>') no-repeat;background-size: cover;">
+         <section id="parallex" class="parallax-window" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/';  ?>') no-repeat;background-size: cover;">
             <div class="container-fluid h-100">
                <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                   <div class="col-lg-4 r-mb-23">
