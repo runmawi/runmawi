@@ -318,14 +318,14 @@
                               dummy text ever since the 1500s.
                            </p>
                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                              <a href="https://flicknexui.webnexs.org/category/Thriller" class="btn btn-hover"><i class="fa fa-play mr-2"
+                              <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                               <a href="https://flicknexui.webnexs.org/" class="btn btn-link">More details</a>
                            </div>
                         </div>
                      </div>
                      <div class="trailor-video">
-                        <a href="http://flicknexui.webnexs.org/" class="video-open playbtn">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="video-open playbtn">
                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                               x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7"
                               enable-background="new 0 0 213.7 213.7" xml:space="preserve">

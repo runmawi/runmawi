@@ -266,8 +266,8 @@ class AdminVideosController extends Controller
              $video->type = $data['type'];
              $video->access = $data['access'];
              $video->video_category_id = $data['video_category_id'];
-             $video->details = $request->details;
-             $video->description = strip_tags($request->description);
+             $video->details = $data['details'];
+             $video->description = strip_tags($data['description']);
              $video->user_id = Auth::user()->id;
              $video->save();
 

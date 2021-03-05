@@ -29,7 +29,8 @@
                                     <th>Category</th>
                                     <th>Release Year</th>
                                     <th>Language</th>
-                                    <th style="width: 20%;">Description</th>
+                                    <!--<th style="width: 20%;">Description</th>-->
+                                     <th>Views</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
@@ -54,12 +55,13 @@
                                     <td>{{ $video->year }}</td>
                                     <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
                                     <td>
-                                       <p> {{ substr($video->description, 0, 50) . '...' }} </p>
+                                       <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
+                                        {{ $video->views }}<i class="lar la-eye "></i>
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="#"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""

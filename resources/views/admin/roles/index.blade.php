@@ -1,6 +1,8 @@
 @extends('admin.master')
 
 @section('content')
+<div id="content-page" class="content-page">
+            <div class="container-fluid">
 
 	<div class="admin-section-title">
 		<div class="row">
@@ -102,6 +104,8 @@
 			</div>
 		
 		</div>
+    </div>
+</div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 

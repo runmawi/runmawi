@@ -12,8 +12,10 @@
 
     $jsondata = json_decode($jsonString, true); 
 ?>
-
+<div id="content-page" class="content-page">
+            <div class="container-fluid">
 <div id="admin-container">
+    
 <!-- This is where -->
 	
 	<div class="admin-section-title">
@@ -136,6 +138,8 @@
 
 		<div class="clear"></div>
 <!-- This is where now -->
+</div>
+    </div>
 </div>
 
 	

@@ -14,6 +14,8 @@
 
 
 @section('content')
+<div id="content-page" class="content-page">
+            <div class="container-fluid">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -84,7 +86,8 @@
 
 	<div class="clear"></div>
 
-</div><!-- admin-container -->
+</div>
+    </div></div><!-- admin-container -->
 
 @section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>

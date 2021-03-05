@@ -16,6 +16,8 @@
 	</style>
 @stop
 @section('content')
+<div id="content-page" class="content-page">
+            <div class="container-fluid">
 <div class="admin-section-title">
     <h3><i class="entypo-monitor"></i> Home Page Settings</h3> 
 </div>
@@ -64,6 +66,8 @@
                 </div>
         </div>
 </form>
+    </div>
+</div>
 	<script src="<?= THEME_URL ?>/assets/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<?= THEME_URL ?>/assets/js/admin-homepage.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>
