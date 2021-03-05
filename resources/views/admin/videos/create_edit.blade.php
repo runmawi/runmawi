@@ -101,6 +101,7 @@
 							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						                  @endforeach
                               </select>
+                                 
                               </div>   
                               <div class="col-sm-6 form-group">
                               <select id="access" name="access"  class="form-control" >
@@ -112,13 +113,21 @@
                                 
 </div>
 
-            <div class="row">
-                     <div class="row">
-                              <div class="col-sm-12 form-group">
+            
+                     
+                         <div class="row">
+                              <div class="col-sm-6 form-group">
                                   <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
-                                   <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-                                   <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                               </div>
+                          <div class="col-sm-6 form-group">
+                                   <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
+                              </div>
+                             </div>
+                         <div class="row">
+                              <div class="col-sm-6 form-group">
+                                  <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+                              </div>
+                             </div>
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                               @endif
@@ -128,7 +137,7 @@
                                  <button type="submit" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                                  <button type="reset" class="btn btn-danger">cancel</button>
                               </div>
-                           </div>
+                         
                         </form>
                      </div>
                   </div>
