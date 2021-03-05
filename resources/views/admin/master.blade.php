@@ -532,7 +532,7 @@
                </ul>
             </div>
             <div class="col-lg-6 text-right">
-               Copyright 2020 <a href="#">Flicknexs</a> All Rights Reserved.
+               Copyright 2020 <a href="<?php echo URL::to('home') ?>">Flicknexs</a> All Rights Reserved.
             </div>
          </div>
       </div>

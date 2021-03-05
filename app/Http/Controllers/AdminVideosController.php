@@ -90,13 +90,10 @@ class AdminVideosController extends Controller
     public function store(StoreVideoRequest $request)
     {
         
-        
         $data = $request->all();
-        
             $validatedData = $request->validate([
                 'title' => 'required',
             ]);
-        
         
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -160,6 +157,8 @@ class AdminVideosController extends Controller
          } else {
             $data['trailer'] = '';
         }
+
+
       
         
     //        print_r($data['mp4_url']);
@@ -194,6 +193,12 @@ class AdminVideosController extends Controller
         }  else {
             $data['language'] =  $data['language'];
         } 
+
+        if(!empty($data['embed_code'])){
+            $data['embed_code'] = $data['embed_code'];
+        } else {
+            $data['embed_code'] = '';
+        }
         
         
             if ($request->slug != '') {
@@ -203,12 +208,6 @@ class AdminVideosController extends Controller
             if($request->slug == ''){
                     $data['slug'] = $this->createSlug($data['title']);    
             }
-        
-//       
-//        
-//        if(empty($data['slug'])){
-//            $data['slug'] = 0;
-//        }
 
         if(empty($data['featured'])){
             $data['featured'] = 0;
@@ -244,7 +243,29 @@ class AdminVideosController extends Controller
                 
         }
         
-        
+        if(!empty($data['embed_code'])) {
+             
+             $video = new Video();
+             $video->disk = 'public';
+             $video->original_name = 'public';
+             $video->path = $path;
+             $video->title = $data['title'];
+             $video->slug = $data['slug'];
+             $video->language = $data['language'];
+             $video->image = $data['image'];
+             $video->trailer = $data['trailer'];
+             $video->mp4_url = $path;
+             $video->type = $data['type'];
+             $video->access = $data['access'];
+             $video->embed_code = $data['embed_code'];
+             $video->video_category_id = $data['video_category_id'];
+             $video->details = $request->details;
+             $video->description = strip_tags($request->description);
+             $video->user_id = Auth::user()->id;
+             $video->save();
+
+        }
+
          if($mp4_url != '') {
              
             $rand = Str::random(16);
@@ -270,14 +291,7 @@ class AdminVideosController extends Controller
              $video->description = strip_tags($request->description);
              $video->user_id = Auth::user()->id;
              $video->save();
-
-//                $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-//                $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-//                $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-//             print_r("sdf1");
-//              exit;
-//             
-                $converted_name = $this->getCleanFileName($video->path);
+             $converted_name = $this->getCleanFileName($video->path);
                 ConvertVideoForStreaming::dispatch($video);
 
          } else {
@@ -419,6 +433,10 @@ class AdminVideosController extends Controller
                 $data['featured'] = 0;
             } 
 
+            if(!empty($data['embed_code'])){
+                $data['embed_code'] = $data['embed_code'];
+            } 
+
             if(empty($data['active'])){
                 $data['active'] = 0;
             } 
@@ -517,9 +535,15 @@ class AdminVideosController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+        if(!empty($data['embed_code'])) {
+             $video->embed_code = $data['embed_code'];
+        }else {
+            $video->embed_code = '';
+        }
 
          $shortcodes = $request['short_code'];        
          $languages = $request['language']; 
+         $video->details = strip_tags($data['details']);
          $video->description = strip_tags($data['description']);
          $video->update($data);
         

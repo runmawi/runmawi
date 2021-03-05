@@ -54,10 +54,8 @@
                                        </select>
                                     </div>
                                     <div class="col-sm-6 form-group">
-                                          <select id="type" name="type" class="form-control" required>
-                                             <option>--Select Video Type--</option>
+                                          <select id="type" name="type" class="form-control">
                                              <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
-                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
                                           </select>   
                                     </div>
                                     <div class="col-12 form-group">
@@ -77,24 +75,12 @@
                                     </video>
                                  @endif
                                  <div class="d-block position-relative">
-                                 <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')style="display:block"@else style = "display:none" @endif>
-                                    <label for="embed_code">Embed Code:</label>
-                                    <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
-                                 </div>
-
-                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload')style="display:block"@else style = "display:none" @endif>
-                                    <!-- <label for="embed_code">Upload Video</label>
-                                    <input type="file" name="video" id="video"> -->
-                                    <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
-                                    <p>Upload video</p>
-                                 </div>
-                                    <!-- <div class="form_video-upload" class="new-video-file" >
+                                    <div class="form_video-upload">
                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
                                        <p>Upload video</p>
-                                       
                                     </div>
-                                     -->
                                  </div>
+                               
                               </div>
                             
                            </div>
@@ -115,6 +101,7 @@
 							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						                  @endforeach
                               </select>
+                                 
                               </div>   
                               <div class="col-sm-6 form-group">
                               <select id="access" name="access"  class="form-control" >
@@ -124,9 +111,11 @@
                               </select>
                               </div> 
                                 
-                        </div>
+</div>
 
-             <div class="row">
+            
+                     
+                         <div class="row">
                               <div class="col-sm-6 form-group">
                                   <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
                               </div>
@@ -148,6 +137,7 @@
                                  <button type="submit" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                                  <button type="reset" class="btn btn-danger">cancel</button>
                               </div>
+                         
                         </form>
                      </div>
                   </div>
@@ -156,15 +146,28 @@
          </div>
       </div>
 
+      
+	
 	<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 	
+
+
+
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
-<script type="text/javascript">
- $ = jQuery;
+
+ 
+
+	<script type="text/javascript">
+   
+
+	$ = jQuery;
+
 	$(document).ready(function(){
+
 		$("#type").change(function(){
+         alert();
 			if($(this).val() == 'file'){
 				$('.new-video-file').show();
 				$('.new-video-embed').hide();
@@ -229,13 +232,6 @@
         filebrowserUploadMethod: 'form'
     });
     </script>
-
-    <script>
-
-      $('input[type="checkbox"]').on('change', function(){
-			   this.value = this.checked ? 1 : 0;
-			}).change();
-      </script>
 
 @section('javascript')
 	@stop
