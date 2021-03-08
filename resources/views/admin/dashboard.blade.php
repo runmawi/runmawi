@@ -295,45 +295,7 @@
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
                               </thead>
-                              <tbody>
-                                  <?php if (count($recent_views) > 0) { ?>
-                              @foreach($recent_views as $views)
-                                  <?php 
-                                  $video_detail = App\Video::find($views->video_id); 
-                                  $user_detail = App\User::find($views->user_id);
-                                    $vid = $views->video_id;
-                                    $video_detail_count = App\Video::where("id","=", $vid)->count(); 
-                                    if ($video_detail_count ) > 0) {
-                                  ?>
-                                 <tr>
-                                    <td>
-                                       <div class="media align-items-center">
-                                          <div class="iq-movie">
-                                             <a href="javascript:void(0);">
-                                                 @if(isset($video_detail->image) && !empty($video_detail->image) )
-                                                 <img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt="">
-                                                 @endif
-                                              </a>
-                                          </div>
-                                          <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video_detail->title }}</p>
-                                             <small>{{ $video_detail->duration }} </small>
-                                          </div>
-                                       </div>
-                                    </td>
-                                    <td><i class="lar la-star mr-2"></i> {{ $video_detail->rating }}</td>
-                                    <td>{{ $video_detail->categories->name }}</td>
-                                    <td>
-                                       {{ $video_detail->views }}<i class="lar la-eye "></i>
-                                    </td>
-                                    <td>{{ $user_detail->role }}</td>
-                                    <!-- <td>21 July,2020</td> -->
-                                    <td><i class="las la-heart text-primary"></i></td>
-                                 </tr>
-                                  <?php } ?>
-                                 @endforeach
-                                  <?php } ?>
-                              </tbody>
+                             
                            </table>
                         </div>
                      </div>
