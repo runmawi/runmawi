@@ -301,6 +301,8 @@
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
                                   $user_detail = App\User::find($views->user_id);
+    
+                                    if (count($video_detail ) > 0) {
                                   ?>
                                  <tr>
                                     <td>
@@ -327,6 +329,7 @@
                                     <!-- <td>21 July,2020</td> -->
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
+                                  <?php } ?>
                                  @endforeach
                                   <?php } ?>
                               </tbody>
