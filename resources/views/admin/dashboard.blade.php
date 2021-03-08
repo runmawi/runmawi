@@ -301,7 +301,8 @@
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
                                   $user_detail = App\User::find($views->user_id);
-                                    $video_detail_count = App\Video::where("id","=",$views->video_id)->count(); 
+                                    $vid = $views->video_id;
+                                    $video_detail_count = App\Video::where("id","=", $vid)->count(); 
                                     if ($video_detail_count ) > 0) {
                                   ?>
                                  <tr>
