@@ -296,6 +296,7 @@
                                  </tr>
                               </thead>
                               <tbody>
+                                  <?php if ($recent_views > 0) { ?>
                               @foreach($recent_views as $views)
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
@@ -323,6 +324,7 @@
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
                                  @endforeach
+                                  <?php } ?>
                               </tbody>
                            </table>
                         </div>
