@@ -296,7 +296,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                  <?php if ($recent_views > 0) { ?>
+                                  <?php if (count($recent_views) > 0) { ?>
                               @foreach($recent_views as $views)
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
