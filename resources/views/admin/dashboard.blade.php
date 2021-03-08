@@ -306,7 +306,11 @@
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                             <a href="javascript:void(0);">
+                                                 @if(isset($video_detail->image) && !empty($video_detail->image) )
+                                                 <img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt="">
+                                                 @endif
+                                              </a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
                                              <p class="mb-0">{{ $video_detail->title }}</p>
