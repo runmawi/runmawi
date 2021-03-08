@@ -59,10 +59,10 @@ abstract class SMime
 
         fseek($stream, $headersPosEnd + \strlen($headerBodySeparator));
 
-        return new SMimePart($this->getStreamIterator($stream), $type, $subtype, $this->getParametersFromHeader($headers['content-type']));
+        return new SMimePart($this->getFlicknexserator($stream), $type, $subtype, $this->getParametersFromHeader($headers['content-type']));
     }
 
-    protected function getStreamIterator($stream): iterable
+    protected function getFlicknexserator($stream): iterable
     {
         while (!feof($stream)) {
             yield str_replace("\n", "\r\n", str_replace("\r\n", "\n", fread($stream, 16372)));

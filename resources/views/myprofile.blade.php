@@ -35,12 +35,12 @@
     top: 80px;
     }
     .btn-primary {
-    background: #e50914;
-    border-color: #e50914;
+    background: #4895d1;
+    border-color: #4895d1;
 }
     .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
-    background-color: #e50914;
-    border-color: #e50914;
+    background-color: #4895d1;
+    border-color: #4895d1;
 }
     .data-back{
         background-color: #333;

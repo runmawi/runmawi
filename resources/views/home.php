@@ -366,8 +366,8 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                             <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                             <?php  if(isset($videos)) :
+			                       foreach($videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -414,8 +414,8 @@
                </div>
             </div>
          
-                          <?php if(isset($latest_videos)) :
-                                foreach($latest_videos as $watchlater_video): ?>
+                          <?php if(isset($videos)) :
+                                foreach($videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
@@ -679,8 +679,16 @@ endif; ?>
                </div>
             </div>
          </section>
-         <section id="parallex" class="parallax-window" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/';  ?>') no-repeat;background-size: cover;">
+        <!-- <section id="parallex" class="parallax-window" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/';  ?>') no-repeat;background-size: cover;">
+             <div id="home-slider" class="slider m-0 p-0">
+                 <?php if(isset($videos)) :
+                    foreach($videos as $watchlater_video): ?>
+              <?php 
+                $i = 1;
+                foreach ($banner as $key => $bannerdetails) { ?>
+                <div class="item <?php if($key == 0){echo 'active';}?> header-image" >
             <div class="container-fluid h-100">
+                
                <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                   <div class="col-lg-4 r-mb-23">
                      
@@ -725,7 +733,15 @@ endif; ?>
                   </div>
                </div>
             </div>
-         </section>
+             </div>
+                 </div>
+                  <?php $i++; } ?>
+             <?php endforeach; 
+                         endif; ?>
+             
+         </section>-->
+          
+          
          <section id="iq-trending" class="s-margin">
             <div class="container-fluid">
                <div class="row">
