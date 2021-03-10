@@ -1233,59 +1233,35 @@ endif; ?>
             </div>
          </section>
          <section id="iq-tvthrillers" class="s-margin">
-            <div class="container-fluid">
-               <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-                        <h4 class="main-title"><a href="<?php echo URL::to('category/thrillers') ?>">TV Thrillers</a></h4>                        
-                     </div>
-                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
-                            <?php  if(isset($videos)) :
-			                       foreach($videos as $watchlater_video): ?>
-                           <li class="slide-item">
-                              <a href="<?php echo URL::to('home') ?>">
-                                 <div class="block-images position-relative">
-                                    <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="block-description">
-                                       <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">15+</div>
-                                          <span class="text-white">2 Seasons</span>
-                                       </div>
-                                       <div class="hover-buttons">
-                                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                          <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now</span></a>
-                                       </div>
-                                           <div>
-                                            <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
-                                                <span class="text-center thumbarrow-sec">
-                                                    <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                                </span>
-                                                    </button>
-                                        </div>
-                                    </div>
-                                   <!-- <div class="block-social-info">
-                                       <ul class="list-inline p-0 m-0 music-play-lists">
-                                          <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                          <li><span><i class="ri-heart-fill"></i></span></li>
-                                          <li><span><i class="ri-add-line"></i></span></li>
-                                       </ul>
-                                    </div>-->
-                                 </div>
-                              </a>
-                           </li>
-                           <?php endforeach; 
-		                                   endif; ?>
-                          
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
+             <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
+    <div class="container">
+     
+        <?php
+            $parentCategories = App\VideoCategory::where('in_home','=',1)->get();
+            foreach($parentCategories as $category) {
+            $videos = App\Video::where('video_category_id','=',$category->id)->get();
+        ?>
+         <div class="row">
+         <!--<a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration:none;color:#fff" >
+         <h4  class="movie-title">
+            <?php echo __($category->name);?> 
+         </h4>
+         </a>-->
+			  <div style="border-bottom: 1px solid #232429;"></div>
+         <!-- <a href="<php echo URL::to('/').'/category/'.$category->slug;?>" class="category-heading" style="text-decoration:none;"> 
+              <h4 class="Continue Watching text-left category-heading">
+                  <php echo __($category->name);?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> 
+              </h4>
+          </a>-->
+             <?php if (count($videos) > 0) { 
+                include('partials/category-videoloop.php');
+            } else { ?>
+            <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
+            <?php } ?>
+         </div>
+        <?php }?>
+        </div>
+        <?php } ?>
          </section>
       </div>
       <footer class="mb-0">
