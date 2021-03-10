@@ -105,6 +105,7 @@ class HomeController extends Controller
 			'pagination_url' => '/videos',
              'settings'=>$settings,
              'pages'=>$pages,
+            'trending_videos' => $trending_videos,
 			'video_categories' => VideoCategory::all()
         );
         //echo "<pre>";print_r($data['latest_videos']);exit;

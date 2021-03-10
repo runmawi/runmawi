@@ -751,8 +751,8 @@ endif; ?>
                      </div>
                      <div class="trending-contens">
                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
-                            <?php  if(isset($trendings)) :
-			                       foreach($trendings as $watchlater_video): ?>
+                            <?php  if(isset($trending_videos)) :
+			                       foreach($trending_videos as $watchlater_video): ?>
                            <li>
                               <a href="javascript:void(0);">
                                  <div class="movie-slick position-relative">
@@ -764,8 +764,8 @@ endif; ?>
 		                                   endif; ?>
                         </ul>
                         <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                            <?php  if(isset($trendings)) :
-			                       foreach($trendings as $watchlater_video): ?>
+                            <?php  if(isset($trending_videos)) :
+			                       foreach($trending_videos as $watchlater_video): ?>
                            <li>
                               <div class="tranding-block position-relative"
                                  style="background-image: url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>');">
