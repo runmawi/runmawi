@@ -366,8 +366,8 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                             <?php  if(isset($videos)) :
-			                       foreach($videos as $watchlater_video): ?>
+                             <?php  if(isset($latest_videos)) :
+			                       foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -414,8 +414,8 @@
                </div>
             </div>
          
-                          <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
+                          <?php if(isset($latest_videos)) :
+                                foreach($latest_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
@@ -515,61 +515,18 @@ endif; ?>
 </section>
           
          <section id="iq-upcoming-movie">
-            <div class="container-fluid">
-               <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-                        <h4 class="main-title"><a href="href="<?php echo URL::to('home') ?>"">Upcoming Videos</a></h4>
-                     </div>
-                     <div class="upcoming-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
-                                <?php if(isset($latest_videos)) :
-                                foreach($latest_videos as $watchlater_video): ?>
-                           <li class="slide-item">
-                              <a href="<?php echo URL::to('home') ?>">
-                                 <div class="block-images position-relative">
-                                    <div class="img-box">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="block-description">
-                                       <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">5+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                       </div>
-                                       <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
-                                          <span class="btn btn-hover">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
-                                          </span>
-                                           </a>
-                                       </div>
-                                          <div>
-                                            <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
-                                                <span class="text-center thumbarrow-sec">
-                                                    <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                                </span>
-                                                    </button>
-                                        </div>
-                                    </div>
-                                   <!-- <div class="block-social-info">
-                                       <ul class="list-inline p-0 m-0 music-play-lists">
-                                          <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                          <li><span><i class="ri-heart-fill"></i></span></li>
-                                          <li><span><i class="ri-add-line"></i></span></li>
-                                       </ul>
-                                    </div>-->
-                                 </div>
-                              </a>
-                           </li>
-                            <?php endforeach; 
-		                                   endif; ?>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
+           
+              <?php if ( GetTrendingVideoStatus() == 1 ) { ?>
+            <div class="video-list">
+
+              <?php if ( count($trendings) > 0 ) { 
+                include('partials/trending-videoloop.php');
+
+              } else {  ?>
+                    <p class="no_video"> No Video Found</p>
+                <?php } ?>
             </div>
+    <?php } ?>
          </section>
          <section id="iq-topten">
             <div class="container-fluid">
@@ -634,8 +591,8 @@ endif; ?>
                      </div>
                      <div class="suggestede-contens">
                         <ul class="list-inline favorites-slider row p-0 mb-0">
-                            <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                            <?php  if(isset($suggested_videos)) :
+			                       foreach($suggested_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
