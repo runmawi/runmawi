@@ -14,6 +14,7 @@
 ?>
 <div id="content-page" class="content-page">
             <div class="container-fluid">
+                <div class="iq-card">
 <div id="admin-container">
     
 <!-- This is where -->
@@ -35,16 +36,17 @@
 	
 
 		<form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-
+         <div class="row">
+             <div class="col-md-6">
 			<div id="user-badge">
 				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'default.jpg'; ?>@endif
-				<img src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
+				<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 				<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
 				<input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
 			</div>
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Username</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<!--<div class="panel-title">Username</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('username')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('username'); ?></div><?php endif; ?>
 					<p>User's Username</p>
@@ -53,23 +55,30 @@
 			</div>
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Email</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<!--<div class="panel-title">Email</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
 					<p>User's Email Address</p>
 					<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 				</div>
 			</div>
+
     
             
-            <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Mobile</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+            
+
+			
+             </div>
+             <div class="col-md-6">
+                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+				<!--<div class="panel-title">Mobile</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                     
                     
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
 					<p>User's Mobile</p>
-                       <div class="col-sm-2">
+                    <div class="row">
+                       <div class="col-sm-4">
                         <select name="ccode" class="form-control" >
                             @foreach($jsondata as $code)
                             <option value="{{ $code['dial_code'] }}" <?php if(isset($user) && $code['dial_code'] == $user->ccode ) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
@@ -78,7 +87,7 @@
                         </div>
                       <div class="col-sm-8">
 					       <input type="text" class="form-control" name="mobile" id="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
-                    </div>
+                    </div></div>
 				</div>
 			</div>
 
@@ -93,10 +102,7 @@
 					<input type="password" class="form-control" name="passwords" id="password" value="" />
 				</div>
 			</div>
-
-			<div class="row"> 
-
-				<div class="col-sm-6"> 
+                 <div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">User Role</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
@@ -110,28 +116,26 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="col-sm-4"> 
+                 <div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">User Active Status</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<!--<div class="panel-title">User Active Status</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<label>User Active Status </label>
 							<input type="checkbox" id="active" name="active" @if(isset($user->active) && $user->active == 1)checked="checked" value="1" @else value="0" @endif />
 						</div>
 					</div>
 				</div>
-
-				
-
-			</div><!-- row -->
+             </div>
+            </div>
+            <!-- row -->
 
 			@if(isset($user->id))
-				<input type="hidden" id="id" name="id" value="{{ $user->id }}" />
-				<input type="hidden" id="stripe_active" name="stripe_active" value="" />
+				<input class="btn btn-primary" type="hidden" id="id" name="id" value="{{ $user->id }}" />
+				<input class="btn btn-primary" type="hidden" id="stripe_active" name="stripe_active" value="" />
 			@endif
 
-			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
+			<input class="btn btn-primary" type="hidden" name="_token" value="<?= csrf_token() ?>" />
+			<input class="btn btn-primary" type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
 
 			<div class="clear"></div>
 		</form>
@@ -140,6 +144,7 @@
 <!-- This is where now -->
 </div>
     </div>
+</div>
 </div>
 
 	

@@ -1,8 +1,27 @@
-<div class="modal-header">
+@extends('admin.master')
+
+
+@section('content')
+<style>
+    .form-control {
+    background-color: var(--iq-body-bg);
+    border: 1px solid transparent;
+    height: 46px;
+    position: relative;
+    color: var(--iq-body-text);
+    font-size: 16px;
+    width: 100%;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+</style>
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h4 class="modal-title">Update Category</h4>
-</div>
-
+</div>-->
+<div class="iq-card">
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/update') }}" method="post" enctype="multipart/form-data">
        
@@ -76,10 +95,13 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-white" id="submit-update-cat">Update</button>
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/videos/categories') }}">Close</a>
+	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
 </div>
-
+    </div>
+</div>
+</div>
+	@section('javascript')
 <script>
 	$(document).ready(function(){
 		$('#submit-update-cat').click(function(){
@@ -87,3 +109,6 @@
 		});
 	});
 </script>
+             @stop
+
+@stop

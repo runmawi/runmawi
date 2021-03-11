@@ -1,20 +1,6 @@
 @extends('admin.master')
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
-<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-       <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
-    
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-
-   <!--datatable CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
-   <!-- Typography CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/typography.css';?>" />
-   <!-- Style CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
-   <!-- Responsive CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
 @endsection
 @section('content')
@@ -23,7 +9,7 @@
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i> Video Categories</h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
+				<h3><i class="entypo-archive"></i> Video Categories</h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>
 	</div>
@@ -96,8 +82,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-cat">Save changes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -140,8 +126,10 @@
                     <tr>
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                         <td>
-                            <div class="actions"><a href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" class="btn btn-black edit"><i class="ri-pencil-line"></i></a> 
-                            <a href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" class="btn btn-white delete"><i
+                            <div class="flex align-items-center list-user-action"><a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
+                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><i
                                                 class="ri-delete-bin-line"></i></a></div>
                            
                         </td>
@@ -162,39 +150,6 @@
 
 
 	@section('javascript')
-<!-- Imported styles on this page -->
-	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
-   <!-- Appear JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.appear.js';?>"></script>
-   <!-- Countdown JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/countdown.min.js';?>"></script>
-   <!-- Select2 JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/select2.min.js';?>"></script>
-   <!-- Counterup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/waypoints.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.counterup.min.js';?>"></script>
-   <!-- Wow JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/wow.min.js';?>"></script>
-   <!-- Slick JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/slick.min.js';?>"></script>
-   <!-- Owl Carousel JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/owl.carousel.min.js';?>"></script>
-   <!-- Magnific Popup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.magnific-popup.min.js';?>"></script>
-   <!-- Smooth Scrollbar JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/smooth-scrollbar.js';?>"></script>
-   <!-- apex Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/apexcharts.js';?>"></script>
-   <!-- Chart Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/chart-custom.js';?>"></script>
-   <!-- Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
-	<!-- End Notifications -->
-<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 
 		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
 

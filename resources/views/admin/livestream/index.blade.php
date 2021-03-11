@@ -5,14 +5,16 @@
 @endsection
 
 @section('content')
-<div id="content-page" class="content-page">
-            <div class="container-fluid">
+<style>
+   
+</style>
+
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-8">
-				<h3><i class="entypo-video"></i> Live Videos</h3><a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
+				<h3><i class="entypo-video"></i> Live Videos</h3><a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 			<div class="col-md-4">	
 				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
@@ -82,7 +84,7 @@
 	</div>
     </div>
 </div>
-    </div>
+    
 </div>
 
 	@section('javascript')

@@ -71,7 +71,9 @@
         opacity: 0.9;
         overflow: hidden;
     }
-    
+    .visitbtn{
+        width: 100px !important;
+    }
     
 </style>
     <style>
@@ -394,10 +396,12 @@
                      </a>
                   </div>
                </div>
+                
                <div class="iq-search-bar ml-auto">
                   <form action="#" class="searchbox">
                     <!-- <input type="text" class="text search-input" placeholder="Search Here...">
                      <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
+                      
                   </form>
                </div>
                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
@@ -405,7 +409,7 @@
                </button>
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto navbar-list">
-                     <li class="nav-item nav-icon search-content">
+                    <!-- <li class="nav-item nav-icon search-content">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-search-line"></i>
                         </a>
@@ -413,7 +417,10 @@
                            <input type="text" class="text search-input" placeholder="Type here to search...">
                            <a class="search-link" href="#"><i class="ri-search-line"></i></a>
                         </form>
-                     </li>
+                     </li>-->
+                      <li class="nav-item nav-icon">
+                      <a type="button" class="btn btn-primary  noborder-radius btn-login nomargin visitbtn" href="<?php echo URL::to('home') ?>" target="_blank" ><span>Visit site</span></a>
+                      </li>
                      <li class="nav-item nav-icon">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-notification-2-line"></i>
@@ -919,6 +926,7 @@
                    </div>
                     </div></div>
           </div>
+          <div class="row">
           <div class="col-md-12">
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
@@ -933,11 +941,11 @@
                               <thead>
                                  <tr>
                                     <th style="width:20%;">Video</th>
-                                    <!--<th style="width:10%;">Rating</th>-->
+                                    <th style="width:10%;">Rating</th>
                                     <th style="width:20%;">Category</th>
                                     <th style="width:10%;">Views</th>
                                    <!-- <th style="width:10%;">User</th>-->
-                                    <!-- <th style="width:20%;">Date</th> -->
+                                     <th style="width:20%;">Date</th> 
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
                               </thead>
@@ -955,13 +963,13 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <!--<td><i class="lar la-star mr-2"></i></td>-->
+                                    <td><i class="lar la-star mr-2"></i></td>
                                     <td></td>
                                     <td>
                                        <i class="lar la-eye "></i>
                                     </td>
                                   
-                                    <!-- <td>21 July,2020</td> -->
+                                     <td>21 July,2020</td> 
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
                                   
@@ -970,7 +978,7 @@
                         </div>
                      </div>
                   </div>
-               </div>
+               </div></div>
         <!--    <div class="col-12 col-md-12 col-lg-8">
                <div class="row">
                   <div class="col-md-6">
