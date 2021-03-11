@@ -135,15 +135,51 @@
         select{
             width: 100% !important;
         }
+        .content-page {
+    overflow: hidden;
+     margin-left: 0px !important; 
+     padding: unset !important; 
+    min-height: 100vh;
+    -webkit-transition: all 0.3s ease-out 0s;
+    -moz-transition: all 0.3s ease-out 0s;
+    -ms-transition: all 0.3s ease-out 0s;
+    -o-transition: all 0.3s ease-out 0s;
+    transition: all 0.3s ease-out 0s;
+    margin-top: 110px;
+}
+        .iq-top-navbar {
+    padding: 0 15px 0 30px;
+    min-height: 73px;
+    position: fixed;
+    top: 0;
+    left: auto;
+    /* right: 0; */
+    width: 100%;
+    display: inline-block;
+    z-index: 99;
+    background: var(--iq-light-card);
+    margin: 0;
+    transition: all 0.45s ease 0s;
+}
+        .iq-footer {
+    background: var(--iq-light-card);
+    padding: 15px;
+    margin-left: 0px !important; 
+    -webkit-transition: all 0.3s ease-out 0s;
+    -moz-transition: all 0.3s ease-out 0s;
+    -ms-transition: all 0.3s ease-out 0s;
+    -o-transition: all 0.3s ease-out 0s;
+    transition: all 0.3s ease-out 0s;
+}
 </style>
 
 </head>
 <body >
 
 
-<div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+<!--<div class="page-container sidebar-collapsed">--><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
-      <div class="iq-sidebar">
+     <!-- <div class="iq-sidebar">
          <div class="iq-sidebar-logo d-flex justify-content-between">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
                <img <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" class="img-fluid rounded-normal" alt="">
@@ -236,7 +272,7 @@
                      </ul>
                   </li>
                   
-                 <!-- <li>
+                  <li>
                      <a href="#ui-elements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i><span>UI Elements</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="ui-elements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="elements">
@@ -301,8 +337,8 @@
                            </ul>
                         </li>
                      </ul>
-                  </li>-->
-                  <!--<li>
+                  </li>
+                  <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-file-alt iq-arrow-left"></i><span>Pages</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li>
@@ -331,11 +367,11 @@
                            </ul>
                         </li>
                      </ul>
-                  </li>-->
+                  </li>
                </ul>
             </nav>
          </div>
-      </div>
+      </div>-->
 
 	<div class="main-content">
 				
@@ -588,8 +624,8 @@
 
 			<div id="content-page" class="content-page">
       <div class="container-fluid">
-         <div class="row profile-content">
-            <div class="col-12 col-md-12 col-lg-4 align-self-center">
+         <div class="row profile-content ">
+            <div class="col-12 col-md-12 col-lg-6 align-self-center">
                <div class="iq-card">
                   <div class="iq-card-body profile-page">
                      <div class="profile-header">
@@ -622,112 +658,8 @@
                   </div>
                </div>
              </div>
-             <div class="offset-md-2 col-sm-6">
-                  <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Recently Viewd Items</h4>
-                        </div>
-                        
-                     </div>
-                      <div class="iq-card-body">
-                        <div class="table-responsive">
-                           <table class="data-tables table movie_table" style="width:100%">
-                              <thead>
-                                 <tr>
-                                    <th style="width:20%;">Video</th>
-                                    <!--<th style="width:10%;">Rating</th>-->
-                                    <th style="width:20%;">Category</th>
-                                    <th style="width:10%;">Views</th>
-                                   <!-- <th style="width:10%;">User</th>-->
-                                    <!-- <th style="width:20%;">Date</th> -->
-                                    <th style="width:10%;"><i class="lar la-heart"></i></th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                             
-                                 <tr>
-                                    <td>
-                                       <div class="media align-items-center">
-                                          <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'}}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
-                                          </div>
-                                          <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0"></p>
-                                             <small> </small>
-                                          </div>
-                                       </div>
-                                    </td>
-                                    <!--<td><i class="lar la-star mr-2"></i></td>-->
-                                    <td></td>
-                                    <td>
-                                       <i class="lar la-eye "></i>
-                                    </td>
-                                  
-                                    <!-- <td>21 July,2020</td> -->
-                                    <td><i class="las la-heart text-primary"></i></td>
-                                 </tr>
-                                  
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-               </div>
             
-             <!--  <div class="iq-card">
-                  <div class="iq-card-header d-flex justify-content-between align-items-center mb-0">
-                     <div class="iq-header-title">
-                        <h4 class="card-title mb-0">Skill Progress</h4>
-                     </div>
-                  </div> 
-                  <div class="iq-card-body">
-                     <ul class="list-inline p-0 mb-0">
-                        <li>
-                           <div class="d-flex align-items-center justify-content-between mb-3">
-                              <h6>Biography</h6>
-                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
-                                 <div class="iq-progress-bar iq-bg-primary">
-                                    <span class="bg-primary" data-percent="70"></span>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="d-flex align-items-center justify-content-between mb-3">
-                              <h6>Horror</h6>
-                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
-                                 <div class="iq-progress-bar iq-bg-danger">
-                                    <span class="bg-danger" data-percent="50"></span>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="d-flex align-items-center justify-content-between mb-3">
-                              <h6>Comic Book</h6>
-                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
-                                 <div class="iq-progress-bar iq-bg-info">
-                                    <span class="bg-info" data-percent="65"></span>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="d-flex align-items-center justify-content-between">
-                              <h6>Adventure</h6>
-                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
-                                 <div class="iq-progress-bar iq-bg-success">
-                                    <span class="bg-success" data-percent="85"></span>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </div>-->
-            </div>
-          <div class="col-12 col-md-12 col-lg-6" >
+               <div class="col-12 col-md-12 col-lg-6" >
                 <div class="iq-card">
                     <div class="row" id="personal">
                     <div class="col-md-12" >
@@ -806,6 +738,61 @@
                     </div>
                    </div></div>
               </div>
+            
+             <!--  <div class="iq-card">
+                  <div class="iq-card-header d-flex justify-content-between align-items-center mb-0">
+                     <div class="iq-header-title">
+                        <h4 class="card-title mb-0">Skill Progress</h4>
+                     </div>
+                  </div> 
+                  <div class="iq-card-body">
+                     <ul class="list-inline p-0 mb-0">
+                        <li>
+                           <div class="d-flex align-items-center justify-content-between mb-3">
+                              <h6>Biography</h6>
+                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
+                                 <div class="iq-progress-bar iq-bg-primary">
+                                    <span class="bg-primary" data-percent="70"></span>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="d-flex align-items-center justify-content-between mb-3">
+                              <h6>Horror</h6>
+                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
+                                 <div class="iq-progress-bar iq-bg-danger">
+                                    <span class="bg-danger" data-percent="50"></span>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="d-flex align-items-center justify-content-between mb-3">
+                              <h6>Comic Book</h6>
+                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
+                                 <div class="iq-progress-bar iq-bg-info">
+                                    <span class="bg-info" data-percent="65"></span>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="d-flex align-items-center justify-content-between">
+                              <h6>Adventure</h6>
+                              <div class="iq-progress-bar-linear d-inline-block mt-1 w-50">
+                                 <div class="iq-progress-bar iq-bg-success">
+                                    <span class="bg-success" data-percent="85"></span>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>-->
+            </div>
+           
+          <div class="row">
           <div class="col-12 col-md-12 col-lg-6" >
            <div class="iq-card">
                     <div class="row" id="subplan">
@@ -871,6 +858,7 @@
                    </div>
                </div>
           </div></div>
+          <div class="row">
                 <div class="col-12 col-md-12 col-lg-6" >
            <div class="iq-card">
                     <div class="row" id="card">
@@ -930,7 +918,59 @@
                     </div>
                    </div>
                     </div></div>
-             
+          </div>
+          <div class="col-md-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Recently Viewd Items</h4>
+                        </div>
+                        
+                     </div>
+                      <div class="iq-card-body">
+                        <div class="table-responsive">
+                           <table class="data-tables table movie_table" style="width:100%">
+                              <thead>
+                                 <tr>
+                                    <th style="width:20%;">Video</th>
+                                    <!--<th style="width:10%;">Rating</th>-->
+                                    <th style="width:20%;">Category</th>
+                                    <th style="width:10%;">Views</th>
+                                   <!-- <th style="width:10%;">User</th>-->
+                                    <!-- <th style="width:20%;">Date</th> -->
+                                    <th style="width:10%;"><i class="lar la-heart"></i></th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                             
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'}}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0"></p>
+                                             <small> </small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <!--<td><i class="lar la-star mr-2"></i></td>-->
+                                    <td></td>
+                                    <td>
+                                       <i class="lar la-eye "></i>
+                                    </td>
+                                  
+                                    <!-- <td>21 July,2020</td> -->
+                                    <td><i class="las la-heart text-primary"></i></td>
+                                 </tr>
+                                  
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
         <!--    <div class="col-12 col-md-12 col-lg-8">
                <div class="row">
                   <div class="col-md-6">
@@ -1470,7 +1510,7 @@
 
           
 </div>
-</div>
+<!--</div>-->
             
 
 		</div>

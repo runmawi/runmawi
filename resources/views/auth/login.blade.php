@@ -104,8 +104,8 @@
                                                 <?php } ?>
                                                 </ul>
                                             </li>
-                                          <li class="blink_me">
-                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #fd1b04;list-style: none;
+                                         <li class="">
+                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1;list-style: none;
                                                                                                font-weight: bold;
                                                                                                font-size: 16px;">
                                               <?php echo __('Refer and Earn');?>
@@ -114,7 +114,7 @@
                                         </ul>
                            </div>
                         </div>
-                        <div class="mobile-more-menu">
+                       <!-- <div class="mobile-more-menu">
                            <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
                               data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
                            <i class="ri-more-line"></i>
@@ -207,7 +207,7 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="assets/images/user/user.jpg" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                  <img src="<?php echo URL::to('/').'/public/uploads/avatars/' /*. Auth::user()->avatar*/ ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
@@ -267,7 +267,7 @@
                                  </div>
                               </li>
                            </ul>
-                        </div>
+                        </div>-->
                      </nav>
                      <div class="nav-overlay"></div>
                   </div>

@@ -83,7 +83,7 @@
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
 				
-                <div class="panel-heading"><h1>{{ __('Enter your Info below to Sign-Up for an Account!') }}</h1></div>
+                <div class="panel-heading"><h2>{{ __('Enter your Info below to Sign-Up for an Account!') }}</h2></div>
                 <div class="panel-body">
                     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
