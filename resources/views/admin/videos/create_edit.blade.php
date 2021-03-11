@@ -44,7 +44,7 @@
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                     @endif
                                  </div>
-                                    <div class="col-md-6 form-group">
+                                   <!-- <div class="col-md-6 form-group">
                                        <select class="form-control" id="video_category_id" name="video_category_id">
                                        <option value="0">Uncategorized</option>
 						                        @foreach($video_categories as $category)
@@ -59,7 +59,8 @@
                                              <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
                                              <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
                                           </select>   
-                                    </div>
+                                    </div>-->
+                                     
                                     <div class="col-12 form-group">
                                        <textarea  rows="5" class="form-control" name="description" id="summary-ckeditor"
                                           placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
@@ -71,6 +72,23 @@
                                  </div>
                               </div>
                               <div class="col-lg-5">
+                                  <div class="row">
+                                   <div class="col-md-6 form-group">
+                                       <select class="form-control" id="video_category_id" name="video_category_id">
+                                       <option value="0">Uncategorized</option>
+						                        @foreach($video_categories as $category)
+                                          <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
+						                        @endforeach
+
+                                       </select>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                          <select id="type" name="type" class="form-control" required>
+                                             <option>--Video Type--</option>
+                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
+                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
+                                          </select>   
+                                      </div></div>
                                  @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
                                     <video width="200" height="200" controls>
                                     <source src="{{ URL::to('/storage/app/public/').'/'.$video->mp4_url }}" type="video/mp4">
