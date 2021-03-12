@@ -10,7 +10,9 @@
 
 </style>
 @section('content')
-
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+             <div class="iq-card">
 <div class="admin-section-title">
        <!--  <div class="row">
             <div class="col-md-12">
@@ -19,10 +21,10 @@
         </div> -->
     </div>
 
-<div class="modal-header">
+<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3>Update Plans</h3>
-</div>
+</div>-->
 
 
         @if ($errors->any())
@@ -39,7 +41,8 @@
 
 <div class="panel panel-default ">
     	<form  accept-charset="UTF-8" action="{{ URL::to('admin/plans/update') }}" method="post" id="edit-form">
-           
+           <div class="row">
+               <div class="col-md-6">
                         <div class="form-group">
                             <label>  Plans Name:</label>
                             <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->plans_name }}" class="form-control" placeholder="Enter ">
@@ -57,7 +60,19 @@
                                 <label>Days:</label>
                                 <input type="text" id="days" name="days" value="{{ $edit_plan[0]->days }}" class="form-control" placeholder="Enter no.of Days">
                             </div>
-                           <div class="form-group">
+                   <div class="form-group">
+		                        <label>Payment Type:</label><br>
+		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
+		                        Recurring : <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
+		                    </div> 
+                          
+            
+            
+                       
+                   </div>
+               <div class="col-md-6">
+                   
+                <div class="form-group">
 		                        <label>Billing Interval:</label>
 		                        <input type="text" id="billing_interval" name="billing_interval" value="{{ $edit_plan[0]->billing_interval }}" class="form-control" placeholder="  etc .. Monthly , Yearly , 3 months ..">
 		                    </div>  
@@ -65,29 +80,25 @@
 		                        <label>Billing Type:</label>
 		                        <input type="text" id="type" name="type" value="{{ $edit_plan[0]->type }}" class="form-control" placeholder="Example .. Non Refundable">
 		                    </div> 
-           
-                            <div class="form-group">
-		                        <label>Payment Type:</label><br>
-		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
-		                        Recurring : <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
-		                    </div> 
-            
-            
-                        <div class="form-group">
+                    <div class="form-group">
                             <label>Price(USD):</label>
                             <input type="text" id="slug" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Enter Price">
                         </div>
+           
+                            
+                   </div>
+               </div>
 
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-                <input  type="submit" class="btn btn-white" id="submit-update-cat" value="Update" />
+                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/plans') }}">Close</a>
+                <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>
            
         </form>
 </div>
-
+             </div></div></div>
     @stop
 
 

@@ -5,7 +5,9 @@
 @endsection
 
 @section('content')
-
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+             <div class="iq-card">
 <div class="admin-section-title">
        <!--  <div class="row">
             <div class="col-md-12">
@@ -14,10 +16,10 @@
         </div> -->
     </div>
 
-<div class="modal-header">
+<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3>Update Plans</h3>
-</div>
+</div>-->
 
 
         @if ($errors->any())
@@ -34,7 +36,8 @@
 
 <div class="modal-body">
     	<form  accept-charset="UTF-8" action="{{ URL::to('admin/paypalplans/update') }}" method="post">
-           
+           <div class="row">
+               <div class="col-md-6">
                         <div class="form-group">
                             <label>  Plans Name:</label>
                             <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->name }}" class="form-control" placeholder="Enter ">
@@ -45,7 +48,10 @@
 		                        <input type="text" id="plans_id" name="plan_id" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
                             </div> 
             
-                            <div class="form-group">
+                            
+               </div>
+               <div class="col-md-6">
+                   <div class="form-group">
 		                        <label> Price:</label>
 		                        <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
                             </div>
@@ -56,7 +62,8 @@
                           Recurring : 
                             <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
                           </div> 
-            
+               </div>
+            </div>
             
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
             
@@ -65,11 +72,14 @@
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-                <input  type="submit" class="btn btn-white" id="submit-update-cat" value="Update" />
+                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/paypalplans') }}">Close</a>
+                <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>
            
         </form>
+</div>
+             </div>
+    </div>
 </div>
 
     @stop

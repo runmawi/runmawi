@@ -7,7 +7,7 @@
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-8">
-				<h3><i class="entypo-newspaper"></i> Page</h3><a href="{{ URL::to('admin/pages/create') }}" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
+				<h3><i class="entypo-newspaper"></i> Page</h3><a href="{{ URL::to('admin/pages/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
             
              @if ($errors->any())
@@ -44,10 +44,12 @@
 				<td valign="bottom"><p>{{ $page->slug }}</p></td>
 				<td><p>{{ $page->active }}</p></td>
 				<td>
-					<p>
-						<a href="{{ URL::to('admin/pages/edit') . '/' . $page->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Edit</a>
-						<a href="{{ URL::to('admin/pages/delete') . '/' . $page->id }}" class="btn btn-xs btn-white delete"><span class="fa fa-trash"></span> Delete</a>
-					</p>
+					<div class="flex align-items-center list-user-action">
+						<a href="{{ URL::to('admin/pages/edit') . '/' . $page->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a>
+						<a href="{{ URL::to('admin/pages/delete') . '/' . $page->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a>
+					</div>
 				</td>
 			</tr>
 			@endforeach

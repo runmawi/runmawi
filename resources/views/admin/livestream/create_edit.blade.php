@@ -240,8 +240,8 @@
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
 			@endif
 
-			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
+			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
 
 		</form>
 

@@ -17,6 +17,7 @@
 
 <div id="content-page" class="content-page">
          <div class="container-fluid">
+              <div class="iq-card">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -428,6 +429,7 @@
 	<div class="clear"></div>
 
 </div>
+             </div>
     </div></div><!-- admin-container -->
 
 @section('javascript')

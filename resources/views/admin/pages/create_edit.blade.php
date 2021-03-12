@@ -8,6 +8,7 @@
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
+             <div class="iq-card">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -122,7 +123,7 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
 
 		</form>
 
@@ -132,7 +133,7 @@
 
     </div></div>
 	
-	
+</div>
 	@section('javascript')
 
 

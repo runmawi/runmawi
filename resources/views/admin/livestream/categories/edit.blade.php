@@ -1,8 +1,11 @@
-<div class="modal-header">
+@extends('admin.master')
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h4 class="modal-title">Update PPV Category</h4>
-</div>
-
+</div>-->
+<div class="iq-card">
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/livestream/categories/update') }}" method="post" enctype="multipart/form-data">
        
@@ -69,9 +72,10 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-white" id="submit-update-cat">Update</button>
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/livestream/categories') }}">Close</a>
+	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
 </div>
+             </div></div></div>
 
 <script>
 	$(document).ready(function(){

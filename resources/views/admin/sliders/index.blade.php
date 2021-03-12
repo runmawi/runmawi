@@ -7,7 +7,7 @@
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i> Sliders </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
+				<h3><i class="entypo-archive"></i> Sliders </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>
 	</div>
@@ -50,8 +50,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-cat">Save changes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -99,7 +99,9 @@
                         <td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">
-                            <div class="actions"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}" class="btn btn-black edit">Edit</a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="btn btn-white delete">Delete</a></div>
+                            <div class="flex align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>
                     </tr>

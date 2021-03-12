@@ -3,10 +3,11 @@
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-	<div class="modal-header">
+              <div class="iq-card">
+	<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h4 class="modal-title">Update Menu Item</h4>
-</div>
+</div>-->
 
 <div class="modal-body">
 	<form id="update-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/update') }}" method="post">
@@ -25,11 +26,12 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-black" id="submit-update-menu">Update</button>
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/menu') }}">Close</a>
+	<button type="button" class="btn btn-primary" id="submit-update-menu">Update</button>
 </div>
 
     </div></div>
+</div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 <script>

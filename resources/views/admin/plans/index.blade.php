@@ -12,7 +12,7 @@
 <div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i>  Plans </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
+				<h3><i class="entypo-archive"></i>  Plans </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>
 	</div>
@@ -74,8 +74,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-white" id="submit-new-cat">Save changes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -93,7 +93,9 @@
                             <li class="dd-item">
 
                                <div class="dd-handle"> {{ $plan->plans_name }} </div>
-                               <div class="actions"><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="btn btn-black edit">Edit</a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="btn btn-white delete">Delete</a></div>
+                               <div class="flex align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                             </li>
 
                         @endforeach
@@ -105,6 +107,7 @@
 			</div>
     </div>
 </div>
+
 
 	<script type="text/javascript">
 

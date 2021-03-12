@@ -6,10 +6,13 @@
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
+             <div class="iq-card">
+<!--
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h4 class="modal-title">Update Category</h4>
 </div>
+-->
 
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/sliders/update') }}" method="post" enctype="multipart/form-data">
@@ -43,10 +46,10 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-white" id="submit-update-cat">Update</button>
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/sliders') }}">Close</a>
+	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
 </div>
-    </div></div>
+             </div></div></div>
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
 

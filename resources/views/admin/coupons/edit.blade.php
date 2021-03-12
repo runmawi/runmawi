@@ -5,6 +5,9 @@
 @endsection
 
 @section('content')
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+             <div class="iq-card">
 
 <div class="admin-section-title">
        <!--  <div class="row">
@@ -14,10 +17,10 @@
         </div> -->
     </div>
 
-<div class="modal-header">
+<!--<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3>Update Plans</h3>
-</div>
+</div>-->
 
        @if ($errors->any())
 
@@ -41,9 +44,12 @@
                 <input type="hidden" name="id" id="id" value="{{ $edit_coupons[0]->id }}" />
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-                <input  type="submit" class="btn btn-white" id="submit-update-cat" value="Update" />
+                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/coupons') }}">Close</a>
+                <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>
         </form>
+</div>
+             </div>
+    </div>
 </div>
     @stop
