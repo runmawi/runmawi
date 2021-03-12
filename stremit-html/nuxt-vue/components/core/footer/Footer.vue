@@ -32,7 +32,7 @@
 export default {
   name: 'Footer',
   props: {
-    copyrighttext: { type: String, default: 'STREAMIT - 2020 All Rights Reserved' }
+    copyrighttext: { type: String, default: 'Flicknexs - 2020 All Rights Reserved' }
   }
 }
 </script>

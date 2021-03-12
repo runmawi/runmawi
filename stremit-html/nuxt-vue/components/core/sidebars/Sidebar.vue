@@ -46,7 +46,7 @@ export default {
   },
   data () {
     return {
-      appName: 'STREAMIT'
+      appName: 'Flicknexs'
     }
   },
   mounted () {

@@ -51,7 +51,7 @@
                             <a href="#" tabindex="0">
                               <div class="res-logo">
                                 <div class="channel-logo">
-                                  <img src="../../../assets/images/logo-full.png" class="c-logo" alt="streamit">
+                                  <img src="../../../assets/images/logo-full.png" class="c-logo" alt="Flicknexs">
                                 </div>
                               </div>
                             </a>

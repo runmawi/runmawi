@@ -14,7 +14,7 @@
                   </div>
               </a>
               <nuxt-link class="navbar-brand" :to="homeURL">
-                <img class="img-fluid logo" :src="logo" alt="streamit">
+                <img class="img-fluid logo" :src="logo" alt="Flicknexs">
               </nuxt-link>
               <b-collapse id="navbarSupportedContent" :visible="sidebar" is-nav>
                 <div class="menu-main-menu-container">
@@ -75,7 +75,7 @@
                                   <img
                                     src="../../../assets/images/frontend/notify/thumb-1.jpg"
                                     class="img-fluid mr-3"
-                                    alt="streamit"
+                                    alt="Flicknexs"
                                   >
                                   <div class="media-body">
                                     <h6 class="mb-0 ">Boop Bitty</h6>
@@ -88,7 +88,7 @@
                                   <img
                                     src="../../../assets/images/frontend/notify/thumb-2.jpg"
                                     class="img-fluid mr-3"
-                                    alt="streamit"
+                                    alt="Flicknexs"
                                   >
                                   <div class="media-body">
                                     <h6 class="mb-0 ">The Last Breath</h6>
@@ -101,7 +101,7 @@
                                   <img
                                     src="../../../assets/images/frontend/notify/thumb-3.jpg"
                                     class="img-fluid mr-3"
-                                    alt="streamit"
+                                    alt="Flicknexs"
                                   >
                                   <div class="media-body">
                                     <h6 class="mb-0 ">The Hero Camp</h6>
@@ -227,7 +227,7 @@
                               <img
                                 src="../../../assets/images/frontend/notify/thumb-1.jpg"
                                 class="img-fluid mr-3"
-                                alt="streamit"
+                                alt="Flicknexs"
                               >
                               <div class="media-body">
                                 <h6 class="mb-0 ">Boot Bitty</h6>
@@ -240,7 +240,7 @@
                               <img
                                 src="../../../assets/images/frontend/notify/thumb-2.jpg"
                                 class="img-fluid mr-3"
-                                alt="streamit"
+                                alt="Flicknexs"
                               >
                               <div class="media-body">
                                 <h6 class="mb-0 ">The Last Breath</h6>
@@ -253,7 +253,7 @@
                               <img
                                 src="../../../assets/images/frontend/notify/thumb-3.jpg"
                                 class="img-fluid mr-3"
-                                alt="streamit"
+                                alt="Flicknexs"
                               >
                               <div class="media-body">
                                 <h6 class="mb-0 ">The Hero Camp</h6>

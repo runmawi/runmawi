@@ -42,7 +42,7 @@
                             <div class="col-sm-4">
                                 <div class="input-group color-picker" style="width: 50%;">
                                     <label> Latest Video </label>
-                                      <div class="input-group color-picker" style="width: 50%;">
+                                      <div class="input-group color-picker" style="width: 20%;">
                                         <div class="make-switch" data-on="success" data-off="warning">
                                             <input type="checkbox" @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos"/>
                                         </div>
@@ -62,7 +62,7 @@
             
             </div>  
                 <div class="panel-body">
-                    <button type="submit" class="btn btn-black pull-right" name="submit"> Save Settings</button>
+                    <button type="submit" class="btn btn-primary pull-right" name="submit"> Save Settings</button>
                 </div>
         </div>
 </form>

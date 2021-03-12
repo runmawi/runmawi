@@ -5,6 +5,8 @@
 	.make-switch{
 		z-index:2;
 	}
+        
+      
 	</style>
 
 @stop
@@ -33,7 +35,7 @@
 		
 		<div class="row">
 			
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Site Name</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
@@ -43,7 +45,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Site Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
@@ -54,10 +56,11 @@
 			</div>
 
 		</div>
+<!--        <div class="row">-->
 
-		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+		<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">Logo</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-			<div class="panel-body" style="display: block; background:#f1f1f1;"> 
+			<div class="panel-body" style="display: block; background:#141414;"> 
 				@if(!empty($settings->logo))
 					<img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}" style="max-height:100px" />
 				@endif
@@ -67,7 +70,7 @@
 			</div> 
 		</div>
 
-		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+		<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">Favicon</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 			<div class="panel-body" style="display: block;"> 
 				@if(!empty($settings->favicon))
@@ -78,44 +81,49 @@
 				
 			</div> 
 		</div>
+       <!-- </div>-->
         
-           <div class="row">
+          
           	<div class="panel panel-primary" data-collapsed="0">
-               <h2>Video Player Watermark Settings</h2>
+               <h3>Video Player Watermark Settings</h3>
                 <div class="panel-body"> 
-            
-                 <div class="col-md-1">
+                    <div class="row">
+                        <div class="col-md-6">
+                 <div >
             <p> Right:</p>
 				    <div class="form-group">
 				        <input type="text"  class="form-control"  name="watermark_right" id="watermark_right" value="<?=$settings->watermark_right;?>" />
 				    </div>
           </div>
-          <div class="col-md-1">
+          <div >
                     <p> Top:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermark_top" id="watermark_top" value="<?=$settings->watermark_top;?>" />
 				    </div>
           </div>
-          <div class="col-md-1">
+          <div >
             <p> Bottom:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermark_bottom" id="watermark_bottom" value="<?=$settings->watermark_bottom;?>" />
 				    </div>
           </div>
-          <div class="col-md-1">
+          <div >
                     <p> Left:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermark_left" id="watermark_left" value="<?=$settings->watermark_left;?>" />
 				    </div>
           </div>
-          <div class="col-md-1">
+          
+                </div>
+                        <div class="col-md-6">
+                        <div >
               <p> Opacity:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermark_opacity" id="watermark_opacity" value="<?=$settings->watermark_opacity;?>" />
 				    </div> 
           </div>
             
-            <div class="col-md-4">
+            <div >
                 <p> Link:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermar_link" id="watermar_link" value="<?=$settings->watermar_link;?>" />
@@ -123,27 +131,18 @@
             
           </div>
             
-        <div class="col-md-2">
+        <div >
             <p>Upload Watermark:</p> 
             <input type="file" multiple="true" class="form-control" name="watermark" id="watermark" />
              @if(!empty($settings->watermark))
                             <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->watermark }}" style="max-height:100px" />
             @endif
           </div>
-                </div>
-            
-            </div>
-        </div>
-
-		   <div class="row">
-              <input type="hidden" value="0" name="demo_mode" id="demo_mode" />
-           </div>
-        
-			<div class="col-sm-6"> 
-				<div class="panel panel-primary" data-collapsed="0">
-					<div class="panel-heading"> <div class="panel-title">Enable https:// sitewide</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body"> 
-						<p>Make sure you have purchased an SSL before anabling https://</p>
+                            <div class="col-sm-6"> 
+				<div class="panel panel-primary row" data-collapsed="0">
+					<div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-body col-md-2"> 
+						<!--<p>Make sure you have purchased an SSL before anabling https://</p>-->
 						<div class="form-group">
 				        	<div class="make-switch" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($settings->enable_https) || (isset($settings->enable_https) && $settings->enable_https))checked="checked" value="1"@else value="0"@endif name="enable_https" id="enable_https" />
@@ -153,16 +152,27 @@
 				</div>
 			</div>
 
-		</div>		
+                        </div>
+            
+            </div>
+        </div>
+               </div>
+
+		   <div class="row">
+              <input type="hidden" value="0" name="demo_mode" id="demo_mode" />
+           </div>
+        
+			
+
         
         <div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title">Pay per View</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body"> 
-						<p>Enable Pay per View:</p>
+					<div class="panel-body row"> 
+						<p class="col-md-8">Enable Pay per View:</p>
 
-						<div class="form-group">
+						<div class="form-group col-md-4">
 				        
 				                <input type="checkbox"  name="ppv_status" id="ppv_status"  @if(!isset($settings->ppv_status) || (isset($settings->ppv_status) && $settings->ppv_status))checked="checked" value="1"@else value="0"@endif />
 				            
@@ -170,10 +180,22 @@
 						
 					</div>
 				</div>
+                <div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading"> <div class="panel-title">Pay Per view Hours</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-body"> 
+						<p>Hours :</p>
+						<div class="form-group">
+				        	<div class="make-switch" data-on="success" data-off="warning">
+                                
+                                <input type="number" class="form-control" name="ppv_hours" id="ppv_hours" placeholder="# of pay Per view hours" value="@if(!empty($settings->ppv_hours)){{ $settings->ppv_hours }}@endif" />
+				            </div>
+						</div>
+					</div>
+				</div>
 
 			</div>
             
-           <div class="col-sm-4"> 
+           <div class="col-sm-6"> 
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title">PPV Global Price </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body"> 
@@ -182,21 +204,6 @@
 				        	<div class="make-switch" data-on="success" data-off="warning">
                                 
                                 <input type="text" class="form-control" name="ppv_price" id="ppv_price" placeholder="# of PPV Global Price" value="@if(!empty($settings->ppv_price)){{ $settings->ppv_price }}@endif" />
-				            </div>
-						</div>
-					</div>
-				</div>
-			</div>
-            
-			<div class="col-sm-4"> 
-				<div class="panel panel-primary" data-collapsed="0">
-					<div class="panel-heading"> <div class="panel-title">Pay Per view Hours</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body"> 
-						<p>Hours :</p>
-						<div class="form-group">
-				        	<div class="make-switch" data-on="success" data-off="warning">
-                                
-                                <input type="number" class="form-control" name="ppv_hours" id="ppv_hours" placeholder="# of pay Per view hours" value="@if(!empty($settings->ppv_hours)){{ $settings->ppv_hours }}@endif" />
 				            </div>
 						</div>
 					</div>
@@ -234,13 +241,15 @@
 			<div class="panel-body"> 
 				<div class="row">
 					<div class="col-md-4 align-center">
-						<p>Enable Free Registration:</p>
+                        <div class="row" >
+						<p class="col-md-8">Enable Free Registration:</p>
 
-						<div class="form-group">
+						<div class="form-group col-md-4">
 				        	<div class="make-switch" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->free_registration) && $settings->free_registration))checked="checked" value="1"@else value="0"@endif name="free_registration" id="free_registration" />
 				            </div>
 						</div>
+                        </div>
 					</div>
 
 
@@ -268,6 +277,8 @@
 				
 			</div>
 		</div>
+        <div class="row">
+            <div class="col-md-6">
 
 		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">System Email</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -277,24 +288,7 @@
 			</div> 
 		</div>
 
-		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-			<div class="panel-title">Social Networks</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-			<div class="panel-body" style="display: block;"> 
-				
-				<p>Facebook Page ID: ex. facebook.com/page_id (without facebook.com):</p> 
-				<input type="text" class="form-control" name="facebook_page_id" id="facebook_page_id" placeholder="Facebook Page" value="@if(!empty($settings->facebook_page_id)){{ $settings->facebook_page_id }}@endif" />
-				<br />
-				<p>Google Plus User ID:</p>
-				<input type="text" class="form-control" name="google_page_id" id="google_page_id" placeholder="Google Plus Page" value="@if(!empty($settings->google_page_id)){{ $settings->google_page_id }}@endif" />
-				<br />
-				<p>Twitter Username:</p>
-				<input type="text" class="form-control" name="twitter_page_id" id="twitter_page_id" placeholder="Twitter Username" value="@if(!empty($settings->twitter_page_id)){{ $settings->twitter_page_id }}@endif" />
-				<br />
-				<p>YouTube Channel ex. youtube.com/channel_name:</p>
-				<input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id" placeholder="YouTube Channel" value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
-			
-			</div> 
-		</div>
+
 
 		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">Google Analytics Tracking ID</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -329,11 +323,32 @@
             
 			</div> 
 		</div>     
-    
+            </div>
+            <div>
+                		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel-title">Social Networks</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+			<div class="panel-body" style="display: block;"> 
+				
+				<p>Facebook Page ID: ex. facebook.com/page_id (without facebook.com):</p> 
+				<input type="text" class="form-control" name="facebook_page_id" id="facebook_page_id" placeholder="Facebook Page" value="@if(!empty($settings->facebook_page_id)){{ $settings->facebook_page_id }}@endif" />
+				<br />
+				<p>Google Plus User ID:</p>
+				<input type="text" class="form-control" name="google_page_id" id="google_page_id" placeholder="Google Plus Page" value="@if(!empty($settings->google_page_id)){{ $settings->google_page_id }}@endif" />
+				<br />
+				<p>Twitter Username:</p>
+				<input type="text" class="form-control" name="twitter_page_id" id="twitter_page_id" placeholder="Twitter Username" value="@if(!empty($settings->twitter_page_id)){{ $settings->twitter_page_id }}@endif" />
+				<br />
+				<p>YouTube Channel ex. youtube.com/channel_name:</p>
+				<input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id" placeholder="YouTube Channel" value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
+			
+			</div> 
+		</div>
+            </div>
+        </div>
     <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title"> Settings For New Subscription </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                     <div class="panel-body" style="display: block;">
                         <label class="panel-title">Coupon Enable / Disable:</label>
                          <div class="form-group add-profile-pic checkbox">
@@ -342,9 +357,16 @@
                         </div>
 
                     </div> 
+                 <div class="panel-body" style="display: block;">
+                        <label class="panel-title">Discount %:</label>
+                         <div class="form-group add-profile-pic checkbox">
+                             <input type="text"  class="form-control" @if(isset($settings->discount_percentage)) value="<?=$settings->discount_percentage;?>"@endif placeholder="Discount %:" name="discount_percentage">
+                        </div>
+
+                    </div> 
             </div> 
             
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                     <div class="panel-body" style="display: block;">
                         <label class="panel-title">Coupon Code:</label>
                          <div class="form-group add-profile-pic checkbox">
@@ -353,18 +375,10 @@
 
                     </div> 
             </div> 
-            
-            <div class="col-sm-4">
-                    <div class="panel-body" style="display: block;">
-                        <label class="panel-title">Discount %:</label>
-                         <div class="form-group add-profile-pic checkbox">
-                             <input type="text"  class="form-control" @if(isset($settings->discount_percentage)) value="<?=$settings->discount_percentage;?>"@endif placeholder="Discount %:" name="discount_percentage">
-                        </div>
-
-                    </div> 
-            </div>
         </div>
 		</div> 
+        <div class="row">
+            <div class="col-md-6">
         
         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">Login Page Content Image</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -397,7 +411,10 @@
 		</div>
     
     
-        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+       
+            </div>
+            <div class="col-md-6">
+                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 
                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                 <div class="panel-title">Pusher Notification</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -410,7 +427,7 @@
         </div>
         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                 <div class="panel-title">Notification Icon</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                <div class="panel-body" style="display: block; background:#f1f1f1;"> 
+                <div class="panel-body" style="display: block; background:#141414;"> 
                     @if(!empty($settings->notification_icon))
                         <img src="{{ URL::to('/public/uploads/') . '/settings/' . $settings->notification_icon }}" style="max-height:100px" />
                     @endif
@@ -419,10 +436,13 @@
 
                 </div> 
             </div>
+            </div>
+        </div>
+      
 
     
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="submit" value="Update Settings" class="btn btn-black pull-right" />
+		<input type="submit" value="Update Settings" class="btn btn-primary pull-right" />
 
 	
 

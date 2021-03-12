@@ -10,6 +10,7 @@
 @section('content')
 <div id="content-page" class="content-page">
             <div class="container-fluid">
+                <div class="iq-card">
 	<div class="admin-section-title">
 		<h3><i class="entypo-monitor"></i> Theme Settings for Default Theme</h3> 
 	</div>
@@ -60,11 +61,12 @@
                         </div>
             </div> 
                 <div class="panel-body">
-                    <button type="submit" class="btn btn-black pull-right" name="submit"> Save Settings</button>
+                    <button type="submit" class="btn btn-primary pull-right" name="submit"> Save Settings</button>
                 </div>
         </div>
 </form>
     </div></div>
+</div>
 	<script src="<?= THEME_URL ?>/assets/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 	    var editor = ace.edit("custom_css");

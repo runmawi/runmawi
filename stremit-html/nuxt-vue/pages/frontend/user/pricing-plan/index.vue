@@ -46,7 +46,7 @@
                                         <td class="text-center child-cell"><i class="ri-check-line ri-2x"></i></td>
                                     </tr>
                                     <tr>
-                                        <th class="text-center" scope="row">Streamit Special</th>
+                                        <th class="text-center" scope="row">Flicknexs Special</th>
                                         <td class="text-center child-cell"><i class="ri-close-line i_close"></i></td>
                                         <td class="text-center child-cell active"><i class="ri-check-line ri-2x"></i>
                                         </td>

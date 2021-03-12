@@ -63,7 +63,7 @@
                   </tr>
                   <tr>
                     <th class="text-center" scope="row">
-                      Streamit Special
+                      Flicknexs Special
                     </th>
                     <td class="text-center child-cell">
                       <i class="ri-close-line i_close" />

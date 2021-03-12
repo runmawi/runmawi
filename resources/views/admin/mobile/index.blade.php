@@ -28,11 +28,10 @@
 
 		<div class="row">
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Splash Screen</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                
-				<div class="panel-body" style="display: block; background:#f1f1f1;"> 
-                    <input type="submit" value="Save Settings" class="btn btn-black pull-right" />
+				<div class="panel-body " style="display: block; background:#141414;"> 
+                    
 					@if(!empty($mobile_settings->splash_image))
 					<img src="{{ URL::to('/') . '/public/uploads/settings/' . $mobile_settings->splash_image }}" style="max-height:100px" />
 					@endif
@@ -40,7 +39,12 @@
 					<input type="file" multiple="true" class="form-control" name="splash_image" id="splash_image" />
 
 				</div> 
+
+                    
 			</div>
+                            <div class="col-md-6" align="right">
+                <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
+                    </div>
 		</div>
 
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
@@ -57,9 +61,11 @@
     
     <div class="admin-section-title">
 		<div class="row">
-			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i> Sliders </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+			<div class="col-md-6">
+				<h3><i class="entypo-archive"></i> Sliders </h3>
 			</div>
+            <div class="col-md-6" align="right">
+            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
 	</div>
     

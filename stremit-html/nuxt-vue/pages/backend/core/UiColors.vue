@@ -387,7 +387,7 @@ export default {
   name: 'UiColor',
   data () {
     return {
-      appName: 'Streamit'
+      appName: 'Flicknexs'
     }
   },
   mounted () {

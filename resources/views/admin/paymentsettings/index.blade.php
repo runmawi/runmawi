@@ -16,6 +16,7 @@
 @section('content')
 <div id="content-page" class="content-page">
             <div class="container-fluid">
+                <div class="iq-card">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -82,14 +83,14 @@
 		</div>
 
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="submit" value="Update Payment Settings" class="btn btn-black pull-right" />
+		<input type="submit" value="Update Payment Settings" class="btn btn-primary pull-right" />
 
 	</form>
 
 	<div class="clear"></div>
 
 </div>
-    </div></div><!-- admin-container -->
+                </div></div></div><!-- admin-container -->
 
 @section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>

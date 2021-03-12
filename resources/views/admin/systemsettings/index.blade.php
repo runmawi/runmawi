@@ -16,7 +16,7 @@
 @section('content')
 <div id="content-page" class="content-page">
             <div class="container-fluid">
-
+<div class="iq-card">
 <div id="admin-container">
 <!-- This is where -->
 	
@@ -31,10 +31,12 @@
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Facebook Login Deatils </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
-                           <p>Enable Facebook:</p> 
-                            <div class="make-switch" data-on="success" data-off="warning">
+                        <div class="row">
+                           <p class="col-md-6">Enable Facebook:</p> 
+                            <div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->facebook) || (isset($system->facebook) && $system->facebook))checked="checked" value="1"@else value="0"@endif name="facebook" id="facebook" />
 				            </div>
+                            </div>
                         
 						<p>Client ID:</p> 
 						<input type="text" class="form-control" name="facebook_client_id" id="facebook_client_id" placeholder="Client ID" value="@if(!empty($system->facebook_client_id) && Auth::user()->role != 'demo'){{ $system->facebook_client_id }}@endif" />
@@ -54,10 +56,12 @@
                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Google Login Details </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
-                         <p>Enable Google:</p> 
-                            <div class="make-switch" data-on="success" data-off="warning">
+                        <div class="row">
+                         <p class="col-md-6">Enable Google:</p> 
+                            <div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->google) || (isset($system->google) && $system->google))checked="checked" value="1"@else value="0"@endif name="google" id="google" />
 				            </div>
+                            </div>
                         
 						<p>Client ID:</p> 
 						<input type="text" class="form-control" name="google_client_id" id="google_client_id" placeholder="Client ID" value="@if(!empty($system->google_client_id) && Auth::user()->role != 'demo'){{ $system->google_client_id }}@endif" />
@@ -80,14 +84,15 @@
 		</div>
 
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="submit" value="Update Payment Settings" class="btn btn-black pull-right" />
+		<input type="submit" value="Update Payment Settings" class="btn btn-primary pull-right" />
 
 	</form>
 
 	<div class="clear"></div>
 
 </div>
-    </div></div><!-- admin-container -->
+    </div></div>
+</div><!-- admin-container -->
 
 @section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>

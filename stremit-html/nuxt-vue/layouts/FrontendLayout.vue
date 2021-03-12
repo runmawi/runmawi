@@ -63,7 +63,7 @@ export default {
   data () {
     return {
       profile,
-      text: 'STREAMIT - 2020 All Rights Reserved',
+      text: 'Flicknexs - 2020 All Rights Reserved',
       url: '/frontend/landing-page',
       logo: loader,
       headerItem: [

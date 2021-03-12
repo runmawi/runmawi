@@ -8,7 +8,7 @@
               <b-col xl="6" lg="12" md="12">
                 <a href="#">
                   <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                    <img src="../../../assets/images/logo-full.png" class="c-logo" alt="streamit">
+                    <img src="../../../assets/images/logo-full.png" class="c-logo" alt="Flicknexs">
                   </div>
                 </a>
                 <h1

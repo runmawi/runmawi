@@ -180,7 +180,7 @@
 
 			<div class="row"> 
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -188,10 +188,7 @@
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
 						</div> 
 					</div>
-				</div>
-
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
+                    <div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> User Access</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<label for="access" style="float:left; margin-right:10px;">Who is allowed to view this video?</label>
@@ -204,26 +201,28 @@
 					</div>
 				</div>
 
-				<div class="col-sm-4"> 
+				
+
+				<div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<div>
-								<label for="featured" style="float:left; display:block; margin-right:10px;">Is this video Featured:</label>
+								<label for="featured" >Is this video Featured:</label>
 								<input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
 							<div>
-								<label for="active" style="float:left; display:block; margin-right:10px;">Is this video Active:</label>
+								<label for="active" >Is this video Active:</label>
 								<input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
 							<div class="clear"></div>
 							<div>
-								<label for="banner" style="float:left; display:block; margin-right:10px;">Is this video display in Banner:</label>
+								<label for="banner" >Is this video display in Banner:</label>
 								<input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div>
-								<label for="footer" style="float:left; display:block; margin-right:10px;">Is this video display in footer:</label>
+								<label for="footer" >Is this video display in footer:</label>
 								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 							</div>
 						</div> 
