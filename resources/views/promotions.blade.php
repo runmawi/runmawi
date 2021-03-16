@@ -1,6 +1,11 @@
 @include('header')
 <style>
- 
+    .container{
+        height: 540px !important;
+    }
+    .item{
+        margin-top: 60px;
+    }
 </style>
 
       <section class="homeslide">
