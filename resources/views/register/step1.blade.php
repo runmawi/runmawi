@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
   <!-- Favicon -->
       <link rel="shortcut icon" href="assets/images/fl-logo.png" />
-<!-- Bootstrap CSS -->
+     <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
       <link rel="stylesheet" href="assets/css/typography.css" />
@@ -76,9 +76,10 @@
     .container{
         margin-top: 70px;
     }
-.panel-heading {
+    .panel-heading {
     margin-bottom: 1rem;
 }
+
 </style>
 <header id="main-header">
          <div class="main-header">
@@ -343,7 +344,7 @@
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
 				
-                <div class="panel-heading" align="center" ><h5 style="color:#45c5e1;">{{ __('Enter your Info below to Sign-Up for an Account!') }}</h5></div>
+                <div class="panel-heading" align="center" ><h5 style="color:#4895d1">{{ __('Enter your Info below to Sign-Up for an Account!') }}</h5></div>
                 <div class="panel-body">
                     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf

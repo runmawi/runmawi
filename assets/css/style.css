@@ -675,3 +675,13 @@ footer, .home footer {
     background-color: #45c5e1 !important;
     border-color: #45c5e1 !important;
 }
+.iq-card {
+background: var(--iq-light-card);
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+margin-bottom: 30px;
+border: none;
+padding: 20px 20px;
+}
+.iq-card .panel.panel-primary { padding: 10px 0 20px;}
