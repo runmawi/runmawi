@@ -13,6 +13,7 @@ use App\Plan as Plan;
 use App\Page as Page;
 use App\Slider as Slider;
 use App\Wishlist as Wishlist;
+use App\Wishlist as Wishlist;
 use App\Watchlater as Watchlater;
 use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
@@ -898,6 +899,34 @@ public function signup(Request $request)
 
 	}
 
+	public function addfavorite(Request $request) {
+
+		$user_id = $request->user_id;
+		//$type = $request->type;//channel,ppv
+		$video_id = $request->video_id;
+		if($request->video_id != ''){
+			$count = Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
+			if ( $count > 0 ) {
+				Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
+				$response = array(
+					'status'=>'false',
+					'message'=>'Removed From Your Favorite List'
+				);
+			} else {
+				$data = array('user_id' => $user_id, 'video_id' => $video_id );
+				Favorite::insert($data);
+				$response = array(
+					'status'=>'true',
+					'message'=>'Added  to  Your Favorite List'
+				);
+
+			}
+		}
+
+		return response()->json($response, 200);
+
+	}
+
 	public function addwatchlater(Request $request) {
 
 		$user_id = $request->user_id;
@@ -932,6 +961,39 @@ public function signup(Request $request)
 		/*channel videos*/
 		$video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->get();
 		$video_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
+
+		if ( $video_ids_count  > 0) {
+
+			foreach ($video_ids as $key => $value1) {
+				$k2[] = $value1->video_id;
+			}
+			$channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+				$item['video_url'] = URL::to('/').'/storage/app/public/';
+				return $item;
+			});
+			$status = "true";
+		}else{
+            $status = "false";
+			$channel_videos = [];
+		}
+
+	
+		$response = array(
+				'status'=>$status,
+				'channel_videos'=> $channel_videos
+			);
+		return response()->json($response, 200);
+
+	}
+
+	public function myFavorites(Request $request) {
+
+		$user_id = $request->user_id;
+
+		/*channel videos*/
+		$video_ids = Favorite::select('video_id')->where('user_id','=',$user_id)->get();
+		$video_ids_count = Favorite::select('video_id')->where('user_id','=',$user_id)->count();
 
 		if ( $video_ids_count  > 0) {
 
@@ -1003,6 +1065,25 @@ public function signup(Request $request)
     	$response = array(
     		'status'=>'true',
     		'wish_count'=>$wish_video_count,
+    	);
+		
+		return response()->json($response, 200);
+
+	}
+
+
+	public function showFavorites(Request $request) {
+
+		$user_id = $request->user_id;
+		$type = $request->type;
+		$video_id = $request->video_id;
+    	if($video_id != ''){ 
+	        $fav_video_count = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
+    	}
+
+    	$response = array(
+    		'status'=>'true',
+    		'fav_count'=>$fav_video_count,
     	);
 		
 		return response()->json($response, 200);

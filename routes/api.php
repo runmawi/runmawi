@@ -43,10 +43,13 @@ Route::group([
     Route::post('ppvvideodetail', 'ApiAuthController@ppvvideodetail');
     Route::post('updateProfile', 'ApiAuthController@updateProfile');
     Route::post('addwishlist', 'ApiAuthController@addwishlist');
+    Route::post('addfavorite', 'ApiAuthController@addfavorite');
     Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
     Route::post('myWishlists', 'ApiAuthController@myWishlists');
+    Route::post('myFavorites', 'ApiAuthController@myFavorites');
     Route::post('mywatchlaters', 'ApiAuthController@mywatchlaters');
     Route::post('showWishlist', 'ApiAuthController@showWishlist');
+    Route::post('showFavorites', 'ApiAuthController@showFavorites');
     Route::post('showWatchlater', 'ApiAuthController@showWatchlater');
     Route::post('getPPV', 'ApiAuthController@getPPV');
     Route::post('getLivepurchased', 'ApiAuthController@getLivepurchased');
