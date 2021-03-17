@@ -19,11 +19,17 @@
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
        <style>
-           .h-100 {
-    height: 540px !important;
-}
+           
+           .blink_me {
+    animation: blinker 2s linear infinite;
+  }
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
        </style>
-   </head>
+   
     <script>
   // Prevent closing from click inside dropdown
   $(document).on('click', '.dropdown-menu', function (e) {
@@ -45,7 +51,7 @@
                                );
   }
 </script>
-             <script type="text/javascript">
+  <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
       var query = $(this).val();
@@ -77,6 +83,7 @@
   }
                    );
 </script>
+       </head>
    <body>
       <!-- loader Start -->
       <div id="loading">

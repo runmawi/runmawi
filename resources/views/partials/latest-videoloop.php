@@ -34,7 +34,7 @@ endif; ?>
  
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
