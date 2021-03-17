@@ -1,4 +1,33 @@
+
 <?php include('header.php'); ?>
+ <!-- Favicon -->
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+      <!-- Typography CSS -->
+      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+      <!-- Style -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+      <!-- Responsive -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+
+<style>
+    .page{
+        margin-top: 100px;
+        min-height: 540px;
+    }
+    a {
+    color: var(--iq-body-text) !important;
+}
+    .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    padding-right: 0px
+    }
+    .navbar-right.menu-right {
+    margin-right: -150px !important;
+}
+
+
+</style>
 
 	<div class="container">
 
@@ -34,5 +63,23 @@
     
 
 	</div>     
+ <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <!-- Bootstrap JS -->
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <!-- Slick JS -->
+      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <!-- owl carousel Js -->
+      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <!-- select2 Js -->
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <!-- Magnific Popup-->
+      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <!-- Slick Animation-->
+      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <!-- Custom JS-->
+      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
 
 <?php include('footer.blade.php'); ?>

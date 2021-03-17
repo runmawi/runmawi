@@ -8,20 +8,27 @@
       <title>Flicknexs</title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
+     <!-- Favicon -->
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="assets/css/typography.css" />
+      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
       <!-- Style -->
-      <link rel="stylesheet" href="assets/css/style.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="assets/css/responsive.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
        <style>
            .h-100 {
     height: 540px !important;
 }
+            a {
+    color: var(--iq-body-text) !important;
+}
+    .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    padding-right: 0px
+    }
+    
        </style>
    </head>
    <body>
@@ -31,7 +38,7 @@
          </div>
       </div>-->
       <!-- loader END -->
-      <!-- Header -->
+     <!-- Header -->
       <header id="main-header">
          <div class="main-header">
             <div class="container-fluid">
@@ -175,7 +182,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                   alt="Flicknexs" />
+                                                   alt="streamit" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">Boot Bitty</h6>
                                                    <small class="font-size-12"> just now</small>
@@ -185,7 +192,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                   alt="Flicknexs" />
+                                                   alt="streamit" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">The Last Breath</h6>
                                                    <small class="font-size-12">15 minutes ago</small>
@@ -195,7 +202,7 @@
                                           <a href="#" class="iq-sub-card">
                                              <div class="media align-items-center">
                                                 <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                   alt="Flicknexs" />
+                                                   alt="streamit" />
                                                 <div class="media-body">
                                                    <h6 class="mb-0 ">The Hero Camp</h6>
                                                    <small class="font-size-12">1 hour ago</small>
@@ -209,7 +216,7 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' /*. Auth::user()->avatar*/ ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
@@ -295,22 +302,22 @@
       </div>
       <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
+      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
      
     
 
