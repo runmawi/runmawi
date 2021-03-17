@@ -79,6 +79,17 @@
     .panel-heading {
     margin-bottom: 1rem;
 }
+    .form-control {
+    background-color: var(--iq-body-text) !important;
+    border: 1px solid transparent;
+    height: 46px;
+    position: relative;
+    color: var(--iq-body-bg) !important;
+    font-size: 16px;
+    width: 100%;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
 
 </style>
 <header id="main-header">
