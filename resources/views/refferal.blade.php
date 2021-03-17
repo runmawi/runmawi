@@ -48,6 +48,12 @@
     .referral {
     margin-top: 80px;
 }
+            a {
+    color: var(--iq-body-text) !important;
+}
+            .navbar-right.menu-right {
+    margin-right: -150px !important;
+}
               </style>
    </head>
  

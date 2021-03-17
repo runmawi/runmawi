@@ -37,6 +37,12 @@
     .item{
         margin-top: 60px;
     }
+            a {
+    color: var(--iq-body-text) !important;
+}
+            .navbar-right.menu-right {
+    margin-right: -150px !important;
+}
        </style>
    </head>
  
@@ -341,10 +347,10 @@
        
 
 
-
+ </body>
 
   @extends('footer')  
 
-   </body>
+  
 </html>
 
