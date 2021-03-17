@@ -9,6 +9,10 @@
     } .list-group-item {
         color: #000;
     }
+    .referral {
+    margin-top: 80px;
+}
+    
 </style>
 <?php
 if (Auth::user()) { 
@@ -23,15 +27,15 @@ if (Auth::user()) {
 }
 ?>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row page-height margin-top-20">	
-        	<div class="col-md-10 col-sm-offset-1">
+        	<div class="col-md-12" align="center">
 			<div class="referral">
                 
                 <?php 
                 if ( Auth::user() && Auth::user()->role == 'subscriber') { ?>
 
-                    <h1 class="title"  style="color:#fff;"><i class="fa fa-comments"></i> Tell friends about Eliteclub <a href="<?php echo URL::to('/my-refferals');?>"><span class="pull-right" style="background: #c3ab06;padding: 10px;border-radius: 30px;color: #fff;font-size: 16px;">My referral</span> </a> </h1>
+                    <h1 class="title"  style="color:#fff;"><i class="fa fa-comments"></i> Tell friends about Flicknexs <a href="<?php echo URL::to('/my-refferals');?>"><span class="pull-right" style="background: #c3ab06;padding: 10px;border-radius: 30px;color: #fff;font-size: 16px;">My referral</span> </a> </h1>
 				    <p class="grey-border"></p>
                
 		        	<div class="clear"></div>
@@ -109,10 +113,10 @@ if (Auth::user()) {
                 	<div class="referral-body">
 						<div class="row">
 							<div class="col-md-10 col-sm-offset-1 refernearn">
-									<h1 class="text-center"> Refer 'N' Earn with Elite Club</h1>                                       
+									<h1 class="text-center"> Refer 'N' Earn with Flicknexs</h1>                                       
 									<img src="<?php echo URL::to('/').'/assets/img/users.png';?>" class="img-responsive" />
                                     <p class="text-center">
-                                        Elite Club Refer'N'Earn offer for Coupon Codes. Each user can earn a coupon code after your get subscribed with us. The offer provides Coupon Code on every successful referral Subscriptions.
+                                        Flicknexs Refer'N'Earn offer for Coupon Codes. Each user can earn a coupon code after your get subscribed with us. The offer provides Coupon Code on every successful referral Subscriptions.
                                     </p>   
                                 
                                     <p class="text-center">Here is a chance to become a Referrer.</p>
@@ -128,10 +132,10 @@ if (Auth::user()) {
                     <div class="referral-body">
 						<div class="row">
 							<div class="col-md-10 col-sm-offset-1 refernearn">
-								<h1 class="text-center"> Refer 'N' Earn with Elite Club</h1> 
+								<h1 class="text-center"> Refer 'N' Earn with Flicknexs</h1> 
 								<img src="<?php echo URL::to('/').'/assets/img/users.png';?>" class="img-responsive" />
 								<p class="text-center">
-									Elite Club Refer'N'Earn offer for Coupon Codes. Each user can earn a coupon code after your get subscribed with us. The offer provides Coupon Code on every successful referral Subscriptions.
+									Flicknexs Refer'N'Earn offer for Coupon Codes. Each user can earn a coupon code after your get subscribed with us. The offer provides Coupon Code on every successful referral Subscriptions.
 								</p>   
 
 							    <p class="text-center">Here is a chance to become a Referrer.</p>

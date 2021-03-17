@@ -19,15 +19,15 @@
       <link rel="stylesheet" href="../assets/admin/dashassets/css/responsive.css" />
         </head>
 <body>
-<footer class="mb-0">
+ <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row">
                   <div class="col-lg-3 col-md-4">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="movie-category.html">Movies</a></li>
-                        <li><a href="show-category.html">Tv Shows</a></li>
-                        <li><a href="#">Coporate Information</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
                      </ul>
                   </div>
                   <!--<div class="col-lg-3 col-md-4">
@@ -71,7 +71,7 @@
                         <a href="#" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
                         </a>
-                         <a href="<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
                         <i class="fa fa-google-plus"></i>
                         </a>
                      </div>

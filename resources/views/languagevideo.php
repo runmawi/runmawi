@@ -26,6 +26,9 @@
     margin-top: 60px;
     overflow: hidden;
 }
+            li.slide-item .block-images{
+         margin-bottom: 2rem !important;
+     }
        </style>
    </head>
 
