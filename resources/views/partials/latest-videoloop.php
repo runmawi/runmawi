@@ -30,6 +30,9 @@ endif; ?>
      li.slide-item .block-images{
          margin-bottom: 2rem !important;
      }
+     .navbar-right.menu-right {
+    margin-right: -150px !important;
+}
        </style>
  
  <!-- MainContent -->
