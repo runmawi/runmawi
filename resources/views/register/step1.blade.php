@@ -90,6 +90,12 @@
     -webkit-border-radius: 6px;
     border-radius: 6px;
 }
+    a {
+    color: var(--iq-body-text);
+    text-decoration: none;
+}
+
+
 
 </style>
 <header id="main-header">
