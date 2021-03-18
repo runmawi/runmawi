@@ -11,7 +11,7 @@
       <!-- Favicon -->
       <link rel="shortcut icon" href="assets/images/fl-logo.png" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
       <link rel="stylesheet" href="assets/css/typography.css" />
       <!-- Style -->
@@ -1458,9 +1458,8 @@ endif; ?>
       <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
-      <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></script>
       <!-- Slick JS -->
       <script src="assets/js/slick.min.js"></script>
       <!-- owl carousel Js -->
@@ -1531,7 +1530,7 @@ function myFunction() {
   });
     
   // make it as accordion for smaller screens
-  if ($(window).width() < 992) {
+  if ($(window).width() < 960) {
     $('.dropdown-menu a').click(function(e){
       e.preventDefault();
       if($(this).next('.submenu').length){
@@ -1545,7 +1544,8 @@ function myFunction() {
                                );
   }
 </script>
-             <script type="text/javascript">
+      <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+  <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
       var query = $(this).val();
@@ -1578,10 +1578,10 @@ function myFunction() {
                    );
 </script>
        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
 
-<script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+
+<!--<script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>-->
 
    </body>
 </html>
