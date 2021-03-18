@@ -1523,7 +1523,7 @@ function myFunction() {
 }
 </script>
     
-    <script>
+<script>
   // Prevent closing from click inside dropdown
   $(document).on('click', '.dropdown-menu', function (e) {
     e.stopPropagation();

@@ -375,7 +375,7 @@ class HomeController extends Controller
             
                     $verification = $client->verify()->start([ 
                                       'number' =>  $ccode.$mobile,
-                                      'brand'  => 'Eliteclub ',
+                                      'brand'  => 'Flicknexs ',
                                       'code_length'  => '4']);
 
                     $verification_id =$verification->getRequestId();
@@ -385,7 +385,7 @@ class HomeController extends Controller
         //                \Mail::send('emails.sms', array(
         //                            'otp' => $string
         //                ), function($message) use ($mails){
-        //                            $message->from(AdminMail(),'EliteClub');
+        //                            $message->from(AdminMail(),'Flicknexs');
         //                            $message->to($mails, "User")->subject('Verification OTP');
         //                        });
 
@@ -405,7 +405,7 @@ class HomeController extends Controller
 //                        ]);
                  $verification = $client->verify()->start([ 
                                   'number' =>  $ccode.$mobile,
-                                  'brand'  => 'Eliteclub ',
+                                  'brand'  => 'Flicknexs ',
                                   'code_length'  => '4']);
 
                  $verification_id =$verification->getRequestId();
@@ -578,7 +578,7 @@ class HomeController extends Controller
             \Mail::send('emails.paypal_cancel', array(
                         'name' => $user->username
             ), function($message) use ($user){
-                $message->from(AdminMail(),'EliteClub');
+                $message->from(AdminMail(),'Flicknexs');
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
         return redirect('/paypal/billings-details');
