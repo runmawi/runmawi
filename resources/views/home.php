@@ -30,59 +30,6 @@
   }
        </style>
    
-    <script>
-  // Prevent closing from click inside dropdown
-  $(document).on('click', '.dropdown-menu', function (e) {
-    e.stopPropagation();
-  });
-    
-  // make it as accordion for smaller screens
-  if ($(window).width() < 992) {
-    $('.dropdown-menu a').click(function(e){
-      e.preventDefault();
-      if($(this).next('.submenu').length){
-        $(this).next('.submenu').toggle();
-      }
-      $('.dropdown').on('hide.bs.dropdown', function () {
-        $(this).find('.submenu').hide();
-      }
-                       )
-    }
-                               );
-  }
-</script>
-             <script type="text/javascript">
-  $(document).ready(function () {
-    $('.searches').on('keyup',function() {
-      var query = $(this).val();
-      //alert(query);
-      // alert(query);
-       if (query !=''){
-      $.ajax({
-        url:"<?php echo URL::to('/search');?>",
-        type:"GET",
-        data:{
-          'country':query}
-        ,
-        success:function (data) {
-          $('.search_list').html(data);
-        }
-      }
-            )
-       } else {
-            $('.search_list').html("");
-       }
-    }
-                     );
-    $(document).on('click', 'li', function(){
-      var value = $(this).text();
-      $('.search').val(value);
-      $('.search_list').html("");
-    }
-                  );
-  }
-                   );
-</script>
        </head>
    <body>
       <!-- loader Start -->
@@ -1577,6 +1524,64 @@ function myFunction() {
 }
 </script>
     
+    <script>
+  // Prevent closing from click inside dropdown
+  $(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
+    
+  // make it as accordion for smaller screens
+  if ($(window).width() < 992) {
+    $('.dropdown-menu a').click(function(e){
+      e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.submenu').hide();
+      }
+                       )
+    }
+                               );
+  }
+</script>
+             <script type="text/javascript">
+  $(document).ready(function () {
+    $('.searches').on('keyup',function() {
+      var query = $(this).val();
+      //alert(query);
+      // alert(query);
+       if (query !=''){
+      $.ajax({
+        url:"<?php echo URL::to('/search');?>",
+        type:"GET",
+        data:{
+          'country':query}
+        ,
+        success:function (data) {
+          $('.search_list').html(data);
+        }
+      }
+            )
+       } else {
+            $('.search_list').html("");
+       }
+    }
+                     );
+    $(document).on('click', 'li', function(){
+      var value = $(this).text();
+      $('.search').val(value);
+      $('.search_list').html("");
+    }
+                  );
+  }
+                   );
+</script>
+       <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 
    </body>
 </html>
