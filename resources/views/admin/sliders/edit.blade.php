@@ -2,7 +2,10 @@
 
 
 @extends('admin.master')
-
+@section('css')
+	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+@stop
+ 
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -46,8 +49,9 @@
 </div>
 
 <div class="modal-footer">
+    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/sliders') }}">Close</a>
-	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
+	<button type="button" class="btn btn-primary" id="submit-update-cat" action="{{ URL::to('admin/sliders/update') }}" >Update</button>
 </div>
              </div></div></div>
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
@@ -108,6 +112,8 @@
 
 		});
 		</script>
+<script src="<?= URL::to('/'). '/assets/css/vue.min.js';?>"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 	@stop
 

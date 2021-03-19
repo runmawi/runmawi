@@ -16,6 +16,9 @@
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <div >
 <?php if(isset($latest_videos)) :
 foreach($latest_videos as $watchlater_video): ?>
@@ -30,8 +33,55 @@ endif; ?>
      li.slide-item .block-images{
          margin-bottom: 2rem !important;
      }
-     .navbar-right.menu-right {
+    /* .navbar-right.menu-right {
     margin-right: -150px !important;
+}*/
+      .nav-tabs {
+    border: 0;
+    margin-top: 15px;
+    text-align: center;
+    width: 60%;
+}
+   
+     .thumb-cont{
+         position: fixed;
+	z-index: 1040;
+	height: 521px;
+    width: 100% !important;
+    margin-top: 80px !important;
+    opacity: none;
+}
+     .modal-backdrop.show {
+    opacity: 0 !important;
+}
+     .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #000;
+}
+     .img-black-back:before {
+    content: "";
+    position: absolute;
+    /* z-index: 10; */
+    background-image: linear-gradient(
+90deg
+,#000,transparent);
+    width: 90%;
+    height: 521px !important;
+}
+    .btn.btn-danger.closewin {
+    margin-right: -17px;
+}
+     .tab-pane {
+    color: #ffff;
+    display: none;
+    padding: 50px;
+    text-align: left;
+    height: 410px !important;
 }
        </style>
  
@@ -68,7 +118,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                            </a>
                                        </div>
                                         <div>
-                                            <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
+                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
@@ -95,11 +145,12 @@ foreach($latest_videos as $watchlater_video): ?>
          
                                   <?php if(isset($latest_videos)) :
 foreach($latest_videos as $watchlater_video): ?>
-                                <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                                <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>" role="dialog"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
-                                    <button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
+                                    <!--<button type="button" class="btn btn-danger closewin" data-dismiss="modal"><span aria-hidden="true">X</span></button>-->
+                                         <a type="button" class="btn btn-danger closewin"  href="<?php echo URL::to('latest-videos') ?>"><span aria-hidden="true">X</span></a>
                                         </div>
                                 <div class="tab-sec">
                                     <div class="tab-content">
@@ -244,7 +295,7 @@ endif; ?>
             
         }); 
     </script> 
-<script>
+<!--<script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -258,7 +309,7 @@ endif; ?>
         $("#" + idval).hide();
       });
     });
-  </script>
+  </script>-->
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;

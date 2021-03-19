@@ -21,7 +21,7 @@
      <style>
        .main-content {padding-top: 80px;}
        section#iq-favorites {min-height: 500px;}
-         .overflow-hidden { min-height: 450px;}
+        /* .overflow-hidden { min-height: 450px;}*/
          .pagination>li>a, .pagination>li>span {
     position: relative;
     float: left;
@@ -59,6 +59,12 @@
     border-color: #ddd;
     cursor: not-allowed;
     height: 36px;
+}
+         .nav-tabs {
+    border: 0;
+    margin-top: 15px;
+    text-align: center;
+    width: 50%;
 }
 
      </style>
@@ -370,11 +376,13 @@
                               </a>
                            </li>
                            
-                                                    
-                                                               @endforeach
-                            <?php } else { ?>
+                                 @endforeach
+ <?php } else { ?>
                                         <p class="no_video"> <?php echo __('No Video Found');?></p>
       <?php } ?>
+                    
+                                                              
+                           
                         </ul>
                          
                      </div>
@@ -384,8 +392,7 @@
             </div>
 
          
-                          <?php if(isset($categoryVideos)) :
-                                foreach($categoryVideos as $watchlater_video): ?>
+                         
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
@@ -402,10 +409,8 @@
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                            <a class="" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
-                                                        <div class="btn btn-danger btn-right-space br-0">
-                                                    <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
-                                                </div></a>
+                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                 aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -477,10 +482,8 @@
 
 	
 	</div></div>
-
-<?php endforeach; 
-endif; ?>
-                           <!--<?php echo $data['categoryVideos']->links("pagination::bootstrap-4");?>-->
+             
+                         
 </section>
       </div>
      <footer class="mb-0">
