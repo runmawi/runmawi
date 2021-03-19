@@ -46,7 +46,7 @@ endif; ?>
      .thumb-cont{
          position: fixed;
 	z-index: 1040;
-	height: 521px;
+	height: 521px !important;
     width: 100% !important;
     margin-top: 80px !important;
     opacity: none;
@@ -75,6 +75,7 @@ endif; ?>
 }
     .btn.btn-danger.closewin {
     margin-right: -17px;
+        background-color: #4895d1 !important;
 }
      .tab-pane {
     color: #ffff;
