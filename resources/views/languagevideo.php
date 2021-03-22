@@ -42,6 +42,7 @@
 }
      .modal-backdrop.show {
     opacity: 0 !important;
+         visibility: hidden;
 }
      .modal-backdrop {
     position: fixed;
