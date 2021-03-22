@@ -197,7 +197,7 @@
                                     
                                 <li class="hidden-xs">
                                           <div id="navbar-search-form">
-                                            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+                                            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="post">
                                               <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                               <div>
                                                 <i class="fa fa-search">
@@ -221,7 +221,7 @@
                                  <i class="ri-search-line"></i>
                                  </a>
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to('/').'/searchResult';?>" class="searchbox">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
