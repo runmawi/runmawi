@@ -61,7 +61,30 @@
     cursor: not-allowed;
     height: 36px;
 }
-
+li.list-group-item {
+              background-color: transparent !important;
+}
+           li.list-group-item a{
+              background: transparent !important;
+               color: var(--iq-body-text) !important;
+               
+}
+           .search_content{
+                           top: 85px !important;
+                           width: 400px !important;
+                           margin-right: -15px !important;
+                           
+                          }
+                           ul.list-group {
+                    text-align: left !important;
+                               max-height: 450px !important;
+                }
+           li.list-group-item {
+    width: 375px;
+}
+           h3 {
+    font-size: 24px !important;
+}
      </style>
    </head>
    <body>
@@ -185,20 +208,27 @@
                         </div>
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
-                              <li class="nav-item nav-icon">
-                                 <a href="#" class="search-toggle device-search">
+                             <li class="nav-item nav-icon">
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
                                  <i class="ri-search-line"></i>
                                  </a>
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="#" class="searchbox">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
-                                          <input type="text" class="text search-input font-size-12"
+                                          <input type="text" name="search" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
                                  </div>
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                       <div class="iq-card-body">
+                                   <div id="search_list" class="search_list search-toggle device-search" >
+                                           </div> </div></div>
                               </li>
+
                               <li class="nav-item nav-icon">
                                  <a href="#" class="search-toggle" data-toggle="search-toggle">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"

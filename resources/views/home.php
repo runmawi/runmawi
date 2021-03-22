@@ -18,6 +18,7 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+     
        <style>
            
            .blink_me {
@@ -28,6 +29,32 @@
       opacity: 0;
     }
   }
+           li.list-group-item {
+              background-color: transparent !important;
+}
+           li.list-group-item a{
+              background: transparent !important;
+               color: var(--iq-body-text) !important;
+               
+}
+           .search_content{
+                           top: 85px !important;
+                           width: 400px !important;
+                           margin-right: -15px !important;
+                           
+                          }
+                           ul.list-group {
+                    text-align: left !important;
+                               max-height: 450px !important;
+                }
+           li.list-group-item {
+    width: 375px;
+}
+           h3 {
+    font-size: 24px !important;
+}
+           
+           
        </style>
    
        </head>
@@ -143,7 +170,7 @@
                                               </div>
                                             </form>
                                           </div>
-                                          <div id="search_list" class="search_list" style="position: absolute;">
+                                          <div id="search_list" class="search_list"  style="position: absolute;">
                                           </div> 
                                         </li>
                                  </ul>
@@ -153,18 +180,24 @@
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-                                 <a href="#" class="search-toggle device-search">
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
                                  <i class="ri-search-line"></i>
                                  </a>
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="#" class="searchbox">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
-                                          <input type="text" class="text search-input font-size-12"
+                                          <input type="text" name="search" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
                                  </div>
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                       <div class="iq-card-body">
+                                   <div id="search_list" class="search_list search-toggle device-search" >
+                                           </div> </div></div>
                               </li>
                               <li class="nav-item nav-icon">
                                  <a href="#" class="search-toggle" data-toggle="search-toggle">
@@ -176,7 +209,7 @@
                                     </svg>
                                     <span class="bg-danger dots"></span>
                                  </a>
-                                 <div class="iq-sub-dropdown">
+                               <!--  <div class="iq-sub-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body">
                                           <a href="#" class="iq-sub-card">
@@ -211,7 +244,7 @@
                                           </a>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div>-->
                               </li>
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
@@ -804,7 +837,7 @@ endif; ?>
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
-                                    <button type="button" class="closewin btn btn-danger" id="lv_vid<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
+                                    <button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
                                         </div>
                                 <div class="tab-sec">
                                     <div class="tab-content">
@@ -1570,6 +1603,7 @@ endif; ?>
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+       
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();

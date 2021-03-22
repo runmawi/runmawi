@@ -73,7 +73,7 @@ class HomeController extends Controller
        $genre_video_display = VideoCategory::all();
         
         $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-        $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+        $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
         $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
 		$trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
 		$ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
@@ -85,7 +85,7 @@ class HomeController extends Controller
 		$trendings = $trendings->merge($trending_videos);
 		$trendings = $trendings->merge($trending_movies);
 		$trendings = $trendings->merge($trending_episodes);
-        $featured_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+        $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
 		$featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
        
         $pages = Page::all();

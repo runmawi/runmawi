@@ -18,6 +18,8 @@
       <!-- Responsive -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
       <link  href="admin/">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
        <style>
            .h-100 {
     height: 540px !important;
@@ -26,9 +28,75 @@
     margin-top: 60px;
     overflow: hidden;
 }
+           
             li.slide-item .block-images{
          margin-bottom: 2rem !important;
      }
+            .thumb-cont{
+         position: fixed;
+	z-index: 1040;
+	height: 521px !important;
+    width: 100% !important;
+    margin-top: 80px !important;
+    opacity: none;
+}
+     .modal-backdrop.show {
+    opacity: 0 !important;
+}
+     .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #000;
+}
+     .img-black-back:before {
+    content: "";
+    position: absolute;
+    /* z-index: 10; */
+    background-image: linear-gradient(
+90deg
+,#000,transparent);
+    width: 90%;
+    height: 521px !important;
+}
+    .btn.btn-danger.closewin {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+     .tab-pane {
+    color: #ffff;
+    display: none;
+    padding: 50px;
+    text-align: left;
+    height: 410px !important;
+}
+            li.list-group-item {
+              background-color: transparent !important;
+}
+           li.list-group-item a{
+              background: transparent !important;
+               color: var(--iq-body-text) !important;
+               
+}
+           .search_content{
+                           top: 85px !important;
+                           width: 400px !important;
+                           margin-right: -15px !important;
+                           
+                          }
+                           ul.list-group {
+                    text-align: left !important;
+                               max-height: 450px !important;
+                }
+           li.list-group-item {
+    width: 375px;
+}
+           h3 {
+    font-size: 24px !important;
+}
        </style>
    </head>
 
@@ -146,19 +214,25 @@
                         </div>
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
-                              <li class="nav-item nav-icon">
-                                 <a href="#" class="search-toggle device-search">
+                             <li class="nav-item nav-icon">
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
                                  <i class="ri-search-line"></i>
                                  </a>
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="#" class="searchbox">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
-                                          <input type="text" class="text search-input font-size-12"
+                                          <input type="text" name="search" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
                                  </div>
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                       <div class="iq-card-body">
+                                   <div id="search_list" class="search_list search-toggle device-search" >
+                                           </div> </div></div>
                               </li>
                               <li class="nav-item nav-icon">
                                  <a href="#" class="search-toggle" data-toggle="search-toggle">
@@ -170,7 +244,7 @@
                                     </svg>
                                     <span class="bg-danger dots"></span>
                                  </a>
-                                 <div class="iq-sub-dropdown">
+                                <!-- <div class="iq-sub-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body">
                                           <a href="#" class="iq-sub-card">
@@ -205,7 +279,7 @@
                                           </a>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div>-->
                               </li>
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
@@ -314,7 +388,7 @@
                                            </a>
                                        </div>
                                         <div>
-                                            <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
+                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
@@ -341,11 +415,12 @@
          
                                   <?php  if(isset($lang_videos)) :
 			foreach($lang_videos as $watchlater_video): ?>
-                                <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                                <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
                                     <button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
+                                       <!-- <a type="button" class="btn btn-danger closewin"  href="<?php echo URL::to('latest-videos') ?>"><span aria-hidden="true">X</span></a>-->
                                         </div>
                                 <div class="tab-sec">
                                     <div class="tab-content">
@@ -440,7 +515,7 @@ endif; ?>
 </section>
  <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
       <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
@@ -451,14 +526,14 @@ endif; ?>
       <!-- select2 Js -->
       <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
 
 
-		<script>
+		<!--<script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -472,7 +547,7 @@ endif; ?>
         $("#" + idval).hide();
       });
     });
-  </script>
+  </script>-->
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;
@@ -494,11 +569,9 @@ function about(evt , id) {
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
-	</div>
 
-</div>
     <div style="height: 10px;"></div>
 
 
@@ -596,6 +669,38 @@ function about(evt , id) {
       $(".block-overlap").css('display','none');
       $(".block-class_"+movie_id).css('display','block');
     }); */
+</script>
+ <script type="text/javascript">
+  $(document).ready(function () {
+    $('.searches').on('keyup',function() {
+      var query = $(this).val();
+      //alert(query);
+      // alert(query);
+       if (query !=''){
+      $.ajax({
+        url:"<?php echo URL::to('/search');?>",
+        type:"GET",
+        data:{
+          'country':query}
+        ,
+        success:function (data) {
+          $('.search_list').html(data);
+        }
+      }
+            )
+       } else {
+            $('.search_list').html("");
+       }
+    }
+                     );
+    $(document).on('click', 'li', function(){
+      var value = $(this).text();
+      $('.search').val(value);
+      $('.search_list').html("");
+    }
+                  );
+  }
+                   );
 </script>
 
 <?php include('footer.blade.php'); ?>

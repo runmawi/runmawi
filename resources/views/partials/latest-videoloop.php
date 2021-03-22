@@ -53,6 +53,7 @@ endif; ?>
 }
      .modal-backdrop.show {
     opacity: 0 !important;
+    visibility: hidden;
 }
      .modal-backdrop {
     position: fixed;
@@ -84,6 +85,7 @@ endif; ?>
     text-align: left;
     height: 410px !important;
 }
+     
        </style>
  
  <!-- MainContent -->
@@ -150,8 +152,8 @@ foreach($latest_videos as $watchlater_video): ?>
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
-                                    <!--<button type="button" class="btn btn-danger closewin" data-dismiss="modal"><span aria-hidden="true">X</span></button>-->
-                                         <a type="button" class="btn btn-danger closewin"  href="<?php echo URL::to('latest-videos') ?>"><span aria-hidden="true">X</span></a>
+                                    <button type="button" class="btn btn-danger closewin" data-dismiss="modal"><span aria-hidden="true">X</span></button>
+                                         <!--<a type="button" class="btn btn-danger closewin"  href="<?php echo URL::to('latest-videos') ?>"><span aria-hidden="true">X</span></a>-->
                                         </div>
                                 <div class="tab-sec">
                                     <div class="tab-content">
