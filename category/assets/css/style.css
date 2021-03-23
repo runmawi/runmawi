@@ -669,3 +669,9 @@ footer, .home footer {
     background-color: #45c5e1 !important;
     border-color: #45c5e1 !important;
 }
+.block-description h6 {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    width: 10em !important;
+}

@@ -685,3 +685,9 @@ border: none;
 padding: 20px 20px;
 }
 .iq-card .panel.panel-primary { padding: 10px 0 20px;}
+.block-description h6 {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    width: 10em !important;
+}

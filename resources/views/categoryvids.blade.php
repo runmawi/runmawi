@@ -18,6 +18,10 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+       
      <style>
        .main-content {padding-top: 80px;}
        section#iq-favorites {min-height: 500px;}
@@ -60,20 +64,80 @@
     cursor: not-allowed;
     height: 36px;
 }
+          li.slide-item .block-images{
+         margin-bottom: 2rem !important;
+     }
+            .thumb-cont{
+         position: fixed;
+	z-index: 1040;
+	height: 521px !important;
+    width: 100% !important;
+    margin-top: 80px !important;
+    opacity: none;
+}
+     .modal-backdrop.show {
+    opacity: 0 !important;
+         visibility: hidden;
+}
+     .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #000;
+}
+     .img-black-back:before {
+    content: "";
+    position: absolute;
+    /* z-index: 10; */
+    background-image: linear-gradient(
+90deg
+,#000,transparent);
+    width: 90%;
+    height: 521px !important;
+}
+    .btn.btn-danger.closewin {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+     .tab-pane {
+    color: #ffff;
+    display: none;
+    padding: 50px;
+    text-align: left;
+    height: 410px !important;
+}
          .nav-tabs {
     border: 0;
     margin-top: 15px;
     text-align: center;
     width: 50%;
 }
-         li.list-group-item {
+         /* scroller */
+.scroller { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
+.scroller::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
+.scroller::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
+#sidebar-scrollbar { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
+#sidebar-scrollbar::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
+/*#sidebar-scrollbar { height: calc(100vh - 153px) !important; }*/
+#sidebar-scrollbar::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
+::-webkit-scrollbar { width: 8px; height: 8px; border-radius: 5px; }
+          li.list-group-item {
               background-color: transparent !important;
+               padding-right: unset !important;
 }
            li.list-group-item a{
               background: transparent !important;
                color: var(--iq-body-text) !important;
+               font-size: 12px !important;
+               padding-left: 10px !important;
                
 }
+         li.list-group-item a:hover{
+             color: var(--iq-primary) !important;
+         }
            .search_content{
                            top: 85px !important;
                            width: 400px !important;
@@ -390,7 +454,7 @@
                                            </a>
                                        </div>
                                         <div>
-                                            <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
+                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
@@ -424,11 +488,11 @@
 
          
                          
-                                <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                                <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
-                                    <button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
+                                     <button type="button" class="btn btn-danger closewin" data-dismiss="modal"><span aria-hidden="true">X</span></button>
                                         </div>
                                 <div class="tab-sec">
                                     <div class="tab-content">
@@ -606,7 +670,7 @@
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
-       <script>
+      <!-- <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -620,7 +684,8 @@
         $("#" + idval).hide();
       });
     });
-  </script>
+  </script>-->
+       <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;

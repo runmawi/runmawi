@@ -85,7 +85,9 @@ endif; ?>
     text-align: left;
     height: 410px !important;
 }
-     
+      li.list-group-item a:hover{
+             color: var(--iq-primary) !important;
+         }
        </style>
  
  <!-- MainContent -->
