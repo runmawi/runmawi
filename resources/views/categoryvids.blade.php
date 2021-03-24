@@ -425,7 +425,7 @@
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="Continue Watching"><?php echo __($data['category_title']);?></h4>
+            <h1 style="margin-left: 483px;" class="Continue Watching"><?php echo __($data['category_title']);?></h1>
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">

@@ -13,7 +13,7 @@ use App\Plan as Plan;
 use App\Page as Page;
 use App\Slider as Slider;
 use App\Wishlist as Wishlist;
-use App\Wishlist as Wishlist;
+/*use App\Wishlist as Wishlist;*/
 use App\Watchlater as Watchlater;
 use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
