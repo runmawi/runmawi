@@ -11,9 +11,10 @@ use App\Series as Series;
 use App\SeriesSeason as SeriesSeason;
 use App\Plan as Plan;
 use App\Page as Page;
+use App\Cast as Cast;
 use App\Slider as Slider;
 use App\Wishlist as Wishlist;
-/*use App\Wishlist as Wishlist;*/
+use App\Favorite as Favorite;
 use App\Watchlater as Watchlater;
 use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
@@ -41,6 +42,7 @@ use App\CouponPurchase as CouponPurchase;
 use App\Coupon as Coupon;
 use App\Tag as Tag;
 use App\LikeDislike as Likedislike;
+use App\Comment as Comment;
 use Auth;
 use Hash;
 use DB;
@@ -61,16 +63,15 @@ use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon as Carbon;
 
-
 class ApiAuthController extends Controller
 {
 
-public function signup(Request $request)
+	public function signup(Request $request)
 	{
         $input = $request->all();
 		$user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
-    
-        $stripe_plan = SubscriptionPlan();
+    	 
+		$stripe_plan = SubscriptionPlan();
 		$settings = Setting::first();
 		if (isset($input['ccode']) && !empty($input['ccode'])) {
 			$user_data['ccode'] = $input['ccode'];
@@ -88,16 +89,22 @@ public function signup(Request $request)
 		} else {
 			$skip = 0;
 		} 
-        $referrer_code = $input['referrer_code'];
+        if (!empty($input['referrer_code'])){
+            $referrer_code = $input['referrer_code'];
+        }
+        
         if ( isset($referrer_code) && !empty($referrer_code) ) { 
             $referred_user = User::where('referral_token','=',$referrer_code)->first();
             $referred_user_id = $referred_user->id;
         } else {
             $referred_user_id =0;
         }
-        $length = 10;
+    	
+		$length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
+        $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
+        $user_data['token'] = $request->token;
         $path = URL::to('/').'/public/uploads/avatars/';
 	    $logo = $request->file('avatar');
             if($logo != '') {   
@@ -134,11 +141,14 @@ public function signup(Request $request)
 			$user->mobile = $user_data['mobile'];
 			$user->avatar = $avatar;
             $user->referrer_id = $referred_user_id;
+            $user->token = $input['token'];
 			$user->referral_token = $ref_token;
 			$user->active = 1;
 			$user->save();
 			$userdata = User::where('email', '=', $request->get('email'))->first();
 			$userid = $userdata->id;
+            send_password_notification('Notification From Finexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+            
 		} else {
 			if($user != null){
 				$response = array('status'=>'false','message' => 'Email id Already Exists');
@@ -153,22 +163,99 @@ public function signup(Request $request)
 			if($settings->free_registration && $settings->activation_email){
 				$email = $input['email'];
 				$uname = $input['username'];
-				Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-					$message->to($email,$uname)->subject('Verify your email address');
-				});
+				// Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+				// 	$message->to($email,$uname)->subject('Verify your email address');
+				// });
 				$response = array('status'=>'true');
 			} else {
+                
 				if(!$settings->free_registration  && $skip == 0){
-					$paymentMethod = $request->get('py_id');
-		            $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
-                        $response = array(
-						'status' => 'true'
-					);
+                     $payment_type = $input['payment_type'];
+                     $paymentMethod = $input['py_id'];
+                    // $payment_type = $request->payment_type;
+                    if ( $payment_type == "recurring") {
+                             $plan = $input['plan']; 
+                            $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+                                        $user = User::find($user->id);
+                                        $user->role = 'subscriber';
+                                        $user->payment_type = 'recurring';
+                                        $user->card_type = 'stripe';
+                                        $user->save();
+                            $email = $input['email'];
+                            $uname = $input['username'];
+                            // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                            //     $message->to($email,$uname)->subject('Verify your email address');
+                            // });
+                                $response = array(
+                                'status' => 'true'
+                            );
+                        
+                    } else  {
+                            $price = $input['amount'];
+                            $plan = $input['plan'];              
+                            $plan_details = Plan::where("plan_id","=",$plan)->first();
+                            $next_date = $plan_details->days;
+                            $current_date = date('Y-m-d h:i:s');
+                            $date = Carbon::parse($current_date)->addDays($next_date);
+                            $sub_price = $plan_details->price;
+                            $sub_total =  $sub_price - DiscountPercentage();
+                            $user = User::find($user->id);
+                            if ( NewSubscriptionCoupon() == 1 ) {
+                              	     $charge = $user->charge( $sub_total * 100, $input['py_id']); 
+                                    if($charge->id != ''){
+                                           $user->role = 'subscriber';
+                                            $user->payment_type = 'one_time';
+                                            $user->card_type = 'stripe';
+                                            $user->save();
+                                            DB::table('single_subscriptions')->insert([
+                                                ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
+                                            ]);
+                                        $email = $input['email'];
+                                        $uname = $input['username'];
+                                        // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                        //     $message->to($email,$uname)->subject('Verify your email address');
+                                        // });
+                                          $response = array(
+                                                'status' => 'true'
+                                        );
+                                     } else {
+                                          $response = array(
+                                                'status' => 'false'
+                                            );
+                                    }
+                                 } else {
+                              	        $charge = $user->charge( $sub_price * 100, $input['py_id']); 
+                                        if($charge->id != ''){
+                                               $user->role = 'subscriber';
+                                                $user->payment_type = 'one_time';
+                                                $user->card_type = 'stripe';
+                                                $user->save();
+                                                DB::table('single_subscriptions')->insert([
+                                                    ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
+                                                ]);
+                                            $email = $input['email'];
+                                            $uname = $input['username'];
+                                            // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                            //     $message->to($email,$uname)->subject('Verify your email address');
+                                            // });
+                                              $response = array(
+                                                    'status' => 'true'
+                                            );
+                                         } else {
+                                              $response = array(
+                                                    'status' => 'false'
+                                                );
+                                        }
+                                     }
+                       }
+                        send_password_notification('Notification From FINEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
 				}else{
 					   $response = array('status'=>'true');
-
 				}
 			}
+            
+          
+            
 		} catch(Exception $e){
 			$user->delete();
 			$response = array('status'=>'false');
@@ -195,12 +282,10 @@ public function signup(Request $request)
 			'email' => $request->get('email'),
 			'password' => $request->get('password')
 		);
-
 		$username_login = array(
 			'username' => $request->get('username'),
 			'password' => $request->get('password')
 		);
-
 		if ( Auth::attempt($email_login) || Auth::attempt($username_login) ){
 
 			if($settings->free_registration && !Auth::user()->stripe_active){
@@ -332,21 +417,13 @@ public function signup(Request $request)
 
 			$user_id = User::where('email', '=', $user_email)->first();
 			$user = User::find($user_id->id);
-			if (!Hash::check($request->password, $user->password)) {
 			$user->password = $request->password;
 			$user->save();
+          send_password_notification('Notification From Finexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);
 			$response = array(
 				'status'=>'true',
 				'message'=>'Password changed successfully.'
 			);
-			}else {
-				$response = array(
-					'status'=>'fasle',
-					'message'=>'You have entered old password'
-				);
-			}
-
-			
 		}else{
 			$response = array(
 				'status'=>'false',
@@ -433,7 +510,8 @@ public function signup(Request $request)
 		return response()->json($response, 200);
 	}
 
-	public function verifyandupdatepassword(Request $request)
+
+public function verifyandupdatepassword(Request $request)
 	{
 		$user_email = $request->email;       
 		$old_password = $request->old_password;
@@ -456,6 +534,7 @@ public function signup(Request $request)
 					'status'=>'true',
 					'message'=>'Password changed successfully.'
 				);
+                  send_password_notification('Notification From FINEXS','Password has been Updated Successfully','Password Update Done','',$user_id);
 
 			} else {
 				$response = array(
@@ -835,7 +914,7 @@ public function signup(Request $request)
 		return response()->json($response, 200);
 	}
 
-	 public function updateProfile(Request $request) {
+	public function updateProfile(Request $request) {
 
         $id = $request->user_id;
         $user = User::find($id);
@@ -868,6 +947,7 @@ public function signup(Request $request)
 				'status'=>'true',
 				'message'=>'Your Profile detail has been updated'
 			);
+		send_password_notification('Notification From FINEXS','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
         return response()->json($response, 200);
    }
 
@@ -987,7 +1067,7 @@ public function signup(Request $request)
 
 	}
 
-	public function myFavorites(Request $request) {
+	public function myfavorite(Request $request) {
 
 		$user_id = $request->user_id;
 
@@ -1071,8 +1151,7 @@ public function signup(Request $request)
 
 	}
 
-
-	public function showFavorites(Request $request) {
+	public function showfavorite(Request $request) {
 
 		$user_id = $request->user_id;
 		$type = $request->type;
@@ -1203,7 +1282,7 @@ public function signup(Request $request)
                             'name' => $user->username,
                             'plan' => ucfirst($plandetail->plans_name),
                         ), function($message) use ($request,$user){
-                            $message->from(AdminMail(),'Eliteclub');
+                            $message->from(AdminMail(),'FINEXS');
                             $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                 });
                 return response()->json(['success'=>'Your plan has been changed.']);
@@ -1225,7 +1304,7 @@ public function signup(Request $request)
 			'start_date' => $start_date,
 			'ends_at' => $ends_at,
 		), function($message) use ($user){
-			$message->from(AdminMail(),'EliteClub');
+			$message->from(AdminMail(),'FINEXS');
 			$message->to($user->email, $user->username)->subject('Subscription Renewal');
 		});
 
@@ -1260,7 +1339,7 @@ public function signup(Request $request)
                 'plan' => ucfirst($plandetail->plans_name),
                // 'price' => $plandetail->price,
             ), function($message) use ($user){
-                $message->from(AdminMail(),'EliteClub');
+                $message->from(AdminMail(),'FINEXS');
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
         
@@ -1281,9 +1360,8 @@ public function signup(Request $request)
 
 
 	public function add_payperview(Request $request)
-	{
-
-		$daten = date('Y-m-d h:i:s a', time());
+      {
+        $daten = date('Y-m-d h:i:s a', time());
 		$setting = Setting::first();
 		$ppv_hours = $setting->ppv_hours;
 		$date = Carbon::parse($daten)->addHour($ppv_hours);
@@ -1291,14 +1369,8 @@ public function signup(Request $request)
 		$user_id = $request->user_id;
 		$paymentMethod = $request->get('py_id');
 		$payment_settings = PaymentSetting::first();
-//        		if($payment_settings->live_mode){
-//        			User::setStripeKey( $payment_settings->live_secret_key );
-//        		} else {
-//        			User::setStripeKey( $payment_settings->test_secret_key );
-//        		}
-
 		$user = User::find($user_id);
-		$pay_amount = 100;
+		$pay_amount = PvvPrice();
 		$pay_amount = $pay_amount*100;
 		$charge = $user->charge($pay_amount, $paymentMethod);
 		if($charge->id != ''){
@@ -1307,6 +1379,7 @@ public function signup(Request $request)
 				DB::table('ppv_purchases')->insert(
 					['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
 				);
+          send_password_notification('Notification From FINEXS','You have rented a video','You have rented a video','',$user_id);
 			} else {
 				DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 			}
@@ -1470,7 +1543,7 @@ public function signup(Request $request)
     }  
     
     public function StripeRecurringPlan() {
-        $plans = Plan::all();
+        $plans = Plan::where("payment_type","=","recurring")->get();
     	$response = array(
     		'status'=>'true',
     		'plans' => $plans
@@ -2253,6 +2326,117 @@ public function checkEmailExists(Request $request)
 		   return response()->json($response, 200); 
 
 		}
+		
+		public function MobileSignup(Request $request)
+			{
+				$username = $request->username;
+				$email = $request->email;
+				$mobile = $request->mobile;
+				$existing_user = User::where("email","=",$email)->count();
+				if ( $existing_user > 0 ) {
+					
+					$response = array(
+						'status'=>'false',
+						'message'=>'success'
+					);
+				} else {
+						$user = new User;
+						$user->mobile =$mobile;
+						$user->email = $email;
+						$user->username = $username;
+						$user->active = 1;
+						$user->user_type = 'firebase';
+						$user->save();
+						$response = array(
+								'status'=>'true',
+								'user_details' => array($user),
+								'message'=>'success'
+						);
+				}
 
+			   return response()->json($response, 200); 
+			}
+	
+	public function CastList() {
 
+			$casts = Cast::all()->map(function ($item) {
+				$item['cast_image'] = URL::to('/').'/public/uploads/avatars/casts/'.$item->cast;
+				return $item;
+			});
+
+			$response = array(
+				'status'=>'true',
+				'casts' => $casts,
+				'message'=>'success'
+			);
+
+		   return response()->json($response, 200);
 	}
+	public function SeriesTitle(){
+		$mobile_settings = DB::table('mobile_apps')->first();
+		$response = array(
+			'status'=>'true',
+			'message'=>'success',
+			'series_status'=> $mobile_settings->series_title
+		);
+		return response()->json($response, 200);
+	}
+
+	public function VideoCast(Request $request) {
+			$video_id = $request->video_id;
+			$video = Video::where("id","=",$video_id)->first();
+			$cast_count = Video::where("id","=",$video_id)->count();
+			if ($cast_count > 0 ) {
+			$array_cast = explode(", ",$video->cast);			
+			foreach ($array_cast as $cast_id) {
+					$cast_details[] = Cast::where("id","=",$cast_id)->first() ;
+			}
+			$response = array(
+				'status'=>'true',
+				'message'=>'success',
+				'image_path'=> URL::to('/public/uploads/images/casts/'),
+				'cast_details'=> $cast_details
+			);
+		} else{
+			$response = array(
+				'status'=>'false'
+			);
+		}
+			return response()->json($response, 200);
+
+		}
+		public function UserComments(Request $request){
+
+					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
+						$item['usr_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->user->avatar;
+						$item['username'] = $item->user->username;
+						return $item;
+					});
+					$response = array(
+						'status'=>'true',
+						'user_comments'=>$comments
+					);
+
+					return response()->json($response, 200);
+		}
+
+		public function AddComment(Request $request){
+			
+			$video_id = $request->video_id;
+			$user_id = $request->user_id;
+			$body = $request->body;
+			$comment = new Comment;
+			$comment->user_id = $user_id;
+			$comment->video_id = $video_id;
+			$comment->body = $body;
+			$comment->save();
+			$response = array(
+				'status'=>'true',
+				'message'=> "Comment Has been added"
+			);
+
+			return response()->json($response, 200);
+
+		}
+	}
+
