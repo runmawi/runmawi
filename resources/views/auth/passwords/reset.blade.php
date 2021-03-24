@@ -36,6 +36,9 @@
     background-color:#3daae0;
     color:#fff;
 }
+    .container.page-height {
+        padding-top: 80px !important;
+}
 
 </style>
 

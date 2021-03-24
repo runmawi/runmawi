@@ -261,7 +261,7 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/'  . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">

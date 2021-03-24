@@ -18,7 +18,14 @@
     endif;
         $media_subject = $media_title;
 ?>
-
+<style>
+    i#dislike {
+    padding: 10px !important;
+}
+    i#like {
+    padding: 10px;
+}
+</style>
 <!--
 <span class="share text-center">
     <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="popup"><i class="fa fa-facebook"></i></a>

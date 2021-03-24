@@ -114,6 +114,9 @@ border-radius: 25px !important;
     .video-js.vjs-v7 .vjs-seek-button.skip-back.skip-10 .vjs-icon-placeholder::before {
       content: '\e059'
     }
+    .btn.btn-default.views {
+    color: #fff !important;
+}
 
 </style>
 

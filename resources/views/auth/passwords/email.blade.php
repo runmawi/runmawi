@@ -1,11 +1,16 @@
 @include('header')
+<style>
+.container.page-height {
+        padding-top: 80px !important;
+}
+</style>
 
 <div class="container  page-height">
     <div class="row justify-content-center">
 
         <div class="card" style="margin-top: 30px;">
                   
-            <div class="col-md-4 col-sm-offset-4">
+            <div class="col-md-12">
         <div class="forgot-box">
             <div class="card text-center">
                 <div class="card-header col-form-label"><h1>{{ __('Forgot Password') }}</h1></div>
