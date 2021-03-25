@@ -147,7 +147,7 @@ class ApiAuthController extends Controller
 			$user->save();
 			$userdata = User::where('email', '=', $request->get('email'))->first();
 			$userid = $userdata->id;
-            send_password_notification('Notification From Finexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+            /*send_password_notification('Notification From Finexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);*/
             
 		} else {
 			if($user != null){
@@ -248,7 +248,8 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                        send_password_notification('Notification From FINEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
+                       /* send_password_notification('Notification From FINEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user
+                                                   id);*/
 				}else{
 					   $response = array('status'=>'true');
 				}
@@ -419,7 +420,7 @@ class ApiAuthController extends Controller
 			$user = User::find($user_id->id);
 			$user->password = $request->password;
 			$user->save();
-          send_password_notification('Notification From Finexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);
+          /*send_password_notification('Notification From Finexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);*/
 			$response = array(
 				'status'=>'true',
 				'message'=>'Password changed successfully.'
@@ -534,7 +535,7 @@ public function verifyandupdatepassword(Request $request)
 					'status'=>'true',
 					'message'=>'Password changed successfully.'
 				);
-                  send_password_notification('Notification From FINEXS','Password has been Updated Successfully','Password Update Done','',$user_id);
+                  /*send_password_notification('Notification From FINEXS','Password has been Updated Successfully','Password Update Done','',$user_id);*/
 
 			} else {
 				$response = array(
@@ -947,7 +948,7 @@ public function verifyandupdatepassword(Request $request)
 				'status'=>'true',
 				'message'=>'Your Profile detail has been updated'
 			);
-		send_password_notification('Notification From FINEXS','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
+		/*send_password_notification('Notification From FINEXS','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
         return response()->json($response, 200);
    }
 
@@ -1379,7 +1380,7 @@ public function verifyandupdatepassword(Request $request)
 				DB::table('ppv_purchases')->insert(
 					['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
 				);
-          send_password_notification('Notification From FINEXS','You have rented a video','You have rented a video','',$user_id);
+          /*send_password_notification('Notification From FINEXS','You have rented a video','You have rented a video','',$user_id);*/
 			} else {
 				DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 			}
