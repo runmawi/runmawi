@@ -13,9 +13,14 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+  </script>
 <style>
-
+    /*.sign-user_card {
+        background: none !important;
+    }*/
 #ck-button {
     margin:4px;
 /*    background-color:#EFEFEF;*/
@@ -59,7 +64,7 @@
     padding-left: 15px;
     letter-spacing: 42px;
     border: 0;
-    background-image: linear-gradient(to right, black 60%, rgb(120, 120, 120) 0%);
+   /* background-image: linear-gradient(to right, black 60%, rgb(120, 120, 120) 0%);*/
     background-position: bottom;
     background-size: 50px 1px;
     background-repeat: repeat-x;
@@ -68,9 +73,9 @@
     #otp:focus {
         border: none;
     }
-    .sign-up-buttons{
+    /*.sign-up-buttons{
         margin-left: 40% !important;
-    }.verify-buttons{
+    }*/.verify-buttons{
         margin-left: 36%;
     }
     .container{
@@ -79,7 +84,7 @@
     .panel-heading {
     margin-bottom: 1rem;
 }
-    .form-control {
+   /* .form-control {
     background-color: var(--iq-body-text) !important;
     border: 1px solid transparent;
     height: 46px;
@@ -93,9 +98,30 @@
     a {
     color: var(--iq-body-text);
     text-decoration: none;
+}*/
+.phselect{
+    width: 100px !important;
+    height: 45px !important;
+    background: transparent !important;
 }
-
-
+.form-control {
+    height: 45px;
+    line-height: 45px;
+    background: transparent !important;
+    border: 1px solid var(--iq-body-text);
+    font-size: 14px;
+    color: var(--iq-secondary);
+    border-radius: 0;
+}
+    .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+input[type="file"] {
+    display: none;
+}
 
 </style>
 <header id="main-header">
@@ -355,8 +381,8 @@
     
 
 ?>
-  
-<div class="container">
+
+<!--<div class="container">
     <div class="row justify-content-center" id="signup-form">
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
@@ -481,7 +507,182 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
+<div class="container" style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
+      <div class="row justify-content-center align-items-center height-self-center">
+         <div class="col-sm-8 align-self-center">
+            <div class="sign-user_card ">                    
+               <div class="sign-in-page-data">
+                  <div class="sign-in-from w-100 m-auto">
+                     <h3 class="mb-3 text-center">Sign Up</h3>
+                      <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                        @csrf
+                            <div class="form-group row">
+                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
+
+                                <div class="col-md-6">
+                                    <input id="username" type="text" class="form-control  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
+
+                                    @error('username')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                 <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="row">
+                               
+                            <div class="col-sm-4">
+                              <select class="phselect" name="ccode" id="ccode" >
+                                @foreach($jsondata as $code)
+                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+                            <div class="col-sm-8">
+                                <input id="mobile" type="text" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span class="verify-error"></span>
+                                
+                                 @error('mobile')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                                    
+                            </div></div>
+						</div>
+
+                                </div>
+                            </div>
+                        
+                            <div class="form-group row">
+                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right ">{{ __('User Profile') }} </label>
+-->
+                               <!-- <div class="col-md-6">
+                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
+
+                                </div>-->
+                            </div>
+
+                        <div class="form-group row">
+                            <!--<label for="email" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('E-Mail Address') }} <span style="color:#4895d1">*</span></label>-->
+
+                            <div class="col-md-6">
+                                <input id="email" placeholder="Email Address" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="avatar" class="custom-file-upload form-control">
+    Upload Profile
+</label>
+
+
+                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
+                                <!-- <label  class="custom-file-upload">
+                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
+                                     </label>-->
+                                </div>
+                        </div>
+                         
+                        <div class="form-group row">
+                           <!-- <label for="mobile" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Phone Number') }} <span style="color:#4895d1">*</span></label>-->
+                            
+                            <!--<div class="form-group">
+                               
+                            <div class="col-sm-2">
+                              <select name="ccode" id="ccode" >
+                                @foreach($jsondata as $code)
+                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="mobile" type="text" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span class="verify-error"></span>
+                                
+                                 @error('mobile')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                                    
+                            </div>
+						</div>-->
+                        </div>
+                        <div class="form-group row">
+                            <!--<label for="password" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">
+                                {{ __('Password') }} <span style="color:#4895d1">*</span>
+                            </label>-->
+                            <div class="col-md-6">
+                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                               
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror                               
+                            </div>
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+                           <span style="color:var(--iq-secondary)">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+
+                        <div class="form-group row">
+                            <!--<label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Confirm Password') }} <span style="color:#4895d1">*</span>
+                            </label>-->
+                            <!--<div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>-->
+                        </div>
+                            <?php if ( isset($ref)) { ?>
+                                <div class="form-group row">
+                                    <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Referrer ID') }} <span style="color:#4895d1"></span>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input id="referrer_code" type="text" class="form-control" value="<?php echo $ref;?>" name="referrer_code" readonly>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        
+                        <div class="form-group row">
+							
+							<div class="col-md-7">
+                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions and privacy policy' ) }}</a></label>
+                            </div>
+                            <div class="sign-up-buttons col-md-5" align="right">
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button class="btn btn-lg btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                </div>
+                        </div>
+                        
+                       
+						<div class="form-group row">
+							<div class="col-md-10 col-sm-offset-1">
+                                <!--<div class="sign-up-buttons">
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button class="btn btn-lg btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                </div>-->
+							</div>
+						</div>
+                        
+                    </form>
+                  </div>
+               </div>    
+               <div class="mt-3">
+                  <div class="d-flex justify-content-center links">
+                     Already have an account? <a href="login.html" class="text-primary ml-2">Sign In</a>
+                  </div>                        
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 
 <!-- Modal -->
   <div class="modal fade" id="terms" role="dialog" >

@@ -381,7 +381,7 @@
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
-                     <form method="POST" action="{{ route('login') }}" class="mt-4" action="index.html">
+                     <form method="POST" action="{{ route('login') }}" class="mt-4">
                          @csrf
 						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
 						@error('email')
