@@ -8,15 +8,17 @@
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/../assets/admin/dashassets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
-      <link rel="shortcut icon" href="../assets/admin/dashassets/images/fl-logo.png" />
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/typography.css" />
+      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
       <!-- Style -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/style.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="../assets/admin/dashassets/css/responsive.css" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+      <link  href="admin/">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
 <body>
     <style>
@@ -124,23 +126,24 @@
          </div>
       </footer>
           <!-- back-to-top End -->
+     <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="../assets/admin/dashassets/js/jquery-3.4.1.min.js"></script>
-      <script src="../assets/admin/dashassets/js/popper.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
-      <script src="../assets/admin/dashassets/js/bootstrap.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
-      <script src="../assets/admin/dashassets/js/slick.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
-      <script src="../assets/admin/dashassets/js/owl.carousel.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="../assets/admin/dashassets/js/select2.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script src="../assets/admin/dashassets/js/jquery.magnific-popup.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
-      <script src="../assets/admin/dashassets/js/slick-animation.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="../assets/admin/dashassets/js/custom.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
