@@ -474,7 +474,7 @@
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-      ...
+     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="https://www.youtube.com/embed/SjcYghBatr8" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
 </div>
