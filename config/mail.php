@@ -44,6 +44,7 @@ return [
             'timeout' => null,
             'auth_mode' => null,
             'driver' => 'sendmail',
+            'secure' => 'false'
         ],
 
         'ses' => [
