@@ -649,7 +649,7 @@ input[type="file"] {
                                 </div>
                             <?php } ?>
                         
-                        <div class="form-group row">
+                        <div class="form-group row" >
 							
 							<div class="col-md-7">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
@@ -676,7 +676,7 @@ input[type="file"] {
                </div>    
                <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="login.html" class="text-primary ml-2">Sign In</a>
+                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>
             </div>

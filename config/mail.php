@@ -39,8 +39,8 @@ return [
             'host' => env('MAIL_HOST', 'server.webnexs.in'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('demos@webnexs.in'),
-            'password' => env('Demo!@#'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
             'driver' => 'sendmail',
@@ -100,7 +100,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'demos@webnexs.in'),
+        'address' => env('MAIL_FROM_ADDRESS', 'server.webnexs.in'),
         'name' => env('MAIL_FROM_NAME', 'Flicknexs'),
     ],
 

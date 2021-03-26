@@ -301,7 +301,9 @@
 				<div class="col-md-6 offset-md-3 input-group mb-3 started">
 				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
+                      <a href="<?= URL::to('/signup')?>"> 
 					<button class="btn btn-outline-secondary subbut" type="button">GET STARTED</button>
+                      </a>
 				  </div>
 				</div>
 			</div>
@@ -425,7 +427,9 @@
 				<div class="col-md-6 offset-md-3 input-group mb-3">
 				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
+                      <a href="<?= URL::to('/signup')?>"> 
 					<button class="btn btn-outline-secondary subbut" type="button">GET STARTED</button>
+                      </a>
 				  </div>
 				</div>
 			
