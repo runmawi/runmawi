@@ -13,10 +13,10 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-  </script>
+  </script>-->
 <style>
     /*.sign-user_card {
         background: none !important;
@@ -111,7 +111,7 @@
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
     color: var(--iq-secondary);
-    border-radius: 0;
+    border-radius: 0 !important;
 }
     .custom-file-upload {
     border: 1px solid #ccc;
@@ -370,8 +370,8 @@ input[type="file"] {
          </div>
       </header>
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>

@@ -430,33 +430,34 @@
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="block-description">
-                                       <h6><?php echo __($watchlater_video->title); ?></h6>
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	 <h6><?php echo __($watchlater_video->title); ?></h6></a>
                                        <div class="movie-time d-flex align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
                                           </span>
-                                           </a>
+                                              </button>	
+                                           
                                        </div>
-                                        <div>
+                                        <div >
                                             <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
                                                     </button></div>
                                         </div>
-                                   <!-- <div class="block-social-info">
-                                       <ul class="list-inline p-0 m-0 music-play-lists">
+                                    <div class="block-social-info">
+                                       <ul class="list-inline  music-play-lists list-group-horizontal">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -468,6 +469,17 @@
                   </div>
                </div>
             </div>
+              <?php if(isset($videos)) :
+                                foreach($videos as $watchlater_video): ?>
+              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+              <?php endforeach; 
+endif; ?>
          
                           <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
@@ -540,7 +552,7 @@
            <h2>More Like This</h2>
     </div>
      <div id="details<?= $watchlater_video->id;?>" class="container tab-pane "><br>
-        <h2>Description</h2>
+        <p><?php echo __($watchlater_video->description); ?></p>
 
     </div>
 	</div>
@@ -606,13 +618,13 @@ endif; ?>
                                                 </span>
                                                     </button></div>
                                         </div>
-                                   <!-- <div class="block-social-info">
+                                    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -829,13 +841,13 @@ endif; ?>
                                                     </button>
                                         </div>
                                     </div>
-                                   <!-- <div class="block-social-info">
+                                    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -1530,72 +1542,7 @@ endif; ?>
         <?php } ?>
          </section>
       </div>
-      <footer class="mb-0">
-         <div class="container-fluid">
-            <div class="block-space">
-               <div class="row">
-                  <div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
-                     </ul>
-                  </div>
-                  <!--<div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Help</a></li>
-                     </ul>
-                  </div>-->
-                  <div class="col-lg-3 col-md-4">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-                  
-                  <div class="col-lg-3 col-md-4 r-mt-15">
-                     <div class="d-flex">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                     </div>
-                  </div>
-                   </div>
-               </div>
-            </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body">FLICKNEXS - 2021 All Rights Reserved</p>
-            </div>
-         </div>
-      </footer>
+     <?php include('footer.blade.php');?>
       <!-- MainContent End-->
       <!-- back-to-top -->
       <div id="back-to-top">

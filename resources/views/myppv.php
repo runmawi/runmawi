@@ -403,13 +403,13 @@
                                                 </span>
                                                     </button></div>
                                         </div>
-                                   <!-- <div class="block-social-info">
+                                    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -528,72 +528,7 @@ endif; ?>
                         
 </section>
       </div>
-     <footer class="mb-0">
-         <div class="container-fluid">
-            <div class="block-space">
-               <div class="row">
-                  <div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
-                     </ul>
-                  </div>
-                  <!--<div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Help</a></li>
-                     </ul>
-                  </div>-->
-                  <div class="col-lg-3 col-md-4">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-                  
-                  <div class="col-lg-3 col-md-4 r-mt-15">
-                     <div class="d-flex">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                     </div>
-                  </div>
-                   </div>
-               </div>
-            </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body">FLICKNEXS - 2021 All Rights Reserved</p>
-            </div>
-         </div>
-      </footer>
+         <?php include('footer.blade.php');?>
       <!-- MainContent End-->
       <!-- back-to-top -->
       <div id="back-to-top">

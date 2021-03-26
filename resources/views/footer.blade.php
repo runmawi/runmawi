@@ -19,10 +19,38 @@
       <link rel="stylesheet" href="../assets/admin/dashassets/css/responsive.css" />
         </head>
 <body>
+    <style>
+        .catag{
+            padding-right: 150px !important;
+        }
+        .c-logo{
+            margin-bottom: 20px !important;
+        }
+    </style>
  <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row">
+                   <div class="col-lg-3 col-md-4 r-mt-15">
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
+                     <div class="d-flex">
+                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
+                        <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-skype-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-linkedin-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-whatsapp-fill"></i>
+                        </a>
+                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                     </div>
+                  </div>
                   <div class="col-lg-3 col-md-4">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
@@ -56,26 +84,36 @@
 						<?php endforeach; ?>
 					</ul>
 				</div>
+                  <div class="col-lg-3 col-md-4">
+                      <div class="row">
+                     <ul class="f-link list-unstyled mb-0 catag">
+                        <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
+                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
+                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
+                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
+                         
+                          </ul>
+                          <ul class="f-link list-unstyled mb-0">
+                        
+                         <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
+                          </ul>
+                      </div>
+                      <!--<ul class="f-link list-unstyled mb-0">
+                        
+						<?php 
+                        
+                        $pages = App\Page::all();
+                        
+                        foreach($pages as $page): ?>
+                        <?php if ( $page->slug != 'promotion' ){ ?>
+							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                        <?php } ?>
+						<?php endforeach; ?>
+					</ul>-->
+				</div>
                   
-                  <div class="col-lg-3 col-md-4 r-mt-15">
-                     <div class="d-flex">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                     </div>
-                  </div>
                    </div>
                </div>
             </div>

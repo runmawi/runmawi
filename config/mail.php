@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'eliteclubco.com'),
-            'port' => env('MAIL_PORT', 465),
+            'host' => env('MAIL_HOST', 'server.webnexs.in'),
+            'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'username' => env('demos@webnexs.in'),
+            'password' => env('Demo!@#'),
             'timeout' => null,
             'auth_mode' => null,
             'driver' => 'sendmail',
@@ -100,8 +100,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'thirunasky7@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'thiru'),
+        'address' => env('MAIL_FROM_ADDRESS', 'demos@webnexs.in'),
+        'name' => env('MAIL_FROM_NAME', 'Flicknexs'),
     ],
 
     /*
