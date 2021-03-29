@@ -119,9 +119,9 @@
     padding: 6px 12px;
     cursor: pointer;
 }
-input[type="file"] {
+/*input[type="file"] {
     display: none;
-}
+}*/
 
 </style>
 <header id="main-header">
@@ -577,9 +577,9 @@ input[type="file"] {
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="avatar" class="custom-file-upload form-control">
+                                <!--<label for="avatar" class="custom-file-upload form-control">
     Upload Profile
-</label>
+</label>-->
 
 
                                         <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />

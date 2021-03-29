@@ -36,7 +36,7 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'server.webnexs.in'),
+            'host' => env('MAIL_HOST', 'eliteclubco.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
@@ -44,7 +44,13 @@ return [
             'timeout' => null,
             'auth_mode' => null,
             'driver' => 'sendmail',
-            'secure' => 'false'
+             'stream' => [
+                'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true,
+    ],
+],
         ],
 
         'ses' => [
@@ -75,20 +81,14 @@ return [
         
     ],
 
-/*    'stream' => [
-        'ssl' => [
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true,
-    ],
-],*/
-    'stream' => [
+   
+    /*'stream' => [
        'ssl' => [
             'allow_self_signed' => true,
            'verify_peer' => false,
             'verify_peer_name' => false,
        ],
-    ],
+    ],*/
     /*
     |--------------------------------------------------------------------------
     | Global "From" Address
@@ -101,9 +101,11 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'server.webnexs.in'),
+        'address' => env('MAIL_FROM_ADDRESS', 'demos@webnexs.in'),
         'name' => env('MAIL_FROM_NAME', 'Flicknexs'),
     ],
+    
+    
 
     /*
     |--------------------------------------------------------------------------

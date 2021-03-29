@@ -21,12 +21,11 @@
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
        <style>
-           .h-100 {
-    height: 540px !important;
-}
+           
            .overflow-hidden {
     margin-top: 60px;
     overflow: hidden;
+    min-height: 450px !important;
 }
            /* scroller */
 .scroller { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
@@ -390,18 +389,20 @@
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="block-description">
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                        <h6><?php echo __($watchlater_video->title); ?></h6>
+                                        </a>
                                        <div class="movie-time d-flex align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
                                           </span>
-                                           </a>
+                                              </button>	
                                        </div>
                                         <div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
@@ -428,6 +429,21 @@
                   </div>
                </div>
             </div>
+               <?php if(isset($lang_videos)) :
+                                foreach($lang_videos as $watchlater_video): ?>
+              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
+        <!-- <video class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;"  poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
+								 </video>-->
+    </div>
+  </div>
+</div>
+              <?php endforeach; 
+endif; ?>
+             
          
                                   <?php  if(isset($lang_videos)) :
 			foreach($lang_videos as $watchlater_video): ?>
@@ -585,7 +601,7 @@ function about(evt , id) {
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
     <div style="height: 10px;"></div>
