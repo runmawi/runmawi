@@ -165,7 +165,7 @@ public function RentPaypal(Request $request)
                     'ends_at' => $ends_at,
                  
                 ), function($message) use ($user){
-                    $message->from(AdminMail(),'EliteClub');
+                    $message->from(AdminMail(),'Flicknexs');
                     $message->to($user->email, $user->username)->subject('Subscription Renewal');
                 });
                 return redirect::to('myprofile');
@@ -185,7 +185,7 @@ public function RentPaypal(Request $request)
                 'plan' => ucfirst($plandetail->plans_name),
                // 'price' => $plandetail->price,
             ), function($message) use ($user){
-                $message->from(AdminMail(),'EliteClub');
+                $message->from(AdminMail(),'Flicknexs');
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
             
@@ -242,7 +242,7 @@ public function RentPaypal(Request $request)
                         'name' => $user->username,
                         'plan' => ucfirst($plandetail->plans_name),
                     ), function($message) use ($request,$user){
-                        $message->from(AdminMail(),'Eliteclub');
+                        $message->from(AdminMail(),'Flicknexs');
                         $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                     });
 

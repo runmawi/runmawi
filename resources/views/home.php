@@ -506,8 +506,7 @@ endif; ?>
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                 aria-hidden="true"></i>Play Now</a>
+                                  <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -588,7 +587,7 @@ endif; ?>
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4>                      
+                        <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">Latest Videos</a></h4>                      
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -676,7 +675,7 @@ endif; ?>
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                        <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
@@ -911,7 +910,7 @@ endif; ?>
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                        <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>

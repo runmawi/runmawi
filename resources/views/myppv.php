@@ -464,7 +464,7 @@ endif; ?>
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                            <a class="" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                                           <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
                                                         <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div></a>

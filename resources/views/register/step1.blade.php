@@ -102,7 +102,8 @@
 .phselect{
     width: 100px !important;
     height: 45px !important;
-    background: transparent !important;
+    background: var(--iq-body-bg) !important;
+    color: var(--iq-white) !important;
 }
 .form-control {
     height: 45px;
@@ -110,8 +111,15 @@
     background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
-    color: var(--iq-secondary);
+    color: var(--iq-white);
     border-radius: 0;
+}
+    .form-control:focus {
+     color: var(--iq-white) !important;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
 }
     .custom-file-upload {
     border: 1px solid #ccc;
@@ -122,6 +130,9 @@
 /*input[type="file"] {
     display: none;
 }*/
+    .catag {
+    padding-right: 150px !important;
+}
 
 </style>
 <header id="main-header">
@@ -521,7 +532,7 @@
                                 <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
 
                                 <div class="col-md-6">
-                                    <input id="username" type="text" class="form-control  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -582,7 +593,7 @@
 </label>-->
 
 
-                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
+                                        <input type="file" required multiple="true" class="form-control" name="avatar" id="avatar" />
                                 <!-- <label  class="custom-file-upload">
                                     <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
                                      </label>-->

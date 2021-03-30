@@ -533,7 +533,7 @@
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                         <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>

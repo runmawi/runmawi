@@ -468,7 +468,7 @@ endif; ?>
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                        <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>

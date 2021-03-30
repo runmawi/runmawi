@@ -173,6 +173,22 @@
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
 }
+        .form-control {
+    height: 45px;
+    line-height: 45px;
+    background: transparent !important;
+    border: 1px solid var(--iq-body-text);
+    font-size: 14px;
+    color: var(--iq-white);
+    border-radius: 0;
+}
+          .form-control:focus {
+     color: var(--iq-white) !important;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}
 </style>
 
 </head>
@@ -634,7 +650,7 @@
          <div class="row profile-content ">
             <div class="col-12 col-md-12 col-lg-6 align-self-center">
                <div class="iq-card">
-                  <div class="iq-card-body profile-page">
+                  <div class="iq-card-body profile-page" id="avatar">
                      <div class="profile-header">
                         <div class="cover-container text-center">
                            <!--<img src="../assets/images/user/1.jpg" alt="profile-bg" class="rounded-circle img-fluid">-->
@@ -928,8 +944,8 @@
           </div>
           <div class="row">
           <div class="col-md-12">
-                  <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-card" id="recentviews">
+                     <div class="iq-card-header d-flex justify-content-between" >
                         <div class="iq-header-title">
                            <h4 class="card-title">Recently Viewd Items</h4>
                         </div>
@@ -1673,6 +1689,8 @@ function openForm() {
      document.getElementById("Profile").style.display = "none";
     document.getElementById("card").style.display = "none";
         document.getElementById("subscribe").style.display = "none";
+     document.getElementById("avatar").style.display = "none";
+     document.getElementById("recentviews").style.display = "none";
 }
 </script>
 <script>
@@ -1683,6 +1701,8 @@ function closeForm() {
      document.getElementById("Profile").style.display = "block";
     document.getElementById("card").style.display = "block";
         document.getElementById("subscribe").style.display = "block";
+    document.getElementById("avatar").style.display = "block";
+     document.getElementById("recentviews").style.display = "block";
 }
 </script>
 

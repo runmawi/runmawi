@@ -95,6 +95,9 @@ border-radius: 25px !important;
     border: 1px solid #000;
     color: #fff;
 }
+    .ytp-impression-link {
+        display: none !important;
+    }
 .vjs-texttrack-settings { display: none; }
 .video-js .vjs-big-play-button{ border: none !important; }
     #video_container{height: auto;padding-top: 120px !important;;width: 95%;margin: 0 auto;}
