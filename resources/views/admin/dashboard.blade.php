@@ -290,7 +290,7 @@
                                     <th style="width:10%;">Rating</th>
                                     <th style="width:20%;">Category</th>
                                     <th style="width:10%;">Views</th>
-                                    <!--<th style="width:10%;">User</th>-->
+                                    
                                     <!-- <th style="width:20%;">Date</th> -->
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
@@ -319,7 +319,7 @@
                                     <td>
                                        {{ $video_detail->views }}<i class="lar la-eye "></i>
                                     </td>
-                                   <!-- <td>{{ $user_detail->role }}</td>-->
+                                    
                                     <!-- <td>21 July,2020</td> -->
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
