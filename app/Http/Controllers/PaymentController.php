@@ -350,11 +350,12 @@ public function RentPaypal(Request $request)
             {
               $stripeCustomer = $user->createAsStripeCustomer();
             }
+           return view('register.upgrade');
 
-            return view('register.upgrade', [
+           /* return view('register.upgrade', [
               'intent' => $user->createSetupIntent()
               ,compact('register')
-            ]);
+            ]);*/
         }
     
          public function saveSubscription(Request $request) {

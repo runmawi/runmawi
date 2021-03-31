@@ -23,7 +23,7 @@
        <style>
            
            .overflow-hidden {
-    margin-top: 60px;
+    margin-top: 70px;
     overflow: hidden;
     min-height: 450px !important;
 }

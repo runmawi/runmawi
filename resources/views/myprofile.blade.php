@@ -663,16 +663,16 @@
                            <div class="iq-social d-inline-block align-items-center">
                               <ul class="list-inline d-flex p-0 mb-0 align-items-center">
                                  <li>
-                                    <a href="https://www.facebook.com/share.php?u=https://flicknexs.com/social" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                    <a href="https://www.facebook.com/webnexs/" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                                  </li>
                                  <li>
-                                    <a href="#" class="avatar-40 rounded-circle bg-primary mr-2 twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                    <a href="https://twitter.com/webnexstech" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
                                  </li>
                                  <li>
-                                    <a href="#" class="avatar-40 rounded-circle bg-primary mr-2 youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                                    <a href="https://www.youtube.com/channel/UC-d56PhtNHTAMNvZ3idGVZw" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
                                  </li>
                                  <li >
-                                    <a href="#" class="avatar-40 rounded-circle bg-primary pinterest"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
+                                    <a href="https://in.pinterest.com/webnexs/" class="avatar-40 rounded-circle bg-primary pinterest"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
                                  </li>
                               </ul>
                            </div>

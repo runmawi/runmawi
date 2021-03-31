@@ -624,7 +624,7 @@ endif; ?>
                                         </div>
                                     <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
-                                          <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                                          <li ><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>

@@ -105,7 +105,14 @@
     .hide-box {
         display: none;
     }
-    
+        .plandetails{
+            margin-top: 70px !important;
+    min-height: 450px !important;
+        }
+        .btn-secondary{
+            background-color: #4895d1 !important;
+            border: none !important;
+        }
 
 </style>
 
@@ -119,9 +126,9 @@
 
 <div class="container">
     <div class="row justify-content-center page-height" id="signup-form">  
-        <div class="col-md-11 col-sm-offset-1">
+        <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
-                    <div class="panel-heading"><h1>Choose You Plan</h1></div>
+                    <div class="panel-heading" align="center"><h1>Choose You Plan</h1></div>
                      <div class="panel-body become-sub">
                         <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
@@ -142,7 +149,7 @@
                       <div id="dvPassport" style="display: none" class="tab-pane fade in active">
                   <div class="row">
                         <?php 
-                            $plans = App\Plan::where('payment_type','=','recurring')->get();
+                            $plans = App\Plan::where('type','=','Non Refundable')->get();
                                foreach($plans as $plan) {
                                   $plans_name = $plan->plans_name;
                             ?>
@@ -162,8 +169,8 @@
                             </div>
                             <div class="plan-details">
                                 <p>Grab this plan for your best Movies to Watch.</p>
-                                <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +181,7 @@
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
-                            $plans = App\Plan::where('payment_type','=','one_time')->get();
+                            $plans = App\Plan::where('type','=','One Time')->get();
                                foreach($plans as $plan) {
                                   $plan_name = $plan->plans_name;
                             ?>
@@ -194,8 +201,8 @@
                                             </div>
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
-                                                <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                <div class="mt-4">
+                                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -220,10 +227,10 @@
     
          <div class="form-group row">
              <div class="col-md-11 col-sm-offset-1">
-                <div class="pull-right sign-up-buttons">
+                <div class="sign-up-buttons" align="center">
 
-				        <span>Or</span>
-				        <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-warning">
+				       <p> <span>Or</span></p>
+				        <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
                             <?php echo __('Skip');?>
                         </a>
 				</div>
@@ -244,7 +251,7 @@
        <div id="dvPassports" style="display: none" class="tab-pane fade in active">
            <div class="row">
             <?php 
-           $plans = App\PaypalPlan::where('payment_type','=','recurring')->get();
+           $plans = App\PaypalPlan::where('type','=','Non Refundable')->get();
            foreach($plans as $plan) {
                $plan_name = $plan->name;
         ?>
@@ -266,12 +273,12 @@
 					<div class="plan-details">
 						<p>Grab this plan for your best Movies to Watch.</p>
                        
-                        <div class="text-right mt-4">
-							<button type="submit" class="btn btn-danger"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                        <div class="mt-4">
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
-							<a class="btn btn-danger" href="/invoice">Pay Now</a>
+							<a class="btn btn-primary" href="/invoice">Pay Now</a>
 						</div>
 -->
 					</div>
@@ -294,7 +301,7 @@
                <div id="AddPassports" >
                     <div class="row">
                     <?php 
-                       $plans = App\PaypalPlan::where('payment_type','=','one_time')->get();
+                       $plans = App\PaypalPlan::where('type','=','One Time')->get();
                        foreach($plans as $plan) {
                            $plan_name = $plan->name;
                     ?>
@@ -316,8 +323,8 @@
                             <div class="plan-details">
                                 <p>Grab this plan for your best Movies to Watch.</p>
 
-                                <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-danger"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
                         </div>
