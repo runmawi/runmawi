@@ -133,7 +133,7 @@
     </div>
 </div>
     </div></div>-->
-<section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/landban.png'; ?>') no-repeat;background-size: cover;">
+<section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
    <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
           <div class="col-lg-6 col-md-12 align-self-center">
