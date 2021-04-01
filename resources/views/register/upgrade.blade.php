@@ -2,6 +2,64 @@
 
 @section('content')
 @include('/header')
+<head>
+         <!-- Favicon -->
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+</head>
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
         
     </script>
@@ -139,7 +197,7 @@
                         </button>
                         </div>
 
-<div id="stripe_pg" class="tabcontent"> 
+<div id="stripe_pg" class="tabcontent" style="display:block;"> 
         <form action="<?php echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
             <label for="chkPassport">
                     <input type="checkbox" id="chkPassport" />
@@ -241,14 +299,14 @@
         
         </div>
 
-    <div id="paypal_pg" class="tabcontent">
+    <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">
                     <input type="checkbox" id="chkPassports" />
                      Click here for Recurring subscription!
         </label>
         <form action="<?php echo URL::to('/').'/paypal_subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
       
-       <div id="dvPassports" style="display: none" class="tab-pane fade in active">
+       <div id="dvPassports" style="display: block;" class="tab-pane fade in active">
            <div class="row">
             <?php 
            $plans = App\PaypalPlan::where('type','=','Non Refundable')->get();

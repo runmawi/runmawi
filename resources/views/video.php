@@ -95,6 +95,9 @@ border-radius: 25px !important;
     border: 1px solid #000;
     color: #fff;
 }
+    a.ytp-impression-link {
+    display: none !important;
+}
     .ytp-impression-link {
         display: none !important;
     }

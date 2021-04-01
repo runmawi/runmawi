@@ -147,7 +147,7 @@ class ApiAuthController extends Controller
 			$user->save();
 			$userdata = User::where('email', '=', $request->get('email'))->first();
 			$userid = $userdata->id;
-            /*send_password_notification('Notification From Finexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);*/
+            /*send_password_notification('Notification From Flicknexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);*/
             
 		} else {
 			if($user != null){
@@ -248,7 +248,7 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                       /* send_password_notification('Notification From FINEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user
+                       /* send_password_notification('Notification From Flicknexs','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user
                                                    id);*/
 				}else{
 					   $response = array('status'=>'true');
@@ -420,7 +420,7 @@ class ApiAuthController extends Controller
 			$user = User::find($user_id->id);
 			$user->password = $request->password;
 			$user->save();
-          /*send_password_notification('Notification From Finexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);*/
+          /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);*/
 			$response = array(
 				'status'=>'true',
 				'message'=>'Password changed successfully.'
@@ -535,7 +535,7 @@ public function verifyandupdatepassword(Request $request)
 					'status'=>'true',
 					'message'=>'Password changed successfully.'
 				);
-                  /*send_password_notification('Notification From FINEXS','Password has been Updated Successfully','Password Update Done','',$user_id);*/
+                  /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id);*/
 
 			} else {
 				$response = array(
@@ -948,7 +948,7 @@ public function verifyandupdatepassword(Request $request)
 				'status'=>'true',
 				'message'=>'Your Profile detail has been updated'
 			);
-		/*send_password_notification('Notification From FINEXS','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
+		/*send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
         return response()->json($response, 200);
    }
 
@@ -1283,7 +1283,7 @@ public function verifyandupdatepassword(Request $request)
                             'name' => $user->username,
                             'plan' => ucfirst($plandetail->plans_name),
                         ), function($message) use ($request,$user){
-                            $message->from(AdminMail(),'FINEXS');
+                            $message->from(AdminMail(),'Flicknexs');
                             $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                 });
                 return response()->json(['success'=>'Your plan has been changed.']);
@@ -1305,7 +1305,7 @@ public function verifyandupdatepassword(Request $request)
 			'start_date' => $start_date,
 			'ends_at' => $ends_at,
 		), function($message) use ($user){
-			$message->from(AdminMail(),'FINEXS');
+			$message->from(AdminMail(),'Flicknexs');
 			$message->to($user->email, $user->username)->subject('Subscription Renewal');
 		});
 
@@ -1340,7 +1340,7 @@ public function verifyandupdatepassword(Request $request)
                 'plan' => ucfirst($plandetail->plans_name),
                // 'price' => $plandetail->price,
             ), function($message) use ($user){
-                $message->from(AdminMail(),'FINEXS');
+                $message->from(AdminMail(),'Flicknexs');
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
         
@@ -1380,7 +1380,7 @@ public function verifyandupdatepassword(Request $request)
 				DB::table('ppv_purchases')->insert(
 					['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
 				);
-          /*send_password_notification('Notification From FINEXS','You have rented a video','You have rented a video','',$user_id);*/
+          /*send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);*/
 			} else {
 				DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 			}
