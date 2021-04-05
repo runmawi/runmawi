@@ -336,7 +336,7 @@
                                 
                                 
                             <div class="col-md-12">
-                                <input type="file" required multiple="true" class="form-control" name="avatar" id="avatar" />
+                                <input type="file" required multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                  </div>
                                  <div class="col-md-12">
                                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
