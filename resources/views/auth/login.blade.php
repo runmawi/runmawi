@@ -41,6 +41,9 @@
    .d-inline-block {
     display: block !important;
 }
+i.fa.fa-google-plus {
+    padding: 10px !important;
+}
 </style>
 
  

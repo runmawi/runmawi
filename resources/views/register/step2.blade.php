@@ -104,7 +104,14 @@
     .hide-box {
         display: none;
     }
-    
+        .plandetails{
+            margin-top: 70px !important;
+    min-height: 450px !important;
+        }
+        .btn-secondary{
+            background-color: #4895d1 !important;
+            border: none !important;
+        }
 
 </style>
 
@@ -143,7 +150,7 @@
 
     
                          
-    <div id="stripe_pg" class="tabcontent">  
+    <div id="stripe_pg" class="tabcontent" style="display:block;">  
         <label for="chkPassport">
                     <input type="checkbox" id="chkPassport" />
                      Click here for Recurring subscription!
@@ -174,8 +181,8 @@
                             </div>
                             <div class="plan-details">
                                 <p>Grab this plan for your best Movies to Watch.</p>
-                                <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                <div class=" mt-4">
+                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
                         </div>
@@ -207,8 +214,8 @@
                                             </div>
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
-                                                <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                <div class=" mt-4">
+                                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,9 +237,10 @@
     
          <div class="form-group row">
              <div class="col-md-11 col-sm-offset-1">
-                <div class="pull-right sign-up-buttons">
+                <div class="sign-up-buttons" align="center">
 <!--				    <button class="btn btn-primary btn-login" type="submit" name="create-account">{{ __('Pay Now') }}</button>-->
-				        <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-warning">
+                    <p> <span>Or</span></p>
+				        <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-secondary">
                             <?php echo __('Skip');?>
                         </a>
 				</div>
@@ -278,12 +286,12 @@
 					<div class="plan-details">
 						<p>Grab this plan for your best Movies to Watch.</p>
                        
-                        <div class="text-right mt-4">
-							<button type="submit" class="btn btn-danger"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                        <div class=" mt-4">
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
-							<a class="btn btn-danger" href="/invoice">Pay Now</a>
+							<a class="btn btn-primary" href="/invoice">Pay Now</a>
 						</div>
 -->
 					</div>
@@ -329,8 +337,8 @@
                             <div class="plan-details">
                                 <p>Grab this plan for your best Movies to Watch.</p>
 
-                                <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-danger"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                <div class=" mt-4">
+                                    <button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
                         </div>
@@ -343,7 +351,7 @@
          <div class="form-group row">
                 <div class="col-md-10 col-sm-offset-1">
 				      <div class="pull-right sign-up-buttons">
-                   <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-warning">
+                   <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-secondary">
                             <?php echo __('Skip');?>
                         </a>
                     </div>

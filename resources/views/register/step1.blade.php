@@ -102,7 +102,7 @@
 .phselect{
     width: 100px !important;
     height: 45px !important;
-    background: #353127 !important;
+    background: transparent !important;
     color: var(--iq-white) !important;
 }
 .form-control {
@@ -134,7 +134,12 @@
     .catag {
     padding-right: 150px !important;
 }
-
+i.fa.fa-google-plus {
+    padding: 10px !important;
+}
+    option {
+    background: #474644 !important;
+}
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
@@ -279,7 +284,7 @@
 </div>-->
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-5 align-self-center">
+         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
@@ -302,7 +307,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-12">
-                                <input id="email" placeholder="Email Address" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -321,7 +326,7 @@
                             </select>
                             </div>
                             <div class="col-sm-8">
-                                <input id="mobile" type="text" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
@@ -349,10 +354,11 @@
                             </div>
                             <div class="col-md-12">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
                             </div>
-                                
+                                 
                             </div>
-                           <span style="color:var(--iq-secondary)">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                          
                         
                             
 

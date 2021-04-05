@@ -9,11 +9,11 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
 
 ?>
 <style>
-.stripe{
+/*.stripe{
     margin-top: 70px !important;
 
 }
-    </style>
+  */  </style>
 <div class="container">
 <div class="row stripe" id="signup-form">
     
