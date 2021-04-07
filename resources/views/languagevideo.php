@@ -112,6 +112,30 @@
            h3 {
     font-size: 24px !important;
 }
+           .playvid {
+    display: block;
+    width: 280%;
+    height: auto !important;
+    margin-left: -410px;
+}
+            .btn.btn-primary.close {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+           button.close {
+            padding: 9px 30px !important;   
+            border: 0;
+           -webkit-appearance: none;
+}
+           .close{
+               margin-right: -429px !important;
+    margin-top: -1132px !important;
+           }
+           .modal-footer {
+    border-bottom: 0px !important;
+                border-top: 0px !important;
+   
+}
        </style>
    </head>
 
@@ -431,14 +455,23 @@
             </div>
                <?php if(isset($lang_videos)) :
                                 foreach($lang_videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+              <div class="modal fade bd-example-modal-xl"  id="vidModal"   tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                 
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
-        <!-- <video class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;"  poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>-->
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
 </div>
               <?php endforeach; 
@@ -563,23 +596,11 @@ endif; ?>
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-
-
-		<!--<script>
-    $(document).ready(function () {
-      $(".thumb-cont").hide();
-      $(".show-details-button").on("click", function () {
-        var idval = $(this).attr("data-id");
-        $(".thumb-cont").hide();
-        $("#" + idval).show();
-      });
-		$(".closewin").on("click", function () {
-        var idval = $(this).attr("data-id");
-        $(".thumb-cont").hide();
-        $("#" + idval).hide();
-      });
-    });
-  </script>-->
+<!--<script>
+    $(function(){
+   $('#closevid').onclick="document.getElementById('demoVideo').pause();"
+});
+</script>-->
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;
@@ -606,9 +627,8 @@ function about(evt , id) {
 
     <div style="height: 10px;"></div>
 
+<script type="text/javascript">
 
- <script> 
-        
         $(document).ready(function() { 
             $(".play-video").hover(function() { 
                 $(this).css("display", "block"); 
@@ -620,7 +640,7 @@ function about(evt , id) {
           $( ".play-video" ).mouseleave(function() {
             $(this).load(); 
         });
-            
+         
             
             
         }); 

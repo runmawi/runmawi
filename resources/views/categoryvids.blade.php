@@ -171,6 +171,30 @@
     background-color:unset !important;
      border:none !important;
 }
+         .playvid {
+    display: block;
+    width: 280%;
+    height: auto !important;
+    margin-left: -410px;
+}
+            .btn.btn-primary.close {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+           button.close {
+            padding: 9px 30px !important;   
+            border: 0;
+           -webkit-appearance: none;
+}
+           .close{
+               margin-right: -429px !important;
+    margin-top: -1461px !important;
+           }
+           .modal-footer {
+    border-bottom: 0px !important;
+                border-top: 0px !important;
+   
+}
      </style>
    </head>
    <body>
@@ -504,14 +528,23 @@
             </div>
              
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
-        <!-- <video class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;"  poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>-->
+   <div class="modal-dialog modal-xl" role="document">
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
+</div>
 </div>
              
 
