@@ -68,7 +68,30 @@
            h3 {
     font-size: 24px !important;
 }
-           
+           .playvid {
+    display: block;
+    width: 280%;
+    height: auto !important;
+    margin-left: -410px;
+}
+            .btn.btn-primary.close {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+           button.close {
+            padding: 9px 30px !important;   
+            border: 0;
+           -webkit-appearance: none;
+}
+           .close{
+               margin-right: -429px !important;
+    margin-top:-1327px !important;
+           }
+           .modal-footer {
+    border-bottom: 0px !important;
+                border-top: 0px !important;
+   
+} 
            
        </style>
    
@@ -261,10 +284,26 @@
                                     </div>
                                  </div>-->
                               </li>
+                               
+       
+                              <?php   
+                                $role = Auth::user()->role; 
+                               if(Auth::user()->role == 'admin' || Auth::user()->role == 'demo' || Auth::user()->role == 'subadmin'){
+                               
+                               Auth::user()->avatar = $avatar;
+
+                    } else {
+                     $avatar  = 'default.png';
+                    }
+                     ?>
+                               <?php
+$avatars = App\Avatar::find(1);
+?>
+                    
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . $avatars->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
@@ -469,21 +508,30 @@
                   </div>
                </div>
             </div>
-              <?php if(isset($videos)) :
+               <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
-        <!-- <video class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;"  poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>-->
+              <div class="modal fade bd-example-modal-xl" id="vidModal"  tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
 </div>
+              </div>
               <?php endforeach; 
-endif; ?>
-         
+		                                   endif; ?>
+              
                           <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -643,12 +691,25 @@ endif; ?>
               <?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                 
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
+        
        
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
+</div>
+       
 </div>
               <?php endforeach; 
 endif; ?>
@@ -876,18 +937,26 @@ endif; ?>
                   </div>
                </div>
             </div>
-              <?php if(isset($suggested_videos)) :
-                                foreach($suggested_videos as $watchlater_video): ?>
+             
               <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
+        
        
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
 </div>
-              <?php endforeach; 
-endif; ?>
+</div>
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 

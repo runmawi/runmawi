@@ -58,12 +58,23 @@
  <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
+   <div class="modal-dialog modal-xl" role="document">
+        
        
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls="" autoplay="" id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
+</div>
 </div>
               <?php endforeach; 
 endif; ?>

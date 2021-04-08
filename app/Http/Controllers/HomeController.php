@@ -69,6 +69,7 @@ class HomeController extends Controller
     
        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
        $settings = Setting::first();
+      
        $genre = Genre::all();
        $genre_video_display = VideoCategory::all();
         

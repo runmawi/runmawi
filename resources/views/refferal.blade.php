@@ -45,21 +45,27 @@
     } .list-group-item {
         color: #000;
     }
-    .referral {
+  /*  .referral {
     margin-top: 80px;
-}
+}*/
             a {
     color: var(--iq-body-text) !important;
 }
-            .navbar-right.menu-right {
+            /*.navbar-right.menu-right {
     margin-right: -150px !important;
-}
+}*/
             .catag{
             padding-right: 120px !important;
         }
         .c-logo{
             margin-bottom: 20px !important;
         }
+           .footref{
+               width: 116% !important;
+    margin-left: -95px !important;
+               top: 1rem !important;
+}
+           
               </style>
    </head>
  
@@ -423,7 +429,7 @@ if (Auth::user()) {
 						<div class="row">
 							<div class="col-md-10 col-sm-offset-1 refernearn">
 									<h1 class="text-center"> Refer 'N' Earn with Flicknexs</h1>                                       
-									<img src="<?php echo URL::to('/').'/assets/img/users.png';?>" class="img-responsive" />
+									<img width="250px" src="<?php echo URL::to('/').'/assets/img/users.png';?>" class="img-responsive" />
                                     <p class="text-center">
                                         Flicknexs Refer'N'Earn offer for Coupon Codes. Each user can earn a coupon code after your get subscribed with us. The offer provides Coupon Code on every successful referral Subscriptions.
                                     </p>   
@@ -459,39 +465,7 @@ if (Auth::user()) {
     </div>
 </div>
 
-
-
-         <!-- back-to-top End -->
-      <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
-      <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
-      <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
-      <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
-      <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
-      <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
-      <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
-      <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-<script>
-function copyToClipboard(element) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  $temp.val($(element).text()).select();
-  document.execCommand("copy");
-  $temp.remove();
-}
-
-</script></body>
-<footer class="mb-0">
+<footer class="mb-0 footref">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row">
@@ -587,6 +561,37 @@ function copyToClipboard(element) {
             </div>
          </div>
       </footer>
+       
+         <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="assets/js/popper.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="assets/js/bootstrap.min.js"></script>
+      <!-- Slick JS -->
+      <script src="assets/js/slick.min.js"></script>
+      <!-- owl carousel Js -->
+      <script src="assets/js/owl.carousel.min.js"></script>
+      <!-- select2 Js -->
+      <script src="assets/js/select2.min.js"></script>
+      <!-- Magnific Popup-->
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <!-- Slick Animation-->
+      <script src="assets/js/slick-animation.min.js"></script>
+      <!-- Custom JS-->
+      <script src="assets/js/custom.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+
+</script></body>
     </html>
      
        

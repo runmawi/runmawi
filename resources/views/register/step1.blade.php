@@ -111,7 +111,7 @@
     background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
-    color: var(--iq-white);
+    color: var(--iq-white) !important;
     border-radius: 0;
     margin-bottom: 1rem !important;
 }
@@ -298,7 +298,7 @@ i.fa.fa-google-plus {
                                 <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
 
                                 <div class="col-md-12">
-                                    <input id="username" type="text"  class="form-control  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -321,7 +321,7 @@ i.fa.fa-google-plus {
                             <div class="col-sm-4">
                               <select class="phselect" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
-                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>
                             </div>
@@ -519,6 +519,13 @@ i.fa.fa-google-plus {
     </section>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+    $('.alphaonly').bind('keyup blur',function(){ 
+    var node = $(this);
+    node.val(node.val().replace(/[^a-z,^A-Z ]/g,'') ); }
+);
+</script>
+
 <script type="text/javascript">
     
 function format(item, state) {
