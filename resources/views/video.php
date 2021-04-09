@@ -184,7 +184,7 @@ border-radius: 25px !important;
 						</div>
 					<?php  elseif($video->type == 'file'): ?>
 						<div id="video_container" class="fitvid">
-						<video id="videojs-seek-buttons-player"  autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
@@ -209,7 +209,7 @@ border-radius: 25px !important;
 						</div>
 					<?php  else: ?>
 						<div id="video_container" class="fitvid" atyle="z-index: 9999;">
-						<video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()" autoplay class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 						
 						<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 						
@@ -257,7 +257,7 @@ border-radius: 25px !important;
   <?php }  
     else { ?>       
 		<div id="video_container" class="fitvid">
-			<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+			<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 				<source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
 			</video> 
 						
@@ -265,7 +265,7 @@ border-radius: 25px !important;
 	<?php } } ?>
 	<?php if(Auth::guest()) {  ?>
 		<div id="video_container" class="fitvid">
-				<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+				<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 			 <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
 			  </video>  
