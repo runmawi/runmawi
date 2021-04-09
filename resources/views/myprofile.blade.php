@@ -435,7 +435,7 @@
                         </form>
                      </li>-->
                       <li class="nav-item nav-icon">
-                      <a type="button" class="btn btn-primary  noborder-radius btn-login nomargin visitbtn" href="<?php echo URL::to('home') ?>" target="_blank" ><span>Visit site</span></a>
+                      <a type="button" class="btn btn-primary  noborder-radius btn-login nomargin visitbtn" href="<?php echo URL::to('home') ?>" ><span>Visit site</span></a>
                       </li>
                      <li class="nav-item nav-icon">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
