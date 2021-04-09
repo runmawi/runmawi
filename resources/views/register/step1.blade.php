@@ -140,6 +140,12 @@ i.fa.fa-google-plus {
     option {
     background: #474644 !important;
 }
+    .reveal{
+        margin-left: -92px !important;
+    height: 45px !important;
+    background: transparent !important;
+    color: #fff !important;
+    }
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
@@ -344,16 +350,40 @@ i.fa.fa-google-plus {
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                  </div>
                                  <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                               
+                                     <div class="row">
+                                     <div class="col-md-12">
+                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                         </div>
+                                         <div >
+                                <span class="input-group-btn" id="eyeSlash">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                 </span>
+                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                 </span>
+                                         </div>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror                               
+                                @enderror
+                                         </div>
                             </div>
                             <div class="col-md-12">
+                                <div class="row">
+                                     <div class="col-md-12">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                    </div>
+                                    <div >
+                              <span class="input-group-btn" id="eyeSlash1">
+                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                 </span>
+                                 <span class="input-group-btn" id="eyeShow1" style="display: none;">
+                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                 </span>
+                                    </div>
+                                </div>
+    
                                 <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
                             </div>
                                  
@@ -519,6 +549,34 @@ i.fa.fa-google-plus {
     </section>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+<script>
+    function visibility2() {
+  var x = document.getElementById('password-confirm');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow1').show();
+    $('#eyeSlash1').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow1').hide();
+    $('#eyeSlash1').show();
+  }
+}
+</script>
 <script>
     $('.alphaonly').bind('keyup blur',function(){ 
     var node = $(this);
