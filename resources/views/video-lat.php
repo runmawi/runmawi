@@ -179,8 +179,8 @@ border-radius: 25px !important;
             }
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid myform">
-							<iframe  width="100%" height="500" src="https://www.youtube.com/embed/<?= $video->embed_code ?>" frameborder="0" allowfullscreen></iframe><!-- <?= $video->embed_code ?> -->
+						<div id="video_container" class="fitvid">
+							<?= $video->embed_code ?>
 						</div>
 					<?php  elseif($video->type == 'file'): ?>
 						<div id="video_container" class="fitvid">
