@@ -270,7 +270,7 @@
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                  <?php if(Auth::guest()): ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                       <?php else: ?>
                                  <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                       <?php endif; ?>
