@@ -19,6 +19,14 @@
       <!-- Responsive -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
        <style>
+           .blink_me {
+    animation: blinker 2s linear infinite;
+  }
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
            .h-100 {
     height: 540px !important;
 }
@@ -261,7 +269,11 @@
                               <li class="nav-item nav-icon">
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/'  /*. Auth::user()->avatar */?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                 <?php if(Auth::guest()): ?>
+                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                      <?php else: ?>
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                      <?php endif; ?>
                                  </a>
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
@@ -347,7 +359,7 @@
       </div>
       <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <scriptsrc="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src= "<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
       <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
@@ -363,6 +375,42 @@
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+       <script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
+    
+<script>
+  // Prevent closing from click inside dropdown
+  $(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
+    
+  // make it as accordion for smaller screens
+  if ($(window).width() < 960) {
+    $('.dropdown-menu a').click(function(e){
+      e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.submenu').hide();
+      }
+                       )
+    }
+                               );
+  }
+</script>
      <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {

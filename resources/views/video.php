@@ -1,6 +1,5 @@
 
-<!doctype html>
-<html lang="en-US">
+
    <head>
       <!-- Required meta tags -->
        <meta name="csrf-token" content="<?php echo csrf_token();?>">
@@ -1055,7 +1054,5 @@ $(document).ready(function () {
       <script src="<?php echo URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?php echo URL::to('/'). '/assets/js/custom.js';?>"></script>
-    </body>
-</html>
-
+   
 <?php include('footer.blade.php');?>

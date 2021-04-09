@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <?php 
     $jsonString = file_get_contents(base_path('assets/country_code.json'));   
@@ -192,7 +191,6 @@
 </style>
 
 </head>
-<body >
 
 
 <!--<div class="page-container sidebar-collapsed">--><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
@@ -1849,5 +1847,3 @@ var chart_01_lable = $('#chart_01_lable').val();
 <?php } ?>
 
 
-</body>
-</html>
