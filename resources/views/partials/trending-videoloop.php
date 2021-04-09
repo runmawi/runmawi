@@ -55,7 +55,7 @@
                   </div>
                </div>
             </div>
- <?php if(isset($featured_videos)) :
+ <!--<?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
@@ -77,7 +77,7 @@
 </div>
 </div>
               <?php endforeach; 
-endif; ?>
+endif; ?>-->
 <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
