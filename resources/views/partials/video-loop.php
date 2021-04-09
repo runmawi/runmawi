@@ -2,7 +2,7 @@
 
 $settings = App\Setting::first();
 ?>
-<style>
+<!--<style>
      .playvid {
     display: block;
     width: 280%;
@@ -27,7 +27,7 @@ $settings = App\Setting::first();
                 border-top: 0px !important;
    
 }
-</style>
+</style>-->
 <section id="iq-favorites">
             <div class="container-fluid">
                <div class="row">

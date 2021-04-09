@@ -232,7 +232,7 @@
                   </div>
                </div>
             </div>
-               <?php if(isset($videos)) :
+              <!-- <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl" id="vidModal"  tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
@@ -254,7 +254,7 @@
 </div>
               </div>
               <?php endforeach; 
-		                                   endif; ?>
+		                                   endif; ?>-->
               
                           <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
@@ -412,7 +412,7 @@ endif; ?>
                   </div>
                </div>
             </div>
-              <?php if(isset($latest_videos)) :
+              <!--<?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                  
@@ -437,7 +437,7 @@ endif; ?>
 </div>
               <?php endforeach; 
 endif; ?>
-         
+         -->
                           <?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -578,7 +578,7 @@ endif; ?>
                                 <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $watchlater_video): ?>
                               <li>
-                                 <div class="block-images position-relative">
+                                 <div class="block-images position-relative active">
                                     <a href="<?php echo URL::to('home') ?>">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                                     </a>
@@ -662,7 +662,7 @@ endif; ?>
                </div>
             </div>
              
-              <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+             <!-- <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
         
        
@@ -680,7 +680,7 @@ endif; ?>
          
   </div>
 </div>
-</div>
+</div>-->
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
