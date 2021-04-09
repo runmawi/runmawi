@@ -111,7 +111,7 @@ endif; ?>
 
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
-                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
+                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
                                     <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
