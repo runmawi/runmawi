@@ -1,6 +1,23 @@
 
      <?php include('header.php');?>
-  
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Flicknexs</title>
+       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+      <!-- Typography CSS -->
+      <link rel="stylesheet" href="assets/css/typography.css" />
+      <!-- Style -->
+      <link rel="stylesheet" href="assets/css/style.css" />
+      <!-- Responsive -->
+      <link rel="stylesheet" href="assets/css/responsive.css" />
      
        <style>
            
@@ -1355,7 +1372,23 @@ endif; ?>
       <div id="back-to-top">
          <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
       </div>
-     
+      <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+   <script src="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></script>
+      <!-- Slick JS -->
+      <script src="assets/js/slick.min.js"></script>
+      <!-- owl carousel Js -->
+      <script src="assets/js/owl.carousel.min.js"></script>
+      <!-- select2 Js -->
+      <script src="assets/js/select2.min.js"></script>
+      <!-- Magnific Popup-->
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <!-- Slick Animation-->
+      <script src="assets/js/slick-animation.min.js"></script>
+      <!-- Custom JS-->
+      <script src="assets/js/custom.js"></script>
        
        <script>
     $(document).ready(function () {

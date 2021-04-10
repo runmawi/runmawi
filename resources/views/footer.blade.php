@@ -1,6 +1,26 @@
-
-    
-
+<!doctype html>
+<html>
+    <head>
+<meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Flicknexs</title>
+       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/../assets/admin/dashassets/js/jquery.hoverplay.js';?>"></script>-->
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+      <!-- Typography CSS -->
+      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+      <!-- Style -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+      <!-- Responsive -->
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+      <link  href="admin/">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        </head>
+<body>
     <style>
         .catag{
             padding-right: 150px !important;
@@ -9,7 +29,6 @@
             margin-bottom: 20px !important;
         }
     </style>
-        
  <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
