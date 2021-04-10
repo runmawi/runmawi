@@ -178,7 +178,7 @@ endif; ?>
 endif; ?>
 
 
- <script> 
+ <!--<script> 
         
         $(document).ready(function() { 
             $(".play-video").hover(function() { 
@@ -195,7 +195,7 @@ endif; ?>
             
             
         }); 
-   </script> 
+   </script> -->
 <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
