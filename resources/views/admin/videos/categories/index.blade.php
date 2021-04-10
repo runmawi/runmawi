@@ -120,24 +120,25 @@
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
-            <table class="table table-bordered">
-                <tr class="table-header">
-                    <th>Video Category Name</th>
-                    <th>Operation</th>
-                    @foreach($allCategories as $category)
-                    <tr>
-                        <td valign="bottom"><p>{{ $category->name }}</p></td>
-                        <td>
-                            <div class="flex align-items-center list-user-action"><a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
-                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><i
-                                                class="ri-delete-bin-line"></i></a></div>
-                           
-                        </td>
-                    </tr>
-                    @endforeach
-            </table>
+                            <table class="table table-bordered">
+                                <tr class="table-header">
+                                    <th>Video Category Name</th>
+                                    <th>Operation</th>
+                                    @foreach($allCategories as $category)
+                                    <tr>
+                                        <td valign="bottom"><p>{{ $category->name }}</p></td>
+                                        <td>
+                                            <div class="flex align-items-center list-user-action">
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
+                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                                             data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><i
+                                                                class="ri-delete-bin-line"></i></a></div>
+
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                            </table>
            
 				
 				</div>

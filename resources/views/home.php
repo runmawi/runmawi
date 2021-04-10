@@ -18,6 +18,7 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+       
      
        <style>
            
@@ -234,25 +235,30 @@
             </div>
                <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl" id="vidModal"  tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-xl" role="document">
-        
-       
-    <div class="modal-content" style="background-color: transparent !important;">
-       
-         
-         <div class="modal-body">
-        <video id="framevid" class="playvid" autostart="false" loop="true"  name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <video width="100%" controls poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>">
+         <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" >
+        </video>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
-        <div class="modal-footer" align="center" >
-                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
-                  
-                    </div>
-         
   </div>
 </div>
-              </div>
+              
+         
+    
               <?php endforeach; 
 		                                   endif; ?>
               
@@ -1389,6 +1395,15 @@ endif; ?>
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('#exampleModal').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
        
        <script>
     $(document).ready(function () {
