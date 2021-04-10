@@ -82,10 +82,7 @@ endif; ?>
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-     <iframe class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;" src="<?= $watchlater_video->trailer; ?>" frameborder="0" allowfullscreen></iframe>
-        <!-- <video class="embed-responsive-item"  width="270%" height="600" style="margin-left:-415px;"  poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>-->
+    <video id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
     </div>
   </div>
 </div>
