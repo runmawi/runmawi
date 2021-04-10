@@ -18,6 +18,9 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
      
        <style>
            
@@ -289,7 +292,7 @@
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
                         <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>"  autostart="false">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
@@ -471,8 +474,8 @@ endif; ?>
 
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
-                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"   muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>"  autostart="false">
+                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
@@ -715,7 +718,7 @@ endif; ?>
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
                         <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>"  autostart="false">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">

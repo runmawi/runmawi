@@ -112,7 +112,7 @@ endif; ?>
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
                         <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
-                                    <source src="<?= $watchlater_video->trailer; ?>" autostart="false">
+                                    <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
@@ -178,7 +178,7 @@ endif; ?>
 endif; ?>
 
 
- <!--<script> 
+ <script> 
         
         $(document).ready(function() { 
             $(".play-video").hover(function() { 
@@ -195,7 +195,7 @@ endif; ?>
             
             
         }); 
-   </script> -->
+   </script> 
 <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
