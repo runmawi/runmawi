@@ -125,7 +125,7 @@
                              </div>
                          <div class="row">
                               <div class="col-sm-6 form-group">
-                                  <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+                                  <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" >
                               </div>
                              </div>
                               @if(isset($video->id))
