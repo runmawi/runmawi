@@ -1,5 +1,6 @@
 
-
+<!doctype html>
+<html lang="en-US">
    <head>
       <!-- Required meta tags -->
        <meta name="csrf-token" content="<?php echo csrf_token();?>">
@@ -102,7 +103,7 @@ border-radius: 25px !important;
     }
 .vjs-texttrack-settings { display: none; }
 .video-js .vjs-big-play-button{ border: none !important; }
-    #video_container{height: auto;width: 95%;margin: 0 auto;}
+    #video_container{height: auto;padding-top: 120px !important;;width: 95%;margin: 0 auto;}
 /*    #video_bg_dim {background: #1a1b20;}*/
     .video-js .vjs-tech {outline: none;}
     
@@ -178,12 +179,12 @@ border-radius: 25px !important;
             }
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid myform">
-							<iframe  width="100%" height="500" src="https://www.youtube.com/embed/<?= $video->embed_code ?>" frameborder="0" allowfullscreen></iframe><!-- <?= $video->embed_code ?> -->
+						<div id="video_container" class="fitvid">
+							<?= $video->embed_code ?>
 						</div>
 					<?php  elseif($video->type == 'file'): ?>
 						<div id="video_container" class="fitvid">
-						<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videojs-seek-buttons-player"  autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
@@ -208,7 +209,7 @@ border-radius: 25px !important;
 						</div>
 					<?php  else: ?>
 						<div id="video_container" class="fitvid" atyle="z-index: 9999;">
-						<video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()" autoplay class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 						
 						<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 						
@@ -256,7 +257,7 @@ border-radius: 25px !important;
   <?php }  
     else { ?>       
 		<div id="video_container" class="fitvid">
-			<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+			<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 				<source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
 			</video> 
 						
@@ -264,7 +265,7 @@ border-radius: 25px !important;
 	<?php } } ?>
 	<?php if(Auth::guest()) {  ?>
 		<div id="video_container" class="fitvid">
-				<video id="videojs-seek-buttons-player"  onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+				<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 			 <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
 			  </video>  
@@ -1054,5 +1055,7 @@ $(document).ready(function () {
       <script src="<?php echo URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?php echo URL::to('/'). '/assets/js/custom.js';?>"></script>
-   
+    </body>
+</html>
+
 <?php include('footer.blade.php');?>

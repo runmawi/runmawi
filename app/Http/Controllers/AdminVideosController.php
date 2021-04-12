@@ -441,6 +441,9 @@ class AdminVideosController extends Controller
                 $data['active'] = 0;
             } 
            
+            if(empty($data['video_gif'])){
+                $data['video_gif'] = '';
+            }
             if(empty($data['type'])){
                 $data['type'] = '';
             }

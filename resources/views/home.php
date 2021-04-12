@@ -19,6 +19,7 @@
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
        
+       
      
        <style>
            
@@ -117,7 +118,7 @@
                 foreach ($banner as $key => $bannerdetails) { ?>
                 <div class="item <?php if($key == 0){echo 'active';}?> header-image" >
                     <a href="<?=$bannerdetails->link;  ?>">
-            <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/'.$bannerdetails->slider;  ?>') no-repeat;background-size: cover;">
+            <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$watchlater_video->image;  ?>') no-repeat;background-size: cover;">
                <div class="container-fluid position-relative h-100">
                   <div class="slider-inner h-100">
                      <div class="row align-items-center  h-100">
@@ -136,6 +137,8 @@
                            <p data-animation-in="fadeInUp" data-delay-in="1.2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
                               dummy text ever since the 1500s.
                            </p>
+                            <!--<p data-animation-in="fadeInUp" data-delay-in="1.2" style="overflow: hidden !important;text-overflow: ellipsis !important;height: 100px;"><?php echo __($watchlater_video->description); ?>
+                           </p>-->
                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                               <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
@@ -667,7 +670,8 @@ endif; ?>
                   </div>
                </div>
             </div>
-             
+             <?php if(isset($suggested_videos)) :
+                                foreach($suggested_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
         
@@ -687,6 +691,8 @@ endif; ?>
   </div>
 </div>
 </div>
+              <?php endforeach; 
+		                                   endif; ?>
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
