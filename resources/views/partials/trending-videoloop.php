@@ -23,7 +23,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2" data-id="<?= $featured_video->id;?>">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -56,7 +56,7 @@
                </div>
             </div>
 <?php if(isset($featured_videos)) :
-                                foreach($featured_videos as $featured_video): ?>
+                                foreach($featured_videos as $watchlater_video): ?>
   <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -65,16 +65,16 @@
        
          
          <div class="modal-body">
-       <?php if($featured_video->type == 'embed'): ?>
+       <?php if($watchlater_video->type == 'embed'): ?>
 						<div id="video_container" class="fitvid">
-							<?= $featured_video->embed_code ?>
+							<?= $watchlater_video->embed_code ?>
 						</div>
 					<?php  elseif($watchlater_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source id="<?= $featured_video->id;?>" src="<?= $featured_video->trailer; ?>" type="video/mp4"></video>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
                                         <?php endif; ?></div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();"   ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          
