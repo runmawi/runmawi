@@ -18,6 +18,9 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+       <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+     
        
        
      
@@ -203,7 +206,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" data-id="<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -236,34 +239,30 @@
                   </div>
                </div>
             </div>
-               <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
-              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <video width="100%" controls poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>">
-         <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" >
-        </video>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+              
+              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls=""  id="framevid<?= $watchlater_video->id;?>" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();"   ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
+</div>
 </div>
               
          
     
-              <?php endforeach; 
-		                                   endif; ?>
+             
               
                           <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
@@ -389,7 +388,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -421,18 +420,16 @@ endif; ?>
                   </div>
                </div>
             </div>
-              <?php if(isset($latest_videos)) :
-                                foreach($latest_videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                 
-  <div class="modal-dialog modal-xl" role="document">
+              
+              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
         
        
     <div class="modal-content" style="background-color: transparent !important;">
        
          
          <div class="modal-body">
-        <video id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
@@ -442,10 +439,7 @@ endif; ?>
          
   </div>
 </div>
-       
 </div>
-              <?php endforeach; 
-endif; ?>
          
                           <?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
@@ -641,7 +635,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
                                               Play Now</span></button>
                                        </div>
@@ -670,17 +664,16 @@ endif; ?>
                   </div>
                </div>
             </div>
-             <?php if(isset($suggested_videos)) :
-                                foreach($suggested_videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
+            
+              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
         
        
     <div class="modal-content" style="background-color: transparent !important;">
        
          
          <div class="modal-body">
-        <video   id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
@@ -691,8 +684,7 @@ endif; ?>
   </div>
 </div>
 </div>
-              <?php endforeach; 
-		                                   endif; ?>
+             
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -1403,7 +1395,7 @@ endif; ?>
       <script src="assets/js/custom.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('#exampleModal').modal({
+      $('.bd-example-modal-xl').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();

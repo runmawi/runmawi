@@ -55,9 +55,7 @@
                   </div>
                </div>
             </div>
- <?php if(isset($featured_videos)) :
-                                foreach($featured_videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -65,7 +63,7 @@
        
          
          <div class="modal-body">
-        <video   id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true" ></video>
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
@@ -76,8 +74,6 @@
   </div>
 </div>
 </div>
-              <?php endforeach; 
-endif; ?>
 <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -196,7 +192,7 @@ endif; ?>
             
         }); 
    </script> 
-<script>
+<!--<script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -210,7 +206,7 @@ endif; ?>
         $("#" + idval).hide();
       });
     });
-  </script>
+  </script>-->
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;
@@ -229,6 +225,6 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->

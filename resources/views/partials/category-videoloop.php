@@ -9,6 +9,35 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+<style>
+     .playvid {
+    display: block;
+    width: 280%;
+    height: auto !important;
+    margin-left: -410px;
+}
+            .btn.btn-primary.close {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+           button.close {
+            padding: 9px 30px !important;   
+            border: 0;
+           -webkit-appearance: none;
+}
+           .close{
+               margin-right: -429px !important;
+    margin-top: -1461px !important;
+           }
+           .modal-footer {
+    border-bottom: 0px !important;
+                border-top: 0px !important;
+   
+}
+</style>
 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 <?php if(isset($videos)) :
 foreach($videos as $watchlater_video): ?>
@@ -77,20 +106,28 @@ endif; ?>
                   </div>
                </div>
             </div>
- <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
+ 
+             
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-    <video id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
+   <div class="modal-dialog modal-xl" role="document">
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+         <div class="modal-body">
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
     </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
 </div>
-              <?php endforeach; 
-endif; ?>
-
-                                 <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
+</div>
+             
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
@@ -185,11 +222,26 @@ endif; ?>
 	
 	</div></div>
 
-<?php endforeach; 
-endif; ?>
+ <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="assets/js/popper.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="assets/js/bootstrap.min.js"></script>
+      <!-- Slick JS -->
+      <script src="assets/js/slick.min.js"></script>
+      <!-- owl carousel Js -->
+      <script src="assets/js/owl.carousel.min.js"></script>
+      <!-- select2 Js -->
+      <script src="assets/js/select2.min.js"></script>
+      <!-- Magnific Popup-->
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <!-- Slick Animation-->
+      <script src="assets/js/slick-animation.min.js"></script>
+      <!-- Custom JS-->
+      <script src="assets/js/custom.js"></script>
 
-
-<script>
+<!--<script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -203,7 +255,7 @@ endif; ?>
         $("#" + idval).hide();
       });
     });
-  </script>
+  </script>-->
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;
@@ -223,9 +275,9 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
 
 
