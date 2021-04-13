@@ -662,28 +662,28 @@ endif; ?>
                   </div>
                </div>
             </div>
-             <?php  if(isset($suggested_videos)) :
-			                       foreach($suggested_videos as $watchlater_video): ?>
-            <div class="modal fade bd-example-modal-xl3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-xl" role="document">
-        
-       
-    <div class="modal-content" style="background-color: transparent !important;">
-       
-         
-         <div class="modal-body">
-        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-    </div>
-        <div class="modal-footer" align="center" >
-                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
-                  
-                    </div>
-         
-  </div>
-</div>
-</div>
-             <?php endforeach; 
+            <?php  if(isset($suggested_videos)) :
+                    foreach($suggested_videos as $suggested_video): ?>
+                        <div class="modal fade bd-example-modal-xl3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content" style="background-color: transparent !important;">
+                                    <div class="modal-body">
+                                         <?php if($suggested_video->type == 'embed'): ?>
+						<div id="video_container" class="fitvid">
+							<?= $suggested_video->embed_code ?>
+						</div>
+					<?php  elseif($suggested_video->type == 'file'): ?>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $suggested_video->trailer; ?>" type="video/mp4"></video>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="modal-footer" align="center" >
+                                        <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+                                    onclick="document.getElementById('framevid').pause();" id="<?= $suggested_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            <?php endforeach; 
 		                                   endif; ?>
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
