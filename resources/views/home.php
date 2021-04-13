@@ -70,7 +70,7 @@
            h3 {
     font-size: 24px !important;
 }
-           /*.playvid {
+           .playvid {
     display: block;
     width: 280%;
     height: auto !important;
@@ -93,7 +93,7 @@
     border-bottom: 0px !important;
                 border-top: 0px !important;
    
-} */
+} 
            
        </style>
    

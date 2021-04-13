@@ -13,7 +13,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
 <style>
-     /*.playvid {
+     .playvid {
     display: block;
     width: 280%;
     height: auto !important;
@@ -36,7 +36,7 @@
     border-bottom: 0px !important;
                 border-top: 0px !important;
    
-}*/
+}
 </style>
 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 <?php if(isset($videos)) :
@@ -106,7 +106,9 @@ endif; ?>
                   </div>
                </div>
             </div>
-  
+  <?php  if(isset($videos)) :
+			                       foreach($videos as $watchlater_video): ?>
+             
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -126,7 +128,8 @@ endif; ?>
   </div>
 </div>
 </div>
- 
+ <?php endforeach; 
+		                                   endif; ?>
              
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
