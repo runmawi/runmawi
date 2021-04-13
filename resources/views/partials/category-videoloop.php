@@ -74,7 +74,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl4">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -106,7 +106,8 @@ endif; ?>
                   </div>
                </div>
             </div>
- 
+  <?php  if(isset($videos)) :
+			                       foreach($videos as $watchlater_video): ?>
              
               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
@@ -127,6 +128,8 @@ endif; ?>
   </div>
 </div>
 </div>
+ <?php endforeach; 
+		                                   endif; ?>
              
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
@@ -240,6 +243,15 @@ endif; ?>
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl4').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
 
 <script>
     $(document).ready(function () {
