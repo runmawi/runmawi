@@ -241,7 +241,7 @@ endif; ?>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
 
-<!--<script>
+<script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -255,7 +255,7 @@ endif; ?>
         $("#" + idval).hide();
       });
     });
-  </script>-->
+  </script>
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;

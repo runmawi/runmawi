@@ -462,7 +462,7 @@
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
-      <!-- <script>
+       <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
@@ -476,7 +476,7 @@
         $("#" + idval).hide();
       });
     });
-  </script>-->
+  </script>
        <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 <script>
 function about(evt , id) {
