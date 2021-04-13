@@ -203,7 +203,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" data-id="<?= $watchlater_video->id;?>">
+                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -246,16 +246,11 @@
        
          
          <div class="modal-body">
-         <?php if($watchlater_video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid">
-							<?= $watchlater_video->embed_code ?>
-						</div>
-					<?php  elseif($watchlater_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source id="<?= $watchlater_video->id;?>"  src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-                                        <?php endif; ?></div>
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+    </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();"  ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          
@@ -389,7 +384,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1" data-id="<?= $latest_video->id;?>">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -422,7 +417,7 @@ endif; ?>
                </div>
             </div>
               <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $latest_video): ?>
+			                       foreach($latest_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -431,16 +426,11 @@ endif; ?>
        
          
          <div class="modal-body">
-        <?php if($latest_video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid">
-							<?= $latest_video->embed_code ?>
-						</div>
-					<?php  elseif($latest_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source id="<?= $latest_video->id;?>"  src="<?= $latest_video->trailer; ?>" type="video/mp4"></video>
-                                        <?php endif; ?></div>
+        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+    </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $latest_video->id;?>"  ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          
@@ -643,7 +633,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl3" data-id="<?= $suggested_video->id;?>">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl3">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
                                               Play Now</span></button>
                                        </div>
@@ -683,12 +673,12 @@ endif; ?>
 							<?= $suggested_video->embed_code ?>
 						</div>
 					<?php  elseif($suggested_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source id="<?= $suggested_video->id;?>" src="<?= $suggested_video->trailer; ?>" type="video/mp4"></video>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $suggested_video->trailer; ?>" type="video/mp4"></video>
                                         <?php endif; ?>
                                     </div>
                                     <div class="modal-footer" align="center" >
                                         <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
-                                    onclick="document.getElementById('framevid').pause();"   ><span aria-hidden="true">X</span></button>
+                                    onclick="document.getElementById('framevid').pause();" id="<?= $suggested_video->id;?>"  ><span aria-hidden="true">X</span></button>
                                     </div>
                                 </div>
                             </div>
