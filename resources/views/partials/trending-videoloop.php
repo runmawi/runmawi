@@ -56,7 +56,7 @@
                </div>
             </div>
 <?php if(isset($featured_videos)) :
-                                foreach($featured_videos as $watchlater_video): ?>
+                                foreach($featured_videos as $featured_video): ?>
   <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -65,16 +65,16 @@
        
          
          <div class="modal-body">
-       <?php if($watchlater_video->type == 'embed'): ?>
+       <?php if($featured_video->type == 'embed'): ?>
 						<div id="video_container" class="fitvid">
-							<?= $watchlater_video->embed_code ?>
+							<?= $featured_video->embed_code ?>
 						</div>
-					<?php  elseif($watchlater_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+					<?php  elseif($featured_video->type == 'file'): ?>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $featured_video->trailer; ?>" type="video/mp4"></video>
                                         <?php endif; ?></div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('framevid').pause();" id="<?= $featured_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          

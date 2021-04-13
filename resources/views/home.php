@@ -246,8 +246,13 @@
        
          
          <div class="modal-body">
-        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-    </div>
+         <?php if($watchlater_video->type == 'embed'): ?>
+						<div id="video_container" class="fitvid">
+							<?= $watchlater_video->embed_code ?>
+						</div>
+					<?php  elseif($watchlater_video->type == 'file'): ?>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+                                        <?php endif; ?> </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
  onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
@@ -417,7 +422,7 @@ endif; ?>
                </div>
             </div>
               <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+			                       foreach($latest_videos as $latest_video): ?>
               <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -426,11 +431,16 @@ endif; ?>
        
          
          <div class="modal-body">
-        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-    </div>
+        <?php if($latest_video->type == 'embed'): ?>
+						<div id="video_container" class="fitvid">
+							<?= $latest_video->embed_code ?>
+						</div>
+					<?php  elseif($latest_video->type == 'file'): ?>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $latest_video->trailer; ?>" type="video/mp4"></video>
+                                        <?php endif; ?> </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('framevid').pause();" id="<?= $latest_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          
@@ -1428,6 +1438,13 @@ endif; ?>
           $(this).find('video')[0].pause();
       });
     });
+</script>
+<script type="text/javascript">
+     $(document).ready(function(){
+   $('.bd-example-modal-xl').on('hidden.bs.modal', function() {
+  $('iframe').contents().find('video')[0].pause();
+});
+          });
 </script>
        
        <script>
