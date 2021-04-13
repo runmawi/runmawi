@@ -18,9 +18,6 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
-       <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
-       <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
        
        
      
@@ -239,8 +236,7 @@
                   </div>
                </div>
             </div>
-              
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -259,10 +255,6 @@
   </div>
 </div>
 </div>
-              
-         
-    
-             
               
                           <?php if(isset($videos)) :
                                 foreach($videos as $watchlater_video): ?>
@@ -388,7 +380,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -420,8 +412,9 @@ endif; ?>
                   </div>
                </div>
             </div>
-              
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+              <?php  if(isset($latest_videos)) :
+			                       foreach($latest_videos as $watchlater_video): ?>
+              <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -440,7 +433,8 @@ endif; ?>
   </div>
 </div>
 </div>
-         
+             <?php endforeach; 
+		                                   endif; ?>
                           <?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -635,7 +629,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl3">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
                                               Play Now</span></button>
                                        </div>
@@ -664,8 +658,9 @@ endif; ?>
                   </div>
                </div>
             </div>
-            
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+             <?php  if(isset($suggested_videos)) :
+			                       foreach($suggested_videos as $watchlater_video): ?>
+            <div class="modal fade bd-example-modal-xl3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -684,7 +679,8 @@ endif; ?>
   </div>
 </div>
 </div>
-             
+             <?php endforeach; 
+		                                   endif; ?>
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -1396,6 +1392,33 @@ endif; ?>
 <script type="text/javascript">
     $(document).ready(function(){
       $('.bd-example-modal-xl').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl1').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl2').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl3').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();

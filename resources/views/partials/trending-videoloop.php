@@ -23,7 +23,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -55,7 +55,9 @@
                   </div>
                </div>
             </div>
-  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<?php if(isset($featured_videos)) :
+                                foreach($featured_videos as $watchlater_video): ?>
+  <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -74,6 +76,8 @@
   </div>
 </div>
 </div>
+<?php endforeach; 
+		                                   endif; ?>
 <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
