@@ -449,21 +449,9 @@
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
-       <script>
-window.onscroll = function() {myFunction()};
-
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
-</script>
     
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+
 <script>
   // Prevent closing from click inside dropdown
   $(document).on('click', '.dropdown-menu', function (e) {
@@ -518,6 +506,18 @@ function myFunction() {
                    );
 </script>
     
+   <script>
+window.onscroll = function() {myFunction()};
 
-   </body>
-</html>
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
+  

@@ -1389,6 +1389,27 @@ endif; ?>
          <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
       </div>
     
+<script>
+  // Prevent closing from click inside dropdown
+  $(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
+    
+  // make it as accordion for smaller screens
+  if ($(window).width() < 960) {
+    $('.dropdown-menu a').click(function(e){
+      e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.submenu').hide();
+      }
+                       )
+    }
+                               );
+  }
+</script>
 <script type="text/javascript">
     $(document).ready(function(){
       $('.bd-example-modal-xl').modal({
@@ -1472,27 +1493,7 @@ function about(evt , id) {
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
     
-<script>
-  // Prevent closing from click inside dropdown
-  $(document).on('click', '.dropdown-menu', function (e) {
-    e.stopPropagation();
-  });
-    
-  // make it as accordion for smaller screens
-  if ($(window).width() < 960) {
-    $('.dropdown-menu a').click(function(e){
-      e.preventDefault();
-      if($(this).next('.submenu').length){
-        $(this).next('.submenu').toggle();
-      }
-      $('.dropdown').on('hide.bs.dropdown', function () {
-        $(this).find('.submenu').hide();
-      }
-                       )
-    }
-                               );
-  }
-</script>
+
       <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
   <script type="text/javascript">
   $(document).ready(function () {
