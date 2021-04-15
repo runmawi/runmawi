@@ -1386,23 +1386,7 @@ endif; ?>
       <div id="back-to-top">
          <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
       </div>
-      <!-- back-to-top End -->
-      <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></script>
-      <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
-      <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
-      <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
-      <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
-      <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
-      <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
+    
 <script type="text/javascript">
     $(document).ready(function(){
       $('.bd-example-modal-xl').modal({
