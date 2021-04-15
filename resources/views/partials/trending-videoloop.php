@@ -23,7 +23,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl2<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -57,7 +57,7 @@
             </div>
 <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $featured_video): ?>
-  <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal fade bd-example-modal-xl2<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        

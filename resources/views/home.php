@@ -205,7 +205,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -240,7 +240,7 @@
             </div>
               <?php  if(isset($videos)) :
 			                       foreach($videos as $watchlater_video): ?>
-               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+               <div class="modal fade bd-example-modal-xl<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -391,7 +391,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl1<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -425,7 +425,7 @@ endif; ?>
             </div>
               <?php  if(isset($latest_videos)) :
 			                       foreach($latest_videos as $latest_video): ?>
-              <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+              <div class="modal fade bd-example-modal-xl1<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
        
@@ -645,7 +645,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl3">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl3<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
                                               Play Now</span></button>
                                        </div>
@@ -676,7 +676,7 @@ endif; ?>
             </div>
             <?php  if(isset($suggested_videos)) :
                     foreach($suggested_videos as $suggested_video): ?>
-                        <div class="modal fade bd-example-modal-xl3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                        <div class="modal fade bd-example-modal-xl3<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content" style="background-color: transparent !important;">
                                     <div class="modal-body">
@@ -1434,7 +1434,7 @@ endif; ?>
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('.bd-example-modal-xl').modal({
+      $('.bd-example-modal-xl<?= $watchlater_video->id;?>').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();
@@ -1443,7 +1443,7 @@ endif; ?>
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('.bd-example-modal-xl1').modal({
+      $('.bd-example-modal-xl1<?= $watchlater_video->id;?>').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();
@@ -1452,7 +1452,7 @@ endif; ?>
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('.bd-example-modal-xl2').modal({
+      $('.bd-example-modal-xl2<?= $watchlater_video->id;?>').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();
@@ -1461,20 +1461,14 @@ endif; ?>
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('.bd-example-modal-xl3').modal({
+      $('.bd-example-modal-xl3<?= $watchlater_video->id;?>').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();
       });
     });
 </script>
-<script type="text/javascript">
-     $(document).ready(function(){
-   $('.bd-example-modal-xl').on('hidden.bs.modal', function() {
-  $('iframe').contents().find('video')[0].pause();
-});
-          });
-</script>
+
        
        <script>
     $(document).ready(function () {
