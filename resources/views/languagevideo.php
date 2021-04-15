@@ -12,7 +12,7 @@
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
-      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
@@ -171,7 +171,7 @@
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -205,7 +205,7 @@
             </div>
                <?php if(isset($lang_videos)) :
                                 foreach($lang_videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl"  id="vidModal"   tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+              <div class="modal fade bd-example-modal-xl<?= $watchlater_video->id;?>"  id="vidModal"   tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                  
   <div class="modal-dialog modal-xl" role="document">
         
@@ -214,7 +214,13 @@
        
          
          <div class="modal-body">
-        <video controls=""  id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+       <?php if($watchlater_video->type == 'embed'): ?>
+						<div id="video_container" class="fitvid">
+							<?= $watchlater_video->embed_code ?>
+						</div>
+					<?php  elseif($watchlater_video->type == 'file'): ?>
+                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
+                                        <?php endif; ?>
     </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
@@ -223,7 +229,7 @@
                     </div>
          
   </div>
-</div>
+                  </div></div>
               <?php endforeach; 
 endif; ?>
              
@@ -346,11 +352,15 @@ endif; ?>
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-<!--<script>
-    $(function(){
-   $('#closevid').onclick="document.getElementById('demoVideo').pause();"
-});
-</script>-->
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl<?= $watchlater_video->id;?>').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
 <script>
 function about(evt , id) {
   var i, tabcontent, tablinks;
@@ -370,14 +380,14 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
 
     <div style="height: 10px;"></div>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 
         $(document).ready(function() { 
             $(".play-video").hover(function() { 
@@ -394,10 +404,10 @@ function about(evt , id) {
             
             
         }); 
-    </script> 
+    </script> -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 
-<script>
+<!--<script>
     $(".slider").slick({
  
   // normal options...
@@ -471,7 +481,7 @@ function about(evt , id) {
       $(".block-overlap").css('display','none');
       $(".block-class_"+movie_id).css('display','block');
     }); */
-</script>
+</script>-->
  <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {

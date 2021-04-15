@@ -13,7 +13,7 @@
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
-      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
