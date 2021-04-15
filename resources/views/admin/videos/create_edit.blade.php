@@ -125,6 +125,21 @@
                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                                        <p>Upload Trailer video</p>
                               </div>
+                              <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+        <div class="panel-title">Subtitles</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+        <div class="panel-body" style="display: block;"> 
+          @foreach($subtitles as $subtitle)
+          <div class="subtitle1" style="clear: both;" >
+            <label for="embed_code"  style="float:left; margin-right:10px; padding-top:1px;">Upload Subtitle {{ $subtitle->language }}</label>
+            <input type="file" name="subtitle_upload" id="subtitle_upload_{{ $subtitle->short_code }}">
+            <input type="hidden" name="short_code" value="{{ $subtitle->short_code }}">
+            <input type="hidden" name="language" value="{{ $subtitle->language }}">
+          </div>
+          @endforeach
+          
+        </div> 
+      </div>
+
                            <div class="row">
                               <div class="col-sm-6 form-group">
                                  <select class="form-control" id="language" name="language">
