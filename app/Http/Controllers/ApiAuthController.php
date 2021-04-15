@@ -694,7 +694,6 @@ public function verifyandupdatepassword(Request $request)
           $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
 		
 		$response = array(
-			'value'=>off,
 			'status' => $status,
 			'wishlist' => $wishliststatus,
 			'ppv_video_status' => $ppv_video_status,
@@ -703,8 +702,7 @@ public function verifyandupdatepassword(Request $request)
 			'ppv_exist' => $ppv_exist,
 			'userrole' => $userrole,
 			'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
-			'videodetail' => $videodetail,
-			'moviesubtitles' => $moviesubtitles
+			'videodetail' => $videodetail
 		);
 		return response()->json($response, 200);
 	}
