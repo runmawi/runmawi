@@ -116,14 +116,62 @@ endif; ?>
     <div class="modal-content" style="background-color: transparent !important;">
        
          
-         <div class="modal-body">
-       <?php if($watchlater_video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid">
-							<?= $watchlater_video->embed_code ?>
-						</div>
-					<?php  elseif($watchlater_video->type == 'file'): ?>
-                                        <video controls=""  id="framevid" class="playvid" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-                                        <?php endif; ?></div>
+          <div class="modal-body playvid">
+                             <?php if($watchlater_video->type == 'embed'): ?>
+                                        <div id="video_container" class="fitvid">
+                                            <?= $watchlater_video->embed_code ?>
+                                        </div>
+                                    <?php  elseif($watchlater_video->type == 'file'): ?>
+                                        <div id="video_container" class="fitvid">
+                                        <video id="videojs-seek-buttons-player"  onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                            <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+                                            <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
+                                            <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
+
+                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                                        </video>
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                                    <?php  else: ?>
+                                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                        <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+
+                                        </video>
+
+
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                             <?php endif; ?>
+                        </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
  onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
