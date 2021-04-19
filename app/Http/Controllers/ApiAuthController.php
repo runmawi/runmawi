@@ -34,6 +34,7 @@ use App\State as State;
 use App\City as City;
 use Nexmo;
 use App\VideoCategory as VideoCategory;
+use App\MoviesSubtitles as MoviesSubtitles;
 use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
@@ -691,7 +692,8 @@ public function verifyandupdatepassword(Request $request)
 
          $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
         
-          $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
+         $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
+         $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
 		
 		$response = array(
 			'status' => $status,
@@ -702,7 +704,8 @@ public function verifyandupdatepassword(Request $request)
 			'ppv_exist' => $ppv_exist,
 			'userrole' => $userrole,
 			'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
-			'videodetail' => $videodetail
+			'videodetail' => $videodetail,
+			'videossubtitles' => $moviesubtitles
 		);
 		return response()->json($response, 200);
 	}
@@ -1073,13 +1076,13 @@ public function verifyandupdatepassword(Request $request)
 		$user_id = $request->user_id;
 
 		/*channel videos*/
-		$video_ids = Favorite::select('video_id')->where('user_id','=',$user_id)->get();
-		$video_ids_count = Favorite::select('video_id')->where('user_id','=',$user_id)->count();
+		$video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
+		$video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
 
 		if ( $video_ids_count  > 0) {
 
-			foreach ($video_ids as $key => $value1) {
-				$k2[] = $value1->video_id;
+			foreach ($video_ids as $key => $value) {
+				$k2[] = $value->video_id;
 			}
 			$channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
 				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;

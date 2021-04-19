@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use URL;
 use App\Test as Test;
 use App\Video as Video;
+use App\MoviesSubtitles as MoviesSubtitles;
 use App\VideoCategory as VideoCategory;
 use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
@@ -76,7 +77,7 @@ class AdminVideosController extends Controller
             'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
             'video_subtitle' => VideosSubtitle::all(),
-            'languages' => VideoLanguage::all(),
+            'languages' => Language::all(),
             'subtitles' => Subtitle::all(),
             );
         return View::make('admin.videos.create_edit', $data);
@@ -87,22 +88,22 @@ class AdminVideosController extends Controller
      *
      * @return Response
      */
-    public function store(StoreVideoRequest $request)
+    public function store(Request $request)
     {
         
+        
         $data = $request->all();
-            $validatedData = $request->validate([
+         $validatedData = $request->validate([
                 'title' => 'required',
             ]);
-        
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
            $mp4_url = (isset($data['video'])) ? $data['video'] : '';
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
               /* logo upload */
         
-          $path = public_path().'/uploads/videos/';
-          $image_path = public_path().'/uploads/images/';
+           $path = public_path().'/uploads/videos/';
+           $image_path = public_path().'/uploads/images/';
           
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -157,8 +158,6 @@ class AdminVideosController extends Controller
          } else {
             $data['trailer'] = '';
         }
-
-
       
         
     //        print_r($data['mp4_url']);
@@ -193,13 +192,12 @@ class AdminVideosController extends Controller
         }  else {
             $data['language'] =  $data['language'];
         } 
-
-        if(!empty($data['embed_code'])){
+        
+         if(!empty($data['embed_code'])){
             $data['embed_code'] = $data['embed_code'];
         } else {
             $data['embed_code'] = '';
         }
-        
         
             if ($request->slug != '') {
                     $data['slug'] = $this->createSlug($request->slug);
@@ -242,7 +240,7 @@ class AdminVideosController extends Controller
                 $data['duration'] = $time_seconds;
                 
         }
-        
+
         if(!empty($data['embed_code'])) {
              
              $video = new Video();
@@ -266,6 +264,8 @@ class AdminVideosController extends Controller
 
         }
 
+        
+        
          if($mp4_url != '') {
              
             $rand = Str::random(16);
@@ -287,12 +287,13 @@ class AdminVideosController extends Controller
              $video->type = $data['type'];
              $video->access = $data['access'];
              $video->video_category_id = $data['video_category_id'];
-             $video->details = $request->details;
-             $video->description = strip_tags($request->description);
+             $video->details = $data['details'];
+             $video->description = strip_tags($data['description']);
              $video->user_id = Auth::user()->id;
-             $video->save();
+             $video->save(); 
+            
              $converted_name = $this->getCleanFileName($video->path);
-                ConvertVideoForStreaming::dispatch($video);
+            ConvertVideoForStreaming::dispatch($video);
 
          } else {
               
@@ -301,22 +302,41 @@ class AdminVideosController extends Controller
         
         $shortcodes = $request['short_code'];
         $languages = $request['language'];
-
-        if(!empty( $files != ''  && $files != null))
+        if(!empty( $files != ''  && $files != null)){
+       /* if($request->hasFile('subtitle_upload'))
         {
+            $vid = $movie->id;
+            $files = $request->file('subtitle_upload');
+*/
+    
             foreach ($files as $key => $val) {
                 if(!empty($files[$key])){
-                    
+                    // $movie_sub = new MovieSubtitle;
+                    // $destinationPath ='public/uploads/subtitles/';
+                    // $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
+                    // $files[$key]->move($destinationPath, $filename);
+                    // $movie_sub->sub_language = $destinationPath.$filename; 
+                    // $movie_sub->movie_id = $vid; 
+                    // $movie_sub->shortcode = $shortcodes[$key]; 
+                    // $movie_sub->url = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+                    //  $subtitle_data['sub_language'] = $languages[$key]; 
+                    // $subtitle_data['shortcode'] = $shortcodes[$key]; 
+                    // $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+                    //  $video_subtitle = VideoSubtitle::updateOrCreate(array('shortcode' => 'en','video_id' => $id), $subtitle_data);
+                    // $movie_subtitle = MovieSubtitle::create($subtitle_data);
+                    // $movie_sub->save();
                     $destinationPath ='public/uploads/subtitles/';
                     $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
                     $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = $languages[$key]; 
+                    $subtitle_data['movie_id'] = $movie->id;
+                    $subtitle_data['sub_language'] = $languages; 
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                    $movie_subtitle = MovieSubtitle::create($subtitle_data);
+                    $movie_subtitle = MoviesSubtitles::create($subtitle_data);
                 }
             }
         }
+    
         
           return redirect('admin/videos')
             ->with(
@@ -432,14 +452,17 @@ class AdminVideosController extends Controller
             if(empty($data['featured'])){
                 $data['featured'] = 0;
             } 
-
-            if(!empty($data['embed_code'])){
+             if(!empty($data['embed_code'])){
                 $data['embed_code'] = $data['embed_code'];
             } 
+
 
             if(empty($data['active'])){
                 $data['active'] = 0;
             } 
+              if(empty($data['video_gif'])){
+                $data['video_gif'] = '';
+            }
            
             if(empty($data['type'])){
                 $data['type'] = '';
@@ -535,7 +558,7 @@ class AdminVideosController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-        if(!empty($data['embed_code'])) {
+          if(!empty($data['embed_code'])) {
              $video->embed_code = $data['embed_code'];
         }else {
             $video->embed_code = '';
@@ -543,25 +566,28 @@ class AdminVideosController extends Controller
 
          $shortcodes = $request['short_code'];        
          $languages = $request['language']; 
-         $video->details = strip_tags($data['details']);
          $video->description = strip_tags($data['description']);
          $video->update($data);
-        
-        if(!empty( $files != ''  && $files != null))
+
+         if(!empty( $files != ''  && $files != null)){
+        /*if($request->hasFile('subtitle_upload'))
         {
+            $files = $request->file('subtitle_upload');*/
             foreach ($files as $key => $val) {
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.vtt';
                     $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = $languages[$key]; 
+                    $subtitle_data['sub_language'] = URL::to('/').$destinationPath.$filename; 
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
+                    $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                    $video_subtitle = VideoSubtitle::updateOrCreate(array('shortcode' => 'en','video_id' => $id), $subtitle_data);
+                    $video_subtitle = MovieSubtitle::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
                 }
             }
         }
+    
 
         return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
@@ -602,6 +628,5 @@ class AdminVideosController extends Controller
                 ->where('id', '<>', $id)
                 ->get();
         }  
-    
     
 }
