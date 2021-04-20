@@ -9,6 +9,35 @@
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+<style>
+     .playvid {
+    display: block;
+    width: 280%;
+    height: auto !important;
+    margin-left: -410px;
+}
+            .btn.btn-primary.close {
+    margin-right: -17px;
+        background-color: #4895d1 !important;
+}
+           button.close {
+            padding: 9px 30px !important;   
+            border: 0;
+           -webkit-appearance: none;
+}
+           .close{
+               margin-right: -429px !important;
+    margin-top: -1461px !important;
+           }
+           .modal-footer {
+    border-bottom: 0px !important;
+                border-top: 0px !important;
+   
+}
+</style>
 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 <?php if(isset($videos)) :
 foreach($videos as $watchlater_video): ?>
@@ -45,7 +74,7 @@ endif; ?>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl4<?= $watchlater_video->id;?>">
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
@@ -77,20 +106,84 @@ endif; ?>
                   </div>
                </div>
             </div>
- <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
-              <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-    <video id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4" autostart="false" loop="true"></video>
-    </div>
+  <?php  if(isset($videos)) :
+			                       foreach($videos as $watchlater_video): ?>
+             
+              <div class="modal fade bd-example-modal-xl4<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
+        
+       
+    <div class="modal-content" style="background-color: transparent !important;">
+       
+         
+          <div class="modal-body playvid">
+                             <?php if($watchlater_video->type == 'embed'): ?>
+                                        <div id="video_container" class="fitvid">
+                                            <?= $watchlater_video->embed_code ?>
+                                        </div>
+                                    <?php  elseif($watchlater_video->type == 'file'): ?>
+                                        <div id="video_container" class="fitvid">
+                                        <video id="videojs-seek-buttons-player"  onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                            <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+                                            <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
+                                            <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
+
+                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                                        </video>
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                                    <?php  else: ?>
+                                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                        <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+
+                                        </video>
+
+
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                             <?php endif; ?>
+                        </div>
+        <div class="modal-footer" align="center" >
+                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
+ onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+                  
+                    </div>
+         
   </div>
 </div>
-              <?php endforeach; 
-endif; ?>
-
-                                 <?php if(isset($videos)) :
-                                foreach($videos as $watchlater_video): ?>
+</div>
+ <?php endforeach; 
+		                                   endif; ?>
+             
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
@@ -185,9 +278,33 @@ endif; ?>
 	
 	</div></div>
 
-<?php endforeach; 
-endif; ?>
-
+ <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="assets/js/jquery-3.4.1.min.js"></script>
+      <script src="assets/js/popper.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="assets/js/bootstrap.min.js"></script>
+      <!-- Slick JS -->
+      <script src="assets/js/slick.min.js"></script>
+      <!-- owl carousel Js -->
+      <script src="assets/js/owl.carousel.min.js"></script>
+      <!-- select2 Js -->
+      <script src="assets/js/select2.min.js"></script>
+      <!-- Magnific Popup-->
+      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <!-- Slick Animation-->
+      <script src="assets/js/slick-animation.min.js"></script>
+      <!-- Custom JS-->
+      <script src="assets/js/custom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.bd-example-modal-xl4<?= $watchlater_video->id;?>').modal({
+          show: false
+      }).on('hidden.bs.modal', function(){
+          $(this).find('video')[0].pause();
+      });
+    });
+</script>
 
 <script>
     $(document).ready(function () {
@@ -223,9 +340,9 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 
 
 

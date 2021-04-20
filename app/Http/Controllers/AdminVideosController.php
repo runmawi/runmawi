@@ -337,6 +337,7 @@ class AdminVideosController extends Controller
             }
         }
     
+
         
           return redirect('admin/videos')
             ->with(
@@ -573,6 +574,7 @@ class AdminVideosController extends Controller
         /*if($request->hasFile('subtitle_upload'))
         {
             $files = $request->file('subtitle_upload');*/
+       
             foreach ($files as $key => $val) {
                 if(!empty($files[$key])){
                     
@@ -587,7 +589,7 @@ class AdminVideosController extends Controller
                 }
             }
         }
-    
+
 
         return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }

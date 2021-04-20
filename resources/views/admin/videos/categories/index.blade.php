@@ -80,13 +80,15 @@
                                     </span>
                                 @endif
                         </div>
+                        
+                             <div class="modal-footer form-group">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+                            </div>
 				    </form>
 				</div>
 				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
-				</div>
+				
 			</div>
 		</div>
 	</div>

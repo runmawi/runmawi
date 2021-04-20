@@ -1,4 +1,4 @@
-@include('header')
+
 
 <style>
 
@@ -39,14 +39,17 @@
     .container.page-height {
         padding-top: 80px !important;
 }
+    i.fa.fa-google-plus {
+    padding: 10px !important;
+}
 
 </style>
-
+<section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
 <div class="container  page-height">
     <div class="row justify-content-center">
         <div class="col-md-4 col-sm-offset-4">
-            <div class="card login-block text-center forgot-box">
-                <div class="card-header"><h1>{{ __('Reset Password') }}</h1></div>
+            <div class="sign-user_card login-block text-center forgot-box">
+                <h2 class="mb-3 text-center">{{ __('Reset Password') }}</h2>
 				<div class="card-body">
 					<form method="POST" action="{{ route('password.update') }}">
 						@csrf
@@ -85,8 +88,8 @@
 						</div>
 
 						<div class="form-group row mb-0">
-							<div class="col-md-6 col-sm-offset-4">
-								<button type="submit" class="btn btn-primary">
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-primary btn-hover">
 									{{ __('Reset Password') }}
 								</button>
 							</div>
@@ -97,4 +100,5 @@
     	</div>
 	</div>
 </div>
+</section>
 @extends('footer')

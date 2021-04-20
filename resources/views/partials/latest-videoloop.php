@@ -1,30 +1,8 @@
-<meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>Flicknexs</title>
-   <!-- Favicon -->
-   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
-   <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
-    
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
 
-   <!--datatable CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/dataTables.bootstrap4.min.css';?>" />
-   <!-- Typography CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
-   <!-- Style CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-   <!-- Responsive CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
-<div >
-<?php if(isset($latest_videos)) :
-foreach($latest_videos as $watchlater_video): ?>
-<?php endforeach; 
-endif; ?>
-</div>
+
  <style>
            .overflow-hidden {
     margin-top: 70px;
@@ -182,18 +160,382 @@ foreach($latest_videos as $watchlater_video): ?>
        
     <div class="modal-content" style="background-color: transparent !important;">
        
-         
-         <div class="modal-body">
-        <video controls=""  id="framevid" class="playvid" autostart="false" loop="true" name="media"><source src="<?= $watchlater_video->trailer; ?>" type="video/mp4"></video>
-    </div>
+        <div class="modal-body playvid">
+                             <?php if($watchlater_video->type == 'embed'): ?>
+                                        <div id="video_container" class="fitvid">
+                                            <?= $watchlater_video->embed_code ?>
+                                        </div>
+                                    <?php  elseif($watchlater_video->type == 'file'): ?>
+                                        <div id="video_container" class="fitvid">
+                                        <video id="videojs-seek-buttons-player"   onplay="playstart()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                            <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+                                            <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
+                                            <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
+
+                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                                        </video>
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                                    <?php  else: ?>
+                                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+                                        <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
+
+                                        </video>
+
+
+                                        <div class="playertextbox hide">
+                                        <h2>Up Next</h2>
+                                        <p><?php if(isset($videonext)){ ?>
+                                        <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                                        <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                                        <?php } ?>
+
+                                        <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                                        <?php } ?></p>
+                                        </div>
+                                        </div>
+                             <?php endif; ?>
+                        </div>
         <div class="modal-footer" align="center" >
                 <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('framevid').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
+ onclick="document.getElementById('videojs-seek-buttons-player').pause();" id="<?= $watchlater_video->id;?>"  ><span aria-hidden="true">X</span></button>
                   
                     </div>
          
   </div>
-</div>
+      <script>
+     var player = videojs('video_player').videoJsResolutionSwitcher({
+        default: '480p', // Default resolution [{Number}, 'low', 'high'],
+        dynamicLabel: true
+      })
+	$(".playertextbox").appendTo($('#video_player'));
+
+  // var res = player.currentResolution();
+  // player.currentResolution(res);
+ 
+    function autoplay1() {
+    	
+    	var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
+		playButton.setAttribute("id", "myPlayButton");
+	    var next_video_id = $(".next_video").text();
+	    var prev_video_id = $(".prev_video").text();
+	    var next_cat_video = $(".next_cat_video").text();
+	    var prev_cat_video = $(".prev_cat_video").text();
+	    var url = $(".next_url").text();
+	    if(next_video_id != ''){
+
+	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+			var bar = new ProgressBar.Circle(myPlayButton, {
+			strokeWidth: 7,
+			easing: 'easeInOut',
+			duration: 2400,
+			color: '#98cb00',
+			trailColor: '#eee',
+			trailWidth: 1,
+			svgStyle: null
+			});
+
+			bar.animate(1.0);  // Number from 0.0 to 1.0
+	    	setTimeout(function(){ 	
+         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+next_video_id;
+         }, 3000);
+	    }else if(prev_video_id != ''){
+	    	
+	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+			var bar = new ProgressBar.Circle(myPlayButton, {
+			strokeWidth: 7,
+			easing: 'easeInOut',
+			duration: 2400,
+			color: '#98cb00',
+			trailColor: '#eee',
+			trailWidth: 1,
+			svgStyle: null
+			});
+
+			bar.animate(1.0);  // Number from 0.0 to 1.0
+	    	setTimeout(function(){ 	
+         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+prev_video_id;
+         }, 3000);
+	    
+	    }
+
+	    if(next_cat_video != ''){
+
+	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+			var bar = new ProgressBar.Circle(myPlayButton, {
+			strokeWidth: 7,
+			easing: 'easeInOut',
+			duration: 2400,
+			color: '#98cb00',
+			trailColor: '#eee',
+			trailWidth: 1,
+			svgStyle: null
+			});
+
+			bar.animate(1.0);  // Number from 0.0 to 1.0
+	    	setTimeout(function(){ 	
+         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+next_cat_video;
+         }, 3000);
+	    }else if(prev_cat_video != ''){
+	    	
+	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+			var bar = new ProgressBar.Circle(myPlayButton, {
+			strokeWidth: 7,
+			easing: 'easeInOut',
+			duration: 2400,
+			color: '#98cb00',
+			trailColor: '#eee',
+			trailWidth: 1,
+			svgStyle: null
+			});
+
+			bar.animate(1.0);  // Number from 0.0 to 1.0
+	    	setTimeout(function(){ 	
+         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+prev_cat_video;
+         }, 3000);
+	    
+	    }
+ 	}
+
+ 	/*on video Play*/
+ 	function playstart() {
+ 		// if($("#video_player").data('authenticated')){
+		// 	$.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $watchlater_video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
+		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+
+		// } else {
+		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+		// }
+    $(".vjs-big-play-button").hide();
+ 	}
+  </script>
+      <script>
+	videojs('videojs-seek-buttons-player', {
+    controls: true,
+    plugins: {
+      videoJsResolutionSwitcher: {
+        default: 'low', // Default resolution [{Number}, 'low', 'high'],
+        dynamicLabel: true
+      }
+    }
+  }, function(){
+    var player = this;
+    window.player = player
+    player.updateSrc([
+      {
+        src: '<?= $watchlater_video->trailer; ?>',
+        type: 'video/mp4',
+        label: 'SD',
+        res: 360
+      },
+      {
+        src: '<?= $watchlater_video->trailer; ?>',
+        type: 'video/mp4',
+        label: 'HD',
+        res: 720
+      }
+    ])
+    player.on('resolutionchange', function(){
+      console.info('Source changed to %s', player.src())
+    })
+  })
+        
+</script>
+  <script>
+    // fire up the plugin
+    videojs('video_player', {
+	  playbackRates: [0.5, 1, 1.5, 2],
+      controls: true,
+      muted: true,
+      width: 991,
+      fluid: true,
+      plugins: {
+        videoJsResolutionSwitcher: {
+		  ui: true,
+          default: 'low', // Default resolution [{Number}, 'low', 'high'],
+          dynamicLabel: true
+        }
+      }
+    }, function(){
+      var player = this;
+      window.player = player
+	  player.watermark({
+        image: '',
+		fadeTime: null,
+        url: ''
+      });
+    });
+  </script>
+      <script>
+        (function(window, videojs) {
+            
+          var examplePlayer = window.examplePlayer = videojs('videojs-seek-buttons-player');
+          var seekButtons = window.seekButtons = examplePlayer.seekButtons({
+            forward: 10,
+            back: 10
+          });
+        }(window, window.videojs));
+      </script>
+    <script>
+        
+      videojs('videojs-seek-buttons-player').ready(function() {
+        this.hotkeys({
+          volumeStep: 0.1,
+          seekStep: 10,
+          enableMute: true,
+          enableFullscreen: true,
+          enableNumbers: false,
+          enableVolumeScroll: true,
+          enableHoverScroll: true,
+
+          // Mimic VLC seek behavior, and default to 5.
+          seekStep: function(e) {
+            if (e.ctrlKey && e.altKey) {
+              return 5*60;
+            } else if (e.ctrlKey) {
+            
+              return 60;
+            } else if (e.altKey) {
+              return 10;
+            } else {               
+              return 5;
+            }
+          },
+
+          // Enhance existing simple hotkey with a complex hotkey
+          fullscreenKey: function(e) {
+            // fullscreen with the F key or Ctrl+Enter
+            return ((e.which === 70) || (e.ctrlKey && e.which === 13));
+          },
+
+          // Custom Keys
+          customKeys: {
+
+            // Add new simple hotkey
+            simpleKey: {
+              key: function(e) {
+                // Toggle something with S Key
+                return (e.which === 83);
+              },
+              handler: function(player, options, e) {
+                // Example
+                if (player.paused()) {
+                  player.play();
+                } else {
+                  player.pause();
+                }
+              }
+            },
+
+            // Add new complex hotkey
+            complexKey: {
+              key: function(e) {
+                // Toggle something with CTRL + D Key
+                return (e.ctrlKey && e.which === 68);
+              },
+              handler: function(player, options, event) {
+                // Example
+                if (options.enableMute) {
+                  player.muted(!player.muted());
+                }
+              }
+            },
+
+            // Override number keys example from https://github.com/ctd1500/videojs-hotkeys/pull/36
+            numbersKey: {
+              key: function(event) {
+                // Override number keys
+                return ((event.which > 47 && event.which < 59) || (event.which > 95 && event.which < 106));
+              },
+              handler: function(player, options, event) {
+                // Do not handle if enableModifiersForNumbers set to false and keys are Ctrl, Cmd or Alt
+                if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                  var sub = 48;
+                  if (event.which > 95) {
+                    sub = 96;
+                  }
+                  var number = event.which - sub;
+                  player.currentTime(player.duration() * number * 0.1);
+                }
+              }
+            },
+
+            emptyHotkey: {
+              // Empty
+            },
+
+            withoutKey: {
+              handler: function(player, options, event) {
+                  console.log('withoutKey handler');
+              }
+            },
+
+            withoutHandler: {
+              key: function(e) {
+                  return true;
+              }
+            },
+
+            malformedKey: {
+              key: function() {
+                console.log('I have a malformed customKey. The Key function must return a boolean.');
+              },
+              handler: function(player, options, event) {
+          
+              }
+            }
+          }
+        });
+      });
+        
+    var video = videojs('videojs-seek-buttons-player');
+
+    video.on('pause', function() {
+      this.bigPlayButton.show();
+        $(".vjs-big-play-button").show();
+        video.one('play', function() {
+        this.bigPlayButton.hide();
+      });
+    });
+ 
+$(document).ready(function () { 
+    $(window).on("beforeunload", function() { 
+
+        var vid = document.getElementById("videojs-seek-buttons-player_html5_api");
+        var currentTime = vid.currentTime;
+        var videoid = video_id;
+            $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+                      //    toastr.success(data.success);
+            });
+      // localStorage.setItem('your_video_'+video_id, currentTime);
+        return;
+    }); });
+
+    var current_time = $('#current_time').val();
+    var myPlayer = videojs('videojs-seek-buttons-player_html5_api');
+    var duration = myPlayer.currentTime(current_time);
+    </script>
+         </div></div>
           <?php endforeach; 
 		                                   endif; ?>
          
@@ -298,38 +640,7 @@ foreach($latest_videos as $watchlater_video): ?>
 endif; ?>
 </section>
 
-<!-- Imported styles on this page -->
-	 <script src="<?= URL::to('/'). '/assets/js/jquery.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/js/jquery.dataTables.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/js/dataTables.bootstrap4.min.js';?>"></script>
-   <!-- Appear JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/jquery.appear.js';?>"></script>
-   <!-- Countdown JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/countdown.min.js';?>"></script>
-   <!-- Select2 JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
-   <!-- Counterup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/waypoints.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/js/jquery.counterup.min.js';?>"></script>
-   <!-- Wow JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/wow.min.js';?>"></script>
-   <!-- Slick JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
-   <!-- Owl Carousel JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
-   <!-- Magnific Popup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
-   <!-- Smooth Scrollbar JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/smooth-scrollbar.js';?>"></script>
-   <!-- apex Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/apexcharts.js';?>"></script>
-   <!-- Chart Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/chart-custom.js';?>"></script>
-   <!-- Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-	<!-- End Notifications -->
+
 
  <script> 
         
@@ -382,6 +693,42 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
+	<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
+
+
+
+   
+<link href=”//vjs.zencdn.net/7.0/video-js.min.css” rel=”stylesheet”>
+<script src=”//vjs.zencdn.net/7.0/video.min.js”></script>
+
+   <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>-->
+   <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
+    <script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
+  	<script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
+  	<script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
+<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
+ <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
+ <script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
+<!--<script src="https://vjs.zencdn.net/7.7.5/video.js"></script>
+<script>
+var vid = document.getElementById("videojs-seek-buttons-player");
+vid.onloadeddata = function() {
+
+    // get the current players AudioTrackList object
+    var player = videojs('videojs-seek-buttons-player')
+    let tracks = player.audioTracks();
+
+    alert(tracks.length);
+
+    for (let i = 0; i < tracks.length; i++) {
+        let track = tracks[i];
+        console.log(track);
+        alert(track.language);
+    }
+};
+</script>-->
+

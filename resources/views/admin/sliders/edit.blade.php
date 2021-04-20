@@ -42,17 +42,21 @@
                         <input type="radio" id="active" name="active" value="0" <?php if( $categories[0]->active == 0) { echo "checked";} ?>>No
 
                     </div>
+        
 
         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+        
+        
+        <div class="modal-footer form-group">
+    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/sliders') }}">Close</a>
+	<button type="submit" class="btn btn-primary" id="submit-update-cat" action="{{ URL::to('admin/sliders/update') }}" >Update</button>
+</div>
     </form>
 </div>
 
-<div class="modal-footer">
-    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/sliders') }}">Close</a>
-	<button type="button" class="btn btn-primary" id="submit-update-cat" action="{{ URL::to('admin/sliders/update') }}" >Update</button>
-</div>
+
              </div></div></div>
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 

@@ -1,35 +1,4 @@
-<!doctype html>
-<html>
-    <head>
-<meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Flicknexs</title>
-       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/../assets/admin/dashassets/js/jquery.hoverplay.js';?>"></script>-->
-<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
-      <!-- Typography CSS -->
-      <link rel="stylesheet"href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
-      <!-- Style -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-      <!-- Responsive -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-      <link  href="admin/">
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        </head>
-<body>
-    <style>
-        .catag{
-            padding-right: 150px !important;
-        }
-        .c-logo{
-            margin-bottom: 20px !important;
-        }
-    </style>
- <footer class="mb-0">
+<footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row">
@@ -177,7 +146,7 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-       <script>
+<script>
   // Prevent closing from click inside dropdown
   $(document).on('click', '.dropdown-menu', function (e) {
     e.stopPropagation();
@@ -198,7 +167,7 @@ function about(evt , id) {
                                );
   }
 </script>
-         <script type="text/javascript">
+<script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
       var query = $(this).val();
@@ -244,6 +213,187 @@ function myFunction() {
   }
 }
 </script>
+<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
+<script>
+<script>
+    // fire up the plugin
+    videojs('videojs-seek-buttons-player', {
+	  playbackRates: [0.5, 1, 1.5, 2],
+      controls: true,
+      muted: true,
+      width: 991,
+      fluid: true,
+      plugins: {
+        videoJsResolutionSwitcher: {
+		  ui: true,
+          default: 'low', // Default resolution [{Number}, 'low', 'high'],
+          dynamicLabel: true
+        }
+      }
+    }, function(){
+      var player = this;
+      window.player = player
+	  player.watermark({
+        image: '',
+		fadeTime: null,
+        url: ''
+      });
+    });
+  </script>
+
+
+      <script>
+        (function(window, videojs) {
+            
+          var examplePlayer = window.examplePlayer = videojs('videojs-seek-buttons-player');
+          var seekButtons = window.seekButtons = examplePlayer.seekButtons({
+            forward: 10,
+            back: 10
+          });
+        }(window, window.videojs));
+      </script>
+
+    <script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
+    <script>
+        
+      videojs('videojs-seek-buttons-player').ready(function() {
+        this.hotkeys({
+          volumeStep: 0.1,
+          seekStep: 10,
+          enableMute: true,
+          enableFullscreen: true,
+          enableNumbers: false,
+          enableVolumeScroll: true,
+          enableHoverScroll: true,
+
+          // Mimic VLC seek behavior, and default to 5.
+          seekStep: function(e) {
+            if (e.ctrlKey && e.altKey) {
+              return 5*60;
+            } else if (e.ctrlKey) {
+            
+              return 60;
+            } else if (e.altKey) {
+              return 10;
+            } else {               
+              return 5;
+            }
+          },
+
+          // Enhance existing simple hotkey with a complex hotkey
+          fullscreenKey: function(e) {
+            // fullscreen with the F key or Ctrl+Enter
+            return ((e.which === 70) || (e.ctrlKey && e.which === 13));
+          },
+
+          // Custom Keys
+          customKeys: {
+
+            // Add new simple hotkey
+            simpleKey: {
+              key: function(e) {
+                // Toggle something with S Key
+                return (e.which === 83);
+              },
+              handler: function(player, options, e) {
+                // Example
+                if (player.paused()) {
+                  player.play();
+                } else {
+                  player.pause();
+                }
+              }
+            },
+
+            // Add new complex hotkey
+            complexKey: {
+              key: function(e) {
+                // Toggle something with CTRL + D Key
+                return (e.ctrlKey && e.which === 68);
+              },
+              handler: function(player, options, event) {
+                // Example
+                if (options.enableMute) {
+                  player.muted(!player.muted());
+                }
+              }
+            },
+
+            // Override number keys example from https://github.com/ctd1500/videojs-hotkeys/pull/36
+            numbersKey: {
+              key: function(event) {
+                // Override number keys
+                return ((event.which > 47 && event.which < 59) || (event.which > 95 && event.which < 106));
+              },
+              handler: function(player, options, event) {
+                // Do not handle if enableModifiersForNumbers set to false and keys are Ctrl, Cmd or Alt
+                if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                  var sub = 48;
+                  if (event.which > 95) {
+                    sub = 96;
+                  }
+                  var number = event.which - sub;
+                  player.currentTime(player.duration() * number * 0.1);
+                }
+              }
+            },
+
+            emptyHotkey: {
+              // Empty
+            },
+
+            withoutKey: {
+              handler: function(player, options, event) {
+                  console.log('withoutKey handler');
+              }
+            },
+
+            withoutHandler: {
+              key: function(e) {
+                  return true;
+              }
+            },
+
+            malformedKey: {
+              key: function() {
+                console.log('I have a malformed customKey. The Key function must return a boolean.');
+              },
+              handler: function(player, options, event) {
+          
+              }
+            }
+          }
+        });
+      });
+        
+    var video = videojs('videojs-seek-buttons-player');
+
+    video.on('pause', function() {
+      this.bigPlayButton.show();
+        $(".vjs-big-play-button").show();
+        video.one('play', function() {
+        this.bigPlayButton.hide();
+      });
+    });
+ 
+$(document).ready(function () { 
+    $(window).on("beforeunload", function() { 
+
+        var vid = document.getElementById("videojs-seek-buttons-player_html5_api");
+        var currentTime = vid.currentTime;
+        var videoid = video_id;
+            $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+                      //    toastr.success(data.success);
+            });
+      // localStorage.setItem('your_video_'+video_id, currentTime);
+        return;
+    }); });
+
+    var current_time = $('#current_time').val();
+    var myPlayer = videojs('videojs-seek-buttons-player_html5_api');
+    var duration = myPlayer.currentTime(current_time);
+    </script>
 
 </body>
 </html>

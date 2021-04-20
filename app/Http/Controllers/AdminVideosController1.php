@@ -11,6 +11,7 @@ use App\VideoCategory as VideoCategory;
 use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
+use App\VideoLanguage as VideoLanguage;
 use App\Subtitle as Subtitle;
 use App\Tag as Tag;
 use Auth;
@@ -27,12 +28,16 @@ use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
-use Illuminate\Support\Str;;
+use Illuminate\Support\Str;
 
 class AdminVideosController extends Controller
 {
     public function index()
     {
+           if (!Auth::user()->role == 'admin')
+            {
+                return redirect('/home');
+            }
        
       // $search_value = Request::get('s');
         
@@ -60,6 +65,10 @@ class AdminVideosController extends Controller
      */
     public function create()
     {
+         if (!Auth::user()->role == 'admin')
+            {
+                return redirect('/home');
+            }
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
             'post_route' => URL::to('admin/videos/store'),
@@ -67,7 +76,7 @@ class AdminVideosController extends Controller
             'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
             'video_subtitle' => VideosSubtitle::all(),
-            'languages' => Language::all(),
+            'languages' => VideoLanguage::all(),
             'subtitles' => Subtitle::all(),
             );
         return View::make('admin.videos.create_edit', $data);
@@ -81,17 +90,10 @@ class AdminVideosController extends Controller
     public function store(StoreVideoRequest $request)
     {
         
-        
         $data = $request->all();
-        
             $validatedData = $request->validate([
                 'title' => 'required',
-                'description' => 'required',
-                'details' => 'required',
-                'year' => 'required',
-                'image' => 'required'
             ]);
-        
         
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -102,7 +104,16 @@ class AdminVideosController extends Controller
           $path = public_path().'/uploads/videos/';
           $image_path = public_path().'/uploads/images/';
           
-         if( !empty($image) ) {   
+           $image = (isset($data['image'])) ? $data['image'] : '';
+           $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+           $mp4_url = (isset($data['video'])) ? $data['video'] : '';
+           $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+              /* logo upload */
+        
+          $path = public_path().'/uploads/videos/';
+          $image_path = public_path().'/uploads/images/';
+          
+         if($image != '') {   
               //code for remove old file
               if($image != ''  && $image != null){
                    $file_old = $image_path.$image;
@@ -111,14 +122,24 @@ class AdminVideosController extends Controller
                   }
               }
               //upload new file
-              $file = $file_old;
+              $file = $image;
               $data['image']  = $file->getClientOriginalName();
               $file->move($image_path, $data['image']);
 
+         } else {
+             $data['image']  = 'default.jpg';
          } 
         
+          if ($request->slug != '') {
+                    $data['slug'] = $this->createSlug($request->slug);
+            }
+
+            if($request->slug == ''){
+                    $data['slug'] = $this->createSlug($data['title']);    
+            }
         
-        if( !empty($trailer) ) {   
+        
+        if($trailer != '') {   
               //code for remove old file
               if($trailer != ''  && $trailer != null){
                    $file_old = $path.$trailer;
@@ -133,8 +154,11 @@ class AdminVideosController extends Controller
             
               $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
 
-         } 
-        
+         } else {
+            $data['trailer'] = '';
+        }
+
+
       
         
     //        print_r($data['mp4_url']);
@@ -157,6 +181,25 @@ class AdminVideosController extends Controller
             $data['year'] =  $data['year'];
         } 
         
+        if(empty($data['access'])){
+            $data['access'] = 0;
+        }  else {
+            $data['access'] =  $data['access'];
+        }  
+        
+        
+        if(empty($data['language'])){
+            $data['language'] = 0;
+        }  else {
+            $data['language'] =  $data['language'];
+        } 
+
+        if(!empty($data['embed_code'])){
+            $data['embed_code'] = $data['embed_code'];
+        } else {
+            $data['embed_code'] = '';
+        }
+        
         
             if ($request->slug != '') {
                     $data['slug'] = $this->createSlug($request->slug);
@@ -165,12 +208,6 @@ class AdminVideosController extends Controller
             if($request->slug == ''){
                     $data['slug'] = $this->createSlug($data['title']);    
             }
-        
-//       
-//        
-//        if(empty($data['slug'])){
-//            $data['slug'] = 0;
-//        }
 
         if(empty($data['featured'])){
             $data['featured'] = 0;
@@ -203,58 +240,62 @@ class AdminVideosController extends Controller
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
+                
         }
         
-        
-         if($mp4_url != '') {
-            
-         
-            $rand = Str::random(16);
-            $path = $rand . '.' . $request->video->getClientOriginalExtension();
-            $request->video->storeAs('public', $path);
-             
-             $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-             
-              
+        if(!empty($data['embed_code'])) {
              
              $video = new Video();
              $video->disk = 'public';
              $video->original_name = 'public';
              $video->path = $path;
              $video->title = $data['title'];
+             $video->slug = $data['slug'];
+             $video->language = $data['language'];
              $video->image = $data['image'];
              $video->trailer = $data['trailer'];
-             $video->mp4_url = $original_name;
+             $video->mp4_url = $path;
              $video->type = $data['type'];
-             $video->details = $data['details'];
-             $video->description = $data['description'];
+             $video->access = $data['access'];
+             $video->embed_code = $data['embed_code'];
+             $video->video_category_id = $data['video_category_id'];
+             $video->details = $request->details;
+             $video->description = strip_tags($request->description);
              $video->user_id = Auth::user()->id;
              $video->save();
+
+        }
+
+         if($mp4_url != '') {
              
-                //             ::create([
-                //                'disk'          => 'public',
-                //                'original_name' => $original_name,
-                //                'path'          => $path,
-                //                'title'         => $request->title,
-                //                'image'         => $data['image'],
-                //                'trailer'         => $data['trailer'],
-                //                'video'         => $path,
-                //                'type'         => $data['type'],
-                //                'details'         => $data['details'],
-                //                'description'         => $data['description'],
-                //                'user_id'         => Auth::user()->id,
-                //            ]);
-
-            $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-            $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-            $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-
-            $converted_name = $this->getCleanFileName($video->path);
-
-            ConvertVideoForStreaming::dispatch($video);
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->video->getClientOriginalExtension();
+            $request->video->storeAs('public', $path);
+             
+             $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+             
+             $video = new Video();
+             $video->disk = 'public';
+             $video->original_name = 'public';
+             $video->path = $path;
+             $video->title = $data['title'];
+             $video->slug = $data['slug'];
+             $video->language = $data['language'];
+             $video->image = $data['image'];
+             $video->trailer = $data['trailer'];
+             $video->mp4_url = $path;
+             $video->type = $data['type'];
+             $video->access = $data['access'];
+             $video->video_category_id = $data['video_category_id'];
+             $video->details = $request->details;
+             $video->description = strip_tags($request->description);
+             $video->user_id = Auth::user()->id;
+             $video->save();
+             $converted_name = $this->getCleanFileName($video->path);
+                ConvertVideoForStreaming::dispatch($video);
 
          } else {
-             
+              
                $movie = Video::create($data);
          }
         
@@ -302,10 +343,12 @@ class AdminVideosController extends Controller
     
     public function edit($id)
     {
+        if (!Auth::user()->role == 'admin')
+        {
+            return redirect('/home');
+        }
+        
        $video = Video::find($id);
-        
-        
-
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
@@ -328,20 +371,23 @@ class AdminVideosController extends Controller
      */
     public function update(Request $request)
     {
+         if (!Auth::user()->role == 'admin')
+        {
+            return redirect('/home');
+        }
+        
         $data = $request->all();
         
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'details' => 'required|max:255',
-            'year' => 'required'
+            'title' => 'required|max:255'
         ]);
         
        
-        $id = $data['id'];
-        
-        $video = Video::findOrFail($id);
-
+            $id = $data['id'];
+            $video = Video::findOrFail($id);
+            if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
+            }
         
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -350,45 +396,73 @@ class AdminVideosController extends Controller
         
            $update_mp4 = $request->get('video');
             
-        if(empty($data['active'])){
+            if(empty($data['active'])){
             $data['active'] = 0;
-        }  
-        
-        if(empty($data['slug'])){
-            $data['slug'] = 0;
-        } 
+            } 
         
 
+         if(empty($data['webm_url'])){
+            $data['webm_url'] = 0;
+            }  else {
+                $data['webm_url'] =  $data['webm_url'];
+            }  
 
-        if(empty($data['featured'])){
-            $data['featured'] = 0;
-        }  
+            if(empty($data['ogg_url'])){
+                $data['ogg_url'] = 0;
+            }  else {
+                $data['ogg_url'] =  $data['ogg_url'];
+            }  
+
+            if(empty($data['year'])){
+                $data['year'] = 0;
+            }  else {
+                $data['year'] =  $data['year'];
+            }   
         
-        if(empty($data['rating'])){
-            $data['rating'] = 0;
-        }  
+            if(empty($data['language'])){
+                $data['language'] = 0;
+            }  else {
+                $data['language'] = $data['language'];
+            } 
         
-        
-        
-        if(empty($data['year'])){
-            $data['year'] = 0;
-        }  
-        
-        if(empty($data['type'])){
-            $data['type'] = '';
-        }
-        
-         if(empty($data['status'])){
-            $data['status'] = 0;
-        }  
-        
-        if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-                $data['status'] = 1;    
+    
+//        if(empty($data['featured'])){
+//            $data['featured'] = 0;
+//        }  
+            if(empty($data['featured'])){
+                $data['featured'] = 0;
+            } 
+
+            if(!empty($data['embed_code'])){
+                $data['embed_code'] = $data['embed_code'];
+            } 
+
+            if(empty($data['active'])){
+                $data['active'] = 0;
+            } 
+           
+            if(empty($data['video_gif'])){
+                $data['video_gif'] = '';
             }
-        
-        if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-                $data['status'] = 0;    
-        }
+            if(empty($data['type'])){
+                $data['type'] = '';
+            }
+
+             if(empty($data['status'])){
+                $data['status'] = 0;
+            }   
+
+//            if(empty($data['path'])){
+//                $data['path'] = 0;
+//            }  
+
+            if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+                    $data['status'] = 1;    
+                }
+
+            if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
+                    $data['status'] = 0;    
+            }
 
 
         $path = public_path().'/uploads/videos/';
@@ -407,7 +481,9 @@ class AdminVideosController extends Controller
               $data['image']  = $file->getClientOriginalName();
               $file->move($image_path, $data['image']);
 
-         } 
+         } else {
+             $data['image'] = $video->image;
+         }
         
         
         if($trailer != '') {   
@@ -425,9 +501,12 @@ class AdminVideosController extends Controller
             
               $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
 
-         } 
+         } else {
+             $data['trailer'] = $video->trailer;
+         }  
         
-        if( isset( $update_mp4 ) && !empty($update_mp4)){   
+        
+        if( isset( $update_mp4 ) && $request->hasFile('video')){   
               //code for remove old file
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->video->getClientOriginalExtension();
@@ -435,19 +514,19 @@ class AdminVideosController extends Controller
                 $data['mp4_url'] = $path;
              
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-            $original_name = URL::to('/').'/storage/app/public/'.$path;
+                $original_name = URL::to('/').'/storage/app/public/'.$path;
             
-            //              if($mp4_url2 != ''  && $mp4_url2 != null){
-            //                   $file_old3 = $path.$mp4_url2;
-            //                  if (file_exists($file_old3)){
-            //                   unlink($file_old3);
-            //                  }
-            //              }
-            //              //upload new file
-            //              $file3 = $mp4_url2;
-            //              $mp4_url1  = $file3->getClientOriginalName();
-            //              $file3->move($path, $mp4_url1);
-            //              $data['mp4_url']  = URL::to('/').'/public/uploads/videos/'.$file3->getClientOriginalName();
+                //              if($mp4_url2 != ''  && $mp4_url2 != null){
+                //                   $file_old3 = $path.$mp4_url2;
+                //                  if (file_exists($file_old3)){
+                //                   unlink($file_old3);
+                //                  }
+                //              }
+                //              //upload new file
+                //              $file3 = $mp4_url2;
+                //              $mp4_url1  = $file3->getClientOriginalName();
+                //              $file3->move($path, $mp4_url1);
+                //              $data['mp4_url']  = URL::to('/').'/public/uploads/videos/'.$file3->getClientOriginalName();
 
          }
         
@@ -459,9 +538,16 @@ class AdminVideosController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+        if(!empty($data['embed_code'])) {
+             $video->embed_code = $data['embed_code'];
+        }else {
+            $video->embed_code = '';
+        }
 
          $shortcodes = $request['short_code'];        
-         $languages = $request['language'];        
+         $languages = $request['language']; 
+         $video->details = strip_tags($data['details']);
+         $video->description = strip_tags($data['description']);
          $video->update($data);
         
         if(!empty( $files != ''  && $files != null))
