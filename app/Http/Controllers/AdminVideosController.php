@@ -326,7 +326,7 @@ class AdminVideosController extends Controller
                     // $movie_subtitle = MovieSubtitle::create($subtitle_data);
                     // $movie_sub->save();
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
+                    $filename = $movie->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['movie_id'] = $movie->id;
                     $subtitle_data['sub_language'] = $languages; 
@@ -585,7 +585,7 @@ class AdminVideosController extends Controller
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                    $video_subtitle = MovieSubtitle::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+                    $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
                 }
             }
         }
