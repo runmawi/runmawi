@@ -131,9 +131,9 @@
           @foreach($subtitles as $subtitle)
           <div class="subtitle1" style="clear: both;" >
             <label for="embed_code"  style="float:left; margin-right:10px; padding-top:1px;">Upload Subtitle {{ $subtitle->language }}</label>
-            <input type="file" name="subtitle_upload" id="subtitle_upload_{{ $subtitle->short_code }}">
-            <input type="hidden" name="short_code" value="{{ $subtitle->short_code }}">
-            <input type="hidden" name="language" value="{{ $subtitle->language }}">
+            <input type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+            <input type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+            <input type="hidden" name="language[]" value="{{ $subtitle->language }}">
           </div>
           @endforeach
           
