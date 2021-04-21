@@ -301,7 +301,9 @@ class AdminVideosController extends Controller
          }
         
         $shortcodes = $request['short_code'];
-        $languages = $request['language'];
+        $languages=$request['sub_language'];
+       /* $languages =$request['language'];*/
+       /* $languages = $subtitle->language;*/
         if(!empty( $files != ''  && $files != null)){
        /* if($request->hasFile('subtitle_upload'))
         {
@@ -329,7 +331,8 @@ class AdminVideosController extends Controller
                     $filename = $movie->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['movie_id'] = $movie->id;
-                    $subtitle_data['sub_language'] = $languages; 
+
+                    $subtitle_data['sub_language']=$languages[$key];
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
                     $movie_subtitle = MoviesSubtitles::create($subtitle_data);
@@ -566,7 +569,7 @@ class AdminVideosController extends Controller
         }
 
          $shortcodes = $request['short_code'];        
-         $languages = $request['language']; 
+         $languages=$request['sub_language'];
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
@@ -579,9 +582,9 @@ class AdminVideosController extends Controller
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $video->id. '-'.$shortcodes[$key].'.vtt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = URL::to('/').$destinationPath.$filename; 
+                    $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
