@@ -194,7 +194,7 @@ class ApiAuthController extends Controller
                     } else  {
                             $price = $input['amount'];
                             $plan = $input['plan'];              
-                            $plan_details = Plan::where("plan_id","=",$plan)->first();
+                            $plan_details = Plan::where("plan_id","=",$plan)->get()->first();
                             $next_date = $plan_details->days;
                             $current_date = date('Y-m-d h:i:s');
                             $date = Carbon::parse($current_date)->addDays($next_date);
@@ -2412,8 +2412,8 @@ public function checkEmailExists(Request $request)
 		public function UserComments(Request $request){
 
 					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
-						$item['usr_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->user->avatar;
-						$item['username'] = $item->user->username;
+						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+						$item['username'] = $item->username;
 						return $item;
 					});
 					$response = array(
@@ -2442,5 +2442,6 @@ public function checkEmailExists(Request $request)
 			return response()->json($response, 200);
 
 		}
+
 	}
 
