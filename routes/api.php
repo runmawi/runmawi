@@ -101,5 +101,5 @@ Route::group([
      Route::get('series_title_status', 'ApiAuthController@SeriesTitle');
      Route::get('cast_lists', 'ApiAuthController@CastList');
       Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
-      Route::post('addfavorite', 'ApiAuthController@addfavorite');
+      
 });

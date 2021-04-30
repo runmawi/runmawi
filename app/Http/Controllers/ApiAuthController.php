@@ -71,7 +71,7 @@ class ApiAuthController extends Controller
 	{
         $input = $request->all();
 		$user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
-    	 
+
 		$stripe_plan = SubscriptionPlan();
 		$settings = Setting::first();
 		if (isset($input['ccode']) && !empty($input['ccode'])) {
@@ -100,12 +100,16 @@ class ApiAuthController extends Controller
         } else {
             $referred_user_id =0;
         }
-    	
+
 		$length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
-        $user_data['token'] = $request->token;
+		if (!empty($request->token)){
+        $user_data['token'] =  $request->token;
+		} else {
+			$user_data['token'] =  '';
+		}
         $path = URL::to('/').'/public/uploads/avatars/';
 	    $logo = $request->file('avatar');
             if($logo != '') {   
@@ -148,7 +152,7 @@ class ApiAuthController extends Controller
 			$user->save();
 			$userdata = User::where('email', '=', $request->get('email'))->first();
 			$userid = $userdata->id;
-            /*send_password_notification('Notification From Flicknexs','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);*/
+       // send_password_notification('Notification From ELITECLUB','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
             
 		} else {
 			if($user != null){
@@ -164,10 +168,10 @@ class ApiAuthController extends Controller
 			if($settings->free_registration && $settings->activation_email){
 				$email = $input['email'];
 				$uname = $input['username'];
-				// Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-				// 	$message->to($email,$uname)->subject('Verify your email address');
-				// });
-				$response = array('status'=>'true');
+				Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+					$message->to($email,$uname)->subject('Verify your email address');
+				});
+				$response = array('status'=>'true','message' => 'Registered Successfully.');
 			} else {
                 
 				if(!$settings->free_registration  && $skip == 0){
@@ -184,17 +188,18 @@ class ApiAuthController extends Controller
                                         $user->save();
                             $email = $input['email'];
                             $uname = $input['username'];
-                            // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                            //     $message->to($email,$uname)->subject('Verify your email address');
-                            // });
+                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                $message->to($email,$uname)->subject('Verify your email address');
+                            });
                                 $response = array(
-                                'status' => 'true'
+                                'status' => 'true',
+                                'message' => 'Registered Successfully.'
                             );
                         
                     } else  {
                             $price = $input['amount'];
                             $plan = $input['plan'];              
-                            $plan_details = Plan::where("plan_id","=",$plan)->get()->first();
+                            $plan_details = Plan::where("plan_id","=",$plan)->first();
                             $next_date = $plan_details->days;
                             $current_date = date('Y-m-d h:i:s');
                             $date = Carbon::parse($current_date)->addDays($next_date);
@@ -213,11 +218,12 @@ class ApiAuthController extends Controller
                                             ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
-                                        // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                                        //     $message->to($email,$uname)->subject('Verify your email address');
-                                        // });
+                                        Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                            $message->to($email,$uname)->subject('Verify your email address');
+                                        });
                                           $response = array(
-                                                'status' => 'true'
+                                                'status' => 'true',
+                                                'message' => 'Registered Successfully.'
                                         );
                                      } else {
                                           $response = array(
@@ -236,11 +242,12 @@ class ApiAuthController extends Controller
                                                 ]);
                                             $email = $input['email'];
                                             $uname = $input['username'];
-                                            // Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                                            //     $message->to($email,$uname)->subject('Verify your email address');
-                                            // });
+                                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                                $message->to($email,$uname)->subject('Verify your email address');
+                                            });
                                               $response = array(
-                                                    'status' => 'true'
+                                                    'status' => 'true',
+                                					'message' => 'Registered Successfully.'
                                             );
                                          } else {
                                               $response = array(
@@ -249,10 +256,10 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                       /* send_password_notification('Notification From Flicknexs','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user
-                                                   id);*/
+                        //send_password_notification('Notification From ELITECLUB','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
 				}else{
-					   $response = array('status'=>'true');
+					   $response = array('status'=>'true',
+                                'message' => 'Registered Successfully.');
 				}
 			}
             
@@ -264,6 +271,7 @@ class ApiAuthController extends Controller
 		}
         return response()->json($response, 200);
 }
+
 
 	/**
 	* Login user and create token
@@ -1071,7 +1079,7 @@ public function verifyandupdatepassword(Request $request)
 
 	}
 
-	public function myfavorite(Request $request) {
+	public function myfavorites(Request $request) {
 
 		$user_id = $request->user_id;
 
@@ -1155,7 +1163,7 @@ public function verifyandupdatepassword(Request $request)
 
 	}
 
-	public function showfavorite(Request $request) {
+	public function showfavorites(Request $request) {
 
 		$user_id = $request->user_id;
 		$type = $request->type;
@@ -2412,7 +2420,7 @@ public function checkEmailExists(Request $request)
 		public function UserComments(Request $request){
 
 					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
-						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
 						$item['username'] = $item->username;
 						return $item;
 					});
