@@ -2420,7 +2420,7 @@ public function checkEmailExists(Request $request)
 		public function UserComments(Request $request){
 
 					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
-						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
+						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
 						$item['username'] = $item->username;
 						return $item;
 					});
