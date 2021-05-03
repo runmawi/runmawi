@@ -213,7 +213,7 @@ class ApiAuthController extends Controller
                                             $user->payment_type = 'one_time';
                                             $user->card_type = 'stripe';
                                             $user->save();
-                                            DB::table('single_subscriptions')->insert([
+                                            DB::table('subscriptions')->insert([
                                                 ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
                                             ]);
                                         $email = $input['email'];
@@ -237,7 +237,7 @@ class ApiAuthController extends Controller
                                                 $user->payment_type = 'one_time';
                                                 $user->card_type = 'stripe';
                                                 $user->save();
-                                                DB::table('single_subscriptions')->insert([
+                                                DB::table('subscriptions')->insert([
                                                     ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
                                                 ]);
                                             $email = $input['email'];
@@ -271,6 +271,7 @@ class ApiAuthController extends Controller
 		}
         return response()->json($response, 200);
 }
+
 
 
 	/**
@@ -2056,7 +2057,7 @@ public function checkEmailExists(Request $request)
     /*Parameters*/
     $input = $request->all();
     $username = $input['username'];
-    $user_email = $input['email'];
+    $email = $input['email'];
     $user_url = $input['url'];
     $login_type = $input['login_type'];//Facebook or Google
     /*Parameters*/
@@ -2418,10 +2419,10 @@ public function checkEmailExists(Request $request)
 
 		}
 		public function UserComments(Request $request){
-
+                     
 					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
 						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
-						$item['username'] = $item->username;
+						$item['username'] = $item->name;
 						return $item;
 					});
 					$response = array(
