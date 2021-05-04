@@ -214,7 +214,8 @@ class ApiAuthController extends Controller
                                             $user->card_type = 'stripe';
                                             $user->save();
                                              DB::table('subscriptions')->insert([
-                                                    ['user_id' => $user->id, 'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+                                                    ['user_id' => $user->id,'name' =>$input['username'],
+                                                     'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
                                                 ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
