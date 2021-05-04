@@ -213,13 +213,9 @@ class ApiAuthController extends Controller
                                             $user->payment_type = 'one_time';
                                             $user->card_type = 'stripe';
                                             $user->save();
-                                             DB::table('subscriptions')->insert([
-                                                    ['user_id' => $user->id,'name' =>$input['username'],
-                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=$user->card_type,
-                                                     'stripe_status' => 'active',
-                                                     'stripe_plan' => $plan, 
-                                                    'ends_at' => $date,'created_at' => $current_date]
-                                                ]);
+                                            DB::table('subscriptions')->insert([
+                                                ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
+                                            ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
                                         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
@@ -241,12 +237,8 @@ class ApiAuthController extends Controller
                                                 $user->payment_type = 'one_time';
                                                 $user->card_type = 'stripe';
                                                 $user->save();
-                                                 DB::table('subscriptions')->insert([
-                                                    ['user_id' => $user->id,'name' =>$input['username'],
-                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=$user->card_type,
-                                                     'stripe_status' => 'active',
-                                                     'stripe_plan' => $plan, 
-                                                    'ends_at' => $date,'created_at' => $current_date]
+                                                DB::table('subscriptions')->insert([
+                                                    ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
                                                 ]);
                                             $email = $input['email'];
                                             $uname = $input['username'];
