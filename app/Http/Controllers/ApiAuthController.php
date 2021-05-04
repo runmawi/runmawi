@@ -215,7 +215,10 @@ class ApiAuthController extends Controller
                                             $user->save();
                                              DB::table('subscriptions')->insert([
                                                     ['user_id' => $user->id,'name' =>$input['username'],
-                                                     'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=$user->card_type,
+                                                     'stripe_status' => 'active',
+                                                     'stripe_plan' => $plan, 
+                                                    'ends_at' => $date,'created_at' => $current_date]
                                                 ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
@@ -238,8 +241,12 @@ class ApiAuthController extends Controller
                                                 $user->payment_type = 'one_time';
                                                 $user->card_type = 'stripe';
                                                 $user->save();
-                                                DB::table('subscriptions')->insert([
-                                                    ['user_id' => $user->id, 'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+                                                 DB::table('subscriptions')->insert([
+                                                    ['user_id' => $user->id,'name' =>$input['username'],
+                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=$user->card_type,
+                                                     'stripe_status' => 'active',
+                                                     'stripe_plan' => $plan, 
+                                                    'ends_at' => $date,'created_at' => $current_date]
                                                 ]);
                                             $email = $input['email'];
                                             $uname = $input['username'];
