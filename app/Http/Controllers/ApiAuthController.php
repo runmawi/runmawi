@@ -213,9 +213,9 @@ class ApiAuthController extends Controller
                                             $user->payment_type = 'one_time';
                                             $user->card_type = 'stripe';
                                             $user->save();
-                                            DB::table('subscriptions')->insert([
-                                                ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
-                                            ]);
+                                             DB::table('subscriptions')->insert([
+                                                    ['user_id' => $user->id, 'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+                                                ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
                                         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
@@ -238,7 +238,7 @@ class ApiAuthController extends Controller
                                                 $user->card_type = 'stripe';
                                                 $user->save();
                                                 DB::table('subscriptions')->insert([
-                                                    ['user_id' => $user->id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
+                                                    ['user_id' => $user->id, 'stripe_plan' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
                                                 ]);
                                             $email = $input['email'];
                                             $uname = $input['username'];
