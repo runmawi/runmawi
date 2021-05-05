@@ -216,12 +216,11 @@ class ApiAuthController extends Controller
                                             $user->save();
                                              DB::table('subscriptions')->insert([
                                                     ['user_id' => $user->id,'name' =>$input['username'],
-                                                      'days' => $plan_details->days, 'price' => $plan_details->price,/*'stripe_id'=>$user->stripe_id,*/
+                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=>$user->card_type,
                                                      'stripe_status' => 'active',
                                                      'stripe_plan' => $plan, 
                                                     'ends_at' => $date,'created_at' => $current_date]
                                                 ]);
-                                             dd($user_details->stripe_id);
                                         $email = $input['email'];
                                         $uname = $input['username'];
                                         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
