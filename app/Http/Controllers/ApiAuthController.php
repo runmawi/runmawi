@@ -204,7 +204,8 @@ class ApiAuthController extends Controller
                             $current_date = date('Y-m-d h:i:s');
                             $date = Carbon::parse($current_date)->addDays($next_date);
                             $sub_price = $plan_details->price;
-                            $sub_total =  $sub_price - DiscountPercentage();
+                            /*$sub_total =  $sub_price - DiscountPercentage();*/
+                            $sub_total =  $sub_price;
                             $user = User::find($user->id);
                             if ( NewSubscriptionCoupon() == 1 ) {
                               	     $charge = $user->charge( $sub_total * 100, $input['py_id']); 
@@ -215,11 +216,12 @@ class ApiAuthController extends Controller
                                             $user->save();
                                              DB::table('subscriptions')->insert([
                                                     ['user_id' => $user->id,'name' =>$input['username'],
-                                                      'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=>$user->card_type,
+                                                      'days' => $plan_details->days, 'price' => $plan_details->price,/*'stripe_id'=>$user->stripe_id,*/
                                                      'stripe_status' => 'active',
                                                      'stripe_plan' => $plan, 
                                                     'ends_at' => $date,'created_at' => $current_date]
                                                 ]);
+                                             dd($user_details->stripe_id);
                                         $email = $input['email'];
                                         $uname = $input['username'];
                                         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
@@ -243,11 +245,12 @@ class ApiAuthController extends Controller
                                                 $user->save();
                                                 DB::table('subscriptions')->insert([
                                                     ['user_id' => $user->id,'name' =>$input['username'],
-                                                       'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=>$user->card_type,
+                                                       'days' => $plan_details->days, 'price' => $plan_details->price,'stripe_id'=>$user_details->stripe_id,
                                                      'stripe_status' => 'active',
                                                      'stripe_plan' => $plan, 
-                                                    'ends_at' => $date,'created_at' => $current_date]
+                                                    'ends_at' => $date,'created_at' => $current_date,'updated_at' => $current_date]
                                                 ]);
+
                                             $email = $input['email'];
                                             $uname = $input['username'];
                                             Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
@@ -2429,8 +2432,23 @@ public function checkEmailExists(Request $request)
 		public function UserComments(Request $request){
                      
 					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
-						$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
-						$item['username'] = $item->name;
+						//dd($item->count());
+						$i = 0;
+						while ($i<= $item->count()) {
+							$user =  User::where("id","=",$item->user_id)->get()->first();
+							if (!empty($user->avatar)) {
+								$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
+							} else {
+								$item['user_profile'] = null;
+							}
+
+							if (!empty($user->username)) {
+								$item['username'] = $user->username;
+							} else {
+								$item['username'] = null;
+							}
+							$i++;
+						}						
 						return $item;
 					});
 					$response = array(
