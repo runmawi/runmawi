@@ -10,6 +10,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
               <!-- Favicon -->
         <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+      <title>Flicknexs</title>
       <link rel="shortcut icon" href="assets/images/fl-logo.png" />
               <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -37,7 +38,8 @@
 		float: right;
 		width: 90px;
 		margin-right: 50px;
-        padding: 7px;
+        padding: 5px;
+		height: 35px;
 	}
 	.inway:visited{
 		color: #fff;
@@ -242,6 +244,8 @@
 		color: #fff;
 		font-size: 25px;
 		text-align: left;
+		display: inline-block;
+        padding: 1.2em;
 	}
 	.btn-link:not(:disabled):not(.disabled) {
     color: #fff;
@@ -362,6 +366,9 @@
 
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
+       Our Netflix Clone script is a splendid Video Streaming script that empowers you to put your leg forward and lead the right direction on the path of building your Video Streaming website.
+       <br>
+       <br>
        Our Netflix Clone script is a splendid Video Streaming script that empowers you to put your leg forward and lead the right direction on the path of building your Video Streaming website.
       </div>
     </div>

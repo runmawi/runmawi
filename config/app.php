@@ -3,7 +3,7 @@
 if( ! defined ( "THEME_URL" ) ):
 	//define("THEME_URL", 'http://localhost/saka_vod' . '/content/themes/default');
        define("THEME_URL", '');
-      // define("THEME_URL", 'https://localhost/flicknexs');
+       //define("THEME_URL", 'https://localhost/flicknexs');
 endif;
     //Enter your Info below to Sign-Up for an Account!
 

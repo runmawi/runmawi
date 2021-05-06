@@ -3,20 +3,6 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    <FilesMatch ".+\.ph(ar|p|tml)$">
--        SetHandler "proxy:unix:/var/run/php-fpm.sock|fcgi://localhost"
--    </FilesMatch>
--    <FilesMatch ".+\.phps$">
--        # Deny access to raw php sources by default
--        # To re-enable it's recommended to enable access to the files
--        # only in specific virtual host or directory
--        Require all denied
--    </FilesMatch>
--    # Deny access to files without filename (e.g. '.php')
--    <FilesMatch "^\.ph(ar|p|ps|tml)$">
--        Require all denied
--    </FilesMatch>
-
     RewriteEngine On
 
     # Handle Authorization Header
@@ -38,7 +24,7 @@
 
     # ensure https
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTPS} on
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     
     

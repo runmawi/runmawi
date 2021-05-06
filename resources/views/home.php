@@ -265,7 +265,7 @@ border-top: 0px !important;
                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                             </div>
                             <div class="block-description">
-                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	 <h6><?php echo __($watchlater_video->title); ?></h6></a>
+                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">   <h6><?php echo __($watchlater_video->title); ?></h6></a>
                                <div class="movie-time d-flex align-items-center my-2">
                                   <div class="badge badge-secondary p-1 mr-2">13+</div>
                                   <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
@@ -276,7 +276,7 @@ border-top: 0px !important;
                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                   Play Now
                                   </span>
-                                      </button>	
+                                      </button> 
 
                                </div>
                                 <div >
@@ -409,7 +409,7 @@ border-top: 0px !important;
                                             <?php } ?>  
                                             <div class="play-button-trail" >
 
-                                                <!--<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                                                <!--<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">  
                                                 <div class="play-block">
                                                 <i class="fa fa-play flexlink" aria-hidden="true"></i> 
                                                 </div></a>-->
@@ -469,7 +469,7 @@ border-top: 0px !important;
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                              <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                             foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -511,14 +511,14 @@ border-top: 0px !important;
                            </li>
                            
                             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                         </ul>
                      </div>
                   </div>
                </div>
             </div>
               <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                             foreach($latest_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl1<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl" role="document">
         
@@ -557,13 +557,7 @@ border-top: 0px !important;
                                         </div>
                                         </div>
                                     <?php  else: ?>
-                                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                        <video id="videojs-seek-buttons-player" onplay="playstart()"   class="video-js vjs-default-skin" controls  poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
-
-                                        <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
-
-                                        </video>
-
+                                       
 
                                         <div class="playertextbox hide">
                                         <h2>Up Next</h2>
@@ -593,7 +587,7 @@ border-top: 0px !important;
 </div>
 </div>
              <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                           <?php if(isset($latest_videos)) :
                                 foreach($latest_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -612,7 +606,7 @@ border-top: 0px !important;
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                           	
+                                            
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
@@ -622,43 +616,43 @@ border-top: 0px !important;
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
          <div class="block expand">
-		
-		<a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+    
+    <a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
 
-		
-				<?php if (!empty($watchlater_video->trailer)) { ?>
+    
+        <?php if (!empty($watchlater_video->trailer)) { ?>
                         <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
                                     <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>
+                 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
-			
-		                   <?php } ?>  
-			            <div class="play-button-trail" >
-				
-<!--			<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+      
+                       <?php } ?>  
+                  <div class="play-button-trail" >
+        
+<!--      <a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">  
                 <div class="play-block">
                     <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-				</div></a>-->
+        </div></a>-->
                 <div class="detail-block">
-<!--					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+<!--          <a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <p class="movie-title"><?php echo __($watchlater_video->title); ?></p>
-					</a>-->
-					
+          </a>-->
+          
                 <!--<p class="movie-rating">
                     <span class="star-rate"><i class="fa fa-star"></i><?= $watchlater_video->rating;?></span>
                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-					</p>-->
+          </p>-->
 
-				</div>
-		</div>
-		</a>
-		<div class="block-contents">
-			<!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
         </div>
-	</div> 
-	            
+    </div>
+    </a>
+    <div class="block-contents">
+      <!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
+        </div>
+  </div> 
+              
     </div>
     <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
      
@@ -668,7 +662,7 @@ border-top: 0px !important;
         <h2>Description</h2>
 
     </div>
-	</div>
+  </div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -687,8 +681,8 @@ border-top: 0px !important;
         </div>
 
 
-	
-	</div></div>
+  
+  </div></div>
 
 <?php endforeach; 
 endif; ?>
@@ -716,19 +710,19 @@ endif; ?>
                         
                         <ul id="top-ten-slider" class="list-inline p-0 m-0  d-flex align-items-center">
                               <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                             foreach($latest_videos as $watchlater_video): ?>
                            <li>
                               <a href="<?php echo URL::to('home') ?>">
                               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
                               </a>
                            </li> 
                             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                         </ul>
                         <div class="vertical_s">
                            <ul id="top-ten-slider-nav" class="list-inline p-0 m-0  d-flex align-items-center">
                                 <?php  if(isset($latest_videos)) :
-			                       foreach($latest_videos as $watchlater_video): ?>
+                             foreach($latest_videos as $watchlater_video): ?>
                               <li>
                                  <div class="block-images position-relative active">
                                     <a href="<?php echo URL::to('home') ?>">
@@ -749,7 +743,7 @@ endif; ?>
                                  </div>
                               </li>
                               <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                            </ul>
                         </div>
                          
@@ -768,7 +762,7 @@ endif; ?>
                      <div class="suggestede-contens">
                         <ul class="list-inline favorites-slider row p-0 mb-0">
                             <?php  if(isset($suggested_videos)) :
-			                       foreach($suggested_videos as $watchlater_video): ?>
+                             foreach($suggested_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -807,14 +801,14 @@ endif; ?>
                               </a>
                            </li>
                             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                         </ul>
                      </div>
                   </div>
                </div>
             </div>
              <?php  if(isset($suggested_videos)) :
-			                       foreach($suggested_videos as $watchlater_video): ?>
+                             foreach($suggested_videos as $watchlater_video): ?>
                         <div class="modal fade bd-example-modal-xl3<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content" style="background-color: transparent !important;">
@@ -882,7 +876,7 @@ endif; ?>
                             </div>
                         </div>
             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
              <?php if(isset($suggested_videos)) :
                                 foreach($suggested_videos as $watchlater_video): ?>
                                 <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -901,7 +895,7 @@ endif; ?>
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
                                                   <p>Welcome</p>
-                                           	
+                                            
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
@@ -911,43 +905,43 @@ endif; ?>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
          <div class="block expand">
-		
-		<a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+    
+    <a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
 
-		
-				<?php if (!empty($watchlater_video->trailer)) { ?>
+    
+        <?php if (!empty($watchlater_video->trailer)) { ?>
                         <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  muted="muted">
                                     <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
-								 </video>
+                 </video>
                             <?php } else { ?>
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
-			
-		                   <?php } ?>  
-			            <div class="play-button-trail" >
-				
-<!--			<a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+      
+                       <?php } ?>  
+                  <div class="play-button-trail" >
+        
+<!--      <a  href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">  
                 <div class="play-block">
                     <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-				</div></a>-->
+        </div></a>-->
                 <div class="detail-block">
-<!--					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+<!--          <a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <p class="movie-title"><?php echo __($watchlater_video->title); ?></p>
-					</a>-->
-					
+          </a>-->
+          
                 <!--<p class="movie-rating">
                     <span class="star-rate"><i class="fa fa-star"></i><?= $watchlater_video->rating;?></span>
                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-					</p>-->
+          </p>-->
 
-				</div>
-		</div>
-		</a>
-		<div class="block-contents">
-			<!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
         </div>
-	</div> 
-	            
+    </div>
+    </a>
+    <div class="block-contents">
+      <!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
+        </div>
+  </div> 
+              
     </div>
     <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
      
@@ -957,7 +951,7 @@ endif; ?>
         <h2>Description</h2>
 
     </div>
-	</div>
+  </div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -976,8 +970,8 @@ endif; ?>
         </div>
 
 
-	
-	</div></div>
+  
+  </div></div>
 
 <?php endforeach; 
 endif; ?>
@@ -993,7 +987,7 @@ endif; ?>
                      <div class="trending-contens">
                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
                             <?php  if(isset($trending_videos)) :
-			                       foreach($trending_videos as $watchlater_video): ?>
+                             foreach($trending_videos as $watchlater_video): ?>
                            <li>
                               <a href="javascript:void(0);">
                                  <div class="movie-slick position-relative">
@@ -1002,11 +996,11 @@ endif; ?>
                               </a>
                            </li>
                             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                         </ul>
                         <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
                             <?php  if(isset($trending_videos)) :
-			                       foreach($trending_videos as $watchlater_video): ?>
+                             foreach($trending_videos as $watchlater_video): ?>
                            <li>
                               <div class="tranding-block position-relative"
                                  style="background-image: url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>');">
@@ -1465,7 +1459,7 @@ endif; ?>
                               </div>
                            </li>
                             <?php endforeach; 
-		                                   endif; ?>
+                                       endif; ?>
                            
                         </ul>
                      </div>
@@ -1488,7 +1482,7 @@ endif; ?>
             <?php echo __($category->name);?> 
          </h4>
          </a>-->
-			  <div style="border-bottom: 1px solid #232429;"></div>
+        <div style="border-bottom: 1px solid #232429;"></div>
          <!-- <a href="<php echo URL::to('/').'/category/'.$category->slug;?>" class="category-heading" style="text-decoration:none;"> 
               <h4 class="Continue Watching text-left category-heading">
                   <php echo __($category->name);?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> 
@@ -1507,8 +1501,8 @@ endif; ?>
 </div>
 <!-- End Of MainContent -->
      <script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
-	<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
-	<script type="text/javascript">
+  <script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
+  <script type="text/javascript">
     $(document).ready(function(){
       $('.bd-example-modal-xl<?= $watchlater_video->id;?>').modal({
           show: false
@@ -1551,106 +1545,106 @@ endif; ?>
         default: '480p', // Default resolution [{Number}, 'low', 'high'],
         dynamicLabel: true
       })
-	$(".playertextbox").appendTo($('#video_player'));
+  $(".playertextbox").appendTo($('#video_player'));
 
   // var res = player.currentResolution();
   // player.currentResolution(res);
  
     function autoplay1() {
-    	
-    	var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-		playButton.setAttribute("id", "myPlayButton");
-	    var next_video_id = $(".next_video").text();
-	    var prev_video_id = $(".prev_video").text();
-	    var next_cat_video = $(".next_cat_video").text();
-	    var prev_cat_video = $(".prev_cat_video").text();
-	    var url = $(".next_url").text();
-	    if(next_video_id != ''){
+      
+      var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
+    playButton.setAttribute("id", "myPlayButton");
+      var next_video_id = $(".next_video").text();
+      var prev_video_id = $(".prev_video").text();
+      var next_cat_video = $(".next_cat_video").text();
+      var prev_cat_video = $(".prev_cat_video").text();
+      var url = $(".next_url").text();
+      if(next_video_id != ''){
 
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+next_video_id;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/"+url+"/"+next_video_id;
          }, 3000);
-	    }else if(prev_video_id != ''){
-	    	
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+      }else if(prev_video_id != ''){
+        
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+prev_video_id;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/"+url+"/"+prev_video_id;
          }, 3000);
-	    
-	    }
+      
+      }
 
-	    if(next_cat_video != ''){
+      if(next_cat_video != ''){
 
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+next_cat_video;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/videos_category/"+next_cat_video;
          }, 3000);
-	    }else if(prev_cat_video != ''){
-	    	
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+      }else if(prev_cat_video != ''){
+        
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+prev_cat_video;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/videos_category/"+prev_cat_video;
          }, 3000);
-	    
-	    }
- 	}
+      
+      }
+  }
 
- 	/*on video Play*/
- 	function playstart() {
- 		// if($("#video_player").data('authenticated')){
-		// 	$.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $watchlater_video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
-		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+  /*on video Play*/
+  function playstart() {
+    // if($("#video_player").data('authenticated')){
+    //  $.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $watchlater_video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
+    //  $.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 
-		// } else {
-		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-		// }
+    // } else {
+    //  $.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+    // }
     $(".vjs-big-play-button").hide();
- 	}
+  }
   </script>
 
 
@@ -1663,10 +1657,10 @@ endif; ?>
     <script src="https://checkout.stripe.com/checkout.js"></script>-->
    <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
     <script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
-  	<script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
-  	<script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
+    <script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
+    <script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
 <script>
-	videojs('videojs-seek-buttons-player', {
+  videojs('videojs-seek-buttons-player', {
     controls: true,
     plugins: {
       videoJsResolutionSwitcher: {
@@ -1725,14 +1719,14 @@ vid.onloadeddata = function() {
   <script>
     // fire up the plugin
     videojs('video_player', {
-	  playbackRates: [0.5, 1, 1.5, 2],
+    playbackRates: [0.5, 1, 1.5, 2],
       controls: true,
       muted: true,
       width: 991,
       fluid: true,
       plugins: {
         videoJsResolutionSwitcher: {
-		  ui: true,
+      ui: true,
           default: 'low', // Default resolution [{Number}, 'low', 'high'],
           dynamicLabel: true
         }
@@ -1740,9 +1734,9 @@ vid.onloadeddata = function() {
     }, function(){
       var player = this;
       window.player = player
-	  player.watermark({
+    player.watermark({
         image: '',
-		fadeTime: null,
+    fadeTime: null,
         url: ''
       });
     });
