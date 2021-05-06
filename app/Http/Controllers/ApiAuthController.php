@@ -204,8 +204,7 @@ class ApiAuthController extends Controller
                             $current_date = date('Y-m-d h:i:s');
                             $date = Carbon::parse($current_date)->addDays($next_date);
                             $sub_price = $plan_details->price;
-                            /*$sub_total =  $sub_price - DiscountPercentage();*/
-                            $sub_total =  $sub_price;
+                            $sub_total =  $sub_price - DiscountPercentage();
                             $user = User::find($user->id);
                             if ( NewSubscriptionCoupon() == 1 ) {
                               	     $charge = $user->charge( $sub_total * 100, $input['py_id']); 
@@ -221,7 +220,6 @@ class ApiAuthController extends Controller
                                                      'stripe_plan' => $plan, 
                                                     'ends_at' => $date,'created_at' => $current_date]
                                                 ]);
-                                             dd($user_details->stripe_id);
                                         $email = $input['email'];
                                         $uname = $input['username'];
                                         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
