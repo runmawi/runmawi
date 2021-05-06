@@ -75,14 +75,14 @@
 	}
 	
 	.tvsec{
-		height: 480px;
+		height: 400px;
 		margin-top: 75px;
 	}
 	.tvtag{
 		font-weight: bold;
 		color: #fff;
 		font-family: 'Open Sans', sans-serif;
-		font-size: 54px;
+		font-size: 50px;
 	}
 	.tvscene{
 		font-size: 25px;
@@ -104,7 +104,7 @@
 		border-bottom: 10px solid #383838;
 	}
 	.downsec{
-		height: 480px;
+		height: 400px;
 		margin-top: 75px;
 	}
 	.downimg{
@@ -118,7 +118,7 @@
 		font-weight: bold;
 		color: #fff;
 		font-family: 'Open Sans', sans-serif;
-		font-size: 54px;
+		font-size: 50px;
 		text-align: left;
 	}
 	.downscene{
@@ -130,7 +130,7 @@
 		text-align: left;
 	}
 	.devicesec{
-		height: 480px;
+		height: 400px;
 		margin-top: 75px;
 	}
 	.deviceimg{
@@ -144,7 +144,7 @@
 		font-weight: bold;
 		color: #fff;
 		font-family: 'Open Sans', sans-serif;
-		font-size: 54px;
+		font-size: 50px;
 	}
 	.devicescene{
 		font-size: 25px;
@@ -163,7 +163,7 @@
 		font-weight: bold;
 		color: #fff;
 		font-family: 'Open Sans', sans-serif;
-		font-size: 54px;
+		font-size: 50px;
 	}
 	.bandetails{
 		text-align: center;
@@ -223,7 +223,8 @@
 }
 	.card {
 		background-color: #202224;
-		top: 60px;	}
+		top: 40px;
+		height: 95px;	}
 	.card-header{
 		margin-top: 15px;
 		text-align: left;
@@ -249,23 +250,24 @@
 	}
 	.btn-link:not(:disabled):not(.disabled) {
     color: #fff;
-		font-size: 35px;
+		font-size: 30px;
 		text-decoration: none;
+		padding: 4px;
 }
 	.plus1{
-		margin-left: 434px;
+		margin-left: 479px;
 	}
 	.plus2{
-		margin-left: 262px;
+		margin-left: 329px;
 	}
 	.plus3{
-		margin-left: 298px;
+		margin-left: 353px;
 	}
 	.plus4{
-		margin-left: 80px;
+		margin-left: 182px;
 	}
 	.plus5{
-		margin-left: 251px;
+		margin-left: 317px;
 	}
 	.loginbut{
 		padding: 7px 17px;
@@ -320,7 +322,7 @@
 				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players and more.</p>
 			</div>
 			<div class="col-md-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="auto" width="auto">
+				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="380" width="auto">
 			</div>
 		</div>
 		
@@ -345,11 +347,25 @@
 				<p class="devicescene">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
 			</div>
 			<div class="col-md-6 deviceimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="auto" width="auto">
+				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="380" width="auto">
 			</div>
 		</div>
 		
-		
+		<script type="text/javascript">
+    $(document).ready(function(){
+$(".plus").click(function(){
+var check=$(".plus").text().trim();
+if(check=="*"){
+ $(".plus").text("+");
+ $("#collapseOne").addClass("collapse");
+ }else{
+ $(".plus").text("*");
+ $("#collapseOne").removeClass("collapse");
+ }
+ });
+ });
+
+</script>
 	</section>
 	<section>
 		<div class="faqsec">
@@ -465,6 +481,7 @@
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+   
 	
 </html> 
 
