@@ -377,6 +377,9 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
         This Video Streaming website lets your users explore various TV shows, movies, video trailers, etc. from large stack of video categories and watch them at their convenience.
+        <br>
+        <br>
+        This Video Streaming website lets your users explore various TV shows, movies, video trailers, etc. from large stack of video categories and watch them at their convenience.
       </div>
     </div>
   </div>
