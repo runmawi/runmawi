@@ -294,7 +294,7 @@
 				</div>
 				<div class="col-sm-4 button">
         <a class="loginbut" href="<?= URL::to('/login')?>"> 
-        	<button class="btn btn-primary inway" type="submit">Sign In</button>
+        	<button class="btn btn-primary inway" type="submit">SIGN IN</button>
     </a>
 				</div>
 			</div>
