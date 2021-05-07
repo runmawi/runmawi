@@ -224,7 +224,7 @@
 	.card {
 		background-color: #202224;
 		top: 40px;
-		height: 95px;	}
+			}
 	.card-header{
 		margin-top: 15px;
 		text-align: left;
@@ -350,24 +350,8 @@
 				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="380" width="auto">
 			</div>
 		</div>
-		
-		<script type="text/javascript">
-    $(document).ready(function(){
-$(".plus").click(function(){
-var check=$(".plus").text().trim();
-if(check=="*"){
- $(".plus").text("+");
- $("#collapseOne").addClass("collapse");
- }else{
- $(".plus").text("*");
- $("#collapseOne").removeClass("collapse");
- }
- });
- });
-
-</script>
-	</section>
-	<section>
+		</section>
+	 <section>
 		<div class="faqsec">
 			<h2 class="freq">Frequently Asked Questions</h2>
 			<div class="col-md-8 offset-md-2" id="accordion">
