@@ -48,7 +48,7 @@
 		
 	}
 	.btn-primary:hover {
-    color: #4895d1;
+    color: #00060a;
     background-color: #fff;
     border-color: #fff;
 }
@@ -81,21 +81,23 @@
 	.tvtag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Open Sans', sans-serif;
-		font-size: 50px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		font-size: 3.125rem;
+		margin-left: -31px;
 	}
 	.tvscene{
 		font-size: 25px;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		width: 370px;
 		margin-left: 105px;
-		margin-top: 35px;
+		margin-top: 13px;
 		text-align: left;
 	}
 	.tvdetail{
 		text-align: center;
-		top: 90px;
+		top: 67px;
+		height: 197px;
 	}
 	.tvimg{
 		text-align: center;
@@ -112,21 +114,21 @@
 	}
 	.downdetail{
 		text-align: center;
-		top: 90px;
+		top: 67px;
 	}
 	.downtag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Open Sans', sans-serif;
-		font-size: 50px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		font-size:3.125rem;
 		text-align: left;
 	}
 	.downscene{
 		font-size: 25px;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		width: 370px;
-		margin-top: 35px;
+		margin-top: 13px;
 		text-align: left;
 	}
 	.devicesec{
@@ -138,20 +140,20 @@
 	}
 	.devicedetail{
 		text-align: center;
-		top: 90px;
+		top: 67px;
 	}
 	.devicetag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Open Sans', sans-serif;
-		font-size: 50px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		    font-size: 3.125rem;
 	}
 	.devicescene{
 		font-size: 25px;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		width: 370px;
-		margin-top: 35px;
+		margin-top: 13px;
 		text-align: left;
 		margin-left: 105px;
 	}
@@ -162,33 +164,33 @@
 	.freq{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Open Sans', sans-serif;
-		font-size: 50px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		    font-size: 3.125rem
 	}
 	.bandetails{
 		text-align: center;
-		margin-top: 150px;
+		margin-top: 79px;
 	}
 	.banhead{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Open Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		font-size: 3.125rem;
 	}
 	.watch{
 		font-size: 1.625rem;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 	}
 	.prime{
 		font-size: 1.2rem;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		margin-top: 30px;
 	}
 	.primebot{
 		font-size: 1.2rem;
-		font-family: 'Quattrocento Sans', sans-serif;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		margin-top: 120px;
 	}
@@ -302,7 +304,7 @@
 			</div>
 			<div class="bandetails">
 			<h1 class="banhead">Watch On! <br>Entertainment at your Desk</h1>
-			   <p class="watch">Watch TV Anytime,Anywhere.</p>
+			   <p class="watch" style="padding-top: 21px">Watch TV Anytime,Anywhere.</p>
 				<P class="prime">Prime Yourself-Get Ready to Keep eye's on!!!</P>
 				<div class="col-md-6 offset-md-3 input-group mb-3 started">
 				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -322,7 +324,7 @@
 				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players and more.</p>
 			</div>
 			<div class="col-md-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land1.png';?>" height="380" width="auto">
+				<img src="<?php echo URL::to('/').'/assets/img/land.png';?>" height="380" width="auto">
 			</div>
 		</div>
 		
