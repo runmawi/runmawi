@@ -2110,7 +2110,7 @@ public function checkEmailExists(Request $request)
       }else{//Signup
         $data = array(
           'username' =>$username,  
-          'email'    =>isset($user_email) ? $user_email : null,
+          'email'    =>isset($email) ? $email : null,
           'user_type'=>$login_type,
           'avatar'   =>$name,
           'role'     =>'registered'
@@ -2127,9 +2127,9 @@ public function checkEmailExists(Request $request)
       }
     }
     if($login_type == 'google'){ //Google
-      $check_exists = User::where('email', '=', $user_email)->where('user_type', '=', $login_type)->count();
+      $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
       if($check_exists > 0) {//Login
-        $user_details = User::where('email', '=', $user_email)->get();
+        $user_details = User::where('email', '=', $email)->get();
         $response = array(
           'status'      =>'true',
           'message'     =>'Login Success',
@@ -2138,7 +2138,7 @@ public function checkEmailExists(Request $request)
       }else{//Signup
         $data = array(
           'username' =>$username,  
-          'email'    =>$user_email,
+          'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
           'role'     =>'registered'
