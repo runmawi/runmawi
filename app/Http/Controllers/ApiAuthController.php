@@ -2113,7 +2113,8 @@ public function checkEmailExists(Request $request)
           'email'    =>isset($email) ? $email : null,
           'user_type'=>$login_type,
           'avatar'   =>$name,
-          'role'     =>'registered'
+          'role'     =>'registered',
+          'password' =>'null'
         );
 
         $user = new User;
@@ -2141,7 +2142,8 @@ public function checkEmailExists(Request $request)
           'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
-          'role'     =>'registered'
+          'role'     =>'registered',
+          'password' =>'null'
         );
 
         $user = new User;
