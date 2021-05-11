@@ -265,6 +265,12 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
+                     
+                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                                $message->to($email,$uname)->subject('Verify your email address');
+                                            });
+
+
                         //send_password_notification('Notification From ELITECLUB','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
 				}else{
 					   $response = array('status'=>'true',
@@ -306,7 +312,11 @@ class ApiAuthController extends Controller
 			'username' => $request->get('username'),
 			'password' => $request->get('password')
 		);
-		if ( Auth::attempt($email_login) || Auth::attempt($username_login) ){
+		$mobile_login = array(
+			'mobile' => $request->get('mobile'),
+			'otp' => $request->get('otp')
+		);
+		if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
 			if($settings->free_registration && !Auth::user()->stripe_active){
 				Auth::user()->role = 'registered';
@@ -380,6 +390,7 @@ class ApiAuthController extends Controller
 			Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
 				$message->to($email)->subject('Verify your email address');
 			});
+			
             
                 $data = DB::table('password_resets')->where('email', $user_email)->first();
                 
@@ -1939,8 +1950,8 @@ public function checkEmailExists(Request $request)
     }
     
         
-    public function SendOtp(Request $request) {/*
-        $mobile = $request->get('mobile');
+    public function SendOtp(Request $request) {
+        /*$mobile = $request->get('mobile');
         $rcode = $request->get('ccode');
         $ccode = $rcode;
         $mobile_number = $ccode.$mobile;
@@ -1964,7 +1975,7 @@ public function checkEmailExists(Request $request)
             try {
                  $verification = $client->verify()->start([ 
                                       'number' =>  $ccode.$mobile,
-                                      'brand'  => 'Eliteclub ',
+                                      'brand'  => 'Flicknexs ',
                                       'code_length'  => '4']);
                     $verification_id =$verification->getRequestId();
                     $response = array(
@@ -1986,7 +1997,7 @@ public function checkEmailExists(Request $request)
               try {
                      $verification = $client->verify()->start([ 
                         'number' =>  $ccode.$mobile,
-                        'brand'  => 'Eliteclub ',
+                        'brand'  => 'Flicknexs ',
                         'code_length'  => '4']);
                   
                         $verification_id =$verification->getRequestId();
@@ -2004,7 +2015,7 @@ public function checkEmailExists(Request $request)
                                     );
                         return response()->json($response, 200);
                     }    
-        }*/   
+        }   */
         $response = array(
         	'status' => true
         );
@@ -2036,7 +2047,7 @@ public function checkEmailExists(Request $request)
                                     'message' => 'Invalid Code'
                                 );
                     return response()->json($response, 200);
-                }  */  
+                }  */
                  $response = array(
                                     'status' => true,
                                     'message' => 'OTP has been verified'
@@ -2067,21 +2078,22 @@ public function checkEmailExists(Request $request)
     $input = $request->all();
     $username = $input['username'];
     $email = $input['email'];
-    $user_url = $input['url'];
+    $user_url = $input['user_url'];
     $login_type = $input['login_type'];//Facebook or Google
     /*Parameters*/
     /*Profile image move to avatar folder*/
     if($user_url != ''){
     	$name = $username.".jpg";
-    	$path = $_SERVER['DOCUMENT_ROOT'].'/content/uploads/avatars/'.$name;
-    	$arrContextOptions=array(
+    	$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+          $arrContextOptions=array(
     		"ssl"=>array(
     			"verify_peer"=>false,
     			"verify_peer_name"=>false,
     		),
     	);  
     	$contents = file_get_contents($user_url, false, stream_context_create($arrContextOptions));
-    	file_put_contents($path, $contents);
+         file_put_contents($path, $contents);
+
     }else{
     	$name = '';
     }
@@ -2116,7 +2128,7 @@ public function checkEmailExists(Request $request)
     }
     if($login_type == 'google'){ //Google
       $check_exists = User::where('email', '=', $user_email)->where('user_type', '=', $login_type)->count();
-      if($check_exists > 0){//Login
+      if($check_exists > 0) {//Login
         $user_details = User::where('email', '=', $user_email)->get();
         $response = array(
           'status'      =>'true',
