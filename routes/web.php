@@ -98,6 +98,7 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     Route::post('becomePaypal', 'PaymentController@BecomePaypal');
     Route::get('upgrade-subscription', 'PaymentController@Upgrade');
     Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber');
+     Route::get('transactiondetails','PaymentController@TransactionDetails');
         
     Route::get('/upgrading', 'PaymentController@upgrading');
         

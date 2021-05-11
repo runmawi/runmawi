@@ -901,8 +901,7 @@
                                  								               
                               </div>
                                <div class="col-sm-4">
-                                  
-                                   <input type="button" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" value="Card Details" /> 
+                                  <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >Transaction Details</a>
                                  								               
                               </div>
                            </div>

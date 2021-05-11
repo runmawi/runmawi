@@ -145,7 +145,7 @@ public function RentPaypal(Request $request)
          }
         return view('update', [
               'intent' => $user->createSetupIntent()
-              ,compact('register')
+             /* ,compact('register')*/
         ]);
     }
 
@@ -357,6 +357,16 @@ public function RentPaypal(Request $request)
               ,compact('register')
             ]);*/
         }
+
+        public function TransactionDetails()
+         {
+              $subscriptions = DB::select('select * from subscriptions');
+
+        
+        return view('TransactionDetails',['subscriptions'=>$subscriptions]);
+    }
+
+
     
          public function saveSubscription(Request $request) {
         
