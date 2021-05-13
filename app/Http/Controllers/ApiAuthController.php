@@ -2093,9 +2093,9 @@ public function checkEmailExists(Request $request)
     if($user_url != ''){
     	$name = $username.".jpg";
     	//local site
-    	$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+    	//$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
     	//live site
-    	//$path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
+    	$path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
           $arrContextOptions=array(
     		"ssl"=>array(
     			"verify_peer"=>false,

@@ -145,7 +145,7 @@ public function RentPaypal(Request $request)
          }
         return view('update', [
               'intent' => $user->createSetupIntent()
-             /* ,compact('register')*/
+              ,compact('register')
         ]);
     }
 
@@ -350,12 +350,12 @@ public function RentPaypal(Request $request)
             {
               $stripeCustomer = $user->createAsStripeCustomer();
             }
-           return view('register.upgrade');
+           /*return view('register.upgrade');*/
 
-           /* return view('register.upgrade', [
+           return view('register.upgrade', [
               'intent' => $user->createSetupIntent()
               ,compact('register')
-            ]);*/
+            ]);
         }
 
         public function TransactionDetails()
@@ -363,14 +363,14 @@ public function RentPaypal(Request $request)
               $subscriptions = DB::select('select * from subscriptions');
 
         
-        return view('TransactionDetails',['subscriptions'=>$subscriptions]);
+        return view('transactiondetails',['subscriptions'=>$subscriptions]);
     }
 
 
     
          public function saveSubscription(Request $request) {
         
-                 $user_email = Auth::user()->email;
+                /* $user_email = Auth::user()->email;
                  $user = User::where('email',$user_email)->first();
                  $stripe_plan = SubscriptionPlan();
                  $paymentMethod = $request->get('py_id');
@@ -390,8 +390,100 @@ public function RentPaypal(Request $request)
                 $response = array(
                     'status' => 'success'
                 );
-              //  return response()->json($response)
+              return response()->json($response)*/
+               $user_email = Auth::user()->email;
+                    $user_id = Auth::user()->user_id;
+                    $user = User::where('email',$user_email)->first();
+                    $paymentMethod = $request->get('py_id');
+                    $plan = $request->get('plan');
+                    $coupon_code = $request->coupon_code;
+                    $payment_type = $request->payment_type;
+                    $paymentMethods = $user->paymentMethods();
+                    $apply_coupon = NewSubscriptionCouponCode();
+                    $stripe_plan = SubscriptionPlan();
+                    $plandetail = Plan::where('plan_id',$plan)->first();
+                
+               if ( NewSubscriptionCoupon() == 1 && ExistingSubscription($user_id) == 0  ) {
+                        try {
+                             $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+                            } catch (IncompletePayment $exception) {
+                                return redirect()->route(
+                                    'cashier.payment',
+                                    [$exception->payment->id, 'redirect' => route('home')]
+                                );
+                            }
+                        \Mail::send('emails.subscriptionmail', array(
+                            'name' => $user->username,
+                            'paymentMethod' => $paymentMethod,
+                            'plan' => ucfirst($plandetail->plans_name),
+                            'price' => $plandetail->price,
+                            'billing_interval' => $plandetail->billing_interval,
+                            /*'next_billing' => $nextPaymentAttemptDate,*/
+                        ), function($message) use ($request,$user){
+                            $message->from(AdminMail(),'Eliteclub');
+                            $message->to($user->email, $user->username)->subject($request->get('subject'));
+                        });
+                            $user->role = 'subscriber';
+                            $user->card_type = 'stripe';
+                            $user->active = 1;
+                            $user->payment_type = $payment_type;
+                            $user->save();
+
+                } else {
+
+                    try {
+                        
+                            if (!empty($coupon_code)){
+                                   $user->newSubscription($stripe_plan, $plan)->withCoupon($coupon_code)->create($paymentMethod);
+                                      \Mail::send('emails.subscriptionmail', array(
+                                            'name' => $user->username,
+                                            'paymentMethod' => $paymentMethod,
+                                            'plan' => ucfirst($plandetail->plans_name),
+                                            'price' => $plandetail->price,
+                                            'billing_interval' => $plandetail->billing_interval,
+                                        ), function($message) use ($request,$user){
+                                            $message->from(AdminMail(),'Eliteclub');
+                                            $message->to($user->email, $user->username)->subject($request->get('subject'));
+                                        });
+                                            $user->role = 'subscriber';
+                                            $user->payment_type = $payment_type;
+                                            $user->card_type = 'stripe';
+                                            $user->active = 1;
+                                            $user->save();
+
+                            }else {
+                                  $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+                                        \Mail::send('emails.subscriptionmail', array(
+                                            'name' => $user->username,
+                                            'paymentMethod' => $paymentMethod,
+                                            'plan' => ucfirst($plandetail->plans_name),
+                                            'price' => $plandetail->price,
+                                            'billing_interval' => $plandetail->billing_interval,
+                                        ), function($message) use ($request,$user){
+                                            $message->from(AdminMail(),'Eliteclub');
+                                            $message->to($user->email, $user->username)->subject($request->get('subject'));
+                                        });
+                                            $user->role = 'subscriber';
+                                            $user->payment_type = $payment_type;
+                                            $user->card_type = 'stripe';
+                                            $user->active = 1;
+                                            $user->save();
+                            }
+                       
+                    } catch (IncompletePayment $exception) {
+                        return redirect()->route(
+                            'cashier.payment',
+                            [$exception->payment->id, 'redirect' => route('home')]
+                        );
+                    }
+                  
+                }
+                $response = array(
+                  'status' => 'success'
+                );             
+             
          }
+         
     
     
     
