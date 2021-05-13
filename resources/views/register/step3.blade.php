@@ -10,6 +10,8 @@ $plan_price = $plan_details->price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;
 ?>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
 <div class="row" id="signup-form">
     
      <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1" >
@@ -101,11 +103,15 @@ $discount_price = $discount_percentage;
 
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
     <script src="https://js.stripe.com/v3/"></script>
+     <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <script>
     
    
-        var base_url = $('#base_url').val();
+        /*var base_url = $('#base_url').val();
     
        const stripe = Stripe('{{ env('STRIPE_KEY') }}');
 
@@ -141,9 +147,9 @@ $discount_price = $discount_percentage;
 			invalid: 'invalid',
 		  };
 
-	
+	*/
 		// Create an instance of the card Element.
-		var cardElement = elements.create('card', {style: style, classes: elementClasses });
+		/*var cardElement = elements.create('card', {style: style, classes: elementClasses });
 
 
         cardElement.mount('#card-element');
@@ -167,17 +173,17 @@ $discount_price = $discount_percentage;
         if (error) {
             
              swal("Your Payment is failed !");
-              $("#card-button").html('Pay Now');
+              $("#card-button").html('Pay Now');*/
             // Display "error.message" to the user...
-        } else {
-                var plan_data = $("#plan_name").val();
+        /*} else {
+                var plan_data = $("#plan_name").val();*/
                 // alert(plan_data);return false;
                 //alert(plan);
                 //alert(setupIntent.payment_method);
-               var py_id = setupIntent.payment_method;
+              /* var py_id = setupIntent.payment_method;*/
               // var plan = $('#plan_name').val();
-
-               $.post(base_url+'/register3', {
+                
+               /*$.post(base_url+'/register3', {
                  py_id:py_id, plan:plan_data, _token: '<?= csrf_token(); ?>' 
                }, 
                 function(data){
@@ -190,10 +196,95 @@ $discount_price = $discount_percentage;
                         
                   }, 2000);
                });
-
+*/
             // The card has been verified successfully...
-        }
+    /*    }
+    });*/
+
+
+      /*  else {*/
+        
+        var base_url = $('#base_url').val();
+         const stripe = Stripe('{{ env('STRIPE_KEY') }}');
+         const elements = stripe.elements();
+	
+		var style = {
+		  base: {
+			color: '#303238',
+			fontSize: '16px',
+			fontFamily: '"Open Sans", sans-serif',
+			fontSmoothing: 'antialiased',
+			'::placeholder': {
+			  color: '#ccc',
+			},
+		  },
+		  CardNumberField : {
+			  background: '#f1f1f1', 
+			  padding: '10px',
+			  borderRadius: '4px', 
+			  transform: 'none',
+		  },
+		  invalid: {
+			color: '#e5424d',
+			':focus': {
+			  color: '#303238',
+			},
+		  },
+		};
+		var elementClasses = {
+			class : 'CardNumberField',
+			empty: 'empty',
+			invalid: 'invalid',
+		  };
+		var cardElement = elements.create('card', {style: style, classes: elementClasses });
+        cardElement.mount('#card-element');
+        const cardHolderName = document.getElementById('card-holder-name');
+        const cardButton = document.getElementById('card-button');       
+        const clientSecret = cardButton.dataset.secret;
+        cardButton.addEventListener('click', async (e) => {
+        $("#card-button").html('Processing ...');
+        
+        const { setupIntent, error } = await stripe.confirmCardSetup(
+            clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: { name: cardHolderName.value }
+                }
+            }
+        );
+        if (error) {
+            swal("Your Payment is failed !");
+              $("#card-button").html('Pay Now');
+        } else {
+        	
+                var plan_data = $("#plan_name").val();
+                var coupon_code = $("#coupon_code").val();
+                var payment_type = $("#payment_type").val();
+                var final_payment = $(".final_payment").val();
+            
+                var py_id = setupIntent.payment_method;
+                
+                stripe.createToken(cardElement).then(function(result) {
+                 console.log(result.token.id);
+                    var stripToken = result.token.id;
+                   $.post(base_url+'/register3', {
+                     py_id:py_id, stripToken:stripToken, payment_type:payment_type, amount:final_payment,plan:plan_data,_token:'<?= csrf_token(); ?>' 
+                   }, 
+
+                   function(data){
+                   	$('#loader').css('display','block');
+                    swal("You have done  Payment !");
+                     $("#card-button").html('Pay Now');
+                    //alert(stripToken);
+                   // return false;
+                    setTimeout(function() {
+                        window.location.replace(base_url+'/login');
+                  }, 2000);
+               });
+             });
+             }
     });
+   
 
 </script>
  @include('footer')

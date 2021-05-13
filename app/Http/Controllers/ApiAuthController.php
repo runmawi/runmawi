@@ -188,6 +188,7 @@ class ApiAuthController extends Controller
                                         $user->save();
                             $email = $input['email'];
                             $uname = $input['username'];
+
                             Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
                                 $message->to($email,$uname)->subject('Verify your email address');
                             });
@@ -265,10 +266,17 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                     
-                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                                                $message->to($email,$uname)->subject('Verify your email address');
+                      Mail::send('emails.subscriptionmail', array(
+                               /* 'activation_code', $user->activation_code,*/
+                                'name'=>$user->username, 
+                          'days' => $plan_details->days, 
+                          'price' => $plan_details->price, 
+                          'ends_at' => $date,
+                          'created_at' => $current_date), function($message) use ($request,$user) {
+                                                $message->from(AdminMail(),'Flicknexs');
+                                                 $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
                                             });
+
 
 
                         //send_password_notification('Notification From ELITECLUB','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
@@ -1951,7 +1959,7 @@ public function checkEmailExists(Request $request)
     
         
     public function SendOtp(Request $request) {
-        /*$mobile = $request->get('mobile');
+        $mobile = $request->get('mobile');
         $rcode = $request->get('ccode');
         $ccode = $rcode;
         $mobile_number = $ccode.$mobile;
@@ -2015,11 +2023,11 @@ public function checkEmailExists(Request $request)
                                     );
                         return response()->json($response, 200);
                     }    
-        }   */
-        $response = array(
+        }   
+        /*$response = array(
         	'status' => true
         );
-        return response()->json($response, 200);    
+        return response()->json($response, 200);  */  
         } 
     
     public function VerifyOtp(Request $request){
@@ -2084,7 +2092,10 @@ public function checkEmailExists(Request $request)
     /*Profile image move to avatar folder*/
     if($user_url != ''){
     	$name = $username.".jpg";
+    	//local site
     	$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+    	//live site
+    	//$path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
           $arrContextOptions=array(
     		"ssl"=>array(
     			"verify_peer"=>false,
