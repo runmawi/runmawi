@@ -866,7 +866,7 @@ Pricing Page
 .file-upload { display: none; }
 .upload_profile { position: relative; }
 .child-cell.active { color: var(--iq-primary); }
-.iq-social ul li a { display: block; text-align: center; font-size: 16px; line-height: 43px; }
+.iq-social ul li a { display: block; text-align: center; font-size: 16px; line-height: 43px; padding-top: 11px;}
 header .navbar ul li.menu-item .dropdown-item{
     line-height: 40px !important;
 }
