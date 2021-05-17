@@ -314,31 +314,27 @@ public function RentPaypal(Request $request)
     
     
       public function ViewStripe(Request $request){
-         
-            $user_id = Auth::user()->id;
-            $user_details = Subscription::where("user_id","=",$user_id)->orderby("created_at","desc")->first();
+           $user_id = Auth::user()->id;
+           
+           $user_details = subscription::where("user_id","=",$user_id)->orderby("created_at","desc")->first();
+           dd($user_details);
             $stripe_id =  $user_details->stripe_id;
             $stripe_status =  $user_details->stripe_status;
             $stripe_Plan =  $user_details->stripe_plan;
-        
-            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-                 
-            $stirpe_subscription = $stripe->subscriptions->retrieve(
+            $stripe = new \Stripe\StripeClient('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt');
+            $stripe_subscription = $stripe->subscriptions->retrieve(
                   $stripe_id,
                   []
                 );
-          
-          
-//         echo "<pre>"; print_r($stirpe_subscription->discount->coupon->amount_off);
-//          exit;
-                $stripe_details = array(
-                        'stirpe_details' => $stirpe_subscription,
+            
+            $stripe_details = array(
+                        'stripe_details' => $stirpe_subscription,
                         //'stripe_status' => $user_details->stripe_status,
                         'stripe_Plan' => $stripe_Plan,
                         'stripe_status' => $stripe_status
-                );
-         
-            return View::make('stripe_billing',$stripe_details);
+            );
+            
+           return View::make('stripe_billing',$stripe_details);
     }
     
     
@@ -354,18 +350,16 @@ public function RentPaypal(Request $request)
 
            return view('register.upgrade', [
               'intent' => $user->createSetupIntent()
-              ,compact('register')
+             /* ,compact('register')*/
             ]);
         }
-
-        public function TransactionDetails()
-         {
-              $subscriptions = DB::select('select * from subscriptions');
-
-        
-        return view('transactiondetails',['subscriptions'=>$subscriptions]);
+         public function TransactionDetails(){  
+          $user_id = Auth::user()->id;
+          $subscriptions = Subscription::where('user_id',$user_id)->get(); 
+            return view('transactiondetails',['subscriptions'=>$subscriptions]);
     }
 
+     
 
     
          public function saveSubscription(Request $request) {
