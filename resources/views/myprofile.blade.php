@@ -866,9 +866,11 @@
                                  								               
                               </div>
                                 <div class="col-sm-6">
-                                    
+                                     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                        @csrf
                                                      <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                             <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" />                       
+                           <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button class="btn btn-primary noborder-radius btn-login nomargin editbtn" type="submit" name="create-account">{{ __('Update Profile') }}</button>                   
                                  								               
                               </div>
                            </div>
@@ -1462,7 +1464,7 @@
 							<div class="row">
 								<?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ ?>
 									<h3> Plan Details:</h3>
-									<p><?php echo CurrentSubPlanName(Auth::user()->id);?></p>
+									<p style="margin-left: 19px;margin-top: 8px"><?php echo CurrentSubPlanName(Auth::user()->id);?></p>
 								<?php } ?>
 								<div class="col-sm-6 col-xs-12 padding-top-30">
 									<?php 
