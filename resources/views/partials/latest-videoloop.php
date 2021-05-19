@@ -102,7 +102,7 @@ overflow-hidden {
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
                      <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <ul class="favorites-slider list-inline row p-0 mb-0">
                             <?php if(isset($latest_videos)) :
                            foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
