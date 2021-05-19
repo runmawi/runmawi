@@ -1,10 +1,9 @@
 
- 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <style>
-           .overflow-hidden {
+overflow-hidden {
     margin-top: 70px;
     overflow: hidden;
                min-height: 450px !important;
@@ -96,7 +95,7 @@
  
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -104,8 +103,8 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-<?php if(isset($latest_videos)) :
-foreach($latest_videos as $watchlater_video): ?>
+                            <?php if(isset($latest_videos)) :
+                           foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -145,7 +144,7 @@ foreach($latest_videos as $watchlater_video): ?>
                            </li>
                            
                             <?php endforeach; 
-		                                   endif; ?>
+		                          endif; ?>
                         </ul>
                      </div>
                   </div>
