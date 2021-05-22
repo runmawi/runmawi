@@ -6,10 +6,10 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Flicknexs</title>
-       <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
-<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-     <!-- Favicon -->
-      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
+       <script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>
+       <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+       <!-- Favicon -->
+     <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
       <!-- Typography CSS -->
@@ -18,68 +18,9 @@
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-       <style>
-           .blink_me {
-    animation: blinker 2s linear infinite;
-  }
-  @keyframes blinker {
-    50% {
-      opacity: 0;
-    }
-  }
-           .h-100 {
-    height: 540px !important;
-}
-            a {
-    color: var(--iq-body-text) !important;
-}
-            li.list-group-item a:hover{
-             color: var(--iq-primary) !important;
-         }
-           /* scroller */
-.scroller { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
-.scroller::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
-.scroller::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
-#sidebar-scrollbar { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
-#sidebar-scrollbar::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
-/*#sidebar-scrollbar { height: calc(100vh - 153px) !important; }*/
-#sidebar-scrollbar::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
-::-webkit-scrollbar { width: 8px; height: 8px; border-radius: 5px; }
-    .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
-    padding-right: 0px
-    }
-            li.list-group-item {
-              background-color: transparent !important;
-               padding-right: unset !important;
-}
-           li.list-group-item a{
-              background: transparent !important;
-               color: var(--iq-body-text) !important;
-               font-size: 12px !important;
-               padding-left: 10px !important;
-               
-}
-           .search_content{
-                           top: 85px !important;
-                           width: 400px !important;
-                           margin-right: -15px !important;
-                           
-                          }
-                           ul.list-group {
-                    text-align: left !important;
-                               max-height: 450px !important;
-                }
-           li.list-group-item {
-    width: 375px;
-}
-           h3 {
-    font-size: 24px !important;
-}
-    
-       </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    </head>
    <body>
       <!-- loader Start -->

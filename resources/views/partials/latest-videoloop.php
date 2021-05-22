@@ -1,10 +1,9 @@
 
- 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <style>
-           .overflow-hidden {
+overflow-hidden {
     margin-top: 70px;
     overflow: hidden;
                min-height: 450px !important;
@@ -96,16 +95,16 @@
  
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
                      <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
-<?php if(isset($latest_videos)) :
-foreach($latest_videos as $watchlater_video): ?>
+                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                            <?php if(isset($latest_videos)) :
+                           foreach($latest_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -145,7 +144,7 @@ foreach($latest_videos as $watchlater_video): ?>
                            </li>
                            
                             <?php endforeach; 
-		                                   endif; ?>
+		                          endif; ?>
                         </ul>
                      </div>
                   </div>
@@ -192,7 +191,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                         </div>
                                     <?php  else: ?>
                                         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                        <video id="videojs-seek-buttons-player" onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
                                         <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
 
