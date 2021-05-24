@@ -1939,7 +1939,7 @@ public function checkEmailExists(Request $request)
     	$userid = $request->user_id;
         $stripe_plan = SubscriptionPlan();
     	$user = User::where('id', '=', $userid)->first();
-    	if ( $user->subscribed($stripe_plan) ) { 
+    	if ( $user->subscription($stripe_plan) ) { 
     		if ($user->subscription($stripe_plan)->onGracePeriod()) { 
     			$status = 'Renew Subscription';
     		}
@@ -2197,6 +2197,7 @@ public function checkEmailExists(Request $request)
 		if ($video_count >0 ) {
 			$video_new = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->first();
 			$video_new->status = $like;
+      $video_new->video_id = $video_id;
 			$video_new->save();
 			$response = array(
 				'status'   =>true
@@ -2317,9 +2318,9 @@ public function checkEmailExists(Request $request)
 		public function LikeVideo(Request $request)
 		{
 			$user_id = $request->user_id;
-			$videoid = $request->videoid;
+			$video_id = $request->video_id;
 			$like = $request->like;
-			$d_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->count();
+			$d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
 		   if ($d_like == 0){
 			   $new_vide_like = new Likedislike;
 			   $new_vide_like->user_id = $request->user_id;
@@ -2327,9 +2328,9 @@ public function checkEmailExists(Request $request)
 			   $new_vide_like->liked = $request->like;
 			   $new_vide_like->save(); 
 		   } else {
-			   $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
+			   $new_vide_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
 			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->videoid;
+			   $new_vide_like->video_id = $request->video_id;
 			   $new_vide_like->liked = $request->like;
 			   $new_vide_like->save(); 
 		   } 
@@ -2347,19 +2348,19 @@ public function checkEmailExists(Request $request)
 		public function DisLikeVideo(Request $request)
 		{
 			$user_id = $request->user_id;
-			$videoid = $request->videoid;
+			$video_id = $request->videoid;
 			$like = $request->like;
-			$d_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->count();
+			$d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
 		   if ($d_like == 0){
 			   $new_vide_like = new Likedislike;
 			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->videoid;
+			   $new_vide_like->video_id = $request->video_id;
 			   $new_vide_like->disliked = $request->like;
 			   $new_vide_like->save(); 
 		   } else {
 			   $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
 			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->videoid;
+			   $new_vide_like->video_id = $request->video_id;
 			   $new_vide_like->disliked = $request->like;
 			   $new_vide_like->save(); 
 		   } 
