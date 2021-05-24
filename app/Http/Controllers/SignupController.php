@@ -402,7 +402,7 @@ public function createStep3(Request $request)
             }
            return view('register.step3', [
                         'intent' => $user->createSetupIntent()
-                        /*,compact('register')*/
+                        ,compact('register')
                     ]);
 
 
