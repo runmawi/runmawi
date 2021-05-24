@@ -86,8 +86,9 @@ Route::group([
     Route::get('/skip_time', 'ApiAuthController@SkipTime');
     Route::post('/next_video', 'ApiAuthController@NextVideo');
     Route::get('/sociallink', 'ApiAuthController@sociallinks');
-    Route::post('/like-dislike', 'ApiAuthController@LikeVideo');
     Route::post('/dislike', 'ApiAuthController@DisLikeVideo');
+    Route::post('/like', 'ApiAuthController@LikeVideo');
+    Route::post('/like_dislike', 'ApiAuthController@LikeDisLike');
     Route::get('popular_series', 'ApiAuthController@popular_series');
     Route::get('serieslist', 'ApiAuthController@serieslist');
     Route::post('seasonlist', 'ApiAuthController@seasonlist');

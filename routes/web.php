@@ -41,6 +41,7 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
   
     Route::post('/sendOtp', 'HomeController@SendOTP');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
+    Route::post('/directVerify', 'SignupController@directVerify');
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
   
     Route::get('/registerUser', 'SignupController@SaveAsRegisterUser');

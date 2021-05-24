@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Auth;
 use DB;
 use Mail;
+use Crypt;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -134,7 +135,30 @@ class SignupController extends Controller
             }
     }
     
-    
+    public function directVerify(Request $request){
+      $activation_code = $request->post('activation_code');
+      $mobile = $request->post('mobile');
+      $user = User::where('mobile',"=", $mobile)
+                      ->update(['otp' => "1234"]);
+      $fetch_user = User::where('mobile',"=", $mobile)->first();
+        // $user = User::where('activation_code', '=', $activation_code)->first();
+        // $fetch_user = User::where('activation_code', '=', $activation_code)->first();
+      if (!empty($user)) {
+        if($activation_code == $fetch_user->otp){
+            $mobile = $fetch_user->mobile;
+            $email = $fetch_user->email;
+            $password = $fetch_user->password;            
+              if (Auth::attempt(['email' => $email, 'otp' => $activation_code])) {
+                  return redirect('/home');
+              }
+          } else {
+             return redirect('/mobileLogin')->with('message', 'Invalid OTP.');
+        }
+      } else {
+        return redirect('/mobileLogin')->with('message', 'Invalid mobile number.');
+      }
+       
+    }
     
     public function Verify($activation_code){
         $user = User::where('activation_code', '=', $activation_code)->first();
@@ -378,7 +402,7 @@ public function createStep3(Request $request)
             }
            return view('register.step3', [
                         'intent' => $user->createSetupIntent()
-                        ,compact('register')
+                        /*,compact('register')*/
                     ]);
 
 
