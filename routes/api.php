@@ -24,6 +24,7 @@ Route::group([
     Route::post('login', 'ApiAuthController@login');
      Route::post('search','ApiAuthController@search');
     Route::post('signup', 'ApiAuthController@signup');
+    Route::post('directVerify', 'ApiAuthController@directVerify');
     Route::post('resetpassword', 'ApiAuthController@resetpassword');
     Route::post('updatepassword', 'ApiAuthController@updatepassword');
     Route::post('changepassword', 'ApiAuthController@changepassword');

@@ -955,13 +955,50 @@ public function verifyandupdatepassword(Request $request)
 		return response()->json($response, 200);
 	}
 
+  public function directVerify(Request $request){
+      $activation_code = $request->post('activation_code');
+      $ccode=$request->post('ccode');
+      $mobile = $request->post('mobile');
+      $user = User::where('mobile',"=", $mobile)
+                      ->update(['otp' => "1234"]);
+      $fetch_user = User::where('mobile',"=", $mobile)->first();
+        // $user = User::where('activation_code', '=', $activation_code)->first();
+        // $fetch_user = User::where('activation_code', '=', $activation_code)->first();
+      if (!empty($user)) {
+        if($activation_code == $fetch_user->otp){
+            $mobile = $fetch_user->mobile;
+            $email = $fetch_user->email;
+            $password = $fetch_user->password;            
+              if (Auth::attempt(['email' => $email, 'otp' => $activation_code])) {
+                $response = array(
+                    'status'      =>'true',
+                    'message'     =>'Your account is verified and login successfully'
+                  );
+                 return response()->json($response, 200);
+              }
+          } else {
+              $response = array(
+                    'status'      =>'false',
+                    'message'     =>'Invalid OTP number'
+                  );
+                 return response()->json($response, 400);
+        }
+      } else {
+        $response = array(
+                    'status'      =>'false',
+                    'message'     =>'Invalid mobile number'
+                  );
+                 return response()->json($response, 400);
+      }
+       
+    }
+
 	public function updateProfile(Request $request) {
 
         $id = $request->user_id;
-        $user = User::find($id);
+        $user_id = User::find($id);
         $path = public_path().'/uploads/avatars/';
-        $logo = $request->avatar;
-
+        $logo = $request->user_avatar;
         if($logo != '') {   
         	if($logo != ''  && $logo != null){
         		$file_old = $path.$logo;
@@ -977,14 +1014,14 @@ public function verifyandupdatepassword(Request $request)
         	$avatar = 'default.png';
         }
         $user = User::find($id);
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->name = $request->username;
-        $user->ccode = $request->ccode;
-        $user->mobile = $request->mobile;
+        $user->email = $request->user_email;
+        $user->username = $request->user_username;
+        $user->name = $request->user_name;
+        $user->ccode = $request->user_ccode;
+        $user->mobile = $request->user_mobile;
         $user->avatar = $avatar;
-		$user->save();
-		$response = array(
+		    $user->save();
+		    $response = array(
 				'status'=>'true',
 				'message'=>'Your Profile detail has been updated'
 			);
@@ -1826,9 +1863,9 @@ public function verifyandupdatepassword(Request $request)
      {
         
         $stripe_plan = SubscriptionPlan();
-    	$userid = $request->get('userid');
+    	$user_id = $request->get('userid');
     	$plan = $request->get('subscrip_plan');
-    	$user = User::find($userid);
+    	$user = User::find($user_id);
     	$paymentMethod = $request->get('py_id');
 		$user->newSubscription('test', $plan)->create($paymentMethod);
        if ( $user->subscribed('test') ) { 
@@ -1939,7 +1976,7 @@ public function checkEmailExists(Request $request)
     	$userid = $request->user_id;
         $stripe_plan = SubscriptionPlan();
     	$user = User::where('id', '=', $userid)->first();
-    	if ( $user->subscription($stripe_plan) ) { 
+    	if ( $user->subscribed($stripe_plan) ) { 
     		if ($user->subscription($stripe_plan)->onGracePeriod()) { 
     			$status = 'Renew Subscription';
     		}
@@ -1959,7 +1996,7 @@ public function checkEmailExists(Request $request)
     
         
     public function SendOtp(Request $request) {
-        $mobile = $request->get('mobile');
+       /* $mobile = $request->get('mobile');
         $rcode = $request->get('ccode');
         $ccode = $rcode;
         $mobile_number = $ccode.$mobile;
@@ -2023,11 +2060,11 @@ public function checkEmailExists(Request $request)
                                     );
                         return response()->json($response, 200);
                     }    
-        }   
-        /*$response = array(
+        }   */
+        $response = array(
         	'status' => true
         );
-        return response()->json($response, 200);  */  
+        return response()->json($response, 200);   
         } 
     
     public function VerifyOtp(Request $request){
@@ -2501,6 +2538,109 @@ public function checkEmailExists(Request $request)
 			return response()->json($response, 200);
 
 		}
+    public function NextVideo(Request $request) {
+
+        //ds
+    $currentvideo_id = $request->id;
+        
+        $videonext_album_id = Video::where('id', '=', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('album_id');
+        
+        $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+        
+    $videonext = Video::where('id', '>', $currentvideo_id)->where('album_id', '=', $videonext_album_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+
+    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
+
+    $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
+        
+    $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
+
+    $count_video = count($videonext);
+        
+        
+    if ( $count_video > 0 ) { 
+  
+                // $audio_cat_id = \Audio::where('id','=',$request->audioid)->pluck('audio_category_id');
+            
+                $settings = Setting::first();
+            
+                $video = Video::find($videonext);
+            
+                // If user has access to all the content
+            
+                if($video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ) {
+                    
+                $columns = null;
+                    
+                // Else we need to restrict the columns we return
+                    
+                } else {
+                    
+                    $columns = $this->public_columns_video;
+                }
+       
+                $response = array(
+                    'status'=>'true',
+                    'video_cat_name' => $video_cat_name,
+                    'video_details' => Video::where('id', '=', $videonext)->where('status','=','1')->where('active','=','1')->get($columns),
+                    'category_details' => $video_cat_details
+                );
+      }
+      else {
+
+      $response = array(
+        'status'=>'false',
+        'message' => 'Sorry No Video Found'
+      );
+    }
+
+    return Response::json($response, 200);
+  }
+  public function prev_audio(Request $request){
+        
+    $currentaudio_id = $request->id;//
+    //$audionext = Audio::where('id', '<', $currentaudio_id)->pluck('id');
+    $audionext = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->pluck('id');
+
+    $audio_cat_id = Audio::where('id','=',$audionext )->where('status','=','1')->where('active','=','1')->pluck('audio_category_id');
+
+    $audio_cat_name = AudioCategory::where('id','=',$audio_cat_id)->pluck('name');
+
+        $audio_cat_details = AudioCategory::where('id','=',$audio_cat_id)->get();
+        
+    $settings = Setting::first();
+
+    $count_audio = count($audionext);
+
+    if ( $count_audio > 0 ) { 
+            
+    //print_r($audionext1);exit;
+    $audio = Audio::find($audionext);
+    // If user has access to all the content
+    if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ){
+      $columns = null;
+    // Else we need to restrict the columns we return
+    } else {
+      $columns = $this->public_columns_audio;
+    }
+
+    $response = array(
+      'status'=>'true',
+      'audio_cat_name' => $audio_cat_name,
+      'audio_details' => Audio::where('id', '=', $audionext)->where('status','=','1')->where('active','=','1')->get($columns),
+      'category_details' => $audio_cat_details
+    );
+        } else {
+
+            $response = array(
+                'status'=>'false',
+                'message' => 'Sorry No Audio Found'
+            );
+        }
+
+            return Response::json($response, 200);
+        }
+    
 
 	}
 
