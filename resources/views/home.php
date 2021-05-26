@@ -312,7 +312,7 @@ border-top: 0px !important;
                          <div class="modal-body playvid">
                              <?php if($watchlater_video->type == 'embed'): ?>
                                         <div id="video_container" class="fitvid">
-                                            <?= $watchlater_video->embed_code ?>
+                                            <iframe  width="100%" height="500" src="https://www.youtube.com/embed/<?= $watchlater_video->embed_code ?>" frameborder="0" allowfullscreen></iframe> <!-- <?= $watchlater_video->embed_code ?> -->
                                         </div>
                                     <?php  elseif($watchlater_video->type == 'file'): ?>
                                         <div id="video_container" class="fitvid">
