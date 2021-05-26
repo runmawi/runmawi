@@ -999,7 +999,7 @@ public function verifyandupdatepassword(Request $request)
         $id = $request->user_id;
         $user = User::find($id);
         $path = public_path().'/uploads/avatars/';
-        $logo = $request->avatar;
+        $logo = $request->user_avatar;
         if($logo != '') {   
         	if($logo != ''  && $logo != null){
         		$file_old = $path.$logo;
