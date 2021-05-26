@@ -427,7 +427,8 @@ class ApiAuthController extends Controller
      public function ViewStripe(Request $request){
          
             $user_id = $request->user_id;
-            $user_details = Subscription::where("user_id","=",$user_id)->orderby("created_at","desc")->first();
+            /*$user_details = Subscription::where("user_id","=",$user_id)->orderby("created_at","desc")->first();*/
+             $subscriptions = Subscription::where('user_id',$user_id)->get();
             $stripe_id =  $user_details->stripe_id;
             $stripe_status =  $user_details->stripe_status;
             $stripe_Plan =  $user_details->stripe_plan;
@@ -2147,9 +2148,9 @@ public function checkEmailExists(Request $request)
     }
 
     if($login_type == 'facebook'){ //Facebook
-      $check_exists = User::where('username', '=', $username)->where('user_type', '=', $login_type)->count();
+      $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
       if($check_exists > 0){//Login
-        $user_details = User::where('username', '=', $username)->get();
+        $user_details = User::where('email', '=', $email)->get();
         $response = array(
           'status'      =>'true',
           'message'     =>'Login Success',
@@ -2158,7 +2159,7 @@ public function checkEmailExists(Request $request)
       }else{//Signup
         $data = array(
           'username' =>$username,  
-          'email'    =>isset($email) ? $email : null,
+          'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
           'role'     =>'registered',
@@ -2356,25 +2357,35 @@ public function checkEmailExists(Request $request)
 		{
 			$user_id = $request->user_id;
 			$video_id = $request->video_id;
-			$like = $request->like;
 			$d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
-		   if ($d_like == 0){
-			   $new_vide_like = new Likedislike;
-			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->videoid;
-			   $new_vide_like->liked = $request->like;
-			   $new_vide_like->save(); 
-		   } else {
-			   $new_vide_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
-			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->video_id;
-			   $new_vide_like->liked = $request->like;
-			   $new_vide_like->save(); 
-		   } 
+		   if ($d_like > 0){
+        $new_vide_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
+        if ($new_vide_like->liked == 1) {
+         $new_vide_like->user_id = $request->user_id;
+         $new_vide_like->video_id = $request->video_id;
+         $new_vide_like->liked = 0;
+         $new_vide_like->disliked = 1; 
+         $new_vide_like->save(); 
+        } elseif ($new_vide_like->liked == 0) {
+          $new_vide_like->user_id = $request->user_id;
+         $new_vide_like->video_id = $request->video_id;
+         $new_vide_like->liked = 1;
+         $new_vide_like->disliked = 0;
+         $new_vide_like->save();
+        }
+     } else {
+         $new_vide_like = new Likedislike;
+         $new_vide_like->user_id = $request->user_id;
+         $new_vide_like->video_id = $request->video_id;
+         $new_vide_like->liked = 1;
+         $new_vide_like->disliked = 0;
+         $new_vide_like->save(); 
+       }
 
 		   $response = array(
 				'status'=>'true',
-				'liked' => $like,
+				'liked' => $new_vide_like->liked,
+        'disliked' => $new_vide_like->disliked,
 				'message'=>'success'
 			);
 			
@@ -2542,19 +2553,21 @@ public function checkEmailExists(Request $request)
 
         //ds
     $currentvideo_id = $request->id;
+      /*  
+        $videonext_album_id = Video::where('id', '=', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('album_id');*/
         
-        $videonext_album_id = Video::where('id', '=', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('album_id');
-        
-        $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
-        
-    $videonext = Video::where('id', '>', $currentvideo_id)->where('album_id', '=', $videonext_album_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+       /* $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');*/
+         $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
 
-    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
+    $videonext = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+
+    $video_cat_id = Video::where('id','=',$videonext)->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
 
     $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
         
     $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
 
+    $settings = Setting::first();
     $count_video = count($videonext);
         
         
@@ -2562,7 +2575,6 @@ public function checkEmailExists(Request $request)
   
                 // $audio_cat_id = \Audio::where('id','=',$request->audioid)->pluck('audio_category_id');
             
-                $settings = Setting::first();
             
                 $video = Video::find($videonext);
             
@@ -2596,39 +2608,40 @@ public function checkEmailExists(Request $request)
 
     return Response::json($response, 200);
   }
-  public function prev_audio(Request $request){
+
+  public function PrevVideo(Request $request){
         
-    $currentaudio_id = $request->id;//
+    $currentvideo_id = $request->id;//
     //$audionext = Audio::where('id', '<', $currentaudio_id)->pluck('id');
-    $audionext = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->pluck('id');
+    $videonext = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->pluck('id');
 
-    $audio_cat_id = Audio::where('id','=',$audionext )->where('status','=','1')->where('active','=','1')->pluck('audio_category_id');
+    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
 
-    $audio_cat_name = AudioCategory::where('id','=',$audio_cat_id)->pluck('name');
+    $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
 
-        $audio_cat_details = AudioCategory::where('id','=',$audio_cat_id)->get();
+        $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
         
     $settings = Setting::first();
 
-    $count_audio = count($audionext);
+    $count_video = count($audionext);
 
-    if ( $count_audio > 0 ) { 
+    if ( $count_video > 0 ) { 
             
     //print_r($audionext1);exit;
-    $audio = Audio::find($audionext);
+    $video = Video::find($videonext);
     // If user has access to all the content
-    if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ){
+    if($video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ){
       $columns = null;
     // Else we need to restrict the columns we return
     } else {
-      $columns = $this->public_columns_audio;
+      $columns = $this->public_columns_video;
     }
 
     $response = array(
       'status'=>'true',
-      'audio_cat_name' => $audio_cat_name,
-      'audio_details' => Audio::where('id', '=', $audionext)->where('status','=','1')->where('active','=','1')->get($columns),
-      'category_details' => $audio_cat_details
+      'video_cat_name' => $video_cat_name,
+      'video_details' => Video::where('id', '=', $videonext)->where('status','=','1')->where('active','=','1')->get($columns),
+      'category_details' => $video_cat_details
     );
         } else {
 

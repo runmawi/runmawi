@@ -86,6 +86,7 @@ Route::group([
     Route::get('/check_block_list', 'ApiAuthController@CheckBlockList');
     Route::get('/skip_time', 'ApiAuthController@SkipTime');
     Route::post('/next_video', 'ApiAuthController@NextVideo');
+    Route::post('/prev_video', 'ApiAuthController@PrevVideo');
     Route::get('/sociallink', 'ApiAuthController@sociallinks');
     Route::post('/dislike', 'ApiAuthController@DisLikeVideo');
     Route::post('/like', 'ApiAuthController@LikeVideo');
