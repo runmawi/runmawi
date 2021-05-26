@@ -997,9 +997,9 @@ public function verifyandupdatepassword(Request $request)
 	public function updateProfile(Request $request) {
 
         $id = $request->user_id;
-        $user_id = User::find($id);
+        $user = User::find($id);
         $path = public_path().'/uploads/avatars/';
-        $logo = $request->user_avatar;
+        $logo = $request->avatar;
         if($logo != '') {   
         	if($logo != ''  && $logo != null){
         		$file_old = $path.$logo;
@@ -2614,16 +2614,15 @@ public function checkEmailExists(Request $request)
     $currentvideo_id = $request->id;//
     //$audionext = Audio::where('id', '<', $currentaudio_id)->pluck('id');
     $videonext = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->pluck('id');
-
-    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
-
+    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id')->limit(1)->get();
+    dd($video_cat_id);
     $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
 
         $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
         
     $settings = Setting::first();
 
-    $count_video = count($audionext);
+    $count_video = count($videonext);
 
     if ( $count_video > 0 ) { 
             
@@ -2655,5 +2654,24 @@ public function checkEmailExists(Request $request)
         }
     
 
+public function upnextAudio(Request $request){
+        
+         
+        $audio_id = $request->audio_id;
+        
+        $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
+        
+        //$album_id = $request->album_id;
+    $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
+        
+    $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
+
+    $response = array(
+      'status'=>'true',
+      'message'=>'success',
+      'audio_albums' =>$album_all_audios
+    );
+    return Response::json($response, 200);
+  }   
 	}
 
