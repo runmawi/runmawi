@@ -957,8 +957,9 @@ public function verifyandupdatepassword(Request $request)
 	}
 
   public function directVerify(Request $request){
+    if (!empty($request->post('activation_code')) && !empty($request->post('mobile'))) {
       $activation_code = $request->post('activation_code');
-      $ccode=$request->post('ccode');
+      $ccode = $request->post('ccode');
       $mobile = $request->post('mobile');
       $user = User::where('mobile',"=", $mobile)
                       ->update(['otp' => "1234"]);
@@ -972,25 +973,39 @@ public function verifyandupdatepassword(Request $request)
             $password = $fetch_user->password;            
               if (Auth::attempt(['email' => $email, 'otp' => $activation_code])) {
                 $response = array(
-                    'status'      =>'true',
-                    'message'     =>'Your account is verified and login successfully'
+                    'status' =>'true',
+                    'message' =>'Your account is verified and login successfully'
                   );
                  return response()->json($response, 200);
               }
           } else {
               $response = array(
-                    'status'      =>'false',
-                    'message'     =>'Invalid OTP number'
+                    'status' =>'false',
+                    'message' =>'Invalid OTP number'
                   );
                  return response()->json($response, 400);
         }
       } else {
         $response = array(
-                    'status'      =>'false',
-                    'message'     =>'Invalid mobile number'
+                    'status' =>'false',
+                    'message' =>'Invalid mobile number'
                   );
                  return response()->json($response, 400);
       }
+    } else {
+      if (empty($request->post('activation_code')) && !empty($request->post('mobile'))) {
+        $msg = "Please enter the OTP";
+      } else if(!empty($request->post('activation_code')) && empty($request->post('mobile'))) {
+        $msg = "Please enter the mobile number";
+      } else {
+        $msg = "Please enter the OTP and Mobile number";
+      }
+        $response = array(
+                    'status' =>'false',
+                    'message' => $msg
+                  );
+        return response()->json($response, 400);
+    }
        
     }
 
@@ -998,17 +1013,15 @@ public function verifyandupdatepassword(Request $request)
 
         $id = $request->user_id;
         $user = User::find($id);
-        $path = public_path().'/uploads/avatars/';
-        $logo = $request->user_avatar;
-        if($logo != '') {   
-        	if($logo != ''  && $logo != null){
+        $path = URL::to('/').'/public/uploads/avatars/';
+        $logo = $request->file('avatar');
+        if($logo != '' && $logo != null) {
         		$file_old = $path.$logo;
         		if (file_exists($file_old)){
         			unlink($file_old);
         		}
-        	}
         	$file = $logo;
-        	$avatar  = $file->getClientOriginalName();
+          $avatar = $file->getClientOriginalName();
         	$file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
         } else {
