@@ -25,17 +25,9 @@
 	}
 		</style>
 </head>
-          <!-- loader Start -->
-      <div id="loading">
-         <div id="loading-center">
-         </div>
-      </div>
-      <!-- loader END -->
-<div class="land">
-	<section >
-		<div class="landing-page" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;
-    height: 665px;">
-			<div class="row">
+	<section class="landing-page" >
+       
+			<div class="row main-head d-flex justify-content-between">
 				<div class="col-sm-8">
         <?php
         $settings = App\Setting::find(1);
@@ -49,6 +41,7 @@
     </a>
 				</div>
 			</div>
+           
 			<div class="bandetails">
 			<h1 class="banhead">Watch On! <br>Entertainment at your Desk</h1>
 			   <p class="watch" style="padding-top: 21px">Watch TV Anytime,Anywhere.</p>
@@ -62,25 +55,26 @@
 				  </div>
 				</div>
 			</div>
-		</div>
+        
 	</section>
-	<section>
-		<div class="row tvsec">
-			<div class="col-md-6 col-sm-6 tvdetail">
+	<section class="tvsec">
+        <div class="container pt-5">
+		<div class="row align-items-center">
+			<div class="col-md-6 col-sm-6 tvdetail ">
 				<h2 class="tvtag">Enjoy on your Tv.</h2>
-				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players and more.</p>
+				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players <br>and more.</p>
 			</div>
 			<div class="col-md-6 col-sm-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land.png';?>" height="380" width="auto">
+				<img src="<?php echo URL::to('/').'/assets/img/land.png';?>" width="550">
 			</div>
 		</div>
-		
+		</div>
 		
 	</section>
-	<section>
-		<div class="row downsec">
+	<section class="downsec">
+		<div class="row  align-items-center">
 			<div class="col-md-6 col-sm-6 downimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>" height="100%" width="75%">
+				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>" width="500">
 			</div>
 			<div class="col-md-6 col-sm-6 downdetail">
 				<h2 class="downtag">Download Your Shows to Watch Offline.</h2>
@@ -89,22 +83,22 @@
 			
 		</div>
 	</section>
-	<section>
-		<div class="row devicesec">
+	<section class="devicesec">
+		<div class="row  align-items-center">
 			<div class="col-md-6 col-sm-6 devicedetail">
 				<h2 class="devicetag">Across all devices.</h2>
 				<p class="devicescene">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
 			</div>
 			<div class="col-md-6 col-sm-6 deviceimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" height="380" width="auto">
+				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" >
 			</div>
 		</div>
 		</section>
-	 <section>
+	 <section class="mt-5 pt-3">
 		<div class="faqsec">
 			<h2 class="freq">Frequently Asked Questions</h2>
 			<div class="col-md-8 offset-md-2" id="accordion">
-  <div class="card">
+  <div class="card mt-5">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -183,11 +177,11 @@
   </div>
 </div>
 			<P class="primebot">Prime Yourself-Get Ready to Keep eye's on!!!</P>
-				<div class="col-md-6 offset-md-3 input-group mb-3">
+				<div class="col-md-6 p-5 offset-md-3 input-group mb-3">
 				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
                       <a href="<?= URL::to('/signup')?>"> 
-					<button class="btn btn-outline-secondary subbut" type="button">GET STARTED</button>
+					<button class="btn btn-outline-secondary subbut pt-2" type="button">GET STARTED</button>
                       </a>
 				  </div>
 				</div>
@@ -195,7 +189,7 @@
 		</div>
 	</section>
 	<?php include('footer.blade.php');?>
-	</div>
+	
           <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>

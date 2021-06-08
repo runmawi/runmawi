@@ -4,7 +4,7 @@
                <div class="row">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
-                     <div class="d-flex">
+                     <div class="d-flex mt-2">
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
                         </a>

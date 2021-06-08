@@ -23,32 +23,10 @@
     </head>
         <body style="background-color:#fff;">
          
-	<section class="land" >
-		<div class="landing-page" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;background-size: cover;">
-			
-			<div class="bandetails align-self-center">
-               
-                    <img class="logo" src="<?php echo URL::to('/').'/assets/img/logo.png';?>">
-			<h1 class="banhead">WELCOME <br>TO FLICKNEXS</h1>
-			  <p class="watch" style="padding-top: 21px">The revolution begins</p>
-				 <!--<P class="prime">Prime Yourself-Get Ready to Keep eye's on!!!</P>-->
-				<div class="text-center">
-                      <a href="<?= URL::to('/signup')?>"> 
-					<button class="subbut" type="button"><a herf="">GET STARTED</a></button>
-                      </a>
-				  </div>
-				</div>
-            <div class="text-center mt-2 pt-5">
-                <hr style="width:40%; margin:0 auto;">
-                <p class="mt-3 have">Already have an account? <a>Sign In Now</a></p>
-            </div>
-			</div>
-	
-	</section>
-            <!--
-            <section class="mt-5 pt-2 p-2 step">
+
+		                <section class="mt-5 pt-2 p-2 step">
                 <div class="container">
-                    <div class="row">
+                    <div class="row mt-4 p-5">
                         <div class="col-sm-12 align-items-center">
                             <div class="text-center">
                                 <p>STEP 1 To 3</p>
@@ -72,7 +50,8 @@
                     </div>
                 </div>
             </section>
-            <section class="mt-5 pt-2 p-2 step">
+            <!--
+<section class="mt-5 pt-2 p-2 step">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 align-items-center">
