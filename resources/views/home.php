@@ -184,7 +184,7 @@ border-top: 0px !important;
         foreach ($banner as $key => $bannerdetails) { ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image" >
             <a href="<?=$bannerdetails->link;  ?>">
-    <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$watchlater_video->image;  ?>') no-repeat;background-size: cover;">
+    <div class="slide slick-bg s-bg-1" style="background: url('<?php echo URL::to('/').'/public/uploads/img/' ?>') no-repeat;background-size: cover;">
        <div class="container-fluid position-relative h-100">
           <div class="slider-inner h-100">
              <div class="row align-items-center  h-100">
@@ -585,7 +585,6 @@ border-top: 0px !important;
          
   </div>
 </div>
-</div>
              <?php endforeach; 
                                        endif; ?>
                           <?php if(isset($latest_videos)) :
@@ -682,7 +681,7 @@ border-top: 0px !important;
 
 
   
-  </div></div>
+                                    </div></div>
 
 <?php endforeach; 
 endif; ?>
@@ -1111,7 +1110,7 @@ endif; ?>
                                                          </p>
                                                       </div>
                                                    </div>
-                                                   <!--<div class="e-item">
+                                                   <div class="e-item">
                                                       <div class="block-image position-relative">
                                                          <a href="<?php echo URL::to('home') ?>">
                                                          <img src="assets/images/episodes/02.jpg" class="img-fluid" alt="">
@@ -1540,15 +1539,15 @@ endif; ?>
 </script>
 
 
-  <script>
+<!--  <script>
      var player = videojs('video_player').videoJsResolutionSwitcher({
         default: '480p', // Default resolution [{Number}, 'low', 'high'],
         dynamicLabel: true
       })
   $(".playertextbox").appendTo($('#video_player'));
 
-  // var res = player.currentResolution();
-  // player.currentResolution(res);
+   var res = player.currentResolution();
+  player.currentResolution(res);
  
     function autoplay1() {
       
@@ -1645,7 +1644,7 @@ endif; ?>
     // }
     $(".vjs-big-play-button").hide();
   }
-  </script>
+  </script>-->
 
 
    
