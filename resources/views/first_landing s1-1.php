@@ -58,9 +58,9 @@ Sign In
                     <table style="width:100%;">
     <tr colspan="3" style="background-color:#f3f3f3;padding:10px;">
       <th></th>
-      <th>Last Name</th>
-      <th>Points</th>
-      <th>Points</th>
+      <th>Basic</th>
+      <th>Standard</th>
+      <th>Premium</th>
       
     </tr>
                         <tr>
@@ -70,12 +70,14 @@ Sign In
                             <td>$799</td>
                             
                         </tr>
+                        
                         <tr>
                             <td>HD available</td>
                             <td><i class="fa fa-times" aria-hidden="true"></i></td>
                             <td><i class="fa fa-times" aria-hidden="true"></i></td>
                             <td> <i class="fa fa-check" aria-hidden="true"></i></td>
                         </tr>
+                        <hr>
                         <tr>
                             <td>Ultra HD available</td>
                             <td><i class="fa fa-times" aria-hidden="true"></i></td>
