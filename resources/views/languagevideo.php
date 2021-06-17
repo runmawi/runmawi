@@ -279,7 +279,7 @@ height: 30px !important;
                   </div>
                </div>
             </div>
-               <?php if(isset($lang_videos)) :
+               <?php /* if(isset($lang_videos)) :
                                 foreach($lang_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl<?= $watchlater_video->id;?>"  id="vidModal"   tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                  
@@ -321,7 +321,7 @@ height: 30px !important;
                                         </div>
                                     <?php  else: ?>
                                         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                        <video id="videojs-seek-buttons-player" onplay="playstart()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
                                         <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
 
@@ -354,7 +354,7 @@ height: 30px !important;
   </div>
                   </div></div>
               <?php endforeach; 
-endif; ?>
+endif; */?>
              
          
                                   <?php  if(isset($lang_videos)) :

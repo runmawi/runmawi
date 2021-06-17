@@ -1,4 +1,3 @@
-
 <?php $settings = App\Setting::first(); ?>
   <body 
         <?php if ( Session::get('locale') == 'arabic') { echo 'dir="rtl"';}?>> 

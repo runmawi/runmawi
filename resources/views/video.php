@@ -43,7 +43,7 @@
 .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
-top: 50% !important;
+top: 55% !important;
 left: 50% !important;
 margin: -25px 0 0 -25px;
 width: 50px !important;
@@ -103,7 +103,7 @@ border-radius: 25px !important;
     }
 .vjs-texttrack-settings { display: none; }
 .video-js .vjs-big-play-button{ border: none !important; }
-    #video_container{height: auto;padding-top: 120px !important;;width: 95%;margin: 0 auto;}
+    #video_container{height: auto;padding-top: 20px !important;;width: 95%;margin: 0 auto;}
 /*    #video_bg_dim {background: #1a1b20;}*/
     .video-js .vjs-tech {outline: none;}
     
@@ -282,15 +282,16 @@ border-radius: 25px !important;
    <?php if(!Auth::guest()) { ?>
 
 		<div class="row">
-			<div class="col-sm-6 col-md-6 col-xs-12">     
+			<div class="col-sm-6 col-md-6 col-xs-12 d-flex justify-content-around">     
 			<!-- Watch Later -->
-			<div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-
+                <div>
+			<div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
+<div>
 			<!-- Wish List -->            
 			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
-
+</div>
 			<!-- Share -->
-			<div class="social_share">
+			<div class="social_share p-1 d-flex justify-content-around align-items-center">
 			  <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
 			  <div id="social_share">
 				<?php include('partials/social-share.php'); ?>

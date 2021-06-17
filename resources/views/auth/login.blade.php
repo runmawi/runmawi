@@ -31,9 +31,13 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+    .lk{
+       text-align:center;
+        font-size: 65px;
+        font-weight: 900;
+    }
     .signcont {
-    margin-top: 100px !important;
-}
+ }
     a.f-link {
     margin-bottom: 1rem;
     margin-left: 140px;
@@ -136,21 +140,19 @@ i.fa.fa-google-plus {
     </div>
 </div>
     </div></div>-->
-<section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
+<section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/landban.png'; ?>') no-repeat;background-size: cover;">
    <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
-          <div class="col-lg-6 col-md-12 align-self-center">
+          <div class="col-lg-6 col-sm-12 col-md-12 align-self-center">
               <div class="col-lg-9" >
-              <h1 style="text-align:center;font-size: 60px;">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
+              <h1 class="lk font-weight-bold" >WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div>
-         <div class="col-lg-4 col-md-12 align-self-center">
+         <div class="col-lg-4 col-sm-12 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto" align="center">
-                      
-                    <img class="logo" src="<?php echo URL::to('/').'/assets/img/logo.png';?>">
-                      
+                      <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" style="margin-bottom:1rem;">
                      <h3 class="mb-3 text-center">{{ __('Sign-In') }}</h3>
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -197,7 +199,9 @@ i.fa.fa-google-plus {
 								<label class="form-check-label" for="remember">
 									{{ __('Keep me signed in') }}
 								</label>
+                            
                               </div>  
+                          <hr>
                           <h5 class="mb-3 text-center">Sign in by using</h5>
                          <div class="form-group row mb-0">
 						@if ( config('social.google') == 1 )

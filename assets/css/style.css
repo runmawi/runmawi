@@ -392,10 +392,10 @@ video { display: block; width: 100%; height: 100%; }
 /*---------------------------------------------------------------------
                       Sign In
 -----------------------------------------------------------------------*/
-#sign-in-page-box { background: #fff; border-radius: 10px; position: relative; width: 100%; min-height: 480px; height: 93vh; margin: 15px auto; box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); -webkit-box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); }
+#sign-in-page-box { background: #fff; border-radius: 10px; position: relative; width: 100%; min-height: 480px;  margin: 15px auto; box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); -webkit-box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); }
 .sign-in-detail { color: var(--iq-white); }
-.sign-in-page { height: 100vh; position: relative; background: url(../img/home/vod-header.png) no-repeat scroll 0 0; background-size: cover; }
-.sign-in-page .height-self-center { height: 100vh; border-radius: 15px; }
+.sign-in-page {  padding: 80px; background: url(../img/home/vod-header.png) no-repeat scroll 0 0; background-size: cover; }
+.sign-in-page .height-self-center { border-radius: 15px; }
 .sign-in-page-data { border-radius: 15px; }
 .sign-in-detail { padding: 50px 80px; }
 .sign-in-logo { display: inline-block; width: 100%; }
@@ -407,7 +407,7 @@ video { display: block; width: 100%; height: 100%; }
 .iq-social-media li a { height: 30px; width: 30px; text-align: center; font-size: 18px; line-height: 30px; display: inline-block; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; background: var(--iq-light-primary); color: var(--iq-primary) !important; }
 .iq-social-media li a:hover { text-decoration: none; }
 .sign-in-page .btn { padding: 10px 35px; border-radius: 4px !important; }
-.sign-user_card { position: relative; border-radius: 4px; background: rgba(0, 0, 0, 0.4); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); padding: 25px; box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); display: block; margin: 0 auto; }
+.sign-user_card {  border-radius: 4px;  -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); padding: 25px; box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); display: block; margin: 0 auto; }
 .sign-user_logo { position: absolute; top: -56px; border-radius: 50%; padding: 10px; text-align: center; }
 .sign-user_logo img { height: 100px; width: 100px; border-radius: 50%; border: 2px solid white; }
 .sign-in-page .form-control, .m-profile .form-control { color: var(--iq-white); }
@@ -779,10 +779,12 @@ h3 {font-size: 24px !important;}
     border-color: #4895d1;
    /* box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);*/
 }
-	.button{
-		padding: 45px;
-    margin-top: -15px;
-	}
+	
+	
+.bk a {
+    float: right;
+    color: #000000;
+}
 	
 	.landing-page{
 		background-image: url(../img/Landban.png);
@@ -896,7 +898,16 @@ h3 {font-size: 24px !important;}
 		border-radius: .07rem !important;
 	}
 	.subbut{
-	
+	margin-top: -1px;
+        outline: none;
+		color: #fff;
+		font-size: 18px;
+		background-color: #4895d1;
+        border-color: #4895d1;
+		border-radius: .07rem !important;
+	}
+.subbut1{
+	margin-top: 1px;
         outline: none;
 		color: #fff;
 		font-size: 18px;
@@ -910,6 +921,16 @@ h3 {font-size: 24px !important;}
     border-color: #4895d1;
 }
 	.subbut:not(:disabled):not(.disabled):active, .show>.btn-outline-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.subbut1:hover {
+    color: #fff;
+    background-color: #4895d1;
+    border-color: #4895d1;
+}
+	.subbut1:not(:disabled):not(.disabled):active, .show>.btn-outline-secondary.dropdown-toggle {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
@@ -986,7 +1007,7 @@ h3 {font-size: 24px !important;}
     color: #000000;
     font-weight: bold;
 		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-		font-size: 2.125rem;
+		font-size: 3.125rem;
 }
 .comm{
     color: #000000;
@@ -1026,11 +1047,16 @@ h3 {font-size: 24px !important;}
 .tyk{
     margin: 0 auto;
 }
+.tyk2{
+    margin: 0 auto;
+}
 .step2{
     padding: 20px;
 }
 .step2 h2{
    color: #000000;
+    font-size: 60px;
+    
 }
 .st{
      color: #000000;
@@ -1089,6 +1115,7 @@ h3 {font-size: 24px !important;}
 }
 .step33 h2{
     color: #000000;
+    font-size: 60px;
 }
 .step33 a{
     color: blue;
@@ -1330,4 +1357,59 @@ h3 {font-size: 24px !important;}
 }
 .main-head{
     margin-top: -40px;
+}
+.social_share p {
+    display: inline-block;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    margin-right: -32px;
+}
+.popup i{
+   /*background: #3b5998;*/
+    color: #fff;
+    background-color:transparent;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 14px;
+    /* width: 35px; */
+    display: flex;
+    justify-content: center;
+    width: 35px;
+}
+#video_container{
+    padding-top: 10px;
+}
+.watchlater i{
+    margin-right: 8px;
+}
+.you-may-like{
+    margin-top: 40px;
+}
+
+.mywishlist i{
+   margin-right: 8px; 
+}
+.lmk{
+    
+}
+.bk a{
+    
+}
+tr{
+    padding: 15px;
+  
+}
+th{
+    padding: 10px;
+     color: #000000;
+}
+td{
+    padding: 20px;
+    color: #000000;
+}
+.check{
+    margin: 0 auto;
+    width: 30%;
+    font-size: 12px;
 }

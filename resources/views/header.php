@@ -6,8 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Flicknexs</title>
-       <script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>
-       <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
        <!-- Favicon -->
      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->

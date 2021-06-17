@@ -90,7 +90,7 @@
 				<p class="devicescene">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
 			</div>
 			<div class="col-md-6 col-sm-6 deviceimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" >
+				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" width="500">
 			</div>
 		</div>
 		</section>
@@ -178,7 +178,7 @@
 </div>
 			<P class="primebot">Prime Yourself-Get Ready to Keep eye's on!!!</P>
 				<div class="col-md-6 p-5 offset-md-3 input-group mb-3">
-				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
+				  <input type="text" class="form-control subtext pt-1" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
                       <a href="<?= URL::to('/signup')?>"> 
 					<button class="btn btn-outline-secondary subbut pt-2" type="button">GET STARTED</button>
