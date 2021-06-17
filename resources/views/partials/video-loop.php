@@ -2,8 +2,19 @@
 
 $settings = App\Setting::first();
 ?>
-<!--<style>
-     .playvid {
+<style>
+       .favorites-slider .slick-next, #trending-slider-nav .slick-next {
+    color: var(--iq-white);
+    right: 20px;
+    top: -12px;
+}
+    .favorites-slider .slick-prev, #trending-slider-nav .slick-prev {
+    color: var(--iq-white);
+    right: 55px;
+         top: -12px;
+    left: auto;
+}
+   /* .playvid {
     display: block;
     width: 280%;
     height: auto !important;
@@ -27,7 +38,7 @@ $settings = App\Setting::first();
                 border-top: 0px !important;
    
 }
-</style>-->
+</style>
 <section id="iq-favorites">
             <div class="container-fluid">
                <div class="row">

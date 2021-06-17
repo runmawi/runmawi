@@ -77,6 +77,11 @@ border-radius: 25px !important;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
 }
+    .favorites-slider .slick-next, #trending-slider-nav .slick-next {
+    color: var(--iq-white);
+    right: 20px;
+    top: -12px;
+}
     #social_share {
     display: inline-block;
     vertical-align: middle;
