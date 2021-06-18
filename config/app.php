@@ -60,8 +60,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/flicknexs/'),
-//    'url' => env('APP_URL', 'http://flicknexui.webnexs.org/'),
+//      'url' => env('APP_URL', 'http://localhost/flicknexs/'),
+  'url' => env('APP_URL', 'http://flicknexui.webnexs.org/'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

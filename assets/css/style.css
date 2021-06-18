@@ -670,7 +670,7 @@ footer, .home footer {
 
 .btn-danger:hover{
     color: #fff;
-    background-color: #45c5e1 !important;
+    background-color: !important;
     border-color: #45c5e1 !important;
 }
 .btn-primary {
