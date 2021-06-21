@@ -445,6 +445,7 @@ border-radius: 25px !important;
     </div>
 
 		<div class="clear"></div>
+            <?php include('footer.blade.php');?>
         <script>
             //$(".share a").hide();
             $(".share").on("mouseover", function() {
@@ -1064,4 +1065,3 @@ $(document).ready(function () {
     </body>
 </html>
 
-<?php include('footer.blade.php');?>
