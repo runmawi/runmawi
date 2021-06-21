@@ -208,7 +208,7 @@ if (Auth::user()) {
     </div>
 </div>
 
-
+@extends('footer')  
        
          <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
@@ -240,6 +240,6 @@ function copyToClipboard(element) {
 }
 
 </script>
- @extends('footer')  
+ 
      
        

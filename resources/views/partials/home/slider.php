@@ -8,7 +8,7 @@
     <div class="slide slick-bg s-bg-1" style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;  ?>') no-repeat;background-size: cover;">
        <div class="container-fluid position-relative h-100">
           <div class="slider-inner h-100">
-             <div class="row align-items-center  h-100">
+             <div class="row h-100">
                 <div class="col-xl-6 col-lg-12 col-md-12">
                    <!--<a href="javascript:void(0);">
                       <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
