@@ -1,16 +1,55 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews
+        Options -MultiViews -Indexes
     </IfModule>
+    
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler "proxy:unix:/var/run/php-fpm.sock|fcgi://localhost"
+  </FilesMatch>
+  <FilesMatch ".+\.phps$">
+      # Deny access to raw php sources by default
+      # To re-enable it's recommended to enable access to the files
+      # only in specific virtual host or directory
+       Require all denied
+   </FilesMatch>
+   # Deny access to files without filename (e.g. '.php')
+   <FilesMatch "^\.ph(ar|p|ps|tml)$">
+      Require all denied
+   </FilesMatch>
 
     RewriteEngine On
 
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
 
-    # Handle Front Controller...
+    # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+    RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
+    RewriteRule (.*?)index\.php/*(.*) /$1 [R=301,NE,L]
+    
+
+    # ensure https
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTPS} on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    
+    <FilesMatch "\.env">
+        Order deny,allow
+        Deny from all
+    </FilesMatch>
+	
+	<FilesMatch "\.git">
+        Order deny,allow
+        Deny from all
+    </FilesMatch>
+    
 </IfModule>

@@ -835,6 +835,7 @@ endif; ?>
                 <?php } ?>
         </section> 
 </div>
+  <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->
   <script type="text/javascript">
     $(document).ready(function(){
@@ -872,4 +873,4 @@ endif; ?>
       });
     });
 </script>   
-    <?php include('footer.blade.php');?>
+  

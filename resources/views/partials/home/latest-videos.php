@@ -20,11 +20,11 @@
                                       <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                    </div>
                                    <div class="hover-buttons">
-                                       <a class="btn btn-primary" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                      <span class="btn btn-hover">
+                                       <a class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+                                    
                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                       Play Now
-                                      </span>
+                                      
                                        </a>
                                    </div>
 <!--
