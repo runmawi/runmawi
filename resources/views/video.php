@@ -43,12 +43,13 @@
 .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
-top: 55% !important;
+top: 50% !important;
 left: 50% !important;
 margin: -25px 0 0 -25px;
 width: 50px !important;
 height: 50px !important;
 border-radius: 25px !important;
+    
 }
     .social_share {
     display: inline-block !important;
@@ -445,7 +446,6 @@ border-radius: 25px !important;
     </div>
 
 		<div class="clear"></div>
-            <?php include('footer.blade.php');?>
         <script>
             //$(".share a").hide();
             $(".share").on("mouseover", function() {

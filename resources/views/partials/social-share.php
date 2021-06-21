@@ -37,12 +37,12 @@
 <ul class="rrssb-buttons clearfix">
     <li class="" >
         
-		<a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank" class="popup"><i class="fa fa-facebook" style="background: #3b5998;color: #fff;padding: 10px;border-radius: 50%;
+		<a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank" class="popup"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%;
     font-size: 14px;width:35px;"></i></a>
     </li>
     <li class="">
         <a  href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank" class="popup">
-        <i class="fa fa-twitter" style="background: #00acee;color: #fff;padding: 10px;border-radius: 50%;
+        <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;
             font-size: 14px;">
             </i>
         </a>
