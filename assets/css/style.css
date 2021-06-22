@@ -891,7 +891,7 @@ h3 {font-size: 24px !important;}
 	}
 	
 	.subbut{
-	margin-top: -1px;
+	       padding: 12px 25px;
         outline: none;
 		color: #fff;
 		font-size: 18px;
@@ -900,7 +900,7 @@ h3 {font-size: 24px !important;}
 		border-radius: .07rem !important;
 	}
 .subbut1{
-	margin-top: 1px;
+	 padding: 15px 25px;
         outline: none;
 		color: #fff;
 		font-size: 18px;
@@ -1177,8 +1177,11 @@ h3 {font-size: 24px !important;}
 	}
 	.downdetail{
 		text-align: center;
-		top: 67px;
 	}
+.devicedetail{
+    		text-align: center;
+
+}
 	.downtag{
 		font-weight: bold;
 		color: #fff;
@@ -1201,10 +1204,7 @@ h3 {font-size: 24px !important;}
 	.deviceimg{
 				text-align: center;
 	}
-	.devicedetail{
-		text-align: center;
-		
-	}
+	
 	.devicetag{
 		font-weight: bold;
 		color: #fff;
@@ -1254,7 +1254,7 @@ h3 {font-size: 24px !important;}
         justify-content: center;
 	}
 	.subtext{
-		height: 52px; 
+		height: 60px; 
 		border: 1px solid #fff;
 		color: #dfdfdf;
 		background-color: #fff;
@@ -1388,23 +1388,18 @@ td{
     position: relative;
 }
 .plus1{
-    position:absolute;
-    left: 790px;
+    margin-left: 590px;
+   
 }
 .plus2{
-    position: absolute;
-    left: 792px;
+   margin-left: 500px;
 }
 .plus3{
-    position: absolute;
-    left: 795px;
+  margin-left: 515px;
 }
 .plus4{
-    position: absolute;
-    left: 795px;
+   margin-left: 410px;
 }
 .plus5{
-    position: absolute;
-    left: 795px;
-}
+    margin-left: 490px;
 }

@@ -84,7 +84,7 @@
 		</div>
 	</section>
 	<section class="devicesec">
-		<div class="row  align-items-center">
+		<div class="row align-items-center">
 			<div class="col-md-6 col-sm-6 devicedetail">
 				<h2 class="devicetag">Across all devices.</h2>
 				<p class="devicescene mt-3">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
@@ -177,17 +177,20 @@
   </div>
 </div>
 			<P class="primebot">Prime Yourself-Get Ready to Keep eye's on!!!</P>
-				<div class="col-md-6 p-5 offset-md-3 input-group mb-3">
-				  <input type="text" class="form-control subtext pt-1" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
+				<div class="col-md-6 offset-md-3 input-group mb-3 mt-4 p-3 started">
+				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
                       <a href="<?= URL::to('/signup')?>"> 
-					<button class="btn btn-outline-secondary subbut pt-2" type="button">GET STARTED</button>
+					<button class="btn btn-outline-secondary subbut" type="button">GET STARTED</button>
                       </a>
 				  </div>
 				</div>
 			
 		</div>
 	</section>
+    <sectio>
+        
+    </sectio>
 	<?php include('footer.blade.php');?>
 	
           <!-- back-to-top End -->
