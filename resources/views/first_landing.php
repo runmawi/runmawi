@@ -46,7 +46,7 @@
 			<h1 class="banhead">Watch On! <br>Entertainment at your Desk</h1>
 			   <p class="watch" style="padding-top: 21px">Watch TV Anytime,Anywhere.</p>
 				<P class="prime">Prime Yourself-Get Ready to Keep eye's on!!!</P>
-				<div class="col-md-6 offset-md-3 input-group mb-3 started">
+				<div class="col-md-6 offset-md-3 input-group mb-3 mt-4 started">
 				  <input type="text" class="form-control subtext" placeholder="Email Address" aria-label="Recipient's username" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
                       <a href="<?= URL::to('/signup')?>"> 
@@ -58,14 +58,14 @@
         
 	</section>
 	<section class="tvsec">
-        <div class="container pt-5">
+        <div class="container pt-4">
 		<div class="row align-items-center">
 			<div class="col-md-6 col-sm-6 tvdetail ">
 				<h2 class="tvtag">Enjoy on your Tv.</h2>
-				<p class="tvscene">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players <br>and more.</p>
+				<p class="tvscene mt-3">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players <br>and more.</p>
 			</div>
 			<div class="col-md-6 col-sm-6 tvimg">
-				<img src="<?php echo URL::to('/').'/assets/img/land.png';?>" width="550">
+				<img src="<?php echo URL::to('/').'/assets/img/land.png';?>">
 			</div>
 		</div>
 		</div>
@@ -74,11 +74,11 @@
 	<section class="downsec">
 		<div class="row  align-items-center">
 			<div class="col-md-6 col-sm-6 downimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>" width="500">
+				<img src="<?php echo URL::to('/').'/assets/img/landown.png';?>">
 			</div>
 			<div class="col-md-6 col-sm-6 downdetail">
 				<h2 class="downtag">Download Your Shows to Watch Offline.</h2>
-				<p class="downscene">Save your favourites easily and always have something to watch.</p>
+				<p class="downscene mt-3">Save your favourites easily and always have something to watch.</p>
 			</div>
 			
 		</div>
@@ -87,10 +87,10 @@
 		<div class="row  align-items-center">
 			<div class="col-md-6 col-sm-6 devicedetail">
 				<h2 class="devicetag">Across all devices.</h2>
-				<p class="devicescene">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
+				<p class="devicescene mt-3">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
 			</div>
 			<div class="col-md-6 col-sm-6 deviceimg">
-				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" width="500">
+				<img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>">
 			</div>
 		</div>
 		</section>

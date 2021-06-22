@@ -797,7 +797,7 @@ h3 {font-size: 24px !important;}
 	}
 	
 .tvsec{
-    padding: 60px;
+    padding: 40px;
     border-bottom: 5px solid #383838;
     
 }
@@ -845,7 +845,7 @@ h3 {font-size: 24px !important;}
         text-align: left;
         margin: 0 auto;
         width: 80%;
-        padding: 20px;
+        padding: 10px;
 		
 	}
 	.faqsec{
@@ -889,17 +889,7 @@ h3 {font-size: 24px !important;}
 		color: #fff;
 		margin-top: 120px;
 	}
-	.started{
-		/*top: 30px;*/
-	}
-	.subtext{
-		height: 55px; 
-		border: 1px solid #fff;
-		color: #dfdfdf;
-		background-color: #fff;
-		font-size: 16px;
-		border-radius: .07rem !important;
-	}
+	
 	.subbut{
 	margin-top: -1px;
         outline: none;
@@ -971,21 +961,7 @@ h3 {font-size: 24px !important;}
 		text-decoration: none;
 		padding: 4px;
 }
-	.plus1{
-		margin-left: 479px;
-	}
-	.plus2{
-		margin-left: 329px;
-	}
-	.plus3{
-		margin-left: 353px;
-	}
-	.plus4{
-		margin-left: 182px;
-	}
-	.plus5{
-		margin-left: 317px;
-	}
+	
 	.loginbut{
 		padding: 7px 17px;
        color: #4895d1;
@@ -1193,7 +1169,7 @@ h3 {font-size: 24px !important;}
 	}
 	
 	.downsec{
-		padding: 80px;
+		padding: 40px;
         border-bottom: 5px solid #383838;
 	}
 	.downimg{
@@ -1274,10 +1250,11 @@ h3 {font-size: 24px !important;}
 		margin-top: 120px;
 	}
 	.started{
-		/*top: 30px;*/
+		display: flex;
+        justify-content: center;
 	}
 	.subtext{
-		height: 55px; 
+		height: 52px; 
 		border: 1px solid #fff;
 		color: #dfdfdf;
 		background-color: #fff;
@@ -1286,7 +1263,7 @@ h3 {font-size: 24px !important;}
         
 	}
 	.subbut{
-        padding: 10px 20px;
+       
 		width: 200px;
 		color: #fff;
 		font-size: 1.425rem;
@@ -1338,22 +1315,7 @@ h3 {font-size: 24px !important;}
 		text-decoration: none;
 		padding: 4px;
 }
-	.plus1{
-		margin-left: 479px;
-	}
-	.plus2{
-		margin-left: 329px;
-	}
-	.plus3{
-		margin-left: 353px;
-	}
-	.plus4{
-		margin-left: 182px;
-	}
-	.plus5{
-		margin-left: 317px;
-	}
-	.loginbut{
+		.loginbut{
 		padding: 7px 17px;
        color: #4895d1;
        text-decoration: none;
@@ -1418,4 +1380,31 @@ td{
     font-size: 12px;
 }
 
+.accordion{
+    padding: 10px;
+}
 
+.card-header{
+    position: relative;
+}
+.plus1{
+    position:absolute;
+    left: 790px;
+}
+.plus2{
+    position: absolute;
+    left: 792px;
+}
+.plus3{
+    position: absolute;
+    left: 795px;
+}
+.plus4{
+    position: absolute;
+    left: 795px;
+}
+.plus5{
+    position: absolute;
+    left: 795px;
+}
+}

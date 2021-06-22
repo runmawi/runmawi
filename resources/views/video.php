@@ -778,7 +778,7 @@ vid.onloadeddata = function() {
 
 
   <script>
-        $(".slider").slick({
+        $(".slider").not('.slick-initialized').slick({
 
     // normal options...
     infinite: false,
