@@ -85,7 +85,7 @@
             <img src="<?php echo URL::to('/').'/assets/img/landown.png';?>">
         </div>
         <div class="col-md-6 col-sm-6 downdetail">
-            <h2 class="downtag">Download Your Shows to Watch Offline.</h2>
+            <h2 class="downtag">Download Your Shows <br>to Watch Offline.</h2>
             <p class="downscene mt-3">Save your favourites easily and always have something to watch.</p>
         </div>
 
