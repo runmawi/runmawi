@@ -65,14 +65,14 @@
 
 </section>
 <section class="tvsec">
-    <div class="container pt-4">
+    <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6 col-sm-6 tvdetail ">
+            <div class="col-md-5 col-sm-6 ">
                 <h2 class="tvtag">Enjoy on your Tv.</h2>
                 <p class="tvscene mt-3">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players
                     <br>and more.</p>
             </div>
-            <div class="col-md-6 col-sm-6 tvimg">
+            <div class="col-md-7 col-sm-6 tvimg">
                 <img src="<?php echo URL::to('/').'/assets/img/land.png';?>">
             </div>
         </div>
@@ -92,15 +92,17 @@
     </div>
 </section>
 <section class="devicesec">
+    <div class="container">
     <div class="row align-items-center">
         <div class="col-md-6 col-sm-6 devicedetail">
             <h2 class="devicetag">Across all devices.</h2>
             <p class="devicescene mt-3">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
         </div>
-        <div class="col-md-6 col-sm-6 deviceimg">
-            <img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>">
+        <div class="col-md- col-sm-6 deviceimg">
+            <img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" >
         </div>
     </div>
+        </div>
 </section>
 <section class="mt-5 pt-3">
     <div class="faqsec">
