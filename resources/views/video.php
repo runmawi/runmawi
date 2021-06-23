@@ -141,6 +141,8 @@ border-radius: 25px !important;
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
   <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
   <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+       <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
     <style>
     

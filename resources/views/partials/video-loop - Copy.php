@@ -6,12 +6,12 @@ $settings = App\Setting::first();
        .favorites-slider .slick-next, #trending-slider-nav .slick-next {
     color: var(--iq-white);
     right: 20px;
-    top: -32px;
+    top: -12px;
 }
     .favorites-slider .slick-prev, #trending-slider-nav .slick-prev {
     color: var(--iq-white);
     right: 55px;
-         top: -32px;
+         top: -12px;
     left: auto;
 }
    /* .playvid {
@@ -178,7 +178,7 @@ $settings = App\Setting::first();
 
 				</div>
 		</div>
-		
+		</a>
 		<div class="block-contents">
 			<!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
         </div>
@@ -193,7 +193,7 @@ $settings = App\Setting::first();
         <h2>Description</h2>
 
     </div>
-	
+	</div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -213,7 +213,7 @@ $settings = App\Setting::first();
 
 
 	
-	
+	</div></div>
 
 <?php endforeach; 
 endif; ?>
