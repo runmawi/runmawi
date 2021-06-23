@@ -218,3 +218,4 @@ $settings = App\Setting::first();
 <?php endforeach; 
 endif; ?>
 </section>
+
