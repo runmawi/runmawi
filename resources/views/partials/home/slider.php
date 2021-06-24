@@ -6,7 +6,7 @@
 <div class="item <?php if($key == 0){echo 'active';}?> header-image">
     <a href="<?=$bannerdetails->link;  ?>">
         <div class="slide slick-bg s-bg-1"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover; background-position:center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center h-100">
@@ -27,7 +27,7 @@
                                 <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
                             </div>
                             <div data-animation-in="fadeInUp" data-delay-in="1.2"
-                                style="overflow: hidden !important;text-overflow: ellipsis !important;height: 90px; margin-bottom: 20px;">
+                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;">
                                 <?php echo __($slider_video->description); ?>
                             </div>
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp"
