@@ -209,11 +209,7 @@ $settings = App\Setting::first();
                       <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
                     </li>
               </ul>
-        </div>
-
-
-	
-	
+        </div>	
 
 <?php endforeach; 
 endif; ?>
