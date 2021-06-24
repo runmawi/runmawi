@@ -31,16 +31,28 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
-    .lk{
+    .from-control::placeholder{
+        color: #7b7b7b!important;
+    }
+    .nv{
+        font-size: 14px;
+       
+        margin-top: 20px;
+    }
+    .km{
        text-align:center;
-        font-size: 65px;
+         font-size: 75px;
         font-weight: 900;
+        
+       
     }
     .signcont {
  }
     a.f-link {
     margin-bottom: 1rem;
-    margin-left: 140px;
+        margin-left: 15vw;
+        font-size: 14px;
+    
 }
    .d-inline-block {
     display: block !important;
@@ -142,17 +154,17 @@ i.fa.fa-google-plus {
     </div></div>-->
 <section class="sign-in-page">
    <div class="container">
-      <div class="row justify-content-center align-items-center height-self-center">
-          <div class="col-lg-6 col-sm-12 col-md-12 align-self-center">
-              <div class="col-lg-9" >
-              <h1 class="lk font-weight-bold" >WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
+      <div class="row  align-items-center height-self-center">
+          <div class="col-lg-7 col-sm-12 col-md-12 ">
+              <div class="" >
+              <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div>
-         <div class="col-lg-4 col-sm-12 col-md-12 align-self-center">
+         <div class="col-lg-5 col-sm-12 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from w-100 m-auto" align="center">
-                      <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" style="margin-bottom:1rem;">
+                  <div class="sign-in-from  m-auto" align="center">
+                      <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" width="200" style="margin-bottom:1rem;">
                      <h3 class="mb-3 text-center">{{ __('Sign-In') }}</h3>
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
@@ -173,13 +185,13 @@ i.fa.fa-google-plus {
 						@enderror
                         <div class="form-group">  
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail Address') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         </div>
-                        <div class="form-group">                                 
+                        <div class="form-group" style="  margin-top: 30px;">                                 
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
-                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password">
+                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-center links">
+                         <div class="d-flex justify-content-around links">
                       @if (Route::has('password.request'))
                      <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
                       @endif
@@ -187,22 +199,22 @@ i.fa.fa-google-plus {
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn btn-hover" style="width:100%;margin-bottom:1rem;">Sign in</button>
+                              <button type="submit" class="btn btn-hover ab" style="width:100%;margin-bottom:1rem;">SIGN IN</button>
                                                             
                            </div> 
-                         <div class="custom-control custom-checkbox" align="left" style="margin-bottom:1rem;" >
+                         <div class="custom-control custom-checkbox" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
                                   <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-								<label class="form-check-label" for="remember">
+								<label class="form-check-label nv" for="remember">
 									{{ __('Keep me signed in') }}
 								</label>
                             
                               </div>  
-                          <hr>
-                          <h5 class="mb-3 text-center">Sign in by using</h5>
+                          <hr style="color:#1e1e1e;">
+                         <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
                          <div class="form-group row mb-0">
 						@if ( config('social.google') == 1 )
                            
@@ -215,12 +227,24 @@ i.fa.fa-google-plus {
                                 <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="background-color:#3f5c9a;border:none;color:#fff;"><i class="fa fa-facebook"></i> Facebook</a>
                             </div>
 						@endif 
-						</div>
-                        
+						</div>-->
+                        <div class="soc mb-3">
+                            <div class="d-flex align-items-center">
+                                <div>
+                            <p>Login with using:</p>
+                                    </div>
+                                <div>
+                                     <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                </div>
+                                <div>
+                                     <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                </div>
+                                </div>
+                         </div>
                      </form>
                   </div>
                </div>
-               <div class="mt-3">
+               <div class="">
                   <div class="d-flex justify-content-center links">
                      Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
                   </div>
