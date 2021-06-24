@@ -633,7 +633,6 @@
 	<!-- Imported styles on this page -->
 	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
    <!-- Appear JavaScript -->
@@ -809,6 +808,63 @@ var chart_01_lable = $('#chart_01_lable').val();
 });
 </script>
 <?php } ?>
+    
+     <script type="text/javascript">
+            $(document).ready(function(){
+                $('#submit-update-cat').click(function(){
+                    debugger;
+                    $('#update-cat-form').submit();
+                });
+            });
+        </script>
+    
+    <script type="text/javascript">
+
+		jQuery(document).ready(function($){
+
+
+			$('#nestable').nestable({ maxDepth: 3 });
+
+			// Add New Category
+			$('#submit-new-cat').click(function(){
+				$('#new-cat-form').submit();
+			});
+
+			$('.actions .edit').click(function(e){
+				$('#update-category').modal('show', {backdrop: 'static'});
+				e.preventDefault();
+				href = $(this).attr('href');
+				$.ajax({
+					url: href,
+					success: function(response)
+					{
+						$('#update-category .modal-content').html(response);
+					}
+				});
+			});
+
+			$('.actions .delete').click(function(e){
+				e.preventDefault();
+				if (confirm("Are you sure you want to delete this category?")) {
+			       window.location = $(this).attr('href');
+			    }
+			    return false;
+			});
+
+			$('.dd').on('change', function(e) {
+    			$('.category-panel').addClass('reloading');
+    			$.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
+    				console.log(data);
+    				$('.category-panel').removeClass('reloading');
+    			});
+
+			});
+
+
+		});
+		</script>
+
+		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
 
 
 </body>

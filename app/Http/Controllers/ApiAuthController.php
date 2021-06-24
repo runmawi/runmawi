@@ -618,7 +618,7 @@ public function verifyandupdatepassword(Request $request)
 
 	public function categorylist()
 	{
-		$channellist = VideoCategory::where('parent_id','=',0)->get()->map(function ($item) {
+		$channellist = VideoCategory::where('order','=',1)->get()->map(function ($item) {
      		$item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
      		return $item;
      	});
