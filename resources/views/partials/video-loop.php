@@ -121,8 +121,8 @@ $settings = App\Setting::first();
          
                           <?php if(isset($recomended)) :
                                 foreach($recomended as $watchlater_video): ?>
-                                <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
-                                    <div class="img-black-back">
+                                <!--<div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                                   <!-- <div class="img-black-back">
                                     </div>
                                     <div align="right">
                                     <button type="button" class="closewin btn btn-danger" id="<?= $watchlater_video->id;?>"><span aria-hidden="true">X</span></button>
@@ -141,7 +141,7 @@ $settings = App\Setting::first();
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                        <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                      <!--  <a href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" class="btn btn-hover"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
       <!--  <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
@@ -165,7 +165,7 @@ $settings = App\Setting::first();
                 <div class="play-block">
                     <i class="fa fa-play flexlink" aria-hidden="true"></i> 
 				</div></a>-->
-                <div class="detail-block">
+             <!--   <div class="detail-block">
 <!--					<a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <p class="movie-title"><?php echo __($watchlater_video->title); ?></p>
 					</a>-->
@@ -176,12 +176,12 @@ $settings = App\Setting::first();
                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
 					</p>-->
 
-				</div>
+				<!--</div>
 		</div>
 		
 		<div class="block-contents">
 			<!--<p class="movie-title padding"><?php echo __($watchlater_video->title); ?></p>-->
-        </div>
+      <!-- </div>
 	</div> 
 	            
     </div>
@@ -194,7 +194,7 @@ $settings = App\Setting::first();
 
     </div>
 	
-    <div align="center">
+    <!--<div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
                       <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
