@@ -384,6 +384,12 @@
 });
        </script>
           
+           <script>
+           $(document).ready(function() {
+    $(".setting-dropdown").dropdown();
+});
+       </script>
+          
           
       </header>
       <!-- Header End -->

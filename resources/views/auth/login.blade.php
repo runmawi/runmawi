@@ -31,13 +31,14 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+    h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;
     }
     .nv{
         font-size: 14px;
        
-        margin-top: 20px;
+        margin-top: 25px;
     }
     .km{
        text-align:center;
@@ -164,8 +165,7 @@ i.fa.fa-google-plus {
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                      <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" width="200" style="margin-bottom:1rem;">
-                     <h3 class="mb-3 text-center">{{ __('Sign-In') }}</h3>
+                      <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" width="250" style="margin-bottom:1rem;">
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
@@ -234,7 +234,8 @@ i.fa.fa-google-plus {
                             <p>Login with using:</p>
                                     </div>
                                 <div>
-                                     <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
+                                     <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                 <div>
                                      <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;">
