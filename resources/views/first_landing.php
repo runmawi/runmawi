@@ -28,7 +28,14 @@
     <link rel="stylesheet" href="assets/css/responsive.css" />
 
     <style>
-        }
+        .dropdown::before {
+    position: absolute;
+    content: " \2193";
+    top: 0px;
+    right: -8px;
+    height: 20px;
+    width: 20px;
+}
     </style>
 </head>
 <section class="landing-page">
@@ -41,10 +48,24 @@
             <!--<img class="logo" src="<?php echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>">-->
             <img class="logo" src="<?php echo URL::to('/').'/assets/img/logo.png';?>">
         </div>
-        <div class="col-sm-4 button">
+        
+        <div class="col-sm-4 button d-flex">
+            <div>
+              <select style="padding:6px 10px;">
+                  <option>English</option>
+                  <option>Hindi</option>
+                  <option>Tamil</option>
+                  <option>French</option>
+                 
+                </select>
+                 
+            </div>
+            <div>
             <a class="loginbut" href="<?= URL::to('/login')?>">
                 <button class="btn btn-primary inway" type="submit">Sign In</button>
             </a>
+                </div>
+            
         </div>
     </div>
 

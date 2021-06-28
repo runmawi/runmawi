@@ -113,11 +113,11 @@
                                                 </ul>
                                             </li>
                                           <li class="">
-                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
+                                            <!--<a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
                                                                                                font-weight: bold;
                                                                                                font-size: 16px;">
                                               <?php echo __('Refer and Earn');?>
-                                            </a>
+                                            </a>-->
                                           </li>
                                         </ul>
                            </div>
@@ -381,12 +381,6 @@
            <script>
            $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
-});
-       </script>
-          
-           <script>
-           $(document).ready(function() {
-    $(".setting-dropdown").dropdown();
 });
        </script>
           

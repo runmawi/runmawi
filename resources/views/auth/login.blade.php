@@ -199,7 +199,7 @@ i.fa.fa-google-plus {
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;margin-bottom:1rem;">SIGN IN</button>
+                              <button type="submit" class="btn btn-hover ab" style="width:100%;">SIGN IN</button>
                                                             
                            </div> 
                          <div class="custom-control custom-checkbox" align="left" style="" >
