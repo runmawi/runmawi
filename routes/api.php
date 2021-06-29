@@ -99,10 +99,11 @@ Route::group([
     Route::post('relatedepisodes', 'ApiAuthController@relatedepisodes');
     Route::post('seasonepisodes', 'ApiAuthController@seasonepisodes');
     Route::post('user_notifications', 'ApiAuthController@seasonepisodes');
-     Route::post('user_comments', 'ApiAuthController@UserComments');
+    Route::post('user_comments', 'ApiAuthController@UserComments');
     Route::post('add_comment', 'ApiAuthController@AddComment');
-     Route::get('series_title_status', 'ApiAuthController@SeriesTitle');
-     Route::get('cast_lists', 'ApiAuthController@CastList');
-      Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
+    Route::get('series_title_status', 'ApiAuthController@SeriesTitle');
+    Route::get('cast_lists', 'ApiAuthController@CastList');
+    Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
+    Route::post('mobile_login', 'ApiAuthController@MobileLogin');
       
 });
