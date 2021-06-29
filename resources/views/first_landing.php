@@ -51,7 +51,7 @@
         
         <div class="col-sm-4 button d-flex">
             <div>
-              <select style="padding:6px 10px;">
+              <select  style="padding:6px 10px;">
                   <option>English</option>
                   <option>Hindi</option>
                   <option>Tamil</option>
