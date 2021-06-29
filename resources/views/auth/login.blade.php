@@ -156,12 +156,12 @@ i.fa.fa-google-plus {
 <section class="sign-in-page">
    <div class="container">
       <div class="row  align-items-center height-self-center">
-          <div class="col-lg-7 col-sm-12 col-md-12 ">
+          <div class="col-lg-7  col-md-6">
               <div class="" >
               <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div>
-         <div class="col-lg-5 col-sm-12 col-md-12 align-self-center">
+         <div class="col-lg-5 col-md-6 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">

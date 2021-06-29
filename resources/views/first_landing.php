@@ -88,12 +88,12 @@
 <section class="tvsec">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-5 col-sm-6 ">
+            <div class="col-sm-6 col-md-5">
                 <h2 class="tvtag">Enjoy on your Tv.</h2>
                 <p class="tvscene mt-3">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players
                     <br>and more.</p>
             </div>
-            <div class="col-md-7 col-sm-6 tvimg">
+            <div class=" col-sm-6 col-md-7 tvimg">
                 <img src="<?php echo URL::to('/').'/assets/img/land.png';?>">
             </div>
         </div>

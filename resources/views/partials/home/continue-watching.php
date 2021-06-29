@@ -27,14 +27,15 @@
                           </a> 
 
                    </div>
-<!--
+
                     <div >
-                        <button class="show-details-button" data-id="<?= $cont_video->id;?>">
+                        <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
                             <span class="text-center thumbarrow-sec">
-                                <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
+                                <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">-->
+                                <p style="color:#fff;">More Details</p>
                             </span>
                                 </button></div>
--->
+
                     </div>
                 <div class="block-social-info">
                    <ul class="list-inline  music-play-lists list-group-horizontal">
@@ -52,7 +53,7 @@
     </ul>
 </div>
 
- <?php /*  if(isset($videos)) :
+ <?php  /* if(isset($videos)) :
            foreach($videos as $cont_video): ?>
             <div class="modal fade bd-example-modal-xl<?= $cont_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
@@ -114,7 +115,7 @@
                              <?php endif; ?>
                         </div>
 
-                        <div class="modal-footer" align="center" >
+                       <div class="modal-footer" align="center" >
                             <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
                         onclick="document.getElementById('videojs-seek-buttons-player').pause();" id="<?= $cont_video->id;?>"  ><span aria-hidden="true">X</span></button>
                         </div>
@@ -122,7 +123,8 @@
                 </div>
             </div>
       <?php endforeach; 
-            endif; ?>
+            endif; */?>
+<div class="mod">
       <?php if(isset($videos)) :
             foreach($videos as $cont_video): ?>
                 <div class="thumb-cont" id="<?= $cont_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -135,15 +137,15 @@
                                 <div id="overview<?= $cont_video->id;?>" class="container tab-pane active"><br>
                                    <h1 class="movie-title-thumb"><?php echo __($cont_video->title); ?></h1>
                                    <p class="movie-rating">
-                                    <span class="thumb-star-rate"><i class="fa fa-star fa-w-18"></i><?= $cont_video->rating;?></span>
-                                    <span class="viewers"><i class="fa fa-eye"></i>(<?= $cont_video->views;?>)</span>
-                                    <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $cont_video->duration); ?></span>
+                                    <span class="thumb-star-rate"><i class="fa fa-star fa-w-18"></i> <?= $cont_video->rating;?></span>
+                                    <span class="viewers"><i class="fa fa-eye"></i> (<?= $cont_video->views;?>)</span>
+                                    <span class="running-time"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
                                    </p>
                                    <p>Welcome</p>
                                     <!-- <div class="btn btn-danger btn-right-space br-0">
                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                     </div>-->
-                                    <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
+                                    <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"> </i>Play Now</a>
                                 </div>
                                 <div id="trailer<?= $cont_video->id;?>" class="container tab-pane ">
                                     <div class="block expand">
@@ -205,5 +207,6 @@
                         </div>
                     </div>
     <?php endforeach; 
-          endif; */?>
+          endif; ?>
+</div>
 <!--  \Continue watching -->
