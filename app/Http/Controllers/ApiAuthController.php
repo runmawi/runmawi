@@ -2706,6 +2706,8 @@ public function upnextAudio(Request $request){
         'message'=>'Mobile Number not exist. Please Register.'
       );
     }
+
+    return Response::json($response, 200);
 	}
 
 }
