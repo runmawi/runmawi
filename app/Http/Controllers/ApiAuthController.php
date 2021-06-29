@@ -2697,6 +2697,7 @@ public function upnextAudio(Request $request){
       $response = array(
         'status'=>'true',
         'user_data'=>$user_data,
+        'otp' => rand(1000,9999),
         'message'=>'success'
       );
     } else {
