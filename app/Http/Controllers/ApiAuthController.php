@@ -2686,5 +2686,28 @@ public function upnextAudio(Request $request){
     );
     return Response::json($response, 200);
   }   
+
+  //Login with Mobile number
+  public function MobileLogin(Request $request)
+  {
+    $mobile = $request->mobile;
+    $existing_user = User::where("mobile","=",$mobile)->count();
+    if ( $existing_user > 0 ) {
+      $user_data = User::where("mobile","=",$mobile)->get();
+      $response = array(
+        'status'=>'true',
+        'user_data'=>$user_data,
+        'otp' => rand(1000,9999),
+        'message'=>'success'
+      );
+    } else {
+      $response = array(
+        'status'=>'false',
+        'message'=>'Mobile Number not exist. Please Register.'
+      );
+    }
+
+    return Response::json($response, 200);
 	}
 
+}
