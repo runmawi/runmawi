@@ -1067,3 +1067,4 @@ $(document).ready(function () {
     </body>
 </html>
 
+<?php include('footer.blade.php');?>
