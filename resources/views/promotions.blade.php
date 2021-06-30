@@ -19,8 +19,8 @@
     .item{
         margin-top: 60px;
     }
-            a {
-    color: var(--iq-body-text) !important;
+            .container {
+    color: #fff!important;
 }
             /*.navbar-right.menu-right {
     margin-right: -150px !important;

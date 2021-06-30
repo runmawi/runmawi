@@ -63,8 +63,8 @@ $settings = App\Setting::first();
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                       <div class="hover-buttons">
-                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">
-                                          <span class="btn btn-hover">
+                                             <button type="button" class="btn btn-primary btn-hover" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                          <span class=" ">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
                                           </span>

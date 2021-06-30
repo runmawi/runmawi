@@ -30,6 +30,11 @@
      
 
    </head>
+    <style>
+        #main-header{
+            color: #fff;
+        }
+    </style>
    <body>
       <!-- loader Start -->
      <!-- <div id="loading">

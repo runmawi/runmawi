@@ -43,6 +43,7 @@
 .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
+    position: absolute;
 top: 50% !important;
 left: 50% !important;
 margin: -25px 0 0 -25px;

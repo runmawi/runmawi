@@ -35,9 +35,12 @@
     .from-control::placeholder{
         color: #7b7b7b!important;
     }
+    .links{
+         color: #fff;
+    }
     .nv{
         font-size: 14px;
-       
+       color: #fff;
         margin-top: 25px;
     }
     .km{
@@ -231,7 +234,7 @@ i.fa.fa-google-plus {
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
                                 <div>
-                            <p>Login with using:</p>
+                            <p class="links">Login with using:</p>
                                     </div>
                                 <div>
                                      <a href="{{ url('/auth/redirect/facebook') }}" class="" >
@@ -246,7 +249,7 @@ i.fa.fa-google-plus {
                   </div>
                </div>
                <div class="">
-                  <div class="d-flex justify-content-center links">
+                  <div class="d-flex justify-content-center  links">
                      Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
                   </div>
                   

@@ -25,6 +25,7 @@
                       Play Now
                       
                           </a> 
+                        
 
                    </div>
 
@@ -32,7 +33,7 @@
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
                             <span class="text-center thumbarrow-sec">
                                 <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">-->
-                                <p style="color:#fff;">More Details</p>
+                                <p style="color:#fff;font-size:12px;text-align:center;">More Details</p>
                             </span>
                                 </button></div>
 
@@ -145,7 +146,9 @@
                                     <!-- <div class="btn btn-danger btn-right-space br-0">
                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                     </div>-->
-                                    <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"> </i>Play Now</a>
+                                    <a class="btn black"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                     <a class=" btn black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
+                                <a class=" btn black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                                 </div>
                                 <div id="trailer<?= $cont_video->id;?>" class="container tab-pane ">
                                     <div class="block expand">

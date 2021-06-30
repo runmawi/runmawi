@@ -148,7 +148,7 @@
                                     <a href="<?= $video->url;?>/<?= $video->id;?>"><i class="fa fa-play" aria-hidden="true"></i></a>
                                     <a href="<?= $video->url;?>/<?= $video->id;?>"><i class="fa fa-info" aria-hidden="true"></i></a>
 <a class="like <?php if(isset($like->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" data-url="<?= $video->url; ?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-<a class="dislike <?php if(isset($dislike->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" data-url="<?= $video->url; ?>"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+<a class="dislike <?php if(isset($dislike->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" data-url="<?= $video->url; ?>"> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </div>

@@ -33,9 +33,9 @@
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                                 data-delay-in="1.2">
                                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $slider_video->slug ?>"
-                                    class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play</a>
-                                  <a class="black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
-                                <a class="black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                    class="btn btn-hover" id="bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                   <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
+                                <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                             </div>
                         </div>
                     </div>
