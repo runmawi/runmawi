@@ -20,13 +20,7 @@
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                    </div>
                                     
-                                    <div class="block-social-info">
-                                   <ul class="music-play-lists d-flex justify-content-around">
-                                      <li ><span><i class="ri-volume-mute-fill"></i></span></li>
-                                      <li><span><i class="ri-heart-fill"></i></span></li>
-                                      <li><span><i class="ri-add-line"></i></span></li>
-                                   </ul>
-                                </div>
+                                    
                                     
                                    <div class="hover-buttons">
                                        <a class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
@@ -36,6 +30,15 @@
                                       
                                        </a>
                                    </div>
+                                    <div class="block-social-info mt-3">
+                                   <ul class="music-play-lists d-flex justify-content-around">
+                                       
+                                      <li ><span><i class="ri-volume-mute-fill"></i></span></li>
+                                      <li><span><i class="ri-heart-fill"></i></span></li>
+                                      <li><span><i class="ri-add-line"></i></span></li>
+                                       
+                                   </ul>
+                                </div>
 <!--
                                     <div>
                                         <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
