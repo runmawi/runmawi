@@ -28,6 +28,13 @@
                         
 
                    </div>
+                     <div class="block-social-info mt-3">
+                   <ul class=" music-play-lists d-flex justify-content-around">
+                      <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                      <li><span><i class="ri-heart-fill"></i></span></li>
+                      <li><span><i class="ri-add-line"></i></span></li>
+                   </ul>
+                </div>
 
                     <div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
@@ -38,13 +45,7 @@
                                 </button></div>
 
                     </div>
-                <div class="block-social-info">
-                   <ul class="list-inline  music-play-lists list-group-horizontal">
-                      <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                      <li><span><i class="ri-heart-fill"></i></span></li>
-                      <li><span><i class="ri-add-line"></i></span></li>
-                   </ul>
-                </div>
+               
              </div>
           </a>
        </li>

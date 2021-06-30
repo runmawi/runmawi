@@ -19,6 +19,15 @@
                                       <div class="badge badge-secondary p-1 mr-2">13+</div>
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                    </div>
+                                    
+                                    <div class="block-social-info">
+                                   <ul class="music-play-lists d-flex justify-content-around">
+                                      <li ><span><i class="ri-volume-mute-fill"></i></span></li>
+                                      <li><span><i class="ri-heart-fill"></i></span></li>
+                                      <li><span><i class="ri-add-line"></i></span></li>
+                                   </ul>
+                                </div>
+                                    
                                    <div class="hover-buttons">
                                        <a class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
                                     
@@ -37,13 +46,7 @@
                                     </div>
 -->
                                     </div>
-                                <div class="block-social-info">
-                                   <ul class="list-inline p-0 m-0 music-play-lists">
-                                      <li ><span><i class="ri-volume-mute-fill"></i></span></li>
-                                      <li><span><i class="ri-heart-fill"></i></span></li>
-                                      <li><span><i class="ri-add-line"></i></span></li>
-                                   </ul>
-                                </div>
+                              
                              </div>
                           </a>
                        </li>

@@ -9,7 +9,7 @@
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover; background-position:center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center h-100">
+                    <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                             <!--<a href="javascript:void(0);">
                       <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
@@ -27,15 +27,15 @@
                                 <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
                             </div>
                             <div data-animation-in="fadeInUp" data-delay-in="1.2"
-                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;">
+                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;">
                                 <?php echo __($slider_video->description); ?>
                             </div>
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                                 data-delay-in="1.2">
                                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $slider_video->slug ?>"
-                                    class="btn btn-hover" id="bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
                                    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-                                <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                <a class="black bl" href="https://flicknexui.webnexs.org/"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                             </div>
                         </div>
                     </div>
