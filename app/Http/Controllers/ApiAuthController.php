@@ -1876,24 +1876,24 @@ public function verifyandupdatepassword(Request $request)
     public function becomesubscriber(Request $request)
      {
         
-        $stripe_plan = SubscriptionPlan();
-    	$user_id = $request->get('userid');
-    	$plan = $request->get('subscrip_plan');
-    	$user = User::find($user_id);
-    	$paymentMethod = $request->get('py_id');
-		$user->newSubscription('test', $plan)->create($paymentMethod);
-       if ( $user->subscribed('test') ) { 
-			$user = User::find($userid);
-			$user->role = 'subscriber';
-			$user->active = 1;
-			$user->save();
-			$users = User::find($userid);
-			$id = $users->id;
-			$role = $users->role;
-			$username = $users->username;
-			$password = $users->password;
-			$email = $users->email;
-			$avatar = $users->avatar;
+      $stripe_plan = SubscriptionPlan();
+      $user_id = $request->get('userid');
+      $plan = $request->get('subscrip_plan');
+      $user = User::find($user_id);
+      $paymentMethod = $request->get('py_id');
+      $user->newSubscription('test', $plan)->create($paymentMethod);
+      if ( $user->subscribed('test') ) { 
+       $user = User::find($userid);
+       $user->role = 'subscriber';
+       $user->active = 1;
+       $user->save();
+       $users = User::find($userid);
+       $id = $users->id;
+       $role = $users->role;
+       $username = $users->username;
+       $password = $users->password;
+       $email = $users->email;
+       $avatar = $users->avatar;
 
 			$user_details = array([
 				'user_id'=>$id,
@@ -2707,7 +2707,7 @@ public function upnextAudio(Request $request){
       );
     }
 
-    return Response::json($response, 200);
+    return response()->json($response, 200);
 	}
 
 }

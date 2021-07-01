@@ -102,8 +102,8 @@ overflow-hidden {
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
-                            <?php if(isset($latest_videos)) :
-                           foreach($latest_videos as $watchlater_video): ?>
+                            <?php if(isset($recomended)) :
+                           foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
