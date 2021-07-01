@@ -37,13 +37,13 @@
                    </ul>
                 </div>-->
 
-                    <div >
+                    <!--<div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
                             <span class="text-center thumbarrow-sec">
-                                <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">-->
+                                <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                 <p style="color:#fff;font-size:12px;text-align:center;">More Details</p>
                             </span>
-                                </button></div>
+                                </button></div>-->
 
                     </div>
                
