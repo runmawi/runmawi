@@ -224,7 +224,7 @@
                                  </div>
                               </li>
                               <li class="nav-item nav-icon">
-                                 <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
+                                 <a href="#" class="iq-user-dropdown dropdown-toggle search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                  <?php if(Auth::guest()): ?>
                                      <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
@@ -293,7 +293,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card dropdown-toggle setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-logout-circle-line text-primary"></i>
@@ -310,7 +310,7 @@
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -389,12 +389,7 @@
 });
        </script>
           
-            <script>
-           $(document).ready(function() {
-    $(".setting-dropdown").dropdown();
-});
-       </script>
-          
+           
           
       </header>
       <!-- Header End -->
