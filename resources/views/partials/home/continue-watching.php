@@ -13,6 +13,7 @@
                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt="">
                 </div>
                 <div class="block-description">
+                    
                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
                    <div class="movie-time d-flex align-items-center my-2">
                       <div class="badge badge-secondary p-1 mr-2">13+</div>
@@ -28,13 +29,13 @@
                         
 
                    </div>
-                     <div class="block-social-info mt-3">
+                    <!-- <div class="block-social-info mt-3">
                    <ul class=" music-play-lists d-flex justify-content-around">
                       <li><span><i class="ri-volume-mute-fill"></i></span></li>
                       <li><span><i class="ri-heart-fill"></i></span></li>
                       <li><span><i class="ri-add-line"></i></span></li>
                    </ul>
-                </div>
+                </div>-->
 
                     <div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">

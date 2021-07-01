@@ -6,13 +6,13 @@
 <div class="item <?php if($key == 0){echo 'active';}?> header-image">
     <a href="<?=$bannerdetails->link;  ?>">
         <div class="slide slick-bg s-bg-1"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover; background-position:center; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:contain;background-position: right; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                             <!--<a href="javascript:void(0);">
-                      <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
+                      <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5" background-size:cover; background-position:center>
                          <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
                       </div>
                    </a>-->

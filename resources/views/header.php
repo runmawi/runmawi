@@ -383,11 +383,11 @@
                </div>
             </div>
          </div>
-           <script>
+    <!--       <script>
            $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
-       </script>
+       </script>-->
           
           
       </header>
