@@ -6,7 +6,7 @@
 <div class="item <?php if($key == 0){echo 'active';}?> header-image">
     <a href="<?=$bannerdetails->link;  ?>">
         <div class="slide slick-bg s-bg-1"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:contain;background-position: right; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:100;background-position: right; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
