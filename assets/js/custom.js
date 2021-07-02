@@ -28,7 +28,7 @@ Index Of Script
 ----------------------------------------------*/
 
 (function (jQuery) {
-	
+	"use strict";
 	jQuery(document).ready(function() {
 
 		function activaTab(pill) {
@@ -85,6 +85,11 @@ Index Of Script
 		jQuery('[data-toggle=more-toggle]').on('click', function() {
 			jQuery(this).next().toggleClass('show');
 		});
+        
+        jQuery('[data-toggle=search-toggle]').on('click', function() {
+			jQuery(this).next().toggleClass('show');
+		});
+        
 
 		jQuery(document).on('click', function(e) {
 			let myTargetElement = e.target;
