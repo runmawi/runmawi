@@ -1488,8 +1488,7 @@ public function verifyandupdatepassword(Request $request)
         'message' => "Payment Failed"
       );
     }
-    }elseif ($payment_type == 'razorpay' && $payment_type == 'paypal')
-elseif ($payment_type == 'razorpay' || $payment_type == 'paypal') {
+    }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal') {
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) { 
         DB::table('ppv_purchases')->insert(
