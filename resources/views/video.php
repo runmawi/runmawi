@@ -39,20 +39,7 @@
 
 
 <style type="text/css">
-    .video-js .vjs-seek-button.skip-forward::before {
-    transform: rotateY(
-180deg
-) rotate(
--45deg
-);
-    -ms-transform: rotateY(180deg) rotate(-45deg);
-    -webkit-transform: rotateY(
-180deg
-) rotate(
--45deg
-);
-    /*content: '\f116';*/
-}
+    
 .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -135,12 +122,12 @@ border-radius: 25px !important;
     .share span, .share a{display: inline-block;text-align: center;font-size: 20px;padding-right: 20px;color: #fff;}
     .share a{padding: 0 20px;}
     .cat-name span{margin-right: 10px;}
-    .video-js .vjs-seek-button.skip-back.skip-10::before,
+ /*   .video-js .vjs-seek-button.skip-back.skip-10::before,
     .video-js.vjs-v6 .vjs-seek-button.skip-back.skip-10 .vjs-icon-placeholder::before,
     .video-js.vjs-v7 .vjs-seek-button.skip-back.skip-10 .vjs-icon-placeholder::before {
       content: '\e059'
           
-    }
+    }*/
     .btn.btn-default.views {
     color: #fff !important;
 }
