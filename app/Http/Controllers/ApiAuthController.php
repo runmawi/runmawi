@@ -67,29 +67,29 @@ use Carbon\Carbon as Carbon;
 class ApiAuthController extends Controller
 {
 
-	public function signup(Request $request)
-	{
+  public function signup(Request $request)
+  {
         $input = $request->all();
-		$user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
+    $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
 
-		$stripe_plan = SubscriptionPlan();
-		$settings = Setting::first();
-		if (isset($input['ccode']) && !empty($input['ccode'])) {
-			$user_data['ccode'] = $input['ccode'];
-		} else {
-			$user_data['ccode'] = '';
-		} 
+    $stripe_plan = SubscriptionPlan();
+    $settings = Setting::first();
+    if (isset($input['ccode']) && !empty($input['ccode'])) {
+      $user_data['ccode'] = $input['ccode'];
+    } else {
+      $user_data['ccode'] = '';
+    } 
         if (isset($input['mobile']) && !empty($input['mobile'])) {
-			$user_data['mobile'] = $input['mobile'];
-		} else {
-			$user_data['mobile'] = '';
-		} 
+      $user_data['mobile'] = $input['mobile'];
+    } else {
+      $user_data['mobile'] = '';
+    } 
         if (isset($input['skip'])) {
 
-			$skip = $input['skip'];
-		} else {
-			$skip = 0;
-		} 
+      $skip = $input['skip'];
+    } else {
+      $skip = 0;
+    } 
         if (!empty($input['referrer_code'])){
             $referrer_code = $input['referrer_code'];
         }
@@ -101,17 +101,17 @@ class ApiAuthController extends Controller
             $referred_user_id =0;
         }
 
-		$length = 10;
+    $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
-		if (!empty($request->token)){
+    if (!empty($request->token)){
         $user_data['token'] =  $request->token;
-		} else {
-			$user_data['token'] =  '';
-		}
+    } else {
+      $user_data['token'] =  '';
+    }
         $path = URL::to('/').'/public/uploads/avatars/';
-	    $logo = $request->file('avatar');
+      $logo = $request->file('avatar');
             if($logo != '') {   
                   if($logo != ''  && $logo != null){
                    $file_old = $path.$logo;
@@ -125,56 +125,56 @@ class ApiAuthController extends Controller
             } else {
                 $avatar  = 'default.png';
             }      
-		if (!$settings->free_registration && $skip == 0) {
-			$user_data['role'] = 'subscriber';
-			$user_data['active'] = '1';
-		} else {
+    if (!$settings->free_registration && $skip == 0) {
+      $user_data['role'] = 'subscriber';
+      $user_data['active'] = '1';
+    } else {
                 if($settings->activation_email):
                     $user_data['activation_code'] = Str::random(60);
                     $user_data['active'] = 0;
                 endif;
-			$user_data['role'] = 'registered';
-		}
+      $user_data['role'] = 'registered';
+    }
             if (isset($input['subscrip_plan'])) {
                 $plan = $input['subscrip_plan'];
             }    
-		  $user = User::where('email', '=', $request->get('email'))->first();
-		  $username = User::where('username', '=', $request->get('username'))->first();
-		if ($user === null && $username === null) {
-			$user = new User($user_data);
-			$user->ccode = $user_data['ccode'];
-			$user->mobile = $user_data['mobile'];
-			$user->avatar = $avatar;
+      $user = User::where('email', '=', $request->get('email'))->first();
+      $username = User::where('username', '=', $request->get('username'))->first();
+    if ($user === null && $username === null) {
+      $user = new User($user_data);
+      $user->ccode = $user_data['ccode'];
+      $user->mobile = $user_data['mobile'];
+      $user->avatar = $avatar;
             $user->referrer_id = $referred_user_id;
             $user->token = $input['token'];
-			$user->referral_token = $ref_token;
-			$user->active = 1;
-			$user->save();
-			$userdata = User::where('email', '=', $request->get('email'))->first();
-			$userid = $userdata->id;
+      $user->referral_token = $ref_token;
+      $user->active = 1;
+      $user->save();
+      $userdata = User::where('email', '=', $request->get('email'))->first();
+      $userid = $userdata->id;
        // send_password_notification('Notification From ELITECLUB','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
             
-		} else {
-			if($user != null){
-				$response = array('status'=>'false','message' => 'Email id Already Exists');
-				return response()->json($response, 200);
-			}else{
-				$response = array('status'=>'false','message' => 'Username Already Exists');
-				return response()->json($response, 200);
-			}
+    } else {
+      if($user != null){
+        $response = array('status'=>'false','message' => 'Email id Already Exists');
+        return response()->json($response, 200);
+      }else{
+        $response = array('status'=>'false','message' => 'Username Already Exists');
+        return response()->json($response, 200);
+      }
 
-		}
-		try {
-			if($settings->free_registration && $settings->activation_email){
-				$email = $input['email'];
-				$uname = $input['username'];
-				Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-					$message->to($email,$uname)->subject('Verify your email address');
-				});
-				$response = array('status'=>'true','message' => 'Registered Successfully.');
-			} else {
+    }
+    try {
+      if($settings->free_registration && $settings->activation_email){
+        $email = $input['email'];
+        $uname = $input['username'];
+        Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+          $message->to($email,$uname)->subject('Verify your email address');
+        });
+        $response = array('status'=>'true','message' => 'Registered Successfully.');
+      } else {
                 
-				if(!$settings->free_registration  && $skip == 0){
+        if(!$settings->free_registration  && $skip == 0){
                      $payment_type = $input['payment_type'];
                      $paymentMethod = $input['py_id'];
                     // $payment_type = $request->payment_type;
@@ -208,7 +208,7 @@ class ApiAuthController extends Controller
                             $sub_total =  $sub_price - DiscountPercentage();
                             $user = User::find($user->id);
                             if ( NewSubscriptionCoupon() == 1 ) {
-                              	     $charge = $user->charge( $sub_total * 100, $input['py_id']); 
+                                     $charge = $user->charge( $sub_total * 100, $input['py_id']); 
                                     if($charge->id != ''){
                                            $user->role = 'subscriber';
                                             $user->payment_type = 'one_time';
@@ -236,7 +236,7 @@ class ApiAuthController extends Controller
                                             );
                                     }
                                  } else {
-                              	        $charge = $user->charge( $sub_price * 100, $input['py_id']); 
+                                        $charge = $user->charge( $sub_price * 100, $input['py_id']); 
                                         if($charge->id != ''){
                                                $user->role = 'subscriber';
                                                 $user->payment_type = 'one_time';
@@ -257,7 +257,7 @@ class ApiAuthController extends Controller
                                             });
                                               $response = array(
                                                     'status' => 'true',
-                                					'message' => 'Registered Successfully.'
+                                          'message' => 'Registered Successfully.'
                                             );
                                          } else {
                                               $response = array(
@@ -280,125 +280,125 @@ class ApiAuthController extends Controller
 
 
                         //send_password_notification('Notification From ELITECLUB','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
-				}else{
-					   $response = array('status'=>'true',
+        }else{
+             $response = array('status'=>'true',
                                 'message' => 'Registered Successfully.');
-				}
-			}
+        }
+      }
             
           
             
-		} catch(Exception $e){
-			$user->delete();
-			$response = array('status'=>'false');
-		}
+    } catch(Exception $e){
+      $user->delete();
+      $response = array('status'=>'false');
+    }
         return response()->json($response, 200);
 }
 
 
 
-	/**
-	* Login user and create token
-	*
-	* @param  [string] email
-	* @param  [string] password
-	* @param  [boolean] remember_me
-	* @return [string] access_token
-	* @return [string] token_type
-	* @return [string] expires_at
-	*/
-	public function login(Request $request)
-	{
+  /**
+  * Login user and create token
+  *
+  * @param  [string] email
+  * @param  [string] password
+  * @param  [boolean] remember_me
+  * @return [string] access_token
+  * @return [string] token_type
+  * @return [string] expires_at
+  */
+  public function login(Request $request)
+  {
 
-		$settings = Setting::first();
+    $settings = Setting::first();
 
-		$email_login = array(
-			'email' => $request->get('email'),
-			'password' => $request->get('password')
-		);
-		$username_login = array(
-			'username' => $request->get('username'),
-			'password' => $request->get('password')
-		);
-		$mobile_login = array(
-			'mobile' => $request->get('mobile'),
-			'otp' => $request->get('otp')
-		);
-		if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
+    $email_login = array(
+      'email' => $request->get('email'),
+      'password' => $request->get('password')
+    );
+    $username_login = array(
+      'username' => $request->get('username'),
+      'password' => $request->get('password')
+    );
+    $mobile_login = array(
+      'mobile' => $request->get('mobile'),
+      'otp' => $request->get('otp')
+    );
+    if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
-			if($settings->free_registration && !Auth::user()->stripe_active){
-				Auth::user()->role = 'registered';
-				$user = User::find(Auth::user()->id);
-				$user->role = 'registered';
-				$user->save();
-			}
+      if($settings->free_registration && !Auth::user()->stripe_active){
+        Auth::user()->role = 'registered';
+        $user = User::find(Auth::user()->id);
+        $user->role = 'registered';
+        $user->save();
+      }
 
-			if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
-				$id = Auth::user()->id;
-				$role = Auth::user()->role;
-				$username = Auth::user()->username;
-				$password = Auth::user()->password;
-				$email = Auth::user()->email;
-				$mobile = Auth::user()->mobile;
-				$avatar = Auth::user()->avatar;
-				$user_details = array([
-					'user_id'=>$id,
-					'role'=>$role,
-					'username'=>$username,
-					'email'=>$email,
-					'mobile'=>$mobile,
-					'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
-				] );
+      if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
+        $id = Auth::user()->id;
+        $role = Auth::user()->role;
+        $username = Auth::user()->username;
+        $password = Auth::user()->password;
+        $email = Auth::user()->email;
+        $mobile = Auth::user()->mobile;
+        $avatar = Auth::user()->avatar;
+        $user_details = array([
+          'user_id'=>$id,
+          'role'=>$role,
+          'username'=>$username,
+          'email'=>$email,
+          'mobile'=>$mobile,
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
+        ] );
 
-			$redirect = ($request->get('redirect', 'false')) ? $request->get('redirect') : '/';
-			if(Auth::user()->role == 'demo' && Setting::first()->demo_mode != 1){
-				Auth::logout();
+      $redirect = ($request->get('redirect', 'false')) ? $request->get('redirect') : '/';
+      if(Auth::user()->role == 'demo' && Setting::first()->demo_mode != 1){
+        Auth::logout();
 
-				$response = array('message' => 'Sorry, demo mode has been disabled', 'note_type' => 'error');
-				return response()->json($response, 200);
-			} elseif($settings->free_registration && $settings->activation_email && Auth::user()->active == 0) {
-				Auth::logout();
+        $response = array('message' => 'Sorry, demo mode has been disabled', 'note_type' => 'error');
+        return response()->json($response, 200);
+      } elseif($settings->free_registration && $settings->activation_email && Auth::user()->active == 0) {
+        Auth::logout();
 
-				$response = array('message' => 'Please make sure to activate your account in your email before logging in.', 'note_type' => 'error','status'=>'verifyemail');
-				return response()->json($response, 200);
-			} else {
+        $response = array('message' => 'Please make sure to activate your account in your email before logging in.', 'note_type' => 'error','status'=>'verifyemail');
+        return response()->json($response, 200);
+      } else {
 
-				$response = array('message' => 'You have been successfully logged in.', 'note_type' => 'success','status'=>'true','user_details'=> $user_details);
-				return response()->json($response, 200);
-			}
-		else:
-			$username = Auth::user()->username;
+        $response = array('message' => 'You have been successfully logged in.', 'note_type' => 'success','status'=>'true','user_details'=> $user_details);
+        return response()->json($response, 200);
+      }
+    else:
+      $username = Auth::user()->username;
 
-			$response = array('message' => 'Uh oh, looks like you don\'t have an active subscription, please renew to gain access to all content', 'note_type' => 'error');
-			return response()->json($response, 200);
-		endif;
+      $response = array('message' => 'Uh oh, looks like you don\'t have an active subscription, please renew to gain access to all content', 'note_type' => 'error');
+      return response()->json($response, 200);
+    endif;
 
-	} else {
-		$count = User::where('email', '=', $request->get('email'))->count();
-		if($count > 0){
-			$response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
-			return response()->json($response, 200);
-		}else{
-			$response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
-			return response()->json($response, 200);
-		}
-	}
-	}
+  } else {
+    $count = User::where('email', '=', $request->get('email'))->count();
+    if($count > 0){
+      $response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
+      return response()->json($response, 200);
+    }else{
+      $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
+      return response()->json($response, 200);
+    }
+  }
+  }
 
-	public function resetpassword(Request $request)
-	{
-		$user_email = $request->email;
-		$user = User::where('email', $user_email)->count();
+  public function resetpassword(Request $request)
+  {
+    $user_email = $request->email;
+    $user = User::where('email', $user_email)->count();
 
        
-		if($user > 0){
-			
-			$verification_code = mt_rand(100000, 999999);
-			$email = $user_email;
-			Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
-				$message->to($email)->subject('Verify your email address');
-			});
-			
+    if($user > 0){
+      
+      $verification_code = mt_rand(100000, 999999);
+      $email = $user_email;
+      Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
+        $message->to($email)->subject('Verify your email address');
+      });
+      
             
                 $data = DB::table('password_resets')->where('email', $user_email)->first();
                 
@@ -418,10 +418,10 @@ class ApiAuthController extends Controller
                     'status'=>'false',
                     'message'=>'Invalid email'
                 );
-		}
-		return response()->json($response, 200);
+    }
+    return response()->json($response, 200);
 
-	}
+  }
     
     
      public function ViewStripe(Request $request){
@@ -449,268 +449,268 @@ class ApiAuthController extends Controller
             return response()->json($response, 200);
     }
 
-	public function updatepassword(Request $request)
-	{
-		$user_email = $request->email;       
-		$verification_code = $request->verification_code;
-		if (DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists()) {
+  public function updatepassword(Request $request)
+  {
+    $user_email = $request->email;       
+    $verification_code = $request->verification_code;
+    if (DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists()) {
 
-			$user_id = User::where('email', '=', $user_email)->first();
-			$user = User::find($user_id->id);
-			$user->password = $request->password;
-			$user->save();
+      $user_id = User::where('email', '=', $user_email)->first();
+      $user = User::find($user_id->id);
+      $user->password = $request->password;
+      $user->save();
           /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);*/
-			$response = array(
-				'status'=>'true',
-				'message'=>'Password changed successfully.'
-			);
-		}else{
-			$response = array(
-				'status'=>'false',
-				'message'=>'Invalid Verification code.'
-			);    
-		}
-		return response()->json($response, 200);
-	}
+      $response = array(
+        'status'=>'true',
+        'message'=>'Password changed successfully.'
+      );
+    }else{
+      $response = array(
+        'status'=>'false',
+        'message'=>'Invalid Verification code.'
+      );    
+    }
+    return response()->json($response, 200);
+  }
 
 
-	public function categoryvideos(Request $request)
-	{
+  public function categoryvideos(Request $request)
+  {
         
-		//$channelid = $request->channelid;
+    //$channelid = $request->channelid;
        
-		$videocategories = VideoCategory::select('id','image')->get()->toArray();
-		$myData = array();
-		foreach ($videocategories as $key => $videocategory) {
-			$videocategoryid = $videocategory['id'];
-			$genre_image = $videocategory['image'];
-			$videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		$item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
-     		return $item;
-     	});
-			$categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
+    $videocategories = VideoCategory::select('id','image')->get()->toArray();
+    $myData = array();
+    foreach ($videocategories as $key => $videocategory) {
+      $videocategoryid = $videocategory['id'];
+      $genre_image = $videocategory['image'];
+      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
+        return $item;
+      });
+      $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
 
-			if(count($videos) > 0){
-				$msg = 'success';
-			}else{
-				$msg = 'nodata';
-			}
-			$myData[] = array(
-				"genre_name"   => $categorydetails->name,
-				"genre_id"   => $videocategoryid,
-				"genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
-				"message" => $msg,
-				"videos" => $videos
-			);
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+        "genre_name"   => $categorydetails->name,
+        "genre_id"   => $videocategoryid,
+        "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
+        "message" => $msg,
+        "videos" => $videos
+      );
 
-		}
+    }
 
-		$response = array(
-			'status' => 'true',
-			'genre_movies' => $myData
-		);
-		return response()->json($response, 200);
-	}
-
-
-	public function changepassword(Request $request)
-	{
-		$user_email = $request->email;		
-		$user_id = $request->user_id;
-
-		$user = User::where('email', $user_email)->where('id', $user_id)->count();
-
-		if($user > 0){
-
-			$verification_code = mt_rand(100000, 999999);
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData
+    );
+    return response()->json($response, 200);
+  }
 
 
-			Mail::send('resetpassword', array('verification_code' => $verification_code), function($message) use ($request)  {
-				$message->to($request->get('email'))->subject('Verify your email address');
-			});
+  public function changepassword(Request $request)
+  {
+    $user_email = $request->email;    
+    $user_id = $request->user_id;
 
-			$data = DB::table('password_resets')->where('email', $user_email)->first();
-			if(empty($data)){
-				DB::table('password_resets')->insert(['email' => $user_email, 'verification_code' => $verification_code]);
-			}else{
-				DB::table('password_resets')->where('email', $user_email)->update(['verification_code' => $verification_code]);
-			}
-			$response = array(
-				'status'=>'true',
-				'email' => $user_email,
-				'verification_code'=>$verification_code
-			);
-		}else{
-			$response = array(
-				'status'=>'false',
-				'message'=>'Invalid email'
-			);
-		}
-		return response()->json($response, 200);
-	}
+    $user = User::where('email', $user_email)->where('id', $user_id)->count();
+
+    if($user > 0){
+
+      $verification_code = mt_rand(100000, 999999);
+
+
+      Mail::send('resetpassword', array('verification_code' => $verification_code), function($message) use ($request)  {
+        $message->to($request->get('email'))->subject('Verify your email address');
+      });
+
+      $data = DB::table('password_resets')->where('email', $user_email)->first();
+      if(empty($data)){
+        DB::table('password_resets')->insert(['email' => $user_email, 'verification_code' => $verification_code]);
+      }else{
+        DB::table('password_resets')->where('email', $user_email)->update(['verification_code' => $verification_code]);
+      }
+      $response = array(
+        'status'=>'true',
+        'email' => $user_email,
+        'verification_code'=>$verification_code
+      );
+    }else{
+      $response = array(
+        'status'=>'false',
+        'message'=>'Invalid email'
+      );
+    }
+    return response()->json($response, 200);
+  }
 
 
 public function verifyandupdatepassword(Request $request)
-	{
-		$user_email = $request->email;       
-		$old_password = $request->old_password;
+  {
+    $user_email = $request->email;       
+    $old_password = $request->old_password;
 
-		$user = User::where('email', $user_email)->count();
+    $user = User::where('email', $user_email)->count();
 
-		if($user > 0){
-			$userdata = User::where('email', $user_email)->first();
-			$userhashpassword = $userdata->password;
-			if ( Hash::check($old_password, $userhashpassword) ) {
+    if($user > 0){
+      $userdata = User::where('email', $user_email)->first();
+      $userhashpassword = $userdata->password;
+      if ( Hash::check($old_password, $userhashpassword) ) {
 
-				$userdetail = User::where('email', '=',$user_email)->first();
-				$user_id = $userdetail->id;
-				$user = User::find($user_id);
+        $userdetail = User::where('email', '=',$user_email)->first();
+        $user_id = $userdetail->id;
+        $user = User::find($user_id);
 
-				$user->password = $request->password;
-				$user->save();
+        $user->password = $request->password;
+        $user->save();
 
-				$response = array(
-					'status'=>'true',
-					'message'=>'Password changed successfully.'
-				);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Password changed successfully.'
+        );
                   /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id);*/
 
-			} else {
-				$response = array(
-					'status'=>'false',
-					'message'=>'Check your old password.'
-				); 
-			}
-		}
-		else {
-			$response = array(
-				'status'=>'false',
-				'message'=>'User Email Not exists.'
-			); 
-		}
-		return response()->json($response, 200);
-	}
+      } else {
+        $response = array(
+          'status'=>'false',
+          'message'=>'Check your old password.'
+        ); 
+      }
+    }
+    else {
+      $response = array(
+        'status'=>'false',
+        'message'=>'User Email Not exists.'
+      ); 
+    }
+    return response()->json($response, 200);
+  }
 
-	public function latestvideos()
-	{
-		$latestvideos = Video::where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		$item['video_url'] = URL::to('/').'/storage/app/public/';
-     		return $item;
-     	});
-		if(count($latestvideos) > 0){
-			$response = array(
-				'status'=>'true',
-				'latestvideos' => $latestvideos
-			); 
-			return response()->json($response, 200);
-		}else{
-			$response = array(
-				'status'=>'true',
-				'latestvideos' => []
-			); 
-			return response()->json($response, 200);
-		}
+  public function latestvideos()
+  {
+    $latestvideos = Video::where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+    if(count($latestvideos) > 0){
+      $response = array(
+        'status'=>'true',
+        'latestvideos' => $latestvideos
+      ); 
+      return response()->json($response, 200);
+    }else{
+      $response = array(
+        'status'=>'true',
+        'latestvideos' => []
+      ); 
+      return response()->json($response, 200);
+    }
 
-	}
+  }
 
 
-	public function categorylist()
-	{
-		$channellist = VideoCategory::where('order','=',1)->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
-     		return $item;
-     	});
-		if(count($channellist) > 0){
-			$response = array(
-				'status'=>'true',
-				'categorylist' => $channellist
-			); 
-			return response()->json($response, 200);
-		}else{
-			$response = array(
-				'status'=>'true',
-				'categorylist' => []
-			); 
-			return response()->json($response, 200);
-		}
-	}
+  public function categorylist()
+  {
+    $channellist = VideoCategory::where('order','=',1)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
+        return $item;
+      });
+    if(count($channellist) > 0){
+      $response = array(
+        'status'=>'true',
+        'categorylist' => $channellist
+      ); 
+      return response()->json($response, 200);
+    }else{
+      $response = array(
+        'status'=>'true',
+        'categorylist' => []
+      ); 
+      return response()->json($response, 200);
+    }
+  }
     
-	public function channelvideos(Request $request)
-	{
-		$channelid = $request->channelid;
+  public function channelvideos(Request $request)
+  {
+    $channelid = $request->channelid;
 
 
-		$videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
-		$myData = array();
-		foreach ($videocategories as $key => $videocategory) {
-			$videocategoryid = $videocategory['id'];
-			$genre_image = $videocategory['image'];
-			$videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		$item['video_url'] = URL::to('/').'/storage/app/public/';
-     		return $item;
-     	});
-			$categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
+    $videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
+    $myData = array();
+    foreach ($videocategories as $key => $videocategory) {
+      $videocategoryid = $videocategory['id'];
+      $genre_image = $videocategory['image'];
+      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
 
-			if(count($videos) > 0){
-				$msg = 'success';
-			}else{
-				$msg = 'nodata';
-			}
-			$myData[] = array(
-				"genre_name"   => $categorydetails->name,
-				"genre_id"   => $videocategoryid,
-				"genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
-				"message" => $msg,
-				"videos" => $videos
-			);
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+        "genre_name"   => $categorydetails->name,
+        "genre_id"   => $videocategoryid,
+        "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
+        "message" => $msg,
+        "videos" => $videos
+      );
 
-		}
+    }
 
-		$videos_cat = VideoCategory::where('id','=',$channelid)->get();
+    $videos_cat = VideoCategory::where('id','=',$channelid)->get();
 
-		$response = array(
-			'status' => 'true',
-			'main_genre' => $videos_cat[0]->name,
-			'categoryVideos' => $videos
-		);
-		return response()->json($response, 200);
-	}
+    $response = array(
+      'status' => 'true',
+      'main_genre' => $videos_cat[0]->name,
+      'categoryVideos' => $videos
+    );
+    return response()->json($response, 200);
+  }
 
-	public function videodetail(Request $request)
-	{
+  public function videodetail(Request $request)
+  {
         
-		$videoid = $request->videoid;
+    $videoid = $request->videoid;
         
        
         $current_date = date('Y-m-d h:i:s a', time()); 
-		$videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		$item['video_url'] = URL::to('/').'/storage/app/public/';
-     		return $item;
-     	});
+    $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
         
-     	if ( isset($request->user_id) && $request->user_id != '' ) { 
+      if ( isset($request->user_id) && $request->user_id != '' ) { 
             $user_id = $request->user_id;
             $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-			//Wishlilst
-			$cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-			$wishliststatus =  ($cnt == 1) ? "true" : "false";
-			//Watchlater
-			$cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-			$watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
-			$userrole = User::where('id','=',$user_id)->first()->role;
-			$status = 'true';
+      //Wishlilst
+      $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+      $wishliststatus =  ($cnt == 1) ? "true" : "false";
+      //Watchlater
+      $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+      $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+      $userrole = User::where('id','=',$user_id)->first()->role;
+      $status = 'true';
 
-		} else{
-			$wishliststatus = 'false';
-			$watchlaterstatus = 'false';
-			$ppv_exist = 0;
-			$userrole = '';
-			$status = 'true';
-		}
+    } else{
+      $wishliststatus = 'false';
+      $watchlaterstatus = 'false';
+      $ppv_exist = 0;
+      $userrole = '';
+      $status = 'true';
+    }
         
                  if ($ppv_exist > 0) {
 
@@ -732,98 +732,98 @@ public function verifyandupdatepassword(Request $request)
         
          $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
          $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
-		
-		$response = array(
-			'status' => $status,
-			'wishlist' => $wishliststatus,
-			'ppv_video_status' => $ppv_video_status,
+    
+    $response = array(
+      'status' => $status,
+      'wishlist' => $wishliststatus,
+      'ppv_video_status' => $ppv_video_status,
             'main_genre' => $videos_cat[0]->name,
-			'watchlater' => $watchlaterstatus,
-			'ppv_exist' => $ppv_exist,
-			'userrole' => $userrole,
-			'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
-			'videodetail' => $videodetail,
-			'videossubtitles' => $moviesubtitles
-		);
-		return response()->json($response, 200);
-	}
+      'watchlater' => $watchlaterstatus,
+      'ppv_exist' => $ppv_exist,
+      'userrole' => $userrole,
+      'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
+      'videodetail' => $videodetail,
+      'videossubtitles' => $moviesubtitles
+    );
+    return response()->json($response, 200);
+  }
 
-	public function livestreams()
-	{
-		$livecategories = LiveCategory::select('id','image')->get()->toArray();
-		$myData = array();
-		foreach ($livecategories as $key => $livecategory) {
-			$livecategoryid = $livecategory['id'];
-			$genre_image = $livecategory['image'];
-			$videos= LiveStream::where('video_category_id',$livecategoryid)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		return $item;
-     	});
-			$categorydetails = LiveCategory::where('id','=',$livecategoryid)->first();
+  public function livestreams()
+  {
+    $livecategories = LiveCategory::select('id','image')->get()->toArray();
+    $myData = array();
+    foreach ($livecategories as $key => $livecategory) {
+      $livecategoryid = $livecategory['id'];
+      $genre_image = $livecategory['image'];
+      $videos= LiveStream::where('video_category_id',$livecategoryid)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $categorydetails = LiveCategory::where('id','=',$livecategoryid)->first();
 
-			if(count($videos) > 0){
-				$msg = 'success';
-			}else{
-				$msg = 'nodata';
-			}
-			$myData[] = array(
-				"genre_name"   => $categorydetails->name,
-				"genre_id"   => $livecategoryid,
-				"genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
-				"message" => $msg,
-				"videos" => $videos
-			);
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+        "genre_name"   => $categorydetails->name,
+        "genre_id"   => $livecategoryid,
+        "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
+        "message" => $msg,
+        "videos" => $videos
+      );
 
-		}
+    }
 
-		$response = array(
-			'status' => 'true',
-			'genre_movies' => $myData
-		);
-		return response()->json($response, 200);
-	
-	}
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData
+    );
+    return response()->json($response, 200);
+  
+  }
 
-	public function livestreamdetail(Request $request)
-	{
-		$liveid = $request->liveid;
-		$livedetail = LiveStream::where('id',$liveid)->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		return $item;
-     	});
-		$response = array(
-			'status' => 'true',
-			'shareurl' => URL::to('live/play').'/'.$liveid,
-			'livedetail' => $livedetail
-		);
-		return response()->json($response, 200);
-	}
+  public function livestreamdetail(Request $request)
+  {
+    $liveid = $request->liveid;
+    $livedetail = LiveStream::where('id',$liveid)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+    $response = array(
+      'status' => 'true',
+      'shareurl' => URL::to('live/play').'/'.$liveid,
+      'livedetail' => $livedetail
+    );
+    return response()->json($response, 200);
+  }
 
-	public function cmspages()
+  public function cmspages()
      {
         
-     	$pages = Page::where('active', '=', 1)->get()->map(function ($item) {
-     		$item['page_url'] = URL::to('page').'/'.$item->slug;
-     		return $item;
-     	});
-     	$response = array(
-     		'status' => 'true',
-     		'pages' => $pages
-     	);
-     	return response()->json($response, 200);
+      $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
+        $item['page_url'] = URL::to('page').'/'.$item->slug;
+        return $item;
+      });
+      $response = array(
+        'status' => 'true',
+        'pages' => $pages
+      );
+      return response()->json($response, 200);
      }
 
      public function sliders()
      {
-     	$sliders = Slider::where('active', '=', 1)->get()->map(function ($item) {
-     		$item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
-     		return $item;
-     	});
-     	$response = array(
-     		'status' => 'true',
-     		'sliders' => $sliders
-     	);
-     	return response()->json($response, 200);
+      $sliders = Slider::where('active', '=', 1)->get()->map(function ($item) {
+        $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+        return $item;
+      });
+      $response = array(
+        'status' => 'true',
+        'sliders' => $sliders
+      );
+      return response()->json($response, 200);
      } 
        
      public function coupons(Request $request)
@@ -864,97 +864,97 @@ public function verifyandupdatepassword(Request $request)
     
     public function MobileSliders()
      {
-     	$sliders = MobileSlider::where('active', '=', 1)->get()->map(function ($item) {
-     		$item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
-     		return $item;
-     	});
-     	$response = array(
-     		'status' => 'true',
-     		'sliders' => $sliders
-     	);
-     	return response()->json($response, 200);
+      $sliders = MobileSlider::where('active', '=', 1)->get()->map(function ($item) {
+        $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+        return $item;
+      });
+      $response = array(
+        'status' => 'true',
+        'sliders' => $sliders
+      );
+      return response()->json($response, 200);
      }
 
      public function ppvvideos()
-	{
-		$ppvcategories = PpvCategory::select('id','image')->get()->toArray();
-		$myData = array();
-		foreach ($ppvcategories as $key => $ppvcategory) {
-			$ppvcategoryid = $ppvcategory['id'];
-			$genre_image = $ppvcategory['image'];
-			$videos= PpvVideo::where('video_category_id',$ppvcategoryid)->where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		return $item;
-     	});
-			$categorydetails = PpvCategory::where('id','=',$ppvcategoryid)->first();
+  {
+    $ppvcategories = PpvCategory::select('id','image')->get()->toArray();
+    $myData = array();
+    foreach ($ppvcategories as $key => $ppvcategory) {
+      $ppvcategoryid = $ppvcategory['id'];
+      $genre_image = $ppvcategory['image'];
+      $videos= PpvVideo::where('video_category_id',$ppvcategoryid)->where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $categorydetails = PpvCategory::where('id','=',$ppvcategoryid)->first();
 
-			if(count($videos) > 0){
-				$msg = 'success';
-			}else{
-				$msg = 'nodata';
-			}
-			$myData[] = array(
-				"genre_name"   => $categorydetails->name,
-				"genre_id"   => $ppvcategoryid,
-				"genre_image"   => URL::to('/').'/public/uploads/ppvcategory/'.$genre_image,
-				"message" => $msg,
-				"videos" => $videos
-			);
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+        "genre_name"   => $categorydetails->name,
+        "genre_id"   => $ppvcategoryid,
+        "genre_image"   => URL::to('/').'/public/uploads/ppvcategory/'.$genre_image,
+        "message" => $msg,
+        "videos" => $videos
+      );
 
-		}
+    }
 
-		$response = array(
-			'status' => 'true',
-			'genre_movies' => $myData
-		);
-		return response()->json($response, 200);
-	}
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData
+    );
+    return response()->json($response, 200);
+  }
 
-	public function ppvvideodetail(Request $request)
-	{
-		$ppvvideoid = $request->ppvvideoid;
-		$user_id = $request->user_id;
-		$ppvvideodetail = PpvVideo::where('id',$ppvvideoid)->get()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-     		return $item;
-     	});
-     	$ppv_status = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '=', $ppvvideoid)->get()->map(function ($item) {
-				$item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
-				return $item;
-			});
-     	if(!$ppv_status->isEmpty()){
-     		$ppvstatus = $ppv_status[0]->ppv_videos_status;
-     	}else{
-     		$ppvstatus = 'Purchase';
-     	}
+  public function ppvvideodetail(Request $request)
+  {
+    $ppvvideoid = $request->ppvvideoid;
+    $user_id = $request->user_id;
+    $ppvvideodetail = PpvVideo::where('id',$ppvvideoid)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $ppv_status = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '=', $ppvvideoid)->get()->map(function ($item) {
+        $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+        return $item;
+      });
+      if(!$ppv_status->isEmpty()){
+        $ppvstatus = $ppv_status[0]->ppv_videos_status;
+      }else{
+        $ppvstatus = 'Purchase';
+      }
 
-     	if ( $request->user_id != '' ) { 
-			$user_id = $request->user_id;
-			//Wishlilst
-			$cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$ppvvideoid)->count();
-			$wishliststatus =  ($cnt == 1) ? "true" : "false";
-			//Watchlater
-			$cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$ppvvideoid)->count();
-			$watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
-			$userrole = User::where('id','=',$user_id)->first()->role;
-			$status = 'true';
-		} else{
-			$wishliststatus = 'false';
-			$watchlaterstatus = 'false';
-			$userrole = '';
-			$status = 'false';
-		}
-		$response = array(
-			'status' => $status,
-			'wishlist' => $wishliststatus,
-			'watchlater' => $watchlaterstatus,
-			'ppvstatus' => $ppvstatus,
-			'userrole' => $userrole,
-			'shareurl' => URL::to('ppvVideos/play_videos').'/'.$ppvvideoid,
-			'ppvvideodetail' => $ppvvideodetail
-		);
-		return response()->json($response, 200);
-	}
+      if ( $request->user_id != '' ) { 
+      $user_id = $request->user_id;
+      //Wishlilst
+      $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$ppvvideoid)->count();
+      $wishliststatus =  ($cnt == 1) ? "true" : "false";
+      //Watchlater
+      $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$ppvvideoid)->count();
+      $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+      $userrole = User::where('id','=',$user_id)->first()->role;
+      $status = 'true';
+    } else{
+      $wishliststatus = 'false';
+      $watchlaterstatus = 'false';
+      $userrole = '';
+      $status = 'false';
+    }
+    $response = array(
+      'status' => $status,
+      'wishlist' => $wishliststatus,
+      'watchlater' => $watchlaterstatus,
+      'ppvstatus' => $ppvstatus,
+      'userrole' => $userrole,
+      'shareurl' => URL::to('ppvVideos/play_videos').'/'.$ppvvideoid,
+      'ppvvideodetail' => $ppvvideodetail
+    );
+    return response()->json($response, 200);
+  }
 
   public function directVerify(Request $request){
     if (!empty($request->post('activation_code')) && !empty($request->post('mobile'))) {
@@ -1009,23 +1009,23 @@ public function verifyandupdatepassword(Request $request)
        
     }
 
-	public function updateProfile(Request $request) {
+  public function updateProfile(Request $request) {
 
         $id = $request->user_id;
         $user = User::find($id);
         $path = URL::to('/').'/public/uploads/avatars/';
         $logo = $request->file('avatar');
         if($logo != '' && $logo != null) {
-        		$file_old = $path.$logo;
-        		if (file_exists($file_old)){
-        			unlink($file_old);
-        		}
-        	$file = $logo;
+            $file_old = $path.$logo;
+            if (file_exists($file_old)){
+              unlink($file_old);
+            }
+          $file = $logo;
           $avatar = $file->getClientOriginalName();
-        	$file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
+          $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
         } else {
-        	$avatar = 'default.png';
+          $avatar = 'default.png';
         }
         $user = User::find($id);
         $user->email = $request->user_email;
@@ -1034,318 +1034,318 @@ public function verifyandupdatepassword(Request $request)
         $user->ccode = $request->user_ccode;
         $user->mobile = $request->user_mobile;
         $user->avatar = $avatar;
-		    $user->save();
-		    $response = array(
-				'status'=>'true',
-				'message'=>'Your Profile detail has been updated'
-			);
-		/*send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
+        $user->save();
+        $response = array(
+        'status'=>'true',
+        'message'=>'Your Profile detail has been updated'
+      );
+    /*send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
         return response()->json($response, 200);
    }
 
    public function addwishlist(Request $request) {
 
-		$user_id = $request->user_id;
-		//$type = $request->type;//channel,ppv
-		$video_id = $request->video_id;
-		if($request->video_id != ''){
-			$count = Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
-			if ( $count > 0 ) {
-				Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
-				$response = array(
-					'status'=>'false',
-					'message'=>'Removed From Your Wishlist List'
-				);
-			} else {
-				$data = array('user_id' => $user_id, 'video_id' => $video_id );
-				Wishlist::insert($data);
-				$response = array(
-					'status'=>'true',
-					'message'=>'Added  to  Your Wishlist List'
-				);
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $video_id = $request->video_id;
+    if($request->video_id != ''){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
+      if ( $count > 0 ) {
+        Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Wishlist List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'video_id' => $video_id );
+        Wishlist::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Wishlist List'
+        );
 
-			}
-		}
-
-		return response()->json($response, 200);
-
-	}
-
-	public function addfavorite(Request $request) {
-
-		$user_id = $request->user_id;
-		//$type = $request->type;//channel,ppv
-		$video_id = $request->video_id;
-		if($request->video_id != ''){
-			$count = Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
-			if ( $count > 0 ) {
-				Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
-				$response = array(
-					'status'=>'false',
-					'message'=>'Removed From Your Favorite List'
-				);
-			} else {
-				$data = array('user_id' => $user_id, 'video_id' => $video_id );
-				Favorite::insert($data);
-				$response = array(
-					'status'=>'true',
-					'message'=>'Added  to  Your Favorite List'
-				);
-
-			}
-		}
-
-		return response()->json($response, 200);
-
-	}
-
-	public function addwatchlater(Request $request) {
-
-		$user_id = $request->user_id;
-		$video_id = $request->video_id;
-		if($request->video_id != ''){
-			$count = Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
-			if ( $count > 0 ) {
-				Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
-				$response = array(
-					'status'=>'false',
-					'message'=>'Removed From Your Watch Later List'
-				);
-			} else {
-				$data = array('user_id' => $user_id, 'video_id' => $video_id );
-				Watchlater::insert($data);
-				$response = array(
-					'status'=>'true',
-					'message'=>'Added  to  Your Watch Later List'
-				);
-
-			}
-		}
-
-		return response()->json($response, 200);
-
-	}
-
-	public function myWishlists(Request $request) {
-
-		$user_id = $request->user_id;
-
-		/*channel videos*/
-		$video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->get();
-		$video_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
-
-		if ( $video_ids_count  > 0) {
-
-			foreach ($video_ids as $key => $value1) {
-				$k2[] = $value1->video_id;
-			}
-			$channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				$item['video_url'] = URL::to('/').'/storage/app/public/';
-				return $item;
-			});
-			$status = "true";
-		}else{
-            $status = "false";
-			$channel_videos = [];
-		}
-
-	
-		$response = array(
-				'status'=>$status,
-				'channel_videos'=> $channel_videos
-			);
-		return response()->json($response, 200);
-
-	}
-
-	public function myfavorites(Request $request) {
-
-		$user_id = $request->user_id;
-
-		/*channel videos*/
-		$video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
-		$video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
-
-		if ( $video_ids_count  > 0) {
-
-			foreach ($video_ids as $key => $value) {
-				$k2[] = $value->video_id;
-			}
-			$channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				$item['video_url'] = URL::to('/').'/storage/app/public/';
-				return $item;
-			});
-			$status = "true";
-		}else{
-            $status = "false";
-			$channel_videos = [];
-		}
-
-	
-		$response = array(
-				'status'=>$status,
-				'channel_videos'=> $channel_videos
-			);
-		return response()->json($response, 200);
-
-	}
-
-	public function mywatchlaters(Request $request) {
-
-		$user_id = $request->user_id;
-
-		/*channel videos*/
-		$video_ids = Watchlater::select('video_id')->where('user_id','=',$user_id)->get();
-		$video_ids_count = Watchlater::select('video_id')->where('user_id','=',$user_id)->count();
-
-		if ( $video_ids_count  > 0) {
-
-			foreach ($video_ids as $key => $value1) {
-				$k2[] = $value1->video_id;
-			}
-			$channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				$item['video_url'] = URL::to('/').'/storage/app/public/';
-				return $item;
-			});
-			$status = "true";
-		}else{
-             $status = "false";
-			$channel_videos = [];
-		}
-		
-		$response = array(
-				'status'=>$status,
-				'channel_videos'=> $channel_videos
-			);
-		return response()->json($response, 200);
-
-	}
-
-
-	public function showWishlist(Request $request) {
-
-		$user_id = $request->user_id;
-		$type = $request->type;
-		$video_id = $request->video_id;
-    	if($video_id != ''){ 
-	        $wish_video_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
-    	}
-
-    	$response = array(
-    		'status'=>'true',
-    		'wish_count'=>$wish_video_count,
-    	);
-		
-		return response()->json($response, 200);
-
-	}
-
-	public function showfavorites(Request $request) {
-
-		$user_id = $request->user_id;
-		$type = $request->type;
-		$video_id = $request->video_id;
-    	if($video_id != ''){ 
-	        $fav_video_count = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
-    	}
-
-    	$response = array(
-    		'status'=>'true',
-    		'fav_count'=>$fav_video_count,
-    	);
-		
-		return response()->json($response, 200);
-
-	}
-
-	public function showWatchlater(Request $request) {
-
-		$user_id = $request->user_id;
-		$type = $request->type;
-		$video_id = $request->video_id;
-    	if($video_id != ''){ 
-	        $watchlater_count = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
-    	}
-
-    	$response = array(
-    		'status'=>'true',
-    		'watch_count'=>$watchlater_count,
-    	);
-		
-		return response()->json($response, 200);
-
-	}
-
-	public function getPPV(Request $request)
-	{
-
-		$user_id = $request->user_id;
-
-		$daten = date('Y-m-d h:i:s a', time());
-
-		$payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)->get()->map(function ($item) {
-				$item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
-
-		$response = array(
-			'status' => 'true',
-			'payperview_video' => $payperview_video
-		);
-
-		return response()->json($response, 200);
-
-	}
-    
-    public function payment_settings() {
-		$payment_settings = PaymentSetting::get();
-		$response = array(
-			'status'=>'true',
-			'payment_settings'=> $payment_settings
-		);
-
-		return response()->json($response, 200);
+      }
     }
 
-	public function getLivepurchased(Request $request)
-	{
+    return response()->json($response, 200);
 
-		$user_id = $request->user_id;
+  }
 
-		$daten = date('Y-m-d h:i:s a', time());
+  public function addfavorite(Request $request) {
 
-		$payperview_video = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')->where('live_purchases.user_id', '=', $user_id)->where('live_purchases.video_id', '!=', 0)->get()->map(function ($item) {
-				$item['live_streams_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $video_id = $request->video_id;
+    if($request->video_id != ''){
+      $count = Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
+      if ( $count > 0 ) {
+        Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Favorite List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'video_id' => $video_id );
+        Favorite::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Favorite List'
+        );
 
-		$response = array(
-			'status' => 'true',
-			'livevideos' => $payperview_video
-		);
+      }
+    }
 
-		return response()->json($response, 200);
+    return response()->json($response, 200);
 
-	}
+  }
 
-	public function settings()
-	{
-		$settings = Setting::all()->map(function ($item) {
-     		$item['image_url'] = URL::to('/').'/public/uploads/settings/'.$item->logo;
-     		return $item;
-     	});
-		$response = array(
-			'settings' => $settings
-		);
-		return response()->json($response, 200);
-	}
+  public function addwatchlater(Request $request) {
 
-	public function upgradesubscription(Request $request)
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    if($request->video_id != ''){
+      $count = Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
+      if ( $count > 0 ) {
+        Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Watch Later List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'video_id' => $video_id );
+        Watchlater::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Watch Later List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function myWishlists(Request $request) {
+
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->get();
+    $video_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->video_id;
+      }
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $channel_videos = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+
+  public function myfavorites(Request $request) {
+
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
+    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value) {
+        $k2[] = $value->video_id;
+      }
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $channel_videos = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+
+  public function mywatchlaters(Request $request) {
+
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $video_ids = Watchlater::select('video_id')->where('user_id','=',$user_id)->get();
+    $video_ids_count = Watchlater::select('video_id')->where('user_id','=',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->video_id;
+      }
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+             $status = "false";
+      $channel_videos = [];
+    }
+    
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+
+
+  public function showWishlist(Request $request) {
+
+    $user_id = $request->user_id;
+    $type = $request->type;
+    $video_id = $request->video_id;
+      if($video_id != ''){ 
+          $wish_video_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
+      }
+
+      $response = array(
+        'status'=>'true',
+        'wish_count'=>$wish_video_count,
+      );
+    
+    return response()->json($response, 200);
+
+  }
+
+  public function showfavorites(Request $request) {
+
+    $user_id = $request->user_id;
+    $type = $request->type;
+    $video_id = $request->video_id;
+      if($video_id != ''){ 
+          $fav_video_count = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
+      }
+
+      $response = array(
+        'status'=>'true',
+        'fav_count'=>$fav_video_count,
+      );
+    
+    return response()->json($response, 200);
+
+  }
+
+  public function showWatchlater(Request $request) {
+
+    $user_id = $request->user_id;
+    $type = $request->type;
+    $video_id = $request->video_id;
+      if($video_id != ''){ 
+          $watchlater_count = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('type','=',$type)->count();
+      }
+
+      $response = array(
+        'status'=>'true',
+        'watch_count'=>$watchlater_count,
+      );
+    
+    return response()->json($response, 200);
+
+  }
+
+  public function getPPV(Request $request)
+  {
+
+    $user_id = $request->user_id;
+
+    $daten = date('Y-m-d h:i:s a', time());
+
+    $payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)->get()->map(function ($item) {
+        $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
+    $response = array(
+      'status' => 'true',
+      'payperview_video' => $payperview_video
+    );
+
+    return response()->json($response, 200);
+
+  }
+    
+    public function payment_settings() {
+    $payment_settings = PaymentSetting::get();
+    $response = array(
+      'status'=>'true',
+      'payment_settings'=> $payment_settings
+    );
+
+    return response()->json($response, 200);
+    }
+
+  public function getLivepurchased(Request $request)
+  {
+
+    $user_id = $request->user_id;
+
+    $daten = date('Y-m-d h:i:s a', time());
+
+    $payperview_video = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')->where('live_purchases.user_id', '=', $user_id)->where('live_purchases.video_id', '!=', 0)->get()->map(function ($item) {
+        $item['live_streams_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
+    $response = array(
+      'status' => 'true',
+      'livevideos' => $payperview_video
+    );
+
+    return response()->json($response, 200);
+
+  }
+
+  public function settings()
+  {
+    $settings = Setting::all()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/settings/'.$item->logo;
+        return $item;
+      });
+    $response = array(
+      'settings' => $settings
+    );
+    return response()->json($response, 200);
+  }
+
+  public function upgradesubscription(Request $request)
      {
          $user_id = $request->user_id;
          $user = User::find($user_id);
@@ -1380,46 +1380,46 @@ public function verifyandupdatepassword(Request $request)
                 return response()->json(['success'=>'Your plan has been changed.']);
         }
     
-	public function cancelsubscription(Request $request)
-	{
-		$user_id = $request->user_id;
-		$user = User::find($user_id);
-		$stripe_plan = SubscriptionPlan();
-		$user->subscription($stripe_plan)->cancel();
-		$plan_name =  CurrentSubPlanName($user_id);
-		$start_date =  SubStartDate($user_id);
-		$ends_at =  SubEndDate($user_id);
+  public function cancelsubscription(Request $request)
+  {
+    $user_id = $request->user_id;
+    $user = User::find($user_id);
+    $stripe_plan = SubscriptionPlan();
+    $user->subscription($stripe_plan)->cancel();
+    $plan_name =  CurrentSubPlanName($user_id);
+    $start_date =  SubStartDate($user_id);
+    $ends_at =  SubEndDate($user_id);
 
-		\Mail::send('emails.cancel', array(
-			'name' => $user->username,
-			'plan_name' => $plan_name,
-			'start_date' => $start_date,
-			'ends_at' => $ends_at,
-		), function($message) use ($user){
-			$message->from(AdminMail(),'Flicknexs');
-			$message->to($user->email, $user->username)->subject('Subscription Renewal');
-		});
+    \Mail::send('emails.cancel', array(
+      'name' => $user->username,
+      'plan_name' => $plan_name,
+      'start_date' => $start_date,
+      'ends_at' => $ends_at,
+    ), function($message) use ($user){
+      $message->from(AdminMail(),'Flicknexs');
+      $message->to($user->email, $user->username)->subject('Subscription Renewal');
+    });
 
-		if ($user->subscription($stripe_plan)->cancel()){
-			$response = array(
-				'status' => 'true',
-				'message' => 'Cancelled Successfuly '
-			);
-		} else {
-			$response = array(
-				'status' => 'false',
-				'message' => 'Failed Cancellation '
-			);
-		}
-		return response()->json($response, 200);
+    if ($user->subscription($stripe_plan)->cancel()){
+      $response = array(
+        'status' => 'true',
+        'message' => 'Cancelled Successfuly '
+      );
+    } else {
+      $response = array(
+        'status' => 'false',
+        'message' => 'Failed Cancellation '
+      );
+    }
+    return response()->json($response, 200);
 
-	}
+  }
 
-	public function renewsubscription(Request $request)
-	{
+  public function renewsubscription(Request $request)
+  {
 
-		$user_id = $request->user_id;
-		$user = User::find($user_id);
+    $user_id = $request->user_id;
+    $user = User::find($user_id);
         $stripe_plan = SubscriptionPlan();
            if ($user->subscription($stripe_plan)->resume()) {
             $planvalue = $user->subscriptions;
@@ -1435,107 +1435,107 @@ public function verifyandupdatepassword(Request $request)
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
         
-		
-		
-			$response = array(
-				'status' => 'true',
-				'msg' => 'Renewed successfully'
-			);
-		}else{
-			$response = array(
-				'status' => 'false',
-				'msg' => 'Check Again'
-			);
-		}
-		return response()->json($response, 200);
-	}
+    
+    
+      $response = array(
+        'status' => 'true',
+        'msg' => 'Renewed successfully'
+      );
+    }else{
+      $response = array(
+        'status' => 'false',
+        'msg' => 'Check Again'
+      );
+    }
+    return response()->json($response, 200);
+  }
 
 
-	public function add_payperview(Request $request)
+  public function add_payperview(Request $request)
       {
         $daten = date('Y-m-d h:i:s a', time());
-		$setting = Setting::first();
-		$ppv_hours = $setting->ppv_hours;
-		$date = Carbon::parse($daten)->addHour($ppv_hours);
-		$video_id = $request->video_id;
-		$user_id = $request->user_id;
-		$paymentMethod = $request->get('py_id');
-		$payment_settings = PaymentSetting::first();
-		$user = User::find($user_id);
-		$pay_amount = PvvPrice();
-		$pay_amount = $pay_amount*100;
-		$charge = $user->charge($pay_amount, $paymentMethod);
-		if($charge->id != ''){
-			$ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-			if ( $ppv_count == 0 ) { 
-				DB::table('ppv_purchases')->insert(
-					['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
-				);
+    $setting = Setting::first();
+    $ppv_hours = $setting->ppv_hours;
+    $date = Carbon::parse($daten)->addHour($ppv_hours);
+    $video_id = $request->video_id;
+    $user_id = $request->user_id;
+    $paymentMethod = $request->get('py_id');
+    $payment_settings = PaymentSetting::first();
+    $user = User::find($user_id);
+    $pay_amount = PvvPrice();
+    $pay_amount = $pay_amount*100;
+    $charge = $user->charge($pay_amount, $paymentMethod);
+    if($charge->id != ''){
+      $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
+      if ( $ppv_count == 0 ) { 
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+        );
           /*send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);*/
-			} else {
-				DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-			}
+      } else {
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
 
-			$response = array(
-				'status' => 'true',
-				'message' => "video has been added"
-			);
-		}else{
-			$response = array(
-				'status' => 'false',
-				'message' => "Payment Failed"
-			);
-		}
-		return response()->json($response, 200);
+      $response = array(
+        'status' => 'true',
+        'message' => "video has been added"
+      );
+    }else{
+      $response = array(
+        'status' => 'false',
+        'message' => "Payment Failed"
+      );
+    }
+    return response()->json($response, 200);
 
-	}	
+  } 
     
     public function AddPpvPaypal(Request $request)
-	{
+  {
 
-		$daten = date('Y-m-d h:i:s a', time());
-		$setting = Setting::first();
-		$ppv_hours = $setting->ppv_hours;
-		$date = Carbon::parse($daten)->addHour($ppv_hours);
-		$video_id = $request->video_id;
-		$user_id = $request->user_id;
-		$paymentStatus = $request->get('status');
-		$payment_settings = PaymentSetting::first();
-		$user = User::find($user_id);
-		
-		if($paymentStatus == 'true'){
-			$ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-			if ( $ppv_count == 0 ) { 
-				DB::table('ppv_purchases')->insert(
-					['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
-				);
-			} else {
-				DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-			}
+    $daten = date('Y-m-d h:i:s a', time());
+    $setting = Setting::first();
+    $ppv_hours = $setting->ppv_hours;
+    $date = Carbon::parse($daten)->addHour($ppv_hours);
+    $video_id = $request->video_id;
+    $user_id = $request->user_id;
+    $paymentStatus = $request->get('status');
+    $payment_settings = PaymentSetting::first();
+    $user = User::find($user_id);
+    
+    if($paymentStatus == 'true'){
+      $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
+      if ( $ppv_count == 0 ) { 
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
 
-			$response = array(
-				'status' => 'true',
-				'message' => "video has been added"
-			);
-		} else {
-			$response = array(
-				'status' => 'false',
-				'message' => "Payment Failed"
-			);
-		}
-		return response()->json($response, 200);
+      $response = array(
+        'status' => 'true',
+        'message' => "video has been added"
+      );
+    } else {
+      $response = array(
+        'status' => 'false',
+        'message' => "Payment Failed"
+      );
+    }
+    return response()->json($response, 200);
 
-	}
+  }
 
-	public function splash(){
+  public function splash(){
         $mobile_settings = DB::table('mobile_apps')->first();
-		$response = array(
-			'status'=>'true',
-			'message'=>'success',
-			'splash_image'=> URL::to('/').'/public/uploads/settings/'.$mobile_settings->splash_image
-		);
-		return response()->json($response, 200);
-	}  
+    $response = array(
+      'status'=>'true',
+      'message'=>'success',
+      'splash_image'=> URL::to('/').'/public/uploads/settings/'.$mobile_settings->splash_image
+    );
+    return response()->json($response, 200);
+  }  
     
 
         public function ViewProfile(Request $request) {
@@ -1552,7 +1552,7 @@ public function verifyandupdatepassword(Request $request)
                 $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
             }else{
                 $nextPaymentAttemptDate = '';
-            }	
+            } 
             $user = User::find($user_id);
 
             if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
@@ -1578,273 +1578,273 @@ public function verifyandupdatepassword(Request $request)
             return response()->json($response, 200);
         }
 
-	 //For fetching Countries
+   //For fetching Countries
     public function getCountries()
     {
         $country = Country::get()->map(function ($item) {
-     		$item['country_id'] = $item->id;
-     		return $item;
-     	});
+        $item['country_id'] = $item->id;
+        return $item;
+      });
         $response = array(
-			'status'=>'true',
-			'country' => $country
-		);
-		return response()->json($response, 200);
+      'status'=>'true',
+      'country' => $country
+    );
+    return response()->json($response, 200);
     }
 
-	 //For fetching states
+   //For fetching states
     public function getStates(Request $request)
     {
-    	$id = $request->country_id;
+      $id = $request->country_id;
         $states = State::where("country_id",$id)
         ->get()->map(function ($item) {
-     		$item['state_id'] = $item->id;
-     		return $item;
-     	});
+        $item['state_id'] = $item->id;
+        return $item;
+      });
         $response = array(
-			'status'=>'true',
-			'states' => $states
-		);
-		return response()->json($response, 200);
+      'status'=>'true',
+      'states' => $states
+    );
+    return response()->json($response, 200);
     }
 
     //For fetching cities
     public function getCities(Request $request)
     {
-    	$id = $request->state_id;
+      $id = $request->state_id;
         $cities= City::where("state_id",$id)
         ->get()->map(function ($item) {
-     		$item['city_id'] = $item->id;
-     		return $item;
-     	});
+        $item['city_id'] = $item->id;
+        return $item;
+      });
         $response = array(
-			'status'=>'true',
-			'cities' => $cities
-		);
-		return response()->json($response, 200);
+      'status'=>'true',
+      'cities' => $cities
+    );
+    return response()->json($response, 200);
     }
 
 
     public function StripeOnlyTimePlan() {
         $plans = Plan::where("payment_type","=","one_time")->get();
-    	$response = array(
-    		'status'=>'true',
-    		'plans' => $plans
-    	); 
-    	return response()->json($response, 200);
+      $response = array(
+        'status'=>'true',
+        'plans' => $plans
+      ); 
+      return response()->json($response, 200);
     }  
     
     public function StripeRecurringPlan() {
         $plans = Plan::where("payment_type","=","recurring")->get();
-    	$response = array(
-    		'status'=>'true',
-    		'plans' => $plans
-    	); 
-    	return response()->json($response, 200);
+      $response = array(
+        'status'=>'true',
+        'plans' => $plans
+      ); 
+      return response()->json($response, 200);
     } 
     
     public function PaypalOnlyTimePlan() {
         $plans = PaypalPlan::where("payment_type","=","one_time")->get()->map(function ($item) {
-     		$item['billing_interval'] = $item->name;
-     		$item['plans_name'] = $item->name;
-     		return $item;
-     	});
-    	$response = array(
-    		'status'=>'true',
-    		'plans' => $plans
-    	); 
-    	return response()->json($response, 200);
+        $item['billing_interval'] = $item->name;
+        $item['plans_name'] = $item->name;
+        return $item;
+      });
+      $response = array(
+        'status'=>'true',
+        'plans' => $plans
+      ); 
+      return response()->json($response, 200);
     }  
     
     public function PaypalRecurringPlan() {
         
         $plans = PaypalPlan::where("payment_type","=","recurring")->get()->map(function ($item) {
-     		$item['billing_interval'] = $item->name;
+        $item['billing_interval'] = $item->name;
             $item['plans_name'] = $item->name;
-     		return $item;
-     	});
+        return $item;
+      });
         
-    	$response = array(
-    		'status'=>'true',
-    		'plans' => $plans
-    	); 
-    	return response()->json($response, 200);
+      $response = array(
+        'status'=>'true',
+        'plans' => $plans
+      ); 
+      return response()->json($response, 200);
     }
 
 
     public function relatedchannelvideos(Request $request) {
-    	$videoid = $request->videoid;
-    	$categoryVideos = Video::where('id',$videoid)->first();
+      $videoid = $request->videoid;
+      $categoryVideos = Video::where('id',$videoid)->first();
         $category_id = Video::where('id',$videoid)->pluck('video_category_id');
         $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
         $response = array(
-    		'status'=>'true',
-    		'channelrecomended' => $recomended
-    	); 
-    	return response()->json($response, 200);
+        'status'=>'true',
+        'channelrecomended' => $recomended
+      ); 
+      return response()->json($response, 200);
     }
 
     public function relatedppvvideos(Request $request) {
-    	$ppvvideoid = $request->ppvvideoid;
-    	$recomended = PpvVideo::where('id','!=',$ppvvideoid)->where('status',1)->where('active','=',1)->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
+      $ppvvideoid = $request->ppvvideoid;
+      $recomended = PpvVideo::where('id','!=',$ppvvideoid)->where('status',1)->where('active','=',1)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
         $response = array(
-    		'status'=>'true',
-    		'ppvrecomended' => $recomended
-    	); 
-    	return response()->json($response, 200);
+        'status'=>'true',
+        'ppvrecomended' => $recomended
+      ); 
+      return response()->json($response, 200);
     }
 
 
     public function search(Request $request)
     {
 
-    	$search_value =  $request['search'];
+      $search_value =  $request['search'];
         
-    	$videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
-    	$ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
-    	$video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
-    	$ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
-    	if ($videos_count > 0) {
+      $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+      $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
+      $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+      $ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+      if ($videos_count > 0) {
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
 
-    	} else {
-    		$videos = [];
-    	} 
-    	if ($ppv_videos_count > 0) {
-    		$ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				return $item;
-			});
+      } else {
+        $videos = [];
+      } 
+      if ($ppv_videos_count > 0) {
+        $ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
 
-    	} else {
-    		$ppv_videos = 0;
-    	} 
+      } else {
+        $ppv_videos = 0;
+      } 
 
-    	if ($video_category_count > 0) {
+      if ($video_category_count > 0) {
 
-    		$video_category = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
+        $video_category = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
 
-    	} else {
-    		$video_category = [];
-    	}
+      } else {
+        $video_category = [];
+      }
 
-    	if ($ppv_category_count > 0) {
+      if ($ppv_category_count > 0) {
 
-    		$ppv_category = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
+        $ppv_category = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
 
-    	} else {
-    		$ppv_category = 0;
-    	}
+      } else {
+        $ppv_category = 0;
+      }
 
-    	$response = array(
-    		'channelvideos' => $videos,
-    		'channel_category' => $video_category,
-    		'search_value' => $search_value
-    	);
+      $response = array(
+        'channelvideos' => $videos,
+        'channel_category' => $video_category,
+        'search_value' => $search_value
+      );
 
-    	return response()->json($response, 200);
+      return response()->json($response, 200);
     }
 
     public function isPaymentEnable()
-	{
-		$settings = Setting::first();
-		$response = array(
-			'status' => 'true',
-			'is_payment' => $settings->free_registration
-		);
-		return response()->json($response, 200);
-	}
+  {
+    $settings = Setting::first();
+    $response = array(
+      'status' => 'true',
+      'is_payment' => $settings->free_registration
+    );
+    return response()->json($response, 200);
+  }
 
-	public function searchapi(Request $request)
+  public function searchapi(Request $request)
     {
 
-    	$search_value =  $request['search'];
-    	$type =  $request['type'];
+      $search_value =  $request['search'];
+      $type =  $request['type'];
 
-    	if($type == 'channelvideo'){
-    		$videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
-    		if ($videos_count > 0) {
+      if($type == 'channelvideo'){
+        $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        if ($videos_count > 0) {
 
-    			$videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-    				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-    				return $item;
-    			});
+          $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
 
-    		} else {
-    			$videos = [];
-    		} 
+        } else {
+          $videos = [];
+        } 
 
-    		$response = array(
-    		'channelvideos' => $videos,
-    		'search_value' => $search_value
-    		);
-    	}
+        $response = array(
+        'channelvideos' => $videos,
+        'search_value' => $search_value
+        );
+      }
 
-    	if($type == 'ppvvideo'){
-    		$ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
-    		if ($ppv_videos_count > 0) {
+      if($type == 'ppvvideo'){
+        $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        if ($ppv_videos_count > 0) {
 
-    			$ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-    				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-    				return $item;
-    			});
+          $ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
 
-    		} else {
-    			$ppv_videos = [];
-    		} 
-    		$response = array(
-    		'ppv_videos' => $ppv_videos,
-    		'search_value' => $search_value
-    		);
-    	}
+        } else {
+          $ppv_videos = [];
+        } 
+        $response = array(
+        'ppv_videos' => $ppv_videos,
+        'search_value' => $search_value
+        );
+      }
 
-    	if($type == 'channelcategory'){
-    		$video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->count();
-    		if ($video_category_count > 0) {
+      if($type == 'channelcategory'){
+        $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->count();
+        if ($video_category_count > 0) {
 
-    			$video_category = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-    				$item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
-    				return $item;
-    			});
+          $video_category = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
+            return $item;
+          });
 
-    		} else {
-    			$video_category = [];
-    		}
-    		$response = array(
-    		'channel_category' => $video_category,
-    		'search_value' => $search_value
-    		);
-    	}
+        } else {
+          $video_category = [];
+        }
+        $response = array(
+        'channel_category' => $video_category,
+        'search_value' => $search_value
+        );
+      }
 
 
-    	if($type == 'ppvcategory'){
-    		$ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->count();
-    		if ($ppv_category_count > 0) {
+      if($type == 'ppvcategory'){
+        $ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->count();
+        if ($ppv_category_count > 0) {
 
-    			$ppv_category = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-    				$item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
-    				return $item;
-    			});
+          $ppv_category = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->where('parent_id','=',0)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
+            return $item;
+          });
 
-    		} else {
-    			$ppv_category = [];
-    		}
-    		$response = array(
-    		'ppv_category' => $ppv_category,
-    		'search_value' => $search_value
-    		);
-    	}
-    	
-    	return response()->json($response, 200);
+        } else {
+          $ppv_category = [];
+        }
+        $response = array(
+        'ppv_category' => $ppv_category,
+        'search_value' => $search_value
+        );
+      }
+      
+      return response()->json($response, 200);
     }
     
     
@@ -1870,63 +1870,63 @@ public function verifyandupdatepassword(Request $request)
             'available_coupon' => $available_coupon
         );
             
-		return response()->json($response, 200);
+    return response()->json($response, 200);
     }
     
     public function becomesubscriber(Request $request)
      {
         
         $stripe_plan = SubscriptionPlan();
-    	$user_id = $request->get('userid');
-    	$plan = $request->get('subscrip_plan');
-    	$user = User::find($user_id);
-    	$paymentMethod = $request->get('py_id');
-		$user->newSubscription('test', $plan)->create($paymentMethod);
+      $user_id = $request->get('userid');
+      $plan = $request->get('subscrip_plan');
+      $user = User::find($user_id);
+      $paymentMethod = $request->get('py_id');
+    $user->newSubscription('test', $plan)->create($paymentMethod);
        if ( $user->subscribed('test') ) { 
-			$user = User::find($userid);
-			$user->role = 'subscriber';
-			$user->active = 1;
-			$user->save();
-			$users = User::find($userid);
-			$id = $users->id;
-			$role = $users->role;
-			$username = $users->username;
-			$password = $users->password;
-			$email = $users->email;
-			$avatar = $users->avatar;
+      $user = User::find($userid);
+      $user->role = 'subscriber';
+      $user->active = 1;
+      $user->save();
+      $users = User::find($userid);
+      $id = $users->id;
+      $role = $users->role;
+      $username = $users->username;
+      $password = $users->password;
+      $email = $users->email;
+      $avatar = $users->avatar;
 
-			$user_details = array([
-				'user_id'=>$id,
-				'role'=>$role,
-				'username'=>$username,
-				'email'=>$email,
-				'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
-			] );
+      $user_details = array([
+        'user_id'=>$id,
+        'role'=>$role,
+        'username'=>$username,
+        'email'=>$email,
+        'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
+      ] );
 
-			$response = array(
-    			'status' => 'true',
-    			'next-billing' => '',
-    			'user_details'=> $user_details
-    		);
+      $response = array(
+          'status' => 'true',
+          'next-billing' => '',
+          'user_details'=> $user_details
+        );
             }else{
                 $response = array(
                     'status' => 'false'
                 );
             }
 
-		return response()->json($response, 200);
+    return response()->json($response, 200);
     }
     
     
 public function checkEmailExists(Request $request)
     {
-    	$email = $request->get('email');
-    	$username = $request->get('username');
+      $email = $request->get('email');
+      $username = $request->get('username');
        
        if ( isset($email) && !isset($username)  )
        {
            if (User::where('email', '=', $email)->exists()) {
-    		  $response = array(
+          $response = array(
                     'status' =>  'false',
                     'message' =>  'Email Already Exists'
                 );
@@ -1982,30 +1982,30 @@ public function checkEmailExists(Request $request)
                                 'message' =>  ''
                             );
        }
-    	return response()->json($response, 200);
+      return response()->json($response, 200);
     }
 
     public function subscriptiondetail(Request $request)
     {
-    	$userid = $request->user_id;
+      $userid = $request->user_id;
         $stripe_plan = SubscriptionPlan();
-    	$user = User::where('id', '=', $userid)->first();
-    	if ( $user->subscribed($stripe_plan) ) { 
-    		if ($user->subscription($stripe_plan)->onGracePeriod()) { 
-    			$status = 'Renew Subscription';
-    		}
-    		else { 
-    			$status = 'Cancel Subscription';
-    		} 
-    	} 
-    	else { 
-    		$status = 'Become Subscriber';
-    	} 
-    	$response = array(
-    		'status' => $status
+      $user = User::where('id', '=', $userid)->first();
+      if ( $user->subscribed($stripe_plan) ) { 
+        if ($user->subscription($stripe_plan)->onGracePeriod()) { 
+          $status = 'Renew Subscription';
+        }
+        else { 
+          $status = 'Cancel Subscription';
+        } 
+      } 
+      else { 
+        $status = 'Become Subscriber';
+      } 
+      $response = array(
+        'status' => $status
 
-    	);
-    	return response()->json($response, 200);
+      );
+      return response()->json($response, 200);
     }
     
         
@@ -2026,7 +2026,7 @@ public function checkEmailExists(Request $request)
                     'status' => false,
                     'message' => 'This number already Exist, try with another number'
                );
-    	   return response()->json($response, 200);             
+         return response()->json($response, 200);             
         }
         elseif ( $user_count > 0  ) {
           
@@ -2076,7 +2076,7 @@ public function checkEmailExists(Request $request)
                     }    
         }   */
         $response = array(
-        	'status' => true
+          'status' => true
         );
         return response()->json($response, 200);   
         } 
@@ -2142,22 +2142,22 @@ public function checkEmailExists(Request $request)
     /*Parameters*/
     /*Profile image move to avatar folder*/
     if($user_url != ''){
-    	$name = $username.".jpg";
-    	//local site
-    	//$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
-    	//live site
-    	$path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
+      $name = $username.".jpg";
+      //local site
+      //$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+      //live site
+      $path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
           $arrContextOptions=array(
-    		"ssl"=>array(
-    			"verify_peer"=>false,
-    			"verify_peer_name"=>false,
-    		),
-    	);  
-    	$contents = file_get_contents($user_url, false, stream_context_create($arrContextOptions));
+        "ssl"=>array(
+          "verify_peer"=>false,
+          "verify_peer_name"=>false,
+        ),
+      );  
+      $contents = file_get_contents($user_url, false, stream_context_create($arrContextOptions));
          file_put_contents($path, $contents);
 
     }else{
-    	$name = '';
+      $name = '';
     }
 
     if($login_type == 'facebook'){ //Facebook
@@ -2220,7 +2220,7 @@ public function checkEmailExists(Request $request)
     }
 
     if($username == null || $login_type == null){
-    	$response = array(
+      $response = array(
           'status'       =>'false',
           'message'      =>'Empty Request'
         );
@@ -2231,147 +2231,147 @@ public function checkEmailExists(Request $request)
 
   public function SkipTime(){
 
-		$response = array(
-			'skip_time'   =>'5',
-			'intro_time' =>'10'
-		);
-		return response()->json($response, 200);
+    $response = array(
+      'skip_time'   =>'5',
+      'intro_time' =>'10'
+    );
+    return response()->json($response, 200);
   }
 
   public function LikeDisLike(Request $request)
   {
-		$video_id = $request->video_id;
-		$like = $request->like;
-		$user_id = $request->user_id;
-		$video = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->get();
-		$video_count = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->count();
-		if ($video_count >0 ) {
-			$video_new = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->first();
-			$video_new->status = $like;
+    $video_id = $request->video_id;
+    $like = $request->like;
+    $user_id = $request->user_id;
+    $video = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->get();
+    $video_count = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->count();
+    if ($video_count >0 ) {
+      $video_new = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->first();
+      $video_new->status = $like;
       $video_new->video_id = $video_id;
-			$video_new->save();
-			$response = array(
-				'status'   =>true
-			);
-		} else {
-			$video_new = new LikeDisLike;
-			$video_new->video_id = $video_id;
-			$video_new->user_id = $user_id;
-			$video_new->status = $like;
-			$video_new->save();
-			$response = array(
-				'status'   =>true
-			);
-		}
-		return response()->json($response, 200);
+      $video_new->save();
+      $response = array(
+        'status'   =>true
+      );
+    } else {
+      $video_new = new LikeDisLike;
+      $video_new->video_id = $video_id;
+      $video_new->user_id = $user_id;
+      $video_new->status = $like;
+      $video_new->save();
+      $response = array(
+        'status'   =>true
+      );
+    }
+    return response()->json($response, 200);
   }
 
-  	public function serieslist()
-		{
-			$series = Series::where('active', '=', '1')->get()->map(function ($item) {
-				$item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				$item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
-				return $item;
-			});
-			$response = array(
-					'series' => $series
-				);
-			return response()->json($response, 200);
-		}
-	public function seasonlist(Request $request){
-			$seriesid = $request->seriesid;
-			$season = SeriesSeason::where('series_id','=',$seriesid)->get();
-			$seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
-			$first_season_id = $seasonfirst->id;
-			$response = array(
-				'status'=>'true',
-				'message'=>'success',
-				'first_season_id'=> $first_season_id,
-				'season' => $season
-			);
-			return response()->json($response, 200);
-		}
-		public function seriesepisodes(Request $request){
-		
-			$season_id = $request->seasonid;
-			
-			$episodes = Episode::where('season_id','=',$season_id)->get()->map(function ($item) {
-				 $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				 return $item;
-			 });
-			
-			$response = array(
-				'status'=>'true',
-				'message'=>'success',
-				'episodes' => $episodes
-			);
-			
-			return response()->json($response, 200);
-			
-		}
-		
-		
-		public function episodedetails(Request $request){
-			
-			$episodeid = $request->episodeid;
-			$episode = Episode::where('id',$episodeid)->get()->map(function ($item) {
-				 $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				 return $item;
-			 });
-			if($request->user_id != ''){
-				$user_id = $request->user_id;
-				$cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
-				$wishliststatus =  ($cnt == 1) ? "true" : "false";
-				$userrole = User::find($user_id)->pluck('role');
-			}else{
-				$wishliststatus = 'false';
-				$userrole = '';
-			}	
-			if($request->user_id != ''){
-				$user_id = $request->user_id;
-				$cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
-				$watchlaterstatus =  ($cnt == 1) ? "true" : "false";
-				$userrole = User::find($user_id)->pluck('role');
-			}else{
-				$watchlaterstatus = 'false';
-				$userrole = '';
-			}
-			$response = array(
-				'status'=>'true',
-				'message'=>'success',
-				'episode' => $episode,
-				'wishlist' => $wishliststatus,
-				'watchlater' => $watchlaterstatus,
-				'userrole' => $userrole
-			);
-			return response()->json($response, 200);
-		} 
-		
-		
-		public function relatedepisodes(Request $request){
-			
-			$episodeid = $request->episodeid;
-			$season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
-			$episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->get()->map(function ($item) {
-				 $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-				 return $item;
-			 });
-			
-			$response = array(
-				'status'=>'true',
-				'message'=>'success',
-				'related_episode' => $episode
-			);
-			return response()->json($response, 200);
-		}
+    public function serieslist()
+    {
+      $series = Series::where('active', '=', '1')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
+        return $item;
+      });
+      $response = array(
+          'series' => $series
+        );
+      return response()->json($response, 200);
+    }
+  public function seasonlist(Request $request){
+      $seriesid = $request->seriesid;
+      $season = SeriesSeason::where('series_id','=',$seriesid)->get();
+      $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
+      $first_season_id = $seasonfirst->id;
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'first_season_id'=> $first_season_id,
+        'season' => $season
+      );
+      return response()->json($response, 200);
+    }
+    public function seriesepisodes(Request $request){
+    
+      $season_id = $request->seasonid;
+      
+      $episodes = Episode::where('season_id','=',$season_id)->get()->map(function ($item) {
+         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         return $item;
+       });
+      
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'episodes' => $episodes
+      );
+      
+      return response()->json($response, 200);
+      
+    }
+    
+    
+    public function episodedetails(Request $request){
+      
+      $episodeid = $request->episodeid;
+      $episode = Episode::where('id',$episodeid)->get()->map(function ($item) {
+         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         return $item;
+       });
+      if($request->user_id != ''){
+        $user_id = $request->user_id;
+        $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+        $wishliststatus =  ($cnt == 1) ? "true" : "false";
+        $userrole = User::find($user_id)->pluck('role');
+      }else{
+        $wishliststatus = 'false';
+        $userrole = '';
+      } 
+      if($request->user_id != ''){
+        $user_id = $request->user_id;
+        $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+        $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+        $userrole = User::find($user_id)->pluck('role');
+      }else{
+        $watchlaterstatus = 'false';
+        $userrole = '';
+      }
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'episode' => $episode,
+        'wishlist' => $wishliststatus,
+        'watchlater' => $watchlaterstatus,
+        'userrole' => $userrole
+      );
+      return response()->json($response, 200);
+    } 
+    
+    
+    public function relatedepisodes(Request $request){
+      
+      $episodeid = $request->episodeid;
+      $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+      $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->get()->map(function ($item) {
+         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         return $item;
+       });
+      
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'related_episode' => $episode
+      );
+      return response()->json($response, 200);
+    }
 
 
-		public function LikeVideo(Request $request)
-		{
-			$user_id = $request->user_id;
-			$video_id = $request->video_id;
-			$d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
-		   if ($d_like > 0){
+    public function LikeVideo(Request $request)
+    {
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
+      $d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
+       if ($d_like > 0){
         $new_vide_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
         if ($new_vide_like->liked == 1) {
          $new_vide_like->user_id = $request->user_id;
@@ -2395,173 +2395,173 @@ public function checkEmailExists(Request $request)
          $new_vide_like->save(); 
        }
 
-		   $response = array(
-				'status'=>'true',
-				'liked' => $new_vide_like->liked,
+       $response = array(
+        'status'=>'true',
+        'liked' => $new_vide_like->liked,
         'disliked' => $new_vide_like->disliked,
-				'message'=>'success'
-			);
-			
-		   return response()->json($response, 200); 
+        'message'=>'success'
+      );
+      
+       return response()->json($response, 200); 
 
-		}
+    }
 
-		public function DisLikeVideo(Request $request)
-		{
-			$user_id = $request->user_id;
-			$video_id = $request->videoid;
-			$like = $request->like;
-			$d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
-		   if ($d_like == 0){
-			   $new_vide_like = new Likedislike;
-			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->video_id;
-			   $new_vide_like->disliked = $request->like;
-			   $new_vide_like->save(); 
-		   } else {
-			   $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
-			   $new_vide_like->user_id = $request->user_id;
-			   $new_vide_like->video_id = $request->video_id;
-			   $new_vide_like->disliked = $request->like;
-			   $new_vide_like->save(); 
-		   } 
+    public function DisLikeVideo(Request $request)
+    {
+      $user_id = $request->user_id;
+      $video_id = $request->videoid;
+      $like = $request->like;
+      $d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
+       if ($d_like == 0){
+         $new_vide_like = new Likedislike;
+         $new_vide_like->user_id = $request->user_id;
+         $new_vide_like->video_id = $request->video_id;
+         $new_vide_like->disliked = $request->like;
+         $new_vide_like->save(); 
+       } else {
+         $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
+         $new_vide_like->user_id = $request->user_id;
+         $new_vide_like->video_id = $request->video_id;
+         $new_vide_like->disliked = $request->like;
+         $new_vide_like->save(); 
+       } 
 
-		   $response = array(
-				'status'=>'true',
-				'liked' => $like,
-				'message'=>'success'
-			);
-			
-		   return response()->json($response, 200); 
+       $response = array(
+        'status'=>'true',
+        'liked' => $like,
+        'message'=>'success'
+      );
+      
+       return response()->json($response, 200); 
 
-		}
-		
-		public function MobileSignup(Request $request)
-			{
-				$username = $request->username;
-				$email = $request->email;
-				$mobile = $request->mobile;
-				$existing_user = User::where("email","=",$email)->count();
-				if ( $existing_user > 0 ) {
-					
-					$response = array(
-						'status'=>'false',
-						'message'=>'success'
-					);
-				} else {
-						$user = new User;
-						$user->mobile =$mobile;
-						$user->email = $email;
-						$user->username = $username;
-						$user->active = 1;
-						$user->user_type = 'firebase';
-						$user->save();
-						$response = array(
-								'status'=>'true',
-								'user_details' => array($user),
-								'message'=>'success'
-						);
-				}
+    }
+    
+    public function MobileSignup(Request $request)
+      {
+        $username = $request->username;
+        $email = $request->email;
+        $mobile = $request->mobile;
+        $existing_user = User::where("email","=",$email)->count();
+        if ( $existing_user > 0 ) {
+          
+          $response = array(
+            'status'=>'false',
+            'message'=>'success'
+          );
+        } else {
+            $user = new User;
+            $user->mobile =$mobile;
+            $user->email = $email;
+            $user->username = $username;
+            $user->active = 1;
+            $user->user_type = 'firebase';
+            $user->save();
+            $response = array(
+                'status'=>'true',
+                'user_details' => array($user),
+                'message'=>'success'
+            );
+        }
 
-			   return response()->json($response, 200); 
-			}
-	
-	public function CastList() {
+         return response()->json($response, 200); 
+      }
+  
+  public function CastList() {
 
-			$casts = Cast::all()->map(function ($item) {
-				$item['cast_image'] = URL::to('/').'/public/uploads/avatars/casts/'.$item->cast;
-				return $item;
-			});
+      $casts = Cast::all()->map(function ($item) {
+        $item['cast_image'] = URL::to('/').'/public/uploads/avatars/casts/'.$item->cast;
+        return $item;
+      });
 
-			$response = array(
-				'status'=>'true',
-				'casts' => $casts,
-				'message'=>'success'
-			);
+      $response = array(
+        'status'=>'true',
+        'casts' => $casts,
+        'message'=>'success'
+      );
 
-		   return response()->json($response, 200);
-	}
-	public function SeriesTitle(){
-		$mobile_settings = DB::table('mobile_apps')->first();
-		$response = array(
-			'status'=>'true',
-			'message'=>'success',
-			'series_status'=> $mobile_settings->series_title
-		);
-		return response()->json($response, 200);
-	}
+       return response()->json($response, 200);
+  }
+  public function SeriesTitle(){
+    $mobile_settings = DB::table('mobile_apps')->first();
+    $response = array(
+      'status'=>'true',
+      'message'=>'success',
+      'series_status'=> $mobile_settings->series_title
+    );
+    return response()->json($response, 200);
+  }
 
-	public function VideoCast(Request $request) {
-			$video_id = $request->video_id;
-			$video = Video::where("id","=",$video_id)->first();
-			$cast_count = Video::where("id","=",$video_id)->count();
-			if ($cast_count > 0 ) {
-			$array_cast = explode(", ",$video->cast);			
-			foreach ($array_cast as $cast_id) {
-					$cast_details[] = Cast::where("id","=",$cast_id)->first() ;
-			}
-			$response = array(
-				'status'=>'true',
-				'message'=>'success',
-				'image_path'=> URL::to('/public/uploads/images/casts/'),
-				'cast_details'=> $cast_details
-			);
-		} else{
-			$response = array(
-				'status'=>'false'
-			);
-		}
-			return response()->json($response, 200);
+  public function VideoCast(Request $request) {
+      $video_id = $request->video_id;
+      $video = Video::where("id","=",$video_id)->first();
+      $cast_count = Video::where("id","=",$video_id)->count();
+      if ($cast_count > 0 ) {
+      $array_cast = explode(", ",$video->cast);     
+      foreach ($array_cast as $cast_id) {
+          $cast_details[] = Cast::where("id","=",$cast_id)->first() ;
+      }
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'image_path'=> URL::to('/public/uploads/images/casts/'),
+        'cast_details'=> $cast_details
+      );
+    } else{
+      $response = array(
+        'status'=>'false'
+      );
+    }
+      return response()->json($response, 200);
 
-		}
-		public function UserComments(Request $request){
+    }
+    public function UserComments(Request $request){
                      
-					$comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
-						//dd($item->count());
-						$i = 0;
-						while ($i<= $item->count()) {
-							$user =  User::where("id","=",$item->user_id)->get()->first();
-							if (!empty($user->avatar)) {
-								$item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
-							} else {
-								$item['user_profile'] = null;
-							}
+          $comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
+            //dd($item->count());
+            $i = 0;
+            while ($i<= $item->count()) {
+              $user =  User::where("id","=",$item->user_id)->get()->first();
+              if (!empty($user->avatar)) {
+                $item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
+              } else {
+                $item['user_profile'] = null;
+              }
 
-							if (!empty($user->username)) {
-								$item['username'] = $user->username;
-							} else {
-								$item['username'] = null;
-							}
-							$i++;
-						}						
-						return $item;
-					});
-					$response = array(
-						'status'=>'true',
-						'user_comments'=>$comments
-					);
+              if (!empty($user->username)) {
+                $item['username'] = $user->username;
+              } else {
+                $item['username'] = null;
+              }
+              $i++;
+            }           
+            return $item;
+          });
+          $response = array(
+            'status'=>'true',
+            'user_comments'=>$comments
+          );
 
-					return response()->json($response, 200);
-		}
+          return response()->json($response, 200);
+    }
 
-		public function AddComment(Request $request){
-			
-			$video_id = $request->video_id;
-			$user_id = $request->user_id;
-			$body = $request->body;
-			$comment = new Comment;
-			$comment->user_id = $user_id;
-			$comment->video_id = $video_id;
-			$comment->body = $body;
-			$comment->save();
-			$response = array(
-				'status'=>'true',
-				'message'=> "Comment Has been added"
-			);
+    public function AddComment(Request $request){
+      
+      $video_id = $request->video_id;
+      $user_id = $request->user_id;
+      $body = $request->body;
+      $comment = new Comment;
+      $comment->user_id = $user_id;
+      $comment->video_id = $video_id;
+      $comment->body = $body;
+      $comment->save();
+      $response = array(
+        'status'=>'true',
+        'message'=> "Comment Has been added"
+      );
 
-			return response()->json($response, 200);
+      return response()->json($response, 200);
 
-		}
+    }
     public function NextVideo(Request $request) {
 
         //ds
@@ -2619,7 +2619,7 @@ public function checkEmailExists(Request $request)
       );
     }
 
-    return Response::json($response, 200);
+    return response()->json($response, 200);
   }
 
   public function PrevVideo(Request $request){
@@ -2663,7 +2663,7 @@ public function checkEmailExists(Request $request)
             );
         }
 
-            return Response::json($response, 200);
+            return response()->json($response, 200);
         }
     
 
@@ -2684,7 +2684,7 @@ public function upnextAudio(Request $request){
       'message'=>'success',
       'audio_albums' =>$album_all_audios
     );
-    return Response::json($response, 200);
+    return response()->json($response, 200);
   }   
 
   //Login with Mobile number
@@ -2707,7 +2707,8 @@ public function upnextAudio(Request $request){
       );
     }
 
-    return Response::json($response, 200);
-	}
+    //return Response::json($response, 200);
+      return response()->json($response, 200);
+  }    
 
 }

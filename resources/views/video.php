@@ -28,8 +28,8 @@
         <link rel="stylesheet" href="<?php echo URL::to('/'). '/assets/css/animate.min.css';?>" />
          
   <link href="<?php echo URL::to('/').'/assets/dist/video-js.min.css';?>" rel="stylesheet">
-	<link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
-	<link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
+  <link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
+  <link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
@@ -134,8 +134,8 @@ border-radius: 25px !important;
 
   
   <link href="<?php echo URL::to('/').'/assets/dist/video-js.min.css';?>" rel="stylesheet">
-	<link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
-	<link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
+  <link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
+  <link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
@@ -154,11 +154,11 @@ border-radius: 25px !important;
              height: 30px !important;
         }
     
-		/*.video-js .vjs-watermark-top-right {right:<=Right();?> ;top: <=Top();?>;bottom: <=Bottom();?>;left;<=Left();?>;}
-		.video-js .vjs-watermark-content {opacity: <=Opacity();?>;}
-		.vjs-menu-button-popup .vjs-menu {width: auto;}*/
-	</style>
-	   </head>
+    /*.video-js .vjs-watermark-top-right {right:<=Right();?> ;top: <=Top();?>;bottom: <=Bottom();?>;left;<=Left();?>;}
+    .video-js .vjs-watermark-content {opacity: <=Opacity();?>;}
+    .vjs-menu-button-popup .vjs-menu {width: auto;}*/
+  </style>
+     </head>
     <body>
       <!-- loader Start -->
      <!-- <div id="loading">
@@ -176,9 +176,9 @@ border-radius: 25px !important;
    if(!Auth::guest()) {  
    if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
 
-	<div id="video_bg">
-		<div class=" page-height">
-			<?php 
+  <div id="video_bg">
+    <div class=" page-height">
+      <?php 
             $paypal_id = Auth::user()->paypal_id;
             if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
             $paypal_subscription = PaypalSubscriptionStatus();
@@ -187,131 +187,131 @@ border-radius: 25px !important;
             }
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
-						<div id="video_container" class="fitvid">
-							<?= $video->embed_code ?>
-						</div>
-					<?php  elseif($video->type == 'file'): ?>
-						<div id="video_container" class="fitvid">
-						<video id="videojs-seek-buttons-player"  autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+            <div id="video_container" class="fitvid">
+              <?= $video->embed_code ?>
+            </div>
+          <?php  elseif($video->type == 'file'): ?>
+            <div id="video_container" class="fitvid">
+            <video id="videojs-seek-buttons-player"  autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
-							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
-							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
-							<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' >
-							
-							<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-						</video>
-						<div class="playertextbox hide">
-						<!--<h2>Up Next</h2>-->
-						<p><?php if(isset($videonext)){ ?>
-						<?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-						<?php }elseif(isset($videoprev)){ ?>
-						<?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-						<?php } ?>
+              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
+              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
+              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' >
+              
+              <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+            </video>
+            <div class="playertextbox hide">
+            <!--<h2>Up Next</h2>-->
+            <p><?php if(isset($videonext)){ ?>
+            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+            <?php }elseif(isset($videoprev)){ ?>
+            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+            <?php } ?>
 
-						<?php if(isset($videos_category_next)){ ?>
-						<?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-						<?php }elseif(isset($videos_category_prev)){ ?>
-						<?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-						<?php } ?></p>
-						</div>
-						</div>
-					<?php  else: ?>
-						<div id="video_container" class="fitvid" atyle="z-index: 9999;">
-						<video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()" autoplay class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
-						
-						<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
-						
-						</video>
-							
+            <?php if(isset($videos_category_next)){ ?>
+            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+            <?php }elseif(isset($videos_category_prev)){ ?>
+            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+            <?php } ?></p>
+            </div>
+            </div>
+          <?php  else: ?>
+            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <video id="videojs-seek-buttons-player" onplay="playstart()" onended="autoplay1()" autoplay class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+            
+            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
+            
+            </video>
+              
 
-						<div class="playertextbox hide">
-						<!--<h2>Up Next</h2>-->
-						<p><?php if(isset($videonext)){ ?>
-						<?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-						<?php }elseif(isset($videoprev)){ ?>
-						<?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-						<?php } ?>
+            <div class="playertextbox hide">
+            <!--<h2>Up Next</h2>-->
+            <p><?php if(isset($videonext)){ ?>
+            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+            <?php }elseif(isset($videoprev)){ ?>
+            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+            <?php } ?>
 
-						<?php if(isset($videos_category_next)){ ?>
-						<?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-						<?php }elseif(isset($videos_category_prev)){ ?>
-						<?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-						<?php } ?></p>
-						</div>
-						</div>
-					<?php endif; ?>
-				
+            <?php if(isset($videos_category_next)){ ?>
+            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+            <?php }elseif(isset($videos_category_prev)){ ?>
+            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+            <?php } ?></p>
+            </div>
+            </div>
+          <?php endif; ?>
+        
 
-			<?php else: ?>
+      <?php else: ?>
 
-				<div id="subscribers_only">
-					<h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-					<div class="clear"></div>
-					<?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
-						<form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
-							<button id="button">Become a subscriber to watch this video</button>
-						</form>
-					<?php else: ?>
-						<form method="get" action="<?= URL::to('signup') ?>">
-							<button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-						</form>
-					<?php endif; ?>
-				</div>
-			
-			<?php endif; ?>            
-		</div>
-	</div>
+        <div id="subscribers_only">
+          <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+          <div class="clear"></div>
+          <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+            <form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+              <button id="button">Become a subscriber to watch this video</button>
+            </form>
+          <?php else: ?>
+            <form method="get" action="<?= URL::to('signup') ?>">
+              <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+            </form>
+          <?php endif; ?>
+        </div>
+      
+      <?php endif; ?>            
+    </div>
+  </div>
 
   <?php }  
     else { ?>       
-		<div id="video_container" class="fitvid">
-			<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
-				<source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
-			</video> 
-						
-		</div>
-	<?php } } ?>
-	<?php if(Auth::guest()) {  ?>
-		<div id="video_container" class="fitvid">
-				<video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+    <div id="video_container" class="fitvid">
+      <video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+        <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
+      </video> 
+            
+    </div>
+  <?php } } ?>
+  <?php if(Auth::guest()) {  ?>
+    <div id="video_container" class="fitvid">
+        <video id="videojs-seek-buttons-player" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/uploads/') . '/images/' . $video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
-			 <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
-			  </video>  
-		</div>
-	<?php } ?>
+       <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
+        </video>  
+    </div>
+  <?php } ?>
             
 
-	<input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-		<div class="container-fluid video-details">
-			<div id="video_title">
-				<h1><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
-			</div>
+  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
+    <div class="container-fluid video-details">
+      <div id="video_title">
+        <h1><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+      </div>
         
    <?php if(!Auth::guest()) { ?>
 
-		<div class="row">
-			<div class="col-sm-6 col-md-6 col-xs-12 d-flex justify-content-around">     
-			<!-- Watch Later -->
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-xs-12 d-flex justify-content-around">     
+      <!-- Watch Later -->
                 <div>
-			<div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
+      <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
 <div>
-			<!-- Wish List -->            
-			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+      <!-- Wish List -->            
+      <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 </div>
-			<!-- Share -->
-			<div class="social_share p-1 d-flex justify-content-around align-items-center">
-			  <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
-			  <div id="social_share">
-				<?php include('partials/social-share.php'); ?>
-			  </div>
-			</div>
+      <!-- Share -->
+      <div class="social_share p-1 d-flex justify-content-around align-items-center">
+        <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
+        <div id="social_share">
+        <?php include('partials/social-share.php'); ?>
         </div>
-			<div class="col-sm-6 col-md-6 col-xs-12">
-			<!-- Views -->
-			 <div class="btn btn-default views">
-				<span class="view-count"><i class="fa fa-eye"></i> 
-				<?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-			</div> 
+      </div>
+        </div>
+      <div class="col-sm-6 col-md-6 col-xs-12">
+      <!-- Views -->
+       <div class="btn btn-default views">
+        <span class="view-count"><i class="fa fa-eye"></i> 
+        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
+      </div> 
                 <?php     
                     $user = Auth::user(); 
                     if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
@@ -331,7 +331,7 @@ border-radius: 25px !important;
                 <?php } ?>
                 
               
-		</div> 
+    </div> 
        </div>
         <?php   }?> 
             
@@ -367,28 +367,28 @@ border-radius: 25px !important;
         
    <?php if(Auth::guest()) { ?>
   
-		<div class="row">
-			<div class="col-sm-8 col-md-8 col-xs-12">     
-			<!-- Watch Later -->
-			<div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
+    <div class="row">
+      <div class="col-sm-8 col-md-8 col-xs-12">     
+      <!-- Watch Later -->
+      <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
 
-			<!-- Wish List -->            
-			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+      <!-- Wish List -->            
+      <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 
-			<!-- Share -->
-<!--			<div class="social_share">
-			  <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
-			  <div id="social_share">
-				<?php/* include('partials/social-share.php');*/ ?>
-			  </div>
-			</div>-->
+      <!-- Share -->
+<!--      <div class="social_share">
+        <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
+        <div id="social_share">
+        <?php/* include('partials/social-share.php');*/ ?>
         </div>
-			<div class="col-sm-4 col-md-4 col-xs-12">
-			<!-- Views -->
-			 <div class="btn btn-default views">
-				<span class="view-count"><i class="fa fa-eye"></i> 
-				<?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-			</div> 
+      </div>-->
+        </div>
+      <div class="col-sm-4 col-md-4 col-xs-12">
+      <!-- Views -->
+       <div class="btn btn-default views">
+        <span class="view-count"><i class="fa fa-eye"></i> 
+        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
+      </div> 
                 
                         <div class="btn views" style="margin: 0 12px; padding: 0;">
                             <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
@@ -401,42 +401,42 @@ border-radius: 25px !important;
                    </div> 
                 
               
-		</div> 
+    </div> 
        </div>
         <?php   }?>
-		<div class="row">
+    <div class="row">
         <div class="vid-details col-sm-12 col-md-12 col-xs-12">
             <p class="cat-name">
                 <span><?php echo __($video->title); ?></span> <span><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
             </p>
         </div>
-		</div>
-		<div class="row">
-			<div class="col-sm-12 col-md-12 col-xs-12">
-				<div class="video-details-container"><?php echo __($video->description); ?></div>
-			</div>
-		</div>
-		<?php if(isset($videonext)){ ?>
-		<div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
-		<div class="next_url" style="display: none;"><?= $url ?></div>
-		<?php }elseif(isset($videoprev)){ ?>
-		<div class="prev_video" style="display: none;"><?= $videoprev->slug ?></div>
-		<div class="next_url" style="display: none;"><?= $url ?></div>
-		<?php } ?>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-xs-12">
+        <div class="video-details-container"><?php echo __($video->description); ?></div>
+      </div>
+    </div>
+    <?php if(isset($videonext)){ ?>
+    <div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
+    <div class="next_url" style="display: none;"><?= $url ?></div>
+    <?php }elseif(isset($videoprev)){ ?>
+    <div class="prev_video" style="display: none;"><?= $videoprev->slug ?></div>
+    <div class="next_url" style="display: none;"><?= $url ?></div>
+    <?php } ?>
 
-		<?php if(isset($videos_category_next)){ ?>
-		<div class="next_cat_video" style="display: none;"><?= $videos_category_next->slug ?></div>
-		<?php }elseif(isset($videos_category_prev)){ ?>
-		<div class="prev_cat_video" style="display: none;"><?= $videos_category_prev->slug ?></div>
-		<?php } ?>
+    <?php if(isset($videos_category_next)){ ?>
+    <div class="next_cat_video" style="display: none;"><?= $videos_category_next->slug ?></div>
+    <?php }elseif(isset($videos_category_prev)){ ?>
+    <div class="prev_cat_video" style="display: none;"><?= $videos_category_prev->slug ?></div>
+    <?php } ?>
 
-		<div class="clear"></div>
+    <div class="clear"></div>
 <!--
-		<div id="tags">Tags: 
-		<php foreach($video->tags as $key => $tag): ?>
-			<span><a href="/videos/tag/<= $tag->name ?>"><= $tag->name ?></a></span><php if($key+1 != count($video->tags)): ?>,<php endif; ?>
-		<php endforeach; ?>
-		</div>
+    <div id="tags">Tags: 
+    <php foreach($video->tags as $key => $tag): ?>
+      <span><a href="/videos/tag/<= $tag->name ?>"><= $tag->name ?></a></span><php if($key+1 != count($video->tags)): ?>,<php endif; ?>
+    <php endforeach; ?>
+    </div>
 -->
         
     <div class="video-list you-may-like">
@@ -444,10 +444,10 @@ border-radius: 25px !important;
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>
                 </div>
-		
+    
     </div>
 
-		<div class="clear"></div>
+    <div class="clear"></div>
         <script>
             //$(".share a").hide();
             $(".share").on("mouseover", function() {
@@ -457,88 +457,88 @@ border-radius: 25px !important;
             });
         </script>
 
-		<!--<div class="clear"></div>
+    <!--<div class="clear"></div>
 
-		<div id="comments">
-			<div id="disqus_thread"></div>
-		</div>-->
+    <div id="comments">
+      <div id="disqus_thread"></div>
+    </div>-->
     
-	</div>
-	
+  </div>
+  
     <noscript>Please enable JavaScript to view the comments</noscript> 
 
-	<script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
-	<script type="text/javascript">
+  <script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
+  <script type="text/javascript">
 
-		$(document).ready(function(){
-			$('#video_container').fitVids();
-			$('.favorite').click(function(){
-				if($(this).data('authenticated')){
-					$.post('<?= URL::to('favorite') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-					$(this).toggleClass('active');
-				} else {
-					window.location = '<?= URL::to('login') ?>';
-				}
-			});
-			//watchlater
-			$('.watchlater').click(function(){
+    $(document).ready(function(){
+      $('#video_container').fitVids();
+      $('.favorite').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('favorite') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
+      //watchlater
+      $('.watchlater').click(function(){
                 
                          toastr.options = {
                               "closeButton": true,
                               "newestOnTop": true,
                               "positionClass": "toast-top-right"
                             };
-				if($(this).data('authenticated')){
-					$.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){
                          toastr.success(data.success);
                     });
-					$(this).toggleClass('active');
-					$(this).html("");
-			        if($(this).hasClass('active')){
-			          $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
-			        }else{
-			          $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
-			        }
-				} else {
-					window.location = '<?= URL::to('login') ?>';
-				}
-			});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
+              }
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
 
-			//My Wishlist
-			$('.mywishlist').click(function(){
+      //My Wishlist
+      $('.mywishlist').click(function(){
                        toastr.options = {
                               "closeButton": true,
                               "newestOnTop": true,
                               "positionClass": "toast-top-right"
                             };
                 
-				if($(this).data('authenticated')){
-					$.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){
                         toastr.success(data.success);
                     });
-					$(this).toggleClass('active');
-					$(this).html("");
-			        if($(this).hasClass('active')){
-			          $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
-			        }else{
-			          $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
-			        }
-			        
-				} else {
-					window.location = '<?= URL::to('login') ?>';
-				}
-			});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
+              }
+              
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
 
-		});
+    });
 
-	</script>
+  </script>
 
-	<!-- RESIZING FLUID VIDEO for VIDEO JS -->
-	
+  <!-- RESIZING FLUID VIDEO for VIDEO JS -->
+  
 
-	<script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
-	<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
-	<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
+  <script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
+  <script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
+  <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 
 
   <script>
@@ -546,106 +546,106 @@ border-radius: 25px !important;
         default: '480p', // Default resolution [{Number}, 'low', 'high'],
         dynamicLabel: true
       })
-	$(".playertextbox").appendTo($('#video_player'));
+  $(".playertextbox").appendTo($('#video_player'));
 
   // var res = player.currentResolution();
   // player.currentResolution(res);
  
     function autoplay1() {
-    	
-    	var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-		playButton.setAttribute("id", "myPlayButton");
-	    var next_video_id = $(".next_video").text();
-	    var prev_video_id = $(".prev_video").text();
-	    var next_cat_video = $(".next_cat_video").text();
-	    var prev_cat_video = $(".prev_cat_video").text();
-	    var url = $(".next_url").text();
-	    if(next_video_id != ''){
+      
+      var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
+    playButton.setAttribute("id", "myPlayButton");
+      var next_video_id = $(".next_video").text();
+      var prev_video_id = $(".prev_video").text();
+      var next_cat_video = $(".next_cat_video").text();
+      var prev_cat_video = $(".prev_cat_video").text();
+      var url = $(".next_url").text();
+      if(next_video_id != ''){
 
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+next_video_id;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/"+url+"/"+next_video_id;
          }, 3000);
-	    }else if(prev_video_id != ''){
-	    	
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+      }else if(prev_video_id != ''){
+        
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/"+url+"/"+prev_video_id;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/"+url+"/"+prev_video_id;
          }, 3000);
-	    
-	    }
+      
+      }
 
-	    if(next_cat_video != ''){
+      if(next_cat_video != ''){
 
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+next_cat_video;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/videos_category/"+next_cat_video;
          }, 3000);
-	    }else if(prev_cat_video != ''){
-	    	
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
+      }else if(prev_cat_video != ''){
+        
+        $(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
+      var bar = new ProgressBar.Circle(myPlayButton, {
+      strokeWidth: 7,
+      easing: 'easeInOut',
+      duration: 2400,
+      color: '#98cb00',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: null
+      });
 
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = "<?= URL::to('/');?>"+"/videos_category/"+prev_cat_video;
+      bar.animate(1.0);  // Number from 0.0 to 1.0
+        setTimeout(function(){  
+          window.location = "<?= URL::to('/');?>"+"/videos_category/"+prev_cat_video;
          }, 3000);
-	    
-	    }
- 	}
+      
+      }
+  }
 
- 	/*on video Play*/
- 	function playstart() {
- 		// if($("#video_player").data('authenticated')){
-		// 	$.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
-		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+  /*on video Play*/
+  function playstart() {
+    // if($("#video_player").data('authenticated')){
+    //  $.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
+    //  $.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 
-		// } else {
-		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-		// }
+    // } else {
+    //  $.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+    // }
     $(".vjs-big-play-button").hide();
- 	}
+  }
   </script>
 
 
@@ -669,10 +669,10 @@ border-radius: 25px !important;
     <script src="https://checkout.stripe.com/checkout.js"></script>-->
    <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
     <script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
-  	<script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
-  	<script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
+    <script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
+    <script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
 <script>
-	videojs('videojs-seek-buttons-player', {
+  videojs('videojs-seek-buttons-player', {
     controls: true,
     plugins: {
       videoJsResolutionSwitcher: {
@@ -870,14 +870,14 @@ var base_url = $('#base_url').val();
   <script>
     // fire up the plugin
     videojs('video_player', {
-	  playbackRates: [0.5, 1, 1.5, 2],
+    playbackRates: [0.5, 1, 1.5, 2],
       controls: true,
       muted: true,
       width: 991,
       fluid: true,
       plugins: {
         videoJsResolutionSwitcher: {
-		  ui: true,
+      ui: true,
           default: 'low', // Default resolution [{Number}, 'low', 'high'],
           dynamicLabel: true
         }
@@ -885,9 +885,9 @@ var base_url = $('#base_url').val();
     }, function(){
       var player = this;
       window.player = player
-	  player.watermark({
+    player.watermark({
         image: '',
-		fadeTime: null,
+    fadeTime: null,
         url: ''
       });
     });
