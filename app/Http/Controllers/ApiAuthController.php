@@ -1454,16 +1454,18 @@ public function verifyandupdatepassword(Request $request)
   public function add_payperview(Request $request)
   {
     $payment_type = $request->payment_type;
-    if($payment_type == 'stripe'){
+    $video_id = $request->video_id;
+    $user_id = $request->user_id;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
-    $video_id = $request->video_id;
-    $user_id = $request->user_id;
+    $user = User::find($user_id);
+    if($payment_type == 'stripe'){
+    
     $paymentMethod = $request->get('py_id');
     $payment_settings = PaymentSetting::first();
-    $user = User::find($user_id);
+    
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
     $charge = $user->charge($pay_amount, $paymentMethod);
