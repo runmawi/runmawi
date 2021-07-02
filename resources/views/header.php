@@ -6,8 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Flicknexs</title>
-       <script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>
-       <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
        <!-- Favicon -->
      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
       <!-- Bootstrap CSS -->
@@ -18,10 +17,24 @@
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
       <!-- Responsive -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+       
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+       
+       
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+       
+       
+     
+
    </head>
+    <style>
+        #main-header{
+            color: #fff;
+        }
+    </style>
    <body>
       <!-- loader Start -->
      <!-- <div id="loading">
@@ -105,11 +118,11 @@
                                                 </ul>
                                             </li>
                                           <li class="">
-                                            <a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
+                                            <!--<a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
                                                                                                font-weight: bold;
                                                                                                font-size: 16px;">
                                               <?php echo __('Refer and Earn');?>
-                                            </a>
+                                            </a>-->
                                           </li>
                                         </ul>
                            </div>
@@ -211,7 +224,7 @@
                                  </div>
                               </li>
                               <li class="nav-item nav-icon">
-                                 <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
+                                 <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                  <?php if(Auth::guest()): ?>
                                      <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
@@ -280,7 +293,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card dropdown-toggle setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-logout-circle-line text-primary"></i>
@@ -297,7 +310,7 @@
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-file-user-line text-primary"></i>
@@ -365,11 +378,19 @@
                            </ul>
                         </div>
                      </nav>
-                     <div class="nav-overlay"></div>
+                   
                   </div>
                </div>
             </div>
          </div>
+          
+          
+           <script>
+               $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+});
+          </script>
+          
       </header>
       <!-- Header End -->
      
