@@ -1456,14 +1456,16 @@ public function verifyandupdatepassword(Request $request)
     $payment_type = $request->payment_type;
     $video_id = $request->video_id;
     $user_id = $request->user_id;
-    if($payment_type == 'stripe'){
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
+    $user = User::find($user_id);
+    if($payment_type == 'stripe'){
+    
     $paymentMethod = $request->get('py_id');
     $payment_settings = PaymentSetting::first();
-    $user = User::find($user_id);
+    
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
     $charge = $user->charge($pay_amount, $paymentMethod);
