@@ -1452,8 +1452,10 @@ public function verifyandupdatepassword(Request $request)
 
 
   public function add_payperview(Request $request)
-      {
-        $daten = date('Y-m-d h:i:s a', time());
+  {
+    $payment_type = $request->payment_type;
+    if($payment_type == 'stripe'){
+    $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
@@ -1471,7 +1473,7 @@ public function verifyandupdatepassword(Request $request)
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
         );
-          /*send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);*/
+        /*send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);*/
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
       }
@@ -1484,6 +1486,20 @@ public function verifyandupdatepassword(Request $request)
       $response = array(
         'status' => 'false',
         'message' => "Payment Failed"
+      );
+    }
+    }elseif ($payment_type == 'razorpay' && $payment_type == 'paypal') {
+      $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
+      if ( $ppv_count == 0 ) { 
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+      $response = array(
+        'status' => 'true',
+        'message' => "video has been added"
       );
     }
     return response()->json($response, 200);
