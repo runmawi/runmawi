@@ -69,6 +69,8 @@ class ChannelController extends Controller
     
     public function play_videos($slug)
     {
+
+      if(Auth::user()){
         
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
@@ -131,7 +133,9 @@ class ChannelController extends Controller
             );
             }
        return view('video', $data);
-        
+       }else{
+        return redirect('/');
+       } 
     }   
     
     
