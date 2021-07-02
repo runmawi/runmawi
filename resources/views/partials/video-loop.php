@@ -2,9 +2,27 @@
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <style>
-     .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow{
-         top:-27px
-     }
+    .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    opacity: 1;
+    z-index: 9;
+    top: -28px;
+    background: var(--iq-primary) 0% 0% no-repeat padding-box;
+    margin: 0 0 0 20px;
+    line-height: 5px;
+    box-shadow: 0px 9px 19px #01041b0d;
+    font-size: 0;
+    transform: none;
+    color: var(--iq-white);
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
 overflow-hidden {
     margin-top: 70px;
     overflow: hidden;
