@@ -378,21 +378,12 @@
                            </ul>
                         </div>
                      </nav>
-                     <div class="nav-overlay"></div>
+                   
                   </div>
                </div>
             </div>
          </div>
-           <script>
-           $(document).ready(function() {
-    $(".dropdown-toggle").dropdown();
-});
-       </script> 
-          <script>
-           $(document).ready(function() {
-    $(".setting-dropdown").dropdown();
-});
-       </script>
+          
           
            
           
