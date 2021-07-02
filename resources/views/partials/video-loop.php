@@ -2,6 +2,9 @@
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <style>
+     .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow{
+         top:-27px
+     }
 overflow-hidden {
     margin-top: 70px;
     overflow: hidden;
@@ -124,12 +127,12 @@ overflow-hidden {
                                           </span>
                                            </a>
                                        </div>
-                                        <div>
+                                        <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
-                                                    </button></div>
+                                                    </button></div>-->
                                         </div>
                                 <!--    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
