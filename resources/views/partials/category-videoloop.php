@@ -323,49 +323,6 @@
 <script src="assets/js/slick-animation.min.js"></script>
 <!-- Custom JS-->
 <script src="assets/js/custom.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.bd-example-modal-xl4<?= $latest_video->id;?>').modal({
-            show: false
-        }).on('hidden.bs.modal', function () {
-            $(this).find('video')[0].pause();
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $(".thumb-cont").hide();
-        $(".show-details-button").on("click", function () {
-            var idval = $(this).attr("data-id");
-            $(".thumb-cont").hide();
-            $("#" + idval).show();
-        });
-        $(".closewin").on("click", function () {
-            var idval = $(this).attr("data-id");
-            $(".thumb-cont").hide();
-            $("#" + idval).hide();
-        });
-    });
-</script>
-<script>
-    function about(evt, id) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < tablinks.length; i++) {
-
-        }
-
-        document.getElementById(id).style.display = "block";
-
-    }
-// Get the element with id="defaultOpen" and click on it
-//document.getElementById("defaultOpen").click();
-</script>
 
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
