@@ -19,7 +19,7 @@
 <!-- MainContent -->
 <div class="main-content">
     <section id="iq-continue">
-        <div class="container-fluid">
+        <div class="fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                   <?php include('partials/home/continue-watching.php'); ?>
@@ -28,7 +28,7 @@
         </div>
     </section>
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <?php include('partials/home/latest-videos.php'); ?>
@@ -819,7 +819,7 @@ endif; ?>
          </section>*/ ?>
         <section id="iq-tvthrillers" class="s-margin">
             <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
-            <div class="container-fluid">
+            <div class="fluid">
                 <?php
                     $parentCategories = App\VideoCategory::where('in_home','=',1)->get();
                     foreach($parentCategories as $category) {
