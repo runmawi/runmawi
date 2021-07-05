@@ -704,12 +704,18 @@ public function verifyandupdatepassword(Request $request)
       $userrole = User::where('id','=',$user_id)->first()->role;
       $status = 'true';
 
+      $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+      $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->->where("disliked","=",1)count();
+      $like = ($like_data == 1) ? "true" : "false";
+      $dislike = ($dislike_data == 1) ? "true" : "false";
     } else{
       $wishliststatus = 'false';
       $watchlaterstatus = 'false';
       $ppv_exist = 0;
       $userrole = '';
       $status = 'true';
+      $like = "false";
+      $dislike = "false";
     }
         
                  if ($ppv_exist > 0) {
@@ -741,6 +747,8 @@ public function verifyandupdatepassword(Request $request)
       'watchlater' => $watchlaterstatus,
       'ppv_exist' => $ppv_exist,
       'userrole' => $userrole,
+      'like' => $like,
+      'dislike' => $dislike,
       'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
       'videodetail' => $videodetail,
       'videossubtitles' => $moviesubtitles
@@ -2388,30 +2396,31 @@ public function checkEmailExists(Request $request)
     {
       $user_id = $request->user_id;
       $video_id = $request->video_id;
+      $like = $request->like;
       $d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
-       if ($d_like > 0){
+
+      if($d_like > 0){
         $new_vide_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
-        if ($new_vide_like->liked == 1) {
-         $new_vide_like->user_id = $request->user_id;
-         $new_vide_like->video_id = $request->video_id;
-         $new_vide_like->liked = 0;
-         $new_vide_like->disliked = 1; 
-         $new_vide_like->save(); 
-        } elseif ($new_vide_like->liked == 0) {
+        if($like == 1){
           $new_vide_like->user_id = $request->user_id;
-         $new_vide_like->video_id = $request->video_id;
-         $new_vide_like->liked = 1;
-         $new_vide_like->disliked = 0;
-         $new_vide_like->save();
+          $new_vide_like->video_id = $request->video_id;
+          $new_vide_like->liked = 1;
+          $new_vide_like->disliked = 0; 
+          $new_vide_like->save(); 
+        }else{
+          $new_vide_like->user_id = $request->user_id;
+          $new_vide_like->video_id = $request->video_id;
+          $new_vide_like->liked = 0;
+          $new_vide_like->save(); 
         }
-     } else {
-         $new_vide_like = new Likedislike;
-         $new_vide_like->user_id = $request->user_id;
-         $new_vide_like->video_id = $request->video_id;
-         $new_vide_like->liked = 1;
-         $new_vide_like->disliked = 0;
-         $new_vide_like->save(); 
-       }
+      }else{
+        $new_vide_like = new Likedislike;
+        $new_vide_like->user_id = $request->user_id;
+        $new_vide_like->video_id = $request->video_id;
+        $new_vide_like->liked = 1;
+        $new_vide_like->disliked = 0;
+        $new_vide_like->save(); 
+      }
 
        $response = array(
         'status'=>'true',
@@ -2427,31 +2436,41 @@ public function checkEmailExists(Request $request)
     public function DisLikeVideo(Request $request)
     {
       $user_id = $request->user_id;
-      $video_id = $request->videoid;
-      $like = $request->like;
+      $video_id = $request->video_id;
+      $dislike = $request->dislike;
       $d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
-       if ($d_like == 0){
-         $new_vide_like = new Likedislike;
-         $new_vide_like->user_id = $request->user_id;
-         $new_vide_like->video_id = $request->video_id;
-         $new_vide_like->disliked = $request->like;
-         $new_vide_like->save(); 
-       } else {
-         $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
-         $new_vide_like->user_id = $request->user_id;
-         $new_vide_like->video_id = $request->video_id;
-         $new_vide_like->disliked = $request->like;
-         $new_vide_like->save(); 
-       } 
+
+      if($d_like > 0){
+        $new_vide_dislike = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
+        if($dislike == 1){
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->video_id = $request->video_id;
+          $new_vide_dislike->liked = 0;
+          $new_vide_dislike->disliked = 1; 
+          $new_vide_dislike->save(); 
+        }else{
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->video_id = $request->video_id;
+          $new_vide_dislike->disliked = 0;
+          $new_vide_dislike->save(); 
+        }
+      }else{
+        $new_vide_dislike = new Likedislike;
+        $new_vide_dislike->user_id = $request->user_id;
+        $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->liked = 0;
+        $new_vide_dislike->disliked = 1;
+        $new_vide_dislike->save(); 
+      }
 
        $response = array(
         'status'=>'true',
-        'liked' => $like,
+        'liked' => $new_vide_dislike->liked,
+        'disliked' => $new_vide_dislike->disliked,
         'message'=>'success'
       );
       
        return response()->json($response, 200); 
-
     }
     
     public function MobileSignup(Request $request)
