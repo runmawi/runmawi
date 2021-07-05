@@ -77,13 +77,14 @@ h4, .h4 { font-size: 1.400em; }
 h5, .h5 { font-size: 1.200em; }
 h6, .h6 { font-size: 1.0em; }
 .container-fluid { padding: 0 100px; }
-.fluid{padding: 10px 20px;    min-width: 100%;overflow: visible;position: relative;
+.fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
     top: 0;
     left: 0;
     display: block;
     margin-left: auto;
     margin-right: auto;
-padding: 50px;}
+    padding-left: 50px;
+}
 .height-100-vh { height: 100vh; }
 .w-20 { width: 20px; }
 .big-title { font-family: 'Helvetica Neue Regular'; }
