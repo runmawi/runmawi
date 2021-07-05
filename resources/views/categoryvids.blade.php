@@ -31,7 +31,7 @@
                                                     </div>
                                                     <div class="hover-buttons">
                                                         <a  class="btn btn-primary btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <span class="btn "><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
+                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
                                                         </a>
                                                     </div>
 <!--

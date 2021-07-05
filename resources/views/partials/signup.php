@@ -10,11 +10,16 @@
     overflow:auto;
     float:left;
 }
-
+    .pwd input{
+        border: 1px solid!important;
+    }
 #ck-button label {
     float:left;
     width:4.0em;
 }
+    .links a{
+        color:#fff!important;
+    }
 
 #ck-button label span {
     text-align:center;
@@ -154,10 +159,12 @@
             </div>
                 
                <div class="form-group row">
-                   <div class="col-md-4"></div>
+                   <div class="col-md-4">
+                        <input type="checkbox"  id="terms" name="terms"  class="terms" value="0" required="" />
+                   </div>
                     
                     <div class="col-md-8">
-                        <input type="checkbox"  id="terms" name="terms"  class="terms" value="0" required="" />
+                       
                         <label class="control-label" for="password_confirmation">  Yes , <a data-toggle="modal" data-target="#myModal" style="text-decoration:none;"> I Agree to Terms and  Conditions and privacy policy </a> </label>
                     </div>
 

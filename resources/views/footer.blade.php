@@ -148,7 +148,7 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<script>
+<!--<script>
   // Prevent closing from click inside dropdown
   $(document).on('click', '.dropdown-menu', function (e) {
     e.stopPropagation();
@@ -168,7 +168,7 @@ function about(evt , id) {
     }
                                );
   }
-</script>
+</script>-->
 <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
@@ -201,7 +201,7 @@ function about(evt , id) {
   }
                    );
 </script>
-<script>
+<!--<script>
 window.onscroll = function() {myFunction()};
 
 var header = document.getElementById("myHeader");
@@ -214,7 +214,7 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
-</script>
+</script>-->
 <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 <script>

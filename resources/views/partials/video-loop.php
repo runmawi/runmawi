@@ -135,10 +135,10 @@ overflow-hidden {
                                        <h6><?php echo __($watchlater_video->title); ?></h6>
                                        <div class="movie-time d-flex align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
+                                           <a  href="<?php echo URL::to('category') ?> <?= '/videos/' . $watchlater_video->slug ?>">	
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
