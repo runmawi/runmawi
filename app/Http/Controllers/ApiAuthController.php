@@ -705,7 +705,7 @@ public function verifyandupdatepassword(Request $request)
       $status = 'true';
 
       $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
-      $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->->where("disliked","=",1)->count();
+      $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
       $like = ($like_data == 1) ? "true" : "false";
       $dislike = ($dislike_data == 1) ? "true" : "false";
     } else{
