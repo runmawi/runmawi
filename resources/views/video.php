@@ -1050,23 +1050,7 @@ $(document).ready(function () {
    <!-- <script type=”text/javascript” src=”//cdn.jsdelivr.net/afterglow/latest/afterglow.min.js”></script>-->
         <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="<?php echo URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script src="<?php echo URL::to('/'). '/assets/js/popper.min.js';?>"></script>
-      <!-- Bootstrap JS -->
-      <script src="<?php echo URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
-      <!-- Slick JS -->
-      <script src="<?php echo URL::to('/'). '/assets/js/slick.min.js';?>"></script>
-      <!-- owl carousel Js -->
-      <script src="<?php echo URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
-      <!-- select2 Js -->
-      <script src="<?php echo URL::to('/'). '/assets/js/select2.min.js';?>"></script>
-      <!-- Magnific Popup-->
-      <script src="<?php echo URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
-      <!-- Slick Animation-->
-      <script src="<?php echo URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
-      <!-- Custom JS-->
-      <script src="<?php echo URL::to('/'). '/assets/js/custom.js';?>"></script>
-    </body>
+        </body>
 </html>
 
 <?php include('footer.blade.php');?>
