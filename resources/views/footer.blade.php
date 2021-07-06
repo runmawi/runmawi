@@ -23,7 +23,7 @@
                      </div>
                   </div>
                   <div class="col-lg-3 col-md-4 col-sm-12">
-                     <ul class="f-link1 list-unstyled mb-0">
+                     <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
@@ -39,14 +39,14 @@
                   
                   <div class="col-lg-3 col-md-4">
                       <div class="row">
-                     <ul class="f-link1 list-unstyled mb-0 catag">
+                     <ul class="f-link list-unstyled mb-0 catag">
                         <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
                         <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
                         <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
                          <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
                          
                           </ul>
-                          <ul class="f-link1 list-unstyled mb-0">
+                          <ul class="f-link list-unstyled mb-0">
                         
                          <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
@@ -73,7 +73,7 @@
                         <li><a href="#">Cotact Us</a></li>
                         <li><a href="#">Legal Notice</a></li>
                      </ul>-->
-                      <ul class="f-link1 list-unstyled mb-0">
+                      <ul class="f-link list-unstyled mb-0">
                         
 						<?php 
                         

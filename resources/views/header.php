@@ -34,6 +34,9 @@
         #main-header{
             color: #fff;
         }
+        .svg{
+            color: #fff;
+        }
     </style>
    <body>
       <!-- loader Start -->
