@@ -9,6 +9,27 @@
 <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 
        <style>
+           .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    opacity: 1;
+    z-index: 9;
+    top: -28px;
+    background: var(--iq-primary) 0% 0% no-repeat padding-box;
+    margin: 0 0 0 20px;
+    line-height: 5px;
+    box-shadow: 0px 9px 19px #01041b0d;
+    font-size: 0;
+    transform: none;
+    color: var(--iq-white);
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
            .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -247,27 +268,27 @@ height: 30px !important;
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
-                                          <span class="btn btn-hover">
+                                             <button type="button" class="btn btn-primary btn-hover" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
+                                          <span class=" ">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
                                           </span>
                                               </button>	
                                        </div>
-                                        <div>
+                                        <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
-                                                    </button></div>
+                                                    </button></div>-->
                                         </div>
-                                    <div class="block-social-info">
+                                  <!--  <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>
+                                    </div>-->
                                  </div>
                               </a>
                            </li>
