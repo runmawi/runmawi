@@ -156,7 +156,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 5,
+			slidesToShow: 6,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
@@ -392,7 +392,7 @@ Index Of Script
 					items:1
 				},
 				1000:{
-					items:4
+					items:8
 				}
 			}
 		});
