@@ -702,9 +702,9 @@ public function verifyandupdatepassword(Request $request)
       $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
       $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
 
-       //Favourite
-      $cnt2 = Favourite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-      $favouritestatus =  ($cnt2 == 1) ? "true" : "false";
+       //Favorite
+      $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+      $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
 
       $userrole = User::where('id','=',$user_id)->first()->role;
       $status = 'true';
@@ -716,7 +716,7 @@ public function verifyandupdatepassword(Request $request)
     } else{
       $wishliststatus = 'false';
       $watchlaterstatus = 'false';
-      $favouritestatus = 'false';
+      $favoritestatus = 'false';
       $ppv_exist = 0;
       $userrole = '';
       $status = 'true';
@@ -751,7 +751,7 @@ public function verifyandupdatepassword(Request $request)
       'ppv_video_status' => $ppv_video_status,
             'main_genre' => $videos_cat[0]->name,
       'watchlater' => $watchlaterstatus,
-      'favourite' => $favouritestatus,
+      'favorite' => $favoritestatus,
       'ppv_exist' => $ppv_exist,
       'userrole' => $userrole,
       'like' => $like,
@@ -2869,7 +2869,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function nextfavouritevideo(Request $request)
+  public function nextfavoritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
@@ -2889,7 +2889,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function prevfavouritevideo(Request $request)
+  public function prevfavoritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
