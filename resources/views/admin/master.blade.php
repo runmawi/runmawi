@@ -130,6 +130,8 @@
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Sliders</span></a></li>
+                   
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Player UI</span></a></li>
                   
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
@@ -152,6 +154,7 @@
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                      </ul>
                   </li>
+                   
                     <li>
                      <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
