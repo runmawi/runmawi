@@ -176,7 +176,7 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
 		Route::get('/countries/delete/{id}', 'AdminManageCountries@Delete');
 		Route::post('/countries/update', 'AdminManageCountries@Update');
     
-
+Route::get('/player', 'Adminplayer@Index');
 
         /* manage videos */
 
