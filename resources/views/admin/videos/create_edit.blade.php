@@ -81,6 +81,10 @@
 						                        @endforeach
 
                                        </select>
+                                       <div class="mt-5">
+                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                       <p>Upload video</p>
+                                           </div>
                                     </div>
                                     <div class="col-sm-6 form-group">
                                           <select id="type" name="type" class="form-control" required>
