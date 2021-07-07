@@ -130,7 +130,7 @@
 <div class="mod">
       <?php if(isset($videos)) :
             foreach($videos as $cont_video): ?>
-                <div class="thumb-cont" id="<?= $cont_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>') no-repeat;background-size: cover;"> 
+            <!--    <div class="thumb-cont" id="<?= $cont_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>') no-repeat;background-size: cover;"> 
                     <div class="img-black-back"></div>
                         <div align="right">
                             <button type="button" class="closewin btn btn-danger" id="cont_vid<?= $cont_video->id;?>"><span aria-hidden="true">X</span></button>
@@ -148,7 +148,7 @@
                                     <!-- <div class="btn btn-danger btn-right-space br-0">
                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                     </div>-->
-                                    <a class="btn black"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                  <!--  <a class="btn black"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
                                      <a class=" btn black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
                                 <a class=" btn black" href="https://flicknexui.webnexs.org/" class="btn btn-link"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                                 </div>
@@ -180,10 +180,10 @@
                                                 </p>-->
                                                 </div>
                                             </div>
-                                        </a>
+                                     <!--   </a>
                                         <div class="block-contents">
                                             <!--<p class="movie-title padding"><?php echo __($cont_video->title); ?></p>-->
-                                        </div>
+                                       <!-- </div>
                                     </div> 
                                 </div>
                                 <div id="like<?= $cont_video->id;?>" class="container tab-pane "><br>
