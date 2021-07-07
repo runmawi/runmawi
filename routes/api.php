@@ -108,4 +108,7 @@ Route::group([
 
     // Season and Episodes list
     Route::post('SeasonsEpisodes', 'ApiAuthController@SeasonsEpisodes');
+    Route::post('nextwishlistvideo', 'ApiAuthController@nextwishlistvideo');
+    Route::post('prevwishlistvideo', 'ApiAuthController@prevwishlistvideo');
+    
 });

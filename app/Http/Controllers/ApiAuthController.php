@@ -2780,4 +2780,45 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   } 
 
+
+  public function nextwishlistvideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Wishlist::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevwishlistvideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Wishlist::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
 }
