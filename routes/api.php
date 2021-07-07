@@ -105,5 +105,7 @@ Route::group([
     Route::get('cast_lists', 'ApiAuthController@CastList');
     Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
     Route::post('mobile_login', 'ApiAuthController@MobileLogin');
-      
+
+    // Season and Episodes list
+    Route::post('SeasonsEpisodes', 'ApiAuthController@SeasonsEpisodes');
 });

@@ -2746,6 +2746,38 @@ public function upnextAudio(Request $request){
 
     //return Response::json($response, 200);
       return response()->json($response, 200);
-  }    
+  }   
+
+
+  /* Season and Episode details*/
+  public function SeasonsEpisodes(Request $request)
+  {
+    $seriesid = $request->seriesid;
+    $myData = array();
+    $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
+    foreach ($seasonlist as $key => $season) {
+      $seasonid = $season['id'];
+      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->get();
+
+      if(count($episodes) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $season_name = 'Season '.($key+1);
+      $myData[] = array(
+        "season_name"   => $season_name,
+        "message" => $msg,
+        "episodes" => $episodes
+      );
+    }
+
+    $response = array(
+      'status' => 'true',
+      'SeasonsEpisodes' => $myData
+    );
+
+    return response()->json($response, 200);
+  } 
 
 }
