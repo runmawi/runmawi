@@ -877,11 +877,14 @@ endif; ?>
    $(document).ready(function () {
     $(".block-images").hover(function () {
       var pl = $(this).find('video')[0];
-      setTimeout(function(){ pl.play(); }, 2000);
+       pl.play(); 
     }, function () {
         var el = $(this).find('video')[0];
-        el.pause();
         el.currentTime = 0;
+        el.pause();
+        var container = document.getElementByTag("video");
+        var content = container.innerHTML;
+        container.innerHTML= content; 
     });
 });
 </script>   

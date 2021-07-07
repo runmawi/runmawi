@@ -701,6 +701,11 @@ public function verifyandupdatepassword(Request $request)
       //Watchlater
       $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
       $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+
+       //Favourite
+      $cnt2 = Favourite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+      $favouritestatus =  ($cnt2 == 1) ? "true" : "false";
+
       $userrole = User::where('id','=',$user_id)->first()->role;
       $status = 'true';
 
@@ -711,6 +716,7 @@ public function verifyandupdatepassword(Request $request)
     } else{
       $wishliststatus = 'false';
       $watchlaterstatus = 'false';
+      $favouritestatus = 'false';
       $ppv_exist = 0;
       $userrole = '';
       $status = 'true';
@@ -745,6 +751,7 @@ public function verifyandupdatepassword(Request $request)
       'ppv_video_status' => $ppv_video_status,
             'main_genre' => $videos_cat[0]->name,
       'watchlater' => $watchlaterstatus,
+      'favourite' => $favouritestatus,
       'ppv_exist' => $ppv_exist,
       'userrole' => $userrole,
       'like' => $like,
@@ -2806,6 +2813,87 @@ public function upnextAudio(Request $request){
     $user_id = $request->user_id;
     $video_id = $request->video_id;
     $next_videoid = Wishlist::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+
+  public function nextwatchlatervideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Watchlater::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevwatchlatervideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function nextfavouritevideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Favorite::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($next_videoid){
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'video' => $video
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'video' => 'No Data Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevfavouritevideo(Request $request)
+  {
+    $user_id = $request->user_id;
+    $video_id = $request->video_id;
+    $next_videoid = Favorite::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
     if($next_videoid){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(

@@ -108,7 +108,15 @@ Route::group([
 
     // Season and Episodes list
     Route::post('SeasonsEpisodes', 'ApiAuthController@SeasonsEpisodes');
+    // Wishlist Next Prev Video
     Route::post('nextwishlistvideo', 'ApiAuthController@nextwishlistvideo');
     Route::post('prevwishlistvideo', 'ApiAuthController@prevwishlistvideo');
+    // Watchlater Next Prev Video
+    Route::post('nextwatchlatervideo', 'ApiAuthController@nextwatchlatervideo');
+    Route::post('prevwatchlatervideo', 'ApiAuthController@prevwatchlatervideo');
+
+    // Favourite Next Prev Video
+    Route::post('nextfavouritevideo', 'ApiAuthController@nextfavouritevideo');
+    Route::post('prevfavouritevideo', 'ApiAuthController@prevfavouritevideo');
     
 });
