@@ -872,5 +872,17 @@ endif; ?>
           $(this).find('video')[0].pause();
       });
     });
+
+   /*Play Pause Video on mouse hover and mouse leave*/
+   $(document).ready(function () {
+    $(".block-images").hover(function () {
+      var pl = $(this).find('video')[0];
+      setTimeout(function(){ pl.play(); }, 2000);
+    }, function () {
+        var el = $(this).find('video')[0];
+        el.pause();
+        el.currentTime = 0;
+    });
+});
 </script>   
   

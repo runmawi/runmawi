@@ -76,15 +76,16 @@ class ChannelController extends Controller
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time()); 
 
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+            
+        
+         $view_increment = $this->handleViewCount_movies($vid);
+        if ( !Auth::guest() ) {
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
             $view = new RecentView;
             $view->video_id = $vid;
             $view->user_id = Auth::user()->id;
             $view->visited_at = date('Y-m-d');
             $view->save();
-        
-         $view_increment = $this->handleViewCount_movies($vid);
-        if ( !Auth::guest() ) {
            $user_id = Auth::user()->id;
            $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
            $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
