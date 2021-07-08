@@ -39,7 +39,7 @@
                                     </div>
                                  <div class="col-sm-12 form-group">
                                      <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" >
-                                     <p>Upload Thumnail</p>
+                                     <p>Upload Thumnail (16:9 Ratio or 1280X720px)</p>
                                      @if(!empty($video->image))
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                     @endif
@@ -81,11 +81,7 @@
 						                        @endforeach
 
                                        </select>
-                                       <div class="mt-5">
-                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                       <p>Upload video</p>
-                                           </div>
-                                    </div>
+                                                                          </div>
                                     <div class="col-sm-6 form-group">
                                           <select id="type" name="type" class="form-control" required>
                                              <option>--Video Type--</option>
@@ -128,6 +124,11 @@
                               @endif
                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                                        <p>Upload Trailer video</p>
+                                 <div class="mt-3">
+                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                       <p>Upload video</p>
+                                           </div>
+ 
                               </div>
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
         <div class="panel-title">Subtitles</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
