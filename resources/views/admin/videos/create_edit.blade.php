@@ -27,19 +27,44 @@
                         </div>
                      </div>
                      <div class="iq-card-body">
+                         <h5>Video Info Details</h5>
                         <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                            <div class="row">
-                              <div class="col-lg-7">
+                              <div class="col-lg-12">
                                  <div class="row">
-                                    <div class="col-12 form-group">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="p-2">Title :</label>
                                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
                                     </div>
-                                    <div class="col-12 form-group">
+                                    <div class="col-sm-6 form-group">
+                                         <label class="p-2">Video Slug :</label>
                                        <input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
                                     </div>
+                                     <div class="col-sm-6 form-group">
+                                       <label class="p-2">Uncategorized :</label>
+                                       <select class="form-control" id="video_category_id" name="video_category_id">
+                                       <option value="0">Uncategorized</option>
+						                        @foreach($video_categories as $category)
+                                          <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
+						                        @endforeach
+
+                                       </select>
+                                                                          </div>
+                                      <div class="col-sm-6 form-group">
+                                  <label class="p-2">Choose Language:</label>
+                                 <select class="form-control" id="language" name="language">
+                                    <option selected disabled="">Choose Language</option>
+                                    @foreach($languages as $language)
+							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
+						                  @endforeach
+                              </select>
+                              </div>   
+                                     
                                  <div class="col-sm-12 form-group">
-                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" >
-                                     <p>Upload Thumnail (16:9 Ratio or 1280X720px)</p>
+                                     
+                                     
+                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" ><br>
+                                   <label>Thumbnail (16:9 Ratio or 1280X720px)</label>
                                      @if(!empty($video->image))
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                     @endif
@@ -61,7 +86,7 @@
                                           </select>   
                                     </div>-->
                                      
-                                    <div class="col-12 form-group">
+                                    <div class="col-lg-12 form-group">
                                        <textarea  rows="5" class="form-control" name="description" id="summary-ckeditor"
                                           placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                                     </div>
@@ -71,24 +96,8 @@
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-lg-5">
-                                  <div class="row">
-                                   <div class="col-md-6 form-group">
-                                       <select class="form-control" id="video_category_id" name="video_category_id">
-                                       <option value="0">Uncategorized</option>
-						                        @foreach($video_categories as $category)
-                                          <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
-						                        @endforeach
-
-                                       </select>
-                                                                          </div>
-                                    <div class="col-sm-6 form-group">
-                                          <select id="type" name="type" class="form-control" required>
-                                             <option>--Video Type--</option>
-                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
-                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
-                                          </select>   
-                                      </div></div>
+                              <div class="">
+                                  
                                  @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
                                     <video width="200" height="200" controls>
                                     <source src="{{ URL::to('/storage/app/public/').'/'.$video->mp4_url }}" type="video/mp4">
@@ -116,26 +125,37 @@
                               </div>
                             
                            </div>
-                             <div class="col-sm-12 form-group">
+                            <div>
+                                <h5>Video Upload</h5>
+                            </div>
+                            <div class="row ">
+                             <div class="col-sm-6 form-group">
                              @if(!empty($video->trailer) && $video->trailer != '')
                               <video width="200" height="200" controls>
                                     <source src="{{ $video->trailer }}" type="video/mp4">
                               </video>
                               @endif
+                                 <label class="p-2">Upload Trailer :</label><br>
                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                       <p>Upload Trailer video</p>
-                                 <div class="mt-3">
-                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                       <p>Upload video</p>
-                                           </div>
+                                       <!--<p>Upload Trailer video</p>-->
+                                 
  
                               </div>
+                                <div class="col-sm-6 form-group">
+                                         <label class="">Video Type :</label>
+                                          <select id="type" name="type" class="form-control" required>
+                                             <option>--Video Type--</option>
+                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
+                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
+                                          </select>   
+                                      </div>
+                                </div>
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
         <div class="panel-title">Subtitles</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
         <div class="panel-body" style="display: block;"> 
           @foreach($subtitles as $subtitle)
           <div class="subtitle1" style="clear: both;" >
-            <label for="embed_code"  style="float:left; margin-right:10px; padding-top:1px;">Upload Subtitle {{ $subtitle->language }}</label>
+            <label for="embed_code"  style="">Upload Subtitle {{ $subtitle->language }}</label>
             <input type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
             <input type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
             <input type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
@@ -145,37 +165,56 @@
         </div> 
       </div>
 
-                           <div class="row">
-                              <div class="col-sm-6 form-group">
+         <div class="row">
+                              <!--<div class="col-sm-6 form-group">
+                                  <label class="p-2">Choose Language:</label>
                                  <select class="form-control" id="language" name="language">
                                     <option selected disabled="">Choose Language</option>
                                     @foreach($languages as $language)
 							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						                  @endforeach
                               </select>
-                              </div>   
+                              </div> -->  
                               <div class="col-sm-6 form-group">
+                                 <!-- <label class="p-2">Subscriber (only paid subscription users):</label>
                               <select id="access" name="access"  class="form-control" >
                                 <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                  <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
                                  <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>   
-                              </select>
+                              </select>-->
+                                   <label class="">Video Duration:</label>
+                                   <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
                               </div> 
+             <div class="col-sm-6 form-group">
+                  <label class="">Year:</label>
+                                  <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+             </div>
                                 
                         </div>
 
              <div class="row">
                               <div class="col-sm-6 form-group">
-                                  <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+                                 <!-- <label class="p-2">Year:</label>
+                                  <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">-->
+                                  <label class="">Movie Language:</label>
+                                 <select class="form-control" id="language" name="language">
+                                    <option selected disabled="">Choose Language</option>
+                                    @foreach($languages as $language)
+							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
+						                  @endforeach
+                              </select>
                               </div>
                           <div class="col-sm-6 form-group">
-                                   <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-                              </div>
-                             </div>
-                         <div class="row">
-                              <div class="col-sm-6 form-group">
+                              <label class="">Rating:</label>
                                   <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                               </div>
+                              </div>
+                             
+                         <div class="row">
+                             <!-- <div class="col-sm-6 form-group">
+                                   <label class="p-2">Rating:</label>
+                                  <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+                              </div>-->
                              <div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
