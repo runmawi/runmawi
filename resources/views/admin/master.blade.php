@@ -47,6 +47,7 @@
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/typography.css';?>" />
    <!-- Style CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/vod.css';?>" />
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
@@ -63,6 +64,7 @@
         opacity: 0.9;
         overflow: hidden;
     }
+    
     
     
 </style>
