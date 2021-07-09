@@ -882,10 +882,10 @@ endif; ?>
         var el = $(this).find('video')[0];
         el.currentTime = 0;
         el.pause();
-        var container = document.getElementByTag("video");
-        var content = container.innerHTML;
-        container.innerHTML= content; 
+        
+         $(this).find('video')[0].load(); 
     });
+   
 });
 </script>   
   

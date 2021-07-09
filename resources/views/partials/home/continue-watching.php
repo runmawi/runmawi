@@ -11,7 +11,7 @@
              <div class="block-images position-relative">
                 <div class="img-box">
                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt=""> -->
-                   <video class="thevideo" loop muted poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>">
+                   <video class="thevideo" loop poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>">
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>
                 </div>

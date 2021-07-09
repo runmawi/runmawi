@@ -664,7 +664,7 @@ border-radius: 25px !important;
 
       </script>
 <link href=”//vjs.zencdn.net/7.0/video-js.min.css” rel=”stylesheet”>
-<script src=”//vjs.zencdn.net/7.0/video.min.js”></script>
+
 
    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>

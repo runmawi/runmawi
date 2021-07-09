@@ -102,6 +102,13 @@
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
 					</ul></li>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+
+            </ul>
+          </li>
                    <li>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
