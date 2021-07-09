@@ -5,9 +5,54 @@
 @stop
  
     <style>
+        span{
+            color: gray;
+        }
         .progress { position:relative; width:100%; }
         .bar { background-color: #008000; width:0%; height:20px; }
          .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
+        [data-tip] {
+	position:relative;
+
+}
+[data-tip]:before {
+	content:'';
+	/* hides the tooltip when not hovered */
+	display:none;
+	content:'';
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #1a1a1a;	
+	position:absolute;
+	
+	z-index:8;
+	font-size:0;
+	line-height:0;
+	width:0;
+	height:0;
+}
+[data-tip]:after {
+	display:none;
+	content:attr(data-tip);
+	position:absolute;
+	
+	padding:5px 8px;
+	background:#1a1a1a;
+	color:#fff;
+	z-index:9;
+	font-size: 0.75em;
+	height:18px;
+	line-height:18px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	white-space:nowrap;
+	word-wrap:normal;
+}
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+	display:block;
+}
    </style>
 
 @section('content')
@@ -32,16 +77,18 @@
                            <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
-                                    <div class="col-sm-6 form-group">
+                                    <div class="col-sm-6 form-group" >
                                         <label class="p-2">Title :</label>
                                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
                                     </div>
-                                    <div class="col-sm-6 form-group">
-                                         <label class="p-2">Video Slug :</label>
-                                       <input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
+                                    <div class="col-sm-6 form-group" >
+                                         <label class="p-2">
+                                             Video Slug <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please enter the name of the video again here" data-original-title="this is the tooltip" href="#">
+                                             <i class="las la-exclamation-circle"></i></a>:</label>
+                                       <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
                                     </div>
-                                     <div class="col-sm-6 form-group">
-                                       <label class="p-2">Uncategorized :</label>
+                                     <div class="col-sm-6 form-group" >
+                                       <label class="p-2">Select Video Category :</label>
                                        <select class="form-control" id="video_category_id" name="video_category_id">
                                        <option value="0">Uncategorized</option>
 						                        @foreach($video_categories as $category)
@@ -62,9 +109,9 @@
                                      
                                  <div class="col-sm-12 form-group">
                                      
-                                     
-                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" ><br>
-                                   <label>Thumbnail (16:9 Ratio or 1280X720px)</label>
+                                      <label>Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" >
+                                  
                                      @if(!empty($video->image))
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                     @endif
@@ -87,6 +134,7 @@
                                     </div>-->
                                      
                                     <div class="col-lg-12 form-group">
+                                        <h5>Video description:</h5>
                                        <textarea  rows="5" class="form-control" name="description" id="summary-ckeditor"
                                           placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                                     </div>
