@@ -342,8 +342,9 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::post('/episode/create', 'AdminSeriesController@create_episode');
 		Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
 		Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
-		Route::post('/episode/update', 'AdminSeriesController@update_episode');
-		
+        Route::post('/episode/update', 'AdminSeriesController@update_episode');
+		Route::get('/players', 'AdminSettingsController@playerui_index');
+		Route::post('/players/store', 'AdminSettingsController@storeplayerui');
 
 });
     

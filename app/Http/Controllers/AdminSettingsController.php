@@ -8,6 +8,7 @@ use \Redirect as Redirect;
 use URL;
 use Auth;
 use App\Setting as Setting;
+use App\Playerui as Playerui;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
@@ -237,6 +238,100 @@ class AdminSettingsController extends Controller
 
 	}
    
-    
-    
+  public function playerui_index() {
+
+    $playerui = Playerui::first();
+
+    $data = array(
+      'admin_user' => Auth::user(),
+      'playerui' => $playerui,
+    );
+    return \View::make('admin.players.index', $data);
+
+  }  
+
+
+  public function storeplayerui(Request $request){
+    $input = $request->all();
+    $playerui = Playerui::find(1);
+    $playerui->show_logo = $request['show_logo'];
+    if(empty($playerui->show_logo)){
+      $playerui->show_logo = 0;
+    }else{
+      $playerui->show_logo = 1;
+    }
+
+    $playerui->skip_intro = $request['skip_intro'];
+    if(empty($playerui->skip_intro)){
+      $playerui->skip_intro = 0;
+    }else{
+      $playerui->skip_intro = 1;
+    }
+
+    $playerui->embed_player = $request['embed_player'];
+    if(empty($playerui->embed_player)){
+      $playerui->embed_player = 0;
+    }else{
+      $playerui->embed_player = 1;
+    }
+
+    $playerui->watermark = $request['watermark'];
+    if(empty($playerui->watermark)){
+      $playerui->watermark = 0;
+    }else{
+      $playerui->watermark = 1;
+    }
+
+    $playerui->thumbnail = $request['thumbnail'];
+    if(empty($playerui->thumbnail)){
+      $playerui->thumbnail = 0;
+    }else{
+      $playerui->thumbnail = 1;
+    }
+
+    $playerui->advance_player = $request['advance_player'];
+    if(empty($playerui->advance_player)){
+      $playerui->advance_player = 0;
+    }else{
+      $playerui->advance_player = 1;
+    }
+
+    $playerui->speed_control = $request['speed_control'];
+    if(empty($playerui->speed_control)){
+      $playerui->speed_control = 0;
+    }else{
+      $playerui->speed_control = 1;
+    }
+
+    $playerui->video_card = $request['video_card'];
+    if(empty($playerui->video_card)){
+      $playerui->video_card = 0;
+    }else{
+      $playerui->video_card = 1;
+    }
+
+    $playerui->subtitle = $request['subtitle'];
+    if(empty($playerui->subtitle)){
+      $playerui->subtitle = 0;
+    }else{
+      $playerui->subtitle = 1;
+    }
+
+    $playerui->subtitle_preference = $request['subtitle_preference'];
+    if(empty($playerui->subtitle_preference)){
+      $playerui->subtitle_preference = 0;
+    }else{
+      $playerui->subtitle_preference = 1;
+    }
+
+    $playerui->font = $request['font'];
+    $playerui->size = $request['size'];
+    $playerui->font_color = $request['font_color'];
+    $playerui->background_color = $request['background_color'];
+    $playerui->opacity = $request['opacity'];
+    $playerui->save();
+      
+    return Redirect::to('admin/players')->with(array('note' => 'Successfully Updated Player Setting UI!', 'note_type' => 'success') );
+  }
+
 }

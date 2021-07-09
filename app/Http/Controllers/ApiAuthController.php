@@ -2774,6 +2774,7 @@ public function upnextAudio(Request $request){
       $season_name = 'Season '.($key+1);
       $myData[] = array(
         "season_name"   => $season_name,
+        "season_id"   => $seasonid,
         "message" => $msg,
         "episodes" => $episodes
       );
@@ -2797,6 +2798,7 @@ public function upnextAudio(Request $request){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'next_videoid' => $next_videoid,
         'video' => $video
       );
     }else{
@@ -2812,11 +2814,12 @@ public function upnextAudio(Request $request){
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $next_videoid = Wishlist::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
-    if($next_videoid){
+    $prev_videoid = Wishlist::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($prev_videoid){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'prev_videoid' => $prev_videoid,
         'video' => $video
       );
     }else{
@@ -2838,6 +2841,7 @@ public function upnextAudio(Request $request){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'next_videoid' => $next_videoid,
         'video' => $video
       );
     }else{
@@ -2853,11 +2857,12 @@ public function upnextAudio(Request $request){
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $next_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
-    if($next_videoid){
+    $prev_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($prev_videoid){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'prev_videoid' => $prev_videoid,
         'video' => $video
       );
     }else{
@@ -2878,6 +2883,7 @@ public function upnextAudio(Request $request){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'next_videoid' => $next_videoid,
         'video' => $video
       );
     }else{
@@ -2893,11 +2899,12 @@ public function upnextAudio(Request $request){
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $next_videoid = Favorite::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
-    if($next_videoid){
+    $prev_videoid = Favorite::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    if($prev_videoid){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
+        'prev_videoid' => $prev_videoid,
         'video' => $video
       );
     }else{
