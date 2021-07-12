@@ -14,7 +14,7 @@
 				<!-- This is where -->
 
 				<div class="admin-section-title">
-					<h3><i class="entypo-globe"></i> Player Settings</h3> 
+					<h3 class="p-3"><i class="entypo-globe"></i> Player Settings</h3> 
 				</div>
 				<div class="clear"></div>
 
