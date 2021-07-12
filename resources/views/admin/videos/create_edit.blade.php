@@ -15,6 +15,11 @@
 	position:relative;
 
 }
+        .subtitle1{
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+        }
 [data-tip]:before {
 	content:'';
 	/* hides the tooltip when not hovered */
@@ -144,6 +149,31 @@
                                     </div>
                                  </div>
                               </div>
+                              
+                            
+                           </div>
+                            <div>
+                                <h5>Video Upload</h5>
+                            </div>
+                            <div class="row ">
+                             <div class="col-sm-8 form-group">
+                             @if(!empty($video->trailer) && $video->trailer != '')
+                              <video width="200" height="200" controls>
+                                    <source src="{{ $video->trailer }}" type="video/mp4">
+                              </video>
+                              @endif
+                                 <label class="p-2">Upload Trailer :</label><br>
+                                 <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                       <!--<p>Upload Trailer video</p>-->
+                                </div>
+                                  <div class="col-sm-6 form-group">
+                                         <label><h5>Video Type :</h5></label>
+                                          <select id="type" name="type" class="form-control" required>
+                                             <option>--Video Type--</option>
+                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
+                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
+                                          </select>   
+                                      </div>
                               <div class="">
                                   
                                  @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
@@ -157,49 +187,21 @@
                                     <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
                                  </div>
 
-                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload')style="display:block"@else style = "display:none" @endif>
-                                    <!-- <label for="embed_code">Upload Video</label>
-                                    <input type="file" name="video" id="video"> -->
+                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:block" @else  @endif>
+                                  
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
                                     <p>Upload video</p>
                                  </div>
-                                    <!-- <div class="form_video-upload" class="new-video-file" >
-                                       <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
-                                       <p>Upload video</p>
-                                       
-                                    </div>
-                                     -->
+                                    
                                  </div>
-                              </div>
-                            
-                           </div>
-                            <div>
-                                <h5>Video Upload</h5>
-                            </div>
-                            <div class="row ">
-                             <div class="col-sm-6 form-group">
-                             @if(!empty($video->trailer) && $video->trailer != '')
-                              <video width="200" height="200" controls>
-                                    <source src="{{ $video->trailer }}" type="video/mp4">
-                              </video>
-                              @endif
-                                 <label class="p-2">Upload Trailer :</label><br>
-                                 <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                       <!--<p>Upload Trailer video</p>-->
-                                 
+                              </div>      
  
                               </div>
-                                <div class="col-sm-6 form-group">
-                                         <label class="">Video Type :</label>
-                                          <select id="type" name="type" class="form-control" required>
-                                             <option>--Video Type--</option>
-                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
-                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
-                                          </select>   
-                                      </div>
-                                </div>
+                                
+                               
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-        <div class="panel-title">Subtitles</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+        <div class="panel-title">Subtitles (srt or txt)<a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
+                                             <i class="las la-exclamation-circle"></i></a>:</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
         <div class="panel-body" style="display: block;"> 
           @foreach($subtitles as $subtitle)
           <div class="subtitle1" style="clear: both;" >

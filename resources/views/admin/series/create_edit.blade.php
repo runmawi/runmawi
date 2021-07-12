@@ -20,7 +20,6 @@
 		<h3><i class="entypo-plus"></i> Add New Series</h3> 
 	@endif
 	</div>
-	<div class="clear"></div>
 
 	
 

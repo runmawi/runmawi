@@ -2,6 +2,9 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+<style>
+    ''
+</style>
 @stop
  
 
@@ -38,7 +41,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 30px;">
 
 		@if(!empty($video->created_at))
 			<div class="row">
