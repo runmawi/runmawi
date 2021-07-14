@@ -7,7 +7,8 @@
 
 @section('content')
 
-<div id="admin-container">
+<div id="admin-container" style="margin-left: 340px;
+    padding-top: 100px;" >
 <!-- This is where -->
 	
 	<div class="admin-section-title">

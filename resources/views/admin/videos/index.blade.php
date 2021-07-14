@@ -84,7 +84,7 @@
                </div>
             </div>
          </div>
-      </div>
+      
 
 @section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
