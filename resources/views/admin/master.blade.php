@@ -2,34 +2,34 @@
 <html lang="en">
 <head>
 
-	<!--<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="HelloVideo Admin Panel" />
-	<meta name="author" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HelloVideo Admin Panel" />
+  <meta name="author" content="" />
 
-	<title><?php $settings = App\Setting::first(); echo $settings->website_name;?></title>
+  <title><?php $settings = App\Setting::first(); echo $settings->website_name;?></title>
 
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/font-awesome/css/font-awesome.min.css'; ?>">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/bootstrap.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/animate.min.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/core.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/theme.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/forms.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/custom.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/font-awesome/css/font-awesome.min.css'; ?>">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/bootstrap.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/animate.min.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/core.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/theme.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/forms.css'; ?>">
+  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/custom.css'; ?>">
     <script src="<?= THEME_URL ?>/assets/js/admin-homepage.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	@yield('css')
+  @yield('css')
 
-	<script src="<?= URL::to('/').'/assets/admin/admin/js/jquery-1.11.0.min.js'; ?>"></script>
-	<script src="<?= THEME_URL .'/assets/admin/admin/js/bootstrap-colorpicker.min.js'; ?>" id="script-resource-13"></script>
-	<script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
-	
-	<script>$.noConflict();</script>-->
+  <script src="<?= URL::to('/').'/assets/admin/admin/js/jquery-1.11.0.min.js'; ?>"></script>
+  <script src="<?= THEME_URL .'/assets/admin/admin/js/bootstrap-colorpicker.min.js'; ?>" id="script-resource-13"></script>
+  <script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
+  
+  <script>$.noConflict();</script>-->
     <!-- Required meta tags -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -51,13 +51,13 @@
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
-	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
+  <!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
-	<!-- HTML5 shim and Respond.js') }} IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
-	<![endif]-->
+  <!-- HTML5 shim and Respond.js') }} IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
+  <![endif]-->
 <style>
 
     .top-left-logo img {
@@ -103,7 +103,7 @@
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
-					</ul></li>
+          </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
@@ -279,11 +279,11 @@
          </div>
       </div>
 
-	<div class="main-content">
-				
-		<div class="row">
-		
-			<!-- TOP Nav Bar -->
+  <div class="main-content">
+        
+    <div class="row">
+    
+      <!-- TOP Nav Bar -->
       <div class="iq-top-navbar">
          <div class="iq-navbar-custom">
             <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -525,20 +525,20 @@
          </div>
       </div>
       <!-- TOP Nav Bar END -->
-		
-		</div>
-		
-		<!--<hr />-->
+    
+    </div>
+    
+    <!--<hr />-->
 
-		<div id="main-admin-content">
+    <div id="main-admin-content">
 
-			@yield('content')
+      @yield('content')
             
 
-		</div>
-		
-		<!-- Footer -->
-		<footer class="iq-footer">
+    </div>
+    
+    <!-- Footer -->
+    <footer class="iq-footer">
       <div class="container-fluid">
          <div class="row">
             <div class="col-lg-6">
@@ -553,76 +553,76 @@
          </div>
       </div>
    </footer>
-	</div>
-	
-	
+  </div>
+  
+  
 </div>
 
-	<!-- Sample Modal (Default skin) -->
-	<!--<div class="modal fade" id="sample-modal-dialog-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Widget Options - Default Modal</h4>
-				</div>
-				
-				<div class="modal-body">
-					<p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-				</div>
-				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>-->
-	
-	<!-- Sample Modal (Skin inverted) -->
-	<!--<div class="modal invert fade" id="sample-modal-dialog-2">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Widget Options - Inverted Skin Modal</h4>
-				</div>
-				
-				<div class="modal-body">
-					<p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-				</div>
-				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>-->
-	
-	<!-- Sample Modal (Skin gray) -->
-	<!--<div class="modal gray fade" id="sample-modal-dialog-3">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Widget Options - Gray Skin Modal</h4>
-				</div>
-				
-				<div class="modal-body">
-					<p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-				</div>
-				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>-->
+  <!-- Sample Modal (Default skin) -->
+  <!--<div class="modal fade" id="sample-modal-dialog-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Widget Options - Default Modal</h4>
+        </div>
+        
+        <div class="modal-body">
+          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  
+  <!-- Sample Modal (Skin inverted) -->
+  <!--<div class="modal invert fade" id="sample-modal-dialog-2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Widget Options - Inverted Skin Modal</h4>
+        </div>
+        
+        <div class="modal-body">
+          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  
+  <!-- Sample Modal (Skin gray) -->
+  <!--<div class="modal gray fade" id="sample-modal-dialog-3">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Widget Options - Gray Skin Modal</h4>
+        </div>
+        
+        <div class="modal-body">
+          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>-->
    <?php 
    if (isset($page) && $page =='admin-dashboard') {
             $visitor_count = TotalVisitorcount();
@@ -642,8 +642,8 @@
    ?>
 
 
-	<!-- Imported styles on this page -->
-	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
+  <!-- Imported styles on this page -->
+   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
@@ -672,9 +672,9 @@
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/chart-custom.js';?>"></script>
    <!-- Custom JavaScript -->
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
-	<!-- End Notifications -->
+  <!-- End Notifications -->
 
-	<!--@yield('javascript')-->
+  <!--@yield('javascript')-->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -832,51 +832,51 @@ var chart_01_lable = $('#chart_01_lable').val();
     
     <script type="text/javascript">
 
-		jQuery(document).ready(function($){
+    jQuery(document).ready(function($){
 
 
-			$('#nestable').nestable({ maxDepth: 3 });
+      $('#nestable').nestable({ maxDepth: 3 });
 
-			// Add New Category
-			$('#submit-new-cat').click(function(){
-				$('#new-cat-form').submit();
-			});
+      // Add New Category
+      $('#submit-new-cat').click(function(){
+        $('#new-cat-form').submit();
+      });
 
-			$('.actions .edit').click(function(e){
-				$('#update-category').modal('show', {backdrop: 'static'});
-				e.preventDefault();
-				href = $(this).attr('href');
-				$.ajax({
-					url: href,
-					success: function(response)
-					{
-						$('#update-category .modal-content').html(response);
-					}
-				});
-			});
+      $('.actions .edit').click(function(e){
+        $('#update-category').modal('show', {backdrop: 'static'});
+        e.preventDefault();
+        href = $(this).attr('href');
+        $.ajax({
+          url: href,
+          success: function(response)
+          {
+            $('#update-category .modal-content').html(response);
+          }
+        });
+      });
 
-			$('.actions .delete').click(function(e){
-				e.preventDefault();
-				if (confirm("Are you sure you want to delete this category?")) {
-			       window.location = $(this).attr('href');
-			    }
-			    return false;
-			});
+      $('.actions .delete').click(function(e){
+        e.preventDefault();
+        if (confirm("Are you sure you want to delete this category?")) {
+             window.location = $(this).attr('href');
+          }
+          return false;
+      });
 
-			$('.dd').on('change', function(e) {
-    			$('.category-panel').addClass('reloading');
-    			$.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
-    				console.log(data);
-    				$('.category-panel').removeClass('reloading');
-    			});
+      $('.dd').on('change', function(e) {
+          $('.category-panel').addClass('reloading');
+          $.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
+            console.log(data);
+            $('.category-panel').removeClass('reloading');
+          });
 
-			});
+      });
 
 
-		});
-		</script>
+    });
+    </script>
 
-		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
+    <script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
 
 
 </body>
