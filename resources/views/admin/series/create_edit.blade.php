@@ -28,20 +28,20 @@
 
 		@if(!empty($series->created_at))
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-sm-6 p-0">
 		@endif
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body" style="display: block;"> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p>Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> 
 					</div>
 
                     
             @if(!empty($series->created_at))
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                             <div class="panel-body" style="display: block;"> 
@@ -114,16 +114,16 @@
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Details, Links, and Info</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block; padding:0px;">
-					<textarea class="form-control" name="details" id="summary-ckeditor">@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
+				<div class="panel-body col-sm-6 p-0" style="display: block; padding:0px;">
+					<textarea class="form-control" name="details" id="summary-ckeditor" style="background-color:#000000;!important">@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
 				</div> 
 			</div>
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Short Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p>Add a short description of the series below:</p> 
-					<textarea class="form-control" name="description" id="description">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
+					<textarea class="form-control" name="description" id="description" style="background-color:#000000;!important">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
 
@@ -170,9 +170,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Year</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					Series Created Year
-					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif">
+					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -180,9 +180,9 @@
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Tags</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p>Add series tags below:</p> 
-					<input class="form-control" name="tags" id="tags" value="">
+					<input class="form-control" name="tags" id="tags" value="" style="background-color:#000000;!important">
 				</div> 
 			</div>
 
@@ -245,7 +245,8 @@
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
-
+                </div>
+            </div>
 		</form>
 
 		<div class="clear"></div>
