@@ -145,9 +145,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					IMDb Ratings 10 out of 10
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -159,7 +159,7 @@
 				<div class="panel-title">Language</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p>Select a Series Language Below:</p>
-					<select class="form-control" id="language" name="language">
+					<select class="form-control" id="language" name="language" style="background-color:#000000;!important">
 						@foreach($languages as $language)
 							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
 						@endforeach
@@ -189,14 +189,14 @@
 			<div class="clear"></div>
 
 
-			<div class="row"> 
+			<div class="row p-3"> 
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-4 "> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p>Enter the series duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif">
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" style="background-color:#000000;!important">
 						</div> 
 					</div>
 				</div>
@@ -244,7 +244,7 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-success" />
                 </div>
             </div>
 		</form>
@@ -290,7 +290,7 @@
 		</div>
 		@endif
 <!-- This is where now -->
-</div>
+
 
 	
 	
