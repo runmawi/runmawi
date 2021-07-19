@@ -78,7 +78,7 @@
       <div class="iq-sidebar">
          <div class="iq-sidebar-logo d-flex justify-content-between">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" class="img-fluid rounded-normal" alt="">
+               <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/asset.png';?>" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                   <span class="text-primary text-uppercase">Flicknexs</span>
                </div>
