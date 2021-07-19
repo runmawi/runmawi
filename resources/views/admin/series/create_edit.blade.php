@@ -191,7 +191,7 @@
 
 			<div class="row p-3"> 
 
-				<div class="col-sm-4 "> 
+				<div class="col-sm-4 p-0"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -232,10 +232,8 @@
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
-
-			@if(!isset($series->user_id))
+                <div class="mt-3">
+                    @if(!isset($series->user_id))
 				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 			@endif
 
@@ -244,7 +242,10 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-success" /></div>
+			</div><!-- row -->
+
+			
                 </div>
             </div>
 		</form>

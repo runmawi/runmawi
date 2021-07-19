@@ -277,7 +277,7 @@
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">Recently Viewd Items</h4>
+                           <h4 class="card-title">Recently Viewed Items</h4>
                         </div>
                         
                      </div>
