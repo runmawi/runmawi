@@ -176,11 +176,7 @@
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
-
-
-			@if(isset($series->id))
+                @if(isset($series->id))
 				<input type="hidden" id="series_id" name="series_id" value="{{ $series->id }}" />
 			@endif
 
@@ -195,6 +191,10 @@
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			</div><!-- row -->
+
+
+			
 
 		</form>
 

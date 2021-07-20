@@ -1324,17 +1324,17 @@ h3 {font-size: 2px !important;}
 	}
 	.card-body{
 		color: #fff;
-		font-size: 25px;
+		font-size: 23px;
 		text-align: left;
 		display: inline-block;
         padding: 1.2em;
 	}
 	.btn-link:not(:disabled):not(.disabled) {
     color: #fff;
-		font-size: 18px;
+		font-size: 20px;
 		text-decoration: none;
 		padding: 4px;
-        font-weight: 700;
+        
 }
 		.loginbut{
 		padding: 7px 17px;
@@ -1413,16 +1413,16 @@ td{
    
 }
 .plus2{
-   margin-left: 500px;
+   margin-left: 490px;
 }
 .plus3{
-  margin-left: 515px;
+  margin-left: 500px;
 }
 .plus4{
-   margin-left: 410px;
+   margin-left: 390px;
 }
 .plus5{
-    margin-left: 490px;
+    margin-left: 480px;
 }
 .sign-user_card input{
     background-color: #30312f;
