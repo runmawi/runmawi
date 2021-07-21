@@ -35,7 +35,18 @@
     right: -8px;
     height: 20px;
     width: 20px;
-}
+        }.collapsed{
+            font-size: 22px!important;
+        }
+        .fa{
+            float: right;
+            font-size: 22px
+                font-weight: 400;
+        }
+        .card-header{
+            font-weight: 400;
+            font-size: 22px;
+        }
     </style>
 </head>
 <section class="landing-page">
@@ -125,103 +136,81 @@
     </div>
         </div>
 </section>
+        
 <section class="mt-5 pt-3">
     <div class="faqsec">
         <h2 class="freq">Frequently Asked Questions</h2>
-        <div class="col-md-8 offset-md-2" id="accordion">
-            <div class="card mt-5">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne"
-                            aria-expanded="true" aria-controls="collapseOne">
-                            What is Netflix Clone?<span class="plus1">+</span>
-                        </button>
-                    </h5>
-                </div>
+         <div id="accordion" style="width:60%;margin:0 auto;" itemscope="" itemtype="https://schema.org/FAQPage">
+                      
+                        <div class="card" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                        <h4 class="card-header" itemprop="name">
+                          <a class="card-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true"> What is Netflix Clone?
+                             <i class="fa fa-plus" aria-hidden="true"></i></a>
+                      </h4>
+                        <div id="collapseOne" class="collapse show" data-parent="#accordion" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <p class="card-body m-0" itemprop="text">
+                          Our Netflix Clone script is a splendid Video Streaming script that empowers you to put your leg
+                        forward and lead the right direction on the path of building your Video Streaming website.
+ 
+                          </p>
+                        </div>
+                      </div>
+                        
+                    <div class="card" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                        <h4 class="card-header" itemprop="name">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                            Does the videos are categorized? <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a></h4>
+                        <div id="collapseTwo" class="collapse" data-parent="#accordion" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="card-body m-0" itemprop="text">
+                            <p> This Video Streaming website lets your users explore various TV shows, movies, video trailers,
+                        etc. from large stack of video categories and watch them at their convenience.</p> 
 
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        Our Netflix Clone script is a splendid Video Streaming script that empowers you to put your leg
-                        forward and lead the right direction on the path of building your Video Streaming website.
-                        <br>
-                        <br>
-                        Our Netflix Clone script is a splendid Video Streaming script that empowers you to put your leg
-                        forward and lead the right direction on the path of building your Video Streaming website.
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                            aria-expanded="false" aria-controls="collapseTwo">
-                            Does the videos are categorized?<span class="plus2">+</span>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        This Video Streaming website lets your users explore various TV shows, movies, video trailers,
-                        etc. from large stack of video categories and watch them at their convenience.
-                        <br>
-                        <br>
-                        This Video Streaming website lets your users explore various TV shows, movies, video trailers,
-                        etc. from large stack of video categories and watch them at their convenience.
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
-                            aria-expanded="false" aria-controls="collapseThree">
-                            How does search made easier?<span class="plus3">+</span>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                        Users can search various videos, movies, video trailers etc. with auto suggestion options
-                        provided.
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingFour">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
-                            aria-expanded="false" aria-controls="collapseThree">
-                            What media format does the player support?<span class="plus4">+</span>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <div class="card-body">
-                        To assure high-quality video playback over multiple devices, we have integrated FFMPEG Player,
+                          </div>
+                        </div>
+                        </div>
+                        
+                       <div class="card" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                        <h4  class="card-header" itemprop="name">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                         How does search made easier? <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a></h4>
+                        <div id="collapseThree" class="collapse" data-parent="#accordion" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"> 
+                      <div class="card-body m-0" itemprop="text">
+                           <p> Users can search various videos, movies, video trailers etc. with auto suggestion options
+                        provided.</p> </div>
+                        </div>
+                        </div>
+                        
+                    <div class="card" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                        <h4   class="card-header" itemprop="name">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapsefour">
+                          What media format does the player support?<i class="fa fa-plus" aria-hidden="true"></i>
+                            </a></h4>
+                        <div id="collapsefour" class="collapse" data-parent="#accordion" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"> 
+                      <div class="card-body m-0" itemprop="text">
+                           <p> To assure high-quality video playback over multiple devices, we have integrated FFMPEG Player,
                         video player software that lets users watch videos smoothly, fast across various browsers and
-                        media types.
+                        media types. </p>
+                          </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingFive">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive"
-                            aria-expanded="false" aria-controls="collapseThree">
-                            What fascinates the Admin Panel?<span class="plus5">+</span>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                    <div class="card-body">
-                        On the upper hand, admin has all the rights to manage membership plans, videos, reported users,
+                        <div class="card" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                        <h4   class="card-header" itemprop="name">
+                          <a class="collapsed card-link" data-toggle="collapse" href="#collapsefive">
+                         What fascinates the Admin Panel? <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a></h4>
+                        <div id="collapsefive" class="collapse" data-parent="#accordion" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"> 
+                      <div class="card-body m-0" itemprop="text">
+                           <p> On the upper hand, admin has all the rights to manage membership plans, videos, reported users,
                         payment history, and video categories, export various details of videos, users, payment etc.
                         with CSV and XLS seamlessly and many more.
+ </p>
+                          </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <P class="primebot">Prime Yourself-Get Ready to Keep eye's on!!!</P>
+                        
+            </div>        <P class="primebot">Prime Yourself-Get Ready to Keep eye's on!!!</P>
         <div class="col-md-6 offset-md-3 input-group mb-3 mt-4 p-3 started">
             <input type="text" class="form-control subtext" placeholder="Email Address"
                 aria-label="Recipient's username" aria-describedby="basic-addon2">
