@@ -7,7 +7,8 @@
 
 @section('content')
 
-<div id="admin-container">
+<div id="admin-container" style="margin-left: 340px;
+    padding-top: 100px;" >
 <!-- This is where -->
 	
 	<div class="admin-section-title">
@@ -27,20 +28,20 @@
 
 		@if(!empty($series->created_at))
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-sm-6 p-0">
 		@endif
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body" style="display: block;"> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p>Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> 
 					</div>
 
                     
             @if(!empty($series->created_at))
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                             <div class="panel-body" style="display: block;"> 
@@ -113,16 +114,16 @@
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Details, Links, and Info</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block; padding:0px;">
-					<textarea class="form-control" name="details" id="summary-ckeditor">@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
+				<div class="panel-body col-sm-6 p-0" style="display: block; padding:0px;">
+					<textarea class="form-control" name="details" id="summary-ckeditor" style="background-color:#000000;!important">@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
 				</div> 
 			</div>
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Short Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p>Add a short description of the series below:</p> 
-					<textarea class="form-control" name="description" id="description">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
+					<textarea class="form-control" name="description" id="description" style="background-color:#000000;!important">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
 
@@ -144,9 +145,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					IMDb Ratings 10 out of 10
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -158,7 +159,7 @@
 				<div class="panel-title">Language</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p>Select a Series Language Below:</p>
-					<select class="form-control" id="language" name="language">
+					<select class="form-control" id="language" name="language" style="background-color:#000000;!important">
 						@foreach($languages as $language)
 							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
 						@endforeach
@@ -169,9 +170,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Year</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					Series Created Year
-					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif">
+					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -179,23 +180,23 @@
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Tags</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p>Add series tags below:</p> 
-					<input class="form-control" name="tags" id="tags" value="">
+					<input class="form-control" name="tags" id="tags" value="" style="background-color:#000000;!important">
 				</div> 
 			</div>
 
 			<div class="clear"></div>
 
 
-			<div class="row"> 
+			<div class="row p-3"> 
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-4 p-0"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p>Enter the series duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif">
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" style="background-color:#000000;!important">
 						</div> 
 					</div>
 				</div>
@@ -231,10 +232,8 @@
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
-
-			@if(!isset($series->user_id))
+                <div class="mt-3">
+                    @if(!isset($series->user_id))
 				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 			@endif
 
@@ -243,8 +242,12 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-success" /></div>
+			</div><!-- row -->
 
+			
+                </div>
+            </div>
 		</form>
 
 		<div class="clear"></div>
@@ -288,7 +291,7 @@
 		</div>
 		@endif
 <!-- This is where now -->
-</div>
+
 
 	
 	

@@ -181,13 +181,13 @@
                                     <source src="{{ URL::to('/storage/app/public/').'/'.$video->mp4_url }}" type="video/mp4">
                                     </video>
                                  @endif
-                                 <div class="d-block position-relative">
-                                 <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')style="display:block"@else style = "display:none" @endif>
+                                 <div class="d-block position-relative" style="left:80px;top:-50px;">
+                                 <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')@else  @endif>
                                     <label for="embed_code">Embed Code:</label>
                                     <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
                                  </div>
 
-                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:block" @else  @endif>
+                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else  @endif>
                                   
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
                                     <p>Upload video</p>

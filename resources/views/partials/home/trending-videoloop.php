@@ -57,7 +57,7 @@
 </div>
 <?php if(isset($featured_videos)) :
         foreach($featured_videos as $watchlater_video): ?>
-        <div class="modal fade bd-example-modal-xl2<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <!--<div class="modal fade bd-example-modal-xl2<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content" style="background-color: transparent !important;">
                <div class="modal-body playvid">
@@ -73,7 +73,7 @@
                                     <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
                                     <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
 
-                                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                             <!--       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
                                 </video>
                                 <div class="playertextbox hide">
                                 <h2>Up Next</h2>
@@ -122,12 +122,12 @@
                          </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 <?php endforeach; 
 		                                   endif; ?>
 <?php if(isset($featured_videos)) :
                                 foreach($featured_videos as $watchlater_video): ?>
-                                <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                             <!--   <div class="thumb-cont" id="<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
@@ -147,7 +147,7 @@
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
-                                         <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
+                                       <!--  <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
                                  aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
@@ -200,7 +200,7 @@
 
     </div>
 	</div>
-    <div align="center">
+   <!-- <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
                       <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
@@ -219,7 +219,7 @@
 
 
 	
-	</div></div>
+	</div></div>-->
 
 <?php endforeach; 
       endif; ?>
