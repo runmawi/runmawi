@@ -7,7 +7,8 @@
 
 @section('content')
 
-<div id="admin-container">
+<div id="admin-container" style="margin-left: 340px;
+    padding-top: 100px;">
 <!-- This is where -->
 	
 	<div class="admin-section-title">
@@ -32,9 +33,9 @@
 		@endif
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body" style="display: block;"> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p>Add the episodes title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif" />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif" style="background-color:#000000;!important" />
 						</div> 
 					</div>
 
@@ -46,7 +47,7 @@
 						<div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<p>Select Date/Time Below</p> 
-							<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($episodes->created_at)){{ $episodes->created_at }}@endif" />
+							<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($episodes->created_at)){{ $episodes->created_at }}@endif"/>
 						</div> 
 					</div>
 				</div>
@@ -70,9 +71,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Episode Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					IMDb Ratings 10 out of 10
-					<input class="form-control" name="rating" id="rating" value="" onkeyup="NumAndTwoDecimals(event , this);">
+					<input class="form-control" name="rating" id="rating" value="" onkeyup="NumAndTwoDecimals(event , this);"  style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -129,7 +130,7 @@
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p>Enter the episode duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif">
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif"  style="background-color:#000000;!important">
 						</div> 
 					</div>
 				</div>
@@ -175,11 +176,7 @@
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
-
-
-			@if(isset($series->id))
+                @if(isset($series->id))
 				<input type="hidden" id="series_id" name="series_id" value="{{ $series->id }}" />
 			@endif
 
@@ -194,6 +191,10 @@
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			</div><!-- row -->
+
+
+			
 
 		</form>
 

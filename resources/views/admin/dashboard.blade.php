@@ -51,7 +51,7 @@
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body">
-                              <div class="d-flex align-items-center justify-content-between">
+                              <div class="d-flex  justify-content-between">
                                  <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0 font-size-14">
                                        Rated This App
@@ -78,7 +78,7 @@
                                     </p>
                                  </div>
                                  <div class="icon iq-icon-box-top rounded-circle bg-info">
-                                    <i class="las la-download"></i>
+                                     <i class="las la-download"></i>
                                  </div>
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
@@ -277,7 +277,7 @@
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">Recently Viewd Items</h4>
+                           <h4 class="card-title">Recently Viewed Items</h4>
                         </div>
                         
                      </div>

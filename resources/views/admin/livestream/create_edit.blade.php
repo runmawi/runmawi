@@ -12,7 +12,7 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
              <div class="iq-card">
-<div id="admin-container">
+<div id="admin-container" style="padding: 20px;">
 <!-- This is where -->
 	
 	<div class="admin-section-title">
@@ -36,6 +36,7 @@
 	@else
 		<h3><i class="entypo-plus"></i> Add New Video</h3> 
 	@endif
+        <hr>
 	</div>
 	<div class="clear"></div>
 
