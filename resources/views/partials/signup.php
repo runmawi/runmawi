@@ -41,7 +41,13 @@
     background-color:#3daae0;
     color:#fff;
 }
-
+    .sign-user_card input{
+background-color: #30312f !important;
+    outline: 1px solid !important;
+    color: gray;
+    border: none;
+    height: 60px;
+        }
 </style>
 
 <div class="row" id="signup-form">
