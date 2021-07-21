@@ -43,6 +43,9 @@
             font-size: 22px
                 font-weight: 400;
         }
+        .fa:hover{
+           transform: rotate(45deg);
+        }
         .card-header{
             font-weight: 400;
             font-size: 22px;
