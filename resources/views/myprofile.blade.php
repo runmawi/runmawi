@@ -97,8 +97,7 @@
     }
     .details-back{
        background-color: transparent;
-    margin-left: 350px;
-    top: 80px;
+        margin: 40px auto;
     }
     .btn-primary {
     background: #4895d1;
@@ -111,26 +110,26 @@
     .data-back{
         background-color: #333;
     opacity: 0.5;
-    height: 460px;
+   padding: 20px;
     }
     .editbtn{
         float: right;
     }
     input.form-control#email {
      background-color: #1a1b20; 
-     border: none; 
+   
     color: #fff;
     box-shadow: none;
 }
     input.form-control#password {
    background-color: #1a1b20; 
-     border: none; 
+    
     color: #fff;
     box-shadow: none;
 }
     #update_profile_form .form-control {
     background: #1a1b20 !important;
-   border: none;
+   
     color: #fff;
 }
         select{
@@ -148,6 +147,9 @@
     transition: all 0.3s ease-out 0s;
     margin-top: 110px;
 }
+        #mobile{
+            height: 25px!important;
+        }
         .iq-top-navbar {
     padding: 0 15px 0 30px;
     min-height: 73px;
@@ -1307,8 +1309,7 @@
 					</div>
 				</div>-->
                 <!--popup-->
-                <div class="form-popup " id="myForm" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;
-    height: 665px;">
+                <div class="form-popup " id="myForm" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;padding:40px;">
                 <div class="col-sm-4 details-back">
 					<div class="row data-back">
 						<div class="well-in col-sm-12 col-xs-12" >
@@ -1342,7 +1343,7 @@
 							<input type="password" class="form-control" name="password" id="password"  />
 						</div>
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-						<div class="col-sm-12 col-xs-12">
+						<div class="col-sm-12 col-xs-12 mt-3">
 							<input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary" />
                              <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
 						</div>

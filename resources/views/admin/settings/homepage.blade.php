@@ -62,7 +62,7 @@
             
             </div>  
                 <div class="panel-body">
-                    <button type="submit" class="btn btn-primary pull-right" name="submit"> Save Settings</button>
+                    <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
                 </div>
         </div>
 </form>
