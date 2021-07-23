@@ -80,7 +80,7 @@ if($value['sub_language'] == "Spanish"){
           <?php  else: ?>
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 <!-- Current time: <div id="current_time"></div> -->
-<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
 <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 <?php
 if($playerui_settings['subtitle'] == 1 ){
@@ -152,7 +152,7 @@ if($value['sub_language'] == "Spanish"){
     else { ?>       
     <div id="video_container" class="fitvid">
 
-    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
     <?php
 if($playerui_settings['subtitle'] == 1 ){
@@ -187,7 +187,7 @@ if($value['sub_language'] == "Spanish"){
   <?php if(Auth::guest()) {  ?>
     <div id="video_container" class="fitvid">
 
-    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
 
     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
     <?php
