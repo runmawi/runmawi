@@ -215,7 +215,7 @@
 			
 			@foreach($episodes as $key=>$episode)
 			<tr>
-				<td valign="bottom"><p>{{$episode->id}}</p></td>
+				<td valign="bottom"><p>Season {{$key+1}}</p></td>
 				<td valign="bottom"><p>{{$episode->title}}</p></td>
 				<td>
 					<p>

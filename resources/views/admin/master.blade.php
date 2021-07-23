@@ -76,9 +76,9 @@
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
-         <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+         <div class="iq-sidebar-logo d-flex justify-content-between">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/asset.png';?>" class="img-fluid rounded-normal" alt="">
+               <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                   <span class="text-primary text-uppercase">Flicknexs</span>
                </div>
