@@ -63,6 +63,8 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon as Carbon;
+use App\Playerui as Playerui;
+
 
 class ApiAuthController extends Controller
 {
@@ -2899,5 +2901,25 @@ public function upnextAudio(Request $request){
       }
       return response()->json($response, 200);
   }
+
+  public function Playerui(Request $request){
+    $playerui = Playerui::find(1);
+    if($playerui){
+      $response = array(
+        'status' => true,
+        'playerui' => $playerui
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'playerui' => 'No Data Found'
+      );
+    }
+    // $response = $playerui;
+      return response()->json($response, 200);
+  }
+
+  
+  //http://localhost/flicknexs/api/auth/Playerui
 
 }

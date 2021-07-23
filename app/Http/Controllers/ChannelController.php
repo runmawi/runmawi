@@ -27,6 +27,11 @@ use Illuminate\Support\Facades\Cache;
 //use Image;
 use Intervention\Image\ImageManagerStatic as Image;
 use Session;
+use App\Playerui as Playerui;
+use App\MoviesSubtitles as MoviesSubtitles;
+// use App\Video as Video;
+
+
 
 class ChannelController extends Controller
 {
@@ -70,8 +75,6 @@ class ChannelController extends Controller
     public function play_videos($slug)
     {
 
-      
-        
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time()); 
@@ -100,6 +103,8 @@ class ChannelController extends Controller
            $categoryVideos = \App\Video::where('id',$vid)->first();
            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+           $playerui = Playerui::first();
+           $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
 
                 $wishlisted = false;
                 if(!Auth::guest()):
@@ -118,25 +123,34 @@ class ChannelController extends Controller
                      'watchlatered' => $watchlater,
                      'mywishlisted' => $wishlisted,
                      'watched_time' => $watchtime,
-                     'like_dislike' =>$like_dislike
+                     'like_dislike' =>$like_dislike,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+
                  );
-            
+             
         } else {
 
            
             $categoryVideos = \App\Video::where('id',$vid)->first();
             $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-               $data = array(
+    $playerui = Playerui::first();
+    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+
+            $data = array(
                  'video' => $categoryVideos,
                  'recomended' => $recomended,
-                
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+
             );
+
             }
+ 
        return view('video', $data);
-       
-    }   
     
+        }
     
     public function PlayPpv($vid)
     {

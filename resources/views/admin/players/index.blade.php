@@ -12,39 +12,29 @@
 
 			<div id="admin-container">
 				<!-- This is where -->
-
+                 
 				<div class="admin-section-title">
 					<h3 class="p-3"><i class="entypo-globe"></i> Player Settings</h3> 
 				</div>
+				
 				<div class="clear"></div>
 
 
 
 				<form method="POST" action="{{ URL::to('admin/players/store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-					<section class="play">
+					<section class="">
 						<h2></h2> 
+						<div class="col-md-6">
 						<div class="flex">
 							<div>
 								<label> Show logos on player</label>
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="show_logo" @if(!isset($playerui->show_logo) || (isset($playerui->show_logo) && $playerui->show_logo))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="show_logo">    
+									<input type="checkbox" name="show_logo" @if(!isset($playerui->show_logo) || (isset($playerui->show_logo) && $playerui->show_logo))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
-
-								</label>
-							</div>
-						</div>
-						<div class="flex">
-							<div>
-								<label>Skip intro <br><span>(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
-							</div>
-							<div>
-								<label class="switch">
-									<input type="checkbox" name="skip_intro" @if(!isset($playerui->skip_intro) || (isset($playerui->skip_intro) && $playerui->skip_intro))checked="checked" value="1"@else value="0"@endif>
-									<span class="slider round" ></span>
-
 								</label>
 							</div>
 						</div>
@@ -56,7 +46,9 @@
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="embed_player">    
+
+									<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 								</label>
 							</div>
@@ -67,7 +59,9 @@
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="watermark" @if(!isset($playerui->watermark) || (isset($playerui->watermark) && $playerui->watermark))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="watermark">    
+
+									<input type="checkbox" name="watermark" @if(!isset($playerui->watermark) || (isset($playerui->watermark) && $playerui->watermark))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -79,7 +73,40 @@
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="thumbnail" @if(!isset($playerui->thumbnail) || (isset($playerui->thumbnail) && $playerui->thumbnail))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="thumbnail">    
+
+									<input type="checkbox" name="thumbnail" @if(!isset($playerui->thumbnail) || (isset($playerui->thumbnail) && $playerui->thumbnail))checked="checked" value="0"@else value="1"@endif>
+									<span class="slider round"></span>
+
+								</label>
+							</div>
+						</div>
+					
+                     </div>
+					 <div class="col-md-6">
+						<div class="flex">
+							<div>
+								<label>Skip intro <br><span>(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
+							</div>
+							<div>
+								<label class="switch">
+								<input type="hidden" value="0" name="skip_intro">    
+
+									<input type="checkbox" name="skip_intro" @if(!isset($playerui->skip_intro) || (isset($playerui->skip_intro) && $playerui->skip_intro))checked="checked" value="0"@else value="1"@endif>
+									<span class="slider round" ></span>
+
+								</label>
+							</div>
+						</div>
+						<div class="flex">
+							<div>
+								<label>Playback speed control</label>
+							</div>
+							<div>
+								<label class="switch">
+								<input type="hidden" value="0" name="speed_control">    
+
+									<input type="checkbox" name="speed_control" @if(!isset($playerui->speed_control) || (isset($playerui->speed_control) && $playerui->speed_control))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -91,19 +118,9 @@
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="advance_player" @if(!isset($playerui->advance_player) || (isset($playerui->advance_player) && $playerui->advance_player))checked="checked" value="1"@else value="0"@endif>
-									<span class="slider round"></span>
+								<input type="hidden" value="0" name="advance_player">    
 
-								</label>
-							</div>
-						</div>
-						<div class="flex">
-							<div>
-								<label>Playback speed control</label>
-							</div>
-							<div>
-								<label class="switch">
-									<input type="checkbox" name="speed_control" @if(!isset($playerui->speed_control) || (isset($playerui->speed_control) && $playerui->speed_control))checked="checked" value="1"@else value="0"@endif>
+									<input type="checkbox" name="advance_player" @if(!isset($playerui->advance_player) || (isset($playerui->advance_player) && $playerui->advance_player))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -115,43 +132,60 @@
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="video_card" @if(!isset($playerui->video_card) || (isset($playerui->video_card) && $playerui->video_card))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="video_card">    
+
+									<input type="checkbox" name="video_card" @if(!isset($playerui->video_card) || (isset($playerui->video_card) && $playerui->video_card))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
 							</div>
 						</div>
+						</div>
+						
+						
 						<div class="">
 							<h1>Subtitle option</h1>
 						</div>
+						<div class="col-md-6">
 						<div class="flex">
 							<div>
 								<label>Subtitle on as Default</label>
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="subtitle">    
+
+									<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
 							</div>
 						</div>
+						</div>
+
+						<div class="col-md-6">
+
 						<div class="flex">
 							<div>
 								<label>Remeber subtitle preferences</label>
 							</div>
 							<div>
 								<label class="switch">
-									<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="1"@else value="0"@endif>
+								<input type="hidden" value="0" name="subtitle_preference">    
+
+									<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="0"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
 							</div>
 						</div>
+						</div>
+
 						<div class="">
 							<h1>Subtitle apperance</h1>
 							<p>Customize the appearance of subtitle</p>
 						</div>
+						<div class="col-md-6">
 
 						<div class="flex1">
 							<div>
@@ -179,6 +213,10 @@
 
 							</div>
 						</div>
+					
+						</div>
+
+						<div class="col-md-6">
 						<div class="flex1">
 							<div>
 								<label>Font color *</label>
@@ -206,10 +244,97 @@
 
 							</div>
 						</div>
+						</div>
+
+
+
+
+
+						<div class="">
+						<h3>Video Player Watermark Settings</h3>
+						</div>
+						<div class="col-md-6">
+
+						<div >
+           			 <p> Right:</p>
+				    <div class="form-group">
+				        <input type="text"  class="form-control"  name="watermark_right" id="watermark_right" value="<?=$playerui->watermark_right;?>" />
+				    </div>
+				    </div>
+					<div >
+                    <p> Top:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermark_top" id="watermark_top" value="<?=$playerui->watermark_top;?>" />
+				    </div>
+						</div>
+						<div >
+							<p> Bottom:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermark_bottom" id="watermark_bottom" value="<?=$playerui->watermark_bottom;?>" />
+						</div>
+						</div>
+				    </div>
+
+				
+					<div class="col-md-6">
+					
+						<div >
+                    <p> Left:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermark_left" id="watermark_left" value="<?=$playerui->watermark_left;?>" />
+				    </div>
+       			   </div>
+          
+                		</div>
+                        <div class="col-md-6">
+                        <div >
+           			   <p> Opacity:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermark_opacity" id="watermark_opacity" value="<?=$playerui->watermark_opacity;?>" />
+				    </div> 
+          </div>
+            
+            <div >
+                <p> Link:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermar_link" id="watermar_link" value="<?=$playerui->watermar_link;?>" />
+				    </div>
+            
+          </div>
+            
+        <div >
+		<div >
+                <p> Width:</p>
+				    <div class="form-group">
+				        <input type="text" class="form-control"  name="watermar_width" id="watermar_width" value="<?=$playerui->watermar_width;?>" />
+				    </div>
+            
+          </div>
+            
+        <div >
+            <p>Upload Watermark:</p> 
+            <input type="file" multiple="true" class="form-control" name="watermark_logo" id="watermark_logo" />
+             @if(!empty($playerui->watermark))
+                            <img src="{{ URL::to('/') . '/public/uploads/settings/' . $playerui->watermark }}" style="max-height:100px" />
+            @endif
+          </div>
+		  <div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> 
+		  <div class="panel-options"> 
+			  <a href="#" data-rel="collapse">
+				  <i class="entypo-down-open"></i>
+				</a> 
+			</div>
+		</div> 
+		</div>
+		</div> 
+		<div class="col-md-6">
+
 						<div class="bt">
 							<button name="save" type="submit">Save</button>
 							<button name="">Reset Default</button>
 						</div>
+						</div>
+
 					</section>
 				</form>
 
@@ -219,3 +344,10 @@
 
 
 	@stop
+
+
+	<style>
+		   .col-md-6{
+           float:left;
+        }
+		</style>

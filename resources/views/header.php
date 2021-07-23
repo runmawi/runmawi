@@ -35,6 +35,7 @@
         .svg{
             color: #fff;
         }
+     
     </style>
    <body>
       <!-- loader Start -->
