@@ -68,32 +68,23 @@
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-					<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Series Format</label>
+				<div class="panel-body" > 
+					<label for="type" >Series Format</label>
 					<select id="type" name="type">
 						<option value="embed">Embed Code</option>
 						<option value="file" @if(!empty($series->type) && $series->type == 'file'){{ 'selected' }}@endif>Series File</option>
 						<option value="upload" @if(!empty($series->type) && $series->type == 'upload'){{ 'selected' }}@endif>Upload Series</option>
 					</select>
-					<hr />
+					
 
-					<div class="new-series-file" @if(!empty($series->type) && $series->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
-						<label for="mp4_url">Mp4 File URL:</label>
-						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($series->mp4_url)){{ $series->mp4_url }}@endif" />
-						<hr />
-						<label for="webm_url">WebM File URL:</label>
-						<input type="text" class="form-control" name="webm_url" id="webm_url" value="@if(!empty($series->webm_url)){{ $series->webm_url }}@endif" />
-						<hr />
-						<label for="ogg_url">Ogg File URL:</label>
-						<input type="text" class="form-control" name="ogg_url" id="ogg_url" value="@if(!empty($series->ogg_url)){{ $series->ogg_url }}@endif" />
-					</div>
+					
 
 					<div class="new-series-embed" @if(!empty($series->type) && $series->type == 'embed')style="display:block"@else style = "display:none" @endif>
 						<label for="embed_code">Embed Code:</label>
 						<textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($series->embed_code)){{ $series->embed_code }}@endif</textarea>
 					</div>
 
-					<div class="new-series-upload" @if(!empty($series->type) && $series->type == 'upload')style="display:block"@else style = "display:none" @endif>
+					<div class="new-series-upload" @if(!empty($series->type) && $series->type == 'upload') @endif>
 						<label for="embed_code">Upload Series</label>
 						<input type="file" name="series_upload" id="series_upload">
 					</div>
