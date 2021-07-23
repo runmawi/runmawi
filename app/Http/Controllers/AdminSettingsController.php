@@ -20,7 +20,9 @@ class AdminSettingsController extends Controller
     public function index() {
         
         $setting = Setting::first();
-        
+        //   echo "<pre>";
+        // print_r($setting);
+        // exit();
         $data = array(
             'admin_user' => Auth::user(),
 			'settings' => $setting,
@@ -33,6 +35,10 @@ class AdminSettingsController extends Controller
 
 		//$input = Request::all();
         $input = $request->all();
+
+        // echo "<pre>";
+        // print_r($input);
+        // exit();
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
 		$settings->ppv_hours = $request['ppv_hours'];
@@ -239,21 +245,99 @@ class AdminSettingsController extends Controller
 	}
    
   public function playerui_index() {
-
+    // $setting = Setting::first();
+ 
     $playerui = Playerui::first();
 
     $data = array(
       'admin_user' => Auth::user(),
       'playerui' => $playerui,
+      // 'settings' => $setting,
     );
+
     return \View::make('admin.players.index', $data);
+
+  }  
+  public function playerui_settings() {
+
+    $playerui_settings = Playerui::first();
+
+return view('videolayout.header',compact('playerui_settings') );
+
+  }  
+  public function playerui_settings_footer() {
+
+    $playerui_settings = Playerui::first();
+
+return view('videolayout.footer',compact('playerui_settings') );
 
   }  
 
 
   public function storeplayerui(Request $request){
     $input = $request->all();
+      
     $playerui = Playerui::find(1);
+    // echo "<pre>";
+    // print_r($input);
+    // exit(); 
+    if($playerui->show_logo == 0){
+      $playerui->show_logo = 0;
+    }else{
+      $playerui->show_logo = 1;
+    }
+    if($playerui->embed_player == 0){
+      $playerui->embed_player = 0;
+    }else{
+      $playerui->embed_player = 1;
+    }
+    if($playerui->watermark == 0){
+      $playerui->watermark = 0;
+    }else{
+      $playerui->watermark = 1;
+    }
+    
+    if($playerui->thumbnail == 0){
+      $playerui->thumbnail = 0;
+    }else{
+      $playerui->thumbnail = 1;
+    }
+    
+    if($playerui->skip_intro == 0){
+      $playerui->skip_intro = 0;
+    }else{
+      $playerui->skip_intro = 1;
+    }
+    
+    if($playerui->speed_control == 0){
+      $playerui->speed_control = 0;
+    }else{
+      $playerui->speed_control = 1;
+    }
+    
+    if($playerui->advance_player == 0){
+      $playerui->advance_player = 0;
+    }else{
+      $playerui->advance_player = 1;
+    }
+    
+    if($playerui->video_card == 0){
+      $playerui->video_card = 0;
+    }else{
+      $playerui->video_card = 1;
+    }
+    
+    if($playerui->subtitle == 0){
+      $playerui->subtitle = 0;
+    }else{
+      $playerui->subtitle = 1;
+    }
+    
+    if($playerui->subtitle_preference == 0){
+      $playerui->subtitle_preference = 0;
+    }else{
+      $playerui->subtitle_preference = 1;
+    }
     $playerui->show_logo = $request['show_logo'];
     if(empty($playerui->show_logo)){
       $playerui->show_logo = 0;
@@ -329,6 +413,35 @@ class AdminSettingsController extends Controller
     $playerui->font_color = $request['font_color'];
     $playerui->background_color = $request['background_color'];
     $playerui->opacity = $request['opacity'];
+    //Watermark Settings
+    $playerui->watermark_right = $request['watermark_right'];
+    $playerui->watermark_right = $request['watermark_top'];
+    $playerui->watermark_bottom = $request['watermark_bottom'];
+    $playerui->watermark_left = $request['watermark_left'];
+    $playerui->watermark_opacity = $request['watermark_opacity'];
+    $playerui->watermar_link = $request['watermar_link'];
+    $playerui->watermar_width = $request['watermar_width'];
+
+
+    // http://localhost/flicknexs/public/uploads/settings/fl-logo.jpg
+
+    $logopath = URL::to('/public/uploads/settings/');
+    $path = public_path().'/uploads/settings/';
+    $watermark = $request['watermark_logo'];
+if($watermark != '') {   
+     //code for remove old file
+     if($watermark != ''  && $watermark != null){
+          $file_old = $path.$watermark;
+         if (file_exists($file_old)){
+          unlink($file_old);
+         }
+     }
+     //upload new file
+     $file = $watermark;
+     $playerui->watermark_logo  = $logopath.'/'.$file->getClientOriginalName();
+     $file->move($path, $playerui->watermark);
+    
+}
     $playerui->save();
       
     return Redirect::to('admin/players')->with(array('note' => 'Successfully Updated Player Setting UI!', 'note_type' => 'success') );
