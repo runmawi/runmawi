@@ -85,10 +85,10 @@
         
           
           	<div class="panel panel-primary" data-collapsed="0">
-               <h3>Video Player Watermark Settings</h3>
+               <!-- <h3>Video Player Watermark Settings</h3> -->
                 <div class="panel-body"> 
                     <div class="row">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                  <div >
             <p> Right:</p>
 				    <div class="form-group">
@@ -137,10 +137,10 @@
              @if(!empty($settings->watermark))
                             <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->watermark }}" style="max-height:100px" />
             @endif
-          </div>
+          </div> -->
                             <div class="col-sm-6"> 
 				<div class="panel panel-primary row" data-collapsed="0">
-					<div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<!-- <div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div>  -->
 					<div class="panel-body col-md-2"> 
 						<!--<p>Make sure you have purchased an SSL before anabling https://</p>-->
 						<div class="form-group">

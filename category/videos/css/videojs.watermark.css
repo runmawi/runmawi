@@ -1,0 +1,13 @@
+/* .vjs-watermark {
+    position: absolute;
+    display: inline;
+    z-index: 2000;
+} */
+.vjs-watermark img {
+    width: 10%;
+    float: right;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translate(-50%, 0%);
+}

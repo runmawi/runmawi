@@ -38,6 +38,12 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     Route::get('/', 'HomeController@FirstLanging');
     
     Route::get('/home', 'HomeController@index')->name('home');
+
+    /*TV-shows*/
+    Route::get('tv-shows', 'TvshowsController@index');
+    Route::get('episode/{id}', 'TvshowsController@play_episode');
+    Route::get('play_series/{id}', 'TvshowsController@play_series');
+    
   
     Route::post('/sendOtp', 'HomeController@SendOTP');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
@@ -78,8 +84,6 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     
     Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
     Route::get('series/category/{id}', 'ChannelController@series_genre' );
-    Route::get('play_series/{id}', 'ChannelController@play_series');
-    Route::get('episodes/{id}', 'ChannelController@play_episode');
 
     Route::get('watchlaters', 'WatchLaterController@show_watchlaters');
     Route::get('myprofile', 'AdminUsersController@myprofile');
@@ -344,6 +348,7 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
         Route::post('/episode/update', 'AdminSeriesController@update_episode');
 		Route::get('/players', 'AdminSettingsController@playerui_index');
+        Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
 		Route::post('/players/store', 'AdminSettingsController@storeplayerui');
 
 });

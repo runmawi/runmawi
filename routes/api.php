@@ -122,5 +122,13 @@ Route::group([
     // Season  Next Prev Episode
     Route::post('NextEpisode', 'ApiAuthController@NextEpisode');
     Route::post('PrevEpisode', 'ApiAuthController@PrevEpisode');
+
+    //  Palyer UI Settings
+
+    Route::post('Playerui', 'ApiAuthController@Playerui');
+
+    Route::get('Playerui', 'ApiAuthController@Playerui');
+
+
     
 });

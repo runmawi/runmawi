@@ -110,13 +110,7 @@ class AdminSeriesController extends Controller
          /*Slug*/
         $data = $request->all();
         
-        if ($request->slug != '') {
-            $data['slug'] = $this->createSlug($request->slug);
-        }
-
-        if($request->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
-        }
+       
 
                  $path = public_path().'/uploads/videos/';
                  $image_path = public_path().'/uploads/images/';
@@ -167,7 +161,7 @@ class AdminSeriesController extends Controller
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
-
+        $data['title'] = $data['title'];
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -175,7 +169,6 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
         $series = Series::create($data);
         
        // $this->addUpdateSeriesTags($series, $tags);
@@ -256,24 +249,8 @@ class AdminSeriesController extends Controller
         $id = $input['id'];
         $series = Series::findOrFail($id);
 
-        $validator = Validator::make($data = $input, Series::$rules);
-
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-        /*Slug*/
-        if ($series->slug != $request->slug) {
-            $data['slug'] = $this->createSlug($request->slug, $id);
-        }
-
-        if($request->slug == '' || $series->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
-        }
-//        $tags = $data['tags'];
-//        unset($data['tags']);
-//        $this->addUpdateSeriesTags($series, $tags);
-
+       
+        $data = $input;
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
