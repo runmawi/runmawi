@@ -2608,107 +2608,45 @@ public function checkEmailExists(Request $request)
     }
     public function NextVideo(Request $request) {
 
-        //ds
-    $currentvideo_id = $request->id;
-      /*  
-        $videonext_album_id = Video::where('id', '=', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('album_id');*/
-        
-       /* $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');*/
-         $next_id = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+      $currentvideo_id = $request->id;
 
-    $videonext = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->pluck('id');
+      $next_videoid = Video::where('id', '>', $currentvideo_id)->where('status','=','1')->where('active','=','1')->min('id');
 
-    $video_cat_id = Video::where('id','=',$videonext)->where('status','=','1')->where('active','=','1')->pluck('video_category_id');
-
-    $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
-        
-    $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
-
-    $settings = Setting::first();
-    $count_video = count($videonext);
-        
-        
-    if ( $count_video > 0 ) { 
-  
-                // $audio_cat_id = \Audio::where('id','=',$request->audioid)->pluck('audio_category_id');
-            
-            
-                $video = Video::find($videonext);
-            
-                // If user has access to all the content
-            
-                if($video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ) {
-                    
-                $columns = null;
-                    
-                // Else we need to restrict the columns we return
-                    
-                } else {
-                    
-                    $columns = $this->public_columns_video;
-                }
-       
-                $response = array(
-                    'status'=>'true',
-                    'video_cat_name' => $video_cat_name,
-                    'video_details' => Video::where('id', '=', $videonext)->where('status','=','1')->where('active','=','1')->get($columns),
-                    'category_details' => $video_cat_details
-                );
+      if($next_videoid){
+        $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => true,
+          'next_videoid' => $next_videoid,
+          'video' => $video
+        );
+      }else{
+        $response = array(
+          'status' => false,
+          'video' => 'No Data Found'
+        );
       }
-      else {
-
-      $response = array(
-        'status'=>'false',
-        'message' => 'Sorry No Video Found'
-      );
-    }
-
-    return response()->json($response, 200);
+      return response()->json($response, 200);
   }
 
   public function PrevVideo(Request $request){
-        
-    $currentvideo_id = $request->id;//
-    //$audionext = Audio::where('id', '<', $currentaudio_id)->pluck('id');
-    $videonext = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->pluck('id');
-    $video_cat_id = Video::where('id','=',$videonext )->where('status','=','1')->where('active','=','1')->pluck('video_category_id')->limit(1)->get();
-    dd($video_cat_id);
-    $video_cat_name = VideoCategory::where('id','=',$video_cat_id)->pluck('name');
 
-        $video_cat_details = VideoCategory::where('id','=',$video_cat_id)->get();
-        
-    $settings = Setting::first();
-
-    $count_video = count($videonext);
-
-    if ( $count_video > 0 ) { 
-            
-    //print_r($audionext1);exit;
-    $video = Video::find($videonext);
-    // If user has access to all the content
-    if($video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ){
-      $columns = null;
-    // Else we need to restrict the columns we return
-    } else {
-      $columns = $this->public_columns_video;
-    }
-
-    $response = array(
-      'status'=>'true',
-      'video_cat_name' => $video_cat_name,
-      'video_details' => Video::where('id', '=', $videonext)->where('status','=','1')->where('active','=','1')->get($columns),
-      'category_details' => $video_cat_details
-    );
-        } else {
-
-            $response = array(
-                'status'=>'false',
-                'message' => 'Sorry No Audio Found'
-            );
-        }
-
-            return response()->json($response, 200);
-        }
+    $currentvideo_id = $request->id;
+    $prev_videoid = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->min('id');
+    if($prev_videoid){
+        $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => true,
+          'prev_videoid' => $prev_videoid,
+          'video' => $video
+        );
+      }else{
+        $response = array(
+          'status' => false,
+          'video' => 'No Data Found'
+        );
+      }
+      return response()->json($response, 200);
+  }
     
 
 public function upnextAudio(Request $request){
@@ -2914,6 +2852,52 @@ public function upnextAudio(Request $request){
       );
     }
     return response()->json($response, 200);
+  }
+
+
+   public function NextEpisode(Request $request) {
+
+      $seasonid = $request->seasonid;
+      $episode_id = $request->episode_id;
+
+      $next_episodeid = Episode::where('id', '>', $episode_id)->where('season_id','=',$seasonid)->where('active','=','1')->where('status','=','1')->min('id');
+
+      if($next_episodeid){
+        $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => true,
+          'next_episodeid' => $next_episodeid,
+          'episode' => $episode
+        );
+      }else{
+        $response = array(
+          'status' => false,
+          'episode' => 'No Data Found'
+        );
+      }
+      return response()->json($response, 200);
+  }
+
+  public function PrevEpisode(Request $request){
+
+    $seasonid = $request->seasonid;
+    $episode_id = $request->episode_id;
+
+    $prev_episodeid = Video::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->min('id');
+    if($prev_episodeid){
+        $episode= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => true,
+          'prev_episodeid' => $prev_episodeid,
+          'episode' => $episode
+        );
+      }else{
+        $response = array(
+          'status' => false,
+          'episode' => 'No Data Found'
+        );
+      }
+      return response()->json($response, 200);
   }
 
 }

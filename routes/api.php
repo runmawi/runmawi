@@ -118,5 +118,9 @@ Route::group([
     // Favourite Next Prev Video
     Route::post('nextfavouritevideo', 'ApiAuthController@nextfavouritevideo');
     Route::post('prevfavouritevideo', 'ApiAuthController@prevfavouritevideo');
+
+    // Season  Next Prev Episode
+    Route::post('NextEpisode', 'ApiAuthController@NextEpisode');
+    Route::post('PrevEpisode', 'ApiAuthController@PrevEpisode');
     
 });

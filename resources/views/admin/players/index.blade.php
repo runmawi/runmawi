@@ -1,16 +1,5 @@
 @extends('admin.master')
 
-@section('css')
-<style type="text/css">
-	.make-switch{
-		z-index:2;
-	}
-
-
-</style>
-
-@stop
-
 @section('content')
 
 
@@ -226,10 +215,7 @@
 
 			</div>
 		</div>
-	</div></div><!-- admin-container -->
-
-	@section('javascript')
-	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+	</div><!-- admin-container -->
 
 
 	@stop
