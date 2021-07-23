@@ -11,7 +11,7 @@
 <?php
     // print_r($watched_time);
    if(!Auth::guest()) {  
-   if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
+   if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered') && $video->mp4_url != null) { ?>
 
   <div id="video_bg">
     <div class=" page-height">
