@@ -1,5 +1,6 @@
 <?php include('videolayout/header.php');?>
  
+ 
 <?php include('header.php');?>
 
  <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
