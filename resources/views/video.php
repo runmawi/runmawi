@@ -30,7 +30,15 @@
             </div>
           <?php  elseif($video->type == 'file'): ?>
             <div id="video_container" class="fitvid">
+<<<<<<< HEAD
+<<<<<<< HEAD
+            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+=======
             <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+>>>>>>> 7129dcc0d6250753307605030da6dbc604163cef
+=======
+            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+>>>>>>> e29b857fe3c87e440c5931fe48352a9e571580e8
            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
               <!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' > -->
@@ -81,7 +89,15 @@ if($value['sub_language'] == "Spanish"){
           <?php  else: ?>
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 <!-- Current time: <div id="current_time"></div> -->
+<<<<<<< HEAD
+<<<<<<< HEAD
+<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+=======
+<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+>>>>>>> 7129dcc0d6250753307605030da6dbc604163cef
+=======
 <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
+>>>>>>> e29b857fe3c87e440c5931fe48352a9e571580e8
 <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
 <?php
 if($playerui_settings['subtitle'] == 1 ){
@@ -153,7 +169,15 @@ if($value['sub_language'] == "Spanish"){
     else { ?>       
     <div id="video_container" class="fitvid">
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+=======
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+>>>>>>> 7129dcc0d6250753307605030da6dbc604163cef
+=======
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
+>>>>>>> e29b857fe3c87e440c5931fe48352a9e571580e8
     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
     <?php
 if($playerui_settings['subtitle'] == 1 ){
@@ -188,7 +212,15 @@ if($value['sub_language'] == "Spanish"){
   <?php if(Auth::guest()) {  ?>
     <div id="video_container" class="fitvid">
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+=======
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay>
+>>>>>>> 7129dcc0d6250753307605030da6dbc604163cef
+=======
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay>
+>>>>>>> e29b857fe3c87e440c5931fe48352a9e571580e8
 
     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
     <?php
