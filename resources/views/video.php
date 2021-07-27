@@ -387,6 +387,7 @@ if($value['sub_language'] == "Spanish"){
     </div>
 
     <div class="clear"></div>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
         <script>
             //$(".share a").hide();
             $(".share").on("mouseover", function() {
@@ -394,6 +395,59 @@ if($value['sub_language'] == "Spanish"){
             }).on("mouseout", function() {
             $(".share a").hide();
             });
+
+              $(document).ready(function () {  
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+  });
+ 
+              function pay(amount) {
+
+              var video_id = $('#video_id').val();
+
+              var handler = StripeCheckout.configure({
+
+              key: 'pk_test_hklBv33GegQSzdApLK6zWuoC00pEBExjiP',
+              locale: 'auto',
+              token: function (token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+              console.log('Token Created!!');
+              console.log(token);
+              $('#token_response').html(JSON.stringify(token));
+
+              $.ajax({
+              url: '<?php echo URL::to("purchase-live") ;?>',
+              method: 'post',
+              data: {"_token": "<?php echo csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
+              success: (response) => {
+              alert("You have done  Payment !");
+              setTimeout(function() {
+              location.reload();
+              }, 2000);
+
+              },
+              error: (error) => {
+              swal('error');
+              //swal("Oops! Something went wrong");
+              /* setTimeout(function() {
+              location.reload();
+              }, 2000);*/
+              }
+              })
+              }
+              });
+
+
+              handler.open({
+              name: 'Flicknexs',
+              description: 'PAY PAR VIEW',
+              amount: amount * 100
+              });
+            }
         </script>
 
     <!--<div class="clear"></div>

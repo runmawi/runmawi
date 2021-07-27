@@ -104,7 +104,7 @@ public function RentPaypal(Request $request)
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
     $date = date('YYYY-MM-DD');
-    $stripe = Stripe::make('sk_test_u9FDGnChLD9i5gF4iY2kaZ4300y4xKOfJk', '2020-03-02');
+    $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
     $charge = $stripe->charges()->create([
       'source' => $request->get('tokenId'),
       'currency' => 'USD',
@@ -116,7 +116,7 @@ public function RentPaypal(Request $request)
     ]);
 
 
-    return back();
+    return 1;
   }
 
   public function upgrading(Request $request) {
