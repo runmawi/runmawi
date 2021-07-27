@@ -22,7 +22,7 @@
                         </a>
                      </div>
                   </div>
-                  <div class="col-lg-3 col-md-4 col-sm-12">
+                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
@@ -67,7 +67,7 @@
 						<?php endforeach; ?>
 					</ul>-->
 				</div>
-                   <div class="col-lg-3 col-md-4 ">
+                   <div class="col-lg-3 col-md-4 p-0">
                      <!--<ul class="f-link list-unstyled mb-0">
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Cotact Us</a></li>
