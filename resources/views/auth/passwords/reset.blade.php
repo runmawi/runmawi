@@ -1,3 +1,6 @@
+<html>
+    <head>
+    </head>
 
 
 <style>
@@ -101,4 +104,3 @@
 	</div>
 </div>
 </section>
-@extends('footer')

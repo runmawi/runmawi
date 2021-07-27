@@ -34,6 +34,8 @@ use App\Jobs\ConvertVideoForStreaming;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
+use App\Artist;
+use App\Seriesartist;
 
 class AdminSeriesController extends Controller
 {
@@ -85,6 +87,8 @@ class AdminSeriesController extends Controller
             'admin_user' => Auth::user(),
             'series_categories' => VideoCategory::all(),
             'languages' => Language::all(),
+            'artists' => Artist::all(),
+            'series_artist' => [],
             );
         return View::make('admin.series.create_edit', $data);
     }
@@ -110,12 +114,9 @@ class AdminSeriesController extends Controller
          /*Slug*/
         $data = $request->all();
         
-        if ($request->slug != '') {
-            $data['slug'] = $this->createSlug($request->slug);
-        }
-
-        if($request->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
+       if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
         }
 
                  $path = public_path().'/uploads/videos/';
@@ -167,7 +168,7 @@ class AdminSeriesController extends Controller
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
-
+        $data['title'] = $data['title'];
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -175,9 +176,17 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
         $series = Series::create($data);
         
+        if(!empty($artistsdata)){
+            foreach ($artistsdata as $key => $value) {
+                $artist = new Seriesartist;
+                $artist->series_id =  $series->id;
+                $artist->artist_id = $value;
+                $artist->save();
+            }
+            
+        }
        // $this->addUpdateSeriesTags($series, $tags);
 
         $resolution_data['series_id'] = $series->id;
@@ -239,6 +248,8 @@ class AdminSeriesController extends Controller
             'admin_user' => Auth::user(),
             'series_categories' => Genre::all(),
             'languages' => Language::all(),
+            'artists' => Artist::all(),
+            'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -256,24 +267,8 @@ class AdminSeriesController extends Controller
         $id = $input['id'];
         $series = Series::findOrFail($id);
 
-        $validator = Validator::make($data = $input, Series::$rules);
-
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-        /*Slug*/
-        if ($series->slug != $request->slug) {
-            $data['slug'] = $this->createSlug($request->slug, $id);
-        }
-
-        if($request->slug == '' || $series->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
-        }
-//        $tags = $data['tags'];
-//        unset($data['tags']);
-//        $this->addUpdateSeriesTags($series, $tags);
-
+       
+        $data = $input;
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -337,7 +332,21 @@ class AdminSeriesController extends Controller
         
         
         $series->update($data);
+        if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
+            /*save artist*/
+            if(!empty($artistsdata)){
+                Seriesartist::where('series_id', $series->id)->delete();
+                foreach ($artistsdata as $key => $value) {
+                    $artist = new Seriesartist;
+                    $artist->series_id = $series->id;
+                    $artist->artist_id = $value;
+                    $artist->save();
+                }
 
+            }
+        }
         if(empty($data['series_upload'])){
             unset($data['series_upload']);
         } 
@@ -381,6 +390,7 @@ class AdminSeriesController extends Controller
         //$this->deleteSeriesImages($series);
 
         Series::destroy($id);
+        Seriesartist::where('series_id',$id)->delete();
 //        SeriesResolution::where('series_id', '=', $id)->delete();
 //        SeriesSubtitle::where('series_id', '=', $id)->delete();
 

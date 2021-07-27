@@ -241,7 +241,8 @@ i.fa.fa-google-plus {
                                      <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                 <div>
-                                     <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                      <a href="{{ url('/auth/redirect/twiter') }}" class="" >
+                                          <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                 </div>
                          </div>

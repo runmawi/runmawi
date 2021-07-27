@@ -79,16 +79,6 @@
 							<?php } } ?>
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
-						<div class="playertextbox hide">
-						<h2>Up Next</h2>
-						<?php if(isset($episodenext)){ ?>
-						<p><?php  App\Episode::where('id','=',$episodenext->id)->pluck('title'); ?></p>
-						<p style="top:80px;">SEASON <?php App\Episode::where('id','=',$episodenext->id)->pluck('season_id'); ?></p>
-						<?php }elseif(isset($episodeprev)){ ?>
-						<p><?php App\Episode::where('id','=',$episodeprev->id)->pluck('title'); ?></p>
-						<p style="top:80px;">SEASON <?php App\Episode::where('id','=',$episodeprev->id)->pluck('season_id'); ?></p>
-						<?php } ?>
-						</div>
 						</div>
 					<?php  else: ?>
 						<div id="series_container">
@@ -108,16 +98,6 @@
 -->
 						
 						</video>
-						<div class="playertextbox hide">
-						<h2>Up Next</h2>
-						<?php if(isset($episodenext)){ ?>
-						<p><?= App\Episode::where('id','=',$episodenext->id)->pluck('title'); ?></p>
-						<p style="top:80px;">SEASON <?php App\Episode::where('id','=',$episodenext->id)->pluck('season_id'); ?></p>
-						<?php }elseif(isset($episodeprev)){ ?>
-						<p><?php  App\Episode::where('id','=',$episodeprev->id)->pluck('title'); ?></p>
-						<p style="top:80px;">SEASON <?php App\Episode::where('id','=',$episodeprev->id)->pluck('season_id'); ?></p>
-						<?php } ?>
-						</div>
 						</div>
 					<?php endif; ?>
 				
@@ -146,9 +126,9 @@
 
 	<div class="container series-details">
 
-		<h3 style="color:#000;">
-            <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-clock-o"></i> Watch Later</div>
-			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-plus"></i> My Wishlist</div>
+		<h3 style="color:#000;margin: 10px;">
+            <div class="watchlater btn btn-primary <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-clock-o"></i> Watch Later</div>
+			<div class="mywishlist btn btn-primary <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-plus"></i> My Wishlist</div>
 			<span class="view-count" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span>
             <br>
 			
@@ -170,21 +150,22 @@
 
 		<?php
 		foreach($season as $key => $seasons): ?>
-			<h4 style="color:#000;">Season <?= $key+1; ?></h4>
-			<?php foreach($seasons->episodes as $key => $episodes): ?>
+			<h4 style="color:#fff;">Season <?= $key+1; ?></h4>
+
+			<?php foreach($seasons->episodes as $key => $episodes): 
+				if($episodes->id != $episode->id):?>
 				<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 new-art">
 				<article class="block">
 				<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episodes') ?><?= '/' . $episodes->id ?>">
 				<div class="thumbnail-overlay"></div>
-				<span class="play-button"></span>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>">
+				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250">
 				<div class="details">
-				<h2><?= $episodes->title; ?> <span><?= gmdate("H:i:s", $episodes->duration); ?></span></h2>
+				<h4><?= $episodes->title; ?> <span><br><?= gmdate("H:i:s", $episodes->duration); ?></span></h4>
 				</div>
 				</a>
 				<div class="block-contents">
-				<p class="date"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+				<p class="date" style="color:#fff;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
 				<?php elseif($episodes->access == 'subscriber'): ?>
@@ -197,7 +178,7 @@
 				</div>
 				</article>
 				</div>
-			<?php endforeach; ?>
+			<?php endif; endforeach; ?>
 				<div class="clear"></div>
 
 		<?php endforeach; ?>
@@ -229,7 +210,7 @@
 	
 	<script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'cosman') ?>';
+        var disqus_shortname = 'Flicknexs';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
@@ -255,7 +236,6 @@
 			});
 			//watchlater
 			$('.watchlater').click(function(){
-				alert();
 				if($(this).data('authenticated')){
 					$.post(base_url+'/watchlater', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 					$(this).toggleClass('active');

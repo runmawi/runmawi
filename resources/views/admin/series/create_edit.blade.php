@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('css')
-	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
 
@@ -126,7 +126,26 @@
 					<textarea class="form-control" name="description" id="description" style="background-color:#000000;!important">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
+			<div class="row"> 
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-body" style="display: block;"> 
+							<p>Add artists for the series below:</p> 
+							<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+								@foreach($artists as $artist)
+								@if(in_array($artist->id, $series_artist))
+								<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+								@else
+								<option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+								@endif 
+								@endforeach
+							</select>
 
+						</div> 
+					</div>
+				</div>
+			</div>
 			<div class="row"> 
 			<div class="col-sm-6">
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
@@ -145,9 +164,9 @@
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Series Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					IMDb Ratings 10 out of 10
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" style="background-color:#000000;!important">
 				</div> 
 			</div>
 			</div>
@@ -159,7 +178,7 @@
 				<div class="panel-title">Language</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p>Select a Series Language Below:</p>
-					<select class="form-control" id="language" name="language">
+					<select class="form-control" id="language" name="language" style="background-color:#000000;!important">
 						@foreach($languages as $language)
 							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
 						@endforeach
@@ -189,14 +208,14 @@
 			<div class="clear"></div>
 
 
-			<div class="row"> 
+			<div class="row p-3"> 
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-4 p-0"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p>Enter the series duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif">
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" style="background-color:#000000;!important">
 						</div> 
 					</div>
 				</div>
@@ -232,10 +251,8 @@
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
-
-			@if(!isset($series->user_id))
+                <div class="mt-3">
+                    @if(!isset($series->user_id))
 				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 			@endif
 
@@ -244,7 +261,10 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-success" /></div>
+			</div><!-- row -->
+
+			
                 </div>
             </div>
 		</form>
@@ -290,26 +310,17 @@
 		</div>
 		@endif
 <!-- This is where now -->
-</div>
-
-	
-	
-	
-	@section('javascript')
 
 
-	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript">
 
-	$ = jQuery;
+		$ = jQuery;
 
-	$(document).ready(function(){
+		$(document).ready(function(){
+			$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');
-		$('#tags').tagsInput();
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){
@@ -375,7 +386,7 @@
         });
         </script>
 
-
+@section('javascript')
 
 	@stop
 

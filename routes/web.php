@@ -38,6 +38,12 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     Route::get('/', 'HomeController@FirstLanging');
     
     Route::get('/home', 'HomeController@index')->name('home');
+
+    /*TV-shows*/
+    Route::get('tv-shows', 'TvshowsController@index');
+    Route::get('episode/{id}', 'TvshowsController@play_episode');
+    Route::get('play_series/{id}', 'TvshowsController@play_series');
+    
   
     Route::post('/sendOtp', 'HomeController@SendOTP');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
@@ -78,8 +84,6 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     
     Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
     Route::get('series/category/{id}', 'ChannelController@series_genre' );
-    Route::get('play_series/{id}', 'ChannelController@play_series');
-    Route::get('episodes/{id}', 'ChannelController@play_episode');
 
     Route::get('watchlaters', 'WatchLaterController@show_watchlaters');
     Route::get('myprofile', 'AdminUsersController@myprofile');
@@ -314,7 +318,7 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/audios/edit/{id}', 'AdminAudioController@edit');
 		Route::post('/audios/update', array('before' => 'demo', 'uses' => 'AdminAudioController@update'));
 		Route::get('/audios/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioController@destroy'));
-		Route::get('/audios/create', 'AdminAudiosController@create');
+		Route::get('/audios/create', 'AdminAudioController@create');
 		Route::post('/audios/store', array('before' => 'demo', 'uses' => 'AdminAudioController@store'));
         
         
@@ -326,6 +330,16 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/audios/categories/edit/{id}', 'AdminAudioCategoriesController@edit');
 		Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@update'));
 		Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@destroy'));
+
+        //Artist Routes
+        Route::get('/artists', 'AdminArtistsController@index');
+        Route::get('/artists/create', 'AdminArtistsController@create');
+        Route::post('/artists/store',  'AdminArtistsController@store');
+        Route::get('/artists/edit/{id}', 'AdminArtistsController@edit');
+        Route::post('/artists/update', 'AdminArtistsController@update');
+        Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
+
+        
 
         Route::get('/series-list', 'AdminSeriesController@index');
 		Route::get('/series/create', 'AdminSeriesController@create');
@@ -344,6 +358,7 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
         Route::post('/episode/update', 'AdminSeriesController@update_episode');
 		Route::get('/players', 'AdminSettingsController@playerui_index');
+        Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
 		Route::post('/players/store', 'AdminSettingsController@storeplayerui');
 
 });

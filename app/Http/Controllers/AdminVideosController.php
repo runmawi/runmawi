@@ -30,6 +30,8 @@ use App\Jobs\ConvertVideoForStreaming;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
+use App\Artist;
+use App\Videoartist;
 
 class AdminVideosController extends Controller
 {
@@ -79,6 +81,8 @@ class AdminVideosController extends Controller
             'video_subtitle' => VideosSubtitle::all(),
             'languages' => Language::all(),
             'subtitles' => Subtitle::all(),
+            'artists' => Artist::all(),
+            'video_artist' => [],
             );
         return View::make('admin.videos.create_edit', $data);
     }
@@ -113,7 +117,10 @@ class AdminVideosController extends Controller
         
           $path = public_path().'/uploads/videos/';
           $image_path = public_path().'/uploads/images/';
-          
+          if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
+        }
          if($image != '') {   
               //code for remove old file
               if($image != ''  && $image != null){
@@ -340,7 +347,15 @@ class AdminVideosController extends Controller
             }
         }
     
-
+if(!empty($artistsdata)){
+            foreach ($artistsdata as $key => $value) {
+                $artist = new Videoartist;
+                $artist->video_id = $movie->id;
+                $artist->artist_id = $value;
+                $artist->save();
+            }
+            
+        }
         
           return redirect('admin/videos')
             ->with(
@@ -360,7 +375,7 @@ class AdminVideosController extends Controller
         Video::destroy($id);
 //        VideoResolution::where('video_id', '=', $id)->delete();
 //        VideoSubtitle::where('video_id', '=', $id)->delete();
-
+        Videoartist::where('video_id',$id)->delete();
         return Redirect::to('admin/videos')->with(array('note' => 'Successfully Deleted Video', 'note_type' => 'success') );
     }
     
@@ -383,6 +398,8 @@ class AdminVideosController extends Controller
             'video_subtitle' => VideosSubtitle::all(),
             'subtitles' => Subtitle::all(),
             'languages' => Language::all(),
+            'artists' => Artist::all(),
+            'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             );
 
         return View::make('admin.videos.create_edit', $data); 
@@ -573,6 +590,22 @@ class AdminVideosController extends Controller
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
+         if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
+            /*save artist*/
+            if(!empty($artistsdata)){
+                Videoartist::where('video_id', $video->id)->delete();
+                foreach ($artistsdata as $key => $value) {
+                    $artist = new Videoartist;
+                    $artist->video_id = $video->id;
+                    $artist->artist_id = $value;
+                    $artist->save();
+                }
+
+            }
+        }
+
          if(!empty( $files != ''  && $files != null)){
         /*if($request->hasFile('subtitle_upload'))
         {
@@ -602,7 +635,7 @@ class AdminVideosController extends Controller
     }
     
     
-               /* slug function for audio categoty */
+               /* slug function for Video categoty */
     
      public function createSlug($title, $id = 0)
             {

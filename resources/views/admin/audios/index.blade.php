@@ -6,80 +6,82 @@
 
 @section('content')
 
-	<div class="admin-section-title">
-		<div class="row">
-			<div class="col-md-8">
-				<h3><i class="entypo-audio"></i> Audios</h3><a href="{{ URL::to('admin/audios/create') }}" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
-			</div>
-			<div class="col-md-4">	
-				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
-			</div>
-		</div>
-	</div>
-	<div class="clear"></div>
-
-	<div class="gallery-env">
-		
-		<div class="row">
-
-		@foreach($audios as $audio)
-		
-			<div class="col-sm-6 col-md-4">
-				
-				<article class="album">
-					
-					<header>
-						
-						<a href="{{ URL::to('audio/') . '/' . $audio->id }}" target="_blank">
-							<img src="{{ Config::get('site.uploads_dir') . 'images/' . $audio->image }}" />
-						</a>
-						
-						<a href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}" class="album-options">
-							<i class="entypo-pencil"></i>
-							Edit
-						</a>
-					</header>
-					
-					<section class="album-info">
-						<h3><a href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><?php if(strlen($audio->title) > 25){ echo substr($audio->title, 0, 25) . '...'; } else { echo $audio->title; } ?></a></h3>
-						
-						<p>{{ $audio->description }}</p>
-					</section>
-					
-					<footer>
-						
-						<div class="album-images-count">
-							<i class="entypo-audio"></i>
-						</div>
-						
-						<div class="album-options">
-							<a href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}">
-								<i class="entypo-pencil"></i>
-							</a>
-							
-							<a href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}" class="delete">
-								<i class="entypo-trash"></i>
-							</a>
-						</div>
-						
-					</footer>
-					
-				</article>
-				
-			</div>
-
-		@endforeach
-
-		<div class="clear"></div>
+     <div id="content-page" class="content-page">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Audio Lists</h4>
+                        </div>
+                        <div class="iq-card-header-toolbar d-flex align-items-center">
+                           <a href="{{ URL::to('admin/audios/create') }}" class="btn btn-primary">Add Audio</a>
+                        </div>
+                     </div>
+                     <div class="iq-card-body">
+                        <div class="table-view">
+                           <table class="data-tables table audio_table " style="width:100%">
+                              <thead>
+                                 <tr>
+                                    <th>Title</th>
+                                    <th>Rating</th>
+                                    <th>Category</th>
+                                     <th>Views</th>
+                                    <th>Action</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              @foreach($audios as $audio)
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-audio">
+                                             <a href="javascript:void(0);"><img
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">{{ $audio->title }}</p>
+                                             <!-- <small>2h 15m</small> -->
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>{{ $audio->rating }}</td>
+                                    <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
+                                  
+                                    <td>
+                                        {{ $audio->views }}<i class="lar la-eye "></i>
+                                    </td>
+                                    <td>
+                                       <div class="flex align-items-center list-user-action">
+                                          <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="View" href="{{ URL::to('/category/audios') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
+                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><i class="ri-pencil-line"></i></a>
+                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><i
+                                                class="ri-delete-bin-line"></i></a>
+                                       </div>
+                                    </td>
+                                 </tr>
+                                 @endforeach
+                              </tbody>
+                           </table>
+                           <div class="clear"></div>
 
 		<div class="pagination-outter"><?= $audios->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
-		
-	</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      
 
-
-	@section('javascript')
+@section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
 

@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('css')
-	<link rel="stylesheet" href="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.css' }}" />
+	<link rel="stylesheet" href="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.css' }}"/>
 @stop
 
 
@@ -15,7 +15,7 @@
 <div id="content-page" class="content-page">
             <div class="container-fluid">
                 <div class="iq-card">
-<div id="admin-container">
+<div id="admin-container" style="padding:20px;">
     
 <!-- This is where -->
 	
@@ -62,19 +62,12 @@
 					<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 				</div>
 			</div>
-
-    
-            
-            
-
-			
              </div>
              <div class="col-md-6">
                  <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<!--<div class="panel-title">Mobile</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-                    
-                    
+                      
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
 					<p>User's Mobile</p>
                     <div class="row">
