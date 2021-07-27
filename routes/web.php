@@ -331,6 +331,16 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@update'));
 		Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@destroy'));
 
+        //Artist Routes
+        Route::get('/artists', 'AdminArtistsController@index');
+        Route::get('/artists/create', 'AdminArtistsController@create');
+        Route::post('/artists/store',  'AdminArtistsController@store');
+        Route::get('/artists/edit/{id}', 'AdminArtistsController@edit');
+        Route::post('/artists/update', 'AdminArtistsController@update');
+        Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
+
+        
+
         Route::get('/series-list', 'AdminSeriesController@index');
 		Route::get('/series/create', 'AdminSeriesController@create');
 		Route::post('/series/store', 'AdminSeriesController@store');

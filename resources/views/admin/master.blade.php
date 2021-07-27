@@ -119,6 +119,14 @@
 
             </ul>
           </li>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
+              <li><a href="{{ URL::to('admin/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
+
+            </ul>
+          </li>
+          
                    <li>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
