@@ -115,7 +115,7 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
         <?php if(isset($videos) && !empty($videos)) { 
             foreach($videos as $watchlater_video): ?>
-             <li class="slide-item">
+             <li class="slide-item" style="width: 150px;">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
