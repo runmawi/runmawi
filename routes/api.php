@@ -129,6 +129,17 @@ Route::group([
 
     Route::get('Playerui', 'ApiAuthController@Playerui');
 
+    Route::post('Playerui', 'ApiAuthController@Playerui');
 
+    Route::get('Playerui', 'ApiAuthController@Playerui');
+
+    // Route::post('Useraccesslogin', 'ApiAuthController@Useraccesslogin');
+    Route::get('Moderatorsuser', 'ApiAuthController@Moderatorsuser');
+
+    Route::get('Useraccess', 'ApiAuthController@Useraccess');
+
+    Route::get('Moderatorsrole', 'ApiAuthController@Moderatorsrole');
+
+    Route::get('Moderatorspermission', 'ApiAuthController@Moderatorspermission');
     
 });
