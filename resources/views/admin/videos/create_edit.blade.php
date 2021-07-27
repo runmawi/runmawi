@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('css')
-	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
  
     <style>
@@ -92,6 +92,7 @@
                                              <i class="las la-exclamation-circle"></i></a>:</label>
                                        <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
                                     </div>
+                                    
                                      <div class="col-sm-6 form-group" >
                                        <label class="p-2">Select Video Category :</label>
                                        <select class="form-control" id="video_category_id" name="video_category_id">
@@ -102,6 +103,25 @@
 
                                        </select>
                                                                           </div>
+                                           <div class="col-sm-6 form-group" >                               
+                                          <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                                      <div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                      <div class="panel-body" style="display: block;"> 
+                                        <p>Add artists for the video below:</p> 
+                                        <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                          @foreach($artists as $artist)
+                                          @if(in_array($artist->id, $video_artist))
+                                          <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+                                          @else
+                                          <option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+                                          @endif 
+                                          @endforeach
+                                        </select>
+
+                                      </div> 
+                                    </div>
+                                    </div>
+                                    
                                       <div class="col-sm-6 form-group">
                                   <label class="p-2">Choose Language:</label>
                                  <select class="form-control" id="language" name="language">
@@ -304,12 +324,12 @@
 
 	<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 	
-	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
-<script type="text/javascript">
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script type="text/javascript">
  $ = jQuery;
 	$(document).ready(function(){
+    $('.js-example-basic-multiple').select2();
+    
 		$("#type").change(function(){
 			if($(this).val() == 'file'){
 				$('.new-video-file').show();

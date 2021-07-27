@@ -26,11 +26,11 @@ class Video extends Model
 	}
 
 	public function videoresolutions(){
-		return $this->hasMany('VideoResolution','video_id','id');
+		return $this->hasMany('App\VideoResolution','video_id','id');
 	}
 
 	public function videosubtitles(){
-		return $this->hasMany('VideoSubtitle','video_id','id');
+		return $this->hasMany('App\VideoSubtitle','video_id','id');
 	}
 
 	public function languages(){

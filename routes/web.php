@@ -318,7 +318,7 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/audios/edit/{id}', 'AdminAudioController@edit');
 		Route::post('/audios/update', array('before' => 'demo', 'uses' => 'AdminAudioController@update'));
 		Route::get('/audios/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioController@destroy'));
-		Route::get('/audios/create', 'AdminAudiosController@create');
+		Route::get('/audios/create', 'AdminAudioController@create');
 		Route::post('/audios/store', array('before' => 'demo', 'uses' => 'AdminAudioController@store'));
         
         
