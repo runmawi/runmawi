@@ -119,6 +119,30 @@ public function RentPaypal(Request $request)
     return 1;
   }
 
+
+  public function purchaseVideo(Request $request)
+  {
+    $daten = date('m/d/Y h:i:s a', time());    
+    $setting = Setting::first();   
+    $ppv_hours = $setting->ppv_hours;
+    $user_id = Auth::user()->id;
+    $video_id = $request->get('video_id');
+    $date = date('YYYY-MM-DD');
+    $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
+    $charge = $stripe->charges()->create([
+      'source' => $request->get('tokenId'),
+      'currency' => 'USD',
+      'amount' => $request->get('amount')
+    ]);
+
+    DB::table('ppv_purchases')->insert([
+      ['user_id' => $user_id, 'video_id' => $video_id]
+    ]);
+
+
+    return 1;
+  }
+
   public function upgrading(Request $request) {
 
         $uid = Auth::user()->id;

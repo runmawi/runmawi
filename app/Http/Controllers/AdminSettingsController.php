@@ -415,7 +415,7 @@ return view('videolayout.footer',compact('playerui_settings') );
     $playerui->opacity = $request['opacity'];
     //Watermark Settings
     $playerui->watermark_right = $request['watermark_right'];
-    $playerui->watermark_right = $request['watermark_top'];
+    $playerui->watermark_top = $request['watermark_top'];
     $playerui->watermark_bottom = $request['watermark_bottom'];
     $playerui->watermark_left = $request['watermark_left'];
     $playerui->watermark_opacity = $request['watermark_opacity'];

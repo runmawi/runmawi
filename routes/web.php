@@ -115,6 +115,7 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     Route::get('/live', 'LiveStreamController@Index');
     Route::get('/live/play/{id}', 'LiveStreamController@Play');
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
+    Route::post('purchase-video', 'PaymentController@purchaseVideo');
     Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
     Route::get('/logout', 'AdminUsersController@logout');
     Route::post('/stripe-payment', 'PaymentController@store')->name('stripe.store');

@@ -5,7 +5,7 @@
 
  <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
-<input type="hidden" name="logo_path" id='logo_path' value="<?php echo URL::to('/') . '/public/uploads/settings/' . $playerui_settings['watermark'] ;?>">
+<input type="hidden" name="logo_path" id='logo_path' value="<?php echo $playerui_settings['watermark_logo'] ;?>">
 
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
    
@@ -31,7 +31,7 @@
           <?php  elseif($video->type == 'file'): ?>
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
             <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay style="height: 550px;width:1000px;">
-           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
+           <source src="<?php echo $video->trailer; ?>" type='video/mp4' label='auto' >
               <!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' > -->
 <?php
@@ -82,7 +82,7 @@ if($value['sub_language'] == "Spanish"){
             <div id="video_container" class="fitvid" style="z-index: 9999;margin:0 auto;">
 <!-- Current time: <div id="current_time"></div> -->
 <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer"  controls autoplay  style="height: 550px;width:1000px;">
-<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
+<source src="<?php echo $video->trailer; ?>" type='video/mp4' label='auto' >
 <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -420,7 +420,7 @@ if($value['sub_language'] == "Spanish"){
               $('#token_response').html(JSON.stringify(token));
 
               $.ajax({
-              url: '<?php echo URL::to("purchase-live") ;?>',
+              url: '<?php echo URL::to("purchase-video") ;?>',
               method: 'post',
               data: {"_token": "<?php echo csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
               success: (response) => {
