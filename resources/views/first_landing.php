@@ -55,7 +55,7 @@
 <section class="landing-page">
 
     <div class="row main-head d-flex justify-content-between">
-        <div class="col-sm-8">
+        <div class="col-lg-8 col-sm-6">
             <?php
         $settings = App\Setting::find(1);
       ?>
@@ -63,7 +63,7 @@
             <img class="logo" src="<?php echo URL::to('/').'/assets/img/logo.png';?>">
         </div>
         
-        <div class="col-sm-4 button d-flex">
+        <div class="col-lg-4 col-sm-6 button d-flex">
             <div>
               <select  style="padding:6px 0px;background-color:#000000;color:#fff;">
                   <option>English</option>
@@ -102,12 +102,12 @@
 <section class="tvsec">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-sm-6 col-md-5">
+            <div class="col-lg-6 col-sm-12">
                 <h2 class="tvtag">Enjoy on your Tv.</h2>
                 <p class="tvscene mt-3">Watch on smartTvs, PlayStation, Xbox, ChromeCast, Apple Tv. Blu-Ray Players
                     <br>and more.</p>
             </div>
-            <div class=" col-sm-6 col-md-7 tvimg">
+            <div class=" col-lg-6 col-sm-12 tvimg">
                 <img src="<?php echo URL::to('/').'/assets/img/land.png';?>">
             </div>
         </div>
@@ -116,10 +116,10 @@
 </section>
 <section class="downsec">
     <div class="row  align-items-center">
-        <div class="col-md-6 col-sm-6 downimg">
+        <div class="col-lg-6 col-sm-12 downimg">
             <img src="<?php echo URL::to('/').'/assets/img/landown.png';?>">
         </div>
-        <div class="col-md-6 col-sm-6 downdetail">
+        <div class="col-lg-6 col-sm-12 downdetail">
             <h2 class="downtag">Download Your Shows <br>to Watch Offline.</h2>
             <p class="downscene mt-3">Save your favourites easily and always have something to watch.</p>
         </div>
@@ -129,11 +129,11 @@
 <section class="devicesec">
     <div class="container">
     <div class="row align-items-center">
-        <div class="col-md-6 col-sm-6 devicedetail">
+        <div class="col-lg-6 col-sm-12 devicedetail">
             <h2 class="devicetag">Across all devices.</h2>
             <p class="devicescene mt-3">Stream Unlimited movies and tv shows on your phone, tablet, laptop and Tv.</p>
         </div>
-        <div class="col-md- col-sm-6 deviceimg">
+        <div class="col-lg-6 col-sm-12 deviceimg">
             <img src="<?php echo URL::to('/').'/assets/img/landevice.png';?>" >
         </div>
     </div>

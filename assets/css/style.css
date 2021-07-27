@@ -22,6 +22,40 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
+@media (min-width: 411px){
+    .tvsec {
+       text-align: center;
+        padding: 10px;
+    }  
+    .downtag{
+        text-align: center!important;
+       
+    }
+    .downscene{
+        text-align: center!important;
+        margin: 0 auto;
+        padding: 10px;
+    }
+    .devicedetail{
+        text-align: center!important;
+         margin: 0 auto;
+        padding: 10px;
+    }
+    .devicescene{
+         text-align: center!important;
+         margin: 0 auto;
+        padding: 10px;
+        
+    }
+    .main-head{
+          margin: 0 auto;
+        padding: 10px;
+    }
+    .km{
+        font-size: 48px;
+    }
+}
+
 header#main-header { position: relative; left: 0px; right: 0px; text-align: center; z-index: 99; background: rgba(20, 20, 20, 0.5) !important; }
 header .navbar-light .navbar-brand img.logo { width: 160px; }
 .iq-search-bar .search-input { width: 100%; height: 40px; padding: 5px 15px 5px 40px; border: none; border-radius: 0; color: var(--iq-white); background: var(--iq-bg1); }

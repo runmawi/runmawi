@@ -1,31 +1,35 @@
 <?php include('header.php'); ?>
 <style type="text/css">
 	.nav-pills li a {color: #fff !important;}
+    nav{
+       margin: 0 auto;
+        align-items: center;
+    }
 </style>
 <div class="container" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
-	<div class="row">
+	<div class="row mt-3">
 		<?php if($series->access == 'guest' || ( ($series->access == 'subscriber' || $series->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $series->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
-		<div class="col-md-9">
+		<div class="col-md-6 p-0">
 			<div id="series_title">
 				<div class="container">
 					<span class="label"></span> <h1><?= $series->title ?></h1><br><br>
-					<div class="col-md-4">
+					<div class="col-md-6 p-0">
 						<select class="form-control">
 							<?php foreach($season as $key => $seasons): ?>
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div><br><br>
-					<div class="row">
+					<div class="row p-2">
 						<p class="desc" style="color: #fff;"><?php echo $series->description;?></p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-3">
-			<img src="<?= URL::to('/') . '/public/uploads/images/' . $series->image; ?>" height="450" width="350">
+			<img src="<?= URL::to('/') . '/public/uploads/images/' . $series->image; ?>" height="500" width="550">
 		</div>
 	</div>
 </div>
@@ -33,7 +37,7 @@
 <section id="tabs" class="project-tab">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 mt-4">
 				<nav>
 					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
@@ -46,9 +50,9 @@
 						<?php foreach($season as $key => $seasons):  
 							foreach($seasons->episodes as $key => $episodes): ?>
 								<a href="<?php echo URL::to('episode').'/'.$episodes->id;?>">
-								<div class="row episodes_div season_<?= $seasons->id;?>">
+								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
-										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="100" height="100">
+										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
 									</div>
 									<div class="col-md-7">
 										<h2><?= $episodes->title; ?></h2>

@@ -1,6 +1,9 @@
 <?php include('header.php'); ?>
 <style type="text/css">
-    
+    .clearfix{
+        list-style: none;
+        display: inherit;
+    }
     .watchlater.active
     {
         color: #1a86e0;
@@ -133,9 +136,31 @@
             <br>
 			
 			<?= $episode->title ?>
+            
 
 		</h3>
 
+<div class="clear" style="display:flex;justify-content: space-between;
+    align-items: center;">
+    <div>
+		<h2 id="tags">Tags: 
+		<?php if(isset($episode->tags)) {
+		foreach($episode->tags as $key => $tag): ?>
+
+			<span><a href="/episode/tag/<?= $tag->name ?>"><?= $tag->name ?></a></span><?php if($key+1 != count($episode->tags)): ?>,<?php endif; ?>
+
+		<?php endforeach; }
+		?>
+            
+		</h2>
+        </div>
+
+		<div class="clear"></div>
+		<div id="social_share" style="display:flex;color:#fff;">
+	    	<p class="mt-1">Share This episode:</p>
+			<?php include('partials/social-share.php'); ?>
+		</div>
+            </div>
 
 
 		<div class="series-details-container"><?= $episode->details ?></div>
@@ -182,7 +207,7 @@
 				<div class="clear"></div>
 
 		<?php endforeach; ?>
-		<div class="clear"></div>
+		<div class="clear">
 		<h2 id="tags">Tags: 
 		<?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
@@ -198,6 +223,7 @@
 	    	<p>Share This episode:</p>
 			<?php include('partials/social-share.php'); ?>
 		</div>
+            </div>
 
 		<div class="clear"></div>
 
