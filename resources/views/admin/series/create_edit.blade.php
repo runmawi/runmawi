@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('css')
-	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
 
@@ -117,7 +117,26 @@
 					<textarea class="form-control" name="description" id="description" style="background-color:#000000;!important">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
+			<div class="row"> 
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-body" style="display: block;"> 
+							<p>Add artists for the series below:</p> 
+							<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+								@foreach($artists as $artist)
+								@if(in_array($artist->id, $series_artist))
+								<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+								@else
+								<option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+								@endif 
+								@endforeach
+							</select>
 
+						</div> 
+					</div>
+				</div>
+			</div>
 			<div class="row"> 
 			<div class="col-sm-6">
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
@@ -284,24 +303,15 @@
 <!-- This is where now -->
 
 
-	
-	
-	
-	@section('javascript')
-
-
-	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript">
 
-	$ = jQuery;
+		$ = jQuery;
 
-	$(document).ready(function(){
+		$(document).ready(function(){
+			$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');
-		$('#tags').tagsInput();
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){
@@ -367,7 +377,7 @@
         });
         </script>
 
-
+@section('javascript')
 
 	@stop
 

@@ -34,6 +34,8 @@ use App\Jobs\ConvertVideoForStreaming;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
+use App\Artist;
+use App\Audioartist;
 
 class AdminAudioController extends Controller
 {
@@ -78,6 +80,8 @@ class AdminAudioController extends Controller
             'admin_user' => Auth::user(),
             'languages' => Language::all(),
             'audio_categories' => AudioCategory::all(),
+            'artists' => Artist::all(),
+            'audio_artist' => [],
             );
         return View::make('admin.audios.create_edit', $data);
     }
@@ -105,6 +109,11 @@ class AdminAudioController extends Controller
             $data['slug'] = $this->createSlug($data['title']);    
         }
         
+        if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
+        }
+
         $image = (isset($data['image'])) ? $data['image'] : '';
         if(!empty($image)){
             $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
@@ -132,6 +141,16 @@ class AdminAudioController extends Controller
 
         $audio = Audio::create($data);
         $audio_id = $audio->id;
+
+        if(!empty($artistsdata)){
+            foreach ($artistsdata as $key => $value) {
+                $artist = new Audioartist;
+                $artist->audio_id = $audio_id;
+                $artist->artist_id = $value;
+                $artist->save();
+            }
+            
+        }
         
         $audio_upload = $request->file('audio_upload');
 
@@ -174,6 +193,8 @@ class AdminAudioController extends Controller
             'admin_user' => Auth::user(),
             'languages' => Language::all(),
             'audio_categories' => AudioCategory::all(),
+            'artists' => Artist::all(),
+            'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
             );
 
         return View::make('admin.audios.create_edit', $data);
@@ -229,6 +250,22 @@ class AdminAudioController extends Controller
 
         $audio->update($data);
 
+        if(!empty($data['artists'])){
+            $artistsdata = $data['artists'];
+            unset($data['artists']);
+            /*save artist*/
+            if(!empty($artistsdata)){
+                Audioartist::where('audio_id', $id)->delete();
+                foreach ($artistsdata as $key => $value) {
+                    $artist = new Audioartist;
+                    $artist->audio_id = $id;
+                    $artist->artist_id = $value;
+                    $artist->save();
+                }
+
+            }
+        }
+
         if(empty($data['audio_upload'])){
             unset($data['audio_upload']);
         } else {
@@ -270,6 +307,8 @@ class AdminAudioController extends Controller
         $this->deleteAudioImages($audio);
 
         Audio::destroy($id);
+
+        Audioartist::where('audio_id',$id)->delete();
 
         return Redirect::to('admin/audios')->with(array('note' => 'Successfully Deleted Audio', 'note_type' => 'success') );
     }

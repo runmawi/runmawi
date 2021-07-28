@@ -1502,4 +1502,6 @@ td{
     
     
     
-    
+    #videoPlayer{
+        margin: 0 auto!important;
+    }

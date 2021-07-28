@@ -5,9 +5,10 @@ import videojs from 'video.js';
 import logger from './util/logger';
 import noop from './util/noop';
 import { bufferIntersection } from './ranges.js';
-import {getMimeForCodec} from '@videojs/vhs-utils/dist/codecs.js';
+import {getMimeForCodec} from '@videojs/vhs-utils/es/codecs.js';
 import window from 'global/window';
 import toTitleCase from './util/to-title-case.js';
+import { QUOTA_EXCEEDED_ERR } from './error-codes';
 
 const bufferTypes = [
   'video',
@@ -79,7 +80,11 @@ const shiftQueue = (type, sourceUpdater) => {
   // Media source queue entries don't need to consider whether the source updater is
   // started (i.e., source buffers are created) as they don't need the source buffers, but
   // source buffer queue entries do.
-  if (!sourceUpdater.started_ || sourceUpdater.mediaSource.readyState === 'closed' || updating(type, sourceUpdater)) {
+  if (
+    !sourceUpdater.ready() ||
+    sourceUpdater.mediaSource.readyState === 'closed' ||
+    updating(type, sourceUpdater)
+  ) {
     return;
   }
 
@@ -97,16 +102,22 @@ const shiftQueue = (type, sourceUpdater) => {
   }
 
   sourceUpdater.queue.splice(queueIndex, 1);
+  // Keep a record that this source buffer type is in use.
+  //
+  // The queue pending operation must be set before the action is performed in the event
+  // that the action results in a synchronous event that is acted upon. For instance, if
+  // an exception is thrown that can be handled, it's possible that new actions will be
+  // appended to an empty queue and immediately executed, but would not have the correct
+  // pending information if this property was set after the action was performed.
+  sourceUpdater.queuePending[type] = queueEntry;
   queueEntry.action(type, sourceUpdater);
 
   if (!queueEntry.doneFn) {
     // synchronous operation, process next entry
+    sourceUpdater.queuePending[type] = null;
     shiftQueue(type, sourceUpdater);
     return;
   }
-
-  // asynchronous operation, so keep a record that this source buffer type is in use
-  sourceUpdater.queuePending[type] = queueEntry;
 };
 
 const cleanupBuffer = (type, sourceUpdater) => {
@@ -128,7 +139,7 @@ const inSourceBuffers = (mediaSource, sourceBuffer) => mediaSource && sourceBuff
   Array.prototype.indexOf.call(mediaSource.sourceBuffers, sourceBuffer) !== -1;
 
 const actions = {
-  appendBuffer: (bytes, segmentInfo) => (type, sourceUpdater) => {
+  appendBuffer: (bytes, segmentInfo, onError) => (type, sourceUpdater) => {
     const sourceBuffer = sourceUpdater[`${type}Buffer`];
 
     // can't do anything if the media source / source buffer is null
@@ -139,7 +150,15 @@ const actions = {
 
     sourceUpdater.logger_(`Appending segment ${segmentInfo.mediaIndex}'s ${bytes.length} bytes to ${type}Buffer`);
 
-    sourceBuffer.appendBuffer(bytes);
+    try {
+      sourceBuffer.appendBuffer(bytes);
+    } catch (e) {
+      sourceUpdater.logger_(`Error with code ${e.code} ` +
+        (e.code === QUOTA_EXCEEDED_ERR ? '(QUOTA_EXCEEDED_ERR) ' : '') +
+        `when appending segment ${segmentInfo.mediaIndex} to ${type}Buffer`);
+      sourceUpdater.queuePending[type] = null;
+      onError(e);
+    }
   },
   remove: (start, end) => (type, sourceUpdater) => {
     const sourceBuffer = sourceUpdater[`${type}Buffer`];
@@ -151,7 +170,11 @@ const actions = {
     }
 
     sourceUpdater.logger_(`Removing ${start} to ${end} from ${type}Buffer`);
-    sourceBuffer.remove(start, end);
+    try {
+      sourceBuffer.remove(start, end);
+    } catch (e) {
+      sourceUpdater.logger_(`Remove ${start} to ${end} from ${type}Buffer failed`);
+    }
   },
   timestampOffset: (offset) => (type, sourceUpdater) => {
     const sourceBuffer = sourceUpdater[`${type}Buffer`];
@@ -331,15 +354,32 @@ export default class SourceUpdater extends videojs.EventTarget {
       // used for debugging
       this.audioError_ = e;
     };
-    this.started_ = false;
+    this.createdSourceBuffers_ = false;
+    this.initializedEme_ = false;
+    this.triggeredReady_ = false;
+  }
+
+  initializedEme() {
+    this.initializedEme_ = true;
+    this.triggerReady();
+  }
+
+  hasCreatedSourceBuffers() {
+    // if false, likely waiting on one of the segment loaders to get enough data to create
+    // source buffers
+    return this.createdSourceBuffers_;
+  }
+
+  hasInitializedAnyEme() {
+    return this.initializedEme_;
   }
 
   ready() {
-    return this.started_;
+    return this.hasCreatedSourceBuffers() && this.hasInitializedAnyEme();
   }
 
   createSourceBuffers(codecs) {
-    if (this.ready()) {
+    if (this.hasCreatedSourceBuffers()) {
       // already created them before
       return;
     }
@@ -347,8 +387,22 @@ export default class SourceUpdater extends videojs.EventTarget {
     // the intial addOrChangeSourceBuffers will always be
     // two add buffers.
     this.addOrChangeSourceBuffers(codecs);
-    this.started_ = true;
-    this.trigger('ready');
+    this.createdSourceBuffers_ = true;
+    this.trigger('createdsourcebuffers');
+    this.triggerReady();
+  }
+
+  triggerReady() {
+    // only allow ready to be triggered once, this prevents the case
+    // where:
+    // 1. we trigger createdsourcebuffers
+    // 2. ie 11 synchronously initializates eme
+    // 3. the synchronous initialization causes us to trigger ready
+    // 4. We go back to the ready check in createSourceBuffers and ready is triggered again.
+    if (this.ready() && !this.triggeredReady_) {
+      this.triggeredReady_ = true;
+      this.trigger('ready');
+    }
   }
 
   /**
@@ -415,8 +469,9 @@ export default class SourceUpdater extends videojs.EventTarget {
   canRemoveSourceBuffer() {
     // IE reports that it supports removeSourceBuffer, but often throws
     // errors when attempting to use the function. So we report that it
-    // does not support removeSourceBuffer.
-    return !videojs.browser.IE_VERSION && window.MediaSource &&
+    // does not support removeSourceBuffer. As of Firefox 83 removeSourceBuffer
+    // throws errors, so we report that it does not support this as well.
+    return !videojs.browser.IE_VERSION && !videojs.browser.IS_FIREFOX && window.MediaSource &&
       window.MediaSource.prototype &&
       typeof window.MediaSource.prototype.removeSourceBuffer === 'function';
   }
@@ -483,7 +538,7 @@ export default class SourceUpdater extends videojs.EventTarget {
     Object.keys(codecs).forEach((type) => {
       const codec = codecs[type];
 
-      if (!this.ready()) {
+      if (!this.hasCreatedSourceBuffers()) {
         return this.addSourceBuffer(type, codec);
       }
 
@@ -510,10 +565,16 @@ export default class SourceUpdater extends videojs.EventTarget {
       return;
     }
 
+    // In the case of certain errors, for instance, QUOTA_EXCEEDED_ERR, updateend will
+    // not be fired. This means that the queue will be blocked until the next action
+    // taken by the segment-loader. Provide a mechanism for segment-loader to handle
+    // these errors by calling the doneFn with the specific error.
+    const onError = doneFn;
+
     pushQueue({
       type,
       sourceUpdater: this,
-      action: actions.appendBuffer(bytes, segmentInfo || {mediaIndex: -1}),
+      action: actions.appendBuffer(bytes, segmentInfo || {mediaIndex: -1}, onError),
       doneFn,
       name: 'appendBuffer'
     });

@@ -16,6 +16,7 @@ use App\ContinueWatching as ContinueWatching;
 use App\Genre;
 use App\Audio;
 use App\Page as Page;
+use App\HomeSetting as HomeSetting;
 use App\Movie;
 use App\Episode;
 use App\LikeDislike as Likedislike;
@@ -110,7 +111,8 @@ class HomeController extends Controller
              'pages'=>$pages,
             'trending_videos' => $trending_videos,
             'suggested_videos' => $suggested_videos,
-			'video_categories' => VideoCategory::all()
+      'video_categories' => VideoCategory::all(),
+			'home_settings' => HomeSetting::first()
         );
         //echo "<pre>";print_r($data['latest_videos']);exit;
         return View::make('home', $data);

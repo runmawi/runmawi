@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/moderator', 'ModeratorsUserController@index');
+Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
@@ -112,6 +115,7 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
     Route::get('/live', 'LiveStreamController@Index');
     Route::get('/live/play/{id}', 'LiveStreamController@Play');
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
+    Route::post('purchase-video', 'PaymentController@purchaseVideo');
     Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
     Route::get('/logout', 'AdminUsersController@logout');
     Route::post('/stripe-payment', 'PaymentController@store')->name('stripe.store');
@@ -318,7 +322,7 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/audios/edit/{id}', 'AdminAudioController@edit');
 		Route::post('/audios/update', array('before' => 'demo', 'uses' => 'AdminAudioController@update'));
 		Route::get('/audios/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioController@destroy'));
-		Route::get('/audios/create', 'AdminAudiosController@create');
+		Route::get('/audios/create', 'AdminAudioController@create');
 		Route::post('/audios/store', array('before' => 'demo', 'uses' => 'AdminAudioController@store'));
         
         
@@ -330,6 +334,16 @@ Route::get('/player', 'Adminplayer@Index');
 		Route::get('/audios/categories/edit/{id}', 'AdminAudioCategoriesController@edit');
 		Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@update'));
 		Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@destroy'));
+
+        //Artist Routes
+        Route::get('/artists', 'AdminArtistsController@index');
+        Route::get('/artists/create', 'AdminArtistsController@create');
+        Route::post('/artists/store',  'AdminArtistsController@store');
+        Route::get('/artists/edit/{id}', 'AdminArtistsController@edit');
+        Route::post('/artists/update', 'AdminArtistsController@update');
+        Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
+
+        
 
         Route::get('/series-list', 'AdminSeriesController@index');
 		Route::get('/series/create', 'AdminSeriesController@create');
