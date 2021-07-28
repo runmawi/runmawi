@@ -25,9 +25,26 @@ class HomeSettingsController extends Controller
     public function save_settings(Request $request){
         
         $settings = HomeSetting::first();
-		$settings->featured_videos = $request['featured_videos'];
-		$settings->latest_videos = $request['latest_videos'];
-		$settings->category_videos = $request['category_videos'];
+        if(!empty($request['featured_videos'])){
+            $settings->featured_videos = 1;
+        } 
+        if(empty($request['featured_videos'])){
+            $settings->featured_videos = 0;
+        } 
+
+        if(!empty($request['latest_videos'])){
+            $settings->latest_videos = 1;
+        } 
+        if(empty($request['latest_videos'])){
+            $settings->latest_videos = 0;
+        } 
+
+        if(!empty($request['category_videos'])){
+            $settings->category_videos = 1;
+        } 
+        if(empty($request['category_videos'])){
+            $settings->category_videos = 0;
+        } 
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

@@ -27,6 +27,7 @@
            </div>
         </div>
     </section>
+    <?php if($home_settings->latest_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -36,6 +37,7 @@
            </div>
         </div>
 </section>
+<?php } ?>
     <?php /*
 <section id="iq-upcoming-movie">
     <?php if ( GetTrendingVideoStatus() == 1 ) { ?>
@@ -864,6 +866,7 @@ endif; ?>
       });
     });
 </script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
       $('.bd-example-modal-xl3<?= $latest_video->id;?>').modal({
@@ -874,18 +877,17 @@ endif; ?>
     });
 
    /*Play Pause Video on mouse hover and mouse leave*/
-   $(document).ready(function () {
-    $(".block-images").hover(function () {
-      var pl = $(this).find('video')[0];
-       pl.play(); 
-    }, function () {
-        var el = $(this).find('video')[0];
-        el.currentTime = 0;
-        el.pause();
-        
-         $(this).find('video')[0].load(); 
+   $(document).ready(function() { 
+    $(".play-video").hover(function() { 
+      alert("As");
+      $(this).css("display", "block"); 
+    }, function() { 
+     $(".play-video").load(); 
+   }); 
+
+    $( ".play-video" ).mouseleave(function() {
+      $(this).load(); 
     });
-   
-});
+  });
 </script>   
   

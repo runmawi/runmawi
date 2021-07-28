@@ -51,7 +51,7 @@
                                 <div class="img-box">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> -->
-                                        <video class="thevideo" loop poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>">
+                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" muted="muted">
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>
                                 </div>
@@ -122,11 +122,8 @@
                 </div>
                 <?php  elseif($latest_video->type == 'file'): ?>
                 <div id="video_container" class="fitvid">
-                    <video id="videojs-seek-buttons-player" onplay="playstart()" class="video-js vjs-default-skin"
-                        controls preload="auto"
-                        poster="<?= URL::to('/public/') . '/uploads/images/' . $latest_video->image ?>"
-                        data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;"
-                        data-authenticated="<?= !Auth::guest() ?>">
+                    <video id="videojs-seek-buttons-player" width="100%" height="auto" class="play-video" poster="<?= URL::to('/public/') . '/uploads/images/' . $latest_video->image ?>"
+                         data-play="hover" muted="muted" data-authenticated="<?= !Auth::guest() ?>">
 
                         <source src="<?= $latest_video->trailer; ?>" type='video/mp4' label='auto'>
                         <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$latest_video->webm_url; ?>" type='video/webm' label='auto' >
@@ -155,11 +152,7 @@
                 </div>
                 <?php  else: ?>
                 <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                    <video id="videojs-seek-buttons-player" onplay="playstart()" class="video-js vjs-default-skin"
-                        controls preload="auto"
-                        poster="<?= Config::get('site.uploads_url') . '/images/' . $latest_video->image ?>"
-                        data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;"
-                        data-authenticated="<?= !Auth::guest() ?>">
+                    <video id="videojs-seek-buttons-player" width="100%" height="auto" class="play-video" poster="<?= Config::get('site.uploads_url') . '/images/' . $latest_video->image ?>" data-play="hover" muted="muted" data-authenticated="<?= !Auth::guest() ?>">
 
                         <source src="<?= $latest_video->trailer; ?>" type='video/mp4' label='auto'>
 
@@ -241,7 +234,7 @@
 
 
                         <?php if (!empty($latest_video->trailer)) { ?>
-                        <video class="trail-vid" width="30%" height="auto" class="play-video"
+                        <video width="100%" height="auto" class="play-video" 
                             poster="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>"
                             data-play="hover" muted="muted">
                             <source src="<?= $latest_video->trailer; ?>" type="video/mp4">
