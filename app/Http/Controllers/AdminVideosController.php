@@ -156,11 +156,11 @@ class AdminVideosController extends Controller
                   }
               }
               //upload new file
+              $randval = Str::random(16);
               $file = $trailer;
-              $trailer_vid  = $file->getClientOriginalName();
+              $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
               $file->move($path, $trailer_vid);
-            
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
+              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
 
          } else {
             $data['trailer'] = '';
@@ -284,7 +284,7 @@ class AdminVideosController extends Controller
              $video = new Video();
              $video->disk = 'public';
              $video->original_name = 'public';
-             $video->path = $path;
+             $video->path = $rand;
              $video->title = $data['title'];
              $video->slug = $data['slug'];
              $video->language = $data['language'];
@@ -299,12 +299,16 @@ class AdminVideosController extends Controller
              $video->user_id = Auth::user()->id;
              $video->save(); 
             
-             $converted_name = $this->getCleanFileName($video->path);
-            ConvertVideoForStreaming::dispatch($video);
+             $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+             $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+             $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+             $converted_name = ConvertVideoForStreaming::handle($path);
+
+             ConvertVideoForStreaming::dispatch($video);
 
          } else {
               
-               $movie = Video::create($data);
+               $video = Video::create($data);
          }
         
         $shortcodes = $request['short_code'];
@@ -335,14 +339,14 @@ class AdminVideosController extends Controller
                     // $movie_subtitle = MovieSubtitle::create($subtitle_data);
                     // $movie_sub->save();
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $movie->id. '-'.$shortcodes[$key].'.srt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['movie_id'] = $movie->id;
+                    $subtitle_data['video_id'] = $video->id;
 
                     $subtitle_data['sub_language']=$languages[$key];
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                    $movie_subtitle = MoviesSubtitles::create($subtitle_data);
+                    $video_subtitle = VideosSubtitle::create($subtitle_data);
                 }
             }
         }
@@ -350,7 +354,7 @@ class AdminVideosController extends Controller
 if(!empty($artistsdata)){
             foreach ($artistsdata as $key => $value) {
                 $artist = new Videoartist;
-                $artist->video_id = $movie->id;
+                $artist->video_id = $video->id;
                 $artist->artist_id = $value;
                 $artist->save();
             }
@@ -436,7 +440,6 @@ if(!empty($artistsdata)){
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
         
            $update_mp4 = $request->get('video');
-            
             if(empty($data['active'])){
             $data['active'] = 0;
             } 
@@ -536,27 +539,33 @@ if(!empty($artistsdata)){
                   }
               }
               //upload new file
+              $randval = Str::random(16);
               $file = $trailer;
-              $trailer_vid  = $file->getClientOriginalName();
+              $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
               $file->move($path, $trailer_vid);
-            
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
+              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
 
          } else {
              $data['trailer'] = $video->trailer;
          }  
         
         
-        if( isset( $update_mp4 ) && $request->hasFile('video')){   
+        if( $mp4_url2 != ''){   
               //code for remove old file
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->video->getClientOriginalExtension();
                 $request->video->storeAs('public', $path);
                 $data['mp4_url'] = $path;
+                $data['path'] = $rand;
              
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
                 $original_name = URL::to('/').'/storage/app/public/'.$path;
-            
+                $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+                $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+                $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+                $converted_name = ConvertVideoForStreaming::handle($path);
+
+                ConvertVideoForStreaming::dispatch($video);
                 //              if($mp4_url2 != ''  && $mp4_url2 != null){
                 //                   $file_old3 = $path.$mp4_url2;
                 //                  if (file_exists($file_old3)){

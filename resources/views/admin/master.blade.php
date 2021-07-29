@@ -154,7 +154,7 @@
                   </li>
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Manage Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                   

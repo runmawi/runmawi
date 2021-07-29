@@ -839,54 +839,23 @@ endif; ?>
 </div>
   <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('.bd-example-modal-xl<?= $latest_video->id;?>').modal({
-          show: false
-      }).on('hidden.bs.modal', function(){
-          $(this).find('video')[0].pause();
-      });
-    });
-</script>
+<script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-      $('.bd-example-modal-xl1<?= $latest_video->id;?>').modal({
-          show: false
-      }).on('hidden.bs.modal', function(){
-          $(this).find('video')[0].pause();
-      });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-      $('.bd-example-modal-xl2<?= $latest_video->id;?>').modal({
-          show: false
-      }).on('hidden.bs.modal', function(){
-          $(this).find('video')[0].pause();
-      });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-      $('.bd-example-modal-xl3<?= $latest_video->id;?>').modal({
-          show: false
-      }).on('hidden.bs.modal', function(){
-          $(this).find('video')[0].pause();
-      });
-    });
-
-   /*Play Pause Video on mouse hover and mouse leave*/
-   $(document).ready(function() { 
-    $(".play-video").hover(function() { 
-      alert("As");
-      $(this).css("display", "block"); 
-    }, function() { 
-     $(".play-video").load(); 
-   }); 
-
-    $( ".play-video" ).mouseleave(function() {
-      $(this).load(); 
+  $( document ).ready(function() {
+    $('.play-video').hoverPlay({
+      callbacks: {
+        play: function(el, video) {
+          video.play();
+          el.addClass('hoverPlay');
+        },
+        pause: function(el, video) {
+          video.pause();
+          el.removeClass('hoverPlay');
+        },
+        click: function(el, video, e) {
+          e.preventDefault();
+        }
+      }
     });
   });
-</script>   
-  
+</script>

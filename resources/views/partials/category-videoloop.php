@@ -46,15 +46,12 @@
                     <?php  if(isset($videos)) :
                        foreach($videos as $category_video): ?>
                     <li class="slide-item">
-                        <a href="<?php echo URL::to('home') ?>">
                             <div class="block-images position-relative">
-                                <div class="img-box">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> -->
-                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" muted="muted">
+                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>
-                                </div>
                                 <div class="block-description">
                                     <a
                                         href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
@@ -94,7 +91,6 @@
                           </ul>
                        </div>-->
                             </div>
-                        </a>
                     </li>
 
                     <?php endforeach; 
@@ -123,7 +119,7 @@
                 <?php  elseif($latest_video->type == 'file'): ?>
                 <div id="video_container" class="fitvid">
                     <video id="videojs-seek-buttons-player" width="100%" height="auto" class="play-video" poster="<?= URL::to('/public/') . '/uploads/images/' . $latest_video->image ?>"
-                         data-play="hover" muted="muted" data-authenticated="<?= !Auth::guest() ?>">
+                         data-play="hover"  data-authenticated="<?= !Auth::guest() ?>">
 
                         <source src="<?= $latest_video->trailer; ?>" type='video/mp4' label='auto'>
                         <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$latest_video->webm_url; ?>" type='video/webm' label='auto' >
@@ -152,7 +148,7 @@
                 </div>
                 <?php  else: ?>
                 <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                    <video id="videojs-seek-buttons-player" width="100%" height="auto" class="play-video" poster="<?= Config::get('site.uploads_url') . '/images/' . $latest_video->image ?>" data-play="hover" muted="muted" data-authenticated="<?= !Auth::guest() ?>">
+                    <video id="videojs-seek-buttons-player" width="100%" height="auto" class="play-video" poster="<?= Config::get('site.uploads_url') . '/images/' . $latest_video->image ?>" data-play="hover"  data-authenticated="<?= !Auth::guest() ?>">
 
                         <source src="<?= $latest_video->trailer; ?>" type='video/mp4' label='auto'>
 
@@ -236,7 +232,7 @@
                         <?php if (!empty($latest_video->trailer)) { ?>
                         <video width="100%" height="auto" class="play-video" 
                             poster="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>"
-                            data-play="hover" muted="muted">
+                            data-play="hover" >
                             <source src="<?= $latest_video->trailer; ?>" type="video/mp4">
                         </video>
                         <?php } else { ?>
@@ -296,8 +292,5 @@
             </ul>
         </div>
 
-
-
     </div>
 </div>
-

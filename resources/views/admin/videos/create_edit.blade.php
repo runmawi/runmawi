@@ -96,7 +96,6 @@
                                      <div class="col-sm-6 form-group" >
                                        <label class="p-2">Select Video Category :</label>
                                        <select class="form-control" id="video_category_id" name="video_category_id">
-                                       <option value="0">Uncategorized</option>
 						                        @foreach($video_categories as $category)
                                           <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						                        @endforeach
@@ -333,18 +332,15 @@
 		$("#type").change(function(){
 			if($(this).val() == 'file'){
 				$('.new-video-file').show();
-				$('.new-video-embed').hide();
-				$('.new-video-upload').hide();
+				$('.new-video-embed').show();
 
 			} else if($(this).val() == 'embed'){ 
 				$('.new-video-file').hide();
 				$('.new-video-embed').show();
-				$('.new-video-upload').hide();
 
 			}else{
 				$('.new-video-file').hide();
 				$('.new-video-embed').hide();
-				$('.new-video-upload').show();
 				
 			}
 		});

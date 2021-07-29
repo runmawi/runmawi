@@ -133,7 +133,6 @@
 				<div class="panel-body" style="display: block;"> 
 					<p>Select a Video Category Below:</p>
 					<select class="form-control" id="video_category_id" name="video_category_id">
-						<option value="0">Uncategorized</option>
 						@foreach($video_categories as $category)
 							<option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						@endforeach

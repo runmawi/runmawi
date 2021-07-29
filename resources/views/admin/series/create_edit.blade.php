@@ -144,7 +144,6 @@
 				<div class="panel-body" style="display: block;"> 
 					<p>Select a Series Category Below:</p>
 					<select id="genre_id" name="genre_id">
-						<option value="0">Uncategorized</option>
 						@foreach($series_categories as $category)
 							<option value="{{ $category->id }}" @if(!empty($series->genre_id) && $series->genre_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						@endforeach
