@@ -51,9 +51,7 @@ NOTE: This file contains the styling for responsive Template.
           margin: 0 auto;
         padding: 10px;
     }
-    .km{
-        font-size: 48px;
-    }
+   
 }
 
 header#main-header { position: relative; left: 0px; right: 0px; text-align: center; z-index: 99; background: rgba(20, 20, 20, 0.5) !important; }
@@ -1504,4 +1502,6 @@ td{
     
     
     
-    
+    #videoPlayer{
+        margin: 0 auto!important;
+    }

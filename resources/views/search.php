@@ -100,6 +100,11 @@
     text-align: center;
     width: 60%;
 }
+    .slick-slide{
+        width: 250px!important;
+           
+    padding-left: 25px!important;
+    }
 
 </style>
 
@@ -107,7 +112,7 @@
 <div class="container movlistt" id="home-content">
     
     <div class="new-art">
-        <h4 class="Continue Watching text-left padding-top-40" >Search Result of "<?php echo $search_value;?>" Channel Videos</h4>
+        <h4 class="Continue Watching  padding-top-40" >Search Result of "<?php echo $search_value;?>" Channel Videos</h4>
 	    <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
     </div>
     
@@ -115,7 +120,7 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
         <?php if(isset($videos) && !empty($videos)) { 
             foreach($videos as $watchlater_video): ?>
-             <li class="slide-item" style="width: 150px;">
+             <li class="slide-item p-0">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
@@ -135,12 +140,12 @@
                                           </span>
                                            </a>
                                        </div>
-                                        <div>
+                                        <!--<div>
                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
-                                                    </button></div>
+                                                    </button></div>-->
                                         </div>
                                    <!-- <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
