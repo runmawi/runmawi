@@ -131,7 +131,7 @@
 
 		<h3 style="color:#000;margin: 10px;">
             <div class="watchlater btn btn-primary <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-clock-o"></i> Watch Later</div>
-			<div class="mywishlist btn btn-primary <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-plus"></i> My Wishlist</div>
+			<div class="mywishlist btn btn-primary <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><i class="fa fa-plus"></i> My Wishlist</div>
 			<span class="view-count" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span>
             <br>
 			
@@ -162,7 +162,7 @@
 		</div>
             </div>
 
-
+       
 		<div class="series-details-container"><?= $episode->details ?></div>
 
 		<?php if(isset($episodenext)){ ?>
@@ -176,7 +176,7 @@
 		<?php
 		foreach($season as $key => $seasons): ?>
 			<h4 style="color:#fff;">Season <?= $key+1; ?></h4>
-
+ <div class="d-flex mt-3">
 			<?php foreach($seasons->episodes as $key => $episodes): 
 				if($episodes->id != $episode->id):?>
 				<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 new-art">
@@ -205,10 +205,10 @@
 				</div>
 			<?php endif; endforeach; ?>
 				<div class="clear"></div>
-
+        </div>
 		<?php endforeach; ?>
 		<div class="clear">
-		<h2 id="tags">Tags: 
+		<h2 id="tags">
 		<?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 
@@ -220,8 +220,8 @@
 
 		<div class="clear"></div>
 		<div id="social_share">
-	    	<p>Share This episode:</p>
-			<?php include('partials/social-share.php'); ?>
+	    	<!--<p>Share This episode:</p>
+			<?php /*include('partials/social-share.php'); */?>-->
 		</div>
             </div>
 

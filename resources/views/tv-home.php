@@ -1,9 +1,21 @@
 <!-- Header Start -->
 <?php include('header.php');?>
 <!-- Header End -->
+<section id="home" class="iq-main-slider p-0">
+    <div id="home-slider" class="slider m-0 p-0">
+        <?php include('partials/home/slider.php'); ?>
+    </div>
+ <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
+       fill="none" stroke="currentColor">
+       <circle r="20" cy="22" cx="22" id="test"></circle>
+    </symbol>
+ </svg>
+</section>
 
 <!-- MainContent -->
 <div class="main-content">
+    
   
   <section id="iq-favorites">
     <div class="fluid">
