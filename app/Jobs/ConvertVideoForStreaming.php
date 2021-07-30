@@ -38,9 +38,9 @@ class ConvertVideoForStreaming implements ShouldQueue
     public static function handle($video)
     {
         // create a video format...
-        $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-        $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        $lowBitrateFormat = (new X264)->setKiloBitrate(500);
+        $midBitrateFormat  =(new X264)->setKiloBitrate(1500);
+        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
         
