@@ -18,9 +18,7 @@ class AdminVideoCategoriesController extends Controller
       
       public function index(){
           
-        $categories = VideoCategory::where('parent_id', '=', 0)->get();
-
-        $allCategories = VideoCategory::all();
+        $allCategories = VideoCategory::where('parent_id', '=', 0)->orderBy('order','ASC')->get();
           
           $data = array (
             'allCategories'=>$allCategories
@@ -161,7 +159,20 @@ class AdminVideoCategoriesController extends Controller
     
     
     
+public function category_order(Request $request){
 
+      $input = $request->all();
+      $position = $_POST['position'];
+      $i=1;
+      foreach($position as $k=>$v){
+        $videocategory = VideoCategory::find($v);
+        $videocategory->order = $i;
+        $videocategory->save();
+        $i++;
+      }
+      return 1;
+
+    }
     
     
     

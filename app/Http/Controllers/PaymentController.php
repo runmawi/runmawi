@@ -122,12 +122,11 @@ public function RentPaypal(Request $request)
 
   public function purchaseVideo(Request $request)
   {
-    $daten = date('m/d/Y h:i:s a', time());    
     $setting = Setting::first();   
     $ppv_hours = $setting->ppv_hours;
+    $to_time =  Carbon::now()->addHour($ppv_hours);
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
-    $date = date('YYYY-MM-DD');
     $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
     $charge = $stripe->charges()->create([
       'source' => $request->get('tokenId'),
@@ -136,9 +135,8 @@ public function RentPaypal(Request $request)
     ]);
 
     DB::table('ppv_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $video_id]
+      ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $to_time]
     ]);
-
 
     return 1;
   }

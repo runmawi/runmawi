@@ -30,46 +30,14 @@
           <?php  elseif($video->type == 'file'): ?>
 
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
-            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay style="height: 550px;width:1000px;">
-           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.mp4'; ?>" type='video/mp4' label='auto' >
             
-
-              <!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
-              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' > -->
-<?php
-if($playerui_settings['subtitle'] == 1 ){
-
-foreach($subtitles as $key => $value){
-
-if($value['sub_language'] == "English"){
-?>
- <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
- <?php } 
-  if($value['sub_language'] == "German"){
- ?>
- <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
- <?php }
-if($value['sub_language'] == "Spanish"){
-  ?>
-  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-  <?php }
-  if($value['sub_language'] == "Hindi"){
- ?>
- <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
- <?php }
-}
-}else{
-
-} 
-?>  
- <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-    </p>
-</video>
-<!-- <video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>" type="application/x-mpegURL">
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_1500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+<video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
+controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+          
+ <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_1500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
             <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_500.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_3000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>
-        </video>  -->
+            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_3000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
+        </video> 
 <div class="playertextbox hide">
             <!--<h2>Up Next</h2>-->
             <p><?php if(isset($videonext)){ ?>
@@ -89,7 +57,9 @@ if($value['sub_language'] == "Spanish"){
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 <!-- Current time: <div id="current_time"></div> -->
 <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' >
+<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
+
+<!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > -->
 <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -161,7 +131,9 @@ if($value['sub_language'] == "Spanish"){
     <div id="video_container" class="fitvid">
 
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-    <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
+    <!-- <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > -->
+<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
+
     <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -196,8 +168,9 @@ if($value['sub_language'] == "Spanish"){
     <div id="video_container" class="fitvid">
 
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+    <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
 
-    <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' >
+    <!-- <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > -->
     <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -393,7 +366,7 @@ if($value['sub_language'] == "Spanish"){
                 </div>
     
     </div>
-
+    <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="clear"></div>
         <script>
             //$(".share a").hide();
@@ -402,6 +375,59 @@ if($value['sub_language'] == "Spanish"){
             }).on("mouseout", function() {
             $(".share a").hide();
             });
+
+            $(document).ready(function () {  
+              $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+              });
+            });
+ 
+            function pay(amount) {
+
+              var video_id = $('#video_id').val();
+
+              var handler = StripeCheckout.configure({
+
+                key: 'pk_test_hklBv33GegQSzdApLK6zWuoC00pEBExjiP',
+                locale: 'auto',
+                token: function (token) {
+// You can access the token ID with `token.id`.
+// Get the token ID to your server-side code for use.
+console.log('Token Created!!');
+console.log(token);
+$('#token_response').html(JSON.stringify(token));
+
+$.ajax({
+  url: '<?php echo URL::to("purchase-video") ;?>',
+  method: 'post',
+  data: {"_token": "<?php echo csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
+  success: (response) => {
+    alert("You have done  Payment !");
+    setTimeout(function() {
+      location.reload();
+    }, 2000);
+
+  },
+  error: (error) => {
+    swal('error');
+//swal("Oops! Something went wrong");
+/* setTimeout(function() {
+location.reload();
+}, 2000);*/
+}
+})
+}
+});
+
+
+              handler.open({
+                name: 'Flicknexs',
+                description: 'PAY PAR VIEW',
+                amount: amount * 100
+              });
+            }
         </script>
 
     <!--<div class="clear"></div>
