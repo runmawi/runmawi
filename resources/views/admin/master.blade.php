@@ -157,7 +157,7 @@
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
-                  
+                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                        class="la la-newspaper-o"></i><span>Pages</span><i
@@ -690,8 +690,8 @@
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
   <!-- End Notifications -->
 
-  <!--@yield('javascript')-->
-    <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+  @yield('javascript')
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -846,54 +846,5 @@ var chart_01_lable = $('#chart_01_lable').val();
             });
         </script>
     
-    <script type="text/javascript">
-
-    jQuery(document).ready(function($){
-
-
-      $('#nestable').nestable({ maxDepth: 3 });
-
-      // Add New Category
-      $('#submit-new-cat').click(function(){
-        $('#new-cat-form').submit();
-      });
-
-      $('.actions .edit').click(function(e){
-        $('#update-category').modal('show', {backdrop: 'static'});
-        e.preventDefault();
-        href = $(this).attr('href');
-        $.ajax({
-          url: href,
-          success: function(response)
-          {
-            $('#update-category .modal-content').html(response);
-          }
-        });
-      });
-
-      $('.actions .delete').click(function(e){
-        e.preventDefault();
-        if (confirm("Are you sure you want to delete this category?")) {
-             window.location = $(this).attr('href');
-          }
-          return false;
-      });
-
-      $('.dd').on('change', function(e) {
-          $('.category-panel').addClass('reloading');
-          $.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
-            console.log(data);
-            $('.category-panel').removeClass('reloading');
-          });
-
-      });
-
-
-    });
-    </script>
-
-    <script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
-
-
 </body>
 </html>

@@ -284,7 +284,7 @@ class AdminThemeSettingsController extends Controller
           
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
-          $allCategories = Slider::all();
+          $allCategories = Slider::orderBy('order_position','ASC')->get();
           $data = array (
             'allCategories'=>$allCategories
           );
@@ -475,7 +475,22 @@ class AdminThemeSettingsController extends Controller
          
         return back()->with('success', 'New Language Updated successfully.');
     }
-    
+
+    public function slider_order(Request $request){
+
+      $input = $request->all();
+      $position = $_POST['position'];
+      $i=1;
+      foreach($position as $k=>$v){
+        $slider = Slider::find($v);
+        $slider->order_position = $i;
+        $slider->save();
+        $i++;
+      }
+      return 1;
+
+    }
+
     
     
     

@@ -38,19 +38,26 @@
         </div>
 </section>
 <?php } ?>
-    <?php /*
-<section id="iq-upcoming-movie">
-    <?php if ( GetTrendingVideoStatus() == 1 ) { ?>
-        <div class="video-list">
-        <?php if ( count($trendings) > 0 ) { 
+
+
+<?php if ( GetTrendingVideoStatus() == 1 ) { ?>
+  <section id="iq-favorites">
+    <div class="fluid">
+      <div class="row">
+        <div class="col-sm-12 overflow-hidden">
+          <?php if ( count($featured_videos) > 0 ) { 
             include('partials/home/trending-videoloop.php');
-        } else {  ?>
+          } else {  ?>
             <p class="no_video"> No Video Found</p>
-        <?php } ?>
+          <?php } ?>
         </div>
-    <?php } ?>
-</section>
-    <section id="iq-topten">
+      </div>
+    </div>
+  </section>
+
+<?php } ?>
+ 
+  <?php /*<section id="iq-topten">
         <div class="container-fluid">
             <div class="row">
                   <div class="col-sm-12 overflow-hidden">
@@ -823,7 +830,7 @@ endif; ?>
             <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
             <div class="fluid">
                 <?php
-                    $parentCategories = App\VideoCategory::where('in_home','=',1)->get();
+                    $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
                     foreach($parentCategories as $category) {
                     $videos = App\Video::where('video_category_id','=',$category->id)->get();
                 ?>

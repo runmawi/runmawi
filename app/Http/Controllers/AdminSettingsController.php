@@ -274,13 +274,14 @@ return view('videolayout.footer',compact('playerui_settings') );
   }  
 
 
+
+
   public function storeplayerui(Request $request){
     $input = $request->all();
-      
+
     $playerui = Playerui::find(1);
-    // echo "<pre>";
-    // print_r($input);
-    // exit(); 
+    $watermark_right = $request['watermark_right'];
+
     if($playerui->show_logo == 0){
       $playerui->show_logo = 0;
     }else{
@@ -415,7 +416,7 @@ return view('videolayout.footer',compact('playerui_settings') );
     $playerui->opacity = $request['opacity'];
     //Watermark Settings
     $playerui->watermark_right = $request['watermark_right'];
-    $playerui->watermark_top = $request['watermark_top'];
+    $playerui->watermark_right = $request['watermark_top'];
     $playerui->watermark_bottom = $request['watermark_bottom'];
     $playerui->watermark_left = $request['watermark_left'];
     $playerui->watermark_opacity = $request['watermark_opacity'];
@@ -423,7 +424,7 @@ return view('videolayout.footer',compact('playerui_settings') );
     $playerui->watermar_width = $request['watermar_width'];
 
 
-    // http://localhost/flicknexs/public/uploads/settings/fl-logo.jpg
+    // http://localhost/flicknexs/public/uploads/settings/1
 
     $logopath = URL::to('/public/uploads/settings/');
     $path = public_path().'/uploads/settings/';
@@ -439,7 +440,7 @@ if($watermark != '') {
      //upload new file
      $file = $watermark;
      $playerui->watermark_logo  = $logopath.'/'.$file->getClientOriginalName();
-     $file->move($path, $playerui->watermark);
+     $file->move($path, $playerui->watermark_logo);
     
 }
     $playerui->save();

@@ -33,7 +33,7 @@
 							<div>
 								<label class="switch">
 								<input type="hidden" value="0" name="show_logo">    
-									<input type="checkbox" name="show_logo" @if(!isset($playerui->show_logo) || (isset($playerui->show_logo) && $playerui->show_logo))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="show_logo" @if(!isset($playerui->show_logo) || (isset($playerui->show_logo) && $playerui->show_logo))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 								</label>
 							</div>
@@ -48,7 +48,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="embed_player">    
 
-									<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 								</label>
 							</div>
@@ -61,7 +61,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="watermark">    
 
-									<input type="checkbox" name="watermark" @if(!isset($playerui->watermark) || (isset($playerui->watermark) && $playerui->watermark))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="watermark" @if(!isset($playerui->watermark) || (isset($playerui->watermark) && $playerui->watermark))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -75,7 +75,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="thumbnail">    
 
-									<input type="checkbox" name="thumbnail" @if(!isset($playerui->thumbnail) || (isset($playerui->thumbnail) && $playerui->thumbnail))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="thumbnail" @if(!isset($playerui->thumbnail) || (isset($playerui->thumbnail) && $playerui->thumbnail))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -92,7 +92,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="skip_intro">    
 
-									<input type="checkbox" name="skip_intro" @if(!isset($playerui->skip_intro) || (isset($playerui->skip_intro) && $playerui->skip_intro))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="skip_intro" @if(!isset($playerui->skip_intro) || (isset($playerui->skip_intro) && $playerui->skip_intro))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round" ></span>
 
 								</label>
@@ -106,7 +106,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="speed_control">    
 
-									<input type="checkbox" name="speed_control" @if(!isset($playerui->speed_control) || (isset($playerui->speed_control) && $playerui->speed_control))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="speed_control" @if(!isset($playerui->speed_control) || (isset($playerui->speed_control) && $playerui->speed_control))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -134,7 +134,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="video_card">    
 
-									<input type="checkbox" name="video_card" @if(!isset($playerui->video_card) || (isset($playerui->video_card) && $playerui->video_card))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="video_card" @if(!isset($playerui->video_card) || (isset($playerui->video_card) && $playerui->video_card))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -155,7 +155,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="subtitle">    
 
-									<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -173,7 +173,7 @@
 								<label class="switch">
 								<input type="hidden" value="0" name="subtitle_preference">    
 
-									<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="0"@else value="1"@endif>
+								<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
@@ -194,7 +194,7 @@
 							<div>
 
 								<select name="font">
-									<option value="Arial" @if(!empty($playerui->font) && $playerui->font == 'Arial'){{ 'selected' }}@endif>Arial</option>
+								<option value="Arial" @if(!empty($playerui->font) && $playerui->font == 'Arial'){{ 'selected' }}@endif>Arial</option>
 									<option value="Timesroman" @if(!empty($playerui->font) && $playerui->font == 'Timesroman'){{ 'selected' }}@endif>Timesroman</option>
 									<option value="Sans" @if(!empty($playerui->font) && $playerui->font == 'Sans'){{ 'selected' }}@endif>Sans sherif</option>
 								</select>
@@ -206,7 +206,7 @@
 							</div>
 							<div>
 								<select name="size">
-									<option value="Smaller" @if(!empty($playerui->size) && $playerui->size == 'Smaller'){{ 'selected' }}@endif>Smaller</option>
+								<option value="Smaller" @if(!empty($playerui->size) && $playerui->size == 'Smaller'){{ 'selected' }}@endif>Smaller</option>
 									<option value="Medium" @if(!empty($playerui->size) && $playerui->size == 'Medium'){{ 'selected' }}@endif>Medium</option>
 									<option value="Bigger" @if(!empty($playerui->size) && $playerui->size == 'Bigger'){{ 'selected' }}@endif>Bigger</option>
 								</select>
@@ -222,7 +222,7 @@
 								<label>Font color *</label>
 							</div>
 							<div>
-								<input type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif">
+							<input type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif">
 								<input type="color" name="chosecolorr" value="#336600">
 							</div>
 						</div>
@@ -231,7 +231,7 @@
 								<label>Background color</label>
 							</div>
 							<div>
-								<input type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif">
+							<input type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif">
 								<input type="color" name="chosecolorr" value="#336600">
 							</div>
 						</div>
@@ -315,7 +315,7 @@
             <p>Upload Watermark:</p> 
             <input type="file" multiple="true" class="form-control" name="watermark_logo" id="watermark_logo" />
              @if(!empty($playerui->watermark))
-                            <img src="{{ URL::to('/') . '/public/uploads/settings/' . $playerui->watermark }}" style="max-height:100px" />
+                            <img src="{{  $playerui->watermark_logo }}" style="max-height:100px" />
             @endif
           </div>
 		  <div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> 

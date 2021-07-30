@@ -183,7 +183,7 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 3,
+				slidesToShow: 1,
 				slidesToScroll: 1
 				}
 			}

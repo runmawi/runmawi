@@ -1,3 +1,25 @@
+<!-- Sliders -->
+<?php if(isset($sliders)) :
+    foreach($sliders as $key => $slider_video): ?>
+
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1"
+            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:100;background-position:right center; ">
+            <div class="container-fluid position-relative h-100">
+                <div class="slider-inner h-100">
+                    <div class="row align-items-center bl h-100">
+                        <a href="<?php echo $slider_video->link; ?>"
+                            class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<?php  ?>
+<?php endforeach; 
+endif; ?>
+<!-- Banners -->
 <?php if(isset($banner)) :
     foreach($banner as $key => $slider_video): ?>
 

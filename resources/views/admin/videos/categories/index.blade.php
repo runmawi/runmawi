@@ -122,12 +122,15 @@
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="categorytbl">
                                 <tr class="table-header">
+                                    <th>Category Image</th>
                                     <th>Video Category Name</th>
                                     <th>Operation</th>
+                                </tr>
                                     @foreach($allCategories as $category)
-                                    <tr>
+                                    <tr id="{{ $category->id }}">
+                                    	<td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
                                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                                         <td>
                                             <div class="flex align-items-center list-user-action">
@@ -156,14 +159,10 @@
 
 	@section('javascript')
 
-		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
 
 		<script type="text/javascript">
 
 		jQuery(document).ready(function($){
-
-
-			$('#nestable').nestable({ maxDepth: 3 });
 
 			// Add New Category
 			$('#submit-new-cat').click(function(){
@@ -191,19 +190,50 @@
 			    return false;
 			});
 
-			$('.dd').on('change', function(e) {
-    			$('.category-panel').addClass('reloading');
-    			$.post('<?= URL::to('admin/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
-    				console.log(data);
-    				$('.category-panel').removeClass('reloading');
-    			});
-
-			});
+		
 
 
 		});
 		</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+		<script type="text/javascript">
+			$(function () {
+				$("#categorytbl").sortable({
+					items: 'tr:not(tr:first-child)',
+					cursor: 'pointer',
+					axis: 'y',
+					dropOnEmpty: false,
+					start: function (e, ui) {
+						ui.item.addClass("selected");
+					},
+					stop: function (e, ui) {
+						ui.item.removeClass("selected");
+						var selectedData = new Array();
+						$(this).find("tr").each(function (index) {
+							if (index > 0) {
+								$(this).find("td").eq(2).html(index);
+								selectedData.push($(this).attr("id"));
+							}
+						});
+						updateOrder(selectedData)
+					}
+				});
+			});
 
+			function updateOrder(data) {
+				
+				$.ajax({
+					url:'<?= URL::to('admin/category_order');?>',
+					type:'post',
+					data:{position:data, _token : $('#_token').val()},
+					success:function(){
+						alert('Position changed successfully.');
+						location.reload();
+					}
+				})
+			}
+		</script>
 	@stop
 
 @stop

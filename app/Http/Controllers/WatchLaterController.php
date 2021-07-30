@@ -80,17 +80,17 @@ class WatchLaterController extends Controller
         
         }      
     
-    public function showPayperview(){
-            $showppv = PpvPurchase::where('user_id', '=', Auth::user()->id)->get();
-            $ppv_array = array();
-			 foreach($showppv as $key => $ccfave){
-				array_push($ppv_array, $ccfave->video_id);
-			}
-            $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
-             $data = array(
-                     'ppv' => $ppvvideos,
-              );
-             return view('myppv', $data);
+        public function showPayperview(){
+          $showppv = PpvPurchase::where('user_id', '=', Auth::user()->id)->get();
+          $ppv_array = array();
+          foreach($showppv as $key => $ccfave){
+            array_push($ppv_array, $ccfave->video_id);
+          }
+          $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
+          $data = array(
+            'ppv' => $ppvvideos,
+          );
+          return view('myppv', $data);
         } 
     
 }

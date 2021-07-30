@@ -127,13 +127,15 @@ class AdminVideosController extends Controller
                   }
               }
               //upload new file
+              $randval = Str::random(16);
               $file = $trailer;
-              $trailer_vid  = $file->getClientOriginalName();
+              $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
               $file->move($path, $trailer_vid);
-            
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
+              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
 
-         } 
+         }else {
+            $data['trailer'] = '';
+        }
         
         if($mp4_url != '') {
             
@@ -380,12 +382,14 @@ class AdminVideosController extends Controller
                   }
               }
               //upload new file
+              $randval = Str::random(16);
               $file = $trailer;
-              $trailer_vid  = $file->getClientOriginalName();
+              $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
               $file->move($path, $trailer_vid);
-            
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
+              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
 
+         } else {
+             $data['trailer'] = $video->trailer;
          } 
         
         if(!empty($mp4_url2) && $mp4_url2 != '') {   

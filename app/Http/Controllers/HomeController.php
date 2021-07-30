@@ -94,6 +94,7 @@ class HomeController extends Controller
         $data = array(
             'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
 			'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+      'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
 			'trendings' => $trending_movies,
 			'latest_videos' => $latest_videos,
 			'movies' => $trending_movies,
