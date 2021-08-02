@@ -68,7 +68,8 @@ class ConvertVideoForStreaming implements ShouldQueue
 //            ->onProgress(function ($percentage, $remaining, $rate) {
 //                echo "{$remaining} seconds left at rate: {$rate}";
 //            })
-            ->save(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),$converted_name);
+            ->inFormat(new \FFMpeg\Format\Video\X264)
+            ->save($converted_name);
 
 //         $this->video->update([
 //             'converted_for_streaming_at' => Carbon::now(),
