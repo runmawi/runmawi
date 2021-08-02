@@ -299,7 +299,7 @@ if($value['sub_language'] == "Spanish"){
 <!--      <div class="social_share">
         <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
         <div id="social_share">
-        <?php/* include("partials/social-share.php");*/ ?>
+        <?php /* include("partials/social-share.php");*/ ?>
         </div>
       </div>-->
         </div>
