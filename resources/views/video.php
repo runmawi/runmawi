@@ -57,9 +57,8 @@ controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", 
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 <!-- Current time: <div id="current_time"></div> -->
 <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
 
-<!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > -->
+<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > 
 <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -131,8 +130,7 @@ if($value['sub_language'] == "Spanish"){
     <div id="video_container" class="fitvid">
 
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-    <!-- <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > -->
-<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
+     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
 
     <?php
 if($playerui_settings['subtitle'] == 1 ){
@@ -168,9 +166,8 @@ if($value['sub_language'] == "Spanish"){
     <div id="video_container" class="fitvid">
 
     <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-    <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL"/>            
 
-    <!-- <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > -->
+    <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
     <?php
 if($playerui_settings['subtitle'] == 1 ){
 
