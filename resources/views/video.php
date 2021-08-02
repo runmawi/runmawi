@@ -30,7 +30,7 @@
           <?php  elseif($video->type == 'file'): ?>
 
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
-            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay style="height: 550px;width:1000px;">
+            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay style="height: 550px;width:auto;">
            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.mp4'; ?>" type='video/mp4' label='auto' >
             
 
@@ -230,15 +230,15 @@ if($value['sub_language'] == "Spanish"){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details">
+    <div class="container-fluid video-details" style="width:90%!important;">
       <div id="video_title">
         <h1><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
       </div>
         
    <?php if(!Auth::guest()) { ?>
 
-    <div class="row">
-      <div class="col-sm-6 col-md-6 col-xs-12 d-flex justify-content-around">     
+    <div class="row" >
+      <div class="col-sm-12 col-md-6 col-xs-12 d-flex justify-content-around">     
       <!-- Watch Later -->
                 <div>
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
@@ -246,15 +246,17 @@ if($value['sub_language'] == "Spanish"){
       <!-- Wish List -->            
       <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 </div>
+           </div>
       <!-- Share -->
+        <div class="col-sm-12 col-md-4 col-xs-12">
       <div class="social_share p-1 d-flex justify-content-around align-items-center">
         <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
         <div id="social_share">
         <?php include('partials/social-share.php'); ?>
         </div>
       </div>
-        </div>
-      <div class="col-sm-6 col-md-6 col-xs-12">
+       </div>
+      <div class="col-sm-12 col-md-2 col-xs-12">
       <!-- Views -->
        <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
@@ -360,7 +362,7 @@ if($value['sub_language'] == "Spanish"){
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-12 col-xs-12">
-        <div class="video-details-container"><?php echo __($video->description); ?></div>
+        <div class="video-details-container" style="text-align:justify;"><?php echo __($video->description); ?></div>
       </div>
     </div>
     <?php if(isset($videonext)){ ?>

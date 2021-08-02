@@ -617,7 +617,7 @@ img.thumb-img {
 }
 video.play-video {
     width: 100%;
-    height: 210px;
+   
     object-fit: cover;
     object-position: center;
 }
