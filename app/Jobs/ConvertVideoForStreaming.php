@@ -38,9 +38,9 @@ class ConvertVideoForStreaming implements ShouldQueue
     public static function handle($video)
     {
         // create a video format...
-        $lowBitrateFormat = (new X264)->setKiloBitrate(500);
-        $midBitrateFormat  =(new X264)->setKiloBitrate(1500);
-        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
+        $lowBitrateFormat = (new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        $midBitrateFormat  =(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        $highBitrateFormat = (new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
         
@@ -68,7 +68,6 @@ class ConvertVideoForStreaming implements ShouldQueue
 //            ->onProgress(function ($percentage, $remaining, $rate) {
 //                echo "{$remaining} seconds left at rate: {$rate}";
 //            })
-            ->inFormat(new \FFMpeg\Format\Video\X264)
             ->save($converted_name);
 
 //         $this->video->update([
