@@ -31,13 +31,13 @@
 
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
             
-<video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
-controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-          
- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_1500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_500.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_3000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-        </video> 
+              <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
+              controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+              
+              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+                <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                  <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
+                  </video> 
 <div class="playertextbox hide">
             <!--<h2>Up Next</h2>-->
             <p><?php if(isset($videonext)){ ?>
