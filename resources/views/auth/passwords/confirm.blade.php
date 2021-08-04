@@ -19,6 +19,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/home/Landban.png'; ?>') no-repeat;background-size: cover;">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -64,5 +65,6 @@
         </div>
     </div>
 </div>
+    </section>
 @endsection
 </html>

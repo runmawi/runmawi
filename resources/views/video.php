@@ -63,7 +63,7 @@ if($value['sub_language'] == "Spanish"){
 } 
 ?>  
  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-    </p>
+   
 </video>
 <!-- <video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>" type="application/x-mpegURL">
             <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_1500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
@@ -154,7 +154,7 @@ if($value['sub_language'] == "Spanish"){
       
       <?php endif; ?>            
     </div>
-  </div>
+  
 
   <?php }  
     else { ?>       
@@ -248,7 +248,7 @@ if($value['sub_language'] == "Spanish"){
 </div>
            </div>
       <!-- Share -->
-        <div class="col-sm-12 col-md-4 col-xs-12">
+        <div class="col-sm-12 col-md-4 col-xs-6">
       <div class="social_share p-1 d-flex justify-content-around align-items-center">
         <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
         <div id="social_share">
@@ -256,12 +256,12 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>
        </div>
-      <div class="col-sm-12 col-md-2 col-xs-12">
+      <div class="col-sm-12 col-md-2 col-xs-6">
       <!-- Views -->
        <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-      </div> 
+      
                 <?php     
                     $user = Auth::user(); 
                     if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
@@ -280,7 +280,7 @@ if($value['sub_language'] == "Spanish"){
 <!--                  <div id="paypal-button"></div>-->
                 <?php } ?>
                 
-              
+          </div>   
     </div> 
        </div>
         <?php   }?> 
@@ -317,7 +317,7 @@ if($value['sub_language'] == "Spanish"){
    <?php if(Auth::guest()) { ?>
   
     <div class="row">
-      <div class="col-sm-8 col-md-8 col-xs-12">     
+      <div class="col-sm-6 col-md-8 col-xs-12">     
       <!-- Watch Later -->
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
 
@@ -332,7 +332,7 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>-->
         </div>
-      <div class="col-sm-4 col-md-4 col-xs-12">
+      <div class="col-sm-6 col-md-4 col-xs-12">
       <!-- Views -->
        <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
