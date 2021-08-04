@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -26,10 +27,7 @@ class User extends Authenticatable
     
     private $token;
     
-    public function __construct($data)
-    {
-        $this->token = $data;
-    }
+    
     
 	/**
 	 * The attributes that are mass assignable.
