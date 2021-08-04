@@ -72,7 +72,7 @@ class ResetPasswordNotification extends Notification
             ], false));
         }
 
-       $url = url(config('app.url') . route('emails.reset', [
+       $url = url(config('app.url') . route('password.reset', [
             'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
