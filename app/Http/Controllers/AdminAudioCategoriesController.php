@@ -9,6 +9,7 @@ use App\Video as Video;
 use App\Audio as Audio;
 use App\VideoCategory as VideoCategory;
 use App\AudioCategory as AudioCategory;
+use App\AudioAlbums as AudioAlbums;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
@@ -25,7 +26,8 @@ class AdminAudioCategoriesController extends Controller
           
           
         $data = array (
-            'allCategories'=>$allCategories
+            'allCategories'=>$allCategories,
+            'categories'=>$categories,
           );
          
         return view('admin.audios.categories.index',$data);
@@ -158,5 +160,160 @@ class AdminAudioCategoriesController extends Controller
         }
     
     
+         /*Albums section */
     
+    public function albumIndex(){
+        $allAlbums = AudioAlbums::all();
+        $allCategories = AudioCategory::all();
+        $data = array(
+            'audioCategories' => $allCategories,
+            'allAlbums' => $allAlbums,
+        );
+        return view('admin.audios.albums.index',$data);
+   
+    }
+
+    public function storeAlbum(Request $request){
+        
+        $input = $request->all();
+        
+        $path = public_path().'/uploads/audios/';
+        
+        $image = $request['image'];
+        if($image != '') {   
+             //code for remove old file
+
+          if($image != ''  && $image != null){
+             $file_old = $path.$image;
+             if (file_exists($file_old)){
+                 unlink($file_old);
+             }
+         }
+                //upload new file
+         $file = $image;
+         $input['image']  = $file->getClientOriginalName();
+         $file->move($path, $input['image']);
+     } else {
+         $input['image']  = 'default.jpg';
+     }
+        
+        
+         /*Slug*/
+            if ($request->slug != '') {
+                $input['slug'] = $this->createAlbumSlug($request->slug);
+            }
+
+            if($request->slug == ''){
+                $input['slug'] = $this->createAlbumSlug($input['albumname']);    
+            }
+
+
+        AudioAlbums::create($input);
+        return back()->with('success', 'New Album added successfully.');
+
+    }
+
+    public function updateAlbum(Request $request){
+
+        
+        
+               
+        $request = $request->all();
+        
+         
+        
+            $id = $request['id'];
+            $audio = AudioAlbums::findOrFail($id);
+        
+         
+        
+           if ($audio->slug != $request->slug) {
+                $request['slug'] = $this->createAlbumSlug($request->slug, $id);
+            }
+
+            if($request->slug == '' || $audio->slug == ''){
+                $request['slug'] = $this->createAlbumSlug($request['albumname']);    
+            }
+
+            $path = public_path().'/uploads/audios/';
+            if (isset($request['image']) && !empty($request['image'])){
+                $image = $request['image']; 
+            } else {
+               $request['image'] = $category->image;
+           }
+           if( isset($image) && $image!= '') {   
+              //code for remove old file
+              if($image != ''  && $image != null){
+                 $file_old = $path.$image;
+                 if (file_exists($file_old)){
+                     unlink($file_old);
+                 }
+             }
+                  //upload new file
+             $file = $image;
+             $category->image  = $file->getClientOriginalName();
+             $file->move($path,$category->image);
+
+         } 
+        
+        $audio->update($request);
+        
+        
+        if(isset($audio)){
+            return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Updated Albums', 'note_type' => 'success') );
+        }
+    }
+
+    public function destroyAlbum($id){
+        AudioAlbums::destroy($id);
+       
+        return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Deleted Albums', 'note_type' => 'success') );
+    }
+
+    public function editAlbum($id){
+        $categories = AudioAlbums::where('id', '=', $id)->get();
+        $allAlbums = AudioAlbums::all();
+        $allCategories = AudioCategory::all();
+         $data = array(
+                'audioCategories' => $allCategories,
+                'allAlbums' => $allAlbums,
+                'categories' => $categories
+            );
+        
+        return view('admin.audios.albums.edit',$data);
+    }
+
+     public function createAlbumSlug($title, $id = 0)
+            {
+                // Normalize the title
+                $slug = str_slug($title);
+
+                // Get any that could possibly be related.
+                // This cuts the queries down by doing it once.
+                $allSlugs = $this->getRelatedAlbumSlugs($slug, $id);
+
+                // If we haven't used it before then we are all good.
+                if (! $allSlugs->contains('slug', $slug)){
+                    return $slug;
+                }
+
+                // Just append numbers like a savage until we find not used.
+                for ($i = 1; $i <= 10; $i++) {
+                    $newSlug = $slug.'-'.$i;
+                    if (! $allSlugs->contains('slug', $newSlug)) {
+                        return $newSlug;
+                    }
+                }
+
+                throw new \Exception('Can not create a unique slug');
+            }
+
+      protected function getRelatedAlbumSlugs($slug, $id = 0)
+        {
+            return AudioAlbums::select('slug')->where('slug', 'like', $slug.'%')
+                ->where('id', '<>', $id)
+                ->get();
+        }
+    
+
 }

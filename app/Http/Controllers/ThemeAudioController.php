@@ -1,0 +1,379 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use \App\User as User;
+use App\Setting as Setting;
+use App\Slider as Slider;
+use App\PpvVideo as PpvVideo;
+use App\PpvCategory as PpvCategory;
+use App\VerifyNumber as VerifyNumber;
+use App\Subscription as Subscription;
+use App\PaypalPlan as PaypalPlan;
+use App\ContinueWatching as ContinueWatching;
+use App\PpvPurchase as PpvPurchase;
+use App\Watchlater as Watchlater;
+use App\Wishlist as Wishlist;
+use App\Page as Page;
+use App\Audio as Audio;
+use App\AudioAlbums as AudioAlbums;
+use App\Artist as Artist;
+use App\AudioCategory as AudioCategory;
+use App\LikeDislike as Likedislike;
+use App\Favorite as Favorite;
+use App\Genre;
+use URL;
+use Auth;
+use View;
+use Hash;
+use Mail;
+use Nexmo;
+use App\Menu as Menu;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\ImageManagerStatic as Image;
+use http\Env\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\Authenticatable;
+use GeoIPLocation;
+use Stevebauman\Location\Facades\Location;
+use Carbon\Carbon as Carbon;
+use Session;
+
+class ThemeAudioController extends Controller{
+
+    private $audios_per_page = 12;
+
+    public function __construct()
+    {
+        $settings = Setting::first();
+        $this->audios_per_page = $settings->audios_per_page;
+        $this->movies_per_page = $settings->audios_per_page;
+        $this->series_per_page = $settings->audios_per_page;
+    }
+
+    /**
+     * Display the specified audio.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function index($slug,$name = '')
+      {
+       
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        //$audio = Audio::findOrFail($albumID);
+        
+        if (!empty($name)) {
+          
+             $audio = Audio::select('id')->where('slug','=',$name)->where('status','=',1)->first();
+             $audio = $audio->id;
+             $albumID = Audio::select('album_id')->where('slug','=',$name)->where('status','=',1)->first();
+        
+             $check_audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+            
+            
+              if (!empty($check_audio_details)) {
+                  $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+                } else {
+                     $audio_details = Audio::where('id','=',$albumID)->where('status','=',1)->first();
+                }
+            
+                $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+        
+
+                $audionext = Audio::select('slug')->where('id', '>', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audioprev = Audio::where('id', '<', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1)->get();
+            
+            
+                $favorited = false;
+                if(!Auth::guest()):
+                    $favorited = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $wishlisted = false;
+                if(!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $watchlater = false;
+                if(!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+            
+            
+        } else {
+           
+            $audio = Audio::where('slug','=',$slug)->where('status','=',1)->get('id');
+            $audio = $audio[0]->id;
+      
+             if (!empty($audio)) {
+              $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->get();
+              $albumID = $check_audio_details[0]->album_id;
+                
+              if (!empty($check_audio_details) && !empty($name)) {
+                  $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+                   
+                } else {
+                     $audio_details = Audio::where('album_id','=',$albumID)->where('status','=',1)->first();
+                  // print_r($audio_details);
+                }
+                $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+        
+                $audiocurrent = Audio::select('id')->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audionext = Audio::select('slug')->where('id', '>', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audioprev = Audio::where('id', '<', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1)->get();
+                 
+                $favorited = false;
+                if(!Auth::guest()):
+                    $favorited = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $wishlisted = false;
+                if(!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $watchlater = false;
+                if(!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+                endif;
+                 
+             } else {
+                  $data = array(
+                'message' => 'No Audio Found',
+                'error' =>'error'
+                );
+                return View::make('audio', $data);
+            }
+            
+            
+        }
+      
+            if (!empty($audio_details)) {
+                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+            $view_increment = $this->handleViewCount($audio);   
+            $data = array(
+                'audio' => Audio::findOrFail($audio),
+                'audio_details' => $audio_details,
+                'related_audio' => $related_audio,
+                'audionext' => $audionext,
+                'audioprev' => $audioprev,
+                'current_slug' =>$slug,
+                'url' => 'audio',
+                'ppv_status' => $ppv_status,
+                'view_increment' => $view_increment,
+                'menu' => Menu::orderBy('order', 'ASC')->get(),
+                'favorited' => $favorited,
+                'mywishlisted' => $wishlisted,
+                'watchlatered' => $watchlater,
+                'audio_categories' => AudioCategory::all(),
+                'pages' => Page::where('active', '=', 1)->get(),
+                );
+            } else {
+                $data = array(
+                'messge' => 'No Audio Found'
+                );
+                
+            }
+        
+
+            return View::make('audio', $data);
+
+        
+    }
+
+    /*
+     * Page That shows the latest audio list
+     *
+     */
+    public function audios(Request $request)
+    {   
+
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        
+        $page =$request->get('page');
+        if( !empty($page) ){
+            $page = $request->get('page');
+        } else {
+            $page = 1;
+        }
+
+        $data = array(
+            'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->audios_per_page),
+            'page_title' => 'All Audios',
+            'page_description' => 'Page ' . $page,
+            'current_page' => $page,
+            'menu' => Menu::orderBy('order', 'ASC')->get(),
+            'pagination_url' => '/audios',
+            'audio_categories' => AudioCategory::all(),
+            'pages' => Page::where('active', '=', 1)->get(),
+            );
+        return View::make('audio-list', $data);
+    }
+
+
+   
+
+    public function category($slug,Request $request)
+    {
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        
+        $page = $request->get('page');
+        if( !empty($page) ){
+            $page = $request->get('page');
+        } else {
+            $page = 1;
+        }
+        
+        
+
+        $getID = AudioCategory::select('id')->where('slug', '=', $slug)->first();
+        $cat = AudioCategory::where('id', '=', $getID)->first();
+        
+        $parent_cat = AudioCategory::where('parent_id', '=', $cat->id)->first();
+       
+        $albums = AudioAlbums::where('parent_id','=',$getID)->orderBy('created_at', 'DESC')->get();
+        
+        
+        
+        
+        if(!empty($parent_cat->id)){
+            $parent_cat2 = AudioCategory::where('parent_id', '=', $parent_cat->id)->first();
+            if(!empty($parent_cat2->id)){
+                $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orWhere('audio_category_id', '=', $parent_cat2->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+            } else {
+                $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+            }
+        } else {
+            $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+        }
+
+
+        $data = array(
+            'audios_category' => $audios,
+            'current_page' => $page,
+            'albums'=>$albums,
+            'category' => $cat,
+            'page_title' => 'Audios - ' . $cat->name,
+            'page_description' => 'Page ' . $page,
+            'pagination_url' => '/audios/category/' . $slug,
+            'menu' => Menu::orderBy('order', 'ASC')->get(),
+            'audio_categories' => AudioCategory::all(),
+            'theme_settings' => ThemeHelper::getThemeSettings(),
+            'pages' => Page::where('active', '=', 1)->get(),
+        );
+
+        return View::make('audio-list', $data);
+    }
+
+    public function handleViewCount($id){
+        
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        // check if this key already exists in the view_media session
+        $blank_array = array();
+        if (! array_key_exists($id, Session::get('viewed_audio', $blank_array) ) ) {
+            
+            try{
+                // increment view
+                $audio = Audio::find($id);
+                $audio->views = $audio->views + 1;
+                $audio->save();
+                // Add key to the view_media session
+                Session::put('viewed_audio.'.$id, time());
+                return true;
+            } catch (Exception $e){
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+   
+    public function categoryaudios($audio_id)
+    {
+       if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        
+        $audio = Audio::findOrFail($audio_id);
+        $audionext = Audio::where('id', '>', $audio_id)->where('audio_category_id', '=', $audio->audio_category_id)->first();
+        $audioprev = Audio::where('id', '<', $audio_id)->where('audio_category_id', '=', $audio->audio_category_id)->first();
+        $audioresolution = Audio::findOrFail($audio_id)->audioresolutions;
+        $audiosubtitles = Audio::findOrFail($audio_id)->audiosubtitles;
+
+        //Make sure audio is active
+        if((!Auth::guest() && Auth::user()->role == 'admin') || $audio->active){
+
+            $favorited = false;
+            if(!Auth::guest()):
+                $favorited = Favorite::where('user_id', '=', Auth::user()->audio_id)->where('audio_id', '=', $audio->audio_id)->first();
+            endif;
+
+            $view_increment = $this->handleViewCount($audio_id);
+
+            $data = array(
+                'audio' => $audio,
+                'audios_category_next' => $audionext,
+                'audios_category_prev' => $audioprev,
+                'audioresolution' => $audioresolution,
+                'audiosubtitles' => $audiosubtitles,
+                'menu' => Menu::orderBy('order', 'ASC')->get(),
+                'view_increment' => $view_increment,
+                'favorited' => $favorited,
+                'audio_categories' => AudioCategory::all(),
+                'theme_settings' => ThemeHelper::getThemeSettings(),
+                'pages' => Page::where('active', '=', 1)->get(),
+                );
+            return View::make('Theme::audio', $data);
+
+        } else {
+            return Redirect::to('audios')->with(array('note' => 'Sorry, this audio is no longer active.', 'note_type' => 'error'));
+        }
+    }
+    
+    public function Albums() {
+       
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        
+        /*print_r('sd');
+        exit;*/
+            $allAlbums = AudioAlbums::orderBy('created_at', 'DESC')->get();
+        
+            $data = array(
+                'allAlbums' => $allAlbums,
+            );
+        return View::make('albums', $data);
+    }
+
+    public function artist($artist_id) {
+       
+         if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        
+        
+        $data = array(
+            'artist' => '',
+        );
+        return View::make('artist', $data);
+    }
+    
+    
+}

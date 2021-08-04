@@ -38,9 +38,9 @@ class ConvertVideoForStreaming implements ShouldQueue
     public static function handle($video)
     {
         // create a video format...
-        $lowBitrateFormat = (new X264)->setKiloBitrate(500);
-        $midBitrateFormat  =(new X264)->setKiloBitrate(1500);
-        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
+        $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(250);
+        $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(1000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
         
@@ -76,10 +76,10 @@ class ConvertVideoForStreaming implements ShouldQueue
 //             'stream_path' => $converted_name
 //         ]);
         
-         //return $converted_name;
+         return $converted_name;
     }
 
     private static function getCleanFileName($filename){
-        return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
+        return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '';
     }
 }

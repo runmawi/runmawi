@@ -15,6 +15,7 @@ Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
 
+
 Route::get('/updatecard', 'PaymentController@UpdateCard');
 Route::get('/my-refferals', 'PaymentController@MyRefferal');
 Route::get('/nexmo', 'HomeController@nexmo')->name('nexmo');
@@ -47,7 +48,16 @@ Route::group(['middleware' => ['restrictIp']], function() {
     Route::get('episode/{id}', 'TvshowsController@play_episode');
     Route::get('play_series/{id}', 'TvshowsController@play_series');
 
+    /* Audio Pages */
+    Route::get('audios', 'ThemeAudioController@audios');
+    Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
+    Route::get('artist/{slug}', 'ThemeAudioController@artist' );
+    Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
+    Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
+    Route::get('audio/{slug}', 'ThemeAudioController@index');
+    Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
 
+        
     Route::post('/sendOtp', 'HomeController@SendOTP');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
     Route::post('/directVerify', 'SignupController@directVerify');
@@ -345,7 +355,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/artists/update', 'AdminArtistsController@update');
     Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
 
-
+//Admin Audio Albums
+        Route::get('/audios/albums', 'AdminAudioCategoriesController@albumIndex');
+        Route::post('/audios/albums/store', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@storeAlbum'));
+        Route::post('/audios/albums/order', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@orderAlbum'));
+        Route::get('/audios/albums/edit/{id}', 'AdminAudioCategoriesController@editAlbum');
+        Route::post('/audios/albums/update', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@updateAlbum'));
+        Route::get('/audios/albums/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@destroyAlbum'));
 
     Route::get('/series-list', 'AdminSeriesController@index');
     Route::get('/series/create', 'AdminSeriesController@create');

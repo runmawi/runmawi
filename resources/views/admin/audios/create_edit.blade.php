@@ -173,22 +173,39 @@
 										<textarea class="form-control" name="description" id="description">@if(!empty($audio->description)){{ htmlspecialchars($audio->description) }}@endif</textarea>
 									</div> 
 								</div>
-								<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-									<div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-									<div class="panel-body" style="display: block;"> 
-										<p>Add artists for the audio below:</p> 
-										<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-											@foreach($artists as $artist)
-											@if(in_array($artist->id, $audio_artist))
-											<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
-											@else
-											<option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
-											@endif 
-											@endforeach
-										</select>
+								<div class="row"> 
+									<div class="col-sm-6">
+										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+											<div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-body" style="display: block;"> 
+												<p>Add artists for the audio below:</p> 
+												<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+													@foreach($artists as $artist)
+													@if(in_array($artist->id, $audio_artist))
+													<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+													@else
+													<option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+													@endif 
+													@endforeach
+												</select>
 
-									</div> 
-								</div>
+											</div> 
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+											<div class="panel-title">Album</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-body" style="display: block;"> 
+												<p>Select a Audio Album Below:</p>
+												<select id="album_id" name="album_id" class="form-control">
+													@foreach($audio_albums as $albums)
+													<option value="{{ $albums->id }}" @if(!empty($audio->album_id) && $audio->album_id == $albums->id)selected="selected"@endif>{{ $albums->albumname }}</option>
+													@endforeach
+												</select>
+											</div> 
+										</div>
+									</div>
+									</div>
 								<div class="row"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
@@ -302,7 +319,7 @@
 								@endif
 
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-								<input type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
+								<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
 
 							</form>
 

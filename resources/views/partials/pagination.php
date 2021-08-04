@@ -4,6 +4,8 @@ if(isset($videos)):
 	$media = $videos;
 elseif(isset($videos_category)):
 	$media = $videos_category;
+elseif(isset($audios)):
+	$media = $audios;
 elseif(isset($audios_category)):
 	$media = $audios_category;
 elseif(isset($movies_genre)):

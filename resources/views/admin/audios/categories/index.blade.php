@@ -1,23 +1,69 @@
 @extends('admin.master')
 
+@section('css')
+	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+@endsection
+
 @section('content')
 
-	<div class="admin-section-title">
-		<div class="row">
-			<div class="col-md-12">
-				<h3><i class="entypo-archive"></i> Audio Categories</h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
-			</div>
-		</div>
-	</div>
+     <div id="content-page" class="content-page">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Audio Category</h4>
+                        </div>
+                        <div class="iq-card-header-toolbar d-flex align-items-center">
+                           <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
+                        </div>
+                     </div>
+                     <div class="iq-card-body">
+                     <div id="nestable" class="nested-list dd with-margins">
 
-	<!-- Add New Modal -->
+					 <ol id="tree1" class="dd-list">
+
+                        @foreach($categories as $category)
+
+                            <li class="dd-item">
+
+                               <div class="dd-handle"> {{ $category->name }} </div>
+                               <div class="actions">
+                               	
+                               	<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
+
+                               	<a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
+
+                               	</div>
+                                @if(count($category->childs))
+
+                                    @include('admin.audios.categories.manageChild',['childs' => $category->childs])
+
+                                @endif
+
+                            </li>
+
+                        @endforeach
+
+                    </ol>
+						
+				</div>
+			</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title">New Audio Category</h4>
+
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
 				<div class="modal-body">
@@ -83,7 +129,7 @@
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-cat">Save changes</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -99,51 +145,6 @@
 	</div>
 
 	<div class="clear"></div>
-		
-		
-		<div class="panel panel-primary category-panel" data-collapsed="0">
-					
-			<div class="panel-heading">
-				<div class="panel-title">
-					Organize the Categories below: 
-				</div>
-				
-				<div class="panel-options">
-					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-				</div>
-			</div>
-			
-			
-			<div class="panel-body">
-		
-				<div id="nestable" class="nested-list dd with-margins">
-
-					 <ol id="tree1" class="dd-list">
-
-                        @foreach($categories as $category)
-
-                            <li class="dd-item">
-
-                               <div class="dd-handle"> {{ $category->name }} </div>
-                               <div class="actions"><a href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}" class="btn btn-black edit">Edit</a> <a href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}" class="btn btn-white delete">Delete</a></div>
-                                @if(count($category->childs))
-
-                                    @include('admin.audios.categories.manageChild',['childs' => $category->childs])
-
-                                @endif
-
-                            </li>
-
-                        @endforeach
-
-                    </ol>
-						
-				</div>
-		
-			</div>
-		
-		</div>
-
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
 

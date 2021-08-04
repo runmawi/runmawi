@@ -26,7 +26,7 @@ class User extends Authenticatable
     
     private $token;
     
-    public function __construct($data)
+    public function __construct($data = null)
     {
         $this->token = $data;
     }

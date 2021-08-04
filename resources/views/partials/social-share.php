@@ -5,6 +5,11 @@
         $url = URL::to('/category/videos');
         $media_url = $url . '/' . $video->slug;
         $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
+    elseif(isset($audio)):
+        $media_title = $audio->title;
+        $url = URL::to('/');
+        $media_url = $url . '/' . $audio->slug;
+        $hidden = '<input type="hidden" value="'.$audio->id.'" id="audioid">';
     elseif(isset($post)):
         $media_title = $post->title;
         $url = ($settings->enable_https) ? secure_url('post') : URL::to('post');

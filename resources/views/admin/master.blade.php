@@ -113,10 +113,10 @@
           </li>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-user-plus"></i>Audio List</a></li>
-              <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-eye"></i>Add New Audio</a></li>
-              <li><a href="{{ URL::to('admin/audios/categories') }}"><span class="title">Manage Audio Categories</span></a></li>
-
+              <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
+              <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>
           </li>
           <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>

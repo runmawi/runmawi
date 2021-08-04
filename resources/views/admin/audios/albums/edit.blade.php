@@ -1,0 +1,84 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Update Album</h4>
+</div>
+
+<div class="modal-body">
+	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/audios/albums/update') }}" method="post" enctype="multipart/form-data">
+       
+         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+
+                        <label>Name:</label>
+
+                        <input type="text" id="albumname" name="albumname" value="{{ $categories[0]->albumname }}" class="form-control" placeholder="Enter Name">
+                        @if ($errors->has('albumname'))
+                            <span class="text-red" role="alert">
+                                <strong>{{ $errors->first('albumname') }}</strong>
+                            </span>
+                        @endif
+
+                    </div>
+        
+        
+                    <div class="form-group add-profile-pic">
+                      
+                        
+                    @if(!empty($categories[0]->album))
+                        <img src="{{ Config::get('site.uploads_dir') . 'albums/' . $categories[0]->album }}" style="max-height:100px" />
+                    @endif
+                         <label>Cover Image:</label>
+                            <input id="f02" type="file" name="album" placeholder="Add profile picture" />
+                         
+                          <p class="padding-top-20">Must be JPEG, PNG, or GIF and cannot exceed 10MB.</p>
+                      </div>
+              <br/>
+
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+
+                        <label>Slug:</label>
+
+                        <input type="text" id="slug" name="slug" value="{{ $categories[0]->slug }}" class="form-control" placeholder="Enter Slug">
+                        @if ($errors->has('slug'))
+                            <span class="text-red" role="alert">
+                                <strong>{{ $errors->first('slug') }}</strong>
+                            </span>
+                        @endif
+
+                    </div>
+
+
+                    <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
+
+                        <label>Category:</label>
+                        <select id="parent_id" name="parent_id" class="form-control">
+                        	
+                            <option value="0">Select</option>
+                            @foreach($audioCategories as $rows)
+                                <option value="{{ $rows->id }}" @if ($rows->id == $categories[0]->parent_id) selected  @endif >{{ $rows->name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('parent_id'))
+                            <span class="text-red" role="alert">
+                                <strong>{{ $errors->first('parent_id') }}</strong>
+                            </span>
+                        @endif
+
+                    </div>
+        <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
+        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+    </form>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('#submit-update-cat').click(function(){
+			$('#update-cat-form').submit();
+		});
+	});
+</script>

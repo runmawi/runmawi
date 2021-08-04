@@ -36,6 +36,8 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
 use App\Artist;
 use App\Audioartist;
+use App\AudioAlbums;
+
 
 class AdminAudioController extends Controller
 {
@@ -80,6 +82,7 @@ class AdminAudioController extends Controller
             'admin_user' => Auth::user(),
             'languages' => Language::all(),
             'audio_categories' => AudioCategory::all(),
+            'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => [],
             );
@@ -193,6 +196,7 @@ class AdminAudioController extends Controller
             'admin_user' => Auth::user(),
             'languages' => Language::all(),
             'audio_categories' => AudioCategory::all(),
+            'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
             );
