@@ -8,12 +8,13 @@
         <?php $settings = App\Setting::find(1); ?>
         <img style="margin-left: 39%;" src="<?php echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>" width="80" height="80">
 </a>
-        <h2>Verify Your Email Address</h2>
+        <h2>Reset Password</h2>
 
         <div>
          
-            Please use the below verification code to reset password
-           
+           Click here to reset your password: <?php echo URL::to('/').'password/reset/'.$token ;?>
+           <br>
+
         </div>
 
     </body>
