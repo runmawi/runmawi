@@ -4,7 +4,7 @@
 
  <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
-<input type="hidden" name="logo_path" id='logo_path' value="<?php echo URL::to('/') . '/public/uploads/settings/' . $playerui_settings['watermark'] ;?>">
+<input type="hidden" name="logo_path" id='logo_path' value="<?php echo $playerui_settings['watermark'] ;?>">
 
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
    
@@ -30,57 +30,48 @@
           <?php  elseif($video->type == 'file'): ?>
 
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
-<<<<<<< HEAD
+
             
               <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
               controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-              
+
               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                 <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                   <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-                  </video> 
-=======
-            <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" controls autoplay style="height: 550px;width:auto;">
-           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.mp4'; ?>" type='video/mp4' label='auto' >
-            
 
-              <!-- <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->webm_url; ?>" type='video/webm' label='auto' >
-              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->ogg_url; ?>" type='video/ogg' label='auto' > -->
-<?php
-if($playerui_settings['subtitle'] == 1 ){
 
-foreach($subtitles as $key => $value){
 
-if($value['sub_language'] == "English"){
-?>
- <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
- <?php } 
-  if($value['sub_language'] == "German"){
- ?>
- <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
- <?php }
-if($value['sub_language'] == "Spanish"){
-  ?>
-  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-  <?php }
-  if($value['sub_language'] == "Hindi"){
- ?>
- <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
- <?php }
-}
-}else{
+                    <?php
+                    if($playerui_settings['subtitle'] == 1 ){
 
-} 
-?>  
- <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-   
-</video>
-<!-- <video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>" type="application/x-mpegURL">
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_1500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_500.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_3000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>
-        </video>  -->
->>>>>>> Design
+                      foreach($subtitles as $key => $value){
+
+                        if($value['sub_language'] == "English"){
+                          ?>
+                          <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                          <?php } 
+                          if($value['sub_language'] == "German"){
+                            ?>
+                            <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                            <?php }
+                            if($value['sub_language'] == "Spanish"){
+                              ?>
+                              <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                              <?php }
+                              if($value['sub_language'] == "Hindi"){
+                                ?>
+                                <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                                <?php }
+                              }
+                            }else{
+
+                            } 
+                            ?>  
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+
+                          </video>
+
+
 <div class="playertextbox hide">
             <!--<h2>Up Next</h2>-->
             <p><?php if(isset($videonext)){ ?>

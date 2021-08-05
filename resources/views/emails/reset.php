@@ -12,7 +12,7 @@
 
         <div>
          
-           Click here to reset your password: <?php echo URL::to('/').'password/reset/'.$token ;?>
+           <a href="<?php echo URL::to('/').'/password/reset/'.$token ;?>">Click here</a> to reset your password: <?php echo URL::to('/').'/password/reset/'.$token ;?>
            <br>
 
         </div>
