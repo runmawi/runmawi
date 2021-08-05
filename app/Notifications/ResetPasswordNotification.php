@@ -77,7 +77,7 @@ class ResetPasswordNotification extends Notification
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
 
-       return (new MailMessage)->view('emails.reset', ['url' => $url]);
+       return (new MailMessage)->view('emails.reset', ['url' => $url,'token' => $token]);
         
     }
 
