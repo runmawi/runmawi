@@ -709,6 +709,15 @@ public function verifyandupdatepassword(Request $request)
       $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
       $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
 
+      //Continue Watchings
+      $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
+      if($cnt4 == 1){
+      $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
+      $curr_time = $get_time[0]->currentTime;
+    }else{
+        $curr_time = '00';
+    }
+
       $userrole = User::where('id','=',$user_id)->first()->role;
       $status = 'true';
 
@@ -721,6 +730,7 @@ public function verifyandupdatepassword(Request $request)
       $watchlaterstatus = 'false';
       $favoritestatus = 'false';
       $ppv_exist = 0;
+      $curr_time = '00';
       $userrole = '';
       $status = 'true';
       $like = "false";
@@ -751,6 +761,7 @@ public function verifyandupdatepassword(Request $request)
     $response = array(
       'status' => $status,
       'wishlist' => $wishliststatus,
+      'curr_time' => $curr_time,
       'ppv_video_status' => $ppv_video_status,
             'main_genre' => $videos_cat[0]->name,
       'watchlater' => $watchlaterstatus,
@@ -2973,8 +2984,8 @@ public function upnextAudio(Request $request){
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = ContinueWatching::select('video_id')->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::select('video_id')->where('user_id','=',$user_id)->count();
+    $video_ids = ContinueWatching::select('videoid')->where('user_id','=',$user_id)->get();
+    $video_ids_count = ContinueWatching::select('videoid')->where('user_id','=',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
 
