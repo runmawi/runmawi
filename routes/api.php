@@ -143,6 +143,8 @@ Route::group([
     Route::get('Moderatorspermission', 'ApiAuthController@Moderatorspermission');
 
     Route::post('addtocontinuewatching', 'ApiAuthController@addtocontinuewatching');
+
+    Route::post('listcontinuewatchings', 'ApiAuthController@listcontinuewatchings');
     
     
 });

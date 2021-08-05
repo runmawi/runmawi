@@ -2931,11 +2931,11 @@ public function upnextAudio(Request $request){
           if ( $count > 0 ) {
             ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration]);
             $response = array(
-              'status'=>'false',
+              'status'=>'true',
               'message'=>'Current Time updated'
           );
         } else {
-            $data = array('user_id' => $user_id, 'videoid' => $video_id );
+            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration );
             ContinueWatching::insert($data);
             $response = array(
               'status'=>'true',
@@ -2950,11 +2950,11 @@ public function upnextAudio(Request $request){
           if ( $count > 0 ) {
             ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration]);
             $response = array(
-              'status'=>'false',
+              'status'=>'true',
               'message'=>'Current Time updated'
           );
         } else {
-            $data = array('user_id' => $user_id, 'episodeid' => $episode_id );
+            $data = array('user_id' => $user_id, 'episodeid' => $episode_id,'currentTime' => $current_duration );
             ContinueWatching::insert($data);
             $response = array(
               'status'=>'true',
@@ -2965,6 +2965,41 @@ public function upnextAudio(Request $request){
       }
 
       return response()->json($response, 200);
+  }
+
+  public function listcontinuewatchings(Request $request)
+  {
+      
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $video_ids = ContinueWatching::select('video_id')->where('user_id','=',$user_id)->get();
+    $video_ids_count = ContinueWatching::select('video_id')->where('user_id','=',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->video_id;
+      }
+      $videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $videos = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'videos'=> $videos
+      );
+    return response()->json($response, 200);
+
+
   }
 
 }
