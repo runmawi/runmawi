@@ -23,7 +23,7 @@
 						</select>
 					</div><br><br>
 					<div class="row p-2">
-						<p class="desc" style="color: #fff;"><?php echo $series->description;?></p>
+						<p class="desc" style="color:#fff;"><?php echo $series->description;?></p>
 					</div>
 				</div>
 			</div>

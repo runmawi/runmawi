@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div id="admin-container">
+<div id="admin-container" style="margin-left:340px;padding-top:60px;padding:15px;">
 <!-- This is where -->
 	
 	<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>
@@ -30,14 +30,14 @@
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Artist</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
+							<input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" style="background-color: #000000!important;"/>
 						</div> 
 					</div>
                     
                       <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<textarea class="form-control" name="description" id="description" >@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
+							<textarea class="form-control" name="description" id="description" style="background-color: #000000!important;" >@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
 						</div> 
 					</div>  
                     
@@ -52,21 +52,20 @@
 
 						</div> 
 					</div>
-
-				</div>
-
-
-			</div>
-
-			<div class="clear"></div>
-
-
-			@if(isset($artist->id))
+	@if(isset($artist->id))
 				<input type="hidden" id="id" name="id" value="{{ $artist->id }}" />
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+				</div>
+
+
+		
+
+			</div>
+
+			
 
 		</form>
 

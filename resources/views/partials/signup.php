@@ -47,7 +47,12 @@ background-color: #30312f !important;
     color: gray;
     border: none;
     height: 60px;
+        
         }
+    #signup-form input{
+       
+    }
+    
 </style>
 
 <div class="row" id="signup-form">
@@ -305,7 +310,7 @@ background-color: #30312f !important;
                 <label class="col-md-4 control-label" for="username">Username</label>
 
                 <div class="col-md-8">
-                  <input type="text" class="form-control" id="username" name="username" value="<?= old('username'); ?>" />
+                  <input type="text" class="form-control" id="username" name="username" value="<?= old('username'); ?>" style="background-color:gray!important;"/>
                 </div>
             </div>
 
@@ -325,7 +330,7 @@ background-color: #30312f !important;
                 <label class="col-md-4 control-label" for="email">Email Address</label>
 
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="email" name="email" value="<?= old('email'); ?>">
+                    <input type="text" class="form-control" id="email" name="email" value="<?= old('email'); ?>" >
                 </div>
             </div>
 

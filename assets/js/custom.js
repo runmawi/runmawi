@@ -157,7 +157,7 @@ Index Of Script
 			speed: 300,
 			autoplay: false,
 			slidesToShow: 6,
-			slidesToScroll: 1,		
+			slidesToScroll: 4,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',

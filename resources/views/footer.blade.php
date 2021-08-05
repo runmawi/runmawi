@@ -92,7 +92,7 @@
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body">FLICKNEXS - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;">FLICKNEXS - 2021 All Rights Reserved</p>
             </div>
          </div>
       </footer>

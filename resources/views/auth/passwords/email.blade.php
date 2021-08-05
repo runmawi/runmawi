@@ -26,11 +26,15 @@
     i.fa.fa-google-plus {
     padding: 10px !important;
 }
-    *{
-        color: #fff;
-    }
+   
     .container-fluid{
         width: 90%!important;
+    }
+    h1{
+        color: #fff;
+    }
+    .h{
+        color: #fff; 
     }
 </style>
 
@@ -50,7 +54,7 @@
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto" align="center">
                       <img src="<?php echo URL::to('/').'/assets/img/logo.png'; ?>" style="margin-bottom:1rem;">
-                      <h2 class="mb-3 text-center">{{ __('Forgot Password') }}</h2>
+                      <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 			</div>
                 <div class="card-body">
                     @if (session('status'))

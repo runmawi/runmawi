@@ -5,6 +5,18 @@
 @stop
 
 <style>
+    .btn-black{
+        background-color: #00008b!important;
+        padding: 10px 25px!important;
+        color: #fff!important;
+        margin-top: 10px!important;
+        float: right!important;
+        margin-left: 15px !important;
+            
+    }
+    .content-page{
+        padding: 20px;
+    }
 	span{
 		color: gray;
 	}
@@ -120,19 +132,19 @@
 
 							<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title">Audio Image Cover</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
+								<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ Config::get('site.uploads_dir') . 'images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
 									<p>Select the audio image (1280x720 px or 16:9 ratio):</p> 
-									<input type="file" multiple="true" class="form-control" name="image" id="image" />
+									<input type="file" multiple="true" class="form-control" name="image" id="image"/>
 
 								</div> 
 							</div>
 
 							<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title">Audio Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
+								<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 									<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Audio Format</label>
 									<select id="type" name="type" class="form-control">
 										<option value="file" @if(!empty($audio->type) && $audio->type == 'file'){{ 'selected' }}@endif>Audio File</option>
@@ -189,6 +201,7 @@
 													@endforeach
 												</select>
 
+<<<<<<< HEAD
 											</div> 
 										</div>
 									</div>
@@ -207,6 +220,11 @@
 									</div>
 									</div>
 								<div class="row"> 
+=======
+									</div> 
+								</div>
+								<div class="row align-items-center"> 
+>>>>>>> Design
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title">Category</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -231,7 +249,7 @@
 									</div>
 								</div>
 
-								<div class="row"> 
+								<div class="row align-items-center"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title">Language</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -261,7 +279,7 @@
 
 								<div class="row"> 
 
-									<div class="col-sm-4"> 
+									<div class="col-sm-4 align-items-center"> 
 										<div class="panel panel-primary" data-collapsed="0"> 
 											<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
@@ -307,10 +325,7 @@
 											</div> 
 										</div>
 									</div>
-
-								</div><!-- row -->
-
-								@if(!isset($audio->user_id))
+                                    @if(!isset($audio->user_id))
 								<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 								@endif
 
@@ -319,8 +334,15 @@
 								@endif
 
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+<<<<<<< HEAD
 								<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+=======
+								<input type="submit mt-3" value="{{ $button_text }}" class="btn btn-black pull-right" />
 
+								</div><!-- row -->
+>>>>>>> Design
+
+								
 							</form>
 
 							<div class="clear"></div>
