@@ -2990,7 +2990,7 @@ public function upnextAudio(Request $request){
     if ( $video_ids_count  > 0) {
 
       foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->video_id;
+        $k2[] = $value1->videoid;
       }
       $videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
