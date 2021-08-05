@@ -64,6 +64,7 @@ use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon as Carbon;
 use App\Playerui as Playerui;
+use App\ContinueWatching as ContinueWatching;
 
 
 class ApiAuthController extends Controller
@@ -2920,6 +2921,50 @@ public function upnextAudio(Request $request){
   }
 
   
-  //http://localhost/flicknexs/api/auth/Playerui
+  public function addtocontinuewatching(Request $request)
+  {
+      $user_id = $request->user_id;
+      $current_duration = $request->current_duration;
+      if($request->video_id){
+          $video_id = $request->video_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration]);
+            $response = array(
+              'status'=>'false',
+              'message'=>'Current Time updated'
+          );
+        } else {
+            $data = array('user_id' => $user_id, 'videoid' => $video_id );
+            ContinueWatching::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added  to  Continue Watching List'
+          );
+
+        }
+      }
+      if($request->episode_id){
+          $episode_id = $request->episode_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration]);
+            $response = array(
+              'status'=>'false',
+              'message'=>'Current Time updated'
+          );
+        } else {
+            $data = array('user_id' => $user_id, 'episodeid' => $episode_id );
+            ContinueWatching::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added  to  Continue Watching List'
+          );
+
+        }
+      }
+
+      return response()->json($response, 200);
+  }
 
 }
