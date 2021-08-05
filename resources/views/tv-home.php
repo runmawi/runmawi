@@ -28,7 +28,7 @@
   </section>
 
   <section id="iq-tvthrillers" class="s-margin">
-      <div class="fluid">
+         <div class="fluid">
         <?php
         $parentCategories = App\Genre::all();
         foreach($parentCategories as $category) {
