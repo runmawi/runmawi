@@ -4,7 +4,7 @@
 
  <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
-<input type="hidden" name="logo_path" id='logo_path' value="<?php echo $playerui_settings['watermark'] ;?>">
+<input type="hidden" name="logo_path" id='logo_path' value="<?php echo URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark ;?>">
 
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
    
