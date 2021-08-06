@@ -321,7 +321,7 @@ if($value['sub_language'] == "Spanish"){
    <?php if(Auth::guest()) { ?>
   
     <div class="row">
-      <div class="col-sm-6 col-md-8 col-xs-12">     
+      <div class="col-sm-6 col-md-5 col-xs-12">     
       <!-- Watch Later -->
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
 
@@ -332,17 +332,21 @@ if($value['sub_language'] == "Spanish"){
 <!--      <div class="social_share">
         <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
         <div id="social_share">
-        <?php /* include("partials/social-share.php");*/ ?>
+        <?php/* include("partials/social-share.php");*/ ?>
         </div>
       </div>-->
         </div>
-      <div class="col-sm-6 col-md-4 col-xs-12">
-      <!-- Views -->
-       <div class="btn btn-default views">
+        <div class="col-sm-6 col-md-3">
+            <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
       </div> 
-                
+        </div>
+      <div class="col-sm-6 col-md-4 col-xs-12">
+      <!-- Views -->
+           <div class="d-flex">
+       
+               
                         <div class="btn views" style="margin: 0 12px; padding: 0;">
                             <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                          </div>
@@ -352,10 +356,14 @@ if($value['sub_language'] == "Spanish"){
                      <?php echo __('Rent');?> </a>
 <!--                    <div id="paypal-button"></div>-->
                    </div> 
+                    </div>
                 
               
     </div> 
        </div>
+
+
+
         <?php   }?>
     <div class="row">
         <div class="vid-details col-sm-12 col-md-12 col-xs-12">
