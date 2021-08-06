@@ -130,7 +130,7 @@
             </div>
       <?php endforeach; 
             endif; */?>
-<div class="mod">
+<!--<div class="mod">
       <?php if(isset($videos)) :
             foreach($videos as $cont_video): ?>
             <!--    <div class="thumb-cont" id="<?= $cont_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>') no-repeat;background-size: cover;"> 
@@ -181,8 +181,8 @@
                                                 <span class="viewers"><i class="fa fa-eye"></i>(<?= $cont_video->views;?>)</span>
                                                 <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $cont_video->duration); ?></span>
                                                 </p>-->
-                                                </div>
-                                            </div>
+                                                <!--</div>
+                                            </div>-->
                                      <!--   </a>
                                         <div class="block-contents">
                                             <!--<p class="movie-title padding"><?php echo __($cont_video->title); ?></p>-->
