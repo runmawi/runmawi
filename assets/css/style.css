@@ -105,7 +105,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 /*--------------------------------------------------------------
                        Main Slider
 --------------------------------------------------------------*/
-#home-slider {border: 1px solid #808080;}
+#home-slider {}
 #home-slider ul.slick-dots { bottom: 30px; }
 #home-slider .slick-dots li { height: auto; width: auto; }
 #home-slider .slick-dots li button { height: 2px; width: 30px; background: rgba(229, 9, 20, 0.4); padding: 0; }
@@ -729,7 +729,8 @@ footer, .home footer {
 .btn-danger:hover{
     color: #fff;
     background-color: !important;
-    border-color: #45c5e1 !important;
+    border-color: #45c
+        5e1 !important;
 }
 .btn-primary {
     color: #fff;
