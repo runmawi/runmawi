@@ -2936,17 +2936,18 @@ public function upnextAudio(Request $request){
   {
       $user_id = $request->user_id;
       $current_duration = $request->current_duration;
+      $watch_percentage = $request->watch_percentage;
       if($request->video_id){
           $video_id = $request->video_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration]);
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
           );
         } else {
-            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration );
+            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage );
             ContinueWatching::insert($data);
             $response = array(
               'status'=>'true',
@@ -2959,13 +2960,13 @@ public function upnextAudio(Request $request){
           $episode_id = $request->episode_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration]);
+            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
           );
         } else {
-            $data = array('user_id' => $user_id, 'episodeid' => $episode_id,'currentTime' => $current_duration );
+            $data = array('user_id' => $user_id, 'episodeid' => $episode_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage );
             ContinueWatching::insert($data);
             $response = array(
               'status'=>'true',
