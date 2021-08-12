@@ -2975,7 +2975,7 @@ public function upnextAudio(Request $request){
       foreach ($video_ids as $key => $value1) {
         $k2[] = $value1->videoid;
       }
-      $videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+      $videos = Video::whereIn('id', $k2)->get()->map(function ($item,$user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('videoid','=',$item->id)->get()[0]->watch_percentage;
