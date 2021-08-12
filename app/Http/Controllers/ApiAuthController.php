@@ -2988,7 +2988,7 @@ public function upnextAudio(Request $request){
       $status = "true";
     }else{
             $status = "false";
-            $episodes = [];
+            $videos = [];
     }
 
   
