@@ -2963,12 +2963,12 @@ public function upnextAudio(Request $request){
 
   public function listcontinuewatchings(Request $request)
   {
-      
+
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = ContinueWatching::select('videoid')->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::select('videoid')->where('user_id','=',$user_id)->count();
+    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
 
@@ -2977,14 +2977,13 @@ public function upnextAudio(Request $request){
       }
       $videos = Video::whereIn('id', $k2)->get()->map(function ($item,$user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('videoid','=',$item->id)->pluck('watch_percentage');
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         return $item;
       });
       $status = "true";
     }else{
             $status = "false";
-      $videos = [];
+            $episodes = [];
     }
 
   
@@ -2995,6 +2994,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
 
 
+  
   }
 
   public function remove_continue_watchingvideo(Request$request)
@@ -3067,8 +3067,8 @@ public function upnextAudio(Request $request){
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $episode_ids = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->get();
-    $episode_ids_count = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->count();
+    $episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->get();
+    $episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->count();
 
     if ( $episode_ids_count  > 0) {
 
@@ -3077,13 +3077,13 @@ public function upnextAudio(Request $request){
       }
       $episodes = Episode::whereIn('id', $k2)->get()->map(function ($item,$user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('episodeid','=',$item->id)->pluck('watch_percentage');
+        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         return $item;
       });
       $status = "true";
     }else{
             $status = "false";
-      $episodes = [];
+            $episodes = [];
     }
 
   
