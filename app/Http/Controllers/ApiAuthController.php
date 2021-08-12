@@ -2978,7 +2978,7 @@ public function upnextAudio(Request $request){
       $videos = Video::whereIn('id', $k2)->get()->map(function ($item,$user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('videoid','=',$item->id)->get()[0]->watch_percentage;
+        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('videoid','=',$item->id)->get();
         return $item;
       });
       $status = "true";
@@ -3070,14 +3070,14 @@ public function upnextAudio(Request $request){
     $episode_ids = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->get();
     $episode_ids_count = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->count();
 
-    if ( $video_ids_count  > 0) {
+    if ( $episode_ids_count  > 0) {
 
-      foreach ($video_ids as $key => $value1) {
+      foreach ($episode_ids as $key => $value1) {
         $k2[] = $value1->episodeid;
       }
-      $episodes = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+      $episodes = Episode::whereIn('id', $k2)->get()->map(function ($item,$user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('episodeid','=',$item->id)->get()[0]->watch_percentage;
+        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('episodeid','=',$item->id)->get();
         return $item;
       });
       $status = "true";
