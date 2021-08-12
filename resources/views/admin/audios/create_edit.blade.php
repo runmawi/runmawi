@@ -201,7 +201,7 @@
 													@endforeach
 												</select>
 
-<<<<<<< HEAD
+
 											</div> 
 										</div>
 									</div>
@@ -220,11 +220,11 @@
 									</div>
 									</div>
 								<div class="row"> 
-=======
+
 									</div> 
 								</div>
 								<div class="row align-items-center"> 
->>>>>>> Design
+
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title">Category</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -334,14 +334,10 @@
 								@endif
 
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-<<<<<<< HEAD
-								<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
-=======
-								<input type="submit mt-3" value="{{ $button_text }}" class="btn btn-black pull-right" />
+
+								<input type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
 
 								</div><!-- row -->
->>>>>>> Design
-
 								
 							</form>
 
