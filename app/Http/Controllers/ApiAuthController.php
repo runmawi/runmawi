@@ -848,9 +848,15 @@ public function verifyandupdatepassword(Request $request)
         $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
         return $item;
       });
+      $banners = Video::where('active','=',1)->where('status','=',1)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
       $response = array(
         'status' => 'true',
-        'sliders' => $sliders
+        'sliders' => $sliders,
+        'banners' => $banners
       );
       return response()->json($response, 200);
      } 
