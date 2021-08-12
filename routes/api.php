@@ -145,6 +145,14 @@ Route::group([
     Route::post('addtocontinuewatching', 'ApiAuthController@addtocontinuewatching');
 
     Route::post('listcontinuewatchings', 'ApiAuthController@listcontinuewatchings');
+
+    Route::post('remove_continue_watchingvideo', 'ApiAuthController@remove_continue_watchingvideo');
+
+    Route::post('remove_continue_watchingepisode', 'ApiAuthController@remove_continue_watchingepisode');
+
+    Route::post('EpisodeContinuewatching', 'ApiAuthController@EpisodeContinuewatching');
+    
+    Route::post('listcontinuewatchingsepisode', 'ApiAuthController@listcontinuewatchingsepisode');
     
     
 });

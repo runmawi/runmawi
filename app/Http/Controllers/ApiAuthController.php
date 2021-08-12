@@ -2956,25 +2956,7 @@ public function upnextAudio(Request $request){
 
         }
       }
-      if($request->episode_id){
-          $episode_id = $request->episode_id;
-          $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
-          if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage]);
-            $response = array(
-              'status'=>'true',
-              'message'=>'Current Time updated'
-          );
-        } else {
-            $data = array('user_id' => $user_id, 'episodeid' => $episode_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage );
-            ContinueWatching::insert($data);
-            $response = array(
-              'status'=>'true',
-              'message'=>'Added  to  Continue Watching List'
-          );
-
-        }
-      }
+      
 
       return response()->json($response, 200);
   }
@@ -3009,6 +2991,105 @@ public function upnextAudio(Request $request){
     $response = array(
         'status'=>$status,
         'videos'=> $videos
+      );
+    return response()->json($response, 200);
+
+
+  }
+
+  public function remove_continue_watchingvideo(Request$request)
+  {
+      $user_id = $request->user_id;
+      if($request->video_id){
+          $video_id = $request->video_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->delete();
+            $response = array(
+              'status'=>'true',
+              'message'=>'Removed From ContinueWatching List'
+          );
+        } 
+      }
+      return response()->json($response, 200);
+
+  }
+
+  public function remove_continue_watchingepisode(Request$request)
+  {
+      $user_id = $request->user_id;
+      if($request->episode_id){
+          $episode_id = $request->episode_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->delete();
+            $response = array(
+              'status'=>'true',
+              'message'=>'Removed From ContinueWatching List'
+          );
+        } 
+      }
+      return response()->json($response, 200);
+
+  }
+
+  public function EpisodeContinuewatching(Request $request)
+  {
+    $user_id = $request->user_id;
+      $current_duration = $request->current_duration;
+      $watch_percentage = $request->watch_percentage;
+      if($request->episode_id){
+          $episode_id = $request->episode_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage]);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Current Time updated'
+          );
+        } else {
+            $data = array('user_id' => $user_id, 'episodeid' => $episode_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage );
+            ContinueWatching::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added  to  Continue Watching List'
+          );
+
+        }
+      }
+      return response()->json($response, 200);
+  }
+
+
+  public function listcontinuewatchingsepisode(Request $request)
+  {
+      
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $episode_ids = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->get();
+    $episode_ids_count = ContinueWatching::select('episodeid')->where('user_id','=',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->episodeid;
+      }
+      $episodes = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::select('watch_percentage')->where('user_id','=',$user_id)->where('episodeid','=',$item->id)->get()[0]->watch_percentage;
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $episodes = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'episodes'=> $episodes
       );
     return response()->json($response, 200);
 
