@@ -3146,7 +3146,8 @@ public function upnextAudio(Request $request){
     {
         $user_id = $request->user_id;
         $fav_category = $request->fav_category;
-        $user = new User($user_id);
+
+        $user = User::find($user_id);
         $user->fav_category = $fav_category;
         $user->save();
 

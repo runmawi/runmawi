@@ -75,10 +75,10 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getReferralLinkAttribute()
+    /*public function getReferralLinkAttribute()
     {
         return $this->referral_link = route('signup', ['ref' => $this->referral_link]);
-    }
+    }*/
     
     
     /**
