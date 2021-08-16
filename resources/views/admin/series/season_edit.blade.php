@@ -18,7 +18,7 @@
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
-		<h3><i class="entypo-plus"></i> Add New Episode</h3> 
+		<h5><i class="entypo-plus"></i> Add New Episode</h5> 
 	@endif
 	</div>
 	<div class="clear"></div>
@@ -201,7 +201,7 @@
 		<div class="clear"></div>
 		<!-- Manage Season -->
 		@if(!empty($episodes))
-		<h3>Season & Episodes</h3> 
+		<h5>Season & Episodes</h5> 
 		<div class="admin-section-title">
 		
 		<div class="row">

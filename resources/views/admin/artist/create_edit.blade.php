@@ -1,4 +1,15 @@
 @extends('admin.master')
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+</style>
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -7,8 +18,10 @@
 
 @section('content')
 
-<div id="admin-container" style="margin-left:340px;padding-top:60px;padding:15px;">
+<div id="admin-container" style="margin-left: 330px;
+    padding-top: 100px;">
 <!-- This is where -->
+       <div class="iq-card">
 	
 	<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>
 
@@ -16,7 +29,7 @@
 	@if(!empty($artist->id))
 		<h3>{{ $artist->name }}</h3> 
 	@else
-		<h3><i class="entypo-plus"></i> Create Artist</h3> 
+		<h5><i class="entypo-plus"></i> Create Artist</h5> 
 	@endif
 	</div>
 	<div class="clear"></div>
@@ -30,14 +43,14 @@
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Artist</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" style="background-color: #000000!important;"/>
+							<input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
 						</div> 
 					</div>
                     
                       <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<textarea class="form-control" name="description" id="description" style="background-color: #000000!important;" >@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
+							<textarea class="form-control" name="description" id="description" >@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
 						</div> 
 					</div>  
                     
@@ -52,7 +65,8 @@
 
 						</div> 
 					</div>
-	@if(isset($artist->id))
+                    <div class="clear mt-3"></div>
+                    @if(isset($artist->id))
 				<input type="hidden" id="id" name="id" value="{{ $artist->id }}" />
 			@endif
 
@@ -61,9 +75,10 @@
 				</div>
 
 
-		
-
 			</div>
+
+			<div class="clear"></div>
+
 
 			
 
@@ -73,6 +88,7 @@
 <!-- This is where now -->
 </div>
 
+</div>
 	
 	
 	

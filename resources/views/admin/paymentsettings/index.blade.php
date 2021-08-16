@@ -1,7 +1,5 @@
 @extends('admin.master')
-
-@section('css')
-	<style type="text/css">
+<style type="text/css">
 	.has-switch .switch-on label {
 			background-color: #FFF;
 			color: #000;
@@ -9,7 +7,18 @@
 	.make-switch{
 		z-index:2;
 	}
+        .admin-container{
+            padding: 10px;
+        }
+        .iq-card{
+            padding: 15px!important; 
+        }
+     .p1{
+        font-size: 12px!important;
+    }
 	</style>
+@section('css')
+	
 @stop
 
 
@@ -24,7 +33,7 @@
 	<div class="admin-section-title">
 		<h3><i class="entypo-credit-card"></i> Payment Settings</h3> 
 	</div>
-	<div class="clear"></div>
+	<div class="clear mt-2"></div>
 
 	
 
@@ -36,7 +45,7 @@
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Live Mode Or Test Mode</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
-						<p>Payment Settings are in Live Mode:</p>
+						<p class="p1">Payment Settings are in Live Mode:</p>
 	
 						<div class="form-group">
 				        	<div class="make-switch" data-on="success" data-off="warning">
@@ -76,15 +85,17 @@
 						
 					</div> 
 				</div>
-			</div>		
-            
-           
-
-		</div>
-
-		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                <div class="mt-3"></div>
+                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 		<input type="submit" value="Update Payment Settings" class="btn btn-primary pull-right" />
 
+
+			</div>		
+            
+          
+		</div>
+
+		
 	</form>
 
 	<div class="clear"></div>

@@ -14,7 +14,8 @@
 				<!-- This is where -->
                  
 				<div class="admin-section-title">
-					<h3 class="p-3"><i class="entypo-globe"></i> Player Settings</h3> 
+					<h4 class=" card-title p-3"><i class="entypo-globe"></i> Player Settings</h4> 
+                    <hr>
 				</div>
 				
 				<div class="clear"></div>
@@ -24,7 +25,8 @@
 				<form method="POST" action="{{ URL::to('admin/players/store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 					<section class="">
-						<h2></h2> 
+						<h2></h2>
+                        <div class="row align-items-center" id="pda">
 						<div class="col-md-6">
 						<div class="flex">
 							<div>
@@ -40,8 +42,8 @@
 						</div>
 						<div class="flex">
 							<div>
-								<label>Allow Embed player on specfic domians <br><span>
-									Note: Saving without a domain name will restrict <br>your embed player for all the domains.
+								<label>Allow Embed player on specfic domians <br><span class="span1">
+									(Note: Saving without a domain name will restrict <br>your embed player for all the domains.)
 								</span></label>
 							</div>
 							<div>
@@ -86,7 +88,7 @@
 					 <div class="col-md-6">
 						<div class="flex">
 							<div>
-								<label>Skip intro <br><span>(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
+								<label>Skip intro <br><span class="span1">(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
 							</div>
 							<div>
 								<label class="switch">
@@ -114,7 +116,7 @@
 						</div>
 						<div class="flex">
 							<div>
-								<label>Advanced player <br><span>(Allows you to change add html code)</span></label>
+								<label>Advanced player <br><span class="span1">(Allows you to change add html code)</span></label>
 							</div>
 							<div>
 								<label class="switch">
@@ -140,11 +142,11 @@
 								</label>
 							</div>
 						</div>
-						</div>
+						</div></div>
 						
 						
-						<div class="">
-							<h1>Subtitle option</h1>
+						<div class="p-3">
+							<h4 class="card-title">Subtitle option</h4>
 						</div>
 						<div class="col-md-6">
 						<div class="flex">
@@ -181,8 +183,8 @@
 						</div>
 						</div>
 
-						<div class="">
-							<h1>Subtitle apperance</h1>
+						<div class="p-3">
+							<h4 class="card-title">Subtitle apperance</h4>
 							<p>Customize the appearance of subtitle</p>
 						</div>
 						<div class="col-md-6">
@@ -251,8 +253,9 @@
 
 
 						<div class="">
-						<h3>Video Player Watermark Settings</h3>
+						<h4 class="card-title p-3">Video Player Watermark Settings</h4>
 						</div>
+                        <div class="row p-3">
 						<div class="col-md-6">
 
 						<div >
@@ -273,20 +276,20 @@
 				        <input type="text" class="form-control"  name="watermark_bottom" id="watermark_bottom" value="<?=$playerui->watermark_bottom;?>" />
 						</div>
 						</div>
-				    </div>
-
-				
-					<div class="col-md-6">
-					
-						<div >
+                            <div >
                     <p> Left:</p>
 				    <div class="form-group">
 				        <input type="text" class="form-control"  name="watermark_left" id="watermark_left" value="<?=$playerui->watermark_left;?>" />
 				    </div>
        			   </div>
+				    </div>
+
+				
+					<div class="col-md-6">
+					
+						
           
-                		</div>
-                        <div class="col-md-6">
+                		                        
                         <div >
            			   <p> Opacity:</p>
 				    <div class="form-group">
@@ -327,9 +330,8 @@
 		</div> 
 		</div>
 		</div> 
-		<div class="col-md-6">
-
-						<div class="bt">
+		
+						<div class="bt p-3">
 							<button name="save" type="submit">Save</button>
 							<button name="">Reset Default</button>
 						</div>
@@ -347,7 +349,12 @@
 
 
 	<style>
-		   .col-md-6{
-           float:left;
+        .span1{
+            font-weight: 200;
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+        }
+        #pda{
+            padding: 20px;
         }
 		</style>

@@ -1,5 +1,9 @@
 @extends('admin.master')
-
+<style>
+    .p1{
+        font-size: 12px!important;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.css' }}"/>
 @stop
@@ -28,7 +32,7 @@
 		</a>
 -->
 	@else
-		<h3><i class="entypo-user"></i> Add New User</h3> 
+		<h4><i class="entypo-user"></i> Add New User</h4> 
 	@endif
 	</div>
 	<div class="clear"></div>
@@ -37,7 +41,7 @@
 
 		<form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
          <div class="row">
-             <div class="col-md-6">
+             <div class="col-md-6 mt-2">
 			<div id="user-badge">
 				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'default.jpg'; ?>@endif
 				<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
@@ -45,7 +49,7 @@
 				<input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<!--<div class="panel-title">Username</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('username')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('username'); ?></div><?php endif; ?>
@@ -54,7 +58,7 @@
 				</div>
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<!--<div class="panel-title">Email</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
@@ -69,7 +73,7 @@
 				<div class="panel-body" style="display: block;"> 
                       
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
-					<p>User's Mobile</p>
+					<p class="p1">User's Mobile</p>
                     <div class="row">
                        <div class="col-sm-4">
                         <select name="ccode" class="form-control" >
@@ -84,13 +88,13 @@
 				</div>
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Password</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;">
 					@if(isset($user->password))
 						<p>(leave empty to keep your original password)</p>
 					@else
-						<p>Enter users password:</p>
+						<p class="p1">Enter users password:</p>
 					@endif
 					<input type="password" class="form-control" name="passwords" id="password" value="" />
 				</div>
@@ -99,7 +103,7 @@
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">User Role</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-						<p>Select the user's role below</p>
+						<p class="p1">Select the user's role below</p>
 							<select id="role" name="role">
 								<option value="admin" @if(isset($user->role) && $user->role == 'admin' && $user->sub_admin == 0)selected="selected"@endif>Admin</option>
 								<option value="registered" @if(isset($user->role) && $user->role == 'registered')selected="selected"@endif>Registered Users (free registration must be enabled)</option>
@@ -121,7 +125,7 @@
              </div>
             </div>
             <!-- row -->
-
+<div class="mt-3"></div>
 			@if(isset($user->id))
 				<input class="btn btn-primary" type="hidden" id="id" name="id" value="{{ $user->id }}" />
 				<input class="btn btn-primary" type="hidden" id="stripe_active" name="stripe_active" value="" />

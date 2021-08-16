@@ -1,5 +1,15 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+</style>
 @section('css')
 <style type="text/css">
 	.has-switch .switch-on label {
@@ -16,10 +26,11 @@
 <div id="content-page" class="content-page">
             <div class="container-fluid">
 <div id="admin-container">
+     <div class="iq-card">
 	<!-- This is where -->
 
 	<div class="admin-section-title">
-		<h3><i class="entypo-credit-card"></i> Mobile Settings</h3> 
+		<h5><i class="entypo-credit-card"></i> Mobile Settings</h5> 
 	</div>
 	<div class="clear"></div>
 
@@ -62,7 +73,7 @@
     <div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-6">
-				<h3><i class="entypo-archive"></i> Sliders </h3>
+				<h5><i class="entypo-archive"></i> Sliders </h5>
 			</div>
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
@@ -147,6 +158,7 @@
     
     <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />  
 
+</div>
 </div>
 
 	@section('javascript')

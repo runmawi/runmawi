@@ -1,9 +1,20 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+</style>
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
+        <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
 				<h3><i class="entypo-list"></i> Menu Items</h3>
@@ -12,7 +23,7 @@
                 <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
             </div>
 		</div>
-	</div>
+	
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
@@ -34,7 +45,7 @@
 					<h4 class="modal-title">New Menu Item</h4>
 				</div>
 				
-				<div class="modal-body">
+				<div class="modal-body p-3">
 					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/store') }}" method="post">
 				        <label for="name">Enter the new menu item name below</label>
 				        <input name="name" id="name" placeholder="Menu Item Name"  required class="form-control" value="" /><br />
@@ -145,6 +156,7 @@
 		
 		</div>
     </div></div>
+    </div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 

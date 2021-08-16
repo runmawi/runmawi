@@ -19,7 +19,7 @@
 
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-              <div class="iq-card" style="padding:15px;">
+              <div class="iq-card">
 
 <div id="admin-container">
 <!-- This is where -->
@@ -324,7 +324,7 @@
 			</div> 
 		</div>     
             </div>
-            <div style="padding:15px;">
+            <div>
                 		<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title">Social Networks</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 			<div class="panel-body" style="display: block;"> 
@@ -437,14 +437,13 @@
                 </div> 
             </div>
             </div>
-            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="submit" value="Update Settings" class="btn btn-primary pull-right" />
-
         </div>
       
 
     
-		
+		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+		<input type="submit" value="Update Settings" class="btn btn-primary pull-right" />
+
 	
 
 	<div class="clear"></div>

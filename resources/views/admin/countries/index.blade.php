@@ -1,17 +1,28 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+</style>
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
+          <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
-				<h3><i class="entypo-archive"></i> Blocked Countries </h3>
+				<h5><i class="entypo-archive"></i> Blocked Countries </h5>
 			</div>
             <div class="col-md-8" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
-	</div>
+	
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
@@ -102,7 +113,7 @@
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
-
+</div>
 	@section('javascript')
 
 		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>

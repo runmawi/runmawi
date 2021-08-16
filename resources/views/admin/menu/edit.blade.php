@@ -16,7 +16,7 @@
          <label for="slug">URL (ex. /site/url)</label>
          <input name="url" id="url" placeholder="URL Slug" class="form-control" value="{{ $menu->url }}" /> 
         
-             <label for="categories">Categories (Need to Display video categories in this Menu) ? </label><br>
+             <label for="categories" style="font-size:12px;">Categories (Need to Display video categories in this Menu) ? </label><br>
              <input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/> None 
              <input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> />Video Categories
         
