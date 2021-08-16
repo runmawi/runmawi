@@ -51,7 +51,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['referral_link'];
     
     
     /**
@@ -67,11 +66,7 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getReferralLinkAttribute()
-    {
-        return $this->referral_link = route('signup', ['ref' => $this->username]);
-    }
-    
+   
     
     /**
      * The attributes that should be cast to native types.

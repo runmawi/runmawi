@@ -59,7 +59,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['referral_link'];
     
     
     /**
