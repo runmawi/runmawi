@@ -3100,4 +3100,62 @@ public function upnextAudio(Request $request){
 
   }
 
+    /*Create new user account from existing user profile*/
+    public function addchilduserprofile(Request $request)
+    {
+        $parent_id = $request->parent_id;
+        $user_name = $request->user_name;
+        $user_type = $request->user_type;
+
+        if(DB::table('sub_users')->insert(['parent_id' => $parent_id, 'user_name' => $user_name, 'user_type' => $user_type])){
+            $response = array(
+                'status'=>'true',
+                'message'=> 'New profile created Successfully'
+            );
+        }else{
+            $response = array(
+                'status'=>'false',
+                'message'=> 'Error in Saving profile data'
+            );
+        }
+
+        return response()->json($response, 200);
+    }
+
+    /*View Child profile*/
+    public function viewchildprofile(Request $request)
+    {
+        $parent_id = $request->parent_id;
+        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get();
+        if(!empty($sub_users)){
+            $response = array(
+                'status'=>'true',
+                'sub_users'=> $sub_users
+            );
+        }else{
+            $response = array(
+                'status'=>'false',
+                'sub_users'=> ''
+            );
+        }
+
+        return response()->json($response, 200);
+    }
+
+    public function savefavouritecategory(Request $request)
+    {
+        $user_id = $request->user_id;
+        $fav_category = $request->fav_category;
+        $user = new User($user_id);
+        $user->fav_category = $fav_category;
+        $user->save();
+
+        $response = array(
+            'status'=>'true',
+            'message'=> 'Favorite Category stored successfully'
+        );
+        
+        return response()->json($response, 200);
+    }
+
 }

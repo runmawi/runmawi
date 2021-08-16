@@ -154,5 +154,12 @@ Route::group([
     
     Route::post('listcontinuewatchingsepisode', 'ApiAuthController@listcontinuewatchingsepisode');
     
+    Route::post('addchilduserprofile', 'ApiAuthController@addchilduserprofile');
+
+    Route::post('viewchildprofile', 'ApiAuthController@viewchildprofile');
+
+    Route::post('savefavouritecategory', 'ApiAuthController@savefavouritecategory');
+    
+
     
 });
