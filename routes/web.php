@@ -402,3 +402,434 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+
+use Carbon\Carbon as Carbon;
+
+
+
+
+//categories_audio
+Route::get('categories_audio',function(){
+    $response=DB::table('audio_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+
+
+//audios_list
+Route::get('audios_list',function(){
+    $response=DB::table('audios')->get();
+    return response()->json($response,200);
+});
+//audio_albums
+Route::get('audio_albums',function(){
+    $response=DB::table('audio_albums')->get();
+    return response()->json($response,200);
+});
+//audio_categories
+Route::get('audio_categories',function(){
+    $response=DB::table('audio_categories')->get();
+    return response()->json($response,200);
+});
+
+//artists_index
+Route::get('artists_index',function(){
+    $response=DB::table('artists')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+
+
+//Role
+Route::get('user_roles',function(){
+    $response=DB::table('roles')->get();
+    return response()->json($response,200);
+});
+
+//site_themes
+Route::get('site_themes',function(){
+    $response=DB::table('site_themes')->first();
+    return response()->json($response,200);
+});
+
+//system_settings
+Route::get('system_settings',function(){
+    $response=DB::table('system_settings')->first();
+    return response()->json($response,200);
+});
+//home_settings
+Route::get('home_settings',function(){
+    $response=DB::table('home_settings')->first();
+    return response()->json($response,200);
+});
+//payment_settings
+Route::get('payment_settings',function(){
+    $response=DB::table('payment_settings')->first();
+    return response()->json($response,200);
+});
+
+
+//mobile_settings
+Route::get('mobile_settings',function(){
+    $response=DB::table('mobile_apps')->get();
+    return response()->json($response,200);
+});
+
+//mobileslider
+Route::get('mobileslider',function(){
+    $response=DB::table('mobile_sliders')->get();
+    return response()->json($response,200);
+});
+
+
+//paypalplans
+Route::get('paypalplans',function(){
+    $response=DB::table('paypal_plans')->get();
+    return response()->json($response,200);
+});
+
+//coupons
+Route::get('coupons',function(){
+    $response=DB::table('coupons')->get();
+    return response()->json($response,200);
+});
+
+
+
+//plans
+Route::get('plans',function(){
+    $response=DB::table('plans')->get();
+    return response()->json($response,200);
+});
+
+
+//livestream
+Route::get('livestream_categories',function(){
+    $response=DB::table('live_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+
+
+//livestream
+Route::get('livestream',function(){
+    $response=DB::table('live_streams')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+
+//livestream
+Route::get('live_categories',function(){
+    $response=DB::table('live_categories')->get();
+    return response()->json($response,200);
+});
+
+//series
+Route::get('series',function(){
+    $response=DB::table('series')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+//pages
+Route::get('pages',function(){
+    $response=DB::table('pages')->orderBy('created_at', 'DESC')->paginate(10);
+    return response()->json($response,200);
+});
+
+//categories
+Route::get('categories',function(){
+    $response=DB::table('video_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+//video_categories
+Route::get('video_categories',function(){
+    $response=DB::table('video_categories')->get();
+    return response()->json($response,200);
+});
+
+//Videos
+Route::get('videos',function(){
+    $response=DB::table('videos')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+
+//Videos_index
+Route::get('videos_index',function(){
+    $response=DB::table('videos')->get();
+    return response()->json($response,200);
+});
+
+
+//video_categories
+Route::get('video_categories',function(){
+    $response=DB::table('video_categories')->get();
+    return response()->json($response,200);
+});
+
+
+//video_subtitle
+Route::get('video_subtitle',function(){
+    $response=DB::table('videos_subtitles')->get();
+    return response()->json($response,200);
+});
+
+//languages
+Route::get('languages',function(){
+    $response=DB::table('video_languages')->get();
+    return response()->json($response,200);
+});
+//languages
+Route::get('alllanguages',function(){
+    $response=DB::table('languages')->get();
+    return response()->json($response,200);
+});
+
+//subtitles
+Route::get('subtitles',function(){
+    $response=DB::table('subtitles')->get();
+    return response()->json($response,200);
+});
+
+
+
+//artists
+Route::get('artists',function(){
+    $response=DB::table('artists')->get();
+    return response()->json($response,200);
+});
+
+
+//Menu
+Route::get('menu',function(){
+    $response=DB::table('menus')->get();
+    return response()->json($response,200);
+});
+    // users
+Route::get('users',function(){
+    $response=DB::table('users')->get();
+    return response()->json($response,200);
+});
+
+//Country
+Route::get('country',function(){
+    $response=DB::table('countries')->get();
+    return response()->json($response,200);
+});
+//Palyer UI
+Route::get('playerui_index',function(){
+    $response=DB::table('playerui')->first();
+    return response()->json($response,200);
+});
+//Slider
+Route::get('allCategories',function(){
+    $response=DB::table('sliders')->get();
+    return response()->json($response,200);
+});
+// Moderator 
+
+Route::get('moderatorsrole',function(){
+    $response=DB::table('moderators_roles')->get();
+    return response()->json($response,200);
+});
+
+// Moderator 
+
+Route::get('moderatorspermission',function(){
+    $response=DB::table('moderators_permissions')->get();
+    return response()->json($response,200);
+});
+
+// moderatorsuser 
+
+Route::get('moderatorsuser',function(){
+    $response=DB::table('moderators_users')->get();
+    return response()->json($response,200);
+});
+// ADMIN DASHBOARD
+Route::get('settings',function(){
+    $response=DB::table('settings')->first();
+    return response()->json($response,200);
+});
+
+// total_subscription 
+
+Route::get('total_subscription',function(){
+    $response=DB::table('subscriptions')->where('stripe_status','=','active')->count();
+    return response()->json($response,200);
+});
+
+
+// total_videos 
+
+
+
+Route::get('total_videos',function(){
+    $response=DB::table('videos')->where('active','=',1)->count();
+    return response()->json($response,200);
+});
+
+// ppvvideo 
+
+Route::get('ppvvideo',function(){
+    // $response = PpvVideo::where('active','=',1)->count();
+    $response=DB::table('ppv_videos')->where('active','=',1)->count();
+    return response()->json($response,200);
+});
+
+// total_recent_subscription 
+
+Route::get('total_recent_subscription',function(){
+    $response=DB::table('subscriptions')->orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
+    return response()->json($response,200);
+});
+
+// top_rated_videos 
+
+Route::get('top_rated_videos',function(){
+    $response=DB::table('videos')->where("rating",">",7)->get();
+    return response()->json($response,200);
+});
+
+// recent_views 
+
+Route::get('recent_views',function(){
+    $response=DB::table('recent_views')->get();
+    return response()->json($response,200);
+});
+
+// permission 
+
+
+
+
+
+Route::get('permission',function(){
+    $response=DB::table('moderators_permissions')->get();
+    return response()->json($response,200);
+});
+
+
+
+
+// Test 
+
+Route::post('test', 'ModeratorsUserController@test');
+
+// video_store 
+
+Route::post('video_store', 'ModeratorsUserController@video_store');
+
+// menu_store 
+
+Route::post('menu_store', 'ModeratorsUserController@menu_store');
+
+// county 
+
+Route::post('county', 'ModeratorsUserController@county');
+
+// slider_store 
+
+Route::post('slider_store', 'ModeratorsUserController@slider_store');
+
+
+
+// all_video_store 
+
+Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
+
+
+
+// playerui_setting 
+
+Route::post('playerui_setting', 'ModeratorsUserController@playerui_setting');
+
+
+// plans 
+
+Route::post('plans', 'ModeratorsUserController@plans');
+
+
+// paypalplans 
+
+Route::post('paypalplans', 'ModeratorsUserController@paypalplans');
+
+
+// coupons 
+
+Route::post('coupons', 'ModeratorsUserController@coupons');
+
+
+// all_video_store 
+
+Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
+
+
+
+// payment_setting 
+
+Route::post('payment_setting', 'ModeratorsUserController@payment_setting');
+
+
+
+// systemsettings 
+
+Route::post('systemsettings', 'ModeratorsUserController@systemsettings');
+
+
+// homesettings 
+
+Route::post('homesettings', 'ModeratorsUserController@homesettings');
+
+// mobileappupdate 
+
+Route::post('mobileappupdate', 'ModeratorsUserController@mobileappupdate');
+
+// slider 
+
+Route::post('slider', 'ModeratorsUserController@slider');
+
+// theme_settings 
+
+Route::post('theme_settings', 'ModeratorsUserController@theme_settings');
+// site_setting 
+
+Route::post('site_setting', 'ModeratorsUserController@site_setting');
+// pages 
+
+Route::post('pages', 'ModeratorsUserController@pages');
+// livestream 
+
+Route::post('livestream', 'ModeratorsUserController@livestream');
+// livestream_categories 
+
+Route::post('livestream_categories', 'ModeratorsUserController@livestream_categories');
+// user_store 
+
+Route::post('user_store', 'ModeratorsUserController@user_store');
+// user_role 
+
+Route::post('user_role', 'ModeratorsUserController@user_role');
+// languagestrans 
+
+Route::post('languagestrans', 'ModeratorsUserController@languagestrans');
+// video_languages 
+
+Route::post('video_languages', 'ModeratorsUserController@video_languages');
+
+// artists 
+
+Route::post('artists', 'ModeratorsUserController@artists');
+// audios_categories 
+
+Route::post('audios_categories', 'ModeratorsUserController@audios_categories');
+// audios_album 
+
+Route::post('audios_album', 'ModeratorsUserController@audios_album');
+
+// audios 
+
+Route::post('audios', 'ModeratorsUserController@audios');
+
+
+
+
+
+Route::get('/moderator', 'ModeratorsUserController@index');
+Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+
+
