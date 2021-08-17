@@ -7,7 +7,12 @@
             style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:100;background-position:right center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
+
                     <div class="row align-items-center bl h-100">
+                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                    data-delay-in="0.6">
+                    <?php echo __($slider_video->title); ?>
+                </h1>
                         <a href="<?php echo $slider_video->link; ?>"
                             class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
                     </div>
@@ -54,7 +59,7 @@ data-delay-in="1.2">
 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="black bl" href="https://flicknexui.webnexs.org/"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="black bl" href="<?php echo URL::to('category') ?><?= '/videos/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>

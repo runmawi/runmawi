@@ -46,12 +46,17 @@
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Image:</label>
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />
-
                     </div> 
                         
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Target Link:</label>
-                        <input type="text" multiple="true" class="form-control" name="link" id="link" />
+                        <input type="text" class="form-control" name="link" id="link" />
+
+                    </div>
+
+                    <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+                        <label>Title:</label>
+                        <input type="text" class="form-control" name="title" id="title" />
 
                     </div>
 

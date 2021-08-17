@@ -196,6 +196,7 @@ class AdminThemeSettingsController extends Controller
         $id = $request['id'];
         $in_home = $request['active']; 
         $link = $request['link']; 
+        $title = $request['title']; 
         $category = Slider::find($id);
              if (isset($request['slider']) && !empty($request['slider'])){
                     $image = $request['slider']; 
@@ -222,6 +223,7 @@ class AdminThemeSettingsController extends Controller
                     $file->move($path,$category->slider);
               } 
             $category->link  = $link;
+            $category->title  = $title;
             $category->active = $request['active'];
             $category->save();
             
@@ -236,6 +238,7 @@ class AdminThemeSettingsController extends Controller
         $id = $request['id'];
         $in_home = $request['active']; 
         $link = $request['link']; 
+        $title = $request['title']; 
         $category = MobileSlider::find($id);
              if (isset($request['slider']) && !empty($request['slider'])){
                     $image = $request['slider']; 
@@ -261,6 +264,7 @@ class AdminThemeSettingsController extends Controller
                     $file->move($path,$category->slider);
               } 
             $category->link  = $link;
+            $category->title  = $title;
             $category->active = $request['active'];
             $category->save();
             
@@ -324,6 +328,7 @@ class AdminThemeSettingsController extends Controller
             $path = public_path().'/uploads/videocategory/';
             $image = $request['slider'];
             $link = $request['link'];
+            $title = $request['title'];
             $acive = $request['acive']; 
           
            if($image != '') {   
@@ -338,6 +343,7 @@ class AdminThemeSettingsController extends Controller
               $file = $image;
               $slider->slider  = $file->getClientOriginalName();
               $slider->link  = $link;
+              $slider->title  = $title;
               $file->move($path, $slider->slider);
            } 
           
@@ -358,6 +364,7 @@ class AdminThemeSettingsController extends Controller
             $path = public_path().'/uploads/videocategory/';
             $image = $request['slider'];
             $link = $request['link'];
+            $title = $request['title'];
             $acive = $request['acive']; 
           
            if($image != '') {   
@@ -372,6 +379,7 @@ class AdminThemeSettingsController extends Controller
               $file = $image;
               $slider->slider  = $file->getClientOriginalName();
               $slider->link  = $link;
+              $slider->title  = $title;
               $file->move($path, $slider->slider);
            } 
           
