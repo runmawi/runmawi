@@ -10,20 +10,24 @@
 
                     <div class="row align-items-center bl h-100">
                         <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
-                    data-delay-in="0.6">
-                    <?php echo __($slider_video->title); ?>
-                </h1>
-                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
-data-delay-in="1.2">
-                        <a href="<?php echo $slider_video->link; ?>"
-                            class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
-                        </div>
-                    </div>
+                        data-delay-in="0.6">
+                        <?php echo __($slider_video->title); ?>
+                    </h1>
 
                 </div>
+                <div class="row align-items-center bl h-100">
+
+                    <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                    data-delay-in="1.2">
+                    <a href="<?php echo $slider_video->link; ?>"
+                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 <?php  ?>
 <?php endforeach; 
 endif; ?>
