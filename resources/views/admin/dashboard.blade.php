@@ -117,10 +117,10 @@
                         <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                      </div>
                      <div class="iq-card-body">
-                        <ul class="list-unstyled row top-rated-item mb-0">
+                        <ul class="list-unstyled row  mb-0">
                        
                             @foreach($top_rated_videos as $top_video)
-                           <li class="col-sm-6 col-lg-4 col-xl-3 iq-rated-box">
+                           <li class="col-sm-6 col-lg-4 col-xl-4 iq-rated-box">
                               <div class="iq-card mb-0">
                                  <div class="iq-card-body p-0">
                                     <div class="iq-thumb">

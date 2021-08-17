@@ -195,7 +195,7 @@
 							</div>
 							<div>
 
-								<select name="font">
+								<select name="font" style="background-color:#000000;color:#fff; border:none;">
 								<option value="Arial" @if(!empty($playerui->font) && $playerui->font == 'Arial'){{ 'selected' }}@endif>Arial</option>
 									<option value="Timesroman" @if(!empty($playerui->font) && $playerui->font == 'Timesroman'){{ 'selected' }}@endif>Timesroman</option>
 									<option value="Sans" @if(!empty($playerui->font) && $playerui->font == 'Sans'){{ 'selected' }}@endif>Sans sherif</option>
@@ -207,7 +207,7 @@
 								<label>Size *</label>
 							</div>
 							<div>
-								<select name="size">
+								<select name="size" style="background-color:#000000;color:#fff; border:none;">
 								<option value="Smaller" @if(!empty($playerui->size) && $playerui->size == 'Smaller'){{ 'selected' }}@endif>Smaller</option>
 									<option value="Medium" @if(!empty($playerui->size) && $playerui->size == 'Medium'){{ 'selected' }}@endif>Medium</option>
 									<option value="Bigger" @if(!empty($playerui->size) && $playerui->size == 'Bigger'){{ 'selected' }}@endif>Bigger</option>
@@ -224,7 +224,7 @@
 								<label>Font color *</label>
 							</div>
 							<div>
-							<input type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif">
+							<input type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif" style="background-color:#000000;color:#fff; border:none;">
 								<input type="color" name="chosecolorr" value="#336600">
 							</div>
 						</div>
@@ -233,7 +233,7 @@
 								<label>Background color</label>
 							</div>
 							<div>
-							<input type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif">
+							<input type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif" style="background-color:#000000;color:#fff; border:none;">
 								<input type="color" name="chosecolorr" value="#336600">
 							</div>
 						</div>
@@ -242,7 +242,7 @@
 								<label>Opacity</label>
 							</div>
 							<div>
-								<input type="text" name="opacity" value="@if(!empty($playerui->opacity)){{ $playerui->opacity }}@endif">
+								<input type="text" name="opacity" value="@if(!empty($playerui->opacity)){{ $playerui->opacity }}@endif" style="background-color:#000000;color:#fff; border:none;">
 
 							</div>
 						</div>

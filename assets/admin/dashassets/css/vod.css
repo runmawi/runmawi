@@ -86,9 +86,7 @@ select{
     
       padding: 20px;
   }
-  span{
-      font-weight: bold;
-  }
+  
   .bt{
       margin-top: 40px;
       text-align: center;

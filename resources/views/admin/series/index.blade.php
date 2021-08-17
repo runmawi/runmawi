@@ -20,22 +20,26 @@
 	<div class="admin-section-title"  style="margin-left: 330px;
     padding-top: 100px;">
          <div class="iq-card">
-		<div class="row">
-			<div class="col-md-8">
-				<h4><i class="entypo-movie"></i> Series</h4><a href="{{ URL::to('admin/series/create') }}" class="btn btn-success mt-2"><i class="fa fa-plus-circle"></i> Add New</a>
+		<div class="row align-items-center">
+			<div class="col-md-5">
+				<h4><i class="entypo-movie"></i> Series</h4>
 			</div>
 			<div class="col-md-4 mt-3">	
 				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
+                
 			</div>
+            <div class="col-md-3">
+                <a href="{{ URL::to('admin/series/create') }}" class="btn btn-success mt-2"><i class="fa fa-plus-circle"></i> Add New</a>
+            </div>
 		</div>
 	
 	<div class="clear"></div>
 
 	<div class="gallery-env">
 		
-		<div class="row">
+		<div class="row mt-3">
 
-		<table class="table table-striped genres-table">
+		<table class="table">
 		<tr class="table-header">
 			<th>S.No</th>
 			<th>Image</th>

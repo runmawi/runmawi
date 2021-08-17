@@ -1,5 +1,15 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
@@ -12,16 +22,18 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
+         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
-				<h3><i class="entypo-video"></i> Live Videos</h3>
+                <h5><i class="entypo-video"></i> Live Videos</h5>
+                <hr>
 			</div>
 			<div class="col-md-8" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
                 <a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>    
-	</div>
+	
 	<div class="clear"></div>
 
 	<div class="gallery-env">
@@ -86,7 +98,7 @@
     </div>
 </div>
     
-</div>
+    </div></div>
 
 	@section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>

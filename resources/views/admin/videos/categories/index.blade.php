@@ -142,10 +142,10 @@
                                 </tr>
                                     @foreach($allCategories as $category)
                                     <tr id="{{ $category->id }}">
-                                    	<td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
+                                    	<td valign="bottom" class=""><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
                                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                                         <td>
-                                            <div class="flex align-items-center list-user-action">
+                                            <div class=" align-items-center list-user-action">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                                              data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
                                             <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
