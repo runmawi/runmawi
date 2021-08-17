@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                     data-delay-in="1.2">
                     <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
+                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
                     </div>
                 </div>
                 </div>
