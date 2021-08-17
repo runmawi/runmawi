@@ -12,7 +12,7 @@
                         <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
                     data-delay-in="0.6">
                     <?php echo __($slider_video->title); ?>
-                </h1>
+                </h1><br>
                         <a href="<?php echo $slider_video->link; ?>"
                             class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> View</a>
                     </div>

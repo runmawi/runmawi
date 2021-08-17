@@ -34,8 +34,9 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
 					<h4 class="modal-title">New Slider</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
 				<div class="modal-body">
@@ -114,6 +115,7 @@
 
             <table class="table table-bordered" id="slidertbl">
                 <tr class="table-header">
+                    <th class="text-center">Slider Title</th>
                     <th class="text-center">Slider Image</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Operation</th>
@@ -121,6 +123,8 @@
                     @foreach($allCategories as $category)
                     <tr class="dd" id="{{ $category->id }}">
                         <td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
+                         <td valign="bottom" class="text-center">{{ $category->title }}</td>
+
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">
                             <div class="flex align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
