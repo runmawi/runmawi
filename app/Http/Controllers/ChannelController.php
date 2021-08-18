@@ -143,6 +143,7 @@ class ChannelController extends Controller
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
+                 'watched_time' => 0,
 
             );
 

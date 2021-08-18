@@ -1,11 +1,12 @@
 <!--  Continue watching -->
+<?php  if(isset($cnt_watching)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
-         <?php  if(isset($videos)) :
-               foreach($videos as $cont_video): ?>
+         <?php 
+               foreach($cnt_watching as $cont_video): ?>
        <li class="slide-item">
           <a href="<?php echo URL::to('home') ?>">
              <div class="block-images position-relative">
@@ -49,16 +50,19 @@
                                 </button></div>-->
 
                     </div>
-               
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $cont_video->cnt_watch[0]->watch_percentage;?>%">
+                  </div>
+              </div>  
              </div>
           </a>
        </li>
 
         <?php endforeach; 
-              endif; ?>
+               ?>
     </ul>
 </div>
-
+<?php endif; ?>
  <?php  /* if(isset($videos)) :
            foreach($videos as $cont_video): ?>
             <div class="modal fade bd-example-modal-xl<?= $cont_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">

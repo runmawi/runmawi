@@ -91,10 +91,18 @@ class HomeController extends Controller
 		$featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
        
         $pages = Page::all();
+        if(!Auth::guest()){
+            $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
+            $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+        }else{
+            $cnt_watching = '';
+        }
+        //echo "<pre>";print_r($cnt_watching);exit();
         $data = array(
             'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
-			'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-      'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
+            'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+            'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
+            'cnt_watching' => $cnt_watching,
 			'trendings' => $trending_movies,
 			'latest_videos' => $latest_videos,
 			'movies' => $trending_movies,
@@ -655,6 +663,10 @@ class HomeController extends Controller
                 $currentTime = $request->currentTime;
                 $watch_percentage = ($currentTime * 100 / $duration);
                 $cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->count();
+                $get_cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
+                if($cnt > 0 && $get_cnt->watch_percentage >= "99"){
+                     ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->delete();
+                }
                 if ($cnt == 0){
                     $video = new ContinueWatching;
                     $video->videoid = $request->video_id;

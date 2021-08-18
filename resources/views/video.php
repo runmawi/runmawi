@@ -4,7 +4,7 @@
 
  <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
-<input type="hidden" name="logo_path" id='logo_path' value="<?php echo URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark ;?>">
+<input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
 
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
    
@@ -33,7 +33,7 @@
 
             
               <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
-              controls data-setup='{"controls": true, "autoplay": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+              controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
 
               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                 <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
@@ -336,7 +336,7 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>-->
         </div>
-        <div class="col-sm-6 col-md-5">
+        <div class="col-sm-6 col-md-6">
             <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
@@ -409,18 +409,21 @@ if($value['sub_language'] == "Spanish"){
     <div class="clear"></div>
         <script>
 
-$(document).ready(function () { 
-    $(window).on("beforeunload", function() { 
+          $(document).ready(function () { 
 
-        var vid = document.getElementById("videoPlayer");
-        var currentTime = vid.currentTime;
-        var duration = vid.duration;
-        var videoid = $('#video_id').val();
-            $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+            var vid = document.getElementById("videoPlayer_html5_api");
+            vid.currentTime = $("#current_time").val();
+            $(window).on("beforeunload", function() { 
+
+              var vid = document.getElementById("videoPlayer_html5_api");
+              var currentTime = vid.currentTime;
+              var duration = vid.duration;
+              var videoid = $('#video_id').val();
+              $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
                       //    toastr.success(data.success);
-            });
+                    });
       // localStorage.setItem('your_video_'+video_id, currentTime);
-        return;
+      return;
     }); });
 
             //$(".share a").hide();

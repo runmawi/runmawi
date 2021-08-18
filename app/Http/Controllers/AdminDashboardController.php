@@ -39,7 +39,7 @@ class AdminDashboardController extends Controller
          
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
         $top_rated_videos = Video::where("rating",">",7)->get();
-        $recent_views = RecentView::all();
+        $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
         $page = 'admin-dashboard';
         $data = array(
                 'settings' => $settings,

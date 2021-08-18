@@ -1,4 +1,18 @@
 @extends('admin.master')
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('content')
 
 
@@ -17,7 +31,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i> Users</h3> 
+		<h5><i class="entypo-globe"></i> Users</h5> 
 	</div>
 	<div class="clear"></div>
 
@@ -30,6 +44,23 @@
                             <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
 
                                 <input id="name" type="text" class="form-control" name="username" value="{{ old('username') }}"  autocomplete="username" autofocus>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="width: 50%; float: left;">
+
+                        <div class="form-group row">
+                            <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
+
+                
+                                <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="width: 50%; float: left;">
+
+                        <div class="form-group row">
+                            <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                                <input id="confirm_password" type="password" class="form-control" name="confirm_password"  autocomplete="new-password">
                             </div>
                         </div>
                         <div class="col-md-6" style="width: 50%; float: left;">
@@ -50,23 +81,7 @@
                                 <input id="mobile_number" type="number" class="form-control " name="mobile_number" value="{{ old('mobile_number') }}"  autocomplete="email">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
-
-                        <div class="form-group row">
-                            <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
-
-                
-                                <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
-                            </div>
-                        </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                                <input id="confirm_password" type="password" class="form-control" name="confirm_password"  autocomplete="new-password">
-                            </div>
-                        </div>
+                        
 
 
                         <div class="col-md-6" style="width: 50%; float: left;">

@@ -1694,6 +1694,7 @@ return true;
 public function series_store(Request $request)
 {
   $data = $request->all();
+
   $series_stores = json_decode($data['series_store']);
 $image = $data['image'];
 $series_upload = $data['series_upload'];
@@ -2057,7 +2058,7 @@ $audio->featured = $audios->featured;
 $audio->banner = $audios->banner;
 $audio->active = $audios->active;
 $audio->user_id = $audios->user_id;
-$audio->image = $file->getClientOriginalName() ;;
+$audio->image = $file->getClientOriginalName() ;
 
 
 
@@ -2068,14 +2069,14 @@ $audio->save();
 
 $audio_id = $audio->id;
 
-// $audio_upload = $request->file('audio_upload');
+$audio_upload = ['audio_upload'];
 
 // if($audio_upload){
 //     $ffmpeg = FFMpeg\FFMpeg::create();
 //     $audioupload = $ffmpeg->open($data['audio_upload']);
 
 //     $audioupload
-//     ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$audio->id.'.mp3');
+//     ->save(new ffmpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$audio->id.'.mp3');
 
 //     $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$audio->id.'.mp3'; 
 
@@ -2086,6 +2087,579 @@ $audio_id = $audio->id;
 //     $update_url->save();  
 // }
 
+return true;
+}
+
+
+
+public function edit_video(Request $request)
+{
+
+  $data = $request->all();
+  $id =$data["id"];
+ 
+  $video = Video::find($id);
+
+
+  
+  if($video != ""){
+    $video_data =json_encode($video);
+
+    return $video_data ;
+
+  }else{
+    return  false ;
+
+  }
+}
+
+public function update_video(Request $request)
+{
+  $data = $request->all(); 
+
+
+  $update_video = json_decode($data['video_data']);
+$id = $update_video->id;
+$video = Video::findOrFail($id);
+
+if($update_video->slug == ''){
+    $data['slug'] = ($update_video->title);    
+}
+
+$image = (isset($data['image'])) ? $data['image'] : '';
+$trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+$mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
+$files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+
+$update_mp4 = $data['video'];
+// echo "<pre>";
+// print_r($update_mp4);
+// exit();
+if(empty($update_video->active)){
+$update_video->active = 0;
+} 
+
+
+if(empty($update_video->webm_url)){
+$update_video->webm_url = 0;
+}  else {
+    $update_video->webm_url =  $update_video->webm_url;
+}  
+
+if(empty($update_video->ogg_url)){
+    $update_video->ogg_url = 0;
+}  else {
+    $update_video->ogg_url =  $update_video->ogg_url;
+}  
+
+if(empty($update_video->year)){
+    $update_video->year = 0;
+}  else {
+    $update_video->year =  $update_video->year;
+}   
+
+if(empty($update_video->language)){
+    $update_video->language = 0;
+}  else {
+    $update_video->language = $update_video->language;
+} 
+
+
+//        if(empty($update_video->featured)){
+//            $update_video->featured = 0;
+//        }  
+if(empty($update_video->featured)){
+    $update_video->featured = 0;
+} 
+ if(!empty($update_video->embed_code)){
+    $update_video->embed_code = $update_video->embed_code;
+} 
+
+
+if(empty($update_video->active)){
+    $update_video->active = 0;
+} 
+  if(empty($update_video->video_gif)){
+    $update_video->video_gif = '';
+}
+
+if(empty($update_video->type)){
+    $update_video->type = '';
+}
+
+ if(empty($update_video->status)){
+    $update_video->status = 0;
+}   
+
+//            if(empty($update_video['path'])){
+//                $update_video['path'] = 0;
+//            }  
+
+
+
+$path = public_path().'/uploads/videos/';
+$image_path = public_path().'/uploads/images/';
+
+if($image != '') {   
+  //code for remove old file
+  if($image != ''  && $image != null){
+       $file_old = $image_path.$image;
+      if (file_exists($file_old)){
+       unlink($file_old);
+      }
+  }
+  //upload new file
+  $file = $image;
+  $data['image']  = $file->getClientOriginalName();
+  $file->move($image_path, $data['image']);
+
+} else {
+ $data['image'] = $video->image;
+}
+
+
+if($trailer != '') {   
+  //code for remove old file
+  if($trailer != ''  && $trailer != null){
+       $file_old = $path.$trailer;
+      if (file_exists($file_old)){
+       unlink($file_old);
+      }
+  }
+  //upload new file
+  $file = $trailer;
+  $trailer_vid  = $file->getClientOriginalName();
+  $file->move($path, $trailer_vid);
+
+  $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$file->getClientOriginalName();
+
+} else {
+ $data['trailer'] = $video->trailer;
+}  
+
+
+if( isset( $update_mp4 ) && $request->hasFile('video')){   
+  //code for remove old file
+    $rand = Str::random(16);
+    $path = $rand . '.' . $request->video->getClientOriginalExtension();
+    $request->video->storeAs('public', $path);
+    $data['mp4_url'] = $path;
+ 
+    $original_name = URL::to('/').'/storage/app/public/'.$path;
+
+}
+
+
+if(isset($update_video->duration)){
+    //$str_time = $data
+    $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $update_video->duration);
+    sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+    $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+    $update_video->duration = $time_seconds;
+}
+if(!empty($update_video->embed_code)) {
+ $video->embed_code = $update_video->embed_code;
+}else {
+$video->embed_code = '';
+}
+// echo "<pre>";
+// print_r($update_video);
+// exit();
+$shortcodes = $update_video->short_code;        
+$languages=$update_video->sub_language;
+$video->description = strip_tags($update_video->description);
+$video->details = $update_video->details;
+
+$video->update($data);
+
+if(!empty( $files != ''  && $files != null)){
+
+
+foreach ($files as $key => $val) {
+    if(!empty($files[$key])){
+        
+        $destinationPath ='public/uploads/subtitles/';
+        $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+        $files[$key]->move($destinationPath, $filename);
+        $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+        $subtitle_data['shortcode'] = $shortcodes[$key]; 
+        $subtitle_data['movie_id'] = $id;
+        $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+        $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+    }
+}
+}
+return true;
+
+}
+
+public function destroy_video(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $video = Video::find($id);
+
+  Video::destroy($id);
+
+  return true; 
+}
+
+public function edit_video_category(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $categories = VideoCategory::where('id', '=', $id)->get();
+
+  if($categories != ""){
+    $category =json_encode($categories);
+
+    return $category ;
+
+  }else{
+    return  false ;
+
+  }
+}
+
+
+public function update_video_store(Request $request){
+
+  $input = $request->all();
+  
+
+  $input =$request->all();
+  $videos_categories = json_decode($input['videos_categories']);
+  $image =$input['image'];
+  
+
+
+
+  $path = public_path().'/uploads/videocategory/';
+           
+  $id = $videos_categories->id;
+  $in_home = $videos_categories->in_home; 
+  $category = VideoCategory::find($id);
+  // echo "<pre>";
+  // print_r($category);
+  // exit();
+       if (isset($request['image']) && !empty($request['image'])){
+              $image = $request['image']; 
+           } else {
+               $request['image'] = $category->image;
+        }
+
+        $slug = $videos_categories->slug; 
+        if ( $in_home != '') {
+            $input['in_home']  = $videos_categories->in_home;
+        } else {
+             $input['in_home']  = $videos_categories->in_home;
+        }
+
+    
+      if( isset($image) && $image!= '') {   
+      //code for remove old file
+      if ($image != ''  && $image != null) {
+          $file_old = $path.$image;
+          if (file_exists($file_old)){
+                 unlink($file_old);
+          }
+      }
+            //upload new file
+            $file = $image;
+            $category->image  = $file->getClientOriginalName();
+            $file->move($path,$category->image);
+
+        } 
+   
+      $category->name = $videos_categories->name;
+      $category->slug = $videos_categories->slug;
+      $category->parent_id = $videos_categories->parent_id;
+      $category->in_home = $videos_categories->in_home;
+
+      if ( $category->slug != '') {
+        $category->slug  = $videos_categories->slug;
+      } else {
+         $category->slug  = $videos_categories->name;
+      }
+     
+      $category->save();
+return true ;
+
+
+}
+
+
+
+public function destroy_video_category(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  VideoCategory::destroy($id);
+        $child_cats = VideoCategory::where('parent_id', '=', $id)->get();
+        foreach($child_cats as $cats){
+            $cats->parent_id = 0;
+            $cats->save();
+        }
+
+  return true; 
+}
+
+
+public function edit_series(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  $series = Series::find($id);
+  $results = Episode::all();
+  //$episode = Episode::all();
+  $series_categories = Genre::all();
+  $seasons = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
+$data =array(
+  'series' => $series,
+  'seasons' => $seasons,
+  'series_categories' => $series_categories,
+  'results' => $results,
+);
+  return $data; 
+}
+
+public function update_series(Request $request){
+
+  $data =$request->all();
+  $series_store = json_decode($data['series_store']);
+
+  $id = $series_store->id;
+  $series = Series::findOrFail($id);
+
+  /*Slug*/
+  if ($series->slug != $request->slug) {
+      $data['slug'] = $series_store->slug;
+  }
+
+  if($request->slug == '' || $series->slug == ''){
+      $data['slug'] = $series_store->title;    
+  }
+//        $tags = $data['tags'];
+//        unset($data['tags']);
+//        $this->addUpdateSeriesTags($series, $tags);
+
+  if(isset($series_store->duration)){
+          //$str_time = $data
+          $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $series_store->duration);
+          sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+          $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+          $series_store->duration = $time_seconds;
+  }
+
+   $path = public_path().'/uploads/videos/';
+   $image_path = public_path().'/uploads/images/';
+  
+      $image = (isset($data['image'])) ? $data['image'] : '';
+      if(!empty($image)){
+          //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+          if($image != ''  && $image != null){
+                 $file_old = $image_path.$image;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $data['image']  = $file->getClientOriginalName();
+            $file->move($image_path, $data['image']);
+
+      } else {
+          $data['image'] = 'placeholder.jpg';
+      }
+
+  if(empty($series_store->active)){
+      $series_store->active = 0;
+  }
+
+  if(empty($series_store->featured)){
+      $series_store->featured = 0;
+  }
+  
+  $series_upload = $data['series_upload'];
+  $resolution_data['series_id'] = $series->id;
+  $subtitle_data['series_id'] = $series->id;
+  
+  if($series_upload) {
+
+          $rand = Str::random(16);
+          $path = $rand . '.' . $data['series_upload']->getClientOriginalExtension();
+      //print_r($path);exit;
+          $data['series_upload']->storeAs('public', $path);
+          $data['mp4_url'] = $path;
+      
+          $update_url = Series::find($resolution_data['series_id']);
+
+          $update_url->mp4_url = $data['mp4_url'];
+
+          $update_url->save();  
+
+
+
+  }
+
+  
+  $series->title = $series_store->title;
+$series->embed_code = $series_store->embed_code;
+$series->type = $series_store->type;
+$series->description = $series_store->description;
+$series->genre_id = $series_store->genre_id;
+$series->rating = $series_store->rating;
+$series->language = $series_store->language;
+$series->year = $series_store->year;
+// $series->tags = $series_store->tags;
+$series->duration = $series_store->duration;
+$series->access = $series_store->access;
+$series->featured = $series_store->featured;
+$series->active = $series_store->active;
+$series->trailer = "test";
+$series->user_id = $series_store->user_id;
+
+
+  
+  $series->save();
+
+  if(empty($data['series_upload'])){
+      unset($data['series_upload']);
+  } 
+
+    /*Subtitle Upload*/
+  $files = $request->file('subtitle_upload');
+  $shortcodes = $request->get('short_code');
+  $languages = $request->get('language');
+
+  // if($request->hasFile('subtitle_upload'))
+  // {
+  //     foreach ($files as $key => $val) {
+  //         if(!empty($files[$key])){
+              
+  //             $destinationPath ='content/uploads/subtitles/';
+  //             $filename = $id. '-'.$shortcodes[$key].'.vtt';
+  //             $files[$key]->move($destinationPath, $filename);
+  //             $subtitle_data['sub_language'] = $languages[$key]; 
+  //             $subtitle_data['series_id'] = $id; 
+  //             $subtitle_data['shortcode'] = $shortcodes[$key]; 
+  //             $subtitle_data['url'] = URL::to('/').'/content/uploads/subtitles/'.$filename; 
+  //             $series_subtitle = SeriesSubtitle::updateOrCreate(array('shortcode' => 'en','series_id' => $id), $subtitle_data);
+  //         }
+  //     }
+  // }
+  return true; 
+}
+
+public function destory_series(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $series = Series::find($id);
+  Series::destroy($id);
+
+  return true; 
+}
+
+
+
+public function edit_audio(Request $request){
+
+  $data = $request->all();
+  
+      
+  $id = $data['id'];
+  
+  $audio = Audio::find($id);
+ 
+  return $audio; 
+}
+
+public function update_audio(Request $request){
+
+  $data = $request->all();
+  // print_r($data);
+  //       exit();
+  $audios = json_decode($data['audios']);
+  $id = $audios->id;
+        $audio = Audio::findOrFail($id);
+
+
+     
+        /*Slug*/
+        if ($audio->slug != $audios->slug) {
+            $data['slug'] = $audios->slug;
+        }
+
+        if($request->slug == '' || $audio->slug == ''){
+            $data['slug'] = $audios->title;    
+        }
+        if(isset($audios->duration)){
+                //$str_time = $audios
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $audios->duration);
+                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $audios->duration = $time_seconds;
+        }
+
+
+        $path = public_path().'/uploads/audios/';
+        
+        $image = $request['image'];
+        
+        if($image != '') {   
+             //code for remove old file
+        
+          if($image != ''  && $image != null){
+             $file_old = $path.$image;
+             if (file_exists($file_old)){
+                 unlink($file_old);
+             }
+         }
+                //upload new file
+         $file = $image;
+         $data['image']  = $file->getClientOriginalName();
+         $file->move($path, $data['image']);
+        } else {
+         $data['image']  = 'default.jpg';
+        }
+
+        if(empty($audios->active)){
+            $audios->active = 0;
+        }
+
+        if(empty($audios->featured)){
+            $audios->featured = 0;
+        }
+        $arr = $audios->artists;
+$artists = implode(",",$arr);
+        $audio->title = $audios->title;
+        $audio->slug = $audios->slug;
+        $audio->type = $audios->type;
+        $audio->mp3_url = $audios->mp3_url;
+        $audio->details = $audios->details;
+        $audio->description = $audios->description;
+        $audio->artists = $artists;
+        $audio->album_id = $audios->album_id;
+        $audio->audio_category_id = $audios->audio_category_id;
+        $audio->rating = $audios->rating;
+        $audio->language = $audios->language;
+        $audio->year = $audios->year;
+        $audio->access = $audios->access;
+        $audio->featured = $audios->featured;
+        $audio->banner = $audios->banner;
+        $audio->active = $audios->active;
+        $audio->user_id = $audios->user_id;
+        $audio->image = $file->getClientOriginalName() ;
+
+        $audio->update($data);
+
+        if(empty($data['audio_upload'])){
+            unset($data['audio_upload']);
+        } else {
+        
+        $audio_upload = $data['audio_upload'];
 
 
 
@@ -2099,14 +2673,986 @@ $audio_id = $audio->id;
 
 
 
+        // if($audio_upload){
+        //     $ffmpeg = FFMpeg\FFMpeg::create();
+        //     $audio = $ffmpeg->open($data['audio_upload']);
 
+        //     $audio
+        //     ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$id.'.mp3');
 
+        //     $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$id.'.mp3'; 
 
+        //     $update_url = Audio::find($id);
 
+        //     $update_url->mp3_url = $data['mp3_url'];
 
+        //     $update_url->save();  
+        // }
+
+        }
 
 return true;
 }
+public function destory_audio(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  // print_r($id);
+  // exit();
+  $audio = Audio::find($id);
+
+        // $this->deleteAudioImages($audio);
+
+        Audio::destroy($id);
+ 
+  return true; 
+}
+
+public function edit_audio_categories(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+    
+  $categories = AudioCategory::where('id', '=', $id)->get();
+
+  $allCategories = AudioCategory::all();
+$data =array(
+  'categories' => $categories,
+  'allCategories' => $allCategories,
+
+);
+
+  return $data; 
+ 
+  return true; 
+}
+public function destroy_audio_categories(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+    
+  AudioCategory::destroy($id);
+            
+  $child_cats = AudioCategory::where('parent_id', '=', $id)->get();
+  
+  foreach($child_cats as $cats){
+      $cats->parent_id = 0;
+      $cats->save();
+  }
+  return true; 
+}
+public function edit_artist_categories(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+    
+  $artist = Artist::find($id);
+ 
+
+  return $artist;   
+}
+public function update_artist_categories(Request $request){
+
+  $data = $request->all();
+  $artists_data = json_decode($data['artists']);
+  
+  $id = $artists_data->id;
+        $artist = Artist::findOrFail($id);
+        $image_path = public_path().'/uploads/artists/';
+        $image = (isset($data['image'])) ? $data['image'] : '';
+        if(empty($data['image'])){
+            unset($data['image']);
+        } else {
+            //code for remove old file
+        	if($image != ''  && $image != null){
+        		$file_old = $image_path.$image;
+        		if (file_exists($file_old)){
+        			unlink($file_old);
+        		}
+        	}
+              //upload new file
+        	$file = $image;
+        	$data['image']  = $file->getClientOriginalName();
+        	$file->move($image_path, $data['image']);
+        }
+
+        $artist->artist_name = $artists_data->artist_name;
+        $artist->description = $artists_data->description;
+        $artist->image = $file->getClientOriginalName();
+        $artist->user_id = $artists_data->user_id;
+        $artist->update($data);
+
+
+  return true; 
+}
+
+public function destroy_artist_categories(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+    
+  $artist = Artist::find($id);
+
+  // $this->deleteArtistImages($artist);
+
+  Artist::destroy($id);
+
+  return true; 
+}
+
+
+
+public function editAlbum(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  $categories = AudioAlbums::where('id', '=', $id)->get();
+  $allAlbums = AudioAlbums::all();
+  $allCategories = AudioCategory::all();
+$data = array(
+  'audioCategories' => $allCategories,
+  'allAlbums' => $allAlbums,
+  'categories' => $categories
+
+);
+  return $data;   
+}
+
+
+
+
+
+public function destroyAlbum(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  AudioAlbums::destroy($id);
+  
+  return true;   
+}
+
+
+
+public function MobileSliderEdit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $categories = MobileSlider::where('id', '=', $id)->get();
+  $allCategories = MobileSlider::all();
+  $data = array (
+    'allCategories'=>$allCategories,
+    'categories'=>$categories
+
+  );
+  return $data; 
+}
+public function MobileSliderUpdate(Request $request){
+
+  $input = $request->all();
+
+  $mobile_settings = json_decode($input['mobile_settings']);
+  $id = $mobile_settings->id;
+  $path = public_path().'/uploads/videocategory/';
+  // echo "<pre>";
+  // print_r($id);
+  // exit();
+  $id = $mobile_settings->id;
+  $in_home = $mobile_settings->active; 
+  $link = $mobile_settings->link; 
+  $category = MobileSlider::find($id);
+       if (isset($request['slider']) && !empty($request['slider'])){
+              $image = $request['slider']; 
+           } else {
+               $request['slider'] = $category->slider;
+        }
+       // $slug = $request['slug']; 
+        if ( $in_home != '') {
+            $input['active']  = $request['active'];
+        } else {
+             $input['active']  = $request['active'];
+        }
+      if( isset($image) && $image!= '') {   
+              //code for remove old file
+              if ($image != ''  && $image != null) {
+                  $file_old = $path.$image;
+                  if (file_exists($file_old)){
+                         unlink($file_old);
+                  }
+              }
+              $file = $image;
+              $category->slider  = $file->getClientOriginalName();
+              $file->move($path,$category->slider);
+        } 
+      $category->link  = $link;
+      $category->active = $in_home;
+      $category->slider = $file->getClientOriginalName();
+      $category->user_id = $mobile_settings->user_id;
+
+      $category->save();
+      
+  return true; 
+}
+public function MobileSliderDelete(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  MobileSlider::destroy($id);
+
+
+  return true; 
+}
+
+
+public function page_edit(Request $request){
+
+  $data = $request->all();
+ 
+  $page = Page::find($id);
+
+
+  return $page; 
+}
+
+public function page_update(Request $request){
+
+  $data = $request->all();
+  $pages = json_decode($data['pages']);
+  $id = $pages->id; 
+  $page = Page::findOrFail($id);
+
+  
+  
+   $path = public_path().'/uploads/settings/';
+  
+   $logo = $request['banner'];
+  
+  /* logo upload */
+    
+if($logo != '') {   
+    //code for remove old file
+    if($logo != ''  && $logo != null){
+         $file_old = $path.$logo;
+        if (file_exists($file_old)){
+         unlink($file_old);
+        }
+    }
+    //upload new file
+    $file = $logo;
+    $data['banner']  = $file->getClientOriginalName();
+    $file->move($path, $data['banner']);
+   
+}
+
+
+  if(!isset($pages->active) || $pages->active == ''){
+      $pages->active = 0;
+  }
+  $page->title =$pages->title;
+  $page->slug =$pages->slug;
+  $page->body =$pages->body;
+  $page->active =$pages->active;
+  $page->user_id =$pages->user_id;
+  $page->banner =$file->getClientOriginalName();
+  $page->update($data);
+
+
+  return true; 
+}
+
+public function page_destory(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $page = Page::find($id);
+
+  Page::destroy($id);
+
+
+  return true; 
+}
+
+public function plans_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $edit_plan =  Plan::where('id', '=', $id)->get();
+
+
+
+  return $edit_plan; 
+}
+
+
+public function plans_update(Request $request){
+
+  $data = $request->all();
+  $plan = json_decode($data['plans']);
+  $id = $plan->id; 
+  $plans = Plan::find($id);
+  $plans->plans_name = $plan->plans_name;
+ $plans->days = $plan->days;
+ $plans->payment_type = $plan->payment_type;
+ $plans->price  = $plan->price;
+    $plans->plan_id  = $plan->plan_id;
+    $plans->type  = $plan->type;
+ $plans->billing_interval  = $plan->billing_interval;
+$plans_count = Plan::where('plans_name', '=', $plans->plans_name)->count();
+    $plans->save();
+
+
+  return true; 
+}
+
+public function plans_destory(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  Plan::where('id',$id)->delete();
+
+
+
+  return true; 
+}
+
+public function PaypalEdit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $edit_plan =  PaypalPlan::where('id', '=', $id)->get();
+
+
+
+  return $edit_plan; 
+}
+
+public function PaypalUpdate(Request $request){
+
+  $data = $request->all();
+  $paypalplans = json_decode($data['paypalplans']);
+  $id = $paypalplans->id; 
+  $plans = PaypalPlan::find($id);
+    	$plans->name = $paypalplans->plans_name;
+    	$plans->price = $paypalplans->price;
+    	$plans->payment_type = $paypalplans->payment_type;
+        $plans->plan_id  = $paypalplans->plan_id;
+$plans->user_id = $paypalplans->user_id;
+
+        $plans->save();
+
+
+  return true; 
+}
+
+public function PaypalDelete(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  PaypalPlan::where('id',$id)->delete();
+
+  // echo "<pre>";
+  //           print_r($id);
+  //           exit();
+
+
+  return true; 
+}
+
+
+public function editcoupons(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $edit_coupons =  Coupon::where('id', '=', $id)->get();
+
+
+  return $edit_coupons; 
+}
+public function updatecoupons(Request $request){
+
+  $data = $request->all();
+  $coupons = json_decode($data['coupons']);
+  
+  $id = $coupons->id; 
+        // echo "<pre>";
+        //     print_r($coupons);
+        //     exit();
+        $plans = Coupon::find($id);
+      $plans->coupon_code = $coupons->coupon_code;
+      $plans->user_id = $coupons->user_id;
+        $plans->save();
+
+
+  return true; 
+}
+public function deletecoupons(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  Coupon::where('id',$id)->delete();
+
+  return true; 
+}
+
+public function deletecountry(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  Country::where('id',$id)->delete();
+
+  return true; 
+}
+
+
+public function SliderEdit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $categories = Slider::where('id', '=', $id)->get();
+
+  $allCategories = Slider::all();
+  $data = array (
+    'allCategories'=>$allCategories,
+    'categories'=>$categories
+
+  );
+  return $data; 
+}
+public function SliderUpdate(Request $request){
+
+  $input = $request->all();
+
+  $slider = json_decode($input['slider']);
+  $id = $slider->id;
+    
+  $path = public_path().'/uploads/videocategory/';
+           
+  $id = $slider->id;
+  $in_home = $slider->active; 
+  $link = $slider->link; 
+  // echo "<pre>";
+  // print_r($input);
+  // exit();
+  $category = Slider::find($id);
+ 
+       if (isset($request['slider_image']) && !empty($request['slider_image'])){
+              $image = $request['slider_image']; 
+           } else {
+               $request['slider_image'] = $request['slider_image'];
+        }
+
+       // $slug = $request['slug']; 
+        if ( $in_home != '') {
+            $input['active']  = $slider->active;
+        } else {
+             $input['active']  = $slider->active;
+        }
+      if( isset($image) && $image!= '') {   
+              //code for remove old file
+              if ($image != ''  && $image != null) {
+                  $file_old = $path.$image;
+                  if (file_exists($file_old)){
+                         unlink($file_old);
+                  }
+              }
+              $file = $image;
+              $category->slider  = $file->getClientOriginalName();
+              $file->move($path,$category->slider);
+        } 
+
+      $category->link  = $link;
+      $category->active = $slider->active;
+      $category->user_id = $slider->user_id;
+
+      $category->save();
+      
+  return true; 
+}
+public function SliderDelete(Request $request){
+
+  $input = $request->all();
+
+  // $slider = json_decode($input['slider']);
+  $id = $input['id'];
+    
+  
+  Slider::destroy($id);
+
+
+  return true; 
+}
+
+public function menu_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  $menu = Menu::find($id);
+
+
+
+  return $menu; 
+}
+public function menu_update(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  Menu::find($data['id'])->update($data);
+
+  return true; 
+}
+public function menu_destroy(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  
+  Menu::destroy($id);
+  $child_menu_items = Menu::where('parent_id', '=', $id)->get();
+  foreach($child_menu_items as $menu_items){
+      $menu_items->parent_id = NULL;
+      $menu_items->save();
+  }
+
+
+  return true; 
+}
+
+public function LanguageEdit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $categories = VideoLanguage::where('id', '=', $id)->get();
+  $allCategories = VideoLanguage::all();
+$data =array(
+  'categories' => $categories,
+  'allCategories' => $allCategories,
+);
+
+  return $data; 
+}
+public function LanguageUpdate(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $id = $data['id'];
+  $name = $data['name']; 
+  $category = VideoLanguage::find($id);
+  $category->name = $data['name'];
+  $category->save();
+   
+  return back()->with('success', 'New Language Updated successfully.');
+
+
+  return true; 
+}
+public function LanguageDelete(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  VideoLanguage::destroy($id);
+
+
+  return true; 
+}
+
+
+public function LanguageTransEdit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $categories = VideoLanguage::where('id', '=', $id)->get();
+  $allCategories = VideoLanguage::all();
+$data =array(
+  'categories' => $categories,
+  'allCategories' => $allCategories,
+);
+
+  return $data; 
+}
+public function LanguageTransUpdate(Request $request){
+
+  $data = $request->all();
+  $id = $request['id'];
+  $name = $request['name']; 
+  $category = Language::find($id);
+  $category->name = $request['name'];
+  $category->save();
+   
+  return back()->with('success', 'New Language Updated successfully.');
+
+
+  return true; 
+}
+public function LanguageTransDelete(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  Language::destroy($id);
+
+
+  return true; 
+}
+
+
+
+public function user_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  // print_r($data);
+  // exit();
+  $referral_link ="";
+  $user = User::where('id', '=', $id)->first();
+
+  return $user; 
+}
+public function user_update(Request $request){
+
+  $input =$request->all();
+  $user_store = json_decode($input['user_store']);
+  $email =$user_store->email;
+  $ccode =$user_store->ccode;
+  $mobile =$user_store->mobile;
+  $passwords =$user_store->passwords;
+  $role =$user_store->role;
+  $_token =$user_store->_token;
+  $user_id =$user_store->user_id;
+  $id =$user_store->id;
+
+
+  $avatar = $input['avatar'];
+        
+		$user = User::find($id);        
+       // $user = Auth::user();       
+        
+        $path = public_path().'/uploads/avatars/';         
+        $input['email'] = $request['email'];  
+        
+        $path = public_path().'/uploads/avatars/';        
+        $logo = $request['avatar'];        
+        
+        if($logo != '') {   
+          //code for remove old file
+          if($logo != ''  && $logo != null){
+               $file_old = $path.$logo;
+              if (file_exists($file_old)){
+               unlink($file_old);
+              }
+          }
+          //upload new file
+          $file = $logo;
+          $input['avatar']  = $file->getClientOriginalName();
+          $file->move($path, $input['avatar']);
+         
+     }
+      
+        if ( $rolerole =='subadmin' ){
+            
+                $role ='admin';
+                $sub_admin = 1;
+                $stripe_active = 1;
+            
+        } else {
+            
+             $role = $role;
+        }
+    
+        
+        $terms = 1;
+        $stripe_active = 0;
+
+
+        if(empty($user_store->passwords)) {
+        	$input['passwords'] = $user->password;
+        } 
+        else { 
+                $input['passwords'] = $user_store->passwords; 
+            }
+       
+        $user_update = User::find($id);
+        $user_update->email = $user_update->email;
+        $user_update->password = $user_update->password;
+        $user_update->role = $user_update->role;
+        $user_update->terms = $user_update->terms;
+        $user_update->stripe_active = $stripe_active;
+        $user_update->username = $user_update->username;
+        $user_update->save();
+   
+
+  return true; 
+}
+public function user_delete(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  User::destroy($id);
+
+
+  return true; 
+}
+
+
+public function userroles_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+
+  $roles = Role::find($id);
+
+
+  return $roles; 
+}
+public function userroles_update(Request $request){
+
+  $input =$request->all();
+  $user_role = json_decode($input['user_role']);
+
+  $id = $user_role->id;
+  $role = Role::find($id);
+  $role->name =  $user_role->name;
+  $role->save();
+
+
+  return true; 
+}
+public function userroles_destroy(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+  $role = Role::find($id);
+  $role->delete();
+
+
+
+  return true; 
+}
+
+
+public function refferal() {
+  return View::make('refferal');
+}
+
+public function livestream_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+
+  $video = LiveStream::find($id);
+  $video_categories = LiveCategory::all();
+  $languages = Language::all();
+$data = array(
+
+  'video' => $video,
+  'video_categories' => $video_categories,
+  'languages' => $languages,
+
+);
+  return $data; 
+}
+public function livestream_update(Request $request){
+
+  $data =$request->all();
+  $livestream = json_decode($data['livestream']);
+
+  $id = $livestream->id;
+ 
+  $video = LiveStream::findOrFail($id);  
+
+//  echo "<pre>";
+//  print_r($video);
+//  exit();
+    $image = ($data['image']) ? $data['image'] : '';
+    $mp4_url = (isset($livestream->mp4_url)) ? $livestream->mp4_url : '';
+ 
+ if(empty($livestream->active)){
+     $livestream->active = 0;
+ } 
+
+ if(empty($livestream->ppv_status)){
+     $livestream->ppv_status = 0;
+ }
+ if(empty($livestream->slug)){
+     $livestream->slug = 0;
+ }
+ 
+ if(empty($livestream->rating)){
+     $livestream->rating = 0;
+ }
+ 
+ if(empty($livestream->year)){
+     $livestream->year = 0;
+ }
+
+ if(empty($livestream->featured)){
+     $livestream->featured = 0;
+ }  
+ 
+  if(empty($livestream->status)){
+     $livestream->status = 0;
+ }  
+ 
+ if(empty($livestream->type)){
+     $livestream->type = '';
+ }
+ 
+
+
+ 
+ $path = public_path().'/uploads/livecategory/';
+ $image_path = public_path().'/uploads/images/';
+   
+  if($image != '') {   
+       //code for remove old file
+       if($image != ''  && $image != null){
+            $file_old = $image_path.$image;
+           if (file_exists($file_old)){
+            unlink($file_old);
+           }
+       }
+       //upload new file
+       $file = $image;
+       $data['image']  = $file->getClientOriginalName();
+       $file->move($image_path, $data['image']);
+
+  } 
+
+  $livestream->mp4_url  = $livestream->mp4_url;
+
+  if(isset($livestream->duration)){
+         //$str_time = $data
+         $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $livestream->duration);
+         sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+         $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+         $livestream->duration = $time_seconds;
+ }
+
+
+  // $shortcodes =$livestream->mp4_url->short_code;
+  // $languages =$livestream->mp4_url->language;
+
+  $video['title'] =$livestream->title;
+  $video['details'] =$livestream->details;
+  $video['video_category_id'] =$livestream->video_category_id;
+  $video['description'] =$livestream->description;
+  $video['featured'] =$livestream->featured;
+  $video['language'] =$livestream->language;
+  $video['banner'] =$livestream->banner;
+  $video['duration'] =$livestream->duration;
+  $video['footer'] =$livestream->footer;
+  $video['slug'] =$livestream->slug;
+  // $video['status'] =$livestream->status;
+  $video['image'] =$file->getClientOriginalName();
+  $video['mp4_url'] =$livestream->mp4_url;
+  $video['year'] =$livestream->year;
+  
+  $video->save();
+
+//  $video->update($data);
+
+
+  return true; 
+}
+
+public function livestreamcategory_edit(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+
+  $categories = LiveCategory::where('id', '=', $id)->get();
+
+  $allCategories = LiveCategory::all();
+  $data = array(
+
+    'categories' => $categories,
+    'allCategories' => $allCategories,
+  
+  );
+    return $data; 
+}
+public function livestreamcategory_update(Request $request){
+
+  $input =$request->all();
+  $livestream_categories = json_decode($input['livestream_categories']);
+     
+  $path = public_path().'/uploads/livecategory/';
+
+  $id = $livestream_categories->id;
+  $category = LiveCategory::find($id);
+
+   if (isset($request['image']) && !empty($request['image'])){
+      $image = $request['image']; 
+   } else {
+       $request['image'] = $category->image;
+   }
+
+   if( isset($image) && $image!= '') {   
+    //code for remove old file
+        if($image != ''  && $image != null){
+             $file_old = $path.$image;
+            if (file_exists($file_old)){
+             unlink($file_old);
+            }
+        }
+        //upload new file
+        $file = $image;
+        $category->image  = $file->getClientOriginalName();
+        $file->move($path,$category->image);
+
+   } 
+
+  
+  
+  $category->name = $livestream_categories->name;
+  $category->slug = $livestream_categories->slug;
+  $category->parent_id = $livestream_categories->parent_id;
+  
+   if ( $category->slug != '') {
+    $category->slug  = $livestream_categories->slug;
+    } else {
+         $category->slug  = $livestream_categories->name;
+    }
+  
+  
+  $category->save();
+
+  return true; 
+}
+
+public function livestreamcategory_destroy(Request $request){
+
+  $data = $request->all();
+  $id = $data['id'];
+
+  LiveCategory::destroy($id);
+            
+  $child_cats = LiveCategory::where('parent_id', '=', $id)->get();
+  
+  foreach($child_cats as $cats){
+      $cats->parent_id = 0;
+      $cats->save();
+  }
+
+
+
+  return true; 
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

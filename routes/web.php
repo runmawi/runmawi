@@ -833,3 +833,276 @@ Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 
 
+
+// edit_video 
+
+Route::post('edit_video', 'ModeratorsUserController@edit_video');
+
+
+
+// update_video 
+
+Route::post('update_video', 'ModeratorsUserController@update_video');
+
+
+
+// destroy_video 
+
+Route::post('destroy_video', 'ModeratorsUserController@destroy_video');
+
+
+
+// edit_video_category 
+
+Route::post('edit_video_category', 'ModeratorsUserController@edit_video_category');
+
+
+
+// update_video_store 
+
+Route::post('update_video_store', 'ModeratorsUserController@update_video_store');
+
+
+
+// destroy_video_category 
+
+Route::post('destroy_video_category', 'ModeratorsUserController@destroy_video_category');
+
+
+
+// series_store 
+
+Route::post('series_store', 'ModeratorsUserController@series_store');
+
+
+
+// edit_series 
+
+Route::post('edit_series', 'ModeratorsUserController@edit_series');
+
+
+
+// update_series 
+
+Route::post('update_series', 'ModeratorsUserController@update_series');
+
+
+
+// destory_series 
+
+Route::post('destory_series', 'ModeratorsUserController@destory_series');
+
+
+
+// edit_audio 
+
+Route::post('edit_audio', 'ModeratorsUserController@edit_audio');
+
+
+
+// update_audio 
+
+Route::post('update_audio', 'ModeratorsUserController@update_audio');
+
+
+
+// destory_audio 
+
+Route::post('destory_audio', 'ModeratorsUserController@destory_audio');
+
+
+
+// edit_audio_categories 
+
+Route::post('edit_audio_categories', 'ModeratorsUserController@edit_audio_categories');
+
+
+
+// destroy_audio_categories 
+
+Route::post('destroy_audio_categories', 'ModeratorsUserController@destroy_audio_categories');
+
+
+
+// destroy_artist_categories 
+
+Route::post('destroy_artist_categories', 'ModeratorsUserController@destroy_artist_categories');
+
+
+
+// edit_artist_categories 
+
+Route::post('edit_artist_categories', 'ModeratorsUserController@edit_artist_categories');
+
+
+
+// update_artist_categories 
+
+Route::post('update_artist_categories', 'ModeratorsUserController@update_artist_categories');
+
+
+
+// editAlbum 
+
+Route::post('editAlbum', 'ModeratorsUserController@editAlbum');
+
+
+// destroyAlbum 
+
+Route::post('destroyAlbum', 'ModeratorsUserController@destroyAlbum');
+
+// MobileSliderEdit 
+
+Route::post('MobileSliderEdit', 'ModeratorsUserController@MobileSliderEdit');
+
+// MobileSliderUpdate 
+
+Route::post('MobileSliderUpdate', 'ModeratorsUserController@MobileSliderUpdate');
+
+// MobileSliderDelete 
+
+Route::post('MobileSliderDelete', 'ModeratorsUserController@MobileSliderDelete');
+
+// page_edit 
+
+Route::post('page_edit', 'ModeratorsUserController@page_edit');
+
+// page_update 
+
+Route::post('page_update', 'ModeratorsUserController@page_update');
+
+// page_destory 
+
+Route::post('page_destory', 'ModeratorsUserController@page_destory');
+
+// plans_edit 
+
+Route::post('plans_edit', 'ModeratorsUserController@plans_edit');
+
+// plans_update 
+
+Route::post('plans_update', 'ModeratorsUserController@plans_update');
+
+// plans_destory 
+
+Route::post('plans_destory', 'ModeratorsUserController@plans_destory');
+
+// PaypalEdit 
+
+Route::post('PaypalEdit', 'ModeratorsUserController@PaypalEdit');
+
+// PaypalUpdate 
+
+Route::post('PaypalUpdate', 'ModeratorsUserController@PaypalUpdate');
+
+// PaypalDelete 
+
+Route::post('PaypalDelete', 'ModeratorsUserController@PaypalDelete');
+
+// editcoupons
+
+Route::post('editcoupons', 'ModeratorsUserController@editcoupons');
+
+// updatecoupons 
+
+Route::post('updatecoupons', 'ModeratorsUserController@updatecoupons');
+
+// deletecoupons 
+
+Route::post('deletecoupons', 'ModeratorsUserController@deletecoupons');
+
+// deletecountry 
+
+Route::post('deletecountry', 'ModeratorsUserController@deletecountry');
+
+// SliderEdit 
+
+Route::post('SliderEdit', 'ModeratorsUserController@SliderEdit');
+
+// SliderUpdate 
+
+Route::post('SliderUpdate', 'ModeratorsUserController@SliderUpdate');
+
+// SliderDelete 
+
+Route::post('SliderDelete', 'ModeratorsUserController@SliderDelete');
+
+// menu_edit 
+
+Route::post('menu_edit', 'ModeratorsUserController@menu_edit');
+
+// menu_update 
+
+Route::post('menu_update', 'ModeratorsUserController@menu_update');
+
+// menu_destroy 
+
+Route::post('menu_destroy', 'ModeratorsUserController@menu_destroy');
+
+// LanguageEdit 
+
+Route::post('LanguageEdit', 'ModeratorsUserController@LanguageEdit');
+
+// LanguageUpdate 
+
+Route::post('LanguageUpdate', 'ModeratorsUserController@LanguageUpdate');
+
+// LanguageDelete 
+
+Route::post('LanguageDelete', 'ModeratorsUserController@LanguageDelete');
+
+// LanguageTransEdit 
+
+Route::post('LanguageTransEdit', 'ModeratorsUserController@LanguageTransEdit');
+
+// LanguageTransUpdate 
+
+Route::post('LanguageTransUpdate', 'ModeratorsUserController@LanguageTransUpdate');
+
+// LanguageTransDelete 
+
+Route::post('LanguageTransDelete', 'ModeratorsUserController@LanguageTransDelete');
+
+// user_edit 
+
+Route::post('user_edit', 'ModeratorsUserController@user_edit');
+
+// user_update 
+
+Route::post('user_update', 'ModeratorsUserController@user_update');
+
+// user_delete 
+
+Route::post('user_delete', 'ModeratorsUserController@user_delete');
+
+// userroles_edit 
+
+Route::post('userroles_edit', 'ModeratorsUserController@userroles_edit');
+
+// userroles_update 
+
+Route::post('userroles_update', 'ModeratorsUserController@userroles_update');
+
+// userroles_destroy 
+
+Route::post('userroles_destroy', 'ModeratorsUserController@userroles_destroy');
+
+// livestream_edit 
+
+Route::post('livestream_edit', 'ModeratorsUserController@livestream_edit');
+
+// livestream_update 
+
+Route::post('livestream_update', 'ModeratorsUserController@livestream_update');
+
+// livestreamcategory_edit 
+
+Route::post('livestreamcategory_edit', 'ModeratorsUserController@livestreamcategory_edit');
+
+// livestreamcategory_update 
+
+Route::post('livestreamcategory_update', 'ModeratorsUserController@livestreamcategory_update');
+
+// livestreamcategory_destroy 
+
+Route::post('livestreamcategory_destroy', 'ModeratorsUserController@livestreamcategory_destroy');

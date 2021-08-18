@@ -37,6 +37,10 @@ class Video extends Model
 		return $this->belongsTo('App\Language','language','id');
 	}
     
+    public function cnt_watch(){
+		return $this->hasMany('App\ContinueWatching','videoid','id');
+	}
+
     public function channelVideo(){
         
             return $this->hasMany('App\Video', 'id');

@@ -57,9 +57,10 @@ border-radius: 25px !important;
     font-weight: 600;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
-    background: #000;
-    border: 1px solid #000;
+    background: ;
+    border: 1px solid #fff;
     color: #fff;
+        
 }
     a.ytp-impression-link {
     display: none !important;

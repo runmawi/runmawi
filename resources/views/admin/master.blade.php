@@ -73,7 +73,9 @@
        padding-left: 25px;
         
     }
-    
+    hr{
+        border-top: 1px solid #f39c3ea3!important ;
+    }
     
 </style>
 
@@ -105,8 +107,8 @@
                   <li><a href="<?php echo URL::to('home') ?>" class=""><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div style="line-height: 14px;">
-                   <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Video Management</p>
+                   <hr style="color:!important;">
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Video</p>
                    <hr></div>
                   <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -124,7 +126,7 @@
           </li>
                     <div style="line-height: 14px;">
                    <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Audio Management </p><hr></div>
+                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Audio </p><hr></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -151,7 +153,7 @@
                   </li>
                     <div style="line-height: 14px;">
                    <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Accounts Management</p><hr></div>
+                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Accounts</p><hr></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -163,7 +165,7 @@
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
                     <div style="line-height: 14px;">
                     <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Language Management</p>
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Language</p>
                         <hr></div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -178,7 +180,7 @@
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
                     <div style="line-height: 14px;">
                    <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site Management</p>
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
                         <hr></div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                     <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
@@ -363,7 +365,7 @@
                      <li class="nav-item nav-icon">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-notification-2-line"></i>
-                           <span class="bg-primary dots"></span>
+                          <!-- <span class="bg-primary dots"></span>-->
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -426,7 +428,7 @@
                      <li class="nav-item nav-icon dropdown">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-mail-line"></i>
-                           <span class="bg-primary dots"></span>
+                          <!-- <span class="bg-primary dots"></span>-->
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -508,7 +510,7 @@
                                     <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
                                     <span class="text-white font-size-12">Available</span>
                                  </div>
-                                 <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
+                                 <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-file-user-line"></i>
