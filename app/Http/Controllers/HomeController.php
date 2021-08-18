@@ -651,18 +651,21 @@ class HomeController extends Controller
                if (Auth::user()){
                 $user_id = Auth::user()->id;
                 $video_id = $request->video_id;
+                $duration = $request->duration;
+                $currentTime = $request->currentTime;
+                $watch_percentage = ($currentTime * 100 / $duration);
                 $cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->count();
                 if ($cnt == 0){
                     $video = new ContinueWatching;
                     $video->videoid = $request->video_id;
                     $video->user_id = $user_id;
                     $video->currentTime = $request->currentTime;
-                    $video->watch_percentage = $request->watch_percentage;
+                    $video->watch_percentage = $watch_percentage;
                     $video->save();
                 }else{
                     $cnt_watch = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
                     $cnt_watch->currentTime = $request->currentTime;
-                    $cnt_watch->watch_percentage = $request->watch_percentage;
+                    $cnt_watch->watch_percentage = $watch_percentage;
                     $cnt_watch->save(); 
                 }
             }

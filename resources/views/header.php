@@ -295,7 +295,7 @@
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card dropdown-toggle setting-dropdown">
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-logout-circle-line text-primary"></i>

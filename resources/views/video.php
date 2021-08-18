@@ -242,13 +242,13 @@ if($value['sub_language'] == "Spanish"){
    <?php if(!Auth::guest()) { ?>
 
     <div class="row" >
-      <div class="col-sm-12 col-md-6 col-xs-12 d-flex justify-content-around">     
+      <div class="col-sm-12 col-md-6 col-xs-12 d-flex">     
       <!-- Watch Later -->
                 <div>
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
 <div>
       <!-- Wish List -->            
-      <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+      <div style="margin-left:15px;" class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 </div>
            </div>
       <!-- Share -->
@@ -321,7 +321,7 @@ if($value['sub_language'] == "Spanish"){
    <?php if(Auth::guest()) { ?>
   
     <div class="row">
-      <div class="col-sm-6 col-md-5 col-xs-12">     
+      <div class="col-sm-6 col-md-4 col-xs-12">     
       <!-- Watch Later -->
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
 
@@ -336,18 +336,12 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>-->
         </div>
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-5">
             <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-      </div> 
-        </div>
-      <div class="col-sm-6 col-md-4 col-xs-12">
-      <!-- Views -->
-           <div class="d-flex">
-       
-               
-                        <div class="btn views" style="margin: 0 12px; padding: 0;">
+      </div>
+             <div class="btn views" style="margin: 0 12px; padding: 0;">
                             <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                          </div>
                
@@ -355,7 +349,11 @@ if($value['sub_language'] == "Spanish"){
                      <a class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                      <?php echo __('Rent');?> </a>
 <!--                    <div id="paypal-button"></div>-->
-                   </div> 
+                   </div>
+                   </div>
+      <div class="col-sm-6 col-md-4 col-xs-12">
+      <!-- Views -->
+           <div class="d-flex"> 
                     </div>
                 
               
@@ -410,6 +408,21 @@ if($value['sub_language'] == "Spanish"){
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="clear"></div>
         <script>
+
+$(document).ready(function () { 
+    $(window).on("beforeunload", function() { 
+
+        var vid = document.getElementById("videoPlayer");
+        var currentTime = vid.currentTime;
+        var duration = vid.duration;
+        var videoid = $('#video_id').val();
+            $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+                      //    toastr.success(data.success);
+            });
+      // localStorage.setItem('your_video_'+video_id, currentTime);
+        return;
+    }); });
+
             //$(".share a").hide();
             $(".share").on("mouseover", function() {
             $(".share a").show();
