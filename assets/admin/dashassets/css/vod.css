@@ -8,8 +8,8 @@
   .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 45px;
+    height: 20px;
   }
   
   .switch input { 
@@ -33,10 +33,10 @@
   .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 15px;
+    width: 15px;
     left: 4px;
-    bottom: 4px;
+    bottom: 3px;
     background-color: #fff;
     -webkit-transition: .4s;
     transition: .4s;
