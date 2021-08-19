@@ -236,7 +236,7 @@ height: 30px !important;
                                                               <?php endforeach; 
 
                              } else { ?>
-                                        <p class="no_video"> <?php echo __('No Video Found');?></p>
+                                        <p class="no_video" style="color:#fff!important;"> <?php echo __('No Video Found');?></p>
       <?php } ?>
                         </ul>
                          

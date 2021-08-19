@@ -251,6 +251,7 @@ if($value['sub_language'] == "Spanish"){
       <div style="margin-left:15px;" class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
       <?php if($video->trailer != ''){ ?>
         <div style="margin-left:15px;" class="mywishlist btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
+        <div style="margin-left:15px; display: none;" class="mywishlist btn btn-default skip">Skip</div>
       <?php } ?>
 </div>
            </div>
@@ -416,8 +417,9 @@ if($value['sub_language'] == "Spanish"){
 
             /*Watch trailer*/
             $(".watch_trailer").click(function() {
-              var videohtml = '<button class="skip" style="background-color: #666;border: medium none;color: #fff;display: block;font-size: 18px;margin: 0 autopadding: 8px 16px;position: fixed;right: 10%;bottom: 50%;">Skip</button><video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
+              var videohtml = '<video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
               $("#video_container").empty();
+              $(".skip").css('display','inline-block');
               $("#video_container").html(videohtml);
             });
 
