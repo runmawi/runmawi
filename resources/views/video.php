@@ -416,13 +416,14 @@ if($value['sub_language'] == "Spanish"){
 
             /*Watch trailer*/
             $(".watch_trailer").click(function() {
-              var videohtml = '<button class="skip" style="background-color: #666;border: medium none;color: #fff;display: block;font-size: 18px;margin: 0 auto;padding: 10px 25px;transform: translate(430px, 429px);right: 15%;bottom: 20%;">Skip</button><video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
+              var videohtml = '<button class="skip" style="background-color: #666;border: medium none;color: #fff;font-size: 18px;margin: 0 auto;padding: 10px 25px;transform: translate(430px, 429px);right: 15%;bottom: 20%;">Skip</button><video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
               $("#video_container").empty();
               $("#video_container").html(videohtml);
             });
 
             /*Skip Video*/
             $(document).on("click",".skip",function() {
+              $("#video_container").empty();
               $("#video_container").load(location.href + " #video_container");
             });
 
