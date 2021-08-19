@@ -278,11 +278,10 @@ if($image != '') {
     $data =$request->all();
     $slider = json_decode($data['slider']);
 $active =$slider->active;
-
+$id = $slider->user_id;
     $image =$data['slider_image'];
     $path = public_path().'/uploads/videocategory/';
-      // echo "<pre>";
-      // print_r($slider->active);exit();
+
       if($image != '') {   
         //code for remove old file
             if($image != ''  && $image != null){
@@ -303,8 +302,11 @@ $active =$slider->active;
            $slider = new Slider();
            $slider->slider = $file->getClientOriginalName();
            $slider->link = $slider->link;
+          //  echo "<pre>";
+          //  print_r($id);exit();
            $slider->active = $active;
-           $slider->user_id = $slider->user_id;
+
+           $slider->user_id = $id;
 
             
             $slider->save();
@@ -455,9 +457,6 @@ if(empty($data['status'])){
 if(empty($data['path'])){
  $data['path'] = 0;
 }  
-
-
-
 if(isset($video_data->duration)){
      //$str_time = $video_data
      $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $video_data->duration);
@@ -2905,7 +2904,7 @@ public function MobileSliderDelete(Request $request){
 public function page_edit(Request $request){
 
   $data = $request->all();
- 
+  $id = $data['id'];
   $page = Page::find($id);
 
 
@@ -2916,9 +2915,11 @@ public function page_update(Request $request){
 
   $data = $request->all();
   $pages = json_decode($data['pages']);
+ 
   $id = $pages->id; 
-  $page = Page::findOrFail($id);
-
+  // $page = Page::findOrFail($id);
+  // print_r($pages);
+  // exit();
   
   
    $path = public_path().'/uploads/settings/';
