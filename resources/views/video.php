@@ -242,17 +242,20 @@ if($value['sub_language'] == "Spanish"){
    <?php if(!Auth::guest()) { ?>
 
     <div class="row" >
-      <div class="col-sm-12 col-md-6 col-xs-12 d-flex">     
+      <div class="col-sm-12 col-md-7 col-xs-12 d-flex">     
       <!-- Watch Later -->
                 <div>
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
 <div>
       <!-- Wish List -->            
       <div style="margin-left:15px;" class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+      <?php if($video->trailer != ''){ ?>
+        <div style="margin-left:15px;" class="mywishlist btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
+      <?php } ?>
 </div>
            </div>
       <!-- Share -->
-        <div class="col-sm-12 col-md-4 col-xs-6">
+        <div class="col-sm-12 col-md-3 col-xs-6">
       <div class="social_share p-1 d-flex justify-content-around align-items-center">
         <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
         <div id="social_share">
@@ -260,7 +263,7 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>
        </div>
-      <div class="col-sm-12 col-md-2 col-xs-6">
+      <div class="col-sm-12 col-md-1 col-xs-6">
       <!-- Views -->
        <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
@@ -410,6 +413,18 @@ if($value['sub_language'] == "Spanish"){
         <script>
 
           $(document).ready(function () { 
+
+            /*Watch trailer*/
+            $(".watch_trailer").click(function() {
+              var videohtml = '<button class="skip" style="background-color: #666;border: medium none;color: #fff;display: block;font-size: 18px;margin: 0 auto;padding: 10px 25px;position:absolute;right: 15%;bottom: 20%;">Skip</button><video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
+              $("#video_container").empty();
+              $("#video_container").html(videohtml);
+            });
+
+            /*Skip Video*/
+            $(document).on("click",".skip",function() {
+              $("#video_container").load(location.href + " #video_container");
+            });
 
             var vid = document.getElementById("videoPlayer_html5_api");
             vid.currentTime = $("#current_time").val();

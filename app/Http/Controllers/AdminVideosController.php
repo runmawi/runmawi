@@ -248,6 +248,7 @@ class AdminVideosController extends Controller
                 
         }
 
+
         if(!empty($data['embed_code'])) {
              
              $video = new Video();
@@ -274,12 +275,21 @@ class AdminVideosController extends Controller
         
         
          if($mp4_url != '') {
-             
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->video)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+
+
+
             $rand = Str::random(16);
             $path = $rand . '.' . $request->video->getClientOriginalExtension();
             $request->video->storeAs('public', $path);
              
              $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+
              
              $video = new Video();
              $video->disk = 'public';
@@ -295,6 +305,7 @@ class AdminVideosController extends Controller
              $video->access = $data['access'];
              $video->video_category_id = $data['video_category_id'];
              $video->details = $data['details'];
+             $video->duration = $data['duration'];
              $video->description = strip_tags($data['description']);
              $video->user_id = Auth::user()->id;
              $video->save(); 
@@ -549,14 +560,33 @@ if(!empty($artistsdata)){
              $data['trailer'] = $video->trailer;
          }  
         
-        
+         if(isset($data['duration'])){
+                //$str_time = $data
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $data['duration'] = $time_seconds;
+        }
+
         if( $mp4_url2 != ''){   
+
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->video)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+
+
+
               //code for remove old file
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->video->getClientOriginalExtension();
                 $request->video->storeAs('public', $path);
                 $data['mp4_url'] = $path;
                 $data['path'] = $rand;
+
+               
              
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
                 $original_name = URL::to('/').'/storage/app/public/'.$path;
@@ -566,28 +596,12 @@ if(!empty($artistsdata)){
                 $converted_name = ConvertVideoForStreaming::handle($path);
 
                 ConvertVideoForStreaming::dispatch($video);
-                //              if($mp4_url2 != ''  && $mp4_url2 != null){
-                //                   $file_old3 = $path.$mp4_url2;
-                //                  if (file_exists($file_old3)){
-                //                   unlink($file_old3);
-                //                  }
-                //              }
-                //              //upload new file
-                //              $file3 = $mp4_url2;
-                //              $mp4_url1  = $file3->getClientOriginalName();
-                //              $file3->move($path, $mp4_url1);
-                //              $data['mp4_url']  = URL::to('/').'/public/uploads/videos/'.$file3->getClientOriginalName();
+               
 
          }
         
       
-        if(isset($data['duration'])){
-                //$str_time = $data
-                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
-                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
-                $data['duration'] = $time_seconds;
-        }
+       
           if(!empty($data['embed_code'])) {
              $video->embed_code = $data['embed_code'];
         }else {

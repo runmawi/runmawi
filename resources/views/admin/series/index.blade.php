@@ -41,11 +41,11 @@
 
 		<table class="table">
 		<tr class="table-header">
-			<th>S.No</th>
-			<th>Image</th>
-			<th>Series Title</th>
-			<th>Genre</th>
-			<th>Operation</th>
+			<th><label>S.No</label></th>
+			<th><label>Image</label></th>
+			<th><label>Series Title</label></th>
+			<th><label>Genre</label></th>
+			<th><label>Operation</label></th>
 			@foreach($series as $key=>$series_value)
 			<tr>
 				<td>{{$series_value->id}}</td>

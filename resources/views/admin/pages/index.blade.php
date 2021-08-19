@@ -58,7 +58,7 @@
 				<td valign="bottom"><p>{{ $page->slug }}</p></td>
 				<td><p>{{ $page->active }}</p></td>
 				<td>
-					<div class="flex align-items-center list-user-action">
+					<div class="align-items-center list-user-action">
 						<a href="{{ URL::to('admin/pages/edit') . '/' . $page->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a>
 						<a href="{{ URL::to('admin/pages/delete') . '/' . $page->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""

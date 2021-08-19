@@ -456,13 +456,6 @@ if(empty($data['path'])){
  $data['path'] = 0;
 }  
 
-// if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-//      $data['status'] = 1;    
-//  }
-
-// if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-//      $data['status'] = 0;    
-// }
 
 
 if(isset($video_data->duration)){

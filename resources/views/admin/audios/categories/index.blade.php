@@ -19,8 +19,8 @@
                            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
                         </div>
                      </div>
-                     <div class="iq-card-body">
-                     <div id="nestable" class="nested-list dd with-margins">
+                     <div class="iq-card-body" >
+                     <div id="nestable" class="nested-list dd with-margins" >
 
 					 <ol id="tree1" class="dd-list">
 

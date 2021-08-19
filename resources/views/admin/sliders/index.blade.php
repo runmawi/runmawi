@@ -1,5 +1,18 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('content')
 <style type="text/css">
     table th, table td
@@ -19,14 +32,15 @@
          <div class="container-fluid">
 
 	<div class="admin-section-title">
+         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
-				<h3><i class="entypo-archive"></i> Sliders </h3>
+				<h4><i class="entypo-archive"></i> Sliders </h4>
 			</div>
             <div class="col-md-8" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
-	</div>
+	
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
@@ -97,7 +111,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Categories below: 
+					<p class="p1">Organize the Categories below: </p>
 				</div>
 				
 				<div class="panel-options">
@@ -127,7 +141,7 @@
 
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">
-                            <div class="flex align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                            <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
@@ -144,7 +158,7 @@
 		</div>
     </div></div>
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
-
+</div>
 
 	@section('javascript')
 

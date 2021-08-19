@@ -17,14 +17,15 @@
         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
-				<h3><i class="entypo-list"></i> Menu Items</h3>
+				<h4><i class="entypo-list"></i> Menu Items</h4>
 			</div>
             <div class="col-md-8" align="right">
                 <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
             </div>
+            
 		</div>
 	
-
+<hr>
 	<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -137,8 +138,8 @@
 						@endif
 
 
-							<div class="dd-handle">{{ $menu_item->name}}</div>
-							<div class="flex align-items-center list-user-action"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+							<div class="dd-handle mt-2">{{ $menu_item->name}}</div>
+							<div class=" align-items-center list-user-action mt-2"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
 

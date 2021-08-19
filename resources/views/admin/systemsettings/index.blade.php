@@ -1,5 +1,18 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('css')
 	<style type="text/css">
 	.has-switch .switch-on label {
@@ -21,10 +34,10 @@
 <!-- This is where -->
 	
 	<div class="admin-section-title">
-		<h3><i class="entypo-credit-card"></i> Social Login Settings</h3> 
+		<h4><i class="entypo-credit-card"></i> Social Login Settings</h4> 
 	</div>
   
-	<div class="clear"></div>
+	<div class="clear mt-3"></div>
 	<form method="POST" action="{{ URL::to('admin/system_settings') }}" accept-charset="UTF-8" enctype="multipart/form-data">
 		<div class="row">
 			<div class="col-md-6">
@@ -80,12 +93,13 @@
 			</div>		
             
            
-
 		</div>
 
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="submit" value="Update Payment Settings" class="btn btn-primary pull-right" />
-
+		<div class="panel-body mt-3" style="display: flex;
+    justify-content: flex-end;">
+<input type="submit" value="Update Payment Settings" class="btn btn-primary " />
+            </div>
 	</form>
 
 	<div class="clear"></div>

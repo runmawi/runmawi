@@ -1,5 +1,18 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ '/assets/js/tagsinput/jquery.tagsinput.css' }}" />
 @stop
@@ -17,12 +30,15 @@
 
 	<div class="admin-section-title">
 	@if(!empty($page->id))
-		<h3>{{ $page->title }}</h3> 
-		<a href="{{ URL::to('page') . '/' . $page->slug }}" target="_blank" class="btn btn-black">
-			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
-		</a>
+        <div class="d-flex justify-content-between">
+            <div>
+		<h4>{{ $page->title }}</h4> </div>
+            <div>
+		<a href="{{ URL::to('page') . '/' . $page->slug }}" target="_blank" class="btn btn-info">
+			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i></a></div></div>
+		
 	@else
-		<h3><i class="entypo-plus"></i> Add New Page</h3> 
+		<h5><i class="entypo-plus"></i> Add New Page</h5> 
 	@endif
 	</div>
     
@@ -42,14 +58,14 @@
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
-			<div class="row">
+			<div class="row mt-4">
 				
 				<div class="@if(!empty($page->created_at)) col-sm-6 @else col-sm-8 @endif"> 
 
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<p>Add the page title in the textbox below:</p> 
+							<p class="p1">Add the page title in the textbox below:</p> 
 							<input type="text" class="form-control" name="title" id="title" placeholder="Page Title" value="@if(!empty($page->title)){{ $page->title }}@endif" />
 						</div> 
 					</div>
@@ -58,9 +74,9 @@
 
 				<div class="@if(!empty($page->created_at)) col-sm-3 @else col-sm-4 @endif">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">SEO URL Slug</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title"><label>SEO URL Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<p>(example. /page/slug-name)</p> 
+							<p class="p1">(example. /page/slug-name)</p> 
 							<input type="text" class="form-control" name="slug" id="slug" placeholder="slug-name" value="@if(!empty($page->slug)){{ $page->slug }}@endif" />
 						</div> 
 					</div>
@@ -69,9 +85,9 @@
 				@if(!empty($page->created_at))
 					<div class="col-sm-3">
 						<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-							<div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+							<div class="panel-title"><label>Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 							<div class="panel-body" style="display: block;"> 
-								<p>Select Date/Time Below</p> 
+								<p class="p1">Select Date/Time Below</p> 
 								<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($page->created_at)){{ $page->created_at }}@endif" />
 							</div> 
 						</div>
@@ -80,7 +96,7 @@
 
 			</div>
             
-             <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
+             <div class=" mt-3 form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Banner:</label>
                         <input type="file" multiple="true" class="form-control" name="banner" id="banner" />
 
@@ -89,8 +105,8 @@
 
 
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Page Content</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block; padding:0px;">
+				<div class="panel-title"><label>Page Content</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body mt-3" style="display: block; padding:0px;">
 					<textarea class="form-control" name="body" id="summary-ckeditor">@if(!empty($page->body)){{ $page->body }}@endif</textarea>
 				</div> 
 			</div>
@@ -100,9 +116,9 @@
 
 			<div class="row"> 
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-4 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<div>
 								<label for="active" style="float:left; display:block; margin-right:10px;">Is this page Active:</label>
@@ -110,20 +126,23 @@
 							</div>
 						</div> 
 					</div>
-				</div>
-
-			</div><!-- row -->
-
-			@if(!isset($page->user_id))
+                    <div class="mt-3">
+                    @if(!isset($page->user_id))
 				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 			@endif
 
 			@if(isset($page->id))
 				<input type="hidden" id="id" name="id" value="{{ $page->id }}" />
 			@endif
+ </div>
+				</div>
 
+			</div><!-- row -->
+
+			<div class="mt-2 p-2"  style="display: flex;
+    justify-content: flex-end;">
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+     <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" /></div>
 
 		</form>
 

@@ -1,5 +1,18 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
@@ -7,6 +20,7 @@
 @section('content')
 
 	<div class="admin-section-title">
+        <div class="iq-card">
 		<div class="row">
 			<div class="col-md-8">
 				<h3><i class="entypo-video"></i> Videos</h3><a href="{{ URL::to('admin/ppv/create') }}" class="btn btn-black"><i class="fa fa-plus-circle"></i> Add New</a>
@@ -15,7 +29,7 @@
 				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 			</div>
 		</div>    
-	</div>
+	
 	<div class="clear"></div>
 
 	<div class="gallery-env">
@@ -78,7 +92,7 @@
 		
 	</div>
 
-
+</div>
 	@section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>

@@ -13,7 +13,7 @@
 	
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
-		<h3>{{ $episodes->title }}</h3> 
+		<h4>{{ $episodes->title }}</h4> 
 		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-info">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>

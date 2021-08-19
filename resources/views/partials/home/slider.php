@@ -56,7 +56,10 @@ data-delay-in="0.6">
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
 <div data-animation-in="fadeInUp" data-delay-in="1.2"
-style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;">
+style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;">
 <?php echo __($slider_video->description); ?>
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"

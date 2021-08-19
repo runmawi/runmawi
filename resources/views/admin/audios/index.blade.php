@@ -24,11 +24,11 @@
                            <table class="data-tables table audio_table " style="width:100%">
                               <thead>
                                  <tr>
-                                    <th>Title</th>
-                                    <th>Rating</th>
-                                    <th>Category</th>
-                                     <th>Views</th>
-                                    <th>Action</th>
+                                    <th><label>Title</label></th>
+                                    <th><label>Rating</label></th>
+                                    <th><label>Category</label></th>
+                                     <th><label>Views</label></th>
+                                    <th><label>Action</label></th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -54,7 +54,7 @@
                                         {{ $audio->views }}<i class="lar la-eye "></i>
                                     </td>
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/audios') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

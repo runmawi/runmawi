@@ -17,27 +17,33 @@
 
 @section('content')
 
-<div class="admin-section-title" >
+<div class="admin-section-title" style="margin-left: 340px;
+    padding-top: 100px;">
       <div class="iq-card">
-	<div class="row">
-		<div class="col-md-8">
-			<h3><i class="entypo-newspaper"></i> Manage Artist</h3><a href="{{ URL::to('admin/artists/create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Artist</a>
+	<div class="row mt-3">
+		<div class="col-md-6">
+            
+			<h4><i class="entypo-newspaper"></i> Manage Artist</h4>
+           
 		</div>
 		<div class="col-md-4">	
 			<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" name="s" id="search-input" value="<?= Request::get('s'); ?>" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 		</div>
+        <div class="col-md-2">
+             <a href="{{ URL::to('admin/artists/create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Artist</a>
+        </div>
 	</div>
-    </div>
+    
 
 <div class="clear"></div>
 
 
 <table class="table table-striped artists-table">
 	<tr class="table-header">
-		<th>S.No</th>
-		<th>Image</th>
-		<th>Artist Name</th>
-		<th>Operation</th>
+		<th><label>S.No</label></th>
+		<th><label>Image</label></th>
+		<th><label>Artist Name</label></th>
+		<th><label>Operation</label></th>
 		@foreach($artists as $key=>$artist)
 		<tr>
 			<td>{{$artist->id}}</td>
@@ -52,7 +58,7 @@
 		</tr>
 		@endforeach
 	</table>
-
+</div>
 	<div class="clear"></div>
 
 	<div class="pagination-outter"><?= $artists->appends(Request::only('s'))->render(); ?></div>

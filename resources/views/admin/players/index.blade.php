@@ -193,9 +193,9 @@
 							<div>
 								<label>Font *</label>
 							</div>
-							<div>
+							<div class="col-sm-6">
 
-								<select name="font" style="background-color:#000000;color:#fff; border:none;">
+								<select class="form-control" name="font" >
 								<option value="Arial" @if(!empty($playerui->font) && $playerui->font == 'Arial'){{ 'selected' }}@endif>Arial</option>
 									<option value="Timesroman" @if(!empty($playerui->font) && $playerui->font == 'Timesroman'){{ 'selected' }}@endif>Timesroman</option>
 									<option value="Sans" @if(!empty($playerui->font) && $playerui->font == 'Sans'){{ 'selected' }}@endif>Sans sherif</option>
@@ -206,8 +206,8 @@
 							<div>
 								<label>Size *</label>
 							</div>
-							<div>
-								<select name="size" style="background-color:#000000;color:#fff; border:none;">
+							<div class="col-sm-6">
+								<select class="form-control" name="size" >
 								<option value="Smaller" @if(!empty($playerui->size) && $playerui->size == 'Smaller'){{ 'selected' }}@endif>Smaller</option>
 									<option value="Medium" @if(!empty($playerui->size) && $playerui->size == 'Medium'){{ 'selected' }}@endif>Medium</option>
 									<option value="Bigger" @if(!empty($playerui->size) && $playerui->size == 'Bigger'){{ 'selected' }}@endif>Bigger</option>
@@ -223,18 +223,18 @@
 							<div>
 								<label>Font color *</label>
 							</div>
-							<div>
-							<input type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif" style="background-color:#000000;color:#fff; border:none;">
-								<input type="color" name="chosecolorr" value="#336600">
+							<div class="d-flex class="col-sm-6"">
+							<input class="form-control" type="text" name="font_color" value="@if(!empty($playerui->font_color)){{ $playerui->font_color }}@endif" >
+								<input class="form-control" type="color" name="chosecolorr" value="#336600" style="margin-left:5px;">
 							</div>
 						</div>
 						<div class="flex1">
 							<div>
 								<label>Background color</label>
 							</div>
-							<div>
-							<input type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif" style="background-color:#000000;color:#fff; border:none;">
-								<input type="color" name="chosecolorr" value="#336600">
+							<div class="d-flex class="col-sm-6"">
+							<input class="form-control" type="text" name="background_color" value="@if(!empty($playerui->background_color)){{ $playerui->background_color }}@endif" >
+								<input class="form-control" type="color" name="chosecolorr" value="#336600" style="margin-left:5px;">
 							</div>
 						</div>
 						<div class="flex1">
@@ -242,7 +242,7 @@
 								<label>Opacity</label>
 							</div>
 							<div>
-								<input type="text" name="opacity" value="@if(!empty($playerui->opacity)){{ $playerui->opacity }}@endif" style="background-color:#000000;color:#fff; border:none;">
+								<input class="form-control" type="text" name="opacity" value="@if(!empty($playerui->opacity)){{ $playerui->opacity }}@endif" >
 
 							</div>
 						</div>

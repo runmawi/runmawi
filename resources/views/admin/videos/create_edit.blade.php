@@ -1,5 +1,12 @@
 @extends('admin.master')
-
+<style>
+    .p1{
+        font-size: 12px;
+    }
+    video{
+        display: none;
+    }
+</style>
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
@@ -104,9 +111,9 @@
                                                                           </div>
                                            <div class="col-sm-6 form-group" >                               
                                           <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                                      <div class="panel-title">Cast and Crew </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                      <div class="panel-title"><labe>Cast and Crew</labe> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                       <div class="panel-body" style="display: block;"> 
-                                        <p>Add artists for the video below:</p> 
+                                        <p class="p1">Add artists for the video below:</p> 
                                         <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                           @foreach($artists as $artist)
                                           @if(in_array($artist->id, $video_artist))
@@ -158,12 +165,12 @@
                                     </div>-->
                                      
                                     <div class="col-lg-12 form-group">
-                                        <h5>Video description:</h5>
-                                       <textarea  rows="5" class="form-control" name="description" id="summary-ckeditor"
+                                        <h5 class="mb-3">Video description:</h5>
+                                       <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
                                           placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                                     </div>
                                     <div class="col-12 form-group">
-                                       <textarea   rows="5" class="form-control" name="details" 
+                                       <textarea   rows="5" class="form-control mt-2" name="details" 
                                           placeholder="Link , and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
                                     </div>
                                  </div>
@@ -219,15 +226,15 @@
                                 
                                
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-        <div class="panel-title">Subtitles (srt or txt)<a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
+        <div class="panel-title"><label>Subtitles (srt or txt)</label><a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
                                              <i class="las la-exclamation-circle"></i></a>:</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-        <div class="panel-body" style="display: block;"> 
+        <div class="panel-body mt-3" style="display: block;"> 
           @foreach($subtitles as $subtitle)
-          <div class="subtitle1" style="clear: both;" >
-            <label for="embed_code"  style="">Upload Subtitle {{ $subtitle->language }}</label>
-            <input type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-            <input type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-            <input type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+          <div class="subtitle1" style="clear: both;font-weigth:normal!important" >
+            <label for="embed_code"  class="mt-2"  style="font-weight: 300;">Upload Subtitle {{ $subtitle->language }}</label>
+            <input type="file" class="mt-2" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+            <input type="hidden" class="mt-2" name="short_code[]" value="{{ $subtitle->short_code }}">
+            <input type="hidden" class="mt-2" name="sub_language[]" value="{{ $subtitle->language }}">
           </div>
           @endforeach
           
@@ -244,7 +251,7 @@
 						                  @endforeach
                               </select>
                               </div> -->  
-                              <div class="col-sm-6 form-group">
+                              <div class="col-sm-6 form-group mt-3">
                                  <!-- <label class="p-2">Subscriber (only paid subscription users):</label>
                               <select id="access" name="access"  class="form-control" >
                                 <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
@@ -254,7 +261,7 @@
                                    <label class="">Video Duration:</label>
                                    <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
                               </div> 
-             <div class="col-sm-6 form-group">
+             <div class="col-sm-6 form-group mt-3">
                   <label class="">Year:</label>
                                   <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
              </div>
@@ -262,7 +269,7 @@
                         </div>
 
              <div class="row">
-                              <div class="col-sm-6 form-group">
+                              <div class="col-sm-6 form-group mt-3">
                                  <!-- <label class="p-2">Year:</label>
                                   <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">-->
                                   <label class="">Movie Language:</label>
@@ -273,7 +280,7 @@
 						                  @endforeach
                               </select>
                               </div>
-                          <div class="col-sm-6 form-group">
+                          <div class="col-sm-6 form-group mt-3">
                               <label class="">Rating:</label>
                                   <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                               </div>
@@ -284,7 +291,7 @@
                                    <label class="p-2">Rating:</label>
                                   <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                               </div>-->
-                             <div class="col-sm-6"> 
+                             <div class="col-sm-6 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -309,8 +316,9 @@
                               @endif
 
                               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                              <div class="col-12 form-group ">
-                                 <button type="submit" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+                              <div class="col-12 form-group" style="display: flex;
+    justify-content: flex-end;">
+                                 <button type="submit" style="margin-right: 10px;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                                  <button type="reset" class="btn btn-danger">cancel</button>
                               </div>
                         </form>

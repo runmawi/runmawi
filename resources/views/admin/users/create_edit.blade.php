@@ -25,7 +25,8 @@
 	
 	<div class="admin-section-title">
 	@if(!empty($user->id))
-		<h3><i class="entypo-user"></i> {{ $user->username }}</h3> 
+		<h4><i class="entypo-user"></i> {{ $user->username }}</h4> 
+        <hr>
 <!--
 		<a href="{{ URL::to('user') . '/' . $user->username }}" target="_blank" class="btn btn-black">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
@@ -53,7 +54,7 @@
 				<!--<div class="panel-title">Username</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('username')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('username'); ?></div><?php endif; ?>
-					<p>User's Username</p>
+                    <label>User's Username</label>
 					<input type="text" class="form-control" name="username" id="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
 				</div>
 			</div>
@@ -62,7 +63,7 @@
 				<!--<div class="panel-title">Email</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
-					<p>User's Email Address</p>
+					<label>User's Email Address</label>
 					<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 				</div>
 			</div>
@@ -73,7 +74,7 @@
 				<div class="panel-body" style="display: block;"> 
                       
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
-					<p class="p1">User's Mobile</p>
+					<label>User's Mobile</label>
                     <div class="row">
                        <div class="col-sm-4">
                         <select name="ccode" class="form-control" >
@@ -89,10 +90,10 @@
 			</div>
 
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Password</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title"><label>Password</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;">
 					@if(isset($user->password))
-						<p>(leave empty to keep your original password)</p>
+						<p class="p1">(leave empty to keep your original password)</p>
 					@else
 						<p class="p1">Enter users password:</p>
 					@endif
@@ -100,8 +101,8 @@
 				</div>
 			</div>
                  <div class="col-sm-6"> 
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">User Role</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title"><label>User Role</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 						<p class="p1">Select the user's role below</p>
 							<select id="role" name="role">
@@ -130,9 +131,10 @@
 				<input class="btn btn-primary" type="hidden" id="id" name="id" value="{{ $user->id }}" />
 				<input class="btn btn-primary" type="hidden" id="stripe_active" name="stripe_active" value="" />
 			@endif
-
+ <div class="mt-2 p-2"  style="display: flex;
+    justify-content: flex-end;">
 			<input class="btn btn-primary" type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input class="btn btn-primary" type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" />
+     <input class="btn btn-primary" type="submit" value="{{ $button_text }}" class="btn btn-black pull-right" /></div>
 
 			<div class="clear"></div>
 		</form>

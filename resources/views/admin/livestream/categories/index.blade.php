@@ -9,6 +9,9 @@
     .iq-card{
         padding: 15px;
     }
+    .p1{
+        font-size: 12px;
+    }
 </style>
 @section('content')
 <div id="content-page" class="content-page">
@@ -17,7 +20,7 @@
          <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
-				<h5><i class="entypo-archive"></i> Live Stream Categories</h5>
+				<h4><i class="entypo-archive"></i> Live Stream Categories</h4>
 			</div>
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
@@ -119,7 +122,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Categories below: 
+					<p class="p1">Organize the Categories below:</p> 
 				</div>
 				
 				<div class="panel-options">
@@ -137,8 +140,8 @@
 
             <table class="table table-bordered">
                 <tr class="table-header">
-                    <th>Video Category Name</th>
-                    <th>Operation</th>
+                    <th><label>Video Category Name</label></th>
+                    <th><label>Operation</label></th>
                     @foreach($allCategories as $category)
                     <tr>
                         <td valign="bottom"><p>{{ $category->name }}</p></td>

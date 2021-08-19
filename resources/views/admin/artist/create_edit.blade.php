@@ -9,6 +9,9 @@
     .iq-card{
         padding: 15px;
     }
+    .p1{
+        font-size: 12px;
+    }
 </style>
 
 @section('css')
@@ -29,38 +32,38 @@
 	@if(!empty($artist->id))
 		<h3>{{ $artist->name }}</h3> 
 	@else
-		<h5><i class="entypo-plus"></i> Create Artist</h5> 
+		<h4><i class="entypo-plus"></i> Create Artist</h4> 
 	@endif
 	</div>
 	<div class="clear"></div>
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
-			<div class="row">
+			<div class="row mt-3">
 				
 				<div class="@if(!empty($artist->created_at)) col-sm-6 @else col-sm-8 @endif"> 
 
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Artist</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title"><label>Artist</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
 						</div> 
 					</div>
                     
-                      <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Description</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                      <div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title"><label>Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<textarea class="form-control" name="description" id="description" >@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
 						</div> 
 					</div>  
                     
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Picture</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title"><label>Picture</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							@if(!empty($artist->image))
 							<img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" class="movie-img" width="200"/>
 							@endif
-							<p>Select the artist image (300x300 px or 2:2 ratio):</p> 
+							<p class="p1">Select the artist image (300x300 px or 2:2 ratio):</p> 
 							<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 						</div> 

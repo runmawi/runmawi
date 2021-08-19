@@ -220,7 +220,9 @@ Waves Effect
 @keyframes rippleDrop {
   100% { transform: scale(2); opacity: 0; }
 }
-
+.navbar-nav > .active > a { 
+    background-color: color ; 
+}
 /*---------------------------------------------------------------------
  Sidebar
  -----------------------------------------------------------------------*/
@@ -240,7 +242,7 @@ Waves Effect
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: var(--iq-body-text); position: relative; padding: 12px 20px 12px 20px; line-height: 18px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: var(--iq-body-text); position: relative; padding: 12px 20px 12px 35px; line-height: 18px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
 .iq-sidebar-menu .iq-menu li li a { font-size: 16px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 li.active {
