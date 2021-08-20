@@ -41,50 +41,68 @@
 	<form method="POST" action="{{ URL::to('admin/system_settings') }}" accept-charset="UTF-8" enctype="multipart/form-data">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Facebook Login Deatils </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
                         <div class="row">
-                           <p class="col-md-6">Enable Facebook:</p> 
-                            <div class="make-switch col-md-6" data-on="success" data-off="warning">
+                           <p class="col-md-6"><label>Enable Facebook:</label></p> 
+                            <div class="d-flex justify-content-around align-items-center" style="width:30%;">
+                                <div>ON</div>
+                                <div>
+                            <label class="switch">
+  <input type="checkbox">
+  <span class="slider round"></span>
+</label></div>
+                                <div>OFF</div>
+                                </div>
+                          <!--  <div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->facebook) || (isset($system->facebook) && $system->facebook))checked="checked" value="1"@else value="0"@endif name="facebook" id="facebook" />
-				            </div>
+				            </div>-->
                             </div>
                         
-						<p>Client ID:</p> 
+						<label>Client ID:</label> 
 						<input type="text" class="form-control" name="facebook_client_id" id="facebook_client_id" placeholder="Client ID" value="@if(!empty($system->facebook_client_id) && Auth::user()->role != 'demo'){{ $system->facebook_client_id }}@endif" />
 
 						<br />
-						<p>Secrete Key:</p> 
+						<label>Secrete Key:</label> 
 						<input type="text" class="form-control" name="facebook_secrete_key" id="facebook_secrete_key" placeholder="Secrete Key" value="@if(!empty($system->facebook_secrete_key) && Auth::user()->role != 'demo'){{ $system->facebook_secrete_key }}@endif" />
 
 						<br />
-						<p>Call Back URL:</p> 
+						<label>Call Back URL:</label> 
 						<input type="text" class="form-control" name="facebook_callback" id="facebook_callback" placeholder="Call Back URL" value="@if(!empty($system->facebook_callback) && Auth::user()->role != 'demo'){{ $system->facebook_callback }}@endif" />
 
 					</div> 
 				</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-3">
                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title">Google Login Details </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
                         <div class="row">
-                         <p class="col-md-6">Enable Google:</p> 
-                            <div class="make-switch col-md-6" data-on="success" data-off="warning">
+                         <p class="col-md-6"><label>Enable Google:</label></p> 
+                            <div class="d-flex justify-content-around align-items-center" style="width:30%;">
+                                <div>ON</div>
+                                <div>
+                            <label class="switch">
+  <input type="checkbox">
+  <span class="slider round"></span>
+</label></div>
+                                <div>OFF</div>
+                                </div>
+                            <!--<div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->google) || (isset($system->google) && $system->google))checked="checked" value="1"@else value="0"@endif name="google" id="google" />
-				            </div>
+				            </div>-->
                             </div>
                         
-						<p>Client ID:</p> 
+						<label>Client ID:</label> 
 						<input type="text" class="form-control" name="google_client_id" id="google_client_id" placeholder="Client ID" value="@if(!empty($system->google_client_id) && Auth::user()->role != 'demo'){{ $system->google_client_id }}@endif" />
 
 						<br />
-						<p>Secrete Key:</p> 
+						<label>Secrete Key:</label> 
 						<input type="text" class="form-control" name="google_secrete_key" id="google_secrete_key" placeholder="Secrete Key" value="@if(!empty($system->google_secrete_key) && Auth::user()->role != 'demo'){{ $system->google_secrete_key }}@endif" />
 
 						<br />
-						<p>Call Back URL:</p> 
+						<label>Call Back URL:</label> 
 						<input type="text" class="form-control" name="google_callback" id="google_callback" placeholder="Call Back URL" value="@if(!empty($system->google_callback) && Auth::user()->role != 'demo'){{ $system->google_callback }}@endif" />
 
 						

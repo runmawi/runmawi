@@ -135,7 +135,7 @@
 						<div class="panel-title font-weight-bold"><label>Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<p class="p1">Add artists for the series below:</p> 
-							<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+							<select class="form-control" name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
 								@foreach($artists as $artist)
 								@if(in_array($artist->id, $series_artist))
 								<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
@@ -155,7 +155,7 @@
 				<div class="panel-title font-weight-bold"><label>Genre</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p class="p1">Select a Series Category Below:</p>
-					<select id="genre_id" name="genre_id">
+					<select class="form-control" id="genre_id" name="genre_id">
 						@foreach($series_categories as $category)
 							<option value="{{ $category->id }}" @if(!empty($series->genre_id) && $series->genre_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						@endforeach
@@ -227,7 +227,7 @@
 						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<label for="access" style="float:left; margin-right:10px;">Who is allowed to view this series?</label>
-							<select id="access" name="access">
+							<select class="form-control" id="access" name="access">
 								<option value="guest" @if(!empty($series->access) && $series->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="registered" @if(!empty($series->access) && $series->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(!empty($series->access) && $series->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
@@ -315,7 +315,6 @@
 		</div>
 		@endif
 <!-- This is where now -->
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript">

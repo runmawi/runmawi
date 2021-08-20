@@ -35,40 +35,47 @@
 <div class="admin-section-title">
     
     
-    <h3><i class="entypo-monitor"></i> Home Page Settings</h3> 
+    <h4><i class="entypo-monitor"></i> Home Page Settings</h4> 
 </div>
 <div class="clear"></div>
 
 <form action="{{ URL::to('/admin/home-settings/save')}}" method="post" enctype="multipart/form-data">
     @csrf
-		<div class="panel panel-primary" data-collapsed="0">
+		<div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading"> <div class="panel-title">Listing Home Page video</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
-                        <div class="row">
+                        <div class="row align-items-center">
                            <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
-                                    <label> Featured Video </label>
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around" style="width: ;">
+                                    
+                                        <div>
+                                    <label class="mt-1"> Featured Video </label></div>
+                                    <div>
+                                        
                                      <div class="make-switch" data-on="success" data-off="warning">
                                        
-                                            <input type="checkbox" id="checkbox" class="theme_color" name="featured_videos"   value="{{ $settings->featured_videos}}" @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif />
+                                            <input type="checkbox" id="checkbox" class="theme_color" name="featured_videos"   value="{{ $settings->featured_videos}}" @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif /></div>
                                     </div>
+                                        
                                 </div>
                             </div>    
                             
                             <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
-                                    <label> Latest Video </label>
-                                      <div class="input-group color-picker" style="width: 20%;">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around">
+                                    <div>
+                                    <label class="mt-1"> Latest Video </label></div>
+                                    <div>
+                                      <div class="input-group color-picker">
                                         <div class="make-switch" data-on="success" data-off="warning">
-                                            <input type="checkbox" @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos"/>
+                                            <input type="checkbox" @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos"/></div>
                                         </div>
                                     </div>
                                 </div>
                             </div> 
                             
                             <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
-                                    <label> Category Video </label>
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around">
+                                    <label class="mt-1"> Category Video </label>
                                        <div class="make-switch" data-on="success" data-off="warning">
                                             <input type="checkbox" id="checkbox" class="theme_color" name="category_videos"   value="{{ $settings->category_videos}}" @if ($settings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif />
                                 </div>
@@ -77,7 +84,8 @@
                 </div> 
             
             </div>  
-                <div class="panel-body">
+                <div class="mt-2 p-2"  style="display: flex;
+    justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
                 </div>
         </div>

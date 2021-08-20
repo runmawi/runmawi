@@ -21,9 +21,10 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use View;
 use Validator;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
@@ -32,6 +33,8 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
 use App\Artist;
 use App\Videoartist;
+use GifCreator\GifCreator;
+
 
 class AdminVideosController extends Controller
 {
@@ -284,10 +287,14 @@ class AdminVideosController extends Controller
 
 
 
+
             $rand = Str::random(16);
             $path = $rand . '.' . $request->video->getClientOriginalExtension();
             $request->video->storeAs('public', $path);
-             
+            $thumb_path = 'public';
+
+            $this->build_video_thumbnail($request->video,$path, $data['slug']);
+            
              $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
 
              
@@ -689,5 +696,77 @@ if(!empty($artistsdata)){
                 ->where('id', '<>', $id)
                 ->get();
         }  
+
+
+
+        public function build_video_thumbnail($video_path,$movie, $thumb_path) {
+
+    // Create a temp directory for building.
+            $temp = sys_get_temp_dir() . "/build";
+
+    // Use FFProbe to get the duration of the video.
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $duration = $ffprobe->streams($video_path)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+    // If we couldn't get the direction or it was zero, exit.
+            if (empty($duration)) {
+                return;
+            }
+
+    // Create an FFMpeg instance and open the video.
+
+    // This array holds our "points" that we are going to extract from the
+    // video. Each one represents a percentage into the video we will go in
+    // extracitng a frame. 0%, 10%, 20% ..
+            $points = range(0, 100, 10);
+
+    // This will hold our finished frames.
+            $frames = [];
+
+            foreach ($points as $point) {
+            $video = FFMpeg::fromDisk('public')->open($movie);
+
+        // Point is a percent, so get the actual seconds into the video.
+                $time_secs = floor($duration * ($point / 100));
+
+        // Created a var to hold the point filename.
+                $point_file = "$temp/$point.jpg";
+        // Extract the frame.
+                $frame = $video->frame(TimeCode::fromSeconds($time_secs));
+                $frame->save($point_file);
+
+        // If the frame was successfully extracted, resize it down to
+        // 320x200 keeping aspect ratio.
+                if (file_exists($point_file)) {
+                    $img = Image::make($point_file)->resize(300, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    $img->save($point_file, 40);
+                    $img->destroy();
+                }
+        // If the resize was successful, add it to the frames array.
+                if (file_exists($point_file)) {
+                    $frames[] = $point_file;
+                }
+            }
+    // If we have frames that were successfully extracted.
+            if (!empty($frames)) {
+
+        // We show each frame for 100 ms.
+                $durations = array_fill(0, count($frames), 100);
+        // Create a new GIF and save it.
+                $gc = new GifCreator();
+                $gc->create($frames, $durations, 0);
+                file_put_contents(storage_path('app/public').'/'.$thumb_path.'.gif', $gc->getGif());
+
+        // Remove all the temporary frames.
+                foreach ($frames as $file) {
+                    unlink($file);
+                }
+            }
+        }
     
 }

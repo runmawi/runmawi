@@ -105,7 +105,7 @@
 						<div class="panel-title"><label>User Role</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 						<p class="p1">Select the user's role below</p>
-							<select id="role" name="role">
+							<select class="form-control"  id="role" name="role">
 								<option value="admin" @if(isset($user->role) && $user->role == 'admin' && $user->sub_admin == 0)selected="selected"@endif>Admin</option>
 								<option value="registered" @if(isset($user->role) && $user->role == 'registered')selected="selected"@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(isset($user->role) && $user->role == 'subscriber')selected="selected"@endif>Subscriber</option>

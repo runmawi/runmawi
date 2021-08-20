@@ -114,7 +114,7 @@
                                       <div class="panel-title"><labe>Cast and Crew</labe> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                       <div class="panel-body" style="display: block;"> 
                                         <p class="p1">Add artists for the video below:</p> 
-                                        <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                        <select  name="artists[]" class="js-example-basic-multiple" style="width: 100%;background-color:#000000!important;" multiple="multiple">
                                           @foreach($artists as $artist)
                                           @if(in_array($artist->id, $video_artist))
                                           <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
@@ -213,7 +213,7 @@
                                     <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
                                  </div>
 
-                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else  @endif>
+                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                   
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
                                     <p>Upload video</p>

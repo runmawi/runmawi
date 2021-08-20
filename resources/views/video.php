@@ -426,7 +426,8 @@ if($value['sub_language'] == "Spanish"){
             /*Skip Video*/
             $(document).on("click",".skip",function() {
               $("#video_container").empty();
-              $("#video_container").load(location.href + " #video_container");
+              $(".skip").css('display','none');
+              $(".page-height").load(location.href + " #video_container");
             });
 
             var vid = document.getElementById("videoPlayer_html5_api");
@@ -503,6 +504,8 @@ location.reload();
                 amount: amount * 100
               });
             }
+
+
         </script>
 
     <!--<div class="clear"></div>

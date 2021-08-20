@@ -33,18 +33,18 @@
     
     @csrf
 		<div class="panel panel-primary" data-collapsed="0">
-            <div class="panel-heading"> <div class="panel-title"> Site Background Color</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+            <div class="panel-heading"> <div class="panel-title"> <p>Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
                         <div class="row mt-4">
                            <div class="col-sm-4">
                                 <div class="input-group color-picker" style="width: 50%;">
-                                    <label>Dark Mode</label>
+                                    <label class="mt-2">Dark Mode</label>
                                     <input type="color" class="form-control"  name="dark_bg_color" data-format="hex" value="{{ $settings->dark_bg_color}}" />
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker" style="width: 50%;">
-                                    <label>Light Mode</label>
+                                    <label class="mt-2">Light Mode</label>
                                     <input type="color" class="form-control"  name="light_bg_color" data-format="hex" value="{{ $settings->light_bg_color}}" />
                                 </div>
                             </div>
@@ -59,14 +59,14 @@
                        <div class="row mt-3">
                            <div class="col-sm-4">
                                 <div class="input-group color-picker" >
-                                    <label>Dark Mode</label>
+                                    <label class="mt-2">Dark Mode</label>
                                     <input type="file" class="form-control"  name="dark_mode_logo"  value="" />
                                 </div>
                                 <img class="mt-3" src="{{ URL::to('/public/uploads/settings/'.$settings->dark_mode_logo)}}">
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker" >
-                                    <label>Light Mode</label>
+                                    <label class="mt-2">Light Mode</label>
                                     <input type="file" class="form-control"  name="light_mode_logo" value="" />   
                                 </div>
                                  <img class="mt-3"  src="{{ URL::to('/public/uploads/settings/'.$settings->light_mode_logo)}}">

@@ -321,7 +321,7 @@
                             <img src="{{  $playerui->watermark_logo }}" style="max-height:100px" />
             @endif
           </div>
-		  <div class="panel-heading col-md-10"> <div class="panel-title">Enable https:// sitewide</div> 
+		  <div class="panel-heading col-md-10"> <div class="panel-title"><!--Enable https:// sitewide--></div> 
 		  <div class="panel-options"> 
 			  <a href="#" data-rel="collapse">
 				  <i class="entypo-down-open"></i>
