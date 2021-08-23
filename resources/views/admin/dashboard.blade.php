@@ -125,7 +125,7 @@
                                  <div class="iq-card-body p-0">
                                     <div class="iq-thumb">
                                        <a href="javascript:void(0)">
-                                          <img src="{{  URL::to('/').'/public/uploads/images/'.$top_video->image }}" class="img-fluid w-100 img-border-radius" alt="">{{  $top_video->title }}
+                                          <img src="{{  URL::to('/').'/public/uploads/images/'.$top_video->image }}" class="img-fluid w-100 img-border-radius" alt="">
                                        </a>
                                     </div>
                                     <div class="iq-feature-list">

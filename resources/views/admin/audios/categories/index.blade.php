@@ -19,24 +19,25 @@
                            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
                         </div>
                      </div>
-                     <div class="iq-card-body" >
-                     <div id="nestable" class="nested-list dd with-margins" >
+                     <div class="iq-card-body">
+                        <div class="table-view">
 
-                     	<table class="data-tables table audio_table " style="width:100%">
+                     	<table class="data-tables table movie_table " style="width:100%">
                      		<thead>
                      			<tr>
-                     				<th><label>Name</label></th>
                      				<th><label>Image</label></th>
+                     				<th><label>Name</label></th>
                      				<th><label>Action</label></th>
                      			</tr>
                      		</thead>
                      		<tbody>
                      			@foreach($allCategories as $category)
                      			<tr>
-                     				<td>{{ ucfirst($category->name) }}</td>
                      				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
+                     				<td>{{ ucfirst($category->name) }}</td>
                      				<td> 
-                     					<a class="action edit iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
+                     					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
 
                      					<a class="action delete iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
                      				</td>

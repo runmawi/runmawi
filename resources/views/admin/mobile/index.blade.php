@@ -70,16 +70,6 @@
 
 	<div class="clear"></div>
     
-    <div class="admin-section-title">
-		<div class="row">
-			<div class="col-md-6">
-				<h5><i class="entypo-archive"></i> Sliders </h5>
-			</div>
-            <div class="col-md-6" align="right">
-            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
-		</div>
-	</div>
-    
     <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -127,30 +117,6 @@
 		</div>
 	</div>
     
-    	<div class="panel-body mt-2">
-		
-				<div id="nestable" class="nested-list dd with-margins">
-                    <table class="table table-bordered">
-                        <tr class="table-header">
-                            <th class="text-center">Slider Image</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Operation</th>
-                            @foreach($allCategories as $category)
-                            <tr>
-                                <td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
-                                <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
-                                <td class="text-center">
-                                    <div class="actions"><a href="{{ URL::to('admin/mobile/sliders/edit/') }}/{{$category->id}}" class="btn btn-info edit">Edit</a> <a href="{{ URL::to('admin/mobile/sliders/delete/') }}/{{$category->id}}" class="btn btn-danger delete">Delete</a></div>
-
-                                </td>
-                            </tr>
-                            @endforeach
-                    </table>
-
-				
-				</div>
-		
-			</div>
                 </div>
     </div>
     
