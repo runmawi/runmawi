@@ -505,6 +505,38 @@ location.reload();
               });
             }
 
+//watchlater
+      $('.watchlater').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
+              }
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
+
+      //My Wishlist
+      $('.mywishlist').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
+              }
+              
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
 
         </script>
 

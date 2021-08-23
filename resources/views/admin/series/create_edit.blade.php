@@ -11,6 +11,7 @@
 
 
 @section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 <div id="admin-container" style="margin-left: 330px;
     padding-top: 100px;" >
@@ -45,7 +46,7 @@
 						<div class="panel-title font-weight-bold"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p class="p1">Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="" style="background-color:#000000;!important" />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value=""  />
 						</div> 
 					</div>
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
@@ -80,9 +81,9 @@
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label>Series Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" > 
+				<div class="panel-body col-sm-6 p-0" > 
 					<label for="type" >Series Format</label>
-					<select id="type" name="type">
+					<select class="form-control" id="type" name="type">
 						<option value="embed">Embed Code</option>
 						<option value="file" @if(!empty($series->type) && $series->type == 'file'){{ 'selected' }}@endif>Series File</option>
 						<option value="upload" @if(!empty($series->type) && $series->type == 'upload'){{ 'selected' }}@endif>Upload Series</option>
@@ -118,7 +119,7 @@
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="mb-3">Series Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block; padding:0px;">
-					<textarea class="form-control" name="details" id="summary-ckeditor" style="background-color:#000000;!important">@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
+					<textarea class="form-control" name="details" id="summary-ckeditor" >@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
 				</div> 
 			</div>
 
@@ -126,7 +127,7 @@
 				<div class="panel-title font-weight-bold"><label>Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p class="p1">Add a short description of the series below:</p> 
-					<textarea class="form-control" name="description" id="description" style="background-color:#000000;!important">@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
+					<textarea class="form-control" name="description" id="description" >@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
 			<div class="row mt-3"> 
@@ -135,7 +136,7 @@
 						<div class="panel-title font-weight-bold"><label>Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<p class="p1">Add artists for the series below:</p> 
-							<select class="form-control" name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+							<select class="form-control js-example-basic-multiple" name="artists[]"  style="width: 100%;" multiple="multiple">
 								@foreach($artists as $artist)
 								@if(in_array($artist->id, $series_artist))
 								<option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
@@ -168,7 +169,7 @@
 				<div class="panel-title font-weight-bold"><label>Series Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0 " style="display: block;"> 
                     <p class="p1">IMDb Ratings 10 out of 10</p>
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" style="background-color:#000000;!important">
+					<input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" >
 				</div> 
 			</div>
 			</div>
@@ -180,7 +181,7 @@
 				<div class="panel-title font-weight-bold"><label>Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p class="p1">Select a Series Language Below:</p>
-					<select class="form-control" id="language" name="language" style="background-color:#000000;!important">
+					<select class="form-control" id="language" name="language" >
 						@foreach($languages as $language)
 							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
 						@endforeach
@@ -193,7 +194,7 @@
 				<div class="panel-title font-weight-bold"><label>Series Year</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
                     <p class="p1">Series Created Year</p>
-					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" style="background-color:#000000;!important">
+					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" >
 				</div> 
 			</div>
 			</div>
@@ -203,7 +204,7 @@
 				<div class="panel-title font-weight-bold"><label>Tags</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body  p-0" style="display: block;"> 
 					<p class="p1">Add series tags below:</p> 
-					<input class="form-control" name="tags" id="tags" value="" style="background-color:#000000;!important">
+					<input class="form-control" name="tags" id="tags" value="" >
 				</div> 
 			</div>
 
@@ -217,7 +218,7 @@
 						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label>Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p class="p1">Enter the series duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" style="background-color:#000000;!important">
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" >
 						</div> 
 					</div>
 				</div>
@@ -277,11 +278,14 @@
 		<div class="clear"></div>
 		<!-- Manage Season -->
 		@if(!empty($series->id))
-		<h3>Season & Episodes</h3> 
+		
 		<div class="admin-section-title">
 		<div class="row">
+            <div class="col-md-4">
+                <h3>Season & Episodes</h3> 
+            </div>
 			<div class="col-md-8">
-				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-success"><i class="fa fa-plus-circle"></i>Create Season</a>
+				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-info"><i class="fa fa-plus-circle"></i>Create Season</a>
 			</div>
 		</div>
 		<div class="row">
@@ -316,13 +320,13 @@
 		@endif
 <!-- This is where now -->
 </div>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript">
 
 		$ = jQuery;
 
 		$(document).ready(function(){
-			$('.js-example-basic-multiple').select2();
+			alert("fd");
+		$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');
 
@@ -378,9 +382,9 @@
 
 	}
 
-
 	</script>
-    
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    	
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
         <script>

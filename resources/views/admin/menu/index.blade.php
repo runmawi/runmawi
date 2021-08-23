@@ -42,8 +42,9 @@
     
                 
 				<div class="modal-header">
+                    <h4 class="modal-title">New Menu Item</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Menu Item</h4>
+					
 				</div>
 				
 				<div class="modal-body p-3">
@@ -62,7 +63,7 @@
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
 				        </div>
                         

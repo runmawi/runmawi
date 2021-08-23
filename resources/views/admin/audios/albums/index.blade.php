@@ -16,23 +16,29 @@
 						</div>
 					</div>
 					<div class="iq-card-body">
-						<div id="nestable" class="nested-list dd with-margins">
 
-							<ol id="tree1" class="dd-list">
+						<div id="nestable" class="nested-list dd with-margins">
+							<table class="data-tables table audio_table " style="width:100%">
+                     		<thead>
+                     			<tr>
+                     				<th><label>Name</label></th>
+                     				<th><label>Image</label></th>
+                     				<th><label>Action</label></th>
+                     			</tr>
+                     		</thead>
+                     		<tbody>
 
 								@foreach($allAlbums as $album)
-
-								<li class="dd-item">
-
-									<div class="dd-handle"> {{ $album->albumname }} </div>
-									<div class="actions"><a href="{{ URL::to('/admin/audios/albums/edit/') }}/{{ $album->id }}" class="edit">Edit</a> <a href="{{ URL::to('/admin/audios/albums/delete/') }}/{{ $album->id }}" class="delete">Delete</a></div>
-
-
-								</li>
+								<tr>
+                     				<td>{{ $album->albumname }}</td>
+                     				<td><?php if($album->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$album->image }}" width="50"><?php }else{} ?></td>
+                     				<td><a class="action edit iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('/admin/audios/albums/edit/') }}/{{ $album->id }}" class="edit"><i class="ri-pencil-line"></i></a> 
+                     				<a href="{{ URL::to('/admin/audios/albums/delete/') }}/{{ $album->id }}" class="action delete iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                     			</tr>
 
 								@endforeach
-
-							</ol>
+							</tbody>
+						</table>
 
 						</div>
 
@@ -51,8 +57,9 @@
 			<div class="modal-content">
 
 				<div class="modal-header">
+                    <h4 class="modal-title">New Audio Albums</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Audio Albums</h4>
+					
 				</div>
 
 				<div class="modal-body">
@@ -93,7 +100,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-info" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
@@ -127,7 +134,7 @@ $('#submit-new-cat').click(function(){
 	$('#new-cat-form').submit();
 });
 
-$('.actions .edit').click(function(e){
+$('.edit').click(function(e){
 	$('#update-category').modal('show', {backdrop: 'static'});
 	e.preventDefault();
 	href = $(this).attr('href');
@@ -142,7 +149,7 @@ $('#update-category .modal-content').html(response);
 });
 });
 
-$('.actions .delete').click(function(e){
+$('.delete').click(function(e){
 	e.preventDefault();
 	if (confirm("Are you sure you want to delete this category?")) {
 		window.location = $(this).attr('href');

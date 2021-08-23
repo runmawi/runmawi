@@ -199,11 +199,11 @@ class AdminAudioCategoriesController extends Controller
         
         
          /*Slug*/
-            if ($request->slug != '') {
-                $input['slug'] = $this->createAlbumSlug($request->slug);
+            if ($input['slug'] != '') {
+                $input['slug'] = $this->createAlbumSlug($input['slug']);
             }
 
-            if($request->slug == ''){
+            if($input['slug'] == ''){
                 $input['slug'] = $this->createAlbumSlug($input['albumname']);    
             }
 
@@ -225,13 +225,11 @@ class AdminAudioCategoriesController extends Controller
             $id = $request['id'];
             $audio = AudioAlbums::findOrFail($id);
         
-         
-        
-           if ($audio->slug != $request->slug) {
-                $request['slug'] = $this->createAlbumSlug($request->slug, $id);
+           if ($audio->slug != $request['slug']) {
+                $request['slug'] = $this->createAlbumSlug($request['slug'], $id);
             }
 
-            if($request->slug == '' || $audio->slug == ''){
+            if($request['slug'] == '' || $audio->slug == ''){
                 $request['slug'] = $this->createAlbumSlug($request['albumname']);    
             }
 
@@ -239,7 +237,7 @@ class AdminAudioCategoriesController extends Controller
             if (isset($request['image']) && !empty($request['image'])){
                 $image = $request['image']; 
             } else {
-               $request['image'] = $category->image;
+               $request['image'] = '';
            }
            if( isset($image) && $image!= '') {   
               //code for remove old file
@@ -251,8 +249,8 @@ class AdminAudioCategoriesController extends Controller
              }
                   //upload new file
              $file = $image;
-             $category->image  = $file->getClientOriginalName();
-             $file->move($path,$category->image);
+             $request['image']  = $file->getClientOriginalName();
+             $file->move($path,$request['image']);
 
          } 
         

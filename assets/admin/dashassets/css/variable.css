@@ -8,8 +8,9 @@
   --iq-secondary:#83878a;
   --iq-success: #14e788;
   --iq-warning: #f68a04;
-  --iq-danger:#545E75;
-  --iq-info: #007aff;
+  --iq-danger:#FF0000;
+  --iq-close: #FF0000;
+  --iq-info: #44bdd0;
   --iq-dark: #000000;
   --iq-light: #fafafb;
   --iq-white: #ffffff;

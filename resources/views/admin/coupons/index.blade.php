@@ -1,5 +1,15 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 25px;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 
@@ -9,14 +19,15 @@
             <div class="container-fluid">
 
 <div class="admin-section-title">
+     <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
-				<h3><i class="entypo-archive"></i>  Plans </h3>
+				<h4><i class="entypo-archive"></i>  Plans </h4>
 			</div>
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
-	</div>
+	
 
 
 	<!-- Add New Modal -->
@@ -25,8 +36,9 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
+                    	<h4 class="modal-title">New Plan</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Plan</h4>
+				
 				</div>
 				
 				<div class="modal-body">
@@ -63,7 +75,7 @@
                             <li class="dd-item">
 
                                <div class="dd-handle"> {{ $coupon->coupon_code }} </div>
-                               <div class="flex align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/coupons/edit/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                               <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/coupons/edit/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/coupons/delete/{{ $coupon->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                             </li>
@@ -77,7 +89,7 @@
 			</div>
     </div>
 </div>
-
+</div>
 	<script type="text/javascript">
 
 		jQuery(document).ready(function($){

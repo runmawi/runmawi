@@ -1,18 +1,5 @@
 @extends('admin.master')
-<style type="text/css">
-	.has-switch .switch-on label {
-		background-color: #FFF;color: #000;
-	}
-	.make-switch{
-		z-index:2;
-	}
-    .iq-card{
-        padding: 15px;
-    }
-    .p1{
-        font-size: 12px;
-    }
-</style>
+
 @section('content')
 <style type="text/css">
     table th, table td
@@ -39,6 +26,7 @@
 			</div>
             <div class="col-md-8" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
+            <hr>
 		</div>
 	
 
@@ -82,7 +70,7 @@
                      </div>
                         
                         <div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					<button type="submit" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 
@@ -136,8 +124,8 @@
                 </tr>
                     @foreach($allCategories as $category)
                     <tr class="dd" id="{{ $category->id }}">
-                        <td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
-                         <td valign="bottom" class="text-center">{{ $category->title }}</td>
+                        <td valign="bottom" class="text-center">{{ $category->title }}</td>
+                         <td valign="bottom" class="text-center"> <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
 
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">

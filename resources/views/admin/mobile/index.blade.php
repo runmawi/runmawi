@@ -111,7 +111,7 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
@@ -127,7 +127,7 @@
 		</div>
 	</div>
     
-    	<div class="panel-body">
+    	<div class="panel-body mt-2">
 		
 				<div id="nestable" class="nested-list dd with-margins">
                     <table class="table table-bordered">
@@ -140,7 +140,7 @@
                                 <td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
                                 <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                                 <td class="text-center">
-                                    <div class="actions"><a href="{{ URL::to('admin/mobile/sliders/edit/') }}/{{$category->id}}" class="btn btn-black edit">Edit</a> <a href="{{ URL::to('admin/mobile/sliders/delete/') }}/{{$category->id}}" class="btn btn-white delete">Delete</a></div>
+                                    <div class="actions"><a href="{{ URL::to('admin/mobile/sliders/edit/') }}/{{$category->id}}" class="btn btn-info edit">Edit</a> <a href="{{ URL::to('admin/mobile/sliders/delete/') }}/{{$category->id}}" class="btn btn-danger delete">Delete</a></div>
 
                                 </td>
                             </tr>

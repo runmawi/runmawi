@@ -1,6 +1,7 @@
 <div class="modal-header">
+    <h4 class="modal-title">Update Category</h4>
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Update Category</h4>
+	
 </div>
 
 <div class="modal-body">
@@ -11,7 +12,7 @@
                         @if(!empty($categories[0]->slider))
                         <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->slider }}" class="movie-img" width="200"/>
                         @endif
-                        <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
+                        <p class="p1">Select the movie image (1280x720 px or 16:9 ratio):</p> 
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />                        
 
                     </div>
@@ -35,8 +36,8 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-black" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-white" id="submit-update-cat">Update</button>
+	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
 
 <script>

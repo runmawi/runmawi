@@ -3,8 +3,12 @@
     .p1{
         font-size: 12px;
     }
-    video{
-        display: none;
+    .select2-selection__rendered{
+        background-color: #141414!important;
+        border: none!important;
+    }
+    .select2-container--default .select2-selection--multiple{
+        border: none!important;
     }
 </style>
 @section('css')
@@ -25,7 +29,7 @@
         .subtitle1{
             display: flex;
             justify-content: space-between;
-            width: 50%;
+            width: 52%;
         }
 [data-tip]:before {
 	content:'';
@@ -95,7 +99,7 @@
                                     </div>
                                     <div class="col-sm-6 form-group" >
                                          <label class="p-2">
-                                             Video Slug <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please enter the name of the video again here" data-original-title="this is the tooltip" href="#">
+                                             Video Slug <a class="" data-toggle="tooltip" data-placement="top" title="Please enter the name of the video again here" data-original-title="this is the tooltip" href="#">
                                              <i class="las la-exclamation-circle"></i></a>:</label>
                                        <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
                                     </div>
@@ -114,7 +118,7 @@
                                       <div class="panel-title"><labe>Cast and Crew</labe> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                       <div class="panel-body" style="display: block;"> 
                                         <p class="p1">Add artists for the video below:</p> 
-                                        <select  name="artists[]" class="js-example-basic-multiple" style="width: 100%;background-color:#000000!important;" multiple="multiple">
+                                        <select  name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                           @foreach($artists as $artist)
                                           @if(in_array($artist->id, $video_artist))
                                           <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
@@ -183,30 +187,37 @@
                             </div>
                             <div class="row ">
                              <div class="col-sm-8 form-group">
-                             @if(!empty($video->trailer) && $video->trailer != '')
-                              <video width="200" height="200" controls>
-                                    <source src="{{ $video->trailer }}" type="video/mp4">
-                              </video>
-                              @endif
+                             
                                  <label class="p-2">Upload Trailer :</label><br>
                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                             </div>
+                            <div class="col-sm-8 form-group">
                                        <!--<p>Upload Trailer video</p>-->
+                             @if(!empty($video->trailer) && $video->trailer != '')
+                              <video width="200" height="200" controls>
+                              <source src="{{ $video->trailer }}" type="video/mp4">
+                              </video>
+                              @endif
                                 </div>
+                         </div>
+                                <div class="row mt-5">
                                   <div class="col-sm-6 form-group">
                                          <label><h5>Video Type :</h5></label>
                                           <select id="type" name="type" class="form-control" required>
                                              <option>--Video Type--</option>
                                              <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
                                              <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
-                                          </select>   
-                                      </div>
-                              <div class="">
-                                  
-                                 @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
+                                          </select>
+                                @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
                                     <video width="200" height="200" controls>
                                     <source src="{{ URL::to('/storage/app/public/').'/'.$video->mp4_url }}" type="video/mp4">
                                     </video>
                                  @endif
+
+                                      </div>
+                                
+                              <div class="">
+                                  
                                  <div class="d-block position-relative" style="left:80px;top:-50px;">
                                  <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')@else  @endif>
                                     <label for="embed_code">Embed Code:</label>
@@ -225,10 +236,10 @@
                               </div>
                                 
                                
-                              <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-        <div class="panel-title"><label>Subtitles (srt or txt)</label><a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
+                              <div class="panel panel-primary mt-4" data-collapsed="0"> <div class="panel-heading"> 
+        <div class="panel-title"><label>Subtitles (srt or txt)</label><a class="" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
                                              <i class="las la-exclamation-circle"></i></a>:</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-        <div class="panel-body mt-3" style="display: block;"> 
+        <div class="panel-body  mt-3" style="display: block;"> 
           @foreach($subtitles as $subtitle)
           <div class="subtitle1" style="clear: both;font-weigth:normal!important" >
             <label for="embed_code"  class="mt-2"  style="font-weight: 300;">Upload Subtitle {{ $subtitle->language }}</label>

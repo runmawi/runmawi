@@ -1,46 +1,46 @@
 <?php
 
-    if(isset($video)):
-        $media_title = $video->title;
-        $url = URL::to('/category/videos');
-        $media_url = $url . '/' . $video->slug;
-        $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
-    elseif(isset($audio)):
-        $media_title = $audio->title;
-        $url = URL::to('/');
-        $media_url = $url . '/' . $audio->slug;
-        $hidden = '<input type="hidden" value="'.$audio->id.'" id="audioid">';
-    elseif(isset($post)):
-        $media_title = $post->title;
-        $url = ($settings->enable_https) ? secure_url('post') : URL::to('post');
-        $media_url = $url . '/' . $post->slug; 
-        $hidden = '<input type="hidden" value="'.$post->id.'" id="videoid">';
-    elseif(isset($movie)):
-        $media_title = $movie->title;
-        $url = ($settings->enable_https) ? secure_url('play_movie') : URL::to('play_movie');
-        $media_url = $url . '/' . $movie->slug; 
-        $hidden = '<input type="hidden" value="'.$movie->id.'" id="videoid">';
-    elseif(isset($episode)):
-        $media_title = $episode->title;
-        $url = ($settings->enable_https) ? secure_url('episode') : URL::to('episode');
-        $media_url = $url . '/' . $episode->id; 
-        $hidden = '<input type="hidden" value="'.$episode->id.'" id="videoid">';
-    elseif(isset($series)):
-        $media_title = $series->title;
-        $url = ($settings->enable_https) ? secure_url('series') : URL::to('series');
-        $media_url = $url . '/' . $series->id; 
-        $hidden = '<input type="hidden" value="'.$series->id.'" id="videoid">';
-    else:
-        $media_title = '';
-        $media_url = '';
-    endif;
-        $media_subject = $media_title;
+if(isset($video)):
+    $media_title = $video->title;
+    $url = URL::to('/category/videos');
+    $media_url = $url . '/' . $video->slug;
+    $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
+elseif(isset($audio)):
+    $media_title = $audio->title;
+    $url = URL::to('/');
+    $media_url = $url . '/' . $audio->slug;
+    $hidden = '<input type="hidden" value="'.$audio->id.'" id="audioid">';
+elseif(isset($post)):
+    $media_title = $post->title;
+    $url = ($settings->enable_https) ? secure_url('post') : URL::to('post');
+    $media_url = $url . '/' . $post->slug; 
+    $hidden = '<input type="hidden" value="'.$post->id.'" id="videoid">';
+elseif(isset($movie)):
+    $media_title = $movie->title;
+    $url = ($settings->enable_https) ? secure_url('play_movie') : URL::to('play_movie');
+    $media_url = $url . '/' . $movie->slug; 
+    $hidden = '<input type="hidden" value="'.$movie->id.'" id="videoid">';
+elseif(isset($episode)):
+    $media_title = $episode->title;
+    $url = ($settings->enable_https) ? secure_url('episode') : URL::to('episode');
+    $media_url = $url . '/' . $episode->id; 
+    $hidden = '<input type="hidden" value="'.$episode->id.'" id="videoid">';
+elseif(isset($series)):
+    $media_title = $series->title;
+    $url = ($settings->enable_https) ? secure_url('series') : URL::to('series');
+    $media_url = $url . '/' . $series->id; 
+    $hidden = '<input type="hidden" value="'.$series->id.'" id="videoid">';
+else:
+    $media_title = '';
+    $media_url = '';
+endif;
+$media_subject = $media_title;
 ?>
 <style>
-    i#dislike {
+i#dislike {
     padding: 10px !important;
 }
-    i#like {
+i#like {
     padding: 10px;
 }
 </style>
@@ -54,33 +54,33 @@
 <!-- Buttons start here. Copy this ul to your document. -->
 <ul class="rrssb-buttons clearfix">
     <li class="" >
-        
-		<a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank" class="popup"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%;
-    font-size: 14px;width:35px;"></i></a>
-    </li>
-    <li class="">
-        <a  href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank" class="popup">
+
+      <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank" class="popup"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%;
+      font-size: 14px;width:35px;"></i></a>
+  </li>
+  <li class="">
+    <a  href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank" class="popup">
         <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;
-            font-size: 14px;">
-            </i>
-        </a>
-    </li>
-    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #fff;cursor:pointer;"';}?> class="fa fa-thumbs-o-down" aria-hidden="true" style="cursor:pointer;color:#fff;" data-like-val="1" dislike="1"  id="dislike"></i>
-    <li>
+        font-size: 14px;">
+    </i>
+</a>
+</li>
+<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #fff;cursor:pointer;"';}?> class="fa fa-thumbs-o-down" aria-hidden="true" style="cursor:pointer;color:#fff;" data-like-val="1" dislike="1"  id="dislike"></i>
+<li>
 
     <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up" aria-hidden="true" style="cursor:pointer;color:#fff;" data-like-val="1" like="1" id="like" ></i>
     <li>
-    
-       
+
+
     </li>
 </ul>
 
 <?php echo $hidden; if (Auth::user()) { ?>
-<input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
+    <input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
 <?php } ?>
 <!-- Buttons end here -->
 <script>
-$(document).ready(function(){
+    $(document).ready(function(){
 //   $("#like").click(function(){
 //       var like = $("#like").attr("like");
 //             alert(like);
@@ -97,42 +97,41 @@ $(document).ready(function(){
         var like = $("#like").attr("like");
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
-     toastr.options = {
-                              "closeButton": true,
-                              "newestOnTop": true,
-                              "positionClass": "toast-top-right"
-        }; 
-        $.ajax({
+        if($(this).data('authenticated')){
+            $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
-                         type: "POST",
-                         data: {like: like,videoid:videoid,user_id:user_id},
-                         dataType: "html",
-                         success: function() {
-                              toastr.success("Successfully Added !");
-                         }
+                type: "POST",
+                data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function() {
+                 $(this).toggleClass('active');
+                     if($(this).hasClass('active')){
+                        $(this).css('color','blue');
+                    }else{
+                        $(this).css('color','white');
+                    }
+                }
             });
-        
-	});
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+      }
+  });
 
     $('#dislike').click(function(){
         var like = $("#dislike").attr("dislike");
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
-         toastr.options = {
-                              "closeButton": true,
-                              "newestOnTop": true,
-                              "positionClass": "toast-top-right"
-        }; 
+
         $.ajax({
-                url: "<?php echo URL::to('/').'/like-video';?>",
-                         type: "POST",
-                         data: {like: like,videoid:videoid,user_id:user_id},
-                         dataType: "html",
-                         success: function() {
-                              toastr.success("Successfully Added !");
-                         }
-            });
-        
-	});
+            url: "<?php echo URL::to('/').'/dislike-video';?>",
+            type: "POST",
+            data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+            dataType: "html",
+            success: function() {
+              toastr.success("Successfully Added !");
+          }
+      });
+
+    });
 
 </script>

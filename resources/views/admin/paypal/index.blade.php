@@ -89,21 +89,27 @@
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
-					 <ol id="tree1" class="dd-list">
+					 <table class="table plan_table">
+						<thead>
+							<tr>
+								<th>S.No</th>
+								<th>Plan Name</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($plans as $k=> $plan )
 
-                        @foreach($plans as $plan )
+							<tr>
+                               <td>{{ $k+1 }}</td>
+                               <td>{{ $plan->name }}</td>
+                               <td><a href="{{ URL::to('/') }}/admin/paypalplans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/paypalplans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                           </tr>
 
-                            <li class="dd-item">
+							@endforeach
+						</tbody>
 
-                               <div class="dd-handle"> {{ $plan->name }} </div>
-                               <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/paypalplans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/paypalplans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
-                            </li>
-
-                        @endforeach
-
-                    </ol>
+					</table>
 						
 				</div>
 		

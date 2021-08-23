@@ -977,3 +977,50 @@ select{
       color: #fff;
       border:none;
   }
+ .select2-container--default .select2-selection--multiple {
+        border:none!important;
+    }
+.rk{
+    display: flex;
+    justify-content: flex-end;
+}
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+ .top-left-logo img {
+        opacity: 0.9;
+        overflow: hidden;
+    }
+    span{
+        font-weight: normal!important;
+    }
+    .header-logo
+
+    {
+       padding-left: 25px;
+        
+    }
+    hr{
+        border-top: 1px solid #f39c3ea3!important ;
+    }
+.select2-selection__rendered{
+        background-color: #141414!important;
+        border: none!important;
+    }
+    .select2-container--default .select2-selection--multiple{
+        border: none!important;
+    }
+  .subtitle1{
+            display: flex;
+            justify-content: space-between;
+            width: 52%;
+        }

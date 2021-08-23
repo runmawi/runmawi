@@ -25,9 +25,11 @@
     padding-top: 100px;">
 <!-- This is where -->
        <div class="iq-card">
-	
-	<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>
-
+           <div class="">
+	<h4>Manage Artist</h4>
+               <hr>
+	<!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
+</div>
 	<div class="admin-section-title">
 	@if(!empty($artist->id))
 		<h3>{{ $artist->name }}</h3> 
@@ -74,12 +76,14 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			
 				</div>
 
-
+                   
 			</div>
-
+ <div class="rk">
+                            <input type="submit" value="{{ $button_text }}" class="btn btn-info " />
+                </div>
 			<div class="clear"></div>
 
 

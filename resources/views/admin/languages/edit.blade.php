@@ -11,7 +11,7 @@
 
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/languages/update') }}" method="post" enctype="multipart/form-data">
-       
+       <h5>Language add</h5>
                  
         
                     <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
@@ -26,7 +26,7 @@
 </div>
 
 <div class="modal-footer">
-	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/admin-languages') }}">Close</a>
+	<a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/admin-languages') }}">Close</a>
 	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
 </div>
              </div>

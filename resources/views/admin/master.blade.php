@@ -58,26 +58,6 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
-<style>
-
-    .top-left-logo img {
-        opacity: 0.9;
-        overflow: hidden;
-    }
-    span{
-        font-weight: normal!important;
-    }
-    .header-logo
-
-    {
-       padding-left: 25px;
-        
-    }
-    hr{
-        border-top: 1px solid #f39c3ea3!important ;
-    }
-    
-</style>
 
 </head>
 <body >

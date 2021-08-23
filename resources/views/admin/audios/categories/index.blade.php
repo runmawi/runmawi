@@ -22,31 +22,28 @@
                      <div class="iq-card-body" >
                      <div id="nestable" class="nested-list dd with-margins" >
 
-					 <ol id="tree1" class="dd-list">
+                     	<table class="data-tables table audio_table " style="width:100%">
+                     		<thead>
+                     			<tr>
+                     				<th><label>Name</label></th>
+                     				<th><label>Image</label></th>
+                     				<th><label>Action</label></th>
+                     			</tr>
+                     		</thead>
+                     		<tbody>
+                     			@foreach($allCategories as $category)
+                     			<tr>
+                     				<td>{{ ucfirst($category->name) }}</td>
+                     				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
+                     				<td> 
+                     					<a class="action edit iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
 
-                        @foreach($categories as $category)
-
-                            <li class="dd-item">
-
-                               <div class="dd-handle"> {{ $category->name }} </div>
-                               <div class="actions">
-                               	
-                               	<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
-
-                               	<a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
-
-                               	</div>
-                                @if(count($category->childs))
-
-                                    @include('admin.audios.categories.manageChild',['childs' => $category->childs])
-
-                                @endif
-
-                            </li>
-
-                        @endforeach
-
-                    </ol>
+                     					<a class="action delete iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
+                     				</td>
+                     			</tr>
+                     			@endforeach
+                     		</tbody>
+                     	</table>
 						
 				</div>
 			</div>
@@ -128,7 +125,7 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
@@ -164,7 +161,7 @@
 				$('#new-cat-form').submit();
 			});
 
-			$('.actions .edit').click(function(e){
+			$('.edit').click(function(e){
 				$('#update-category').modal('show', {backdrop: 'static'});
 				e.preventDefault();
 				href = $(this).attr('href');

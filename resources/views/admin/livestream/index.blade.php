@@ -38,61 +38,35 @@
 
 	<div class="gallery-env">
 		
-		<div class="row mt-4">
-
-		@foreach($videos as $video)
+			<table class="data-tables table livestream_table " style="width:100%">
+				<thead>
+					<tr>
+						<th><label>Image</label></th>
+						<th><label>Name</label></th>
+						<th><label>Description</label></th>
+						<th><label>Action</label></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($videos as $video)
+					<tr>
+						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
+						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
+						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
+						<td><a href="{{ URL::to('channelVideos/play_videos/') . '/' . $video->id }}" target="_blank"><i class="fa fa-eye"></i></a>
+							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="album-options"><i class="fa fa-edit"></i></a>
+							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}" class="delete"><i class="fa fa-trash"></i></a>
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 		
-			<div class="col-sm-6 col-md-5">
-				
-				<article class="album">
-					
-					<header>
-						
-						<a href="{{ URL::to('channelVideos/play_videos/') . '/' . $video->id }}" target="_blank">
-							<img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" />
-						</a>
-						
-						<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="album-options">
-							<i class="entypo-pencil"></i>
-							Edit
-						</a>
-					</header>
-					
-					<section class="album-info">
-						<h3><a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}"><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></a></h3>
-						
-						<p>{{ $video->description }}</p>
-					</section>
-					
-					<footer>
-						
-						<div class="album-images-count">
-							<i class="entypo-video"></i>
-						</div>
-						
-						<div class="album-options">
-							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}">
-								<i class="entypo-pencil"></i>
-							</a>
-							
-							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}" class="delete">
-								<i class="entypo-trash"></i>
-							</a>
-						</div>
-						
-					</footer>
-					
-				</article>
-				
-			</div>
-
-		@endforeach
 
 		<div class="clear"></div>
 
 		<div class="pagination-outter"><?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
-		</div>
 		
 	</div>
     </div>

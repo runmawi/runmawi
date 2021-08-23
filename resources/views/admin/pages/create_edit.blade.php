@@ -1,18 +1,5 @@
 @extends('admin.master')
-<style type="text/css">
-	.has-switch .switch-on label {
-		background-color: #FFF;color: #000;
-	}
-	.make-switch{
-		z-index:2;
-	}
-    .iq-card{
-        padding: 15px;
-    }
-    .p1{
-        font-size: 12px;
-    }
-</style>
+
 @section('css')
 	<link rel="stylesheet" href="{{ '/assets/js/tagsinput/jquery.tagsinput.css' }}" />
 @stop
@@ -53,7 +40,7 @@
             @endif    
     
     
-    
+    <hr>
 	<div class="clear"></div>
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">

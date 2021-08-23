@@ -9,6 +9,7 @@
          <div class="container-fluid">
              <div class="iq-card">
 <div class="admin-section-title">
+    <h4 class="p-3">Paypal Edit</h4>
        <!--  <div class="row">
             <div class="col-md-12">
                 <h3><i class="entypo-archive"></i>  Room Topic </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>

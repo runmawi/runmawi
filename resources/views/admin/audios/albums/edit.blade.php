@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">Update Album</h4>
-	<button type="button"class="close" data-dismiss="modal" aria-hidden="true" style="background-color:#00008b;">&times;</button>
+	<button type="button"class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
 	
 </div>
 
@@ -30,7 +30,7 @@
                          <label>Cover Image:</label>
                             <input id="f02" type="file" name="album" placeholder="Add profile picture" />
                          
-                          <p class="padding-top-20">Must be JPEG, PNG, or GIF and cannot exceed 10MB.</p>
+                          <p class="padding-top-20 p1">Must be JPEG, PNG, or GIF and cannot exceed 10MB.</p>
                       </div>
               <br/>
 
@@ -72,7 +72,7 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
 

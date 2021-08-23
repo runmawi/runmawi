@@ -1,5 +1,18 @@
 @extends('admin.master')
-
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop
@@ -7,10 +20,10 @@
 
 @section('content')
 
-<div id="admin-container" style="margin-left: 340px;
+<div id="admin-container" style="margin-left: 320px;
     padding-top: 100px;">
 <!-- This is where -->
-	
+	    <div class="iq-card">
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
@@ -18,8 +31,9 @@
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
-		<h5><i class="entypo-plus"></i> Add New Episode</h5> 
+		<h4><i class="entypo-plus"></i> Add New Episode</h4> 
 	@endif
+        <hr>
 	</div>
 	<div class="clear"></div>
 
@@ -28,14 +42,14 @@
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
 		@if(!empty($episodes->created_at))
-			<div class="row">
-				<div class="col-md-9">
+			<div class="row mt-4">
+				<div class="col-md-9 mt-4">
 		@endif
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-							<p>Add the episodes title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif" style="background-color:#000000;!important" />
+							<p class="p1">Add the episodes title in the textbox below:</p> 
+							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif"  />
 						</div> 
 					</div>
 
@@ -54,15 +68,15 @@
 			</div>
 		@endif
 
-			<div class="row"> 
+			<div class="row mt-3"> 
 			<div class="col-sm-6">
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Episode Image Cover</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title"><label>Episode Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					@if(!empty($episodes->image))
 						<img src="{{ Config::get('site.uploads_dir') . 'images/' . $episodes->image }}" class="episodes-img" width="200"/>
 					@endif
-					<p>Select the episodes image (1280x720 px or 16:9 ratio):</p> 
+					<p class="p1">Select the episodes image (1280x720 px or 16:9 ratio):</p> 
 					<input type="file" multiple="true" class="form-control" name="image" id="image" />
 					
 				</div> 
@@ -70,30 +84,30 @@
 			</div>
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Episode Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title"><label>Episode Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					IMDb Ratings 10 out of 10
-					<input class="form-control" name="rating" id="rating" value="" onkeyup="NumAndTwoDecimals(event , this);"  style="background-color:#000000;!important">
+					<p class="p1">IMDb Ratings 10 out of 10 </p>
+					<input class="form-control" name="rating" id="rating" value="" onkeyup="NumAndTwoDecimals(event , this);"  >
 				</div> 
 			</div>
 			</div>
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Episode Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-					<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Episode Format</label>
-					<select id="type" name="type">
+			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title"><label>Episode Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<label for="type" >Episode Format</label>
+					<select class="form-control" id="type" name="type">
 						<option value="embed">Embed Code</option>
 						<option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
 						<option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
 					</select>
-					<hr />
+					
 
 					<div class="new-episodes-file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
 						<label for="mp4_url">Mp4 File URL:</label>
 						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
-						<hr />
+					
 						
 					</div>
 
@@ -123,24 +137,24 @@
 			<div class="clear"></div>
 
 
-			<div class="row"> 
+			<div class="row align-items-center"> 
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"> <label>Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
-							<p>Enter the episode duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif"  style="background-color:#000000;!important">
+							<p class="p1">Enter the episode duration in the following format (Hours : Minutes : Seconds)</p> 
+							<input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif" >
 						</div> 
 					</div>
 				</div>
 
-				<div class="col-sm-4"> 
+				<div class="col-sm-4 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> User Access</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
-							<label for="access" style="float:left; margin-right:10px;">Who is allowed to view this episode?</label>
-							<select id="access" name="access">
+							<p class="p1">Who is allowed to view this episode?</p>
+							<select id="access" class="form-control" name="access">
 								<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
@@ -152,24 +166,32 @@
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"> <label>Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
-							<div>
+							<div style="display: flex;
+    justify-content: start;
+    align-items: baseline;">
 								<label for="featured" style="float:left; display:block; margin-right:10px;">Is this episode Featured:</label>
 								<input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
-							<div>
+							<div style="display: flex;
+    justify-content: start;
+    align-items: baseline;">
 								<label for="active" style="float:left; display:block; margin-right:10px;">Is this episode Active:</label>
 								<input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
 							<div class="clear"></div>
-							<div>
+							<div style="display: flex;
+    justify-content: start;
+    align-items: baseline;">
 								<label for="banner" style="float:left; display:block; margin-right:10px;">Is this episode display in Banner:</label>
 								<input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div class="clear"></div>
-							<div>
+							<div style="display: flex;
+    justify-content: start;
+    align-items: baseline;">
 								<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
 								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 							</div>
@@ -190,16 +212,19 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+                
 			</div><!-- row -->
 
-
+ <div class="mt-3" style="display: flex;
+    justify-content: flex-end;">
+                     <input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" /></div>
 			
 
 		</form>
 
 		<div class="clear"></div>
 		<!-- Manage Season -->
+            <div class="p-3">
 		@if(!empty($episodes))
 		<h5>Season & Episodes</h5> 
 		<div class="admin-section-title">
@@ -237,7 +262,7 @@
 </div>
 
 	
-	
+	</div>
 	
 	@section('javascript')
 

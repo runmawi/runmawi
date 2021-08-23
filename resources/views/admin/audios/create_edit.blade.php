@@ -13,6 +13,12 @@
 	span{
 		color: gray;
 	}
+    .select2-selection__rendered{
+        background-color: #141414!important;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{
+        border:none!important;
+    }
 	.progress { position:relative; width:100%; }
 	.bar { background-color: #008000; width:0%; height:20px; }
 	.percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}

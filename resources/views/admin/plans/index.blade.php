@@ -28,14 +28,17 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h4><i class="entypo-archive"></i>  Plans </h4>
+                
 			</div>
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
+            
 		</div>
 	
 
 
 	<!-- Add New Modal -->
+            <hr>
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -102,23 +105,26 @@
 			<div class="panel-body">
 		
 				<div id="nestable" class="nested-list dd with-margins">
+					<table class="table plan_table">
+						<thead>
+							<tr>
+								<th>Plan Name</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($plans as $plan )
 
-					 <ol id="tree1" class="dd-list">
+							<tr>
 
-                        @foreach($plans as $plan )
+								<td> {{ $plan->plans_name }} </td>
+								<td><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+							</tr>
 
-                            <li class="dd-item">
+							@endforeach
+						</tbody>
 
-                               <div class="dd-handle"> {{ $plan->plans_name }} </div>
-                               <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
-                            </li>
-
-                        @endforeach
-
-                    </ol>
-						
+					</table>
 				</div>
 		
 			</div>

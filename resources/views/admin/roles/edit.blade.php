@@ -29,7 +29,7 @@
 </div>
 
 <div class="modal-footer">
-	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/roles') }}">Close</a>
+	<a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/roles') }}">Close</a>
 	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
     </div></div>
     </div>

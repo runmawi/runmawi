@@ -202,9 +202,9 @@
 					</div>
                     <div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
+						<div class="panel-body col-sm-6 p-0"> 
 							<p class="p1">Who is allowed to view this video?</p>
-							<select id="access" name="access">
+							<select class="form-control" id="access" name="access">
 								<option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
 							</select>
