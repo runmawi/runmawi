@@ -138,6 +138,7 @@
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ URL::to('admin/roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
                      </ul>
                       
                    </li>
@@ -162,7 +163,7 @@
                    <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
                         <hr></div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
-                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
+                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderator</span></a></li>
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                        class="la la-newspaper-o"></i><span>Pages</span><i
@@ -651,14 +652,26 @@
             $chart_lables = "['Total Subscribers', 'New Subscribers', 'Total Videos', 'Total Visitors']";
             $all_category = App\VideoCategory::all();
             $items = array(); 
-            $lastmonth = array();      
+            $views = array(); 
+            $lastmonth = $this_month_views =  array();      
                foreach($all_category as $category) {
                   $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
                   $items[] = "'$category->name'";
-                  $lastmonth[] = "'$categoty_sum'";
+                  $views[] = "'$category->views'";
+                  $lastmonth[] = $categoty_sum;
+                  $last_month_views[] = App\Video::where("video_category_id","=",$category->id)->whereMonth(
+                    'created_at', '=', Carbon\Carbon::now()->subMonth()->month
+                )->sum('views');
+                  $this_month_views[] = App\Video::where("video_category_id","=",$category->id)->whereMonth(
+                    'created_at', '=', Carbon\Carbon::now()->month
+                )->sum('views');
+                  
                }
                $cate_chart = implode(',', $items);
+               $cate_views = implode(',', $views);
                $last_month_chart = implode(',', $lastmonth);
+               $this_month_record = implode(',', $this_month_views);
+
    }
    ?>
 
@@ -706,7 +719,6 @@
          if(jQuery('#view-chart-01').length){
 
 var chart_01_lable = $('#chart_01_lable').val();
-//alert(chart_01_lable);
    var options = {
       series: <?php echo $chart_details;?>,
       chart: {
@@ -737,14 +749,13 @@ var chart_01_lable = $('#chart_01_lable').val();
       }
     }]
     };
-    console.log(chart_01_lable);
     var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
     chart.render();
   } 
 
  if(jQuery('#view-chart-02').length){
         var options = {
-          series: [44, 30, 20, 43, 22,20],
+          series: <?php echo "[".$last_month_chart."]";?>,
           chart: {
           width: 250,
           type: 'donut',
@@ -788,10 +799,10 @@ var chart_01_lable = $('#chart_01_lable').val();
         var options = {
           series: [{
           name: 'This Month',
-          data: [44, 55,30,60,7000]
+          data: <?php echo "[".$this_month_record."]";?>
         }, {
           name: 'Last Month',
-          data: [35, 41,20,40,100]
+          data: <?php echo "[".$this_month_record."]";?>
         }],
         colors:['#e20e02', '#007aff'],
           chart: {

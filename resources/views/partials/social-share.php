@@ -65,10 +65,10 @@ i#like {
     </i>
 </a>
 </li>
-<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #fff;cursor:pointer;"';}?> class="fa fa-thumbs-o-down" aria-hidden="true" style="cursor:pointer;color:#fff;" data-like-val="1" dislike="1"  id="dislike"></i>
+<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-down" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i>
 <li>
 
-    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up" aria-hidden="true" style="cursor:pointer;color:#fff;" data-like-val="1" like="1" id="like" ></i>
+    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i>
     <li>
 
 
@@ -94,17 +94,22 @@ i#like {
 
 <script>
 	$('#like').click(function(){
-        var like = $("#like").attr("like");
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
         if($(this).data('authenticated')){
+            $(this).toggleClass('active');
+            if($(this).hasClass('active')){
+                var like = 1;
+            }else{
+                var like = 0;
+            }
             $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
                 type: "POST",
                 data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
                 dataType: "html",
                 success: function() {
-                 $(this).toggleClass('active');
+                 
                      if($(this).hasClass('active')){
                         $(this).css('color','blue');
                     }else{
@@ -118,17 +123,26 @@ i#like {
   });
 
     $('#dislike').click(function(){
-        var like = $("#dislike").attr("dislike");
+        $(this).toggleClass('active');
+        if($(this).hasClass('active')){
+            var dislike = 1;
+        }else{
+            var dislike = 0;
+        }
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
 
         $.ajax({
             url: "<?php echo URL::to('/').'/dislike-video';?>",
             type: "POST",
-            data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+            data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
             dataType: "html",
             success: function() {
-              toastr.success("Successfully Added !");
+              if($(this).hasClass('active')){
+                $(this).css('color','blue');
+            }else{
+                $(this).css('color','white');
+            }
           }
       });
 

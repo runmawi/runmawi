@@ -684,23 +684,60 @@ class HomeController extends Controller
     }
 
     public function LikeVideo(Request $request){
-         $user_id = $request->user_id;
-         $videoid = $request->videoid;
-         $like = $request->like;
-         $d_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->count();
-        if ($d_like == 0){
-            $new_vide_like = new Likedislike;
-            $new_vide_like->user_id = $request->user_id;
-            $new_vide_like->video_id = $request->videoid;
-            $new_vide_like->liked = $request->like;
-            $new_vide_like->save(); 
-        } else {
-            $new_vide_like = Likedislike::where("video_id",$videoid)->where("user_id",$user_id)->first();
-            $new_vide_like->user_id = $request->user_id;
-            $new_vide_like->video_id = $request->videoid;
-            $new_vide_like->liked = $request->like;
-            $new_vide_like->save(); 
-        }   
+       $video_id = $request->videoid;
+       $like = $request->like;
+       $user_id = $request->user_id;
+       $video = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->get();
+       $video_count = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->count();
+       if ($video_count >0 ) {
+          $video_new = LikeDisLike::where("video_id","=",$video_id)->where("user_id","=",$user_id)->first();
+          $video_new->liked = $like;
+          $video_new->video_id = $video_id;
+          $video_new->save();
+          $response = array(
+            'status'   =>true
+        );
+      } else {
+          $video_new = new LikeDisLike;
+          $video_new->video_id = $video_id;
+          $video_new->user_id = $user_id;
+          $video_new->liked = $like;
+          $video_new->save();
+          $response = array(
+            'status'   =>true
+        );
+      }  
+             
+    }
+
+    public function DisLikeVideo(Request $request){
+       $user_id = $request->user_id;
+      $video_id = $request->videoid;
+      $dislike = $request->dislike;
+      $d_like = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->count();
+
+      if($d_like > 0){
+        $new_vide_dislike = Likedislike::where("video_id",$video_id)->where("user_id",$user_id)->first();
+        if($dislike == 1){
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->video_id = $video_id;
+          $new_vide_dislike->liked = 0;
+          $new_vide_dislike->disliked = 1; 
+          $new_vide_dislike->save(); 
+        }else{
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->video_id = $video_id;
+          $new_vide_dislike->disliked = 0;
+          $new_vide_dislike->save(); 
+        }
+      }else{
+        $new_vide_dislike = new Likedislike;
+        $new_vide_dislike->user_id = $request->user_id;
+        $new_vide_dislike->video_id = $video_id;
+        $new_vide_dislike->liked = 0;
+        $new_vide_dislike->disliked = 1;
+        $new_vide_dislike->save(); 
+      } 
              
     }
     

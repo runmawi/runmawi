@@ -113,7 +113,15 @@ $request->validate([
     // $moderatorsuser->hashedpassword = $request->picture;
     $moderatorsuser->role = $request->user_role;
     $moderatorsuser->user_permission = $permission;
-    
+    if($request->picture == ""){
+      // print_r('oldtesting pic');
+      // exit();
+      $moderatorsuser->picture  = "Default.png";
+    }else{
+      // print_r('testing pic');
+      // exit();
+        $moderatorsuser->picture = $file->getClientOriginalName();
+    }
 
 
     $logopath = URL::to('/public/uploads/picture/');
@@ -146,9 +154,179 @@ if($picture != '') {
     $userrolepermissiom->save();
 
     }
+    $moderatorsrole = ModeratorsRole::all();
+    $moderatorspermission = ModeratorsPermission::all();
+    $moderatorsuser = ModeratorsUser::all();    
+    $data = array(
    
-  return redirect('/moderator')->with('success', 'Users saved!');
+      'roles' => $moderatorsrole,
+      'permission' => $moderatorspermission,
+      'moderatorsuser' => $moderatorsuser,
+
+
+    );
+    return view('moderator.view',$data);
+   
+  // return redirect('/moderator')->with('success', 'Users saved!');
   }
+
+  public function edit($id)
+  {
+
+$moderators = ModeratorsUser::find($id);
+$useraccess = UserAccess::where('user_id', '=', $id)->get();
+$permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
+
+      $moderatorsrole = ModeratorsRole::all();
+      $moderatorspermission = ModeratorsPermission::all();
+      $moderatorsuser = ModeratorsUser::all();
+      $data = array(
+   
+          'roles' => $moderatorsrole,
+          'permission' => $moderatorspermission,
+          'moderatorsuser' => $moderatorsuser,
+          'moderators' => $moderators,
+          'moderatorspermission' => $permission,
+          'useraccess' => $useraccess,
+
+
+        );
+
+  
+       return view('moderator.create_edit',$data);
+  }
+
+  public function update(Request $request)
+  {
+
+$data = $request->all();
+// echo "<pre>";  
+// print_r($data);
+// exit();
+$user_permission = $data['user_permission'];
+$permission = implode(",",$user_permission);
+$id = $data['id'];
+$moderatorsuser = ModeratorsUser::find($id);
+// echo "<pre>";  
+// print_r($moderatorsuser['username']);
+// exit();
+$moderatorsuser['username'] = $data['username'];
+$moderatorsuser['email'] = $data['email_id'];
+$moderatorsuser['mobile_number'] = $data['mobile_number'];
+// $moderatorsuser->password = $data['password'];
+// $password = Hash::make($moderatorsuser->password);
+// $moderatorsuser->hashedpassword = $password;
+// $moderatorsuser->confirm_password = $data['confirm_password'];
+$moderatorsuser['description'] = $data['description'];
+// $moderatorsuser->hashedpassword = $data['picture'];
+$moderatorsuser['role'] = $data['user_role'];
+$moderatorsuser['user_permission'] = $permission;
+if($data['picture'] == ""){
+  // print_r('oldtesting pic');
+  // exit();
+  $moderatorsuser['picture']  = "Default.png";
+}else{
+
+  $logopath = URL::to('/public/uploads/picture/');
+  $path = public_path().'/uploads/picture/';
+  $picture = $request['picture'];
+  if($picture != '') {   
+   //code for remove old file
+   if($picture != ''  && $picture != null){
+        $file_old = $path.$picture;
+       if (file_exists($file_old)){
+        unemail($file_old);
+       }
+   }
+   //upload new file
+   
+   $file = $picture;
+   $moderatorsuser->picture  = $logopath.'/'.$file->getClientOriginalName();
+   $file->move($path, $moderatorsuser->picture);
+  
+  }
+    $moderatorsuser['picture'] = $file->getClientOriginalName();
+}
+
+
+
+$moderatorsuser->save();
+$user_id = $id;
+
+foreach($data['user_permission'] as $value){
+$userrolepermissiom = UserAccess::where('user_id', '=', $id)->get();
+foreach($userrolepermissiom as $values){
+  $values->user_id = $user_id;
+  $values->role_id = $data['user_role'];
+  $values->permissions_id = $value;
+  $values->save();
+}
+}
+$moderatorsrole = ModeratorsRole::all();
+$moderatorspermission = ModeratorsPermission::all();
+$moderatorsuser = ModeratorsUser::all();
+$moderators = ModeratorsUser::find($id);
+$useraccess = UserAccess::where('user_id', '=', $id)->get();
+$permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
+      $data = array(
+   
+          'roles' => $moderatorsrole,
+          'permission' => $moderatorspermission,
+          'moderatorsuser' => $moderatorsuser,
+          'moderators' => $moderators,
+          'moderatorspermission' => $permission,
+          'useraccess' => $useraccess,
+
+
+        );
+
+  
+       return view('moderator.create_edit',$data);
+  
+  }
+
+
+
+  
+  public function delete($id)
+  {
+
+      $moderatorsrole = ModeratorsRole::all();
+      $moderatorspermission = ModeratorsPermission::all();
+      $moderatorsuser = ModeratorsUser::all();
+      $data = array(
+   
+          'roles' => $moderatorsrole,
+          'permission' => $moderatorspermission,
+          'moderatorsuser' => $moderatorsuser,
+
+
+        );
+        $moderators = ModeratorsUser::find($id);
+
+        ModeratorsUser::destroy($id);
+  
+       return view('moderator.view',$data);
+  }
+  public function view()
+  {
+
+      $moderatorsrole = ModeratorsRole::all();
+      $moderatorspermission = ModeratorsPermission::all();
+      $moderatorsuser = ModeratorsUser::all();
+      $data = array(
+   
+          'roles' => $moderatorsrole,
+          'permission' => $moderatorspermission,
+          'moderatorsuser' => $moderatorsuser,
+
+
+        );
+
+  
+       return view('moderator.view',$data);
+  }
+
   public function test(Request $request)
   {
 
@@ -3301,7 +3479,7 @@ public function user_edit(Request $request){
   $id = $data['id'];
   // print_r($data);
   // exit();
-  $referral_link ="";
+  // $referral_link ="";
   $user = User::where('id', '=', $id)->first();
 
   return $user; 

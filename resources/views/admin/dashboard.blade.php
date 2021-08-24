@@ -162,7 +162,7 @@
                                        <div class="iq-user-box bg-primary"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total  <br> 
-                                          Subscriber's
+                                          Subscriber's <br>{{$total_subscription}}
                                           </p>
                                        </div>
                                     </div>
@@ -176,7 +176,7 @@
                                        <div class="iq-user-box bg-warning"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">New <br>
-                                             Subscriber's
+                                             Subscriber's<br>{{$total_recent_subscription}}
                                           </p>
                                        </div>
                                     </div>
@@ -190,7 +190,7 @@
                                        <div class="iq-user-box bg-info"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total <br>
-                                                Video's
+                                                Video's<br>{{$total_videos}}
                                           </p>
                                        </div>
                                     </div>
@@ -204,7 +204,7 @@
                                        <div class="iq-user-box bg-danger"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total <br>
-                                          Visitor's
+                                          Visitor's<br>{{ App\User::count() }}
                                           </p>
                                        </div>
                                     </div>

@@ -44,8 +44,9 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
+                    <h4 class="modal-title">New Plan</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Plan</h4>
+					
 				</div>
 				
 				<div class="modal-body">
@@ -94,7 +95,7 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
 			</div>
@@ -105,9 +106,9 @@
 			<div class="panel-body">
 		
 				<div id="nestable" class="nested-list dd with-margins">
-					<table class="table plan_table">
+					<table class="table-bordered" id="categorytbl" style="width:100%;padding:10px;">
 						<thead>
-							<tr>
+							<tr class="text-center">
 								<th>Plan Name</th>
 								<th>Action</th>
 							</tr>
@@ -115,7 +116,7 @@
 						<tbody>
 							@foreach($plans as $plan )
 
-							<tr>
+							<tr class="text-center">
 
 								<td> {{ $plan->plans_name }} </td>
 								<td><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>

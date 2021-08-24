@@ -24,4 +24,10 @@ class AdminManageCountries extends Controller
             $county->save();
             return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
     }
+
+
+    public function delete($county_id) {
+            Country::find($county_id)->delete();
+            return Redirect::back()->with(array('note' => 'Country Deleted successfully', 'note_type' => 'success'));
+    }
 }

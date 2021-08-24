@@ -96,7 +96,7 @@
                                 <td valign="bottom" class="text-center">{{ $country->country_name }}</td>
                                 <td class="text-center">
                                     <div class="align-items-center list-user-action">
-                                        <a href="{{ URL::to('admin/sliders/delete/') }}/{{$country->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                        <a href="{{ URL::to('admin/countries/delete/') }}/{{$country->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
 
                                 </td>

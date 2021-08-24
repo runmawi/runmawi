@@ -392,6 +392,7 @@ Route::get('/blocked', 'HomeController@Restrict');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword');
 Route::post('continue-watching', 'HomeController@StoreWatching');
 Route::post('/like-video', 'HomeController@LikeVideo');
+Route::post('/dislike-video', 'HomeController@DisLikeVideo');
 
 Route::get('/auth/redirect/{provider}', 'GoogleLoginController@redirect');
 Route::get('/callback/{provider}', 'GoogleLoginController@callback');
@@ -1106,3 +1107,7 @@ Route::post('livestreamcategory_update', 'ModeratorsUserController@livestreamcat
 // livestreamcategory_destroy 
 
 Route::post('livestreamcategory_destroy', 'ModeratorsUserController@livestreamcategory_destroy');
+Route::get('admin/allmoderator', 'ModeratorsUserController@view');
+Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
+Route::get('admin/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
+Route::post('admin/moderatoruser/update', 'ModeratorsUserController@update');
