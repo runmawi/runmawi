@@ -117,7 +117,8 @@
 </div>
 @foreach($permission as $permissions)
 
-<div  class="col-md-4" style="width: 33%; float: left;">
+<div  class="col-md-4" style="width: 33%; float: left;display: flex;
+    justify-content: space-between;">
             <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
             {{$permissions->name}}
             <label class="switch">

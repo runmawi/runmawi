@@ -409,6 +409,9 @@ if($value['sub_language'] == "Spanish"){
                 </div>
     
     </div>
+    <script type="text/javascript"> 
+        videojs('videoPlayer').videoJsResolutionSwitcher(); 
+    </script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="clear"></div>
         <script>

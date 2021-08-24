@@ -13,7 +13,7 @@
 <div id="admin-container">
 <!-- This is where -->
 	
-    <ol class="breadcrumb"> <li> <a href="{{ URL::to('/admin/pages') }} "><i class="fa fa-newspaper-o"></i>All Pages</a> </li> <li class="active">@if(!empty($page->id)) <strong>{{ $page->title }}</strong> @else <strong>New Page</strong> @endif</li> </ol>
+   <!-- <ol class="breadcrumb"> <li> <a href="{{ URL::to('/admin/pages') }} "><i class="fa fa-newspaper-o"></i>All Pages</a> </li> <li class="active">@if(!empty($page->id)) <strong>{{ $page->title }}</strong> @else <strong>New Page</strong> @endif</li> </ol>-->
 
 	<div class="admin-section-title">
 	@if(!empty($page->id))

@@ -22,9 +22,9 @@
                      <div class="iq-card-body">
                         <div class="table-view">
 
-                     	<table class="data-tables table movie_table " style="width:100%">
+                     	<table class="table-bordered" id="categorytbl" style="width:100%">
                      		<thead>
-                     			<tr>
+                     			<tr class="text-center">
                      				<th><label>Image</label></th>
                      				<th><label>Name</label></th>
                      				<th><label>Action</label></th>
@@ -32,7 +32,7 @@
                      		</thead>
                      		<tbody>
                      			@foreach($allCategories as $category)
-                     			<tr>
+                     			<tr class="text-center">
                      				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
                      				<td>{{ ucfirst($category->name) }}</td>
                      				<td> 

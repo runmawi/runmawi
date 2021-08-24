@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<title>VOD Player</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
+	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">
+	<link href="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<style type="text/css">
+		.video-js .vjs-watermark-top-right {right: 5%;top: 50%;}
+		.video-js .vjs-watermark-content {opacity: 0.3;}
+		.vjs-menu-button-popup .vjs-menu {width: auto;}
+	</style>
+</head>
+<body>
+ 
+  <div class="container-fluid section">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1 class="text-center">
+          VOD MP4 Player
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <video id='video' class="video-js vjs-default-skin vjs-big-play-centered"></video>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/video.js/dist/video.js"></script>
+  <script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
+  <script src="assets/videojs-watermark/dist/videojs-watermark.js"></script>
+
+  <script>
+    // fire up the plugin
+    videojs('video', {
+	  playbackRates: [0.5, 1, 1.5, 2],
+      controls: true,
+      muted: true,
+      width: 991,
+      fluid: true,
+      plugins: {
+        videoJsResolutionSwitcher: {
+		  ui: true,
+          default: 'low', // Default resolution [{Number}, 'low', 'high'],
+          dynamicLabel: true
+        }
+      }
+    }, function(){
+      var player = this;
+      window.player = player
+      player.updateSrc([
+        {
+          src: 'https://vjs.zencdn.net/v/oceans.mp4?SD',
+          type: 'video/mp4',
+          label: '360',
+          res: 360
+        },
+		{
+          src: 'https://vjs.zencdn.net/v/oceans.mp4?SD',
+          type: 'video/mp4',
+          label: '480',
+          res: 480
+        },  
+        {
+          src: 'https://vjs.zencdn.net/v/oceans.mp4?HD',
+          type: 'video/mp4',
+          label: '720',
+          res: 720
+		}
+      ])
+      player.on('resolutionchange', function(){
+        console.info('Source changed to %s', player.src())
+      }),
+	  player.watermark({
+        image: 'assets/logo/te.png',
+		fadeTime: null,
+        url: 'https://www.thinkexam.com/'
+      });
+    });
+  </script>
+
+
+  <script>
+    videojs('video_1').videoJsResolutionSwitcher()
+  </script>
+</body>
+</html>
