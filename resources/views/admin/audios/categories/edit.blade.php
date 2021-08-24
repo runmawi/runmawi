@@ -1,6 +1,7 @@
 <div class="modal-header">
+    <h4 class="modal-title">Update Category</h4>
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Update Category</h4>
+	
 </div>
 
 <div class="modal-body">
@@ -67,8 +68,8 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-black" id="submit-update-cat">Update</button>
+	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
 
 <script>
