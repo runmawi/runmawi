@@ -177,25 +177,24 @@ class AdminAudioCategoriesController extends Controller
         
         $input = $request->all();
         
-        $path = public_path().'/uploads/audios/';
         
-        $image = $request['image'];
-        if($image != '') {   
-             //code for remove old file
-
-          if($image != ''  && $image != null){
-             $file_old = $path.$image;
-             if (file_exists($file_old)){
-                 unlink($file_old);
+        $path = public_path().'/uploads/albums/';
+            $image_path = public_path().'/uploads/albums/';
+            if(empty($input['album'])){
+                unset($input['album']);
+            } else {
+                $image = $input['album'];
+                if($image != ''  && $image != null){
+                 $file_old = $image_path.$image;
+                 if (file_exists($file_old)){
+                     unlink($file_old);
+                 }
              }
+              //upload new file
+             $file = $image;
+             $input['album']  = $file->getClientOriginalName();
+             $file->move($image_path, $input['album']);
          }
-                //upload new file
-         $file = $image;
-         $input['image']  = $file->getClientOriginalName();
-         $file->move($path, $input['image']);
-     } else {
-         $input['image']  = 'default.jpg';
-     }
         
         
          /*Slug*/
@@ -233,26 +232,23 @@ class AdminAudioCategoriesController extends Controller
                 $request['slug'] = $this->createAlbumSlug($request['albumname']);    
             }
 
-            $path = public_path().'/uploads/audios/';
-            if (isset($request['image']) && !empty($request['image'])){
-                $image = $request['image']; 
+            $path = public_path().'/uploads/albums/';
+            $image_path = public_path().'/uploads/albums/';
+            if(empty($request['album'])){
+                unset($request['album']);
             } else {
-               $request['image'] = '';
-           }
-           if( isset($image) && $image!= '') {   
-              //code for remove old file
-              if($image != ''  && $image != null){
-                 $file_old = $path.$image;
+                $image = $request['album'];
+                if($image != ''  && $image != null){
+                 $file_old = $image_path.$image;
                  if (file_exists($file_old)){
                      unlink($file_old);
                  }
              }
-                  //upload new file
+              //upload new file
              $file = $image;
-             $request['image']  = $file->getClientOriginalName();
-             $file->move($path,$request['image']);
-
-         } 
+             $request['album']  = $file->getClientOriginalName();
+             $file->move($image_path, $request['album']);
+         }
         
         $audio->update($request);
         

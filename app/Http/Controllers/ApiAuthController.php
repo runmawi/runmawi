@@ -3106,8 +3106,21 @@ public function upnextAudio(Request $request){
         $parent_id = $request->parent_id;
         $user_name = $request->user_name;
         $user_type = $request->user_type;
+        $path = URL::to('/').'/public/uploads/avatars/';
+        $logo = $request->file('avatar');
+        if($logo != '' && $logo != null) {
+            $file_old = $path.$logo;
+            if (file_exists($file_old)){
+              unlink($file_old);
+          }
+          $file = $logo;
+          $avatar = $file->getClientOriginalName();
+          $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
-        if(DB::table('sub_users')->insert(['parent_id' => $parent_id, 'user_name' => $user_name, 'user_type' => $user_type])){
+      } else {
+          $avatar = 'default.png';
+      }
+        if(DB::table('sub_users')->insert(['parent_id' => $parent_id, 'user_name' => $user_name, 'user_type' => $user_type, 'avatar' => $avatar])){
             $response = array(
                 'status'=>'true',
                 'message'=> 'New profile created Successfully'
@@ -3126,7 +3139,10 @@ public function upnextAudio(Request $request){
     public function viewchildprofile(Request $request)
     {
         $parent_id = $request->parent_id;
-        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get();
+        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+        return $item;
+      });
         if(!empty($sub_users)){
             $response = array(
                 'status'=>'true',

@@ -133,7 +133,7 @@
 								<div class="panel-title"><label>Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
-									<img src="{{ Config::get('site.uploads_dir') . 'images/' . $audio->image }}" class="audio-img" width="200"/>
+									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
 									<p class="p1">Select the audio image (1280x720 px or 16:9 ratio):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />

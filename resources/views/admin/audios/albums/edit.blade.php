@@ -25,7 +25,7 @@
                       
                         
                     @if(!empty($categories[0]->album))
-                        <img src="{{ Config::get('site.uploads_dir') . 'albums/' . $categories[0]->album }}" style="max-height:100px" />
+                        <img src="{{ URL::to('/public/uploads/albums/') . '/'.$categories[0]->album }}" style="max-height:100px" />
                     @endif
                          <label>Cover Image:</label>
                             <input id="f02" type="file" name="album" placeholder="Add profile picture" />

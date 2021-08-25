@@ -31,7 +31,7 @@
 								@foreach($allAlbums as $album)
 								<tr>
                      				<td>{{ $album->albumname }}</td>
-                     				<td><?php if($album->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$album->image }}" width="50"><?php }else{} ?></td>
+                     				<td><?php if($album->album != '') { ?><img src="{{ URL::to('/public/uploads/albums/') . '/'.$album->album }}" width="50"><?php }else{} ?></td>
                      				<td><a class="action edit iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('/admin/audios/albums/edit/') }}/{{ $album->id }}" class="edit"><i class="ri-pencil-line"></i></a> 
                      				<a href="{{ URL::to('/admin/audios/albums/delete/') }}/{{ $album->id }}" class="action delete iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
                      			</tr>

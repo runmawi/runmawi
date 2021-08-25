@@ -116,10 +116,20 @@ class AdminAudioController extends Controller
             $artistsdata = $data['artists'];
             unset($data['artists']);
         }
-
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
         $image = (isset($data['image'])) ? $data['image'] : '';
         if(!empty($image)){
-            $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $file = $image;
+              $data['image']  = $file->getClientOriginalName();
+              $file->move($image_path, $data['image']);
         } else {
             $data['image'] = 'placeholder.jpg';
         }
@@ -237,11 +247,22 @@ class AdminAudioController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
         if(empty($data['image'])){
             unset($data['image']);
         } else {
-            $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+            $image = $data['image'];
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $file = $image;
+              $data['image']  = $file->getClientOriginalName();
+              $file->move($image_path, $data['image']);
         }
 
         if(empty($data['active'])){

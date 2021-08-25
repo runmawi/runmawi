@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use \App\User as User;
 use App\Setting as Setting;
+use \Redirect as Redirect;
 use App\Slider as Slider;
 use App\PpvVideo as PpvVideo;
 use App\PpvCategory as PpvCategory;
@@ -367,10 +368,21 @@ class ThemeAudioController extends Controller{
          if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        
-        
+        $audios = $album_ids = array();
+        $latest_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
+        foreach ($latest_audios as $key => $latest_audio) {
+            $audio_id = $latest_audio->audio_id;
+            if(Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->exists()){
+                $audios[] = Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->get();
+                $getdata = Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->first();
+                $album_ids[] = $getdata->album_id;
+            }
+        }
+        $albums = AudioAlbums::whereIn('id', $album_ids)->get();
         $data = array(
-            'artist' => '',
+            'artist' => Artist::where('id',$artist_id)->first(),
+            'latest_audios' => $audios,
+            'albums' => $albums,
         );
         return View::make('artist', $data);
     }
