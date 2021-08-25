@@ -3135,23 +3135,55 @@ public function upnextAudio(Request $request){
         return response()->json($response, 200);
     }
 
-    /*View Child profile*/
-    public function viewchildprofile(Request $request)
+    public function updatechildprofile(Request $request)
     {
-        $parent_id = $request->parent_id;
-        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
-        return $item;
-      });
-        if(!empty($sub_users)){
+        $child_id = $request->child_id;
+       
+        $path = URL::to('/').'/public/uploads/avatars/';
+        $logo = $request->file('avatar');
+        if($logo != '' && $logo != null) {
+            $file_old = $path.$logo;
+            if (file_exists($file_old)){
+              unlink($file_old);
+          }
+          $file = $logo;
+          $avatar = $file->getClientOriginalName();
+          $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
+
+      } else {
+          $avatar = 'default.png';
+      }
+        if(DB::table('sub_users')->where('id',$child_id)->update([ 'avatar' => $avatar])){
             $response = array(
                 'status'=>'true',
-                'sub_users'=> $sub_users
+                'message'=> 'Profile updated Successfully'
             );
         }else{
             $response = array(
                 'status'=>'false',
-                'sub_users'=> ''
+                'message'=> 'Error in Saving profile data'
+            );
+        }
+
+        return response()->json($response, 200);
+    }
+
+    /*View Child profile*/
+    public function viewchildprofile(Request $request)
+    {
+        $parent_id = $request->parent_id;
+        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get();
+        if(!empty($sub_users)){
+            $response = array(
+                'status'=>'true',
+                'sub_users'=> $sub_users,
+                'image_url' => URL::to('/').'/public/uploads/avatars/'
+            );
+        }else{
+            $response = array(
+                'status'=>'false',
+                'sub_users'=> '',
+                'image_url' => '',
             );
         }
 

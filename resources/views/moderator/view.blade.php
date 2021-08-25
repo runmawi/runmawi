@@ -57,6 +57,7 @@
                                     <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Description</th>
+                                    <th>Action</th>
                                 </tr>
                                     @foreach($moderatorsuser as $user)
                                     <tr id="{{ $user->id }}">

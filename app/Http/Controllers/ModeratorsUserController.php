@@ -203,33 +203,21 @@ $data = $request->all();
 // echo "<pre>";  
 // print_r($data);
 // exit();
+
 $user_permission = $data['user_permission'];
 $permission = implode(",",$user_permission);
 $id = $data['id'];
 $moderatorsuser = ModeratorsUser::find($id);
-// echo "<pre>";  
-// print_r($moderatorsuser['username']);
-// exit();
 $moderatorsuser['username'] = $data['username'];
 $moderatorsuser['email'] = $data['email_id'];
 $moderatorsuser['mobile_number'] = $data['mobile_number'];
-// $moderatorsuser->password = $data['password'];
-// $password = Hash::make($moderatorsuser->password);
-// $moderatorsuser->hashedpassword = $password;
-// $moderatorsuser->confirm_password = $data['confirm_password'];
 $moderatorsuser['description'] = $data['description'];
-// $moderatorsuser->hashedpassword = $data['picture'];
 $moderatorsuser['role'] = $data['user_role'];
 $moderatorsuser['user_permission'] = $permission;
-if($data['picture'] == ""){
-  // print_r('oldtesting pic');
-  // exit();
-  $moderatorsuser['picture']  = "Default.png";
-}else{
 
   $logopath = URL::to('/public/uploads/picture/');
   $path = public_path().'/uploads/picture/';
-  $picture = $request['picture'];
+  $picture = $data['picture'];
   if($picture != '') {   
    //code for remove old file
    if($picture != ''  && $picture != null){
@@ -245,10 +233,6 @@ if($data['picture'] == ""){
    $file->move($path, $moderatorsuser->picture);
   
   }
-    $moderatorsuser['picture'] = $file->getClientOriginalName();
-}
-
-
 
 $moderatorsuser->save();
 $user_id = $id;
@@ -291,22 +275,12 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
   public function delete($id)
   {
 
-      $moderatorsrole = ModeratorsRole::all();
-      $moderatorspermission = ModeratorsPermission::all();
-      $moderatorsuser = ModeratorsUser::all();
-      $data = array(
-   
-          'roles' => $moderatorsrole,
-          'permission' => $moderatorspermission,
-          'moderatorsuser' => $moderatorsuser,
 
-
-        );
         $moderators = ModeratorsUser::find($id);
 
         ModeratorsUser::destroy($id);
   
-       return view('moderator.view',$data);
+       return \Redirect::back();
   }
   public function view()
   {

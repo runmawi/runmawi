@@ -94,11 +94,13 @@
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
 
                            
-                                <input id="picture" type="file" class="form-control" name="picture" >
-                                @if(!empty($moderators->picture))
+                                <input id="picture" type="file" class="form-control" id= "picture" name="picture"  value="DefaultImageName">
+                               <p class="text" id= "error_picture"> </p>
+                      
+                            </div>
+                            @if(!empty($moderators->picture))
                             <img src="{{ $moderators->picture }}" style="max-height:100px" />
                             @endif
-                            </div>
                         </div>
 
                         <div class="col-md-6" style="width: 50%; float: left;">
@@ -172,7 +174,7 @@
                     <br>
                                             <div class="form-group row mb-0">
                                                 <div class="col-md-12 offset-md-4">
-                                                    <button type="submit" class="btn btn-primary">
+                                                    <button type="submit" id ="submit" class="btn btn-primary">
                                                         {{ __('Register') }}
                                                     </button>
                                                 </div>
@@ -185,3 +187,22 @@
                             </div>
                     @endsection
                     <!-- //    display: flex; -->
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+
+                    <script>
+                        $(document).ready(function(){
+                        $('#submit').click(function(){
+                            if($('#picture').val() == ""){
+                            $('#error_picture').text('Picture Is Requried');
+                            $('#error_picture').css('color', 'red');
+
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    });
+
+
+                    </script>

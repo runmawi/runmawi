@@ -157,6 +157,7 @@ Route::group([
     Route::post('addchilduserprofile', 'ApiAuthController@addchilduserprofile');
 
     Route::post('viewchildprofile', 'ApiAuthController@viewchildprofile');
+    Route::post('updatechildprofile', 'ApiAuthController@updatechildprofile');
 
     Route::post('savefavouritecategory', 'ApiAuthController@savefavouritecategory');
     
