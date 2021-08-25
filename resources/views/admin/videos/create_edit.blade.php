@@ -263,12 +263,12 @@
                               </select>
                               </div> -->  
                               <div class="col-sm-6 form-group mt-3">
-                                 <!-- <label class="p-2">Subscriber (only paid subscription users):</label>
+                                  <label class="p-2">User Access:</label>
                               <select id="access" name="access"  class="form-control" >
                                 <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                  <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
                                  <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>   
-                              </select>-->
+                              </select>
                                    <label class="">Video Duration:</label>
                                    <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
                               </div> 
@@ -403,7 +403,7 @@
 	</script>
 
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
+    <script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
     <script>
     CKEDITOR.replace( 'summary-ckeditor', {
         filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
@@ -412,7 +412,7 @@
     </script>
 
     <script>
-
+      $('#duration').mask('00:00:00');  
       $('input[type="checkbox"]').on('change', function(){
 			   this.value = this.checked ? 1 : 0;
 			}).change();

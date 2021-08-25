@@ -163,7 +163,16 @@
                    <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
                         <hr></div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
-                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderator</span></a></li>
+                    <li>
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                     </ul>
+                  </li>
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                        class="la la-newspaper-o"></i><span>Pages</span><i

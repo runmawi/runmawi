@@ -346,13 +346,14 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
 	<script type="text/javascript">
 
 		$ = jQuery;
 
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
-			$('#duration').mask('00:00:00');
+			
 
 			$('#type').change(function(){
 				if($(this).val() == 'file'){
@@ -378,7 +379,7 @@
 			});
 
 		});
-
+$('#duration').mask('00:00:00');
 	</script>
 	@section('javascript')
 	@stop
