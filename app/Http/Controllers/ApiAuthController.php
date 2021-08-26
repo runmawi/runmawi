@@ -3207,4 +3207,389 @@ public function upnextAudio(Request $request){
         return response()->json($response, 200);
     }
 
+    public function getRecentAudios() {
+
+        $date = date('Y-m-d', strtotime('-10 days'));
+
+        $recent_audios =  DB::table('audio')
+        ->join('audio_categories', 'audio.audio_category_id', '=', 'audio_categories.id')
+        ->select('audio_categories.name as audio_cat_name ', 'audio.*')
+        ->where('audio.created_at', '>=', $date)
+        ->get();
+
+        $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
+
+        if ( $recent_audios_count > 0) {
+
+            $response = array(
+                'status'=>'true',
+                'message'=>'success',
+                'recent_audios'=> $recent_audios
+            );
+        } else {
+
+            $response = array(
+                'status'=>'false',
+                'message'=>'No recent Audios Found'
+            );
+        }
+
+        return response()->json($response, 200);
+
+    }
+
+    public function audiodetail(Request $request)
+    {
+
+        $audio_id = $request->audio_id;
+
+        $current_date = date('Y-m-d h:i:s a', time()); 
+        $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+        });
+
+        if ( isset($request->user_id) && $request->user_id != '' ) { 
+            $user_id = $request->user_id;
+      //Wishlilst
+            $cnt = Wishlist::select('audio_id')->where('user_id','=',$user_id)->where('audio_id','=',$audio_id)->count();
+            $wishliststatus =  ($cnt == 1) ? "true" : "false";
+      //Watchlater
+            $cnt1 = Watchlater::select('audio_id')->where('user_id','=',$user_id)->where('audio_id','=',$audio_id)->count();
+            $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+
+       //Favorite
+            $cnt2 = Favorite::select('audio_id')->where('user_id','=',$user_id)->where('audio_id','=',$audio_id)->count();
+            $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+
+            $userrole = User::where('id','=',$user_id)->first()->role;
+            $status = 'true';
+
+            $like_data = LikeDisLike::where("audio_id","=",$audio_id)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+            $dislike_data = LikeDisLike::where("audio_id","=",$audio_id)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+            $like = ($like_data == 1) ? "true" : "false";
+            $dislike = ($dislike_data == 1) ? "true" : "false";
+        } else{
+            $wishliststatus = 'false';
+            $watchlaterstatus = 'false';
+            $favoritestatus = 'false';
+            $ppv_exist = 0;
+            $userrole = '';
+            $status = 'true';
+            $like = "false";
+            $dislike = "false";
+        }
+
+        
+
+        $audio_cat_id = Audio::where('id','=',$audio_id)->pluck('audio_category_id');
+
+        $audio_cat = AudioCategory::where('id','=',$audio_cat_id)->get();
+
+        $response = array(
+            'status' => $status,
+            'wishlist' => $wishliststatus,
+            'main_genre' => $audio_cat[0]->name,
+            'watchlater' => $watchlaterstatus,
+            'favorite' => $favoritestatus,
+            'userrole' => $userrole,
+            'like' => $like,
+            'dislike' => $dislike,
+            'shareurl' => URL::to('channelVideos/play_videos').'/'.$audio_id,
+            'audiodetail' => $audiodetail,
+        );
+        return response()->json($response, 200);
+
+    }
+
+    public function categoryaudios(Request $request)
+    {
+       
+        $audiocategories = AudioCategory::select('id','image')->get()->toArray();
+        $myData = array();
+        foreach ($audiocategories as $key => $audiocategory) {
+            $audiocategoryid = $audiocategory['id'];
+            $genre_image = $audiocategory['image'];
+            $audios= Audio::where('audio_category_id',$audiocategoryid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
+            return $item;
+        });
+            $categorydetails = AudioCategory::where('id','=',$audiocategoryid)->first();
+
+            if(count($audios) > 0){
+                $msg = 'success';
+            }else{
+                $msg = 'nodata';
+            }
+            $myData[] = array(
+                "genre_name"   => $categorydetails->name,
+                "genre_id"   => $audiocategoryid,
+                "genre_image"   => URL::to('/').'/public/uploads/audiocategory/'.$genre_image,
+                "message" => $msg,
+                "audios" => $audios
+            );
+
+        }
+
+        $response = array(
+            'status' => 'true',
+            'genre_audios' => $myData
+        );
+        return response()->json($response, 200);
+    }
+
+    public function artistlist()
+    {
+        $artistlist = Artist::all()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+            return $item;
+        });
+        if($artistlist){
+            $response = array(
+                'status' => 'true',
+                'artistlist' => $artistlist
+            );
+        }else{
+            $response = array(
+                'status' => 'false',
+                'message' => 'No data Found'
+            );
+        }
+
+        return response()->json($response, 200);
+        
+    }
+
+    public function artistfavorites(Request $request)
+    {
+        $user_id = $request->user_id;
+        $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('user_id',$user_id)->where('favourites',1)->get(['artists.*']);
+        if($favoriteslist){
+            $response = array(
+                'status' => 'true',
+                'favoriteslist' => $favoriteslist
+            );
+        }else{
+            $response = array(
+                'status' => 'false',
+                'message' => 'No data Found'
+            );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function artistfollowings(Request $request)
+    {
+        $user_id = $request->user_id;
+        $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('user_id',$user_id)->where('following',1)->get(['artists.*']);
+        if($followinglist){
+            $response = array(
+                'status' => 'true',
+                'followinglist' => $followinglist
+            );
+        }else{
+            $response = array(
+                'status' => 'false',
+                'message' => 'No data Found'
+            );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function artistaddremovefav(Request $request)
+    {
+
+        $user_id = $request->user_id;
+        $artist_id = $request->artist_id;
+        $favourites = $request->favourites;
+        $count = DB::table('artist_favourites')->where('user_id', '=',
+        $user_id)->where('artist_id', '=', $artist_id)->count();
+        if ( $count > 0 ) {
+
+            DB::table('artist_favourites')->where('user_id', '=',
+                $user_id)->where('artist_id', '=', $artist_id)->update(['favourites'=>$favourites]);
+            if($favourites == 1){
+                $response = array(
+                    'status'=>'false',
+                    'message'=>'Artist Added From Your Favorite List'
+                );
+            }else{
+                $response = array(
+                    'status'=>'false',
+                    'message'=>'Artist Removed From Your Favorite List'
+                );
+            }
+
+
+        } else {
+                $data = array('user_id' => $user_id, 'artist_id' => $artist_id );
+                DB::table('artist_favourites')->insert($data);
+                $response = array(
+                    'status'=>'true',
+                    'message'=>'Artist Added  to  Your Favorite List'
+                );
+
+            }
+    return response()->json($response, 200);
+    }
+
+    public function artistaddremovefollow(Request $request)
+    {
+        $user_id = $request->user_id;
+        $artist_id = $request->artist_id;
+        $following = $request->following;
+        $count = DB::table('artist_favourites')->where('user_id', '=',
+        $user_id)->where('artist_id', '=', $artist_id)->count();
+            if ( $count > 0 ) {
+                DB::table('artist_favourites')->where('user_id', '=',
+                $user_id)->where('artist_id', '=', $artist_id)->update(['following'=>$following]);
+                    if($following == 1){
+                        $response = array(
+                            'status'=>'false',
+                            'message'=>'Artist Added From Your Following List'
+                        );
+                    }else{
+                        $response = array(
+                            'status'=>'false',
+                            'message'=>'Artist Removed From Your Following List'
+                        );
+                    }
+                
+                
+            } else {
+                $data = array('user_id' => $user_id, 'artist_id' => $artist_id );
+                DB::table('artist_favourites')->insert($data);
+                $response = array(
+                    'status'=>'true',
+                    'message'=>'Artist Added  to  Your Favorite List'
+                );
+
+            }
+            return response()->json($response, 200);
+    }
+
+    public function artistdetail(Request $request)
+    {
+        $artist_id = $request->artist_id;
+        $user_id = $request->user_id;
+        $artist = Artist::where('id',$artist_id)->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+            return $item;
+        });
+        $fav_count = DB::table('artist_favourites')->where('user_id', '=',
+        $user_id)->where('artist_id', '=', $artist_id)->where('favourites', '=',1)->count();
+        $fav = ($fav_count > 0)?'true':'false';
+        $follow_count = DB::table('artist_favourites')->where('user_id', '=',
+        $user_id)->where('artist_id', '=', $artist_id)->where('following', '=',1)->count();
+        $follow = ($follow_count > 0)?'true':'false'; 
+        $artist_audios = Audioartist::join('audio', 'audio.id', '=', 'audio_artists.audio_id')->where('artist_id',$artist_id)->get();
+        $response = array(
+            'status'=>'true',
+            'artist'=>$artist,
+            'favourites'=>$fav,
+            'following' => $follow,
+            'artist_audios' => $artist_audios
+        );
+        return response()->json($response, 200);
+    }
+
+    public function trendingaudio(Request $request)
+    {
+        $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+        $response = array(
+            'status'=>'true',
+            'trending_audios'=>$trending_audios
+        );
+        return response()->json($response, 200);
+    }
+
+    public function albumlist(Request $request)
+    {
+        $audiocategories = AudioCategory::all();
+        $response = array(
+            'status'=>'true',
+            'audiocategories'=>$audiocategories
+        );
+        return response()->json($response, 200);
+    }
+
+    public function albumaudios(Request $request)
+    {
+        $album_id = $request->album_id;
+        $audioalbum = Audio::where('audio_category_id',$album_id)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
+            return $item;
+        });
+        $response = array(
+            'status'=>'true',
+            'albumname'=>AudioCategory::where('id',$album_id)->first()->name,
+            'audioalbum'=>$audioalbum
+        );
+        return response()->json($response, 200);
+    }
+
+    public function next_audio(Request $request) {
+
+      $currentaudio_id = $request->audio_id;
+
+      $next_audio_id = Audio::where('id', '>', $currentaudio_id)->where('status','=','1')->where('active','=','1')->min('id');
+
+      if($next_audio_id){
+        $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => true,
+          'next_audio_id' => $next_audio_id,
+          'audio' => $audio
+        );
+      }else{
+        $response = array(
+          'status' => false,
+          'message' => 'No Data Found'
+        );
+      }
+      return response()->json($response, 200);
+    }
+
+
+    public function prev_audio(Request $request){
+
+    $currentaudio_id = $request->audio_id;
+    $prev_audio_id = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('id','desc')->first();
+
+    if($prev_audio_id){
+        $prev_audio_id = $prev_audio_id->id;
+        $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get();
+        $response = array(
+          'status' => "true",
+          'prev_audio_id' => $prev_audio_id,
+          'audio' => $audio
+        );
+      }else{
+        $response = array(
+          'status' => "false",
+          'message' => 'No Data Found'
+        );
+      }
+      return response()->json($response, 200);
+  
+    }
+
+    public function relatedaudios(Request $request) {
+        $audio_id = $request->audio_id;
+        $categoryAudios = Audio::where('id',$audio_id)->first();
+        $category_id = Audio::where('id',$audio_id)->pluck('audio_category_id');
+        $recomended = Audio::where('audio_category_id','=',$category_id)->where('id','!=',$audio_id)->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['mp4_url'] = URL::to('/').'/public/uploads/videos/'.$item->mp4_url;
+                return $item;
+            });
+        $response = array(
+            'status'=>'true',
+            'recomendedaudios' => $recomended
+        ); 
+        return response()->json($response, 200);
+    }
+
 }

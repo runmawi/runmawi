@@ -250,8 +250,8 @@ if($value['sub_language'] == "Spanish"){
       <!-- Wish List -->            
       <div style="margin-left:15px;" class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
       <?php if($video->trailer != ''){ ?>
-        <div style="margin-left:15px;" class="mywishlist btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
-        <div style="margin-left:15px; display: none;" class="mywishlist btn btn-default skip">Skip</div>
+        <div style="margin-left:15px;" class="watchtrailer btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
+        <div style="margin-left:15px; display: none;" class="skiptrailer btn btn-default skip">Skip</div>
       <?php } ?>
 </div>
            </div>

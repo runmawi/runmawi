@@ -161,6 +161,19 @@ Route::group([
 
     Route::post('savefavouritecategory', 'ApiAuthController@savefavouritecategory');
     
-
-    
+    Route::get('getRecentAudios', 'ApiAuthController@getRecentAudios');
+    Route::post('audiodetail', 'ApiAuthController@audiodetail');
+    Route::post('next_audio', 'ApiAuthController@next_audio');
+    Route::post('prev_audio', 'ApiAuthController@prev_audio');
+    Route::post('relatedaudios', 'ApiAuthController@relatedaudios');
+    Route::get('categoryaudios', 'ApiAuthController@categoryaudios');
+    Route::get('artistlist', 'ApiAuthController@artistlist');
+    Route::post('artistfavorites', 'ApiAuthController@artistfavorites');
+    Route::post('artistfollowings', 'ApiAuthController@artistfollowings');
+    Route::post('artistaddremovefav', 'ApiAuthController@artistaddremovefav');
+    Route::post('artistaddremovefollow', 'ApiAuthController@artistaddremovefollow');
+    Route::post('artistdetail', 'ApiAuthController@artistdetail');
+    Route::get('trendingaudio', 'ApiAuthController@trendingaudio');
+    Route::get('albumlist', 'ApiAuthController@albumlist');
+    Route::post('albumaudios', 'ApiAuthController@albumaudios');
 });

@@ -65,10 +65,10 @@ i#like {
     </i>
 </a>
 </li>
-<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-down" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i>
+<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-down <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i>
 <li>
 
-    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i>
+    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i>
     <li>
 
 
@@ -100,8 +100,10 @@ i#like {
             $(this).toggleClass('active');
             if($(this).hasClass('active')){
                 var like = 1;
+                $(this).css('color','#34c1d8');
             }else{
                 var like = 0;
+                $(this).css('color','white');
             }
             $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
@@ -109,12 +111,7 @@ i#like {
                 data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
                 dataType: "html",
                 success: function() {
-                 
-                     if($(this).hasClass('active')){
-                        $(this).css('color','blue');
-                    }else{
-                        $(this).css('color','white');
-                    }
+                    
                 }
             });
         } else {
@@ -126,8 +123,10 @@ i#like {
         $(this).toggleClass('active');
         if($(this).hasClass('active')){
             var dislike = 1;
+            $(this).css('color','#34c1d8');
         }else{
             var dislike = 0;
+            $(this).css('color','white');
         }
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
@@ -138,11 +137,6 @@ i#like {
             data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
             dataType: "html",
             success: function() {
-              if($(this).hasClass('active')){
-                $(this).css('color','blue');
-            }else{
-                $(this).css('color','white');
-            }
           }
       });
 
