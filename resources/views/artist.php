@@ -1,4 +1,5 @@
 <?php include('header.php'); ?>
+
 <div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
         <h2 class="font-weight-bold"><?php echo $artist->artist_name;?></h2>
         <!-- <p>8,239,0056 Monthly viewers</p> -->
@@ -6,21 +7,21 @@
     <div class="m-5 mt-3">
         <div class="d-flex align-items-center">
             <div>
-                <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+                <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i>
             </div>
             <div class="flw">
                 <button type="button" class="btn btn-outline-secondary">Follow</button>
 
             </div>
             <div class="flw">
-                <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i>
             </div>
         </div>
     </div>
     <div class="mt-3">
         <div class="d-flex justify-content-between m-4 align-items-center">
             <div>
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" height="350" width="200">
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" >
             </div>
             <div class="abu p-2">
                 <h2>About</h2>
@@ -32,13 +33,13 @@
         <h2>Lastest Release</h2>
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row mb-5">
         	<?php foreach ($latest_audios as $key => $latest_audio) { 
         		?>
         		
             <div class="col-sm-4">
                 <div class="bg">
-                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" height="200" width="300">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" width="330">
                     <div class="d-flex justify-content-between">
                         <div>
                             <p class="dc"><?php echo $latest_audio[0]['title'];?></p>
@@ -58,12 +59,12 @@
         <h2>Album</h2>
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row mb-5">
         	<?php foreach ($albums as $key => $album) { ?>
         		
             <div class="col-sm-4">
                 <div class="bg">
-                    <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" height="200" width="300">
+                    <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" width="330">
                     <div class="d-flex justify-content-between">
                         <div>
                             <p class="dc"><?php echo $album->albumname;?></p>
