@@ -14,7 +14,7 @@
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-6">
-				<h3><i class="entypo-archive"></i> Video Categories</h3>
+				<h3><i class="entypo-archive"></i> All Moderators</h3>
 			</div>
             <div class="col-md-6" align="right">
             <a href="{{ URL::to('moderator') }}" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>

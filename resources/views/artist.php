@@ -1,5 +1,5 @@
 <?php include('header.php'); ?>
-<div class="aud mt-5" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
+<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
         <h2 class="font-weight-bold"><?php echo $artist->artist_name;?></h2>
         <!-- <p>8,239,0056 Monthly viewers</p> -->
     </div>

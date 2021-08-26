@@ -18,7 +18,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i> Users</h3> 
+		<h3><i class="entypo-globe"></i>Update Moderator Users</h3> 
 	</div>
 	<div class="clear"></div>
 <?php
@@ -154,14 +154,15 @@
                                 <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
                                 {{$permissions->name}}
                                 <label class="switch">
+
                                     <?php
                                        foreach($moderatorspermission as $permission){
                                         $permissions_id[] = $permission->permissions_id;
                                     }
-                                    if(in_array($permissions->id,$permissions_id )){ 
+                                    // if(in_array($permissions->id,$permissions_id )){ 
                                         ?>
-                                        <input type="checkbox"  name="user_permission[]" checked="checked" value="{{$permissions->id}}" >
-                                        <?php } ?>
+                    <input type="checkbox" name="user_permission[]" value="{{ $permissions->id }}" {{ in_array($permissions->id,$permissions_id) ? ' checked' : '' }}> 
+                                    <?php //} ?>
                                     <span class="slider round"></span>
                                 </label>
                     </div>

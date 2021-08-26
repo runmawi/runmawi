@@ -200,8 +200,11 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
   {
 
 $data = $request->all();
+
+  // $data_delete = UserAccess::destroy('user_id', '=', $id);
+
 // echo "<pre>";  
-// print_r($data);
+// print_r($data_delete);
 // exit();
 
 $user_permission = $data['user_permission'];
@@ -236,37 +239,25 @@ $moderatorsuser['user_permission'] = $permission;
 
 $moderatorsuser->save();
 $user_id = $id;
+$moderatorsuser->save();
+$user_id = $moderatorsuser->id;
+
+
+// $userrolepermissiom = UserAccess::where('user_id', '=', $id)->get();
+$data_delete = UserAccess::where('user_id','=',$id)->delete();
 
 foreach($data['user_permission'] as $value){
-$userrolepermissiom = UserAccess::where('user_id', '=', $id)->get();
-foreach($userrolepermissiom as $values){
-  $values->user_id = $user_id;
-  $values->role_id = $data['user_role'];
-  $values->permissions_id = $value;
-  $values->save();
-}
-}
-$moderatorsrole = ModeratorsRole::all();
-$moderatorspermission = ModeratorsPermission::all();
-$moderatorsuser = ModeratorsUser::all();
-$moderators = ModeratorsUser::find($id);
-$useraccess = UserAccess::where('user_id', '=', $id)->get();
-$permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
-      $data = array(
-   
-          'roles' => $moderatorsrole,
-          'permission' => $moderatorspermission,
-          'moderatorsuser' => $moderatorsuser,
-          'moderators' => $moderators,
-          'moderatorspermission' => $permission,
-          'useraccess' => $useraccess,
+  $userrolepermissiom = new UserAccess;
+  $userrolepermissiom->user_id = $user_id;
+  $userrolepermissiom->role_id = $request->user_role;
+  $userrolepermissiom->permissions_id = $value;
+  $userrolepermissiom->save();
+  
 
-
-        );
+}
 
   
-       return view('moderator.create_edit',$data);
-  
+       return \Redirect::back();
   }
 
 
