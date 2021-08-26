@@ -1525,4 +1525,64 @@ height: 0.2rem !important;}
     position: relative;
     top: 2px;
 }
+    .aud{
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+   
+}
+.aud h2{
+   float: right;
+   position: relative;
+   top: 70%;
+   left: -15%;
+   color: #fff;
+   font-size: 50px;
+
+}
+.aud p{
+    float: right;
+    position: relative;
+    top: 79%;
+    left: 0%;
+    color: #fff;
+    
+ 
+ }
+.aud h2{
+    color: #fff!important;  
+}
+.aud .fa{
+    color: #fff!important;
+    font-size: 25px;
+}
+.fa-play-circle-o:before {
+    content: "\f01d";
+    font-size: 40px;
+}
+.flw{
+    padding-left: 10px;
+}
+.flw button{
+  
+   color: #fff!important;
+}
+.abu{
+    color: #fff!important;
+    width: 80%;
+    line-height: 35px;
+}
+.abu p{
+    text-align: justify;
+}
+.bg{
+    background: #2C2A2A;
+color: #FFFFFF;
+padding: 15px;
+    width: 330px;
+
+}
+.dc{
+    font-size: 20px;
+}
 
