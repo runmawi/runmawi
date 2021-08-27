@@ -703,7 +703,7 @@ if(!empty($artistsdata)){
         public function build_video_thumbnail($video_path,$movie, $thumb_path) {
 
     // Create a temp directory for building.
-            $temp = sys_get_temp_dir() . "/build";
+            $temp = storage_path('app/public'). "/build";
 
     // Use FFProbe to get the duration of the video.
             $ffprobe = \FFMpeg\FFProbe::create();
