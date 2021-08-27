@@ -347,18 +347,20 @@ class ThemeAudioController extends Controller{
         }
     }
     
-    public function Albums() {
+    public function album($album_slug) {
        
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        
-        /*print_r('sd');
-        exit;*/
-            $allAlbums = AudioAlbums::orderBy('created_at', 'DESC')->get();
+            $album_id = AudioAlbums::where('slug', $album_slug)->first()->id;
+            $album = AudioAlbums::where('id', $album_id)->first();
+            $album_audios = Audio::where('album_id', $album_id)->get();
+            $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
         
             $data = array(
-                'allAlbums' => $allAlbums,
+                'album' => $album,
+                'album_audios' => $album_audios,
+                'other_albums' => $other_albums,
             );
         return View::make('albums', $data);
     }

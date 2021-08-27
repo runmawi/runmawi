@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use View;
 use Validator;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
@@ -111,7 +111,7 @@ class AdminAudioController extends Controller
         if($request->slug == ''){
             $data['slug'] = $this->createSlug($data['title']);    
         }
-        
+        $data['user_id'] = Auth::user()->id;    
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
@@ -166,15 +166,25 @@ class AdminAudioController extends Controller
         }
         
         $audio_upload = $request->file('audio_upload');
-
+ $ext = $audio_upload->extension();
+        
         if($audio_upload){
-            $ffmpeg = FFMpeg\FFMpeg::create();
-            $audioupload = $ffmpeg->open($data['audio_upload']);
+            if($ext == 'mp3'){
+                $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
 
-            $audioupload
-            ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$audio->id.'.mp3');
+                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+            }else{
+                $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                
+                FFMpeg::open($audio_upload->getClientOriginalName())
+                ->export()
+                ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                ->toDisk('public')
+                ->save('audios/'. $audio->id.'.mp3');
+                unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
 
-            $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$audio->id.'.mp3'; 
+            }
 
             $update_url = Audio::find($audio_id);
 
@@ -296,21 +306,33 @@ class AdminAudioController extends Controller
         } else {
         
         $audio_upload = $request->file('audio_upload');
-
+        $ext = $audio_upload->extension();
+        
         if($audio_upload){
-            $ffmpeg = FFMpeg\FFMpeg::create();
-            $audio = $ffmpeg->open($data['audio_upload']);
+            if($ext == 'mp3'){
+                $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
 
-            $audio
-            ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$id.'.mp3');
+                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+            }else{
+                $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                
+                FFMpeg::open($audio_upload->getClientOriginalName())
+                ->export()
+                ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                ->toDisk('public')
+                ->save('audios/'. $audio->id.'.mp3');
+                unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
 
-            $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$id.'.mp3'; 
+            }
 
-            $update_url = Audio::find($id);
+            $update_url = Audio::find($audio->id);
 
             $update_url->mp3_url = $data['mp3_url'];
 
             $update_url->save();  
+
+
         }
 
         }

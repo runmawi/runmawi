@@ -50,12 +50,13 @@ Route::group(['middleware' => ['restrictIp']], function() {
 
     /* Audio Pages */
     Route::get('audios', 'ThemeAudioController@audios');
-    Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
+    //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist' );
-    Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
-    Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
+    //Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
+    //Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
     Route::get('audio/{slug}', 'ThemeAudioController@index');
-    Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
+    //Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
+    Route::get('album/{album_slug}', 'ThemeAudioController@album');
 
         
     Route::post('/sendOtp', 'HomeController@SendOTP');

@@ -176,7 +176,7 @@
 }
         .form-control {
     height: 45px;
-    line-height: 45px;
+    line-height: 27px;
     background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
@@ -440,7 +440,7 @@
                      <li class="nav-item nav-icon">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-notification-2-line"></i>
-                           <span class="bg-primary dots"></span>
+                          <!-- <span class="bg-primary dots"></span>-->
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -503,7 +503,7 @@
                      <li class="nav-item nav-icon dropdown">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-mail-line"></i>
-                           <span class="bg-primary dots"></span>
+                          <!-- <span class="bg-primary dots"></span>-->
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -828,7 +828,7 @@
                   <div class="iq-card-body">
                      <ul class="list-inline p-0 mb-0">
                         <li>
-                           <div class="row align-items-center justify-content-between mb-3">
+                           <div class="row align-items-center justify-content-between mb-3 mt-3">
                               <div class="col-sm-4">
                                  <h6>Subcriptions</h6>                                       
                               </div>
@@ -858,7 +858,7 @@
                   <div class="iq-card-body">
                      <ul class="list-inline p-0 mb-0">
                         <li>
-                           <div class="row align-items-center justify-content-between mb-3">
+                           <div class="row align-items-center  mb-3 mt-3">
                               <div class="col-sm-2">
                                    Avatar                                    
                               </div>
@@ -867,13 +867,13 @@
 						       <img height="50" width="50" class="img-fluid rounded-normal" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>" />
                                  								               
                               </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 mt-5">
                                      <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                                                      <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                           <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-primary noborder-radius btn-login nomargin editbtn" type="submit" name="create-account">{{ __('Update Profile') }}</button>                   
-                                 								               
+                           <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                                  <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account">{{ __('Update Profile') }}</button>                   
+                                    </form>								               
                               </div>
                            </div>
                         </li>
@@ -896,7 +896,7 @@
                   <div class="iq-card-body">
                      <ul class="list-inline p-0 mb-0">
                         <li>
-                           <div class="row align-items-center justify-content-between mb-3">
+                           <div class="row align-items-center justify-content-between mb-3 mt-3">
                               <div class="col-sm-4">
                                    Card1                                    
                               </div>
@@ -927,7 +927,7 @@
                   <div class="iq-card-body">
                      <ul class="list-inline p-0 mb-0">
                         <li>
-                           <div class="row align-items-center justify-content-between mb-3">
+                           <div class="row align-items-center justify-content-between mb-3 mt-3">
                               <div class="col-sm-6">
                                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>                                 
                               </div>
@@ -1460,7 +1460,7 @@
 <!--                    <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
                     <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>-->
                      
-						<div class="col-sm-12 col-xs-12 padding-top-30">
+						<div class="col-sm-12 col-xs-12 padding-top-30 mt-3">
 						<?php if ( Auth::user()->role != 'admin') { ?>
 							<div class="row">
 								<?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ ?>

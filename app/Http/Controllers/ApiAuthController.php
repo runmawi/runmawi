@@ -3386,7 +3386,7 @@ public function upnextAudio(Request $request){
     public function artistfollowings(Request $request)
     {
         $user_id = $request->user_id;
-        $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('user_id',$user_id)->where('following',1)->get(['artists.*']);
+        $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('artist_favourites.user_id',$user_id)->where('artist_favourites.following',1)->get(['artists.*']);
         if($followinglist){
             $response = array(
                 'status' => 'true',

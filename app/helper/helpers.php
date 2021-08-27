@@ -18,6 +18,22 @@ function ReferrerCount($id)
     return $referrer;
 }
 
+function get_audio_artist($audio_id)
+{
+    $artist_ids = App\Audioartist::select('artist_id')->where('audio_id',$audio_id)->get();
+    $artist_name = array();
+    if(!empty($artist_ids)){
+        foreach ($artist_ids as $key => $artist_id) {
+            $artist_name[] = App\Artist::where('id',$artist_id->artist_id)->first()->artist_name;
+        }
+        $artist_name = implode(',', $artist_name);
+    }
+    else{
+        $artist_name = "Unknown";     
+    }
+    return $artist_name;
+}
+
 
 function GetAccessToken()
 {
