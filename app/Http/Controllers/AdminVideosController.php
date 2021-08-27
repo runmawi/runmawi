@@ -5,6 +5,7 @@ use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use URL;
+use File;
 use App\Test as Test;
 use App\Video as Video;
 use App\MoviesSubtitles as MoviesSubtitles;
