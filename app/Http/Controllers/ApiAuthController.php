@@ -64,6 +64,10 @@ use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon as Carbon;
 use App\Playerui as Playerui;
+use App\Audio as Audio;
+use App\Artist as Artist;
+use App\AudioCategory as AudioCategory;
+use App\Audioartist as Audioartist;
 use App\ContinueWatching as ContinueWatching;
 
 
