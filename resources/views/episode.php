@@ -1,62 +1,6 @@
+<?php include('videolayout/episode_header.php');?>
 <?php include('header.php'); ?>
-<style type="text/css">
-    .clearfix{
-        list-style: none;
-        display: inherit;
-    }
-    .watchlater.active
-    {
-        color: #1a86e0;
-    } 
-    .mywishlist.active
-    {
-        color: #1a86e0;
-    }
-    .video-js{height: 500px !important;}
-    .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
-    .vjs-big-play-button{
-    top: 50% !important;
-    left: 50% !important;
-    margin: -25px 0 0 -25px;
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 25px !important;
-    }
-    .vjs-texttrack-settings { display: none; }
-    .video-js .vjs-big-play-button{ border: none !important; }
-        #video_container{height: auto;overflow: auto;padding: 15px 0 !important;width: 80%;margin: 0 auto;}
-    /*    #video_bg_dim {background: #1a1b20;}*/
-        .video-js .vjs-tech {outline: none;}
 
-        .video-details{margin: 0 auto;padding-bottom: 30px;}
-        .video-details h1{margin: 0 0 10px;color: #fff;}
-        .vid-details{margin-bottom: 20px;}
-        #tags{margin-bottom: 10px;}
-        .share{display: flex;align-items: center;}
-        .share span, .share a{display: inline-block;text-align: center;font-size: 20px;padding-right: 20px;color: #fff;}
-        .share a{padding: 0 20px;}
-        .cat-name span{margin-right: 10px;}
-
-
-    </style>
-<!-- unpkg : use the latest version of Video.js -->
-<link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-<script src="https://unpkg.com/video.js/dist/video.min.js"></script>
-
-<!-- unpkg : use a specific version of Video.js (change the version numbers as necessary) -->
-<link href="https://unpkg.com/video.js@7.8.2/dist/video-js.min.css" rel="stylesheet">
-<script src="https://unpkg.com/video.js@7.8.2/dist/video.min.js"></script>
-
-<!-- cdnjs : use a specific version of Video.js (change the version numbers as necessary) -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.8.1/video-js.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.8.1/video.min.js"></script>
-
-
-	<div id="series_title">
-		<div class="container">
-			<span class="label">You're watching:</span> <h1><?= $episode->title ?></h1>
-		</div>
-	</div>
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
 	<div id="series_bg">
@@ -72,7 +16,7 @@
 						</div>
 					<?php  elseif($episode->type == 'file'): ?>
 						<div id="series_container">
-						<video id="video_player"  autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="Player"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
@@ -86,7 +30,7 @@
 						</div>
 					<?php  else: ?>
 						<div id="series_container">
-						<video id="video_player"  autoplay onplay="playstart()" onended="autoplay1()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="Player"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                            
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
@@ -129,12 +73,18 @@
 	</div>
 
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $series->genre_id ?>" value="<?= $series->genre_id ?>">
+<br>
 
 	<div class="container series-details">
-
+	<div id="series_title">
+		<div class="container">
+			<span class="label" style="font-size: 129%;font-weight: 700;">You're watching:</span> <p style="margin-left: 5% !important;font-size: 130%;color: white;"><?= $episode->title ?></p>
+		</div>
+	</div>
 		<h3 style="color:#000;margin: 10px;">
-            <div class="watchlater btn btn-primary <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><i class="fa fa-clock-o"></i> Watch Later</div>
-			<div class="mywishlist btn btn-primary <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><i class="fa fa-plus"></i> My Wishlist</div>
+
+            <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
+			<div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 			<span class="view-count" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span>
             <br>
 			
@@ -158,14 +108,7 @@
 		</h2>
         </div>
 
-		<div class="clear"></div>
-		<div id="social_share" style="display:flex;color:#fff;">
-	    	<p class="mt-1">Share This episode:</p>
-			<?php include('partials/social-share.php'); ?>
-		</div>
-            </div>
-
-       
+		
 		<div class="series-details-container"><?= $episode->details ?></div>
 
 		<?php if(isset($episodenext)){ ?>
@@ -227,7 +170,14 @@
 			<?php /*include('partials/social-share.php'); */?>-->
 		</div>
             </div>
+			<div class="clear"></div>
+		<div id="social_share" style="display:flex;color:#fff;">
+	    	<p class="mt-1">Share This episode:</p>
+			<?php include('partials/social-share.php'); ?>
+		</div>
+            </div>
 
+       
 		<div class="clear"></div>
 
 		<div id="comments">
@@ -236,7 +186,10 @@
     
 	</div>
 	
-	
+	    <script type="text/javascript"> 
+        videojs('Player').videoJsResolutionSwitcher(); 
+    </script>
+    </script>
 	<script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'Flicknexs';
@@ -248,168 +201,6 @@
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
     </script>
-    <noscript>Please enable JavaScript to view the comments</noscript> 
-
-	<script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
-	<script type="text/javascript">
-
-		$(document).ready(function(){
-			$('#series_container').fitVids();
-			$('.favorite').click(function(){
-				if($(this).data('authenticated')){
-					$.post(base_url+'/favorite', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-					$(this).toggleClass('active');
-				} else {
-					window.location = '<?= URL::to('signup') ?>';
-				}
-			});
-
-		//watchlater
-      $('.watchlater').click(function(){
-        if($(this).data('authenticated')){
-          $.post('<?= URL::to('watchlater') ?>', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-          $(this).toggleClass('active');
-          $(this).html("");
-              if($(this).hasClass('active')){
-                $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
-              }else{
-                $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
-              }
-        } else {
-          window.location = '<?= URL::to('login') ?>';
-        }
-      });	
-
-			//My Wishlist
-      $('.mywishlist').click(function(){
-        if($(this).data('authenticated')){
-          $.post('<?= URL::to('mywishlist') ?>', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-          $(this).toggleClass('active');
-          $(this).html("");
-              if($(this).hasClass('active')){
-                $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
-              }else{
-                $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
-              }
-              
-        } else {
-          window.location = '<?= URL::to('login') ?>';
-        }
-      });
-
-		});
-
-	</script>
-
-	<!-- RESIZING FLUID series for series JS -->
-	<script type="text/javascript">
-        
-        var base_url = $('#base_url').val();
-	  // Once the series is ready
-	  _V_("video_player").ready(function(){
-
-	    var myPlayer = this;    // Store the series object
-	    var aspectRatio = 9/16; // Make up an aspect ratio
-
-	    function resizeVideoJS(){
-	    	console.log(myPlayer.id);
-	      // Get the parent element's actual width
-	      var width = document.getElementById('series_container').offsetWidth;
-	      // Set width to fill parent element, Set height
-	      myPlayer.width(width).height( width * aspectRatio );
-	    }
-
-	    resizeVideoJS(); // Initialize the function
-	    window.onresize = resizeVideoJS; // Call the function on resize
-	  });
-	</script>
-
-	<script src="<?= URL::to('/assets/js/rrssb.min.js'); ?>"></script>
-	<script src="<?= URL::to('/assets/js/videojs-resolution-switcher.js');?>"></script>
-	<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
-
-
-  	<script>
-	   var player = videojs('video_player').videoJsResolutionSwitcher({
-	        default: '480p', // Default resolution [{Number}, 'low', 'high'],
-	        dynamicLabel: true
-	      })
-
-	   $(".playertextbox").appendTo($('#video_player'));
-	  var res = player.currentResolution();
-	  player.currentResolution(res);
-	  function autoplay1() {
-    	
-    	var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-		playButton.setAttribute("id", "myPlayButton");
-	    var next_episode_id = $(".next_episode").text();
-	    var prev_episode_id = $(".prev_episode").text();
-	    
-	    var url = $(".next_url").text();
-	    if(next_episode_id != ''){
-
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
-
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = base_url+"/"+url+"/"+next_episode_id;
-         }, 3000);
-	    }else if(prev_episode_id != ''){
-	    	
-	    	$(".vjs-big-play-button").show();$(".playertextbox").removeClass('hide');
-			var bar = new ProgressBar.Circle(myPlayButton, {
-			strokeWidth: 7,
-			easing: 'easeInOut',
-			duration: 2400,
-			color: '#98cb00',
-			trailColor: '#eee',
-			trailWidth: 1,
-			svgStyle: null
-			});
-
-			bar.animate(1.0);  // Number from 0.0 to 1.0
-	    	setTimeout(function(){ 	
-         	window.location = base_url+"/"+url+"/"+prev_episode_id;
-         }, 3000);
-	    
-	    }
-
-	    
- 	}
-
- 	/*on episode Play*/
- 	function playstart() {
- 		if($("#video_player").data('authenticated')){
-			$.post(base_url+'/watchhistory', { episode_id : '<?= $episode->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
-			$.post('/recommendedcategories', { seriescategoryid : $('.seriescategoryid').data('seriescategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-
-		} else {
-			$.post('/recommendedcategories', { seriescategoryid : $('.seriescategoryid').data('seriescategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-		}
- 	}
-
- 	
-
-
-  </script>
-  <script type="text/javascript">
-	$(document).ready(function(){
-
-		$('a.block-thumbnail').click(function(e){
-			var myPlayer = videojs('video_player');
-			var duration = myPlayer.currentTime();
-			$.post(base_url+'/watchhistory', { episode_id : '<?= $episode->id ?>', _token: '<?= csrf_token(); ?>', duration : duration }, function(data){});
-		}); 
-	});
-  </script>
+    
 <?php include('footer.blade.php'); ?>
 

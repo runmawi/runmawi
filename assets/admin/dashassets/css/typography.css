@@ -276,7 +276,7 @@ Card
 ------------------------------------------------*/
 .iq-card { background: var(--iq-light-card); -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none; }
 .iq-card-transparent { background: transparent; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; margin-bottom: 30px; border: none; box-shadow: none; }
-.iq-card-body { padding: 0px; }
+.iq-card-body { padding: 10px; }
 .iq-card .iq-card-header, .iq-card-transparent .iq-card-header { padding: 20px; margin-bottom: 0; -ms-flex-align: center !important; align-items: center !important; border-bottom: 1px solid rgb(20 20 20);}
 .iq-card-transparent .iq-card-header { padding: 0px; border-bottom: 0; }
 .iq-card-transparent .iq-card-header .iq-header-title { display: inline-block; align-self: center !important; background: var(--iq-body-bg); padding: 0 20px; z-index: 9; }
@@ -319,7 +319,7 @@ Buttons
 .btn.focus, .btn:focus { box-shadow: none !important; }
 .btn i { margin-right: 5px; }
 .btn-group-sm>.btn, .btn-sm { padding: .25rem .5rem; }
-.btn { font-size: 14px; border-radius: 4px; }
+.btn { font-size: 16px; border-radius: 4px;padding: 10px 10px; }
 .btn.focus, .btn:focus { box-shadow: none !important; }
 .btn i { margin-right: 5px; }
 .iq-sign-btn { display: inline-block; text-align: center; border: 1px solid transparent; padding: .375rem 1rem; border-radius: 5px; line-height: normal; }

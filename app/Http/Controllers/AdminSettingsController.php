@@ -448,4 +448,12 @@ if($watermark != '') {
     return Redirect::to('admin/players')->with(array('note' => 'Successfully Updated Player Setting UI!', 'note_type' => 'success') );
   }
 
+  public function playerui_settings_episode() {
+
+    $playerui_settings = Playerui::first();
+
+    return view('videolayout.episode_header',compact('playerui_settings') );
+
+  }  
+
 }

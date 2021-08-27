@@ -994,7 +994,7 @@ select{
         padding: 15px;
     }
     .p1{
-        font-size: 12px;
+        font-size: 15px!important;
     }
  .top-left-logo img {
         opacity: 0.9;
@@ -1010,7 +1010,7 @@ select{
         
     }
     hr{
-        border-top: 1px solid #49bfd1!important ;
+        border-top: 1px solid #141414!important ;
     }
 .select2-selection__rendered{
         background-color: #141414!important;
