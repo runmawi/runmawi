@@ -7,6 +7,8 @@
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
 
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
+   <input type="hidden" id="videoslug" value="<?php if(isset($video->slug)) { echo $video->slug; } else{ echo "0";}?>">
+   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
    
 <?php
     // print_r($watched_time);
@@ -32,7 +34,7 @@
             <div id="video_container" class="fitvid" style="margin: 0 auto;">
 
             
-              <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
+              <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
               controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
 
               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
@@ -431,6 +433,9 @@ if($value['sub_language'] == "Spanish"){
               $("#video_container").empty();
               $(".skip").css('display','none');
               $(".page-height").load(location.href + " #video_container");
+              setTimeout(function(){ 
+              videojs('videoPlayer');
+            }, 2000);
             });
 
             var vid = document.getElementById("videoPlayer_html5_api");

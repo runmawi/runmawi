@@ -11,6 +11,51 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
+    .bd{border-radius: 25px!important;
+    background: #2bc5b4!important;}
+    .bd:hover{
+        
+    }
+    p{
+        color: #fff;
+    }
+    .flexlink{
+        position: relative;
+   top: 63px;
+    left: -121px;
+    }
+    #ff{
+        border: 1px solid #fff;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 20px;
+        color: #fff;
+    }
+    li{
+       list-style: none; 
+    }
+    .audio-lp{
+        background: #000000;
+    padding: 33px;
+      
+    }
+    .audio-lp li{
+        list-style: none;
+        color:#fff;
+        padding: 10px 10px;
+    }
+    .audio-lp li:hover {
+   background-color: #1414;
+     color:#fff;
+    border: 1px #e9ecef;
+    border-radius: .25rem;
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+        
+}
+    .aud-lp{
+          border-bottom: 1px solid #141414;
+    }
 
 </style>
 
@@ -56,47 +101,69 @@ border-radius: 25px !important;
                     </div>
                     <?php } else { ?>                
                              
-                            <div class="row album-top-30">
+                            <div class="row album-top-30 mt-4 align-items-center">
                                     <div class="col-sm-4 ">
-                                        <img src="<?= Config::get('site.uploads_url') . '/images/' . $audio_details->image ?>"  class="img-responsive" />
+                                        <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="350">
 
-                                        <div class="carousel-caption">
-                                            <audio  id="video_player" onended="autoplay1()" autoplay class="audio-js vjs-default-skin my-div" controls preload="auto"  style="width: 100%;height: 50px;" controlsList="nodownload">
-                                              <source src="<?= $audio_details->mp3_url; ?>" type="audio/mpeg">
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        </div>
+                                       <!-- -->
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-xs-8">
                                         <div class="album_bg">
                                         <div class="album_container">
                                             <div class="blur"></div>
                                             <div class="overlay_blur">
-                                             <h1 class="hero-title album"> <?= $audio_details->title; ?></h1>
-
-                                                <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio_details->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-
-
-                                                <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio_details->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
-
-                                                
-                                                <!-- Share -->
-                                                <div class="social_share">
-                                                  <p><i class="fa fa-share-alt"></i> Share: </p>
-                                                  <div id="social_share">
-                                                    <?php include('partials/social-share.php'); ?>
-                                                  </div>
+                                             <h2 class="hero-title album"> <?= $audio_details->title; ?></h2>
+                                                <p class="mt-2">Music by	<br>A. R. Rahman</p>
+                                                <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
+                                                    <a href="" class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                                    <i id="ff" class="fa fa-heart-o" aria-hidden="true"></i>
+                                                    <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    <i id="ff" class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    <!-- Share -->
                                                 </div>
-                                                
-                                                 <div class="btn btn-default views">
-                                                    <span class="view-count"><i class="fa fa-eye"></i> 
-                                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $audio_details->views + 1 ?><?php else: ?><?= $audio_details->views ?><?php endif; ?> Views </span>
+                                              
                                                 </div>
-
-                                                <div class="audio-details-container"><p>Artists: <?= $audio_details->details; ?></p></div>
-
-                                                <div class="audio-details-container"><p><?= $audio_details->description; ?></p></div>
-
+                                            </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                            <div class="row mt-5">
+                                                <div class="col-sm-12 db">
+                                                    <ul class="audio-lp">
+                                                        <li class="aud-lp active">
+                                                            <div class="d-flex justify-content-around" style="align-items: center;">
+                                                                 <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
+                                                                <div>villain theme</div>
+                                                                 <div>AR Rhaman</div>
+                                                                <div>Arstist</div>
+                                                                <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                                                                <div>5:00</div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="aud-lp" >
+                                                            <div class="d-flex justify-content-around" style="align-items: center;">
+                                                                 <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
+                                                                <div>villain theme</div>
+                                                                 <div>AR Rhaman</div>
+                                                                <div>Arstist</div>
+                                                                <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                                                                <div>5:00</div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="aud-lp">
+                                                            <div class="d-flex justify-content-around" style="align-items: center;">
+                                                                 <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
+                                                                <div>villain theme</div>
+                                                                 <div>AR Rhaman</div>
+                                                                <div>Arstist</div>
+                                                                <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                                                                <div>5:00</div>
+                                                            </div>
+                                                        </li>
+                                                   </ul>
+                                                </div>
+                                            </div>
+                                               
                                                 <?php if(isset($audionext)){ ?>
                                                 <div class="next_audio" style="display: none;"></div>
                                                 <div class="next_url" style="display: none;"><?php echo  URL::to('/').'/audio/'.$current_slug.'/'.$audionext ?></div>
@@ -114,22 +181,19 @@ border-radius: 25px !important;
                                         </div>
 
                                         <div class="clear"></div>  
-                                        </div>
-                                    </div>
-
-                                </div> 
+                                       
             <?php } ?>
-            
-                                <div class="row album-top-30">  
-                                    <div class="col-sm-8">
+             <div class="container">
+                                <div class="row album-top-30 mt-3">  
+                                    <div class="col-sm-12">
                                        <p  class="album-title">Other Songs from "<?= $current_slug; ?>"</p>
-                                        <ul class="album_list">
+                                        <ul class="album_list mt-3" style="display: flex;">
                                             <?php foreach ($related_audio as $r_audio) { 
                                                 if ( $audio_details->id == $r_audio->id ) {  ?>
                                                 <li>
-                                                    <img src="<?= Config::get('site.uploads_url') . '/images/' . $r_audio->image ?>"  class="img-responsive" />
-                                                    <a href="<?php echo URL('/').'/audio/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
-                                                    <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>
+                                                    <img src="<?= URL::to('/').'/public/uploads/images/' . $r_audio->image ?>"  class="img-responsive" />
+                                                   <!-- <a href="<?php echo URL('/').'/audio/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
+                                                    <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>-->
                                                     
                                                     <div class="play-block">
                                                         
@@ -140,9 +204,9 @@ border-radius: 25px !important;
                                                 </li>
                                                <?php } else { ?>
                                                 <li>
-                                                    <img src="<?= Config::get('site.uploads_url') . '/images/' . $r_audio->image ?>"  class="img-responsive" />
-                                                    <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
-                                                    <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>
+                                                    <img src="<?= URL::to('/').'/public/uploads/images/'. $r_audio->image ?>"  class="img-responsive" / width="200">
+                                                   <!-- <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
+                                                    <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>-->
                                                     
                                                     <div class="play-block">
                                                         <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"><i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
@@ -159,6 +223,26 @@ border-radius: 25px !important;
                               </div>
 					<?php endif; ?>
 				
+                 <div class="">
+                                            <audio  id="video_player" onended="autoplay1()" autoplay class="audio-js vjs-default-skin my-div" controls preload="auto"  style="width: 100%;height: 50px;position: fixed;width: 100%;left: 0;bottom: 0;  z-index: 9999;" controlsList="nodownload">
+                                              <source src="<?= $audio_details->mp3_url; ?>" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </div>
+                 <div class="luna-container">
+  <button type="button" class="luna-prev">Prev</button>
+  <button type="button" class="luna-play-pause">Play</button>
+  <button type="button" class="luna-next">Next</button>
+  <span class="luna-time-current"></span>
+  <div class="luna-progress-bar">
+    <div class="luna-progress-bar-current-position"></div>
+  </div>
+  <span class="luna-time-total"></span>
+  <audio class="luna-audio-tag">
+    <source src="" type="audio/mpeg">
+    Your browser does not support the audio element. Please up<a href="https://www.jqueryscript.net/time-clock/">date</a> your browser.
+  </audio>
+</div>
 
 			<?php else: ?>
 
@@ -379,5 +463,35 @@ border-radius: 25px !important;
  	}
 
   </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js">
+		</script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<script src="./css/jquery-luna.js" type="text/javascript"></script>
+		<script>
+			$(function(){
+				var $audioPlayer = $(".audio-player").luna(
+					{
+						songs:["song.mp3"],
+						onStatusChange: function(e){
+							console.log(e);
+						}
+					}
+				);
+			});
+		</script>
+        </div><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 
 <?php include('footer.blade.php'); ?>

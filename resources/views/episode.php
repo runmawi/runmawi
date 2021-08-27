@@ -58,6 +58,7 @@
 		</div>
 	</div>
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
+<input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
 	<div id="series_bg">
 		<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 		<div class="container">
@@ -86,8 +87,10 @@
 					<?php  else: ?>
 						<div id="series_container">
 						<video id="video_player"  autoplay onplay="playstart()" onended="autoplay1()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
-                            
-                             <source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto' >
+                           
+							<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+									<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
 <!--
 						<php foreach ($episoderesolutions as $key => $episoderesolution_file) { ?>
 							<source src="<= $episoderesolution_file->url; ?>" type='video/mp4' label='<= $episoderesolution_file->quality; ?>p' res='<= $episoderesolution_file->quality; ?>p'/>
@@ -260,27 +263,39 @@
 					window.location = '<?= URL::to('signup') ?>';
 				}
 			});
-			//watchlater
-			$('.watchlater').click(function(){
-				if($(this).data('authenticated')){
-					$.post(base_url+'/watchlater', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-					$(this).toggleClass('active');
 
-				} else {
-					window.location = '<?= URL::to('signup') ?>';
-				}
-			});
+		//watchlater
+      $('.watchlater').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('watchlater') ?>', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
+              }
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });	
 
 			//My Wishlist
-			$('.mywishlist').click(function(){
-				if($(this).data('authenticated')){
-					$.post(base_url+'/mywishlist', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-					$(this).toggleClass('active');
-
-				} else {
-					window.location = '<?= URL::to('signup') ?>';
-				}
-			});
+      $('.mywishlist').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('mywishlist') ?>', { episode_id : $(this).data('episodeid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
+              }else{
+                $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
+              }
+              
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
 
 		});
 
@@ -397,3 +412,4 @@
 	});
   </script>
 <?php include('footer.blade.php'); ?>
+

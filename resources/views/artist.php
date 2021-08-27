@@ -21,7 +21,7 @@
     <div class="mt-3">
         <div class="d-flex justify-content-between m-4 align-items-center">
             <div>
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" >
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" width="300" >
             </div>
             <div class="abu p-2">
                 <h2>About</h2>
@@ -39,7 +39,7 @@
         		
             <div class="col-sm-4">
                 <div class="bg">
-                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" width="330">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
                         <div>
                             <p class="dc"><?php echo $latest_audio[0]['title'];?></p>
@@ -64,7 +64,7 @@
         		
             <div class="col-sm-4">
                 <div class="bg">
-                    <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" width="330">
+                    <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
                         <div>
                             <p class="dc"><?php echo $album->albumname;?></p>

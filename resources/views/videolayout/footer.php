@@ -11,12 +11,7 @@
             <!-- <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> -->
             <!-- <script src="js/videojs-contrib-quality-levels.js"></script> -->
 
-            <?php 
-    if($playerui_settings->thumbnail == 1){  ?>
-             <script src="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.js"></script>
-            <script src="js/thumbnails.js"></script>
-     <?php } else{
-            } ?>
+            
    
 
 <?php 

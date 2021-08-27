@@ -325,7 +325,6 @@
 		$ = jQuery;
 
 		$(document).ready(function(){
-			alert("fd");
 		$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');

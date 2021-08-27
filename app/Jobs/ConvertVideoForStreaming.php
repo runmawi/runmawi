@@ -25,10 +25,7 @@ class ConvertVideoForStreaming implements ShouldQueue
      *
      * @param Video $video
      */
-    public function __construct(Video $video)
-    {
-        $this->video = $video;
-    }
+    
 
     /**
      * Execute the job.

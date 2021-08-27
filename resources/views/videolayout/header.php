@@ -90,7 +90,12 @@
 <!-- old scr cdn -->
 
        <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
- 
+ <?php 
+    if($playerui_settings->thumbnail == 1){  ?>
+             <script src="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.js"></script>
+            <script src="js/thumbnails.js"></script>
+     <?php } else{
+            } ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

@@ -36,6 +36,8 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
 use App\Artist;
 use App\Seriesartist;
+use GifCreator\GifCreator;
+use FFMpeg\Coordinate\TimeCode;
 
 class AdminSeriesController extends Controller
 {
@@ -523,37 +525,8 @@ class AdminSeriesController extends Controller
 
     public function create_episode(Request $request)
     {
-       
-
-       // $validator = Validator::make($data = $request->all(), Episode::$rules);
         
         $data = $request->all();
-
-        //        if ($validator->fails())
-        //        {
-        //            return Redirect::back()->withErrors($validator)->withInput();
-        //        }
-        
-         /*Slug*/
-//        if ($request->slug != '') {
-//            $data['slug'] = $this->createSlug($request->slug);
-//        }
-//
-//        if($request->slug == ''){
-//            $data['slug'] = $this->createSlug($data['title']);    
-//        }
-        
-        
-        
-    //          $validatedData = $request->validate([
-    //                'title' => 'required',
-    //                'description' => 'required',
-    //                'details' => 'required',
-    //                'episode_upload' => 'required',
-    //                'year' => 'required',
-    //                'image' => 'required'
-    //            ]);
-    //        
         
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
@@ -573,7 +546,6 @@ class AdminSeriesController extends Controller
         } else {
             $data['image'] = 'placeholder.jpg';
         }
-
         
         if(empty($data['active'])){
             $data['active'] = 0;
@@ -593,28 +565,34 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
        
-
-       // $resolution_data['episode_id'] = $episode->id;
-        
-         //= $request->file('episode_upload');
         
         $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
-        if($episode_upload != '') {
-            if($episode_upload != ''  && $episode_upload != null){
-                   $file_old = $path.$episode_upload;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $file = $episode_upload;
-              $trailer_vid  = $file->getClientOriginalName();
-              $file->move($path, $trailer_vid);
-            
-              $data['mp4_url']  = URL::to('/').'/public/uploads/episodes/'.$file->getClientOriginalName();
+        if($episode_upload != '' && $request->hasFile('episode_upload')) {
+
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->episode_upload)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
+            $request->episode_upload->storeAs('public', $path);
+            $data['path'] = $rand;
+
+            $thumb_path = 'public';
+            $this->build_video_thumbnail($request->episode_upload,$path, $rand);
+
+            $data['mp4_url'] = URL::to('/').'/storage/app/public/'.$path;
+            $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+            $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+            $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+            $converted_name = ConvertVideoForStreaming::handle($path);
+
+            ConvertVideoForStreaming::dispatch($path);
         }
               $episode = Episode::create($data);
        
@@ -652,20 +630,6 @@ class AdminSeriesController extends Controller
         $episode = Episode::findOrFail($id);
 
         $data = $request->all();
-
-//        if ($validator->fails())
-//        {
-//            return Redirect::back()->withErrors($validator)->withInput();
-//        }
-        /*Slug*/
-//        if ($episode->slug != $request->slug) {
-//            $data['slug'] = $this->createSlugEpisode($request->slug, $id);
-//        }
-//
-//        if($request->slug == '' || $episode->slug == ''){
-//            $data['slug'] = $this->createSlugEpisode($data['title']);    
-//        }
-        
           
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
@@ -680,15 +644,10 @@ class AdminSeriesController extends Controller
                 $data['duration'] = $time_seconds;
         }
 
-//        if(empty($data['image'])){
-//            unset($data['image']);
-//        } else {
-//            $data['image'] = ImageHandler::uploadImage($data['image'], 'images');
-//        }
         
         $image = (isset($data['image'])) ? $data['image'] : '';
         
-             if(!empty($image)){
+             if($request->hasFile('image')){
                if($image != ''  && $image != null){
                    $file_old = $image_path.$image;
                   if (file_exists($file_old)){
@@ -713,24 +672,33 @@ class AdminSeriesController extends Controller
         
           $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
-        if($episode_upload != '') {
-            if($episode_upload != ''  && $episode_upload != null){
-                   $file_old = $path.$episode_upload;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $file = $episode_upload;
-              $trailer_vid  = $file->getClientOriginalName();
-              $file->move($path, $trailer_vid);
-            
-              $data['mp4_url']  = URL::to('/').'/public/uploads/episodes/'.$file->getClientOriginalName();
+        if($episode_upload != '' && $request->hasFile('episode_upload')) {
+
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->episode_upload)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
+            $request->episode_upload->storeAs('public', $path);
+            $data['path'] = $rand;
+
+            $thumb_path = 'public';
+            $this->build_video_thumbnail($request->episode_upload,$path, $rand);
+
+            $data['mp4_url'] = URL::to('/').'/storage/app/public/'.$path;
+            $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+            $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+            $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+            $converted_name = ConvertVideoForStreaming::handle($path);
+
+            ConvertVideoForStreaming::dispatch($path);
         }
         
-        
         $episode->update($data);
-
 
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
@@ -800,4 +768,74 @@ class AdminSeriesController extends Controller
             ->where('id', '<>', $id)
             ->get();
     }
+
+    public function build_video_thumbnail($video_path,$movie, $thumb_path) {
+
+    // Create a temp directory for building.
+            $temp = sys_get_temp_dir() . "/build";
+
+    // Use FFProbe to get the duration of the video.
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $duration = $ffprobe->streams($video_path)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+    // If we couldn't get the direction or it was zero, exit.
+            if (empty($duration)) {
+                return;
+            }
+
+    // Create an FFMpeg instance and open the video.
+
+    // This array holds our "points" that we are going to extract from the
+    // video. Each one represents a percentage into the video we will go in
+    // extracitng a frame. 0%, 10%, 20% ..
+            $points = range(0, 100, 10);
+
+    // This will hold our finished frames.
+            $frames = [];
+
+            foreach ($points as $point) {
+            $video = FFMpeg::fromDisk('public')->open($movie);
+
+        // Point is a percent, so get the actual seconds into the video.
+                $time_secs = floor($duration * ($point / 100));
+
+        // Created a var to hold the point filename.
+                $point_file = "$temp/$point.jpg";
+        // Extract the frame.
+                $frame = $video->frame(TimeCode::fromSeconds($time_secs));
+                $frame->save($point_file);
+
+        // If the frame was successfully extracted, resize it down to
+        // 320x200 keeping aspect ratio.
+                if (file_exists($point_file)) {
+                    $img = Image::make($point_file)->resize(150, 150, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    $img->save($point_file, 40);
+                    $img->destroy();
+                }
+        // If the resize was successful, add it to the frames array.
+                if (file_exists($point_file)) {
+                    $frames[] = $point_file;
+                }
+            }
+    // If we have frames that were successfully extracted.
+            if (!empty($frames)) {
+
+        // We show each frame for 100 ms.
+                $durations = array_fill(0, count($frames), 100);
+        // Create a new GIF and save it.
+                $gc = new GifCreator();
+                $gc->create($frames, $durations, 0);
+                file_put_contents(storage_path('app/public').'/'.$thumb_path.'.gif', $gc->getGif());
+
+        // Remove all the temporary frames.
+                foreach ($frames as $file) {
+                    unlink($file);
+                }
+            }
+        }
 }

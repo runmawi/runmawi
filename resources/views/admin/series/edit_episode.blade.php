@@ -220,7 +220,7 @@
 	$(document).ready(function(){
 
 		$('#duration').mask('00:00:00');
-		$('#tags').tagsInput();
+		//$('#tags').tagsInput();
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){

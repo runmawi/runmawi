@@ -593,7 +593,8 @@ if(!empty($artistsdata)){
                 $data['mp4_url'] = $path;
                 $data['path'] = $rand;
 
-               
+                $thumb_path = 'public';
+                $this->build_video_thumbnail($request->video,$path, $data['slug']);
              
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
                 $original_name = URL::to('/').'/storage/app/public/'.$path;
@@ -740,7 +741,7 @@ if(!empty($artistsdata)){
         // If the frame was successfully extracted, resize it down to
         // 320x200 keeping aspect ratio.
                 if (file_exists($point_file)) {
-                    $img = Image::make($point_file)->resize(300, 200, function ($constraint) {
+                    $img = Image::make($point_file)->resize(150, 150, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });

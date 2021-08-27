@@ -42,6 +42,7 @@ use Stevebauman\Location\Facades\Location;
 use Carbon;
 use Session;
 use App\RecentView as RecentView;
+use App\Playerui as Playerui;
 
 class TvshowsController extends Controller
 {
@@ -124,10 +125,12 @@ class TvshowsController extends Controller
 
             $view_increment = $this->handleViewCount($id);
 
+            $playerui = Playerui::first();
             $data = array(
                 'episode' => $episode,
                 'season' => $season,
                 'series' => $series,
+                'playerui_settings' => $playerui,
                 'episodenext' => $episodenext,
                 'episodeprev' => $episodeprev,
                 'mywishlisted' => $wishlisted,
