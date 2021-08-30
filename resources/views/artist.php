@@ -101,4 +101,82 @@
             </div>
         </div>
     </div> -->
+    <div class="m-4 mt-3">
+        <h2>Audio</h2>
+    </div>
+    <div class="container">
+        <div class="row mb-5">
+        	<?php  foreach ($artist_audios as $key => $artist_audio) { 
+        		?>
+        		
+            <div class="col-sm-4">
+                <div class="bg">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_audio->image;?>" alt="" width="300">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="dc"><?php echo $artist_audio->title;?></p>
+                            <p><?php echo $artist_audio->year;?></p>
+                        </div>
+                        <div>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+        </div>
+    </div>
+    <div class="m-4 mt-3">
+        <h2>Series</h2>
+    </div>
+    <div class="container">
+        <div class="row mb-5">
+        	<?php  foreach ($artist_series as $key => $artist_serie) { 
+        		?>
+        		
+            <div class="col-sm-4">
+                <div class="bg">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_serie->image;?>" alt="" width="300">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="dc"><?php echo $artist_serie->title;?></p>
+                            <p><?php echo $artist_serie->year;?></p>
+                        </div>
+                        <div>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+        </div>
+    </div>
+    <div class="m-4 mt-3">
+        <h2>Videos</h2>
+    </div>
+    <div class="container">
+        <div class="row mb-5">
+            <?php  foreach ($artist_videos as $key => $artist_video) { 
+                ?>
+                
+            <div class="col-sm-4">
+                <div class="bg">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_video->image;?>" alt="" width="300">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="dc"><?php echo $artist_video->title;?></p>
+                            <p><?php echo $artist_video->year;?></p>
+                        </div>
+                        <div>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+        </div>
+    </div>
 <?php include('footer.blade.php'); ?>

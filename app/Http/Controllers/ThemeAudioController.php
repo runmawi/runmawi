@@ -371,7 +371,7 @@ class ThemeAudioController extends Controller{
         return View::make('albums', $data);
     }
 
-    public function artist($artist_id) {
+    /*public function artist($artist_id) {
        
          if(Auth::guest()):
             return Redirect::to('/login');
@@ -393,7 +393,57 @@ class ThemeAudioController extends Controller{
             'albums' => $albums,
         );
         return View::make('artist', $data);
+    }*/
+    
+     public function artist($artist_id) {
+       
+         if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        $audios = $album_ids = array();
+       
+        $latest_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
+        foreach ($latest_audios as $key => $latest_audio) {
+            $audio_id = $latest_audio->audio_id;
+            if(Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->exists()){
+                $audios[] = Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->get();
+                $getdata = Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->first();
+                $album_ids[] = $getdata->album_id;
+            } 
+        }
+        $albums = AudioAlbums::whereIn('id', $album_ids)->get();
+        $artist_audios = DB::table('audio_artists')
+                ->select('audio.*')
+                ->join('audio', 'audio.id', '=', 'audio_artists.audio_id')
+                ->where('audio_artists.artist_id', $artist_id)
+                ->orderBy('audio.created_at', 'desc')
+                ->get();
+    $artist_series = DB::table('series_artists')
+    ->select('series.*')
+    ->join('series', 'series.id', '=', 'series_artists.series_id')
+    ->where('series_artists.artist_id', $artist_id)
+    ->orderBy('series.created_at', 'desc')
+    ->get();
+    $artist_videos = DB::table('video_artists')
+    ->select('videos.*')
+    ->join('videos', 'videos.id', '=', 'video_artists.video_id')
+    ->where('video_artists.artist_id', $artist_id)
+    ->orderBy('videos.created_at', 'desc')
+    ->get();
+        // $artist_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
+        // $audios[] = Audioartist::where('artist_id',$artist_id)->orderBy('created_at', 'desc')->get();
+        // echo "<pre>";
+        // print_r($artist_series);
+        // exit();
+        $data = array(
+            'artist' => Artist::where('id',$artist_id)->first(),
+            'latest_audios' => $audios,
+            'artist_audios' => $artist_audios,
+            'artist_series' => $artist_series,
+            'artist_videos' => $artist_videos,
+            'albums' => $albums,
+        );
+        return View::make('artist', $data);
     }
-    
-    
+
 }
