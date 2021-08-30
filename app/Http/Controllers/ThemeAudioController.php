@@ -110,12 +110,12 @@ class ThemeAudioController extends Controller{
             
         } else {
            
-            $audio = Audio::where('slug','=',$slug)->where('status','=',1)->get('id');
-            $audio = $audio[0]->id;
+            $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+            $audio = $audio->id;
       
              if (!empty($audio)) {
-              $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->get();
-              $albumID = $check_audio_details[0]->album_id;
+              $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
+              $albumID = $check_audio_details->album_id;
                 
               if (!empty($check_audio_details) && !empty($name)) {
                   $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
@@ -152,6 +152,7 @@ class ThemeAudioController extends Controller{
                 'message' => 'No Audio Found',
                 'error' =>'error'
                 );
+
                 return View::make('audio', $data);
             }
             
@@ -163,6 +164,8 @@ class ThemeAudioController extends Controller{
             $view_increment = $this->handleViewCount($audio);   
             $data = array(
                 'audio' => Audio::findOrFail($audio),
+                'album_name' => AudioAlbums::findOrFail($albumID)->albumname,
+                'other_albums' => AudioAlbums::where('id','!=', $albumID)->get(),
                 'audio_details' => $audio_details,
                 'related_audio' => $related_audio,
                 'audionext' => $audionext,
@@ -185,7 +188,6 @@ class ThemeAudioController extends Controller{
                 
             }
         
-
             return View::make('audio', $data);
 
         
@@ -356,9 +358,13 @@ class ThemeAudioController extends Controller{
             $album = AudioAlbums::where('id', $album_id)->first();
             $album_audios = Audio::where('album_id', $album_id)->get();
             $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
-        
+            foreach ($album_audios as $key => $album_audio) {
+                $json[] = array('title' => $album_audio->title,'mp3'=>$album_audio->mp3_url);
+            }
+
             $data = array(
                 'album' => $album,
+                'json_list' => json_encode($json),
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );

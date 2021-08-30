@@ -56,7 +56,19 @@ border-bottom-right-radius:0;
 .aud-lp{
 border-bottom: 1px solid #141414;
 }
-
+.play-button {
+position: absolute;
+z-index: 10;
+top: 46%;
+left: 99px;
+transform: translateY(-50%);
+display: block;
+padding-left: 5px;
+text-align: center;
+}
+#circle{
+border-radius: 50%;
+}
 </style>
 
 <?php if (isset($error)) { ?>
@@ -66,22 +78,22 @@ border-bottom: 1px solid #141414;
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
-<div id="audio_bg_dim" <?php if($audio_details->access == 'guest' || ($audio_details->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
+<div id="audio_bg_dim" <?php if($audio->access == 'guest' || ($audio->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 <div class="container">
 
-<?php if($audio_details->access == 'guest' || ( ($audio_details->access == 'subscriber' || $audio_details->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio_details->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($audio_details->access == 'subscriber' || $audio_details->access == 'registered') && $ppv_status == 1)): ?>
+<?php if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($audio->access == 'subscriber' || $audio->access == 'registered') && $ppv_status == 1)): ?>
 
 
-<!-- <?php //if($audio_details->type == 'file'): ?>
+<!-- <?php //if($audio->type == 'file'): ?>
 
 <div class="row">
 
 <div class="col-sm-4">
-<img src="<?= Config::get('site.uploads_url') . '/images/' . $audio_details->image ?>" class="img-responsive" />
+<img src="<?= Config::get('site.uploads_url') . '/images/' . $audio->image ?>" class="img-responsive" />
 <div class="carousel-caption">
 <audio controls style="width: 67%;height: 33px;" autoplay onended="autoplay1()" class="audio-js vjs-default-skin" controls preload="auto"  >
-  <source src="<?= $audio_details->mp3_url; ?>" type="audio/mpeg">
-    Your browser does not support the audio element.
+<source src="<?= $audio->mp3_url; ?>" type="audio/mpeg">
+Your browser does not support the audio element.
 </audio>
 </div>
 </div>
@@ -94,8 +106,8 @@ border-bottom: 1px solid #141414;
 
 <?php  //else: ?> -->
 
-<?php if($audio_details): ?>
-<?php if ( $audio_details->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
+<?php if($audio): ?>
+<?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
 <div id="subscribers_only">
 <a  class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
 </div>
@@ -103,7 +115,7 @@ border-bottom: 1px solid #141414;
 
 <div class="row album-top-30 mt-4 align-items-center">
 <div class="col-sm-4 ">
-<img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="350">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="350">
 
 <!-- -->
 </div>
@@ -112,71 +124,66 @@ border-bottom: 1px solid #141414;
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
- <h2 class="hero-title album"> <?= $audio_details->title; ?></h2>
-    <p class="mt-2">Music by	<br>A. R. Rahman</p>
-    <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
-        <a href="" class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-        <i id="ff" class="fa fa-heart-o" aria-hidden="true"></i>
-        <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-        <i id="ff" class="fa fa-share-alt" aria-hidden="true"></i>
-        <!-- Share -->
-    </div>
-  
-    </div>
+<h2 class="hero-title album"> <?= $audio->title; ?></h2>
+<p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
+<p class="mt-2">Album <?php echo ucfirst($album_name); ?></p>
+<div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
+<button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
+<i id="ff" class="fa fa-heart-o" aria-hidden="true"></i>
+<i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+<i id="ff" class="fa fa-share-alt" aria-hidden="true"></i>
+<!-- Share -->
+</div>
+
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="row mt-5">
-    <div class="col-sm-12 db">
-        <ul class="audio-lp">
-            <li class="aud-lp active">
-                <div class="d-flex justify-content-around" style="align-items: center;">
-                     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
-                    <div>villain theme</div>
-                     <div>AR Rhaman</div>
-                    <div>Arstist</div>
-                    <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-                    <div>5:00</div>
-                </div>
-            </li>
-            <li class="aud-lp" >
-                <div class="d-flex justify-content-around" style="align-items: center;">
-                     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
-                    <div>villain theme</div>
-                     <div>AR Rhaman</div>
-                    <div>Arstist</div>
-                    <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-                    <div>5:00</div>
-                </div>
-            </li>
-            <li class="aud-lp">
-                <div class="d-flex justify-content-around" style="align-items: center;">
-                     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio_details->image ?>"  class="img-responsive" / width="50">
-                    <div>villain theme</div>
-                     <div>AR Rhaman</div>
-                    <div>Arstist</div>
-                    <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-                    <div>5:00</div>
-                </div>
-            </li>
-       </ul>
-    </div>
-</div>
-   
-    <?php if(isset($audionext)){ ?>
-    <div class="next_audio" style="display: none;"></div>
-    <div class="next_url" style="display: none;"><?php echo  URL::to('/').'/audio/'.$current_slug.'/'.$audionext ?></div>
-    <?php }elseif(isset($audioprev)){ ?>
-    <div class="prev_audio" style="display: none;"><?= $audioprev->id ?></div>
-    <div class="next_url" style="display: none;"><?= $url ?></div>
-    <?php } ?>
+<div class="col-sm-12 db">
 
-    <?php if(isset($audios_category_next)){ ?>
-    <div class="next_cat_audio" style="display: none;"><?= $audios_category_next->id ?></div>
-    <?php }elseif(isset($audios_category_prev)){ ?>
-    <div class="prev_cat_audio" style="display: none;"><?= $audios_category_prev->id ?></div>
-    <?php } ?>
+<ul class="audio-lp">
+<li class=" active">
+<p  class="album-title">Other Songs from <?= ucfirst($album_name); ?></p>
+<div class="d-flex justify-content-around" style="align-items: center;color:#fff;">
+    <div>Album Name </div>
+    <div>Song list</div>
+    <div>Singer by</div>
+    <div>Lyrics by</div>
+    <div>Favourite</div>
+    <div>Duration</div>
+</div>
+</li>
+<?php foreach($related_audio as $other_audio){ ?>
+    <li class="aud-lp">
+        <div class="d-flex justify-content-around" style="align-items: center;">
+           <img src="<?= URL::to('/').'/public/uploads/images/'. $other_audio->image ?>"  class="img-responsive" / width="50">
+           <div><a href="<?php echo URL::to('/').'/audio/'.$other_audio->slug;?>"><?php echo ucfirst($other_audio->title); ?></a></div>
+           <div><?php echo get_audio_artist($other_audio->id); ?></div>
+           <div>Arstist</div>
+           <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+           <div><?php echo gmdate('H:i:s', $other_audio->duration); ?></div>
+       </div>
+   </li>
+<?php } ?>
+</ul>
+</div>
+</div>
+
+<?php if(isset($audionext)){ ?>
+<div class="next_audio" style="display: none;"></div>
+<div class="next_url" style="display: none;"><?php echo  URL::to('/').'/audio/'.$current_slug.'/'.$audionext ?></div>
+<?php }elseif(isset($audioprev)){ ?>
+<div class="prev_audio" style="display: none;"><?= $audioprev->id ?></div>
+<div class="next_url" style="display: none;"><?= $url ?></div>
+<?php } ?>
+
+<?php if(isset($audios_category_next)){ ?>
+<div class="next_cat_audio" style="display: none;"><?= $audios_category_next->id ?></div>
+<?php }elseif(isset($audios_category_prev)){ ?>
+<div class="prev_cat_audio" style="display: none;"><?= $audios_category_prev->id ?></div>
+<?php } ?>
 </div>
 </div>
 
@@ -186,38 +193,25 @@ border-bottom: 1px solid #141414;
 <div class="container">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
-<p  class="album-title">Other Songs from "<?= $current_slug; ?>"</p>
+    
+<p  class="album-title">Other Albums </p>
 <ul class="album_list mt-3" style="display: flex;">
-<?php foreach ($related_audio as $r_audio) { 
-    if ( $audio_details->id == $r_audio->id ) {  ?>
-    <li>
-        <img src="<?= URL::to('/').'/public/uploads/images/' . $r_audio->image ?>"  class="img-responsive" />
-       <!-- <a href="<?php echo URL('/').'/audio/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
-        <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>-->
-        
-        <div class="play-block">
-            
-            <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"> <i class="fa fa-pause flexlink" aria-hidden="true">&nbsp;</i> </a>
-            
-            
-        </div>
-    </li>
-   <?php } else { ?>
-    <li>
-        <img src="<?= URL::to('/').'/public/uploads/images/'. $r_audio->image ?>"  class="img-responsive" / width="200">
-       <!-- <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"><?php echo ucfirst($r_audio->title);?></a>
-        <span><i class="fa fa-user"></i><?= $r_audio->details; ?></span>-->
-        
-        <div class="play-block">
-            <a href="<?php echo URL('/').'/audio/'.$current_slug.'/'.$r_audio->slug;?>"><i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
-        </div>
-    </li>
+    <?php foreach ($other_albums as $other_album) { ?>
+        <li>
+            <?php if($other_album->album != ''){ ?>
+                <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
+              
 
-<?php } }?>
+                <div class="play-block">
+                    <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
+                </div>
+            </a>
+            <?php echo ucfirst($other_album->albumname);?>
+            <?php  } ?>
+        </li>
+    <?php }?>
 </ul>
-  
-
-
 </div>
 
 </div>
@@ -225,37 +219,24 @@ border-bottom: 1px solid #141414;
 
 <div class="">
 <audio  id="video_player" onended="autoplay1()" autoplay class="audio-js vjs-default-skin my-div" controls preload="auto"  style="width: 100%;height: 50px;position: fixed;width: 100%;left: 0;bottom: 0;  z-index: 9999;" controlsList="nodownload">
-  <source src="<?= $audio_details->mp3_url; ?>" type="audio/mpeg">
-    Your browser does not support the audio element.
+<source src="<?= $audio->mp3_url; ?>" type="audio/mpeg">
+Your browser does not support the audio element.
 </audio>
 </div>
-<div class="luna-container">
-<button type="button" class="luna-prev">Prev</button>
-<button type="button" class="luna-play-pause">Play</button>
-<button type="button" class="luna-next">Next</button>
-<span class="luna-time-current"></span>
-<div class="luna-progress-bar">
-<div class="luna-progress-bar-current-position"></div>
-</div>
-<span class="luna-time-total"></span>
-<audio class="luna-audio-tag">
-<source src="" type="audio/mpeg">
-Your browser does not support the audio element. Please up<a href="https://www.jqueryscript.net/time-clock/">date</a> your browser.
-</audio>
-</div>
+
 
 <?php else: ?>
 
 <div id="subscribers_only">
-<h2>Sorry, this audio is only available to <?php if($audio_details->access == 'subscriber'): ?>Subscribers<?php elseif($audio_details->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+<h2>Sorry, this audio is only available to <?php if($audio->access == 'subscriber'): ?>Subscribers<?php elseif($audio->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 <div class="clear"></div>
-<?php if(!Auth::guest() && $audio_details->access == 'subscriber'): ?>
+<?php if(!Auth::guest() && $audio->access == 'subscriber'): ?>
 <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
 <button id="button">Become a subscriber to watch this audio</button>
 </form>
 <?php else: ?>
 <form method="get" action="/signup">
-<button id="button">Signup Now <?php if($audio_details->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($audio_details->access == 'registered'): ?>for Free!<?php endif; ?></button>
+<button id="button">Signup Now <?php if($audio->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($audio->access == 'registered'): ?>for Free!<?php endif; ?></button>
 </form>
 <?php endif; ?>
 </div>
@@ -291,19 +272,19 @@ window.location = base_url+'/signup';
 }
 });
 //watchlater
-//			$('.watchlater').click(function(){
+//          $('.watchlater').click(function(){
 //                //alert(base_url);
 //                var audio_id = $(this).data('audioid');
 //                //alert(audio_id);
-//				if($(this).data('authenticated')){
+//              if($(this).data('authenticated')){
 //                   // alert();
-//					$.post(base_url+'/watchlater', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-//					$(this).toggleClass('active');
+//                  $.post(base_url+'/watchlater', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+//                  $(this).toggleClass('active');
 //
-//				} else {
-//					window.location = '/signup';
-//				}
-//			});
+//              } else {
+//                  window.location = '/signup';
+//              }
+//          });
 
 //watchlater
 $('.watchlater').click(function(){
@@ -323,17 +304,17 @@ window.location = '<?= URL::to('login') ?>';
 });
 
 //My Wishlist
-//			$('.mywishlist').click(function(){
+//          $('.mywishlist').click(function(){
 //                var aud_id = $(this).data('audioid');
 //                //alert(aud_id);
-//				if($(this).data('authenticated')){
-//					$.post(base_url+'/mywishlist', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-//					$(this).toggleClass('active');
+//              if($(this).data('authenticated')){
+//                  $.post(base_url+'/mywishlist', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+//                  $(this).toggleClass('active');
 //
-//				} else {
-//					window.location = base_url+'/signup';
-//				}
-//			});
+//              } else {
+//                  window.location = base_url+'/signup';
+//              }
+//          });
 
 //My Wishlist
 $('.mywishlist').click(function(){
@@ -391,8 +372,8 @@ player.currentResolution(res);
 function autoplay1() {
 //alert();
 var base_url = $('#base_url').val();
-//    	var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-//		playButton.setAttribute("id", "myPlayButton");
+//      var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
+//      playButton.setAttribute("id", "myPlayButton");
 var next_audio_id = $(".next_audio").text();
 var prev_audio_id = $(".prev_audio").text();
 var next_cat_audio = $(".next_cat_audio").text();
@@ -401,7 +382,7 @@ var url = $(".next_url").text();
 if(url != ''){
 //alert();
 
-setTimeout(function(){ 	
+setTimeout(function(){  
 window.location = url;
 }, 3000);
 }else if(prev_audio_id != ''){
@@ -418,7 +399,7 @@ svgStyle: null
 });
 
 bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){ 	
+setTimeout(function(){  
 window.location = base_url+url+"/"+prev_audio_id;
 }, 3000);
 
@@ -438,7 +419,7 @@ svgStyle: null
 });
 
 bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){ 	
+setTimeout(function(){  
 window.location = base_url+"/audios_category/"+next_cat_audio;
 }, 3000);
 }else if(prev_cat_audio != ''){
@@ -455,7 +436,7 @@ svgStyle: null
 });
 
 bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){ 	
+setTimeout(function(){  
 window.location = base_url+"/audios_category/"+prev_cat_audio;
 }, 3000);
 
@@ -492,6 +473,21 @@ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
+
+/*Play and Pause*/
+var ppbutton = document.getElementById("vidbutton");
+ppbutton.addEventListener("click", playPause);
+myVideo = document.getElementById("video_player");
+function playPause() { 
+    if (myVideo.paused) {
+        myVideo.play();
+        ppbutton.innerHTML = "Pause";
+        }
+    else  {
+        myVideo.pause(); 
+        ppbutton.innerHTML = "Play";
+        }
+}
 </script>
 
 <?php include('footer.blade.php'); ?>

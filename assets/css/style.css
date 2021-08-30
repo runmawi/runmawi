@@ -312,8 +312,8 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .banner-wrapper .trending-info .trending-dec { width: 100%; }
 .play-ico { font-size: 22px; }
 .play-button { position: absolute; z-index: 10; top: 50%; left: 15px; transform: translateY(-50%); display: block; padding-left: 5px; text-align: center; }
-.play-button:before { content: ""; position: absolute; z-index: 0; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); display: block; width: 50px; height: 50px; background: #ba1f24; border-radius: 50%; animation: pulse-border 1500ms ease-out infinite; }
-.play-button:after { content: ""; position: absolute; z-index: 1; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); display: block; width: 50px; height: 50px; background: var(--iq-primary); border-radius: 50%; transition: all 200ms; }
+.play-button:before { content: ""; position: absolute; z-index: 0; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); display: block; width: 50px; height: 50px;  border-radius: 50%; animation: pulse-border 1500ms ease-out infinite; }
+.play-button:after { content: ""; position: absolute; z-index: 1; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); display: block; width: 50px; height: 50px; border-radius: 50%; transition: all 200ms; }
 .play-button:hover:after { background-color: darken(#fa183d, 10%); }
 .play-button i { display: block; position: relative; z-index: 3; font-size: 20px; color: var(--iq-white);left: 79px; }
 .w-name { margin-left: 70px; }
