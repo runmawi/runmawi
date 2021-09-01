@@ -12,22 +12,22 @@ elseif(isset($audio)):
     $hidden = '<input type="hidden" value="'.$audio->id.'" id="audioid">';
 elseif(isset($post)):
     $media_title = $post->title;
-    $url = ($settings->enable_https) ? secure_url('post') : URL::to('post');
+    $url = URL::to('post');
     $media_url = $url . '/' . $post->slug; 
     $hidden = '<input type="hidden" value="'.$post->id.'" id="videoid">';
 elseif(isset($movie)):
     $media_title = $movie->title;
-    $url = ($settings->enable_https) ? secure_url('play_movie') : URL::to('play_movie');
+    $url = URL::to('play_movie');
     $media_url = $url . '/' . $movie->slug; 
     $hidden = '<input type="hidden" value="'.$movie->id.'" id="videoid">';
 elseif(isset($episode)):
     $media_title = $episode->title;
-    $url = ($settings->enable_https) ? secure_url('episode') : URL::to('episode');
+    $url = URL::to('episode');
     $media_url = $url . '/' . $episode->id; 
     $hidden = '<input type="hidden" value="'.$episode->id.'" id="videoid">';
 elseif(isset($series)):
     $media_title = $series->title;
-    $url = ($settings->enable_https) ? secure_url('series') : URL::to('series');
+    $url = URL::to('play_series');
     $media_url = $url . '/' . $series->id; 
     $hidden = '<input type="hidden" value="'.$series->id.'" id="videoid">';
 else:

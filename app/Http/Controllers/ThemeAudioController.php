@@ -161,10 +161,14 @@ class ThemeAudioController extends Controller{
       
             if (!empty($audio_details)) {
                 $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
-            $view_increment = $this->handleViewCount($audio);   
+            $view_increment = $this->handleViewCount($audio); 
+
+            $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
                 'audio' => Audio::findOrFail($audio),
+                'json_list' => json_encode($json),
                 'album_name' => AudioAlbums::findOrFail($albumID)->albumname,
+                'album_slug' => AudioAlbums::findOrFail($albumID)->slug,
                 'other_albums' => AudioAlbums::where('id','!=', $albumID)->get(),
                 'audio_details' => $audio_details,
                 'related_audio' => $related_audio,
@@ -176,6 +180,7 @@ class ThemeAudioController extends Controller{
                 'view_increment' => $view_increment,
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
                 'favorited' => $favorited,
+                'media_url' => URL::to('/').'/audio/'.$slug,
                 'mywishlisted' => $wishlisted,
                 'watchlatered' => $watchlater,
                 'audio_categories' => AudioCategory::all(),
@@ -213,6 +218,8 @@ class ThemeAudioController extends Controller{
 
         $data = array(
             'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->audios_per_page),
+            'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
+            'artists' => Artist::orderBy('created_at', 'DESC')->get(),
             'page_title' => 'All Audios',
             'page_description' => 'Page ' . $page,
             'current_page' => $page,
@@ -331,6 +338,7 @@ class ThemeAudioController extends Controller{
 
             $data = array(
                 'audio' => $audio,
+                'media_url' => URL::to('/').'/audio/'.$audio->slug,
                 'audios_category_next' => $audionext,
                 'audios_category_prev' => $audioprev,
                 'audioresolution' => $audioresolution,
@@ -365,6 +373,7 @@ class ThemeAudioController extends Controller{
             $data = array(
                 'album' => $album,
                 'json_list' => json_encode($json),
+                'media_url' => URL::to('/').'/album/'.$album_slug,
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );

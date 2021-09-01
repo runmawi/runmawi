@@ -74,10 +74,11 @@ border-bottom: 1px solid #141414;
 .jp-type-playlist .jp-playlist {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;overflow-y: auto;}
 .jp-btn {border: 0;padding: 0;outline: none;background: none;color: #fff;height: 1.5rem;line-height: 1.5rem;padding: 0 15px;}
 .jp-gui {background: rgba(255, 255, 255, 0.05);padding: 1rem;}
-.jp-gui .jp-title {display: inline-block;color: #fff;height: 1.5rem;width: 7.5rem;line-height: 1.5rem;overflow: hidden;opacity: 0.5;}
+.jp-gui .jp-title {display: inline-block;color: #fff;height: 1.5rem;width: 50%;text-align: right;line-height: 1.5rem;overflow: hidden;opacity: 0.5;}
 .jp-gui .jp-toggles {display: inline-block;float: right;}
 .jp-gui .jp-toggles .jp-repeat,
 .jp-gui .jp-toggles .jp-shuffle {display: inline-block;float: left;vertical-align: top;opacity: 0.5;}
+.jp-gui .jp-toggles .jp-shuffle i,.jp-gui .jp-toggles .jp-repeat i{font-size: 1.6rem;}
 .jp-gui .jp-times {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;margin-top: .5rem;}
 .jp-gui .jp-times .jp-current-time,
 .jp-gui .jp-times .jp-duration {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;color: #fff;font-size: .6rem;opacity: 0.5;}
@@ -152,10 +153,19 @@ border-bottom: 1px solid #141414;
  <h2 class="hero-title album"> <?= $album->albumname; ?></h2>
     <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
     <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
-        <a href="" class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+        <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
         <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-        <i id="ff" class="fa fa-share-alt" aria-hidden="true"></i>
+        <div class="dropdown">
+            <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
+                <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                    <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
+                </a>
+                <div class="divider" style="border:1px solid white"></div>
+                <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
+            </div>
+        </div>
         <!-- Share -->
     </div>
   
@@ -229,69 +239,50 @@ border-bottom: 1px solid #141414;
 
 </div>
 
-<div class="">
-   <!--  <audio  id="video_player" onended="autoplay1()" autoplay class="audio-js vjs-default-skin my-div" controls preload="auto"  style="width: 100%;height: 50px;position: fixed;width: 100%;left: 0;bottom: 0;  z-index: 9999;" controlsList="nodownload">
-        <?php foreach($album_audios as $audio){ ?>
-            <source src="<?php echo $audio->mp3_url;?>" type="audio/mpeg">
-          <?php } ?>
-          Your browser does not support the audio element.
-
-      </audio> -->
-<div class="" id="profile-music">
-<div class="">
-<div class=""><h3></h3></div>
-<div class="">
-<div class="">
-<div id="jplayer-audio" class="jp-jplayer"></div>
-<div id="jplayer-audio-container" class="jp-audio" role="application" aria-label="media player">
-<div class="jp-type-playlist">
-<div class="jp-gui">
-
-
-<div class="jp-toggles">
-
-
-</div>
-    <div class="jp-times">
-<div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-<div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
-</div>
-    <!--<div class="jp-progress">
-<div class="jp-seek-bar">
-<div class="jp-play-bar"></div>
-</div>
-</div>-->
-<div class="jp-controls-holder">
-<div class="jp-controls">
-     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="50">
-    <div class="jp-title"></div>
-   
-    <button class="jp-repeat jp-btn" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
-<button class="jp-previous jp-btn" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
-<button class="jp-play jp-btn" role="button" tabindex="0"><i class="fa fa-play"></i></button>
-<button class="jp-stop jp-btn" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
-<button class="jp-next jp-btn" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
-    <button class="jp-shuffle jp-btn" role="button" tabindex="0"><i class="fa fa-random"></i></button>
-    <div class="jp-volume-controls">
-<button class="jp-mute jp-btn" role="button" tabindex="0"><i class="fa fa-volume-mute"></i></button>
-<button class="jp-volume-max" role="button" tabindex="0">max volume</button>
-<div class="jp-volume-bar">
-<div class="jp-volume-bar-value"></div>
-</div>
-</div>
+<div class="chalf">
+    <div id="jplayer-audio" class="jp-jplayer"></div>
+    <div id="jplayer-audio-container" class="jp-audio" role="application" aria-label="media player">
+        <div class="jp-type-playlist">
+            <div class="jp-gui">
+                <div class="jp-title"></div>
+                <div class="jp-volume-controls">
+                    <button class="jp-mute jp-btn" role="button" tabindex="0"><i class="fa fa-volume-mute"></i></button>
+                    <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                    <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                    </div>
+                </div>
+                <div class="jp-toggles">
+                    <button class="jp-repeat jp-btn" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
+                    <button class="jp-shuffle jp-btn" role="button" tabindex="0"><i class="fa fa-random"></i></button>
+                </div>
+                <div class="jp-controls-holder">
+                    <div class="jp-controls">
+                        <button class="jp-previous jp-btn" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
+                        <button class="jp-play jp-btn" role="button" tabindex="0"><i class="fa fa-play"></i></button>
+                        <button class="jp-stop jp-btn" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
+                        <button class="jp-next jp-btn" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
+                    </div>
+                    <div class="jp-progress">
+                        <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                        </div>
+                    </div>
+                    <div class="jp-times">
+                        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+            <div class="jp-playlist">
+                <ul>
+                    <li>&nbsp;</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-</div>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 
 </div>
 </div>
@@ -485,6 +476,7 @@ jQuery(function($) {
             
     
             /* Youtube Integration Setup */
+            var ppbutton = document.getElementById("vidbutton");
            
             $(document).on($.jPlayer.event.setmedia, function(jpEvent) {});
     
@@ -509,10 +501,12 @@ jQuery(function($) {
                 },
                 pause: function(e) {
                     $(".toggle-play").removeClass("active");
+                    ppbutton.innerHTML = '<i class="fa fa-play mr-2" aria-hidden="true"></i> Play';
                     $(".waves").fadeOut();
                 },
                 play: function(e) {
                     $(".toggle-play").addClass("active");
+                    ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
                     $(".waves").fadeIn();
                 },
                 ready: function(e) {}
