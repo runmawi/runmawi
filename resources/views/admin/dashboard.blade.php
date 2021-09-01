@@ -1,5 +1,4 @@
 @extends('admin.master')
-
 @section('content')
 		
   <!--[hook_admin_dashboard_widgets_start]-->
@@ -30,7 +29,7 @@
                   <div class="row">
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                           <div class="iq-card-body">
+                           <div class="iq-card-body1" >
                               <div class="d-flex align-items-center justify-content-between">
                                  <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0">
@@ -50,8 +49,8 @@
                      </div>
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                           <div class="iq-card-body">
-                              <div class="d-flex  justify-content-between">
+                           <div class="iq-card-body1">
+                              <div class="d-flex  justify-content-between align-items-center">
                                  <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0 font-size-14">
                                        Rated This App
@@ -70,7 +69,7 @@
                      </div>
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                           <div class="iq-card-body">
+                           <div class="iq-card-body1">
                               <div class="d-flex align-items-center justify-content-between">
                                  <div class="iq-cart-text text-capitalize">
                                     <p class="mb-0 font-size-14">
@@ -90,7 +89,7 @@
                      </div>
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                           <div class="iq-card-body">
+                           <div class="iq-card-body1">
                               <div class="d-flex align-items-center justify-content-between">
                                  <div class="iq-cart-text text-uppercase">
                                     <p class="mb-0 font-size-14">
@@ -162,7 +161,7 @@
                                        <div class="iq-user-box bg-primary"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total  <br> 
-                                          Subscriber's <br>{{$total_subscription}}
+                                          Subscriber's
                                           </p>
                                        </div>
                                     </div>
@@ -176,7 +175,7 @@
                                        <div class="iq-user-box bg-warning"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">New <br>
-                                             Subscriber's<br>{{$total_recent_subscription}}
+                                             Subscriber's
                                           </p>
                                        </div>
                                     </div>
@@ -190,7 +189,7 @@
                                        <div class="iq-user-box bg-info"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total <br>
-                                                Video's<br>{{$total_videos}}
+                                                Video's
                                           </p>
                                        </div>
                                     </div>
@@ -204,7 +203,7 @@
                                        <div class="iq-user-box bg-danger"></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total <br>
-                                          Visitor's<br>{{ App\User::count() }}
+                                          Visitor's
                                           </p>
                                        </div>
                                     </div>

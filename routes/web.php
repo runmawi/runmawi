@@ -14,7 +14,8 @@ Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
-
+Route::post('favorite', 'ThemeAudioController@add_favorite');
+Route::post('albumfavorite', 'ThemeAudioController@albumfavorite');
 
 Route::get('/updatecard', 'PaymentController@UpdateCard');
 Route::get('/my-refferals', 'PaymentController@MyRefferal');

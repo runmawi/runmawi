@@ -88,7 +88,7 @@
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div style="line-height: 14px;">
                    <hr style="color:!important;">
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Video</p>
+                   <p class="" style="color: #4295d1 !important;padding-left:15px;">Video</p>
                    <hr></div>
                   <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -106,7 +106,7 @@
           </li>
                     <div style="line-height: 14px;">
                    <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Audio </p><hr></div>
+                        <p class="" style="color: #4295d1 !important;padding-left:15px;">Audio </p><hr></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -133,19 +133,18 @@
                   </li>
                     <div style="line-height: 14px;">
                    <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Accounts</p><hr></div>
+                        <p class="" style="color: #4295d1 !important;padding-left:15px;">Accounts</p><hr></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
-                        <li><a href="{{ URL::to('admin/roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
                      </ul>
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
                     <div style="line-height: 14px;">
                     <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Language</p>
+                   <p class="" style="color:#4295d1 !important;padding-left:15px;">Language</p>
                         <hr></div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -160,19 +159,10 @@
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
                     <div style="line-height: 14px;">
                    <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
+                   <p class="" style="color:#4295d1 !important;padding-left:5px;">Site</p>
                         <hr></div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
-                    <li>
-                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-user-friends"></i><span>Moderators</span><i
-                        class="ri-arrow-right-s-line iq-arrow-right"></i>
-                     </a>
-                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
-                     </ul>
-                  </li>
+                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                        class="la la-newspaper-o"></i><span>Pages</span><i
@@ -661,26 +651,14 @@
             $chart_lables = "['Total Subscribers', 'New Subscribers', 'Total Videos', 'Total Visitors']";
             $all_category = App\VideoCategory::all();
             $items = array(); 
-            $views = array(); 
-            $lastmonth = $this_month_views =  array();      
+            $lastmonth = array();      
                foreach($all_category as $category) {
                   $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
                   $items[] = "'$category->name'";
-                  $views[] = "'$category->views'";
-                  $lastmonth[] = $categoty_sum;
-                  $last_month_views[] = App\Video::where("video_category_id","=",$category->id)->whereMonth(
-                    'created_at', '=', Carbon\Carbon::now()->subMonth()->month
-                )->sum('views');
-                  $this_month_views[] = App\Video::where("video_category_id","=",$category->id)->whereMonth(
-                    'created_at', '=', Carbon\Carbon::now()->month
-                )->sum('views');
-                  
+                  $lastmonth[] = "'$categoty_sum'";
                }
                $cate_chart = implode(',', $items);
-               $cate_views = implode(',', $views);
                $last_month_chart = implode(',', $lastmonth);
-               $this_month_record = implode(',', $this_month_views);
-
    }
    ?>
 
@@ -728,6 +706,7 @@
          if(jQuery('#view-chart-01').length){
 
 var chart_01_lable = $('#chart_01_lable').val();
+//alert(chart_01_lable);
    var options = {
       series: <?php echo $chart_details;?>,
       chart: {
@@ -758,13 +737,14 @@ var chart_01_lable = $('#chart_01_lable').val();
       }
     }]
     };
+    console.log(chart_01_lable);
     var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
     chart.render();
   } 
 
  if(jQuery('#view-chart-02').length){
         var options = {
-          series: <?php echo "[".$last_month_chart."]";?>,
+          series: [44, 30, 20, 43, 22,20],
           chart: {
           width: 250,
           type: 'donut',
@@ -808,10 +788,10 @@ var chart_01_lable = $('#chart_01_lable').val();
         var options = {
           series: [{
           name: 'This Month',
-          data: <?php echo "[".$this_month_record."]";?>
+          data: [44, 55,30,60,7000]
         }, {
           name: 'Last Month',
-          data: <?php echo "[".$this_month_record."]";?>
+          data: [35, 41,20,40,100]
         }],
         colors:['#e20e02', '#007aff'],
           chart: {

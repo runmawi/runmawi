@@ -16,6 +16,13 @@ background: #2bc5b4!important;}
 .bd:hover{
 
 }
+    th,td {
+    padding: 10px;
+    color: #fff!important;
+}
+    tr{
+        border:#141414;
+    }
 p{
 color: #fff;
 }
@@ -37,14 +44,11 @@ list-style: none;
 .audio-lp{
 background: #000000;
 padding: 33px;
+border-radius: 25px;
 
 }
-.audio-lp li{
-list-style: none;
-color:#fff;
-padding: 10px 10px;
-}
-.audio-lp li:hover {
+
+.audio-lpk:hover {
 background-color: #1414;
 color:#fff;
 border: 1px #e9ecef;
@@ -143,31 +147,32 @@ Your browser does not support the audio element.
 <div class="row mt-5">
 <div class="col-sm-12 db">
 
-<ul class="audio-lp">
-<li class=" active">
+<div class="audio-lp">
 <p  class="album-title">Other Songs from <?= ucfirst($album_name); ?></p>
-<div class="d-flex justify-content-around" style="align-items: center;color:#fff;">
-    <div>Album Name </div>
-    <div>Song list</div>
-    <div>Singer by</div>
-    <div>Lyrics by</div>
-    <div>Favourite</div>
-    <div>Duration</div>
-</div>
-</li>
+  <table style="width:100%;color:#fff;">  
+<tr style="border-bottom:1px solid #fff;">
+    <th>Track </th>
+    <th>Song list</th>
+    <th>Singer by</th>
+    <th>Lyrics by</th>
+    <th>Favourite</th>
+    <th>Duration</th></tr>
+      <tr class="audio-lpk">
+
 <?php foreach($related_audio as $other_audio){ ?>
-    <li class="aud-lp">
-        <div class="d-flex justify-content-around" style="align-items: center;">
-           <img src="<?= URL::to('/').'/public/uploads/images/'. $other_audio->image ?>"  class="img-responsive" / width="50">
-           <div><a href="<?php echo URL::to('/').'/audio/'.$other_audio->slug;?>"><?php echo ucfirst($other_audio->title); ?></a></div>
-           <div><?php echo get_audio_artist($other_audio->id); ?></div>
-           <div>Arstist</div>
-           <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-           <div><?php echo gmdate('H:i:s', $other_audio->duration); ?></div>
-       </div>
-   </li>
+   
+        
+          <td> <img src="<?= URL::to('/').'/public/uploads/images/'. $other_audio->image ?>"  class="img-responsive" / width="50"></td>
+           <td><a href="<?php echo URL::to('/').'/audio/'.$other_audio->slug;?>"><?php echo ucfirst($other_audio->title); ?></a></td>
+           <td><?php echo get_audio_artist($other_audio->id); ?></td>
+           <td>Arstist</td>
+           <td><i class="fa fa-heart-o" aria-hidden="true"></i></td>
+           <td><?php echo gmdate('H:i:s', $other_audio->duration); ?></td>
+      
+   
 <?php } ?>
-</ul>
+          </tr>
+    </table>
 </div>
 </div>
 
@@ -194,21 +199,23 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
     
-<p  class="album-title">Other Albums </p>
+<h4  class="album-title">Other Albums </h4>
 <ul class="album_list mt-3" style="display: flex;">
     <?php foreach ($other_albums as $other_album) { ?>
         <li>
             <?php if($other_album->album != ''){ ?>
                 <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                 <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-              
+               
 
                 <div class="play-block">
                     <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
                 </div>
+                    
             </a>
-            <?php echo ucfirst($other_album->albumname);?>
-            <?php  } ?>
+            <p class="mt-2"><?php echo ucfirst($other_album->albumname);?>
+            <?php  } ?> </p>
+          
         </li>
     <?php }?>
 </ul>

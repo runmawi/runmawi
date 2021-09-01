@@ -371,6 +371,40 @@ class ThemeAudioController extends Controller{
         return View::make('albums', $data);
     }
 
+    public function add_favorite(Request $request)
+    {
+        $audio_id = $request->get('audio_id');
+        if($audio_id){
+            $favorite = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
+            if(isset($favorite->id)){ 
+                $favorite->delete();
+            } else {
+                $favorite = new Favorite;
+                $favorite->user_id = Auth::user()->id;
+                $favorite->audio_id = $audio_id;
+                $favorite->save();
+                echo $favorite;
+            }
+        }
+    }
+
+    public function albumfavorite(Request $request)
+    {
+        $album_id = $request->get('album_id');
+        if($album_id){
+            $favorite = Favorite::where('user_id', '=', Auth::user()->id)->where('album_id', '=', $album_id)->first();
+            if(isset($favorite->id)){ 
+                $favorite->delete();
+            } else {
+                $favorite = new Favorite;
+                $favorite->user_id = Auth::user()->id;
+                $favorite->album_id = $album_id;
+                $favorite->save();
+                echo $favorite;
+            }
+        }
+    }
+
     /*public function artist($artist_id) {
        
          if(Auth::guest()):

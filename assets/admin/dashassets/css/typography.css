@@ -65,26 +65,26 @@ General
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body { font-family: 'Roboto', sans-serif; font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.8; padding: 0; margin: 0; color: var(--iq-body-text); background: var(--iq-body-bg); }
+body { font-family: 'Roboto', sans-serif; font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.8; padding: 0; margin: 0; color: var(--iq-body-text); background: #fff;/*var(--iq-body-bg)*/; }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
 a, button, input, btn { outline: medium none !important; }
 a { color: var(--iq-primary); }
 a:hover { color: var(--iq-primary-hover); }
-hr { border-color: var(--iq-border-light); }
+/*hr { border-color: var(--iq-border-light); }*/
 h1, h2, h3, h4, h5, h6 { font-family: 'Roboto', sans-serif; font-weight: 500; margin: 0px; line-height: 1.5; color: var(--iq-title-text); }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
 label { font-weight: normal; }
-h1 { font-size: 3.052em; }
-h2 { font-size: 2.300em; line-height: 1.200em; }
-h3 { font-size: 1.953em; line-height: 1.3em; }
-h4 { font-size: 1.400em; }
-h5 { font-size: 1.200em; }
-h6 { font-size: 1.0em; line-height: 1.3em; }
+h1 { font-size: 3.052em;color:#000000; }
+h2 { font-size: 2.300em; line-height: 1.200em; color:#000000;}
+h3 { font-size: 1.953em; line-height: 1.3em; color:#000000;}
+h4 { font-size: 1.400em;color:#000000; }
+h5 { font-size: 1.200em;color:#000000; }
+h6 { font-size: 1.0em; line-height: 1.3em;color:#000000; }
 
 /*----------------------------------------------
 Input
 ------------------------------------------------*/
-label { color: var(--iq-white); }
+label { color:#000000 /*var(--iq-white)*/; }
 .form-control.form-control-sm { height: 30px; }
 .form-control.form-control-lg { height: 50px; line-height: 50px; }
 
@@ -92,7 +92,7 @@ label { color: var(--iq-white); }
 dl dd { margin-bottom: 15px; }
 dl dd:last-child { margin-bottom: 0px; }
 th { }
-.table-striped tbody tr:nth-of-type(odd) { background: var(--iq-body-bg); }
+.table-striped tbody tr:nth-of-type(odd) { background:/* var(--iq-body-bg)*/#fff; }
 .table td, .table th { vertical-align: middle; }
 .table thead th {
     border-bottom: 2px solid var(--iq-body-bg);
@@ -125,10 +125,10 @@ loading
 .rounded-right { border-radius: 0px 15px 15px 0px !important; }
 .border-none { border: 0 !important; }
 .page-item.active .page-link { background-color: var(--iq-primary); border-color: var(--iq-primary); }
-.page-link { color: var(--iq-primary); border-color: var(--iq-primary); }
+.page-link { color: /*var(--iq-primary)*/#000000; border-color: /*var(--iq-primary)*/#000000; }
 .page-link:hover { color: var(--iq-primary-hover); border-color: var(--iq-primary-hover); }
 .page-item.disabled .page-link { border-color: var(--iq-primary); }
-.form-control { background-color: var(--iq-body-bg); border: 1px solid transparent; height: 46px; position: relative; color:var(--iq-body-text); font-size: 16px;width: 100%; -webkit-border-radius: 6px; border-radius: 6px;}
+.form-control { background-color: #808080; /*var(--iq-body-bg);*/ border: 1px solid transparent; height: 46px; position: relative; color:var(--iq-body-text); font-size: 16px;width: 100%; -webkit-border-radius: 6px; border-radius: 6px;}
 .form-control:focus { color: var(--iq-dark1); border-color: transparent; box-shadow: none;background-color: var(--iq-body-bg);}
 .progress-bar { background-color: var(--iq-primary); }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle { background-color: var(--iq-primary-hover); border-color: var(--iq-primary-hover); }
@@ -274,7 +274,7 @@ Avatar Size
 /*----------------------------------------------
 Card
 ------------------------------------------------*/
-.iq-card { background: var(--iq-light-card); -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none; }
+.iq-card { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none; box-shadow: 2px 2px 2px 2px;}
 .iq-card-transparent { background: transparent; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; margin-bottom: 30px; border: none; box-shadow: none; }
 .iq-card-body { padding: 10px; }
 .iq-card .iq-card-header, .iq-card-transparent .iq-card-header { padding: 20px; margin-bottom: 0; -ms-flex-align: center !important; align-items: center !important; border-bottom: 1px solid rgb(20 20 20);}

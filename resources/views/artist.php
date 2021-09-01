@@ -38,6 +38,7 @@
         		?>
         		
             <div class="col-sm-4">
+                <a href="<?php echo URL::to('/').'/audio/'.$latest_audio[0]['slug'];?>">
                 <div class="bg">
                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
@@ -51,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
         <?php } ?>
         </div>
@@ -63,6 +65,7 @@
         	<?php foreach ($albums as $key => $album) { ?>
         		
             <div class="col-sm-4">
+                <a href="<?php echo URL::to('/').'/album/'.$album->slug;?>">
                 <div class="bg">
                     <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
@@ -75,32 +78,12 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
             <?php } ?>
         </div>
     </div>
-   <!--  <div class="m-4 mt-3">
-        <h2>Music Concert</h2>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="bg">
-                    <img src="1.png" alt="" height="200" width="300">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="dc">Dear Camrod</p>
-                            <p>2018</p>
-                        </div>
-                        <div>
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+  
     <div class="m-4 mt-3">
         <h2>Audio</h2>
     </div>
@@ -110,6 +93,7 @@
         		?>
         		
             <div class="col-sm-4">
+                <a href="<?php echo URL::to('/').'/audio/'.$artist_audio->slug;?>">
                 <div class="bg">
                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_audio->image;?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
@@ -123,6 +107,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
         <?php } ?>
         </div>
@@ -136,6 +121,7 @@
         		?>
         		
             <div class="col-sm-4">
+                <a href="<?php echo URL::to('/').'/play_series/'.$artist_serie->id;?>">
                 <div class="bg">
                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_serie->image;?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
@@ -149,6 +135,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
         <?php } ?>
         </div>
@@ -162,6 +149,7 @@
                 ?>
                 
             <div class="col-sm-4">
+                <a href="<?php echo URL::to('/').'/category/videos/'.$artist_video->slug;?>">
                 <div class="bg">
                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_video->image;?>" alt="" width="300">
                     <div class="d-flex justify-content-between">
@@ -175,6 +163,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
         <?php } ?>
         </div>

@@ -1,5 +1,6 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+.fa-heart{color: red !important;}
 .audio-js *, .audio-js :after, .audio-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
 top: 50% !important;
@@ -16,6 +17,13 @@ background: #2bc5b4!important;}
 .bd:hover{
 
 }
+     th,td {
+    padding: 10px;
+    color: #fff!important;
+}
+    tr{
+        border:#141414;
+    }
 p{
 color: #fff;
 }
@@ -37,14 +45,11 @@ list-style: none;
 .audio-lp{
 background: #000000;
 padding: 33px;
+    border-radius: 25px;
 
 }
-.audio-lp li{
-list-style: none;
-color:#fff;
-padding: 10px 10px;
-}
-.audio-lp li:hover {
+
+.audio-lpk:hover {
 background-color: #1414;
 color:#fff;
 border: 1px #e9ecef;
@@ -57,9 +62,12 @@ border-bottom-right-radius:0;
 border-bottom: 1px solid #141414;
 }
 /* Player Style */
-.audioPlayer .jp-jplayer, #jplayer-audio-container {width: 100%;}
+.audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
-.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;margin: 0 auto;max-width: 35rem;width: 100%;}
+.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
+    top: 85%;
+    z-index: 5;margin-left: -110px;}
+    .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
 .jp-type-playlist .jp-gui {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -73,6 +81,10 @@ border-bottom: 1px solid #141414;
 .jp-gui .jp-times {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;margin-top: .5rem;}
 .jp-gui .jp-times .jp-current-time,
 .jp-gui .jp-times .jp-duration {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;color: #fff;font-size: .6rem;opacity: 0.5;}
+    ..jp-gui .jp-controls-holder .jp-controls{
+        width: 40%
+            margin:0 auto;
+    }
 .jp-gui .jp-times .jp-current-time {text-align: left;}
 .jp-gui .jp-times .jp-duration {text-align: right;}
 .jp-gui .jp-volume-controls {display: inline-block;float: right;}
@@ -80,7 +92,7 @@ border-bottom: 1px solid #141414;
 .jp-gui .jp-volume-controls .jp-mute {display: inline-block;float: left;vertical-align: top;margin-right: -.75rem;opacity: 0.5;}
 .jp-gui .jp-volume-controls .jp-volume-bar {display: none !important;float: left;vertical-align: top;width: 2.5rem;height: 2px;background: rgba(255, 255, 255, 0.5);margin: .65rem 0;}
 .jp-gui .jp-volume-controls .jp-volume-bar .jp-volume-bar-value {background: #fff;height: 2px;}
-.jp-gui .jp-controls-holder .jp-controls {padding: 1rem 0;display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-align-items: center;-moz-align-items: center;-ms-align-items: center;align-items: center;width: 100%;}
+.jp-gui .jp-controls-holder .jp-controls {/*padding: 1rem 0;*/display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-align-items: center;-moz-align-items: center;-ms-align-items: center;align-items: center;width: 40%;margin: 0 auto;}
 .jp-gui .jp-controls-holder .jp-controls button {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;height: 2.5rem;line-height: 2.5rem;}
 .jp-gui .jp-controls-holder .jp-controls button i {font-size: 1.25rem;}
 .jp-gui .jp-controls-holder .jp-controls button:active i {color: #09f;}
@@ -141,7 +153,7 @@ border-bottom: 1px solid #141414;
     <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
     <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
         <a href="" class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-        <i id="ff" class="fa fa-heart-o" aria-hidden="true"></i>
+        <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
         <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
         <i id="ff" class="fa fa-share-alt" aria-hidden="true"></i>
         <!-- Share -->
@@ -154,31 +166,33 @@ border-bottom: 1px solid #141414;
 </div>
 <div class="row mt-5">
     <div class="col-sm-12 db">
-        <ul class="audio-lp">
-            <li class=" active">
-                <div class="d-flex justify-content-around" style="align-items: center;color:#fff;">
-                    <div>Album Name </div>
-                    <div>Song list</div>
-                    <div>Singer by</div>
-                    <div>Lyrics by</div>
-                    <div>Favourite</div>
-                    <div>Duration</div>
-                </div>
-            </li>
+        <div class="audio-lp">
+        <table style="width:100%;color:#fff;">  
+<tr style="border-bottom:1px solid #fff;">
+    <th>Track </th>
+    <th>Song list</th>
+    <th>Singer by</th>
+    <th>Lyrics by</th>
+    <th>Favourite</th>
+    <th>Duration</th>
+            </tr>
+      
+          
             <?php foreach($album_audios as $audio){ ?>
-            <li class="aud-lp">
-                <div class="d-flex justify-content-around" style="align-items: center;">
-                     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="50">
-                <div><a href="<?php echo URL::to('/').'/audio/'.$audio->slug;?>"><?php echo ucfirst($audio->title); ?></a></div>
-                <div><?php echo get_audio_artist($audio->id); ?></div>
-                <div>Arstist</div>
-                <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-                <div><?php echo gmdate('H:i:s', $audio->duration); ?></div>
-                </div>
-            </li>
+            <tr class="audio-lpk">
+                
+                <td> <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="50"></td>
+                <td><a href="<?php echo URL::to('/').'/audio/'.$audio->slug;?>"><?php echo ucfirst($audio->title); ?></a></td>
+                <td><?php echo get_audio_artist($audio->id); ?></td>
+                <td>Arstist</td>
+                <td><a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i class="fa fa-heart" ></i><?php else: ?><i class="fa fa-heart-o" ></i><?php endif; ?></a></td>
+                <td><?php echo gmdate('H:i:s', $audio->duration); ?></td>
+               
+              </tr>
             <?php } ?>
            
-       </ul>
+     
+        </table>
     </div>
 </div>
 </div>
@@ -203,7 +217,7 @@ border-bottom: 1px solid #141414;
                     <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
                 </div>
             </a>
-            <?php echo ucfirst($other_album->albumname);?>
+            <p><?php echo ucfirst($other_album->albumname);?>
             <?php  } ?>
         </li>
     <?php }?>
@@ -223,50 +237,54 @@ border-bottom: 1px solid #141414;
           Your browser does not support the audio element.
 
       </audio> -->
-<div class="sectionContainer" id="profile-music">
-<div class="container">
-<div class="sectionHeading"><h3>Media</h3></div>
-<div class="crow">
-<div class="chalf">
+<div class="" id="profile-music">
+<div class="">
+<div class=""><h3></h3></div>
+<div class="">
+<div class="">
 <div id="jplayer-audio" class="jp-jplayer"></div>
 <div id="jplayer-audio-container" class="jp-audio" role="application" aria-label="media player">
 <div class="jp-type-playlist">
 <div class="jp-gui">
-<div class="jp-title"></div>
-<div class="jp-volume-controls">
+
+
+<div class="jp-toggles">
+
+
+</div>
+    <div class="jp-times">
+<div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+<div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+</div>
+    <!--<div class="jp-progress">
+<div class="jp-seek-bar">
+<div class="jp-play-bar"></div>
+</div>
+</div>-->
+<div class="jp-controls-holder">
+<div class="jp-controls">
+     <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="50">
+    <div class="jp-title"></div>
+   
+    <button class="jp-repeat jp-btn" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
+<button class="jp-previous jp-btn" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
+<button class="jp-play jp-btn" role="button" tabindex="0"><i class="fa fa-play"></i></button>
+<button class="jp-stop jp-btn" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
+<button class="jp-next jp-btn" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
+    <button class="jp-shuffle jp-btn" role="button" tabindex="0"><i class="fa fa-random"></i></button>
+    <div class="jp-volume-controls">
 <button class="jp-mute jp-btn" role="button" tabindex="0"><i class="fa fa-volume-mute"></i></button>
 <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
 <div class="jp-volume-bar">
 <div class="jp-volume-bar-value"></div>
 </div>
 </div>
-<div class="jp-toggles">
-<button class="jp-repeat jp-btn" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
-<button class="jp-shuffle jp-btn" role="button" tabindex="0"><i class="fa fa-random"></i></button>
 </div>
-<div class="jp-controls-holder">
-<div class="jp-controls">
-<button class="jp-previous jp-btn" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
-<button class="jp-play jp-btn" role="button" tabindex="0"><i class="fa fa-play"></i></button>
-<button class="jp-stop jp-btn" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
-<button class="jp-next jp-btn" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
-</div>
-<div class="jp-progress">
-<div class="jp-seek-bar">
-<div class="jp-play-bar"></div>
+
+
 </div>
 </div>
-<div class="jp-times">
-<div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-<div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
-</div>
-</div>
-</div>
-<div class="jp-playlist">
-<ul>
-<li>&nbsp;</li>
-</ul>
-</div>
+
 </div>
 </div>
 </div>
@@ -295,28 +313,6 @@ var base_url = $('#base_url').val();
 
 $(document).ready(function(){
 $('#audio_container').fitVids();
-$('.favorite').click(function(){
-if($(this).data('authenticated')){
-$.post('/saka/favorite', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-$(this).toggleClass('active');
-} else {
-window.location = base_url+'/signup';
-}
-});
-//watchlater
-//          $('.watchlater').click(function(){
-//                //alert(base_url);
-//                var audio_id = $(this).data('audioid');
-//                //alert(audio_id);
-//              if($(this).data('authenticated')){
-//                   // alert();
-//                  $.post(base_url+'/watchlater', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-//                  $(this).toggleClass('active');
-//
-//              } else {
-//                  window.location = '/signup';
-//              }
-//          });
 
 //watchlater
 $('.watchlater').click(function(){
@@ -335,18 +331,6 @@ window.location = '<?= URL::to('login') ?>';
 }
 });
 
-//My Wishlist
-//          $('.mywishlist').click(function(){
-//                var aud_id = $(this).data('audioid');
-//                //alert(aud_id);
-//              if($(this).data('authenticated')){
-//                  $.post(base_url+'/mywishlist', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-//                  $(this).toggleClass('active');
-//
-//              } else {
-//                  window.location = base_url+'/signup';
-//              }
-//          });
 
 //My Wishlist
 $('.mywishlist').click(function(){
@@ -552,6 +536,38 @@ jQuery(function($) {
                 }
             });
         });
+
+//Audio Favorite
+      $('.favorite').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('favorite') ?>', { audio_id : $(this).data('audio_id'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<i class="fa fa-heart"></i>');
+              }else{
+                $(this).html('<i class="fa fa-heart-o"></i>');
+              }
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
+
+      //Album Favorite
+      $('.albumfavorite').click(function(){
+        if($(this).data('authenticated')){
+          $.post('<?= URL::to('albumfavorite') ?>', { album_id : $(this).data('album_id'), _token: '<?= csrf_token(); ?>' }, function(data){});
+          $(this).toggleClass('active');
+          $(this).html("");
+              if($(this).hasClass('active')){
+                $(this).html('<i id="ff" class="fa fa-heart"></i>');
+              }else{
+                $(this).html('<i id="ff" class="fa fa-heart-o"></i>');
+              }
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+        }
+      });
 </script>
 
 <?php include('footer.blade.php'); ?>
