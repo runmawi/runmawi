@@ -26,7 +26,7 @@
             }
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
-            <div id="video_container" class="fitvid">
+            <div id="video_container" class="fitvid" style="margin: 0 auto;">
               <?= $video->embed_code ?>
             </div>
           <?php  elseif($video->type == 'file' && check_file_exist(URL::to('/storage/app/public/').'/'.$video->path . '.m3u8')): ?>
@@ -90,7 +90,7 @@
             </div>
             </div>
           <?php  else: ?>
-            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <div id="video_container" class="fitvid" style="margin: 0 auto;">
 <!-- Current time: <div id="current_time"></div> -->
 <video class="video-js vjs-big-play-centered" id="videoPlayer" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
      <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
@@ -162,7 +162,7 @@ if($value['sub_language'] == "Spanish"){
 
   <?php }  
     else { ?>       
-    <div id="video_container" class="fitvid">
+            <div id="video_container" class="fitvid" style="margin: 0 auto;">
 
     <video class="video-js vjs-big-play-centered"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  id="videoPlayer" >
      <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
@@ -198,7 +198,7 @@ if($value['sub_language'] == "Spanish"){
       </div>
   <?php } } ?>
   <?php if(Auth::guest()) {  ?>
-    <div id="video_container" class="fitvid">
+            <div id="video_container" class="fitvid" style="margin: 0 auto;">
 
     <video class="video-js vjs-big-play-centered"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  id="videoPlayer" >
 
