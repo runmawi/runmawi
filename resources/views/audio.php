@@ -484,5 +484,10 @@ window.location = '<?= URL::to('login') ?>';
         ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
     }
 });
+    
+    $("#vidbutton").on("click", function(e) {
+        e.preventDefault();
+        $(".jp-play").trigger("click");
+    });
 </script>
 <?php include('footer.blade.php'); ?>

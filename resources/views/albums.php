@@ -530,7 +530,11 @@ jQuery(function($) {
                 }
             });
         });
-
+        
+        $("#vidbutton").on("click", function(e) {
+        e.preventDefault();
+        $(".jp-play").trigger("click");
+    });
 //Audio Favorite
       $('.favorite').click(function(){
         if($(this).data('authenticated')){
