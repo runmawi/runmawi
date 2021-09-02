@@ -1,9 +1,56 @@
 @extends('admin.master')
 
 @section('content')
+<script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
+		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
   <div id="content-page" class="content-page">
             <div class="container-fluid">
                <div class="row">
+               <div class="col-sm-4 col-xs-6">
+				<div class="tile-stats tile-red">
+					<div class="icon"><i class="entypo-users"></i></div>
+					<div class="num" data-start="0" data-end="{{ $total_subscription }}" data-postfix="" data-duration="1500" data-delay="0">{{ $total_subscription }}</div>
+					<h3>Total Subscribers</h3>
+					<p>The total amount of subscribers on your site.</p>
+				</div>
+			</div><!-- column -->
+		
+			<div class="col-sm-4 col-xs-6">
+				<div class="tile-stats tile-green">
+					<div class="icon"><i class="entypo-user-add"></i></div>
+					<div class="num" data-start="0" data-end="{{ $total_recent_subscription }}" data-postfix="" data-duration="1500" data-delay="600">{{ $total_recent_subscription }}</div>
+					<h3>New Subscribers</h3>
+					<p>New Subscribers for today.</p>
+				</div>
+			</div><!-- column -->
+		
+			<div class="col-sm-4 col-xs-6">
+				<div class="tile-stats tile-aqua">
+					<div class="icon"><i class="entypo-video"></i></div>
+					<div class="num" data-start="0" data-end="{{ $total_videos }}" data-postfix="" data-duration="1500" data-delay="1200">{{ $total_videos }}</div>
+					<h3>Videos</h3>
+					<p>Total Channel videos on your site.</p>
+				</div>
+			</div><!-- column -->
+         <div class="col-md-12">
+    	<form  accept-charset="UTF-8" action="{{ URL::to('admin/export') }}" method="post">
+						<div class="col-md-4">
+                            <label>  Start Date:</label>
+                            <input type="date" id="start_date" name="start_date" value="" class="form-control" >
+                        </div>
+						<div class="col-md-4">
+                            <label>  End Date:</label>
+                            <input type="date" id="end_date" name="end_date" value="" class="form-control" >
+                        </div>
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+              <div class="col-md-4" >
+			  <label>  </label>
+                <!-- <button type="button" class="btn btn-black" data-dismiss="modal">Close</button> -->
+                <input style="margin-top: 10%;" type="submit" class="btn btn-black" id="Export" value="Export" />
+            </div>
+        </form>
+</div>
                   <div class="col-sm-12">
                      <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between">
@@ -49,6 +96,8 @@
                                                 class="ri-pencil-line"></i></a>
                                                 <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/user/delete') . '/' . $user->id }}"><i
                                                    class="ri-delete-bin-line"></i></a>
+                                                   <a class="iq-bg-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ URL::to('admin/user/view') . '/' . $user->id }}"><i
+                                                   class="fa fa-eye"></i></a>
                                                 </div>
                                              </td>
                                           </tr>
@@ -80,7 +129,13 @@
 		});
 
 	</script>
+<style>
 
+.form-control {
+background-color: #f7f7f7;
+}
+
+</style>
 	@stop
 
 @stop

@@ -158,7 +158,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/user/edit/{id}', 'AdminUsersController@edit');
     Route::post('/user/update', array('before' => 'demo', 'uses' => 'AdminUsersController@update'));
     Route::get('/user/delete/{id}', array('before' => 'demo', 'uses' => 'AdminUsersController@destroy'));
-
+    Route::post('/export', 'AdminUsersController@export');
+    Route::get('/user/view/{id}',  'AdminUsersController@view');
+    
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
 
