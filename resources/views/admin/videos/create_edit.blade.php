@@ -4,11 +4,14 @@
         font-size: 12px;
     }
     .select2-selection__rendered{
-        background-color: #141414!important;
+        background-color: #f7f7f7!important;
         border: none!important;
     }
     .select2-container--default .select2-selection--multiple{
         border: none!important;
+    }
+    #video{
+        background-color: #f7f7f7!important;
     }
 </style>
 @section('css')
@@ -227,7 +230,7 @@
                                  <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                   
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
-                                    <p>Upload video</p>
+                                    <p>Drop and drag the video file</p>
                                  </div>
                                     
                                  </div>
@@ -263,12 +266,12 @@
                               </select>
                               </div> -->  
                               <div class="col-sm-6 form-group mt-3">
-                                  <label class="p-2">User Access:</label>
+                                 <!-- <label class="p-2">Subscriber (only paid subscription users):</label>
                               <select id="access" name="access"  class="form-control" >
                                 <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                  <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
                                  <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>   
-                              </select>
+                              </select>-->
                                    <label class="">Video Duration:</label>
                                    <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
                               </div> 
@@ -304,7 +307,7 @@
                               </div>-->
                              <div class="col-sm-6 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<div>
 								<label for="featured">Is this video Featured:</label>
@@ -403,7 +406,7 @@
 	</script>
 
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-    <script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
+
     <script>
     CKEDITOR.replace( 'summary-ckeditor', {
         filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
@@ -412,7 +415,7 @@
     </script>
 
     <script>
-      $('#duration').mask('00:00:00');  
+
       $('input[type="checkbox"]').on('change', function(){
 			   this.value = this.checked ? 1 : 0;
 			}).change();

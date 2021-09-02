@@ -42,8 +42,9 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
+                    <h4 class="modal-title">New Plan</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Plan</h4>
+					
 				</div>
 				
 				<div class="modal-body">
@@ -85,7 +86,7 @@
 	</div>
 			<div class="panel panel-primary category-panel" data-collapsed="0">
 		</div>
-			<div class="panel-body">
+			<div class="panel-body mt-3">
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
