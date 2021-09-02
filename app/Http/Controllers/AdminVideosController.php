@@ -705,7 +705,10 @@ if(!empty($artistsdata)){
 
     // Create a temp directory for building.
             $temp = storage_path('app/public'). "/build";
-            File::makeDirectory($temp);
+            if (!file_exists($temp)) {
+                File::makeDirectory($temp);
+            }
+
     // Use FFProbe to get the duration of the video.
             $ffprobe = \FFMpeg\FFProbe::create();
             $duration = $ffprobe->streams($video_path)

@@ -90,11 +90,11 @@ $created_at = $start_date ;
 </style>
                                        </div>
                                     </div>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
 
 
 

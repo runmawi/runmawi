@@ -363,20 +363,20 @@ class AdminAudioController extends Controller
 
     private function deleteAudioImages($audio){
         $ext = pathinfo($audio->image, PATHINFO_EXTENSION);
-        if(file_exists(Config::get('site.uploads_dir') . 'images/' . $audio->image) && $audio->image != 'placeholder.jpg'){
-            @unlink(Config::get('site.uploads_dir') . 'images/' . $audio->image);
+        if(file_exists(public_path().'/uploads/images/' . $audio->image) && $audio->image != 'placeholder.jpg'){
+            @unlink(public_path().'/uploads/images/' . $audio->image);
         }
 
-        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
-            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) );
+        if(file_exists(public_path().'/uploads/images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(public_path().'/uploads/images/' . str_replace('.' . $ext, '-large.' . $ext, $audio->image) );
         }
 
-        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
-            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) );
+        if(file_exists(public_path().'/uploads/images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(public_path().'/uploads/images/' . str_replace('.' . $ext, '-medium.' . $ext, $audio->image) );
         }
 
-        if(file_exists(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
-            @unlink(Config::get('site.uploads_dir') . 'images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) );
+        if(file_exists(public_path().'/uploads/images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) )  && $audio->image != 'placeholder.jpg'){
+            @unlink(public_path().'/uploads/images/' . str_replace('.' . $ext, '-small.' . $ext, $audio->image) );
         }
     }
 
