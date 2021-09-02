@@ -12,7 +12,7 @@
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
 	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">
   	<link href="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
     <!-- <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" /> -->
     <link href="css/videojs.thumbnails.css" rel="stylesheet">
     <!-- <link href="https://vjs.zencdn.net/7.3.0/video-js.min.css" rel="stylesheet"> -->
@@ -67,7 +67,7 @@
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
 	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">
   	<link href="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
     <style type="text/css">
 		.video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 		.video-js .vjs-watermark-top-right {right: 5%;top: 50%;}

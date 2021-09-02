@@ -7,6 +7,15 @@ function changeDateFormate($date,$date_format){
     
 }
 
+function check_file_exist($url){
+    $handle = @fopen($url, 'r');
+    if(!$handle){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 function audiofavorite($audio_id)
 {
     $favorite = App\Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
