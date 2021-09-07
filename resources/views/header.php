@@ -14,7 +14,7 @@ $uppercase =  ucfirst($request_url);
       <meta name="description" content="Flicknexs">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title><?php echo $uppercase.'| Flicknexs' ; ?></title>
+      <title><?php echo $uppercase.' | Flicknexs' ; ?></title>
 
        <!-- Favicon -->
      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />

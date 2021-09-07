@@ -21,11 +21,10 @@ $cast_crew = \DB::table('video_artists')
         src="<?php echo URL::to('/') . '/public/uploads/artists/'.$value->image ;?>"
         class="img-border-radius avatar-40 img-fluid" alt=""></a>
         <br>
-        <br>
         <?php echo $value->artist_name; ?>
         <br>
-        <br>
-        <?php echo $value->description; ?>
+        <?php //echo $value->description; ?>
+        </div>
         </div>
 
     <?php }

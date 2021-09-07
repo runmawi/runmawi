@@ -99,7 +99,7 @@ Route::group(['middleware' => ['restrictIp']], function() {
 
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
 Route::get('series/category/{id}', 'ChannelController@series_genre' );
-Route::post('watchlater', 'WatchLaterController@show_watchlaters');
+Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
