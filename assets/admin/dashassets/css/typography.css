@@ -85,7 +85,7 @@ h6 { font-size: 1.0em; line-height: 1.3em;color:#000000; }
 Input
 ------------------------------------------------*/
 label { color:#000000 /*var(--iq-white)*/; }
-.form-control.form-control-sm { height: 30px; }
+.form-control.form-control-sm { height: 30px;border: 1px solid #808080; }
 .form-control.form-control-lg { height: 50px; line-height: 50px; }
 
 /* Definition Lists */
@@ -97,9 +97,9 @@ th { }
 .table thead th {
     border-bottom: 2px solid var(--iq-body-bg);
 }
-.table td, .table th{border-top: 1px solid var(--iq-body-bg);
+.table td, .table th{/*border-top: 1px solid #808080 /*var(--iq-body-bg)*/;
 }
-.table-bordered td, .table-bordered th{border:1px solid var(--iq-body-bg)}
+.table-bordered td, .table-bordered th{/*border:1px solid var(--iq-body-bg);*/padding: 10px;}
 textarea {
   resize: none;
 }
@@ -188,8 +188,10 @@ Background Color Opacity
 .iq-bg-primary { background: var(--iq-light-primary) !important; color: var(--iq-primary) !important; }
 .iq-bg-secondary { background: var(--iq-light-secondary) !important; color: var(--iq-secondary) !important; }
 .iq-bg-success { background: var(--iq-light-success) !important; color: var(--iq-success) !important; }
-.iq-bg-danger { background: var(--iq-light-danger) !important; color: var(--iq-danger) !important; }
+.iq-bg-danger { background: var(--iq-dark) !important; color: var(--iq-danger) !important; }
 .iq-bg-warning { background: var(--iq-light-warning) !important; color: var(--iq-warning) !important; }
+/*.iq-bg-warning { background: var( --iq-dark) !important; color: var(--iq-title-text) !important; }
+/*.iq-bg-success { background: var(--iq-dark) !important; color: var(--iq-success) !important; }*/
 .iq-bg-info { background: var(--iq-light-info) !important; color: var(--iq-info) !important; }
 .iq-bg-dark { background: var(--iq-light-dark) !important; color: var(--iq-dark1) !important; }
 
@@ -288,8 +290,11 @@ Avatar Size
 Card
 ------------------------------------------------*/
 .iq-card { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); }
+.iq-card1 { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); }
+.iq-card0 { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);padding: 10px; }
 .iq-card-transparent { background: transparent; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; margin-bottom: 30px; border: none; box-shadow: none; }
-.iq-card-body { padding: 10px; }
+
+.iq-card-body { padding: 15px; }
 .iq-card .iq-card-header, .iq-card-transparent .iq-card-header { padding: 20px; margin-bottom: 0; -ms-flex-align: center !important; align-items: center !important; border-bottom: 1px solid #F1f1f1;}
 .iq-card-transparent .iq-card-header { padding: 0px; border-bottom: 0; }
 .iq-card-transparent .iq-card-header .iq-header-title { display: inline-block; align-self: center !important; background: var(--iq-body-bg); padding: 0 20px; z-index: 9; }
