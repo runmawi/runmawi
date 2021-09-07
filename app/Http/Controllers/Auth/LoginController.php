@@ -30,30 +30,44 @@ class LoginController extends Controller
      * Where to redirect users after login.
      *
      * @var string
+     * 
      */
+    protected $redirectTo;
+
     public function redirectTo() {
-        $role = Auth::user()->role; 
-        switch ($role) {
+        switch(Auth::user()->role){
             case 'registered':
-            return '/register2';
-            break;
-            default:
-            return '/home'; 
-            break;
-        }
+                return '/register2';
+                break;
+                default:
+                return '/home'; 
+                break;
+
+            }
+
+
+        // $role = Auth::user()->role; 
+        // switch ($role) {
+        //     case 'registered':
+        //     return '/register2';
+        //     break;
+        //     default:
+        //     return '/home'; 
+        //     break;
+        // }
     }
 
-    protected function validateLogin(Request $request)
-    {
-        $user = User::where($this->username(), '=', $request->input($this->username()))->first();
-        if ($user && ! $user->active) {
-            throw ValidationException::withMessages([$this->username() => __('The account is inactive')]);
-        }
-        $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-        ]);
-    }
+    // protected function validateLogin(Request $request)
+    // {
+    //     $user = User::where($this->username(), '=', $request->input($this->username()))->first();
+    //     if ($user && ! $user->active) {
+    //         throw ValidationException::withMessages([$this->username() => __('The account is inactive')]);
+    //     }
+    //     $request->validate([
+    //         $this->username() => 'required|string',
+    //         'password' => 'required|string',
+    //     ]);
+    // }
 
     /**
      * Create a new controller instance.

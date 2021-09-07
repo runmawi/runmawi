@@ -230,7 +230,7 @@
                                  <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                   
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
-                                    <p>Drop and drag the video file</p>
+                                    <p style="font-size: 14px!important;">Drop and drag the video file</p>
                                  </div>
                                     
                                  </div>
@@ -346,7 +346,6 @@
 	<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 	
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
   <script type="text/javascript">
  $ = jQuery;
 	$(document).ready(function(){
@@ -384,6 +383,7 @@
 	
 
    function NumAndTwoDecimals(e , field) {
+       alert(); 
         var val = field.value;
         var re = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)$/g;
         var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;
@@ -419,8 +419,6 @@
       $('input[type="checkbox"]').on('change', function(){
 			   this.value = this.checked ? 1 : 0;
 			}).change();
-        $('#duration').mask('00:00:00');
-      
       </script>
 
 @section('javascript')

@@ -14,7 +14,7 @@
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
-		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-info">
+		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
@@ -220,7 +220,7 @@
 	$(document).ready(function(){
 
 		$('#duration').mask('00:00:00');
-		//$('#tags').tagsInput();
+		$('#tags').tagsInput();
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){

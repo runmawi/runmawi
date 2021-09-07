@@ -9,6 +9,11 @@
     .iq-card{
         padding: 15px;
     }
+    .lar {
+    font-family: 'Line Awesome Free';
+    font-weight: 400;
+    margin: 4px;
+}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -36,7 +41,7 @@
 	
 	<div class="clear"></div>
 
-	<div class="gallery-env">
+	<div class="gallery-env mt-2">
 		
 			<table class="data-tables table livestream_table " style="width:100%">
 				<thead>
@@ -53,9 +58,11 @@
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
 						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
-						<td><a href="{{ URL::to('channelVideos/play_videos/') . '/' . $video->id }}" target="_blank"><i class="fa fa-eye"></i></a>
-							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="album-options"><i class="fa fa-edit"></i></a>
-							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}" class="delete"><i class="fa fa-trash"></i></a>
+						<td class="d-flex align-items-center list-user-action">
+                            <a href="{{ URL::to('channelVideos/play_videos/') . '/' . $video->id }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a>
+							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
+							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}"class="iq-bg-danger"><i
+                                                class="ri-delete-bin-line"></i></a>
 						</td>
 					</tr>
 					@endforeach

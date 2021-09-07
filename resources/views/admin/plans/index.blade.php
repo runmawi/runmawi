@@ -12,6 +12,9 @@
     .p1{
         font-size: 12px;
     }
+    th{
+        color:#000000;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -118,8 +121,8 @@
 
 							<tr class="text-center">
 
-								<td> {{ $plan->plans_name }} </td>
-								<td><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+								<td><label> {{ $plan->plans_name }}</label> </td>
+								<td class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/plans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/plans/delete/{{ $plan->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
 							</tr>
 
 							@endforeach

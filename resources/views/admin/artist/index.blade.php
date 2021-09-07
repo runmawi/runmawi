@@ -30,7 +30,7 @@
 			<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" name="s" id="search-input" value="<?= Request::get('s'); ?>" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 		</div>
         <div class="col-md-2">
-             <a href="{{ URL::to('admin/artists/create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Artist</a>
+             <a href="{{ URL::to('admin/artists/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create Artist</a>
         </div>
 	</div>
     
@@ -50,9 +50,10 @@
 			<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
 			<td valign="bottom"><p>{{ $artist->artist_name }}</p></td>
 			<td>
-				<p>
-					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="btn btn-xs btn-info"><span class="fa fa-edit"></span> Edit</a>
-					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
+				<p class="d-flex align-items-center list-user-action">
+					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="lar la-eye"></i> </a>
+					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" class="iq-bg-danger"><i
+                                                class="ri-delete-bin-line"></i></a>
 				</p>
 			</td>
 		</tr>

@@ -70,6 +70,7 @@ class RegisterController extends Controller
     {
         $path = public_path().'/uploads/avatars/';
         $string = Str::random(60);
+        $password = Hash::make($data['password']);
         
        
         $user = User::create([
@@ -77,7 +78,7 @@ class RegisterController extends Controller
             'role' => 'registered',
             'username' => $data['username'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => $password,
             'activation_code' => $string,
         ]);
             $settings = Setting::first();

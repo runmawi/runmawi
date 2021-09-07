@@ -97,7 +97,7 @@
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
 
               <div class="modal-footer">
-                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/plans') }}">Close</a>
+                <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/plans') }}">Close</a>
                 <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>
            

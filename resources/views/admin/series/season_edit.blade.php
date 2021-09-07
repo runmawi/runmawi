@@ -224,7 +224,7 @@
 
 		<div class="clear"></div>
 		<!-- Manage Season -->
-            <div class="p-3">
+            <div class="p-4">
 		@if(!empty($episodes))
 		<h5>Season & Episodes</h5> 
 		<div class="admin-section-title">
@@ -278,7 +278,7 @@
 	$(document).ready(function(){
 
 		$('#duration').mask('00:00:00');
-		//$('#tags').tagsInput();
+		$('#tags').tagsInput();
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){

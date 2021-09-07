@@ -39,6 +39,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use GeoIPLocation;
 use Stevebauman\Location\Facades\Location;
 use Carbon;
+use Session;
 
 class HomeController extends Controller
 {
@@ -57,7 +58,73 @@ class HomeController extends Controller
     }
 
     public function FirstLanging(){
-        return View::make('first_landing');
+        // return View::make('first_landing');
+        $data = Session::all();
+        // $session_password = $data['password_hash'];
+        if (empty($data['password_hash'])) {
+
+            return View::make('auth.login');
+
+          }else{
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
+            $settings = Setting::first();
+           
+            $genre = Genre::all();
+            $genre_video_display = VideoCategory::all();
+             
+             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
+             $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
+             $trendings = $trendings->merge($trending_videos);
+             $trendings = $trendings->merge($trending_movies);
+             $trendings = $trendings->merge($trending_episodes);
+             $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
+            
+             $pages = Page::all();
+             if(!Auth::guest()){
+                 $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
+                 $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+             }else{
+                 $cnt_watching = '';
+             }
+             //echo "<pre>";print_r($cnt_watching);exit();
+             $data = array(
+                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
+                 'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                 'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
+                 'cnt_watching' => $cnt_watching,
+                 'trendings' => $trending_movies,
+                 'latest_videos' => $latest_videos,
+                 'movies' => $trending_movies,
+                 'latest_movies' => $latest_movies,
+                 'ppv_movies' => $ppv_movies,
+                 'trending_audios' => $trending_audios,
+                 'latest_audios' => $latest_audios,
+                 'featured_videos' => $featured_videos,
+                 'featured_episodes' => $featured_episodes,
+                 'current_page' => 1,
+                 'genre_video_display'=> $genre_video_display,
+                  'genres' => VideoCategory::all(),
+                 'pagination_url' => '/videos',
+                  'settings'=>$settings,
+                  'pages'=>$pages,
+                 'trending_videos' => $trending_videos,
+                 'suggested_videos' => $suggested_videos,
+           'video_categories' => VideoCategory::all(),
+                 'home_settings' => HomeSetting::first()
+             );
+             //echo "<pre>";print_r($data['latest_videos']);exit;
+             return View::make('home', $data);
+        
+          }
     }
 
     /**
@@ -68,63 +135,73 @@ class HomeController extends Controller
     public function index(Request $request)
     {
     
-       $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
-       $settings = Setting::first();
-      
-       $genre = Genre::all();
-       $genre_video_display = VideoCategory::all();
-        
-        $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-        $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-        $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-		$trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-		$ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-		$latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-        $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-        $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-		$trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
-		$trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
-		$trendings = $trendings->merge($trending_videos);
-		$trendings = $trendings->merge($trending_movies);
-		$trendings = $trendings->merge($trending_episodes);
-        $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-		$featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
-       
-        $pages = Page::all();
-        if(!Auth::guest()){
-            $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
-            $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
-        }else{
-            $cnt_watching = '';
-        }
-        //echo "<pre>";print_r($cnt_watching);exit();
-        $data = array(
-            'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
-            'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-            'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
-            'cnt_watching' => $cnt_watching,
-			'trendings' => $trending_movies,
-			'latest_videos' => $latest_videos,
-			'movies' => $trending_movies,
-			'latest_movies' => $latest_movies,
-			'ppv_movies' => $ppv_movies,
-            'trending_audios' => $trending_audios,
-            'latest_audios' => $latest_audios,
-			'featured_videos' => $featured_videos,
-			'featured_episodes' => $featured_episodes,
-			'current_page' => 1,
-			'genre_video_display'=> $genre_video_display,
- 			'genres' => VideoCategory::all(),
-			'pagination_url' => '/videos',
-             'settings'=>$settings,
-             'pages'=>$pages,
-            'trending_videos' => $trending_videos,
-            'suggested_videos' => $suggested_videos,
-      'video_categories' => VideoCategory::all(),
-			'home_settings' => HomeSetting::first()
-        );
-        //echo "<pre>";print_r($data['latest_videos']);exit;
-        return View::make('home', $data);
+        $data = Session::all();
+        // $session_password = $data['password_hash'];
+        if (empty($data['password_hash'])) {
+
+            return View::make('auth.login');
+
+
+          }else{
+    
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
+            $settings = Setting::first();
+           
+            $genre = Genre::all();
+            $genre_video_display = VideoCategory::all();
+             
+             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
+             $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
+             $trendings = $trendings->merge($trending_videos);
+             $trendings = $trendings->merge($trending_movies);
+             $trendings = $trendings->merge($trending_episodes);
+             $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
+            
+             $pages = Page::all();
+             if(!Auth::guest()){
+                 $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
+                 $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+             }else{
+                 $cnt_watching = '';
+             }
+             //echo "<pre>";print_r($cnt_watching);exit();
+             $data = array(
+                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
+                 'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                 'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
+                 'cnt_watching' => $cnt_watching,
+                 'trendings' => $trending_movies,
+                 'latest_videos' => $latest_videos,
+                 'movies' => $trending_movies,
+                 'latest_movies' => $latest_movies,
+                 'ppv_movies' => $ppv_movies,
+                 'trending_audios' => $trending_audios,
+                 'latest_audios' => $latest_audios,
+                 'featured_videos' => $featured_videos,
+                 'featured_episodes' => $featured_episodes,
+                 'current_page' => 1,
+                 'genre_video_display'=> $genre_video_display,
+                  'genres' => VideoCategory::all(),
+                 'pagination_url' => '/videos',
+                  'settings'=>$settings,
+                  'pages'=>$pages,
+                 'trending_videos' => $trending_videos,
+                 'suggested_videos' => $suggested_videos,
+           'video_categories' => VideoCategory::all(),
+                 'home_settings' => HomeSetting::first()
+             );
+             //echo "<pre>";print_r($data['latest_videos']);exit;
+             return View::make('home', $data);
+            }
     }
     public function social()
     {

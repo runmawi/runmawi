@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DateTime;
+use Session;
 
 class AdminUsersController extends Controller
 {
@@ -379,7 +380,13 @@ class AdminUsersController extends Controller
     
     public function logout()
     {
+        $data = \Session::all();
+
         Auth::logout();
+        unset($data['password_hash']);
+
+        \Session::flush();
+        
         
         return Redirect::to('/')->with(array('note' => 'You are logged out done', 'note_type' => 'success') );
     }

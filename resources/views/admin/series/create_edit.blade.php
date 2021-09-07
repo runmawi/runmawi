@@ -46,7 +46,7 @@
 						<div class="panel-title font-weight-bold"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p class="p1">Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value=""  />
 						</div> 
 					</div>
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
@@ -92,12 +92,12 @@
 
 					
 
-					<div class="new-series-embed" @if(!empty($series->type) && $series->type == 'embed')style="display:block"@else style = "display:none" @endif>
+					<div class="new-series-embed mt-2" @if(!empty($series->type) && $series->type == 'embed')style="display:block"@else style = "display:none" @endif>
 						<label for="embed_code">Embed Code:</label>
 						<textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($series->embed_code)){{ $series->embed_code }}@endif</textarea>
 					</div>
 
-					<div class="new-series-upload" @if(!empty($series->type) && $series->type == 'upload') @endif>
+					<div class="new-series-upload mt-2" @if(!empty($series->type) && $series->type == 'upload') @endif>
 						<label for="embed_code">Upload Series</label>
 						<input type="file" name="series_upload" id="series_upload">
 					</div>
@@ -269,7 +269,7 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success" /></div>
+			<input type="submit" value="{{ $button_text }}" class="btn btn-primary" /></div>
 			</div><!-- row -->
             
 		</form>
@@ -280,15 +280,15 @@
 		@if(!empty($series->id))
 		
 		<div class="admin-section-title">
-		<div class="row">
-            <div class="col-md-4">
+		<div class="row p-3">
+            <div class="col-md-8">
                 <h3>Season & Episodes</h3> 
             </div>
-			<div class="col-md-8">
+			<div class="col-md-4">
 				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-info"><i class="fa fa-plus-circle"></i>Create Season</a>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row p-3">
 <table class="table table-bordered genres-table">
 
 		<tr class="table-header">
@@ -325,6 +325,7 @@
 		$ = jQuery;
 
 		$(document).ready(function(){
+			alert("fd");
 		$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');

@@ -148,7 +148,7 @@
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                         <td>
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>

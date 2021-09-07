@@ -105,7 +105,7 @@
                       <td><?php echo $language->name;?></td>
                         <td class="">
                             <div class=" align-items-center list-user-action"><a href="{{ URL::to('admin/languagestrans/edit/') }}/{{$language->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/languagestrans/delete/') }}/{{$language->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/languagestrans/delete/') }}/{{$language->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>

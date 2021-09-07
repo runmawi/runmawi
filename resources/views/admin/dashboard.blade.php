@@ -48,7 +48,7 @@
                         </div>
                      </div>
                      <div class="col-sm-6 col-lg-6 col-xl-3">
-                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex  justify-content-between align-items-center">
                                  <div class="iq-cart-text text-capitalize">
@@ -68,7 +68,7 @@
                         </div>
                      </div>
                      <div class="col-sm-6 col-lg-6 col-xl-3">
-                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex align-items-center justify-content-between">
                                  <div class="iq-cart-text text-capitalize">
@@ -80,7 +80,7 @@
                                      <i class="las la-download"></i>
                                  </div>
                               </div>
-                              <div class="d-flex align-items-center justify-content-between mt-3">
+                              <div class="d-flex mt-4 align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+1M</h4>
                                  <p class="mb-0 text-info"><span><i class="fa fa-caret-up mr-2"></i></span>80%</p>
                               </div>
@@ -155,7 +155,7 @@
                         </div>
                         <div class="row mt-1">
                            <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
-                              <div class="iq-card">
+                              <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-primary"></div>
@@ -169,7 +169,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
-                              <div class="iq-card">
+                              <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-warning"></div>
@@ -183,7 +183,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
-                              <div class="iq-card">
+                              <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-info"></div>
@@ -197,7 +197,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
-                              <div class="iq-card">
+                              <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-danger"></div>

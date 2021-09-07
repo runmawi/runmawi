@@ -3244,9 +3244,12 @@ public function upnextAudio(Request $request){
 
     public function audiodetail(Request $request)
     {
-
+        if(!empty($request->audio_id)){
         $audio_id = $request->audio_id;
-
+        }else{
+          echo "Audios not added";
+          exit();
+        }
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;

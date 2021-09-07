@@ -103,9 +103,9 @@
                                           <div class="d-flex align-items-center list-user-action">
                                              <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/user/edit') . '/' . $user->id }}"><i
                                                 class="ri-pencil-line"></i></a>
-                                                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/user/delete') . '/' . $user->id }}"><i
+                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/user/delete') . '/' . $user->id }}"><i
                                                    class="ri-delete-bin-line"></i></a>
-                                                   <a class="iq-bg-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ URL::to('admin/user/view') . '/' . $user->id }}"><i
+                                                   <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ URL::to('admin/user/view') . '/' . $user->id }}"><i
                                                    class="fa fa-eye"></i></a>
                                                 </div>
                                              </td>

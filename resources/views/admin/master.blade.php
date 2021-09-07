@@ -58,6 +58,26 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
+<style>
+
+    .top-left-logo img {
+        opacity: 0.9;
+        overflow: hidden;
+    }
+    span{
+        font-weight: normal!important;
+    }
+    .header-logo
+
+    {
+       padding-left: 25px;
+        
+    }
+    hr{
+        border-top: 1px solid #f39c3ea3!important ;
+    }
+    
+</style>
 
 </head>
 <body >
@@ -86,9 +106,10 @@
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li><a href="<?php echo URL::to('home') ?>" class=""><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                   <div style="">
-                   <p class="" style="color: #4295d1 !important;padding-left:15px;">Video</p>
-                   </div>
+                   <div style="line-height: 14px;">
+                   <hr style="color:!important;">
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Video</p>
+                   <hr></div>
                   <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
@@ -103,9 +124,9 @@
 
             </ul>
           </li>
-                    <div style="">
-                   
-                        <p class="" style="color: #4295d1 !important;padding-left:15px;">Audio </p></div>
+                    <div style="line-height: 14px;">
+                   <hr>
+                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Audio </p><hr></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -130,21 +151,22 @@
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                    <div style="">
-                  
-                        <p class="" style="color: #4295d1 !important;padding-left:15px;">Accounts</p></div>
+                    <div style="line-height: 14px;">
+                   <hr>
+                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Accounts</p><hr></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                         <li><a href="{{ URL::to('admin/roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
                      </ul>
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                    <div style="">
-                    
-                   <p class="" style="color:#4295d1 !important;padding-left:15px;">Language</p>
-                        </div>
+                    <div style="line-height: 14px;">
+                    <hr>
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Language</p>
+                        <hr></div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -156,10 +178,10 @@
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
-                    <div style=";">
-                  
-                   <p class="" style="color:#4295d1 !important;padding-left:5px;">Site</p>
-                       </div>
+                    <div style="line-height: 14px;">
+                   <hr>
+                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
+                        <hr></div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                     <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
                   <li>

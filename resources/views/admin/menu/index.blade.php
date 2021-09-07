@@ -91,7 +91,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Menu Items below: (max of 3 levels)
+					<p>Organize the Menu Items below: (max of 3 levels)</p>
 				</div>
 				
 				<div class="panel-options">
@@ -100,7 +100,7 @@
 			</div>
 			
 			
-			<div class="panel-body">
+			<div class="panel-body" style="color:#000000;">
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
@@ -141,7 +141,7 @@
 
 							<div class="dd-handle mt-2">{{ $menu_item->name}}</div>
 							<div class=" align-items-center list-user-action mt-2"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
 
 						<?php $previous_item = $menu_item; ?>

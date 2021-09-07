@@ -34,11 +34,11 @@
                      			@foreach($allCategories as $category)
                      			<tr class="text-center">
                      				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
-                     				<td>{{ ucfirst($category->name) }}</td>
-                     				<td> 
-                     					<aa class="action edit iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
+                     				<td><label>{{ ucfirst($category->name) }}</label></td>
+                     				<td class=" list-user-action"> 
+                     					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
 
-                     					<a class="action delete iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
+                     					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
                      				</td>
                      			</tr>
                      			@endforeach

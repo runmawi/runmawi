@@ -130,7 +130,7 @@
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>

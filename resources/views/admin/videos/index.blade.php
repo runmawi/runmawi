@@ -64,7 +64,7 @@
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
-                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><i
                                                 class="ri-delete-bin-line"></i></a>
                                        </div>
