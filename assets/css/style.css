@@ -92,6 +92,8 @@ header#main-header.menu-sticky { position: fixed; top: 0; width: 100%; backgroun
 header .navbar .menu-header-menu-container, header .navbar .menu-all-pages-container, header .navbar .menu-testing-menu-container, header .navbar .menu-short-container, header .navbar .menu-main-menu-container { display: inline-block; width: 100%; }
 header .navbar ul.navbar-nav { display: block; text-align: center; }
 header .navbar ul li { list-style: none; margin-right: 18px; position: relative; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; display: inline-block; }
+header .navbar ul li ul li {display: block; margin-right: 0; }
+header .navbar ul limenu-item ul li a {text-align: left;}
 header .navbar ul li.menu-item a { font-size: 17px; position: relative;line-height: 70px; position: relative; z-index: 9; text-decoration: none; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; text-transform: capitalize; }
 .nav-open .nav-overlay { opacity: 1; visibility: visible; -webkit-transition: 0.3s; -o-transition: 0.3s; transition: 0.3s; }
 .nav-overlay { left: 0; right: 0; top: 0; bottom: 0; opacity: 0; z-index: 900; display: block; width: 100%; position: fixed; visibility: hidden; background: rgba(0, 0, 0, 0.6); -webkit-transition: 0.3s; -o-transition: 0.3s; transition: 0.3s; }
@@ -671,7 +673,6 @@ a.title-dec{
 .cont-item:hover{
     color: #fff !important;
     background-color: #000 !important;
-    padding: 0px !important;
 }
 .dropdown-menu.categ-head{
     color: #fff !important;
