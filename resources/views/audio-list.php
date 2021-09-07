@@ -93,7 +93,7 @@
 													<i class="fa fa-play flexlink" aria-hidden="true"></i> 
 												</div>
 												<div class="detail-block">
-													<!--  <p class="movie-title"><?= $audio->title; ?></p>-->
+													<!--  <p class="movie-title"><?//= $audio->title; ?></p>-->
 												</div>
 											</div>
 											<img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" width="280">
