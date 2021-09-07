@@ -22,7 +22,7 @@
      <?php } else{
             } ?>
 
-            <script src="js/video-quality-selector.js"></script>s
+            <script src="js/video-quality-selector.js"></script>
 
             <!-- <script src="js/videojs-seek.min.js"></script> -->
 
