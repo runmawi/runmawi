@@ -12,7 +12,7 @@ $uppercase =  ucfirst($request_url);
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <!-- <title>Flicknexs</title> -->
-      <title><?php echo $uppercase.'Flicknexs' ; ?></title>
+      <title><?php echo $uppercase.' | Flicknexs' ; ?></title>
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- video js -->
