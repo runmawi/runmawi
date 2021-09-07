@@ -402,13 +402,7 @@ if($value['sub_language'] == "Spanish"){
     <php endforeach; ?>
     </div>
 -->
-<div class="video-list you-may-like">
-            <h4 class="Cast & Crew" style="color:#fffff;"><?php echo __('CAST & CREW');?></h4>
-                <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
-                <?php include('partials/cast-crew.php');?>
-                </div>
-    
-    </div>  
+        
     <div class="video-list you-may-like">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   

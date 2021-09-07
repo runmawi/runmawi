@@ -1,20 +1,11 @@
 <!doctype html>
 <html lang="en-US">
    <head>
-      <?php
-$uri_path = $_SERVER['REQUEST_URI']; 
-$uri_parts = explode('/', $uri_path);
-$request_url = end($uri_parts);
-$uppercase =  ucfirst($request_url);
-// print_r($uppercase);
-// exit();
-      ?>
       <!-- Required meta tags -->
       <meta charset="UTF-8">
-      <meta name="description" content="Flicknexs Watchlater">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title><?php echo $uppercase.'Flicknexs' ; ?></title>
+      <title>Flicknexs</title>
 
        <!-- Favicon -->
      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
@@ -284,7 +275,7 @@ $uppercase =  ucfirst($request_url);
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to('watchlaters') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <i class="ri-settings-4-line text-primary"></i>

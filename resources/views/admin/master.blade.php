@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
 
+      ?>
   <!--<meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -33,7 +39,8 @@
     <!-- Required meta tags -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>Flicknexs</title>
+   <!-- <title>Flicknexs</title> -->
+   <title><?php echo $uppercase.'Flicknexs' ; ?></title>
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" />
    <!-- Bootstrap CSS -->
@@ -58,6 +65,9 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
+  <?php
+       $id = Auth::user()->id;                     
+   ?>
 <style>
 
     .top-left-logo img {
@@ -510,7 +520,8 @@
                                     <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
                                     <span class="text-white font-size-12">Available</span>
                                  </div>
-                                 <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
+                             
+                                 <a  href="{{ URL::to('admin/user/view/'.$id) }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-file-user-line"></i>
@@ -521,7 +532,7 @@
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="{{ URL::to('admin/user/edit') . '/' . $id }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-profile-line"></i>
@@ -532,7 +543,7 @@
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="{{ URL::to('admin/system_settings') }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-account-box-line"></i>
@@ -543,7 +554,7 @@
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="{{ URL::to('admin/settings') }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-lock-line"></i>

@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
+
+      ?>
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Flicknexs</title>
+      <!-- <title>Flicknexs</title> -->
+      <title><?php echo $uppercase.'Flicknexs' ; ?></title>
+
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- video js -->
     
