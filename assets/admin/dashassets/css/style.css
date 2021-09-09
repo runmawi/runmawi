@@ -52,9 +52,9 @@ NOTE: This file contains the styling for responsive Template.
 /*--------------------------------------------------------------------
 General
 ---------------------------------------------------------------------*/
-*::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
+*::-moz-selection { background: #F2F5FA; color:#000000; text-shadow: none; }
+::-moz-selection { background: #F2F5FA; color: #000000; text-shadow: none; }
+::selection { background: #F2F5FA; color: #000000; text-shadow: none; }
 
 /* Definition Lists */
 dl dd { margin-bottom: 15px; }
@@ -238,33 +238,60 @@ Waves Effect
 .iq-sidebar #sidebar-scrollbar { margin-top: 15px; }
 .iq-sidebar-menu .iq-menu .iq-menu-title { display: block; color: var(--iq-body-text); font-size: 15px; position: relative; padding: 15px; font-weight: 500; line-height: 18px; }
 .iq-sidebar-menu .iq-menu .iq-menu-title i { display: none; }
-.iq-sidebar-menu { position: relative; }
+.iq-sidebar-menu { position: relative;padding-top: 30px; }
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 12px 20px 12px 35px; line-height: 18px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
-.iq-sidebar-menu .iq-menu li li a { font-size: 16px; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 15px 35px; line-height: 19px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
+.iq-sidebar-menu .iq-menu li li a { font-size: 16px;height: 40px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 .iq-sidebar-menu .iq-menu li ul li a:hover{
-    background-color: #f1f1f1;
+    background-color: #F2F5FA;
 }
 li.active {
-    color: red;
-    background-color: #57b9ce;
+    color:#0993D2!important;
+    background-color: #F2F5FA;
 }
+li.active a span{
+    color:#0993D2!important;
+}
+.bod{
+  
+width: 246px;
+margin: 12px auto;
+
+border: 1px solid #F1F1F1;
+
+}
+::-webkit-file-upload-button {
+  background: #F2F5FA;
+  color: #000000;
+    border: none;
+    width: 140px;
+height: 45px;
+    border-radius: 4px;
+
+ 
+    
+}
+
 /*.iq-sidebar-menu .iq-menu li:hover {background-color: #1e282c;}*/
-.iq-sidebar-menu .iq-menu li i{
+.iq-sidebar-menu .iq-menu li i a{
     color: #000000;
+}
+.iq-sidebar-menu .iq-menu li i a:hover{
+    color: #0993D2;
 }
 .iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; color: #000000; }
 .iq-sidebar-menu .iq-menu li a .iq-arrow-right { margin-right: 0px; margin-left: auto; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; }
 .iq-sidebar-menu .iq-menu li a .badge { position: absolute; right: 15px; -webkit-transition: all 0.9s ease-out 0s; -moz-transition: all 0.9s ease-out 0s; -ms-transition: all 0.9s ease-out 0s; -o-transition: all 0.9s ease-out 0s; transition: all 0.9s ease-out 0s; }
 .iq-sidebar-menu .iq-menu li a:hover { color: var(--iq-primary); }
-.iq-sidebar-menu .iq-menu > li.active>a { color: var(--iq-primary); text-decoration: none; }
+.iq-sidebar-menu .iq-menu > li.active>a { color: #0993D2!important; text-decoration: none; }
 .iq-search-bar .searchbox .search-link { position: absolute; left: 15px; top: 5px; font-size: 16px; color: var(--iq-body-text); }
 .iq-sidebar-menu .iq-menu li a[aria-expanded="true"], .iq-sidebar-menu .iq-menu li.active-menu > a { color: var(--iq-primary); text-decoration: none; border-radius: 0; transition: none; }
 .iq-sidebar-menu .iq-menu li a[aria-expanded="true"] .iq-arrow-right { transform: rotate(90deg); transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; }
-.iq-sidebar-menu .iq-menu li .iq-submenu li a:hover, .iq-sidebar-menu .iq-menu li.active .iq-submenu li>a { background: #f7f7f7; }
+,.iq-submenu li a{height: 40px;}
+.iq-sidebar-menu .iq-menu li .iq-submenu li a:hover, .iq-sidebar-menu .iq-menu li.active .iq-submenu li>a { background: #fff; }
 .iq-sidebar-menu .iq-menu li.active .iq-submenu li.active>a { color: var(--iq-primary); border-radius: 0; }
 .iq-sidebar-menu .iq-menu li.active .iq-submenu li:last-child>a { border-radius: 0 0 5px 5px; }
 .iq-sidebar-menu .iq-menu li .iq-submenu li>a::before { display: none; }
@@ -273,12 +300,17 @@ body.sidebar-main .iq-sidebar .iq-menu li a[aria-expanded="false"].collapsed { b
 .iq-sidebar-menu .iq-menu li a[aria-expanded="true"] i.iq-arrow-left, .iq-sidebar-menu .iq-menu li.active > a > i.iq-arrow-left { color: var(--iq-primary);/* color: var(--iq-white);*/ }
 .iq-sidebar-menu .iq-menu li>a::before { content: ""; width: 3px; height: 0px; display: inline-block; background: var(--iq-primary); position: absolute; top: 7px; right: 0px; opacity: 0; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s; }
 .iq-sidebar-menu .iq-menu li.active>a::before { opacity: 1; height: 75%; }
-
+.main-circle i{
+    color: #000000;
+}
+iq-submenu li{
+    padding: 15px ;
+}
 /*------------------------*/
 .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
 .sidebar-main .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
 .iq-sidebar-menu .iq-menu li ul a:hover { color: var(--iq-primary); text-decoration: none; background: transparent; }
-.iq-sidebar-menu .iq-menu li ul li a { padding-left: 40px; }
+.iq-sidebar-menu .iq-menu li ul li a { padding-left: 40px;padding-top: 30px; }
 .iq-sidebar-menu .iq-menu li ul ul li > a { padding-left: 65px; }
 .iq-sidebar-menu .iq-menu li ul ul ul li > a { padding-left: 80px; }
 .iq-sidebar-menu .iq-menu li.active .iq-submenu li a[aria-expanded="true"], .iq-sidebar-menu .iq-menu li .iq-submenu li a[aria-expanded="true"] { box-shadow: none; }
@@ -512,7 +544,12 @@ Select 2
 .sea-epi .select2-container { width: 150px !important; }
 
 /* .iq-custom-select .select2-selection{position:relative;} */
-
+.sorting_asc label{
+    font-weight: 500;
+}
+.sorting label{
+    font-weight: 500;
+}
 /*---------------------------------------------------------------------
 Timeline
 -----------------------------------------------------------------------*/
@@ -607,10 +644,10 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination { margin: 15px 0 0;
 div.dataTables_wrapper div.dataTables_info { padding-top: 20px;color: #000000; }
 .movie_table tbody tr { border-bottom: 10px solid var(--iq-light-card); background-color: var(--iq-body-bg); }
 .movie_table tbody td { background-color: /*transparent*/#fff; text-align: center;box-shadow: 2px 2px 2px 2px #f1f1f1; }
-.movie_table thead th { font-size: 14px; /*color: rgba(255, 255, 255, 0.5);*/ font-weight: 300; padding: 0 15px 15px 15px; line-height: 100%; margin-bottom: 0; border: none; text-transform: uppercase; text-align: center; }
+.movie_table thead th { font-size: 14px; /*color: rgba(255, 255, 255, 0.5);*/ font-weight: 500; padding: 0 15px 15px 15px; line-height: 100%; margin-bottom: 0; border: none; text-transform: uppercase; text-align: center; }
 table.dataTable { /*border-collapse: collapse !important; */}
-.select2-container--default .select2-selection--multiple { background-color: #121b26; border: 1px solid #121b26; }
-.select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: var(--iq-light-card); }
+.select2-container--default .select2-selection--multiple { background-color: #F2F5FA; border: 1px solid #121b26; }
+.select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #F2F5FA; }
 .select2-container--default.select2-container--focus .select2-selection--multiple { border: 1px solid #121b26; }
 .form-control option { padding: 5px;background-color: #f7f7f7;
 border: 1px solid #f7f7f7;
@@ -1022,7 +1059,7 @@ select{
         overflow: hidden;
     }
     span{
-        font-weight: normal!important;
+        font-weight: 500!important;
     }
     .header-logo
 
@@ -1032,8 +1069,9 @@ select{
     }
     
 .select2-selection__rendered{
-       background-color: #f7f7f7!important;
+       background-color: #F2F5FA!important;
         border: none!important;
+    height: 45px;
     }
     .select2-container--default .select2-selection--multiple{
         border: none!important;
