@@ -39,8 +39,7 @@ $uppercase =  ucfirst($request_url);
     <!-- Required meta tags -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <!-- <title>Flicknexs</title> -->
-   <title><?php echo $uppercase.' | Flicknexs' ; ?></title>
+   <title>Flicknexs</title>
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" />
    <!-- Bootstrap CSS -->
@@ -65,9 +64,6 @@ $uppercase =  ucfirst($request_url);
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
-  <?php
-       $id = Auth::user()->id;                     
-   ?>
 <style>
 
     .top-left-logo img {
@@ -114,12 +110,13 @@ $uppercase =  ucfirst($request_url);
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li><a href="<?php echo URL::to('home') ?>" class=""><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                   <div style="line-height: 14px;">
-                   <hr style="color:!important;">
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Video</p>
-                   <hr></div>
+                   <div class="bod"></div>
+                   <div style="">
+                 
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   </div>
                   <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
@@ -134,9 +131,9 @@ $uppercase =  ucfirst($request_url);
 
             </ul>
           </li>
-                    <div style="line-height: 14px;">
-                   <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Audio </p><hr></div>
+                    <div style="">
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -161,9 +158,9 @@ $uppercase =  ucfirst($request_url);
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                    <div style="line-height: 14px;">
-                   <hr>
-                        <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Accounts</p><hr></div>
+                    <div >
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -173,10 +170,10 @@ $uppercase =  ucfirst($request_url);
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                    <div style="line-height: 14px;">
-                    <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:15px;">Language</p>
-                        <hr></div>
+                    <div >
+                
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                       </div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -188,10 +185,10 @@ $uppercase =  ucfirst($request_url);
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
-                    <div style="line-height: 14px;">
-                   <hr>
-                   <p class="" style="color: #f39c3ea3 !important;padding-left:5px;">Site</p>
-                        <hr></div>
+                    <div >
+                   
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                       </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                     <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
                   <li>
@@ -520,8 +517,7 @@ $uppercase =  ucfirst($request_url);
                                     <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
                                     <span class="text-white font-size-12">Available</span>
                                  </div>
-                             
-                                 <a  href="{{ URL::to('admin/user/view/'.$id) }}" class="iq-sub-card iq-bg-primary-hover">
+                                 <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-file-user-line"></i>
@@ -532,7 +528,7 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="{{ URL::to('admin/user/edit') . '/' . $id }}" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-profile-line"></i>
@@ -543,7 +539,7 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="{{ URL::to('admin/system_settings') }}" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-account-box-line"></i>
@@ -554,7 +550,7 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="{{ URL::to('admin/settings') }}" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-lock-line"></i>
