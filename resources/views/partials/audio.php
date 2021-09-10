@@ -1,30 +1,29 @@
 <?php if(isset($audios)) :
 foreach($audios as $audio): ?>
 <div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline  row p-0 mb-0">
-        <li class="slide-item">
-	<article class="block expand">
-		<a class="block-thumbnail" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-			<!-- <div class="thumbnail-overlay"></div> -->
-            <div class="play-button">
-                <div class="play-block">
-                    <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-                </div>
-                <div class="detail-block">
-              <!--  <p class="movie-title"><?= $audio->title; ?></p>-->
-                </div>
+    <div class="favorites-contens">           
+        <div class="epi-box">
+            <div class="epi-img position-relative">
+               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
+               <div class="episode-play-info">
+                  <div class="episode-play">
+                     <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                        <i class="ri-play-fill"></i>
+                     </a>
+                  </div>
+               </div>
             </div>
-			<img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" width="280">
-		</a>
-         <div class="block-contents">
-            <p class="movie-title padding p1"><?php echo $audio->title; ?></p>
+            <div class="epi-desc p-3"> 
+               <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                  <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
+               </a>
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
+                    <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?>m</small></span>
+               </div>
+            </div>
         </div>
-		
-	</article>
-        </li>
-    </ul>
-</div>
+    </div>
 </div>
 
 

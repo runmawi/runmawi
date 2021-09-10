@@ -1686,8 +1686,12 @@ padding: 15px;
 		display:none;
 	}
 }
-    .p1{
-        font-size: 14px;
-        color:#fff!important;
-        width: 250px;
-    }
+.p1{
+    font-size: 14px;
+    color:#fff!important;
+    width: 250px;
+}
+.img-fluid {
+    height: 250px;
+    object-fit: scale-down;
+}
