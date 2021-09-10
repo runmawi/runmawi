@@ -774,4 +774,302 @@ if(!empty($artistsdata)){
             }
         }
     
+    public function fileupdate(Request $request)
+        {
+             if (!Auth::user()->role == 'admin')
+            {
+                return redirect('/home');
+            }
+            
+            $data = $request->all();
+        //        echo "<pre>";
+        // print_r($data);
+            $validatedData = $request->validate([
+                'title' => 'required|max:255'
+            ]);
+            
+           
+                $id = $data['video_id'];
+                echo "<pre>";
+            
+                $video = Video::findOrFail($id);
+                // print_r($video);
+        
+                // exit();
+                if($request->slug == ''){
+                    $data['slug'] = $this->createSlug($data['title']);    
+                }
+            
+               $image = (isset($data['image'])) ? $data['image'] : '';
+               $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+               $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+            
+                if(empty($data['active'])){
+                $data['active'] = 0;
+                } 
+            
+    
+             if(empty($data['webm_url'])){
+                $data['webm_url'] = 0;
+                }  else {
+                    $data['webm_url'] =  $data['webm_url'];
+                }  
+    
+                if(empty($data['ogg_url'])){
+                    $data['ogg_url'] = 0;
+                }  else {
+                    $data['ogg_url'] =  $data['ogg_url'];
+                }  
+    
+                if(empty($data['year'])){
+                    $data['year'] = 0;
+                }  else {
+                    $data['year'] =  $data['year'];
+                }   
+            
+                if(empty($data['language'])){
+                    $data['language'] = 0;
+                }  else {
+                    $data['language'] = $data['language'];
+                } 
+            
+        
+    //        if(empty($data['featured'])){
+    //            $data['featured'] = 0;
+    //        }  
+                if(empty($data['featured'])){
+                    $data['featured'] = 0;
+                } 
+                 if(!empty($data['embed_code'])){
+                    $data['embed_code'] = $data['embed_code'];
+                } 
+    
+    
+                if(empty($data['active'])){
+                    $data['active'] = 0;
+                } 
+                  if(empty($data['video_gif'])){
+                    $data['video_gif'] = '';
+                }
+               
+                if(empty($data['type'])){
+                    $data['type'] = '';
+                }
+    
+                 if(empty($data['status'])){
+                    $data['status'] = 0;
+                }   
+    
+    //            if(empty($data['path'])){
+    //                $data['path'] = 0;
+    //            }  
+    
+                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+                        $data['status'] = 1;    
+                    }
+    
+                if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
+                        $data['status'] = 0;    
+                }
+    
+    
+            $path = public_path().'/uploads/videos/';
+            $image_path = public_path().'/uploads/images/';
+              
+             if($image != '') {   
+                  //code for remove old file
+                  if($image != ''  && $image != null){
+                       $file_old = $image_path.$image;
+                      if (file_exists($file_old)){
+                       unlink($file_old);
+                      }
+                  }
+                  //upload new file
+                  $file = $image;
+                  $data['image']  = $file->getClientOriginalName();
+                  $file->move($image_path, $data['image']);
+    
+             } else {
+                 $data['image'] = $video->image;
+             }
+            
+            
+            if($trailer != '') {   
+                  //code for remove old file
+                  if($trailer != ''  && $trailer != null){
+                       $file_old = $path.$trailer;
+                      if (file_exists($file_old)){
+                       unlink($file_old);
+                      }
+                  }
+                  //upload new file
+                  $randval = Str::random(16);
+                  $file = $trailer;
+                  $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                  $file->move($path, $trailer_vid);
+                  $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+    
+             } else {
+                 $data['trailer'] = $video->trailer;
+             }  
+            
+             if(isset($data['duration'])){
+                    //$str_time = $data
+                    $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                    sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                    $time_seconds = $hours  3600 + $minutes  60 + $seconds;
+                    $data['duration'] = $time_seconds;
+            }
+    
+
+          
+           
+              if(!empty($data['embed_code'])) {
+                 $video->embed_code = $data['embed_code'];
+            }else {
+                $video->embed_code = '';
+            }
+    
+             $shortcodes = $request['short_code'];        
+             $languages=$request['sub_language'];
+             $video->description = strip_tags($data['description']);
+             $video->description = 1;
+             $video->update($data);
+    
+             if(!empty($data['artists'])){
+                $artistsdata = $data['artists'];
+                unset($data['artists']);
+                /*save artist*/
+                if(!empty($artistsdata)){
+                    Videoartist::where('video_id', $video->id)->delete();
+                    foreach ($artistsdata as $key => $value) {
+                        $artist = new Videoartist;
+                        $artist->video_id = $video->id;
+                        $artist->artist_id = $value;
+                        $artist->save();
+                    }
+    
+                }
+            }
+    
+             if(!empty( $files != ''  && $files != null)){
+            /*if($request->hasFile('subtitle_upload'))
+            {
+                $files = $request->file('subtitle_upload');*/
+           
+                foreach ($files as $key => $val) {
+                    if(!empty($files[$key])){
+                        
+                        $destinationPath ='public/uploads/subtitles/';
+                        $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+                        $files[$key]->move($destinationPath, $filename);
+                        $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+                        $subtitle_data['shortcode'] = $shortcodes[$key]; 
+                        $subtitle_data['movie_id'] = $id;
+                        $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+                        $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+                    }
+                }
+            }
+    
+    
+            return Redirect::back();
+        }
+    
+
+    public function uploadFile(Request $request){
+
+        $value = array();
+        $data = $request->all();
+  
+        // exit();
+  
+        $validator = Validator::make($request->all(), [
+           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+           
+        ]);
+        $trailer = (isset($data['file'])) ? $data['file'] : '';
+           / logo upload /
+     
+        $path = public_path().'/uploads/videos/ajax/';
+     
+     if($trailer != '') {   
+           //code for remove old file
+           if($trailer != ''  && $trailer != null){
+                $file_old = $path.$trailer;
+               if (file_exists($file_old)){
+                unlink($file_old);
+               }
+           }
+           //upload new file
+           $randval = Str::random(16);
+           $file = $trailer;
+           $trailer_vid  = $randval.'.'.$request->file('file')->extension();
+           $file->move($path, $trailer_vid);
+           $data['trailer']  = URL::to('/').'/public/uploads/videos/ajax/'.$trailer_vid;
+
+      } else {
+         $data['file'] = '';
+     }
+   
+     
+
+
+
+     $mp4_url = $data['file'];
+    //  print_r($mp4_url);
+    
+    if($mp4_url != '') {
+        $ffprobe = \FFMpeg\FFProbe::create();
+        $disk = 'public';
+        $data['duration'] = $ffprobe->streams($request->video)
+        ->videos()
+        ->first()                  
+        ->get('duration'); 
+
+        $rand = Str::random(16);
+        $path = $rand . '.' . $request->video->getClientOriginalExtension();
+        $request->video->storeAs('public', $path);
+        $thumb_path = 'public';
+
+        $this->build_video_thumbnail($request->video,$path, $data['slug']);
+        
+         $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+
+         $video = new Video();
+         $video->disk = 'public';
+         $video->original_name = 'public';
+         $video->trailer = $data['trailer'];
+         $video->path = $data['trailer'];
+         $video->draft = 0;
+         $video->save(); 
+        
+         $video_id = $video->id;
+
+         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+         $converted_name = ConvertVideoForStreaming::handle($path);
+
+         ConvertVideoForStreaming::dispatch($video);
+
+       $value['success'] = 1;
+       $value['message'] = 'Uploaded Successfully!';
+       $value['video_id'] = $video_id;
+       return $value;
+
+     }
+     
+     else {
+         $value['success'] = 2;
+         $value['message'] = 'File not uploaded.'; 
+            // $video = Video::create($data);
+        return response()->json($value);
+
+      }
+
+  
+        // return response()->json($value);
+     }
+    
 }

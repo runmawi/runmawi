@@ -142,6 +142,7 @@ Route::get('mywishlists', 'WishlistController@show_mywishlists');
 Route::get('wishlist_video/{id}', 'WishlistController@wishlist_video');
 Route::get('file-upload', 'FileUploadController@index');
 Route::post('file-upload/upload', 'FileUploadController@fileStore')->name('upload');
+
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']], function() {
 //,'restrictIp'
 //        Route::get('/', function () {
@@ -210,6 +211,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');
+    Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'AdminVideosController@fileupdate'));
     Route::post('/videos/store', array('before' => 'demo', 'uses' => 'AdminVideosController@store'));
     Route::post('/videos/categories/store', array('before' => 'demo', 'uses' => 'AdminVideoCategoriesController@store'));
     Route::post('/videos/categories/order', array('before' => 'demo', 'uses' => 'AdminVideoCategoriesController@order'));
@@ -389,7 +391,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 });
 
 
-
+Route::post('/uploadFile',  'AdminVideosController@uploadFile');
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::get('/blocked', 'HomeController@Restrict');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword');
