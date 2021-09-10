@@ -988,7 +988,7 @@ if(!empty($artistsdata)){
            
         ]);
         $trailer = (isset($data['file'])) ? $data['file'] : '';
-           / logo upload /
+           /* logo upload */
      
         $path = public_path().'/uploads/videos/ajax/';
      
