@@ -981,99 +981,82 @@ if(!empty($artistsdata)){
         }
     
 
-    public function uploadFile(Request $request){
+   public function uploadFile(Request $request){
 
         $value = array();
         $data = $request->all();
-  
+        
         // exit();
-  
+        
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
            
         ]);
-        $trailer = (isset($data['file'])) ? $data['file'] : '';
-           /* logo upload */
-     
-        $path = public_path().'/uploads/videos/ajax/';
-     
-     if($trailer != '') {   
-           //code for remove old file
-           if($trailer != ''  && $trailer != null){
-                $file_old = $path.$trailer;
-               if (file_exists($file_old)){
-                unlink($file_old);
-               }
-           }
-           //upload new file
-           $randval = Str::random(16);
-           $file = $trailer;
-           $trailer_vid  = $randval.'.'.$request->file('file')->extension();
-           $file->move($path, $trailer_vid);
-           $data['trailer']  = URL::to('/').'/public/uploads/videos/ajax/'.$trailer_vid;
-
-      } else {
-         $data['file'] = '';
-     }
-   
-     
-
-
-
-     $mp4_url = $data['file'];
-    //  print_r($mp4_url);
-    
-    if($mp4_url != '') {
+        $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+        
+        $path = public_path().'/uploads/videos/';
+        
+        
+        
+        //  echo "<pre>";
+        //  print_r($request->file);
+        //  exit();
+        
+        
+        $mp4_url = $data['file'];
+        
+        if($mp4_url != '') {
         $ffprobe = \FFMpeg\FFProbe::create();
         $disk = 'public';
-        $data['duration'] = $ffprobe->streams($request->video)
+        $data['duration'] = $ffprobe->streams($request->file)
         ->videos()
         ->first()                  
         ->get('duration'); 
-
-        $rand = Str::random(16);
-        $path = $rand . '.' . $request->video->getClientOriginalExtension();
-        $request->video->storeAs('public', $path);
-        $thumb_path = 'public';
-
-        $this->build_video_thumbnail($request->video,$path, $data['slug']);
         
-         $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-
+        $rand = Str::random(16);
+        $path = $rand . '.' . $request->file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $thumb_path = 'public';
+        
+        // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+        
+         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+              $data['trailer']  = URL::to('/').'/public/uploads/videos/ajax/'.$original_name;
+        
          $video = new Video();
          $video->disk = 'public';
          $video->original_name = 'public';
-         $video->trailer = $data['trailer'];
          $video->path = $data['trailer'];
          $video->draft = 0;
          $video->save(); 
         
          $video_id = $video->id;
-
+        
          $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
          $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
          $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
          $converted_name = ConvertVideoForStreaming::handle($path);
-
+        
          ConvertVideoForStreaming::dispatch($video);
-
-       $value['success'] = 1;
-       $value['message'] = 'Uploaded Successfully!';
-       $value['video_id'] = $video_id;
-       return $value;
-
-     }
-     
-     else {
+        
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['video_id'] = $video_id;
+        
+        return $value;
+        
+        }
+        
+        else {
          $value['success'] = 2;
          $value['message'] = 'File not uploaded.'; 
             // $video = Video::create($data);
         return response()->json($value);
-
-      }
-
-  
+        
+        }
+        
+        
         // return response()->json($value);
-     }
+        }
     
 }
