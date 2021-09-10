@@ -1691,7 +1691,7 @@ padding: 15px;
     color:#fff!important;
     width: 250px;
 }
-.img-fluid {
+.audio-list-page .img-fluid {
     height: 250px;
     object-fit: scale-down;
 }
