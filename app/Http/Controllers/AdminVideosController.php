@@ -70,7 +70,8 @@ class AdminVideosController extends Controller
      *
      * @return Response
      */
-    public function create()
+
+     public function create()
     {
          if (!Auth::user()->role == 'admin')
             {
@@ -78,7 +79,7 @@ class AdminVideosController extends Controller
             }
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
-            'post_route' => URL::to('admin/videos/store'),
+            'post_route' => URL::to('admin/videos/fileupdate'),
             'button_text' => 'Add New Video',
             'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
@@ -88,7 +89,11 @@ class AdminVideosController extends Controller
             'artists' => Artist::all(),
             'video_artist' => [],
             );
-        return View::make('admin.videos.create_edit', $data);
+        return View::make('admin.videos.fileupload', $data);
+                    // 'post_route' => URL::to('admin/videos/store'),
+
+
+        // return View::make('admin.videos.create_edit', $data);
     }
 
      /**
