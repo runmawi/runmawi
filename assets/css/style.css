@@ -308,7 +308,7 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .share { position: relative; }
 .share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute; width: 130px; left: -130px; bottom: -60px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
 .share:hover .share-box { display: inline-block; }
-.share-box a { background: transparent !important; color: var(--iq-body) !important; margin-right: 15px; }
+.share-box a { background: transparent !important; color: var(--iq-body) !important; margin-right: 8px; }
 .share-box i { font-size: 25px !important; }
 .share-box a:hover { color: var(--iq-primary) !important; }
 .banner-wrapper .trending-info .trending-dec { width: 100%; }
@@ -1401,16 +1401,11 @@ h3 {font-size: 2px !important;}
 #video_container{
     padding-top: 10px;
 }
-.watchlater i{
-    margin-right: 8px;
-}
+
 .you-may-like{
     margin-top: 40px;
 }
 
-.mywishlist i{
-   margin-right: 8px; 
-}
 .lmk{
     
 }
@@ -1695,3 +1690,4 @@ padding: 15px;
     height: 250px;
     object-fit: scale-down;
 }
+    .rental-lists li {display: inline-block;}

@@ -237,25 +237,83 @@ if($value['sub_language'] == "Spanish"){
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
     <div class="container-fluid video-details" style="width:90%!important;">
-      <div id="video_title">
-        <h1><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
-      </div>
+        <div class="trending-info g-border p-0">
+                  <h1 class="trending-text big-title text-uppercase mt-0"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+             <?php if(!Auth::guest()) { ?>
+            <!-- Category -->
+                  <ul class="p-0 list-inline d-flex align-items-center movie-content">
+                     <li class="text-white">Action</li>
+                     <li class="text-white">Drama</li>
+                     <li class="text-white">Thriller</li>
+                  </ul>
+            <!-- Year, Running time, Age -->
+                  <div class="d-flex align-items-center text-white text-detail">
+                     <span class="badge badge-secondary p-3">13+</span>
+                     <span class="ml-3"><?php echo __($video->duration);?>m</span>
+                     <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                  </div>
+                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                      <!-- Watchlater -->
+                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-line" <?php else: ?> class="fa fa-clock-o" <?php endif; ?>></i></span></li>
+                      <!-- Wishlist -->
+                     <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                      <!-- Social Share -->
+                     <li class="share">
+                        <span><i class="ri-share-fill"></i></span>
+                        <div class="share-box">
+                           <div class="d-flex align-items-center">
+                              <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                              <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                              <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                           </div>
+                        </div>
+                     </li>
+                  </ul>
+<!--
+                  <div class="d-flex align-items-center series mb-4">
+                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                           alt=""></a>
+                     <span class="text-gold ml-3">#2 in Series Today</span>
+                  </div>
+-->
+                  <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+                 
+                  <div class=" d-flex mt-3">     
+                      <?php if($video->trailer != ''){ ?>
+                        <div class="watchlater btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
+                        <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div></div>
+                      <?php } ?>
+                  </div>
         
+                <ul class="list-inline p-0 mt-4 rental-lists">
+                <!-- Subscribe -->
+                    <li>
+                        <?php     
+                            $user = Auth::user(); 
+                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
+                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                        <?php } ?>
+                    </li>
+                    <!-- PPV button -->
+                    <li>
+                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
+                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
+                            <?php echo __('Rent');?> </button>
+                        <?php } ?>
+                    </li>
+                    <li>
+                        <div class="btn btn-default views">
+                            <span class="view-count"><i class="fa fa-eye"></i> 
+                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                            </span>
+                        </div>
+                    </li>
+               </ul>
+
+        <?php } ?>
    <?php if(!Auth::guest()) { ?>
 
     <div class="row" >
-      <div class="col-sm-12 col-md-6 col-xl-6 d-flex justify-content-around">     
-      <!-- Watch Later -->
-                <div>
-      <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
-<div>
-      <!-- Wish List -->            
-    <div  class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div></div><div>
-      <?php if($video->trailer != ''){ ?>
-        <div class="watchlater btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
-        <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div></div>
-      <?php } ?>
-</div>
           
       <!-- Share -->
         <div class="col-sm-12 col-md-4 col-xs-6">
@@ -265,33 +323,7 @@ if($value['sub_language'] == "Spanish"){
         <?php include('partials/social-share.php'); ?>
         </div>
       </div>
-       </div>
-      <div class="col-sm-12 col-md-1 col-xs-6">
-      <!-- Views -->
-       <div class="btn btn-default views">
-        <span class="view-count"><i class="fa fa-eye"></i> 
-        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-      
-                <?php     
-                    $user = Auth::user(); 
-                    if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                        <div class="views" style="margin: 0 12px;">
-                            <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                         </div>
-                    <?php } ?>
-                
-                <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
-                
-                    <div class="views" style="margin: 0 12px;"> 
-                      
-                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                     <?php echo __('Rent');?> </button>
-                   </div> 
-<!--                  <div id="paypal-button"></div>-->
-                <?php } ?>
-                
-          </div>   
-    </div> 
+       </div> 
        </div>
         <?php   }?> 
    <!-- Button trigger modal -->
@@ -335,52 +367,26 @@ if($value['sub_language'] == "Spanish"){
       <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 
       <!-- Share -->
-<!--      <div class="social_share">
-        <p><i class="fa fa-share-alt"></i> <?/*php echo __('Share')*/;?>: </p>
-        <div id="social_share">
-        <?php /* include("partials/social-share.php"); */ ?>
-        </div>
-      </div>-->
+
         </div>
         <div class="col-sm-6 col-md-6">
             <div class="btn btn-default views">
         <span class="view-count"><i class="fa fa-eye"></i> 
         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
       </div>
-             <div class="btn views" style="margin: 0 12px; padding: 0;">
-                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                         </div>
-               
-                    <div class="btn views" style="margin: 0 12px;padding: 0;">
-                     <a class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
-                     <?php echo __('Rent');?> </a>
-<!--                    <div id="paypal-button"></div>-->
-                   </div>
-                   </div>
-      <div class="col-sm-6 col-md-4 col-xs-12">
-      <!-- Views -->
-           <div class="d-flex"> 
-                    </div>
-                
-              
-    </div> 
-       </div>
-
-
-
-        <?php   }?>
-    <div class="row">
-        <div class="vid-details col-sm-12 col-md-12 col-xs-12">
-            <p class="cat-name">
-                <span><?php echo __($video->title); ?></span> <span><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-            </p>
+        <div class="btn views" style="margin: 0 12px; padding: 0;">
+        <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
         </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-xs-12">
-        <div class="video-details-container" style="text-align:justify;"><?php echo __($video->description); ?></div>
-      </div>
-    </div>
+
+        <div class="btn views" style="margin: 0 12px;padding: 0;">
+        <a class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
+        <?php echo __('Rent');?> </a>
+        <!--                    <div id="paypal-button"></div>-->
+        </div>
+        </div>
+       </div>
+    <?php   }?>
+
     <?php if(isset($videonext)){ ?>
     <div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
     <div class="next_url" style="display: none;"><?= $url ?></div>
@@ -520,9 +526,9 @@ location.reload();
           $(this).toggleClass('active');
           $(this).html("");
               if($(this).hasClass('active')){
-                $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
+                $(this).html('<i class="ri-add-line"></i>');
               }else{
-                $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
+                $(this).html('<i class="fa fa-clock-o"></i>');
               }
         } else {
           window.location = '<?= URL::to('login') ?>';
@@ -536,9 +542,9 @@ location.reload();
           $(this).toggleClass('active');
           $(this).html("");
               if($(this).hasClass('active')){
-                $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
+                $(this).html('<i class="ri-heart-fill"></i>');
               }else{
-                $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
+                $(this).html('<i class="ri-heart-line"></i>');
               }
               
         } else {
