@@ -31,7 +31,7 @@
             </div>
           <?php  elseif($video->type == 'file'): ?>
 
-            <div id="video" class="fitvid" style="margin: 0 auto;">
+            <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
             
               <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
@@ -69,76 +69,58 @@
 
                             } 
                             ?>  
-                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-
                           </video>
 
 
-<div class="playertextbox hide">
-            <!--<h2>Up Next</h2>-->
-            <p><?php if(isset($videonext)){ ?>
-            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-            <?php }elseif(isset($videoprev)){ ?>
-            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-            <?php } ?>
+            <div class="playertextbox hide">
+                <!--<h2>Up Next</h2>-->
+                <p><?php if(isset($videonext)){ ?>
+                <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                <?php }elseif(isset($videoprev)){ ?>
+                <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                <?php } ?>
 
-            <?php if(isset($videos_category_next)){ ?>
-            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-            <?php }elseif(isset($videos_category_prev)){ ?>
-            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-            <?php } ?></p>
+                <?php if(isset($videos_category_next)){ ?>
+                <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                <?php }elseif(isset($videos_category_prev)){ ?>
+                <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                <?php } ?></p>
             </div>
             </div>
           <?php  else: ?>
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-<!-- Current time: <div id="current_time"></div> -->
-<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+                <!-- Current time: <div id="current_time"></div> -->
+                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
 
-<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > 
-<?php
-if($playerui_settings['subtitle'] == 1 ){
-
-foreach($subtitles as $key => $value){
-
-if($value['sub_language'] == "English"){
-?>
- <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
- <?php } 
-  if($value['sub_language'] == "German"){
- ?>
- <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
- <?php }
-if($value['sub_language'] == "Spanish"){
-  ?>
-  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-  <?php }
-  if($value['sub_language'] == "Hindi"){
- ?>
- <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
- <?php }
-}
-}else{
-
-} 
-?>  
-</video>
+                    <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > 
+                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                    <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "German"){?>
+                    <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "Spanish"){ ?>
+                    <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "Hindi"){ ?>
+                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                    <?php }
+                    } } else {  } ?>  
+                </video>
   
-<div class="playertextbox hide">
-            <!--<h2>Up Next</h2>-->
-            <p><?php if(isset($videonext)){ ?>
-            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-            <?php }elseif(isset($videoprev)){ ?>
-            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-            <?php } ?>
+                <div class="playertextbox hide">
+                    <!--<h2>Up Next</h2>-->
+                    <p><?php if(isset($videonext)){ ?>
+                    <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                    <?php }elseif(isset($videoprev)){ ?>
+                    <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                    <?php } ?>
 
-            <?php if(isset($videos_category_next)){ ?>
-            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-            <?php }elseif(isset($videos_category_prev)){ ?>
-            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-            <?php } ?></p>
+                    <?php if(isset($videos_category_next)){ ?>
+                    <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                    <?php }elseif(isset($videos_category_prev)){ ?>
+                    <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                    <?php } ?></p>
+                </div>
             </div>
-            </div>
-          <?php endif; ?>
+    <?php endif; ?>
         
 
       <?php else: ?>
@@ -161,130 +143,103 @@ if($value['sub_language'] == "Spanish"){
     </div>
   
 
-  <?php }  
+  <?php }
+/* For Registered User */       
     else { ?>       
-    <div id="video_container" class="fitvid">
+        <div id="video" class="fitvid" style="margin: 0 auto;">
+        
+        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+            
+            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
-    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
+            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+            <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "German"){ ?>
+            <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "Spanish"){ ?>
+            <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "Hindi"){ ?>
+            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+            <?php } } } else { }  ?>  
+        </video> 
 
-    <?php
-if($playerui_settings['subtitle'] == 1 ){
-
-foreach($subtitles as $key => $value){
-
-if($value['sub_language'] == "English"){
-?>
- <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
- <?php } 
-  if($value['sub_language'] == "German"){
- ?>
- <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
- <?php }
-if($value['sub_language'] == "Spanish"){
-  ?>
-  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-  <?php }
-  if($value['sub_language'] == "Hindi"){
- ?>
- <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
- <?php }
-}
-}else{
-
-} 
-?>  
-      </video> 
-       
-      </div>
-  <?php } } ?>
-  <?php if(Auth::guest()) {  ?>
-    <div id="video_container" class="fitvid">
-
-    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-
-    <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
-    <?php
-if($playerui_settings['subtitle'] == 1 ){
-
-foreach($subtitles as $key => $value){
-
-if($value['sub_language'] == "English"){
-?>
- <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
- <?php } 
-  if($value['sub_language'] == "German"){
- ?>
- <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
- <?php }
-if($value['sub_language'] == "Spanish"){
-  ?>
-  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-  <?php }
-  if($value['sub_language'] == "Hindi"){
- ?>
- <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
- <?php }
-}
-}else{
-
-} 
-?>  
- </video>  
         </div>
+  <?php } } ?>
+<!-- For Guest users -->      
+  <?php if(Auth::guest()) {  ?>
+    <div id="video" class="fitvid" style="margin: 0 auto;">
+        
+        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
+
+<!--
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+
+    <source src="<? //= $video->trailer; ?>" type='video/mp4' label='auto' > 
+-->
+        <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+        <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+        <?php } if($value['sub_language'] == "German"){ ?>
+        <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+        <?php } if($value['sub_language'] == "Spanish"){ ?>
+        <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+        <?php } if($value['sub_language'] == "Hindi"){ ?>
+        <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+        <?php } } } else { } ?>  
+        </video>  
+    </div>
   <?php }  ?>
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
     <div class="container-fluid video-details" style="width:90%!important;">
         <div class="trending-info g-border p-0">
-                  <h1 class="trending-text big-title text-uppercase mt-0"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
-             <?php if(!Auth::guest()) { ?>
-            <!-- Category -->
-                  <ul class="p-0 list-inline d-flex align-items-center movie-content">
-                     <li class="text-white">Action</li>
-                     <li class="text-white">Drama</li>
-                     <li class="text-white">Thriller</li>
-                  </ul>
-            <!-- Year, Running time, Age -->
-                  <div class="d-flex align-items-center text-white text-detail">
-                     <span class="badge badge-secondary p-3">13+</span>
-                     <span class="ml-3"><?php echo __($video->duration);?>m</span>
-                     <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-                  </div>
+            <div class="row">
+                <div class="col-sm-9 col-md-9 col-xs-12">
+                    <h1 class="trending-text big-title text-uppercase mt-0"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+                        <!-- Category -->
+                    <ul class="p-0 list-inline d-flex align-items-center movie-content">
+                     <li class="text-white"><?= $videocategory ;?></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 col-md-3 col-xs-12">
+                    <div class=" d-flex mt-4 pull-right">     
+                        <?php if($video->trailer != ''){ ?>
+                            <div class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Year, Running time, Age -->
+          <div class="d-flex align-items-center text-white text-detail">
+             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict);?></span>
+             <span class="ml-3"><?php echo __($video->duration);?></span>
+             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+          </div>
+            
+        <?php if(!Auth::guest()) { ?>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-xs-12">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                       <!-- Watchlater -->
-                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-line" <?php else: ?> class="fa fa-clock-o" <?php endif; ?>></i></span></li>
+                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                       <!-- Wishlist -->
                      <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                      <!-- Social Share -->
-                     <li class="share">
-                        <span><i class="ri-share-fill"></i></span>
-                        <div class="share-box">
-                           <div class="d-flex align-items-center">
-                              <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
-                              <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
-                              <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
-                           </div>
-                        </div>
-                     </li>
+                      <!-- Social Share, Like Dislike -->
+                         <?php include('partials/social-share.php'); ?>                     
                   </ul>
+            </div>
+                
+            <div class="col-sm-6 col-md-6 col-xs-12">
 <!--
                   <div class="d-flex align-items-center series mb-4">
                      <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
                            alt=""></a>
                      <span class="text-gold ml-3">#2 in Series Today</span>
                   </div>
--->
-                  <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-                 
-                  <div class=" d-flex mt-3">     
-                      <?php if($video->trailer != ''){ ?>
-                        <div class="watchlater btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
-                        <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div></div>
-                      <?php } ?>
-                  </div>
-        
+-->                 
                 <ul class="list-inline p-0 mt-4 rental-lists">
                 <!-- Subscribe -->
                     <li>
@@ -308,24 +263,58 @@ if($value['sub_language'] == "Spanish"){
                             </span>
                         </div>
                     </li>
-               </ul>
+                </ul>
+            </div>
+        </div>
 
         <?php } ?>
-   <?php if(!Auth::guest()) { ?>
-
-    <div class="row" >
-          
-      <!-- Share -->
-        <div class="col-sm-12 col-md-4 col-xs-6">
-      <div class="social_share p-1 d-flex justify-content-around align-items-center">
-        <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
-        <div id="social_share">
-        <?php include('partials/social-share.php'); ?>
+        
+           <?php if(Auth::guest()) { ?>
+  
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                          <!-- Watchlater -->
+                         <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+                          <!-- Wishlist -->
+                         <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                          <!-- Social Share, Like Dislike -->
+                             <?php include('partials/social-share.php'); ?>                     
+                      </ul>
+                </div>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+<!--
+                      <div class="d-flex align-items-center series mb-4">
+                         <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                               alt=""></a>
+                         <span class="text-gold ml-3">#2 in Series Today</span>
+                      </div>
+    -->                 
+                    <ul class="list-inline p-0 mt-4 rental-lists">
+                    <!-- Subscribe -->
+                        <li>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                        </li>
+                        <!-- PPV button -->
+                        <li>
+                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
+                                <?php echo __('Rent');?> </a>
+                        </li>
+                        <li>
+                            <div class="btn btn-default views">
+                                <span class="view-count"><i class="fa fa-eye"></i> 
+                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <?php   }?>
+        
+        <div class="text-white">
+            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
         </div>
-      </div>
-       </div> 
-       </div>
-        <?php   }?> 
    <!-- Button trigger modal -->
 
     <!-- Modal -->
@@ -355,37 +344,6 @@ if($value['sub_language'] == "Spanish"){
         </div>
       </div>
     </div>
-        
-   <?php if(Auth::guest()) { ?>
-  
-    <div class="row">
-      <div class="col-sm-6 col-md-4 col-xs-12">     
-      <!-- Watch Later -->
-      <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-
-      <!-- Wish List -->            
-      <div class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
-
-      <!-- Share -->
-
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <div class="btn btn-default views">
-        <span class="view-count"><i class="fa fa-eye"></i> 
-        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> </span>
-      </div>
-        <div class="btn views" style="margin: 0 12px; padding: 0;">
-        <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-        </div>
-
-        <div class="btn views" style="margin: 0 12px;padding: 0;">
-        <a class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
-        <?php echo __('Rent');?> </a>
-        <!--                    <div id="paypal-button"></div>-->
-        </div>
-        </div>
-       </div>
-    <?php   }?>
 
     <?php if(isset($videonext)){ ?>
     <div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
@@ -526,9 +484,9 @@ location.reload();
           $(this).toggleClass('active');
           $(this).html("");
               if($(this).hasClass('active')){
-                $(this).html('<i class="ri-add-line"></i>');
+                $(this).html('<i class="ri-add-circle-fill"></i>');
               }else{
-                $(this).html('<i class="fa fa-clock-o"></i>');
+                $(this).html('<i class="ri-add-circle-line"></i>');
               }
         } else {
           window.location = '<?= URL::to('login') ?>';

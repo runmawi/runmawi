@@ -780,6 +780,7 @@ if(!empty($artistsdata)){
                 }
             }
         }
+    
     public function fileupdate(Request $request)
         {
              if (!Auth::user()->role == 'admin')
@@ -788,8 +789,9 @@ if(!empty($artistsdata)){
             }
             
             $data = $request->all();
-        //        echo "<pre>";
-        // print_r($data);
+            //    echo "<pre>";
+        // print_r($data['age_restrict']);
+        // exit();
             $validatedData = $request->validate([
                 'title' => 'required|max:255'
             ]);
@@ -923,8 +925,8 @@ if(!empty($artistsdata)){
                     //$str_time = $data
                     $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                     sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                     $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
-                     $data['duration'] = $time_seconds;
+                    $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                    $data['duration'] = $time_seconds;
             }
     
 
@@ -939,7 +941,8 @@ if(!empty($artistsdata)){
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
              $video->description = strip_tags($data['description']);
-             $video->description = 1;
+             $video->draft = 1;
+             $video->age_restrict =  $data['age_restrict'];
              $video->update($data);
     
              if(!empty($data['artists'])){
@@ -982,27 +985,20 @@ if(!empty($artistsdata)){
             return Redirect::back();
         }
     
-
    public function uploadFile(Request $request){
 
         $value = array();
         $data = $request->all();
         
-        // exit();
-        
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
            
         ]);
+       
         $mp4_url = (isset($data['file'])) ? $data['file'] : '';
         
         $path = public_path().'/uploads/videos/';
-        
-        
-        
-   
-        
-        
+
         $mp4_url = $data['file'];
         
         if($mp4_url != '') {
@@ -1036,9 +1032,7 @@ if(!empty($artistsdata)){
         //  $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
         //  $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
         //  $converted_name = ConvertVideoForStreaming::handle($path);
-        //       echo "<pre>";
-        //  print_r($converted_name);
-        //  exit();
+ 
         //  ConvertVideoForStreaming::dispatch($video);
         
         $value['success'] = 1;

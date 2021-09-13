@@ -13,6 +13,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
+use URL;
+use File;
+use Illuminate\Support\Str;
+
 
 class ConvertVideoForStreaming implements ShouldQueue
 {
@@ -34,6 +38,8 @@ class ConvertVideoForStreaming implements ShouldQueue
      */
     public static function handle($video)
     {
+        // print_r($video);
+        // exit();
         // create a video format...
         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(250);
         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
@@ -41,7 +47,8 @@ class ConvertVideoForStreaming implements ShouldQueue
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
         
-        
+
+
         // open the uploaded video from the right disk...
         /*$disk = 'public';
         FFMpeg::fromDisk($disk)
@@ -54,6 +61,15 @@ class ConvertVideoForStreaming implements ShouldQueue
             //->inFormat($lowBitrateFormat)
              ->save($converted_name);
         */
+        $paths = URL::to('/storage/app/public/');
+        $newpath = explode("http://localhost/",$paths);
+        $newpaths = $newpath[1];
+        $paths = $_SERVER['DOCUMENT_ROOT'];
+        $folderpath = $paths.'/'.$newpaths;
+        $rand = Str::random(16);
+        
+        $path = $rand . '.' . $video; 
+$is_dir = File::makeDirectory($folderpath.'/'.$path, 0755, true, true);
         $disk = 'public';
         FFMpeg::fromDisk($disk)
         ->open($video)
@@ -65,7 +81,7 @@ class ConvertVideoForStreaming implements ShouldQueue
 //            ->onProgress(function ($percentage, $remaining, $rate) {
 //                echo "{$remaining} seconds left at rate: {$rate}";
 //            })
-            ->save($converted_name);
+            ->save($path.'/'.$converted_name);
 
 //         $this->video->update([
 //             'converted_for_streaming_at' => Carbon::now(),

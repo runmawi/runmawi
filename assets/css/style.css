@@ -214,7 +214,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 .trending-pills.nav-pills .nav-item a:hover { color: var(--iq-primary); }
 .trending-content { padding: 0px 50px; display: flex; }
 .p-btns { display: flex; align-items: center; }
-.trending-info .trending-text { font-size: 60px; line-height: 100px; margin: 15px 0; }
+.trending-info .trending-text { font-size: 60px; line-height: 70px; margin: 15px 0; }
 .trending-info .text-detail { font-size: 20px; font-weight: 500; letter-spacing: 0.7px; margin-bottom: 30px; }
 .trending-info .text-detail .badge { font-size: 20px; }
 .badge.badge-trend { background: rgb(0, 0, 0, 0.42); }
@@ -302,7 +302,7 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .movie-detail .trending-info.g-border { border-image-source: linear-gradient(to left, rgba(209, 208, 207, 0), rgba(209, 208, 207, 0.6), rgba(209, 208, 207, 0)); }
 .share-icons.music-play-lists li { display: inline-flex; margin-right: 7px; width: 45px; height: 45px; }
 .share-icons.music-play-lists li span { width: 32px; height: 32px; }
-.share-icons.music-play-lists li span i { font-size: 15px; }
+.share-icons.music-play-lists li span i { font-size: 18px; }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
 .main-content.movi { padding-top: 30px; }
 .share { position: relative; }
@@ -1690,4 +1690,5 @@ padding: 15px;
     height: 250px;
     object-fit: scale-down;
 }
-    .rental-lists li {display: inline-block;}
+.rental-lists li {display: inline-block;float:right; margin-right: 10px;}
+.rental-lists li:first-child {margin-right: 0px;}

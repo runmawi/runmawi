@@ -72,7 +72,7 @@ class ChannelController extends Controller
         
     } 
     
-    public function play_videos($slug)
+      public function play_videos($slug)
     {
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
@@ -102,6 +102,8 @@ class ChannelController extends Controller
 
            $categoryVideos = \App\Video::where('id',$vid)->first();
            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          $videocategory = $videocategory[0];
            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
            $playerui = Playerui::first();
            $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
@@ -117,6 +119,7 @@ class ChannelController extends Controller
                     endif;
                  $data = array(
                      'video' => $categoryVideos,
+                     'videocategory' => $videocategory,
                      'recomended' => $recomended,
                      'ppv_exist' => $ppv_exist,
                      'ppv_price' => 100,

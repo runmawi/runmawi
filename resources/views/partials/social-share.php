@@ -44,36 +44,24 @@ i#like {
     padding: 10px;
 }
 </style>
-<!--
-<span class="share text-center">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="popup"><i class="fa fa-facebook"></i></a>
-    <a href="http://twitter.com/home?status=<?= $media_subject ?> : <?= $media_url ?>" class="popup"><i class="fa fa-twitter"></i></a>
-    <a href="https://plus.google.com/share?url=<?= $media_subject ?> : <?= $media_url ?>" class="popup"><i class="fa fa-google-plus"></i></a>
-    <a href="mailto:?subject=<?= $media_subject ?>&amp;body=<?= $media_url ?>"><i class="fa fa-envelope"></i></a>
-</span> -->
+
 <!-- Buttons start here. Copy this ul to your document. -->
-<ul class="rrssb-buttons clearfix">
-    <li class="" >
-
-      <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank" class="popup"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%;
-      font-size: 14px;width:35px;"></i></a>
-  </li>
-  <li class="">
-    <a  href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank" class="popup">
-        <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;
-        font-size: 14px;">
-    </i>
-</a>
+<li class="share">
+<span><i class="ri-share-fill"></i></span>
+    <div class="share-box">
+       <div class="d-flex align-items-center"> 
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+       </div>
+    </div>
 </li>
-<i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-down <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i>
 <li>
-
-    <i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="fa fa-thumbs-o-up <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i>
-    <li>
-
-
-    </li>
-</ul>
+    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="ri-thumb-up-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i></span>
+</li>
+<li>
+    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i></span>
+</li>
 
 <?php echo $hidden; if (Auth::user()) { ?>
     <input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
@@ -100,10 +88,12 @@ i#like {
             $(this).toggleClass('active');
             if($(this).hasClass('active')){
                 var like = 1;
-                $(this).css('color','#34c1d8');
+                //$(this).css('color','#34c1d8');
+                $(this).replaceClass('ri-thumb-up-line ri-thumb-up-fill');
             }else{
                 var like = 0;
-                $(this).css('color','white');
+                //$(this).css('color','#4895d1');
+                $(this).replaceClass('ri-thumb-up-fill ri-thumb-up-line');
             }
             $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
@@ -123,10 +113,10 @@ i#like {
         $(this).toggleClass('active');
         if($(this).hasClass('active')){
             var dislike = 1;
-            $(this).css('color','#34c1d8');
+            $(this).replaceClass('ri-thumb-down-line ri-thumb-down-fill');
         }else{
             var dislike = 0;
-            $(this).css('color','white');
+            $(this).replaceClass('ri-thumb-down-fill ri-thumb-down-line')
         }
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();

@@ -45,7 +45,7 @@ display: none;
            <div class="col-md-6 col-sm-6 col-xs-12">
 
               <input type='file'  id="file" class='dropzone' accept="video/mp4,video/x-m4v,video/*"  name='trailer' class="form-control">
-
+            
               <!-- Error -->
               <div class='alert alert-danger mt-2 d-none text-danger' id="err_file"></div>
 
@@ -216,6 +216,17 @@ display: none;
 						                  @endforeach
                               </select>
                               </div>   
+                                  <div class="col-sm-6 form-group">
+                                         <label><h5>Age Restrict :</h5></label>
+                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
+                                             <!-- <option>--Video Type--</option> -->
+                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
+                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
+                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
+                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
+                                          
+                                          </select>
+                                      </div>
                                      
                                  <div class="col-sm-12 form-group">
                                      
@@ -290,7 +301,7 @@ display: none;
                                     
                                  </div>
                               </div>      
- 
+
                                 
                                
                               <div class="panel panel-primary mt-4" data-collapsed="0"> <div class="panel-heading"> 
@@ -509,6 +520,8 @@ CKEDITOR.replace( 'summary-ckeditor', {
 
 
 
+ 
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
@@ -517,7 +530,12 @@ CKEDITOR.replace( 'summary-ckeditor', {
   $('#Next').hide();
   $('#video_details').hide();
 
+  var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+ 
 
+    
   $(document).ready(function(){
 
     $('#submit').click(function(){
