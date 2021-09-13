@@ -69,6 +69,9 @@ use App\Artist as Artist;
 use App\AudioCategory as AudioCategory;
 use App\Audioartist as Audioartist;
 use App\ContinueWatching as ContinueWatching;
+use App\AudioAlbums as AudioAlbums;
+
+
 
 
 class ApiAuthController extends Controller
@@ -1138,6 +1141,35 @@ public function verifyandupdatepassword(Request $request)
 
   }
 
+  public function addfavoriteaudio(Request $request) {
+
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $audio_id = $request->audios_id;
+    if($request->audios_id != ''){
+      $count = Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->count();
+      if ( $count > 0 ) {
+        Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Favorite List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
+        Favorite::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Favorite List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+
   public function addwatchlater(Request $request) {
 
     $user_id = $request->user_id;
@@ -1152,6 +1184,33 @@ public function verifyandupdatepassword(Request $request)
         );
       } else {
         $data = array('user_id' => $user_id, 'video_id' => $video_id );
+        Watchlater::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Watch Later List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function addwatchlateraudio(Request $request) {
+
+    $user_id = $request->user_id;
+    $audio_id = $request->audios_id;
+    if($request->audios_id != ''){
+      $count = Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->count();
+      if ( $count > 0 ) {
+        Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Watch Later List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
@@ -1767,6 +1826,38 @@ public function verifyandupdatepassword(Request $request)
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+      $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
+      $audio_categories_count = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+      $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
+
+      if ($audios_count > 0) {
+        $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+        } else {
+          $audios = [];
+        } 
+        if ($audio_categories_count > 0) {
+          $audio_categories = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/audios/'.$item->image;
+      return $item;
+      });
+
+      } else {
+      $audio_categories = [];
+      } 
+      if ($albums_count > 0) {
+        $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+      return $item;
+      });
+
+      } else {
+      $albums = [];
+      } 
+
       if ($videos_count > 0) {
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -1805,7 +1896,11 @@ public function verifyandupdatepassword(Request $request)
       $response = array(
         'channelvideos' => $videos,
         'channel_category' => $video_category,
-        'search_value' => $search_value
+        'search_value' => $search_value,
+        'audios' => $audios,
+        'albums' => $albums,
+        'audio_categories' => $audio_categories,
+
       );
 
       return response()->json($response, 200);
@@ -2464,6 +2559,47 @@ public function checkEmailExists(Request $request)
 
     }
 
+    public function LikeAudio(Request $request)
+    {
+      $user_id = $request->user_id;
+      $audio_id = $request->audios_id;
+      $like = $request->like;
+      $d_like = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->count();
+
+      if($d_like > 0){
+        $new_vide_like = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->first();
+        if($like == 1){
+          $new_vide_like->user_id = $request->user_id;
+          $new_vide_like->audio_id = $request->audios_id;
+          $new_vide_like->liked = 1;
+          $new_vide_like->disliked = 0; 
+          $new_vide_like->save(); 
+        }else{
+          $new_vide_like->user_id = $request->user_id;
+          $new_vide_like->audio_id = $request->audios_id;
+          $new_vide_like->liked = 0;
+          $new_vide_like->save(); 
+        }
+      }else{
+        $new_vide_like = new Likedislike;
+        $new_vide_like->user_id = $request->user_id;
+        $new_vide_like->audio_id = $request->audios_id;
+        $new_vide_like->liked = 1;
+        $new_vide_like->disliked = 0;
+        $new_vide_like->save(); 
+      }
+
+       $response = array(
+        'status'=>'true',
+        'liked' => $new_vide_like->liked,
+        'disliked' => $new_vide_like->disliked,
+        'message'=>'success'
+      );
+      
+       return response()->json($response, 200); 
+
+    }
+
     public function DisLikeVideo(Request $request)
     {
       $user_id = $request->user_id;
@@ -2489,6 +2625,46 @@ public function checkEmailExists(Request $request)
         $new_vide_dislike = new Likedislike;
         $new_vide_dislike->user_id = $request->user_id;
         $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->liked = 0;
+        $new_vide_dislike->disliked = 1;
+        $new_vide_dislike->save(); 
+      }
+
+       $response = array(
+        'status'=>'true',
+        'liked' => $new_vide_dislike->liked,
+        'disliked' => $new_vide_dislike->disliked,
+        'message'=>'success'
+      );
+      
+       return response()->json($response, 200); 
+    }
+
+    public function DisLikeAudio(Request $request)
+    {
+      $user_id = $request->user_id;
+      $audio_id = $request->audios_id;
+      $dislike = $request->dislike;
+      $d_like = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->count();
+
+      if($d_like > 0){
+        $new_vide_dislike = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->first();
+        if($dislike == 1){
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->audio_id = $request->audios_id;
+          $new_vide_dislike->liked = 0;
+          $new_vide_dislike->disliked = 1; 
+          $new_vide_dislike->save(); 
+        }else{
+          $new_vide_dislike->user_id = $request->user_id;
+          $new_vide_dislike->audio_id = $request->audios_id;
+          $new_vide_dislike->disliked = 0;
+          $new_vide_dislike->save(); 
+        }
+      }else{
+        $new_vide_dislike = new Likedislike;
+        $new_vide_dislike->user_id = $request->user_id;
+        $new_vide_dislike->audio_id = $request->audios_id;
         $new_vide_dislike->liked = 0;
         $new_vide_dislike->disliked = 1;
         $new_vide_dislike->save(); 
@@ -3242,14 +3418,40 @@ public function upnextAudio(Request $request){
 
     }
 
+    public function AllAudios() {
+
+      $date = date('Y-m-d', strtotime('-10 days'));
+
+      $allaudios =  Audio::All();
+
+      // $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
+      $recent_audios_count = Audio::All()->count();
+
+
+      if ( $recent_audios_count > 0) {
+
+          $response = array(
+              'status'=>'true',
+              'message'=>'success',
+              'allaudios'=> $allaudios
+          );
+      } else {
+
+          $response = array(
+              'status'=>'false',
+              'message'=>'No recent Audios Found'
+          );
+      }
+
+      return response()->json($response, 200);
+
+  }
+
     public function audiodetail(Request $request)
     {
-        if(!empty($request->audio_id)){
+
         $audio_id = $request->audio_id;
-        }else{
-          echo "Audios not added";
-          exit();
-        }
+
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;

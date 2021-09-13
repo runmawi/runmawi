@@ -176,4 +176,9 @@ Route::group([
     Route::get('trendingaudio', 'ApiAuthController@trendingaudio');
     Route::get('albumlist', 'ApiAuthController@albumlist');
     Route::post('albumaudios', 'ApiAuthController@albumaudios');
+    Route::post('addwatchlateraudio', 'ApiAuthController@addwatchlateraudio');
+    Route::post('addfavoriteaudio', 'ApiAuthController@addfavoriteaudio');
+    Route::post('/dislikeaudio', 'ApiAuthController@DisLikeAudio');
+    Route::post('/likeaudio', 'ApiAuthController@LikeAudio');
+    Route::get('AllAudios', 'ApiAuthController@AllAudios');
 });

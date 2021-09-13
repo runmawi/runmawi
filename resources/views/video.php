@@ -547,21 +547,13 @@ location.reload();
       });
 
         </script>
-
-    <!--<div class="clear"></div>
-
-    <div id="comments">
-      <div id="disqus_thread"></div>
-    </div>-->
+    <script type="text/javascript">
+$(document).ready(function(){
+$('#videoPlayer').bind('contextmenu',function() { return false; });
+});
+</script>
     
   </div>
-  <?php 
-
-// dd($this);
-
-   ?>
-    <noscript>Please enable JavaScript to view the comments</noscript> 
-
 
 <?php include('footer.blade.php');?>
 
