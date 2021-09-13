@@ -438,13 +438,15 @@ if(!empty($artistsdata)){
      * @param  int  $id
      * @return Response
      */
+    
     public function update(Request $request)
     {
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
         }
-        
+        // print_r('test');
+        // exit();
         $data = $request->all();
         
         $validatedData = $request->validate([
@@ -577,42 +579,42 @@ if(!empty($artistsdata)){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $time_seconds = $hours  3600 + $minutes  60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
 
-        if( $mp4_url2 != ''){   
+        // if( $mp4_url2 != ''){   
 
-            $ffprobe = \FFMpeg\FFProbe::create();
-            $disk = 'public';
-            $data['duration'] = $ffprobe->streams($request->video)
-            ->videos()
-            ->first()                  
-            ->get('duration'); 
+        //     $ffprobe = \FFMpeg\FFProbe::create();
+        //     $disk = 'public';
+        //     $data['duration'] = $ffprobe->streams($request->video)
+        //     ->videos()
+        //     ->first()                  
+        //     ->get('duration'); 
 
 
 
-              //code for remove old file
-                $rand = Str::random(16);
-                $path = $rand . '.' . $request->video->getClientOriginalExtension();
-                $request->video->storeAs('public', $path);
-                $data['mp4_url'] = $path;
-                $data['path'] = $rand;
+        //       //code for remove old file
+        //         $rand = Str::random(16);
+        //         $path = $rand . '.' . $request->video->getClientOriginalExtension();
+        //         $request->video->storeAs('public', $path);
+        //         $data['mp4_url'] = $path;
+        //         $data['path'] = $rand;
 
-                $thumb_path = 'public';
-                $this->build_video_thumbnail($request->video,$path, $data['slug']);
+        //         $thumb_path = 'public';
+        //         $this->build_video_thumbnail($request->video,$path, $data['slug']);
              
-            // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-                $original_name = URL::to('/').'/storage/app/public/'.$path;
-                $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-                $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-                $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-                $converted_name = ConvertVideoForStreaming::handle($path);
+        //     // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+        //         $original_name = URL::to('/').'/storage/app/public/'.$path;
+        //         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        //         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        //         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        //         $converted_name = ConvertVideoForStreaming::handle($path);
 
-                ConvertVideoForStreaming::dispatch($video);
+        //         ConvertVideoForStreaming::dispatch($video);
                
 
-         }
+        //  }
         
       
        
@@ -998,9 +1000,7 @@ if(!empty($artistsdata)){
         
         
         
-        //  echo "<pre>";
-        //  print_r($request->file);
-        //  exit();
+   
         
         
         $mp4_url = $data['file'];
@@ -1032,12 +1032,14 @@ if(!empty($artistsdata)){
         
          $video_id = $video->id;
         
-         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-         $converted_name = ConvertVideoForStreaming::handle($path);
-        
-         ConvertVideoForStreaming::dispatch($video);
+        //  $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        //  $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        //  $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        //  $converted_name = ConvertVideoForStreaming::handle($path);
+        //       echo "<pre>";
+        //  print_r($converted_name);
+        //  exit();
+        //  ConvertVideoForStreaming::dispatch($video);
         
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';

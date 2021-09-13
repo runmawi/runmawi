@@ -26,12 +26,12 @@
             }
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
-            <div id="video_container" class="fitvid" style="margin: 0 auto;">
+            <div id="video_container" class="fitvid">
               <?= $video->embed_code ?>
             </div>
-          <?php  elseif($video->type == 'file' && check_file_exist(URL::to('/storage/app/public/').'/'.$video->path . '.m3u8')): ?>
+          <?php  elseif($video->type == 'file'): ?>
 
-            <div id="video_container" class="fitvid" style="margin: 0 auto;">
+            <div id="video" class="fitvid" style="margin: 0 auto;">
 
             
               <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
@@ -90,10 +90,11 @@
             </div>
             </div>
           <?php  else: ?>
-            <div id="video_container" class="fitvid" style="margin: 0 auto;">
+            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 <!-- Current time: <div id="current_time"></div> -->
-<video class="video-js vjs-big-play-centered" id="videoPlayer" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
+<video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
+
+<source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > 
 <?php
 if($playerui_settings['subtitle'] == 1 ){
 
@@ -162,9 +163,9 @@ if($value['sub_language'] == "Spanish"){
 
   <?php }  
     else { ?>       
-            <div id="video_container" class="fitvid" style="margin: 0 auto;">
+    <div id="video_container" class="fitvid">
 
-    <video class="video-js vjs-big-play-centered"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  id="videoPlayer" >
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
      <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
 
     <?php
@@ -198,9 +199,9 @@ if($value['sub_language'] == "Spanish"){
       </div>
   <?php } } ?>
   <?php if(Auth::guest()) {  ?>
-            <div id="video_container" class="fitvid" style="margin: 0 auto;">
+    <div id="video_container" class="fitvid">
 
-    <video class="video-js vjs-big-play-centered"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  id="videoPlayer" >
+    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
 
     <source src="<?= $video->trailer; ?>" type='video/mp4' label='auto' > 
     <?php
@@ -243,21 +244,21 @@ if($value['sub_language'] == "Spanish"){
    <?php if(!Auth::guest()) { ?>
 
     <div class="row" >
-      <div class="col-sm-12 col-md-7 col-xs-12 d-flex">     
+      <div class="col-sm-12 col-md-6 col-xl-6 d-flex justify-content-around">     
       <!-- Watch Later -->
                 <div>
       <div class="watchlater btn btn-default <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div></div>
 <div>
       <!-- Wish List -->            
-      <div style="margin-left:15px;" class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+    <div  class="mywishlist btn btn-default <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div></div><div>
       <?php if($video->trailer != ''){ ?>
-        <div style="margin-left:15px;" class="btn btn-default watch_trailer"><i class="fa fa-film"></i>  Watch Trailer</div>
-        <div style="margin-left:15px; display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+        <div class="watchlater btn btn-default watch_trailer"><i class="fa fa-film"></i>Watch Trailer</div>
+        <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div></div>
       <?php } ?>
 </div>
-           </div>
+          
       <!-- Share -->
-        <div class="col-sm-12 col-md-3 col-xs-6">
+        <div class="col-sm-12 col-md-4 col-xs-6">
       <div class="social_share p-1 d-flex justify-content-around align-items-center">
         <p><i class="fa fa-share-alt"></i> <?php echo __('Share');?>: </p>
         <div id="social_share">
@@ -402,13 +403,7 @@ if($value['sub_language'] == "Spanish"){
     <php endforeach; ?>
     </div>
 -->
-<div class="video-list you-may-like">
-            <h4 class="Cast & Crew" style="color:#fffff;"><?php echo __('CAST & CREW');?></h4>
-                <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
-                <?php include('partials/cast-crew.php');?>
-                </div>
-    
-    </div>  
+        
     <div class="video-list you-may-like">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
