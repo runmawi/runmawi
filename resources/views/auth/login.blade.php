@@ -15,7 +15,7 @@
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
-      <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon; ?>" />
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -80,7 +80,7 @@ i.fa.fa-google-plus {
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                      <img src="<?php echo URL::to('/').'/assets/img/'. $settings->logo ; ?>" width="200" style="margin-bottom:1rem;">
+                      <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" width="200" style="margin-bottom:1rem;">
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif

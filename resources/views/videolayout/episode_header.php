@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon; ?>" />
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- video js -->
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
 	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">

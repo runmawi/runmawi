@@ -35,7 +35,7 @@ $uppercase =  ucfirst($request_url);
   
   <script>$.noConflict();</script>-->
    <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon; ?>" />
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
     
@@ -88,7 +88,7 @@ $uppercase =  ucfirst($request_url);
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/assets/img/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
