@@ -35,7 +35,7 @@ $uppercase =  ucfirst($request_url);
   
   <script>$.noConflict();</script>-->
    <!-- Favicon -->
-   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/"'. $settings->favicon .'"'?>" />
+   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon . ?>" />
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
     

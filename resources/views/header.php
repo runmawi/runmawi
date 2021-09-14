@@ -18,7 +18,7 @@ $uppercase =  ucfirst($request_url);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/"'. $settings->favicon .'"'?>" />
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon . ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->

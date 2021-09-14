@@ -15,7 +15,7 @@ $uppercase =  ucfirst($request_url);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/"'. $settings->favicon .'"'?>" />
+   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon . ?>" />
 
     <!-- video js -->
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
