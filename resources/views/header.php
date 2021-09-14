@@ -10,41 +10,30 @@ $uppercase =  ucfirst($request_url);
 // exit();
       ?>
       <!-- Required meta tags -->
-      <meta charset="UTF-8">
-      <meta name="description" content="Flicknexs">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title><?php echo $uppercase.' | Flicknexs' ; ?></title>
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-       <!-- Favicon -->
-     <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
-      <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
-      <!-- Style -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-      <!-- Responsive -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-        <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-       
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-       
-       
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-       
-       
-     
-
+    <!-- Favicon -->
+   <link rel="shortcut icon" href="<?php echo $settings->favicon ; ?>" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+    <!-- Responsive -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    </head>
     <style>
-        #main-header{
-            color: #fff;
-        }
-        .svg{
-            color: #fff;
-        }
-     
+        #main-header{ color: #fff; }
+        .svg{ color: #fff; } 
     </style>
    <body>
       <!-- loader Start -->
