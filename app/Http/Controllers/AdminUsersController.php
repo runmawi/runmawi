@@ -55,7 +55,11 @@ class AdminUsersController extends Controller
         
        $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
        $top_rated_videos = Video::where("rating",">",7)->get();
+      
+    //    $total_revenew = Subscription::all();
+       $total_revenew = Subscription::sum('price');
 
+      
         $search_value = '';
         
         if(!empty($search_value)):
@@ -68,6 +72,7 @@ class AdminUsersController extends Controller
 		$data = array(
 			'users' => $users,
             'total_subscription' => $total_subscription,
+            'total_revenew' => $total_revenew,
             'total_recent_subscription' => $total_recent_subscription,
             'total_videos' => $total_videos,
             'top_rated_videos' => $top_rated_videos,
@@ -118,7 +123,9 @@ class AdminUsersController extends Controller
             ]);
         
         $input = $request->all();
-        
+        // echo "<pre>";
+        // print_r($input);
+        // exit();
         $user = Auth::user();
         
         
@@ -144,33 +151,58 @@ class AdminUsersController extends Controller
           $file->move($path, $input['avatar']);
          
      }
-      
-        if ( $input['role'] =='subadmin' ){
+     $password = Hash::make($request['passwords']);
+
+     $user = new User;
+     $user->username = $request['username'];
+     $user->email = $request['email'];
+     $user->mobile = $request['mobile'];
+     $password = Hash::make($request['passwords']);
+     $user->ccode = $request['ccode'];
+     $user->role = $request['role'];
+    //  $user->terms = $request['terms'];
+     $user->avatar = $file->getClientOriginalName();
+     $user->password = $password;
+    $user->save();
+
+    //  $moderatorsuser->description = $request->description;
+    //     if ( $input['role'] =='subadmin' ){
             
-                $request['role'] ='admin';
-                $request['sub_admin'] = 1;
-                $request['stripe_active'] = 1;
+    //             $request['role'] ='admin';
+    //             $request['sub_admin'] = 1;
+    //             $request['stripe_active'] = 1;
             
-        } else {
+    //     } else {
             
-             $request['role'] = $request['role'];
-        }
+    //          $request['role'] = $request['role'];
+    //     }
         
         if ( empty($request['email'])){
             return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
             
         } else {
             
-             $request['email'] = $request['email'];
+            //  $request['email'] = $request['email'];
         }
         
         $input['terms'] = 0;
         
-          if($request['password'] == ''){
-        	$request['password'] = $user->password;
-        } else{ $request['password'] = $request['password']; }
-//        
-        $user = User::create($input);
+//           if($request['passwords'] == ''){
+
+         
+//             // echo "<pre>";
+//             // print_r($password);
+//             // exit();
+//             $request['password'] = $password;
+//         } else{
+//             // echo "<pre>";
+//             // print_r('$input');
+//             // exit();
+//             $password = Hash::make($request['passwords']);
+
+//             $request['password'] = $password; }
+// //        
+//         $user = User::create($input);
         return Redirect::to('admin/users')->with(array('note' => 'Successfully Created New User', 'note_type' => 'success') );
     }
     

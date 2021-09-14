@@ -270,7 +270,7 @@ display: none;
                               @endif
                                 </div>
                          </div>
-                                <div class="row mt-5">
+                                <!-- <div class="row mt-5">
                                   <div class="col-sm-6 form-group">
                                          <label><h5>Video Type :</h5></label>
                                           <select id="type" name="type" class="form-control" required>
@@ -284,7 +284,7 @@ display: none;
                                     </video>
                                  @endif
 
-                                      </div>
+                                      </div> -->
                                 
                                   
                                  <div class="d-block position-relative" style="left:80px;top:-50px;">

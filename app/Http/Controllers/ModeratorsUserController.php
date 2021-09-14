@@ -111,7 +111,7 @@ $request->validate([
     $moderatorsuser->confirm_password = $request->confirm_password;
     $moderatorsuser->description = $request->description;
     // $moderatorsuser->hashedpassword = $request->picture;
-    $moderatorsuser->role = $request->user_role;
+    $moderatorsuser->user_role = $request->user_role;
     $moderatorsuser->user_permission = $permission;
     if($request->picture == ""){
       // print_r('oldtesting pic');
@@ -196,6 +196,7 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
        return view('moderator.create_edit',$data);
   }
 
+
   public function update(Request $request)
   {
 
@@ -215,7 +216,7 @@ $moderatorsuser['username'] = $data['username'];
 $moderatorsuser['email'] = $data['email_id'];
 $moderatorsuser['mobile_number'] = $data['mobile_number'];
 $moderatorsuser['description'] = $data['description'];
-$moderatorsuser['role'] = $data['user_role'];
+$moderatorsuser['user_role'] = $data['user_role'];
 $moderatorsuser['user_permission'] = $permission;
 
   $logopath = URL::to('/public/uploads/picture/');
@@ -259,8 +260,6 @@ foreach($data['user_permission'] as $value){
   
        return \Redirect::back();
   }
-
-
 
   
   public function delete($id)

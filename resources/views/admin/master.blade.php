@@ -184,7 +184,16 @@ $uppercase =  ucfirst($request_url);
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
-                    <li><a href="{{ URL::to('moderator') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Moderate</span></a></li>
+                   <li>
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                     </ul>
+                  </li>
                   <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
                        class="la la-newspaper-o"></i><span>Pages</span><i
@@ -363,10 +372,11 @@ $uppercase =  ucfirst($request_url);
                            <a class="search-link" href="#"><i class="ri-search-line"></i></a>
                         </form>
                      </li>
+                      <!-- 
                      <li class="nav-item nav-icon">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-notification-2-line"></i>
-                          <!-- <span class="bg-primary dots"></span>-->
+                          <!-- <span class="bg-primary dots"></span>--
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -429,7 +439,7 @@ $uppercase =  ucfirst($request_url);
                      <li class="nav-item nav-icon dropdown">
                         <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-mail-line"></i>
-                          <!-- <span class="bg-primary dots"></span>-->
+                          <!-- <span class="bg-primary dots"></span>--
                         </a>
                         <div class="iq-sub-dropdown">
                            <div class="iq-card shadow-none m-0">
@@ -495,7 +505,7 @@ $uppercase =  ucfirst($request_url);
                               </div>
                            </div>
                         </div>
-                     </li>
+                     </li> -->
                      <li class="line-height pt-3">
                         <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                             <?php if(Auth::guest()): ?>
@@ -508,7 +518,7 @@ $uppercase =  ucfirst($request_url);
                            <div class="iq-card shadow-none m-0">
                               <div class="iq-card-body p-0 ">
                                  <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
+                                    <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
                                     <span class="text-white font-size-12">Available</span>
                                  </div>
                                  <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
@@ -522,7 +532,7 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
-                                 <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
+                                 <a href="{{ URL::to('/myprofile') }}" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
                                           <i class="ri-profile-line"></i>
@@ -533,6 +543,7 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
+<!--
                                  <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
@@ -544,6 +555,8 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
+-->
+<!--
                                  <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
                                        <div class="rounded iq-card-icon iq-bg-primary">
@@ -555,8 +568,9 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </div>
                                  </a>
+-->
                                  <div class="d-inline-block w-100 text-center p-3">
-                                    <a class="bg-primary iq-sign-btn" href="#" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                    <a class="bg-primary iq-sign-btn" href="{{ URL::to('/logout') }}" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
                                  </div>
                               </div>
                            </div>

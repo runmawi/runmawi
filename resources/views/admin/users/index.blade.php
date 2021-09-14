@@ -28,16 +28,17 @@
                 </div>
 			</div><!-- column -->
 		
-			<!--<div class="col-sm-4 col-xs-6">
+			<div class="col-sm-4 col-xs-6">
                  <div class="iq-card" style="height: 150px;">
 				<div class="tile-stats tile-aqua">
 					<div class="icon"><i class="entypo-video"></i></div>
-					<div class="num" data-start="0" data-end="{{ $total_videos }}" data-postfix="" data-duration="1500" data-delay="1200">{{ $total_videos }}</div>
-					<h3>Videos</h3>
-					<p>Total Channel videos on your site.</p>
+					<div class="num" data-start="0" data-end="{{ $total_revenew }}" data-postfix="" data-duration="1500" data-delay="1200">{{ $total_revenew }}</div>
+					<h3>Revenue</h3>
+					<p>Total Revenue</p>
 				</div>
                 </div>
-			</div><!-- column -->
+			</div>
+          <!-- column -->
          <div class="col-md-12">
              
     	<form  accept-charset="UTF-8" action="{{ URL::to('admin/export') }}" method="post">
