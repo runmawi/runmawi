@@ -1,9 +1,10 @@
+<?php $settings = App\Setting::first(); ?>
 <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/assets/img/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
@@ -92,7 +93,7 @@
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;">FLICKNEXS - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
             </div>
          </div>
       </footer>

@@ -64,14 +64,91 @@ class AdminVideosController extends Controller
 
         return View('admin.videos.index', $data);
     }
-    
+    public function uploadFile(Request $request){
+
+        $value = array();
+        $data = $request->all();
+        
+        
+        $validator = Validator::make($request->all(), [
+           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+           
+        ]);
+        $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+        
+        $path = public_path().'/uploads/videos/';
+        
+        
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];
+   
+        
+        
+        $mp4_url = $data['file'];
+        
+        if($mp4_url != '') {
+        $ffprobe = \FFMpeg\FFProbe::create();
+        $disk = 'public';
+        $data['duration'] = $ffprobe->streams($request->file)
+        ->videos()
+        ->first()                  
+        ->get('duration'); 
+        
+        $rand = Str::random(16);
+        $path = $rand . '.' . $request->file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $thumb_path = 'public';
+        
+        // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+        
+         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+              $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+        
+         $video = new Video();
+         $video->disk = 'public';
+         $video->original_name = 'public';
+         $video->path = $storepath;
+         $video->draft = 0;
+         $video->save(); 
+        
+         $video_id = $video->id;
+
+        
+         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+         $converted_name = ConvertVideoForStreaming::handle($path,$file);
+ 
+         ConvertVideoForStreaming::dispatch($video);
+        
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['video_id'] = $video_id;
+        
+        return $value;
+        
+        }
+        
+        else {
+         $value['success'] = 2;
+         $value['message'] = 'File not uploaded.'; 
+            // $video = Video::create($data);
+        return response()->json($value);
+        
+        }
+        
+        
+        // return response()->json($value);
+        }
+        
+  
      /**
      * Show the form for creating a new video
      *
      * @return Response
      */
-
-     public function create()
+    public function create()
     {
          if (!Auth::user()->role == 'admin')
             {
@@ -106,6 +183,7 @@ class AdminVideosController extends Controller
         
         
         $data = $request->all();
+   
          $validatedData = $request->validate([
                 'title' => 'required',
             ]);
@@ -438,15 +516,13 @@ if(!empty($artistsdata)){
      * @param  int  $id
      * @return Response
      */
-    
     public function update(Request $request)
     {
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
         }
-        // print_r('test');
-        // exit();
+        
         $data = $request->all();
         
         $validatedData = $request->validate([
@@ -583,38 +659,38 @@ if(!empty($artistsdata)){
                 $data['duration'] = $time_seconds;
         }
 
-        // if( $mp4_url2 != ''){   
+        if( $mp4_url2 != ''){   
 
-        //     $ffprobe = \FFMpeg\FFProbe::create();
-        //     $disk = 'public';
-        //     $data['duration'] = $ffprobe->streams($request->video)
-        //     ->videos()
-        //     ->first()                  
-        //     ->get('duration'); 
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->video)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
 
 
 
-        //       //code for remove old file
-        //         $rand = Str::random(16);
-        //         $path = $rand . '.' . $request->video->getClientOriginalExtension();
-        //         $request->video->storeAs('public', $path);
-        //         $data['mp4_url'] = $path;
-        //         $data['path'] = $rand;
+              //code for remove old file
+                $rand = Str::random(16);
+                $path = $rand . '.' . $request->video->getClientOriginalExtension();
+                $request->video->storeAs('public', $path);
+                $data['mp4_url'] = $path;
+                $data['path'] = $rand;
 
-        //         $thumb_path = 'public';
-        //         $this->build_video_thumbnail($request->video,$path, $data['slug']);
+                $thumb_path = 'public';
+                $this->build_video_thumbnail($request->video,$path, $data['slug']);
              
-        //     // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-        //         $original_name = URL::to('/').'/storage/app/public/'.$path;
-        //         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        //         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-        //         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-        //         $converted_name = ConvertVideoForStreaming::handle($path);
+            // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+                $original_name = URL::to('/').'/storage/app/public/'.$path;
+                $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+                $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+                $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+                $converted_name = ConvertVideoForStreaming::handle($path);
 
-        //         ConvertVideoForStreaming::dispatch($video);
+                ConvertVideoForStreaming::dispatch($video);
                
 
-        //  }
+         }
         
       
        
@@ -781,7 +857,12 @@ if(!empty($artistsdata)){
             }
         }
     
-    public function fileupdate(Request $request)
+
+
+
+
+
+        public function fileupdate(Request $request)
         {
              if (!Auth::user()->role == 'admin')
             {
@@ -798,7 +879,7 @@ if(!empty($artistsdata)){
             
            
                 $id = $data['video_id'];
-                echo "<pre>";
+                // echo "<pre>";
             
                 $video = Video::findOrFail($id);
                 // print_r($video);
@@ -983,76 +1064,6 @@ if(!empty($artistsdata)){
     
     
             return Redirect::back();
-        }
-    
-   public function uploadFile(Request $request){
-
-        $value = array();
-        $data = $request->all();
-        
-        $validator = Validator::make($request->all(), [
-           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
-           
-        ]);
-       
-        $mp4_url = (isset($data['file'])) ? $data['file'] : '';
-        
-        $path = public_path().'/uploads/videos/';
-
-        $mp4_url = $data['file'];
-        
-        if($mp4_url != '') {
-        $ffprobe = \FFMpeg\FFProbe::create();
-        $disk = 'public';
-        $data['duration'] = $ffprobe->streams($request->file)
-        ->videos()
-        ->first()                  
-        ->get('duration'); 
-        
-        $rand = Str::random(16);
-        $path = $rand . '.' . $request->file->getClientOriginalExtension();
-        $request->file->storeAs('public', $path);
-        $thumb_path = 'public';
-        
-        // $this->build_video_thumbnail($request->file,$path, $data['slug']);
-        
-         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/ajax/'.$original_name;
-        
-         $video = new Video();
-         $video->disk = 'public';
-         $video->original_name = 'public';
-         $video->path = $data['trailer'];
-         $video->draft = 0;
-         $video->save(); 
-        
-         $video_id = $video->id;
-        
-        //  $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        //  $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-        //  $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-        //  $converted_name = ConvertVideoForStreaming::handle($path);
- 
-        //  ConvertVideoForStreaming::dispatch($video);
-        
-        $value['success'] = 1;
-        $value['message'] = 'Uploaded Successfully!';
-        $value['video_id'] = $video_id;
-        
-        return $value;
-        
-        }
-        
-        else {
-         $value['success'] = 2;
-         $value['message'] = 'File not uploaded.'; 
-            // $video = Video::create($data);
-        return response()->json($value);
-        
-        }
-        
-        
-        // return response()->json($value);
         }
     
 }

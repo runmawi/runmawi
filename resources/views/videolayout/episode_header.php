@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Flicknexs</title>
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/images/' . $settings->favicon; ?>" />
     <!-- video js -->
-    
-
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
 	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">
   	<link href="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">

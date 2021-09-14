@@ -1455,7 +1455,7 @@ td{
     margin-left: 480px;
 }
 .sign-user_card input{
-    background-color: #30312f;
+    background-color: rgb(66 66 66 / 51%) !important;
     outline: none;
     color: gray;
     border:none;

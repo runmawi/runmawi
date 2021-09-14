@@ -88,7 +88,7 @@ $uppercase =  ucfirst($request_url);
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/'). '/assets/admin/dashassets/images/logo.png';?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/assets/img/'. $settings->logo ; ?>" class="c-logo" alt="" >
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -338,7 +338,7 @@ $uppercase =  ucfirst($request_url);
                      <a href="<?php echo URL::to('home') ?>" class="header-logo">
                         <!--<img src="<?/*php echo URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png'*/;?>" class="c-logo" alt="Flicknexs">-->
                         <div class="logo-title">
-                           <span class="text-primary text-uppercase">Flicknexs</span>
+                           <span class="text-primary text-uppercase"><?php $settings = App\Setting::first(); echo $settings->website_name;?></span>
                         </div>
                      </a>
                   </div>
@@ -591,7 +591,7 @@ $uppercase =  ucfirst($request_url);
                </ul>
             </div>
             <div class="col-lg-6 text-right">
-               Copyright 2020 <a href="<?php echo URL::to('home') ?>">Flicknexs</a> All Rights Reserved.
+               Copyright 2021 <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
             </div>
          </div>
       </div>
