@@ -387,6 +387,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/players', 'AdminSettingsController@playerui_index');
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
+    
+     /*  Email Setting  */
+
+    Route::get('/email_settings', 'AdminEmailSettingsController@index');
+    Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
 
 });
 

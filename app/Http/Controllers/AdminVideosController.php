@@ -68,8 +68,7 @@ class AdminVideosController extends Controller
 
         $value = array();
         $data = $request->all();
-        
-        
+
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
            
@@ -103,28 +102,26 @@ class AdminVideosController extends Controller
         // $this->build_video_thumbnail($request->file,$path, $data['slug']);
         
          $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-              $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+         $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
         
          $video = new Video();
          $video->disk = 'public';
+         $video->title = $file_folder_name;
          $video->original_name = 'public';
          $video->path = $storepath;
          $video->draft = 0;
          $video->save(); 
         
          $video_id = $video->id;
+       $video_title = Video::find($video_id);
+       $title =$video_title->title; 
 
-        
-         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-         $converted_name = ConvertVideoForStreaming::handle($path,$file);
- 
-         ConvertVideoForStreaming::dispatch($video);
-        
+
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
         $value['video_id'] = $video_id;
+        $value['video_title'] = $title;
+
         
         return $value;
         
@@ -137,8 +134,7 @@ class AdminVideosController extends Controller
         return response()->json($value);
         
         }
-        
-        
+
         // return response()->json($value);
         }
         

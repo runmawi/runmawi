@@ -3,62 +3,11 @@
 @section('content')
 @include('/header')
 <head>
+     <?php
+   $settings = App\Setting::find(1);
+?>
          <!-- Favicon -->
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
-      <link rel="shortcut icon" href="<?php echo URL::to('/'). '/assets/images/fl-logo.png';?>" />
+      <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
 </head>
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
         
@@ -186,7 +135,7 @@
     <div class="row justify-content-center page-height" id="signup-form">  
         <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
-                    <div class="panel-heading" align="center"><h1>Choose You Plan</h1></div>
+                    <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body become-sub">
                         <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
@@ -199,10 +148,12 @@
 
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
         <form action="<?php echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
+<!--
             <label for="chkPassport">
                     <input type="checkbox" id="chkPassport" />
                      Click here for Recurring subscription!
                  </label>
+-->
               <div class="tab-content">
                       <div id="dvPassport" style="display: none" class="tab-pane fade in active">
                   <div class="row">
@@ -239,7 +190,8 @@
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
-                            $plans = App\Plan::where('type','=','One Time')->get();
+                            $plans = App\Plan::get();
+
                                foreach($plans as $plan) {
                                   $plan_name = $plan->plans_name;
                             ?>
@@ -359,36 +311,34 @@
                <div id="AddPassports" >
                     <div class="row">
                     <?php 
-                       $plans = App\PaypalPlan::where('type','=','One Time')->get();
-                       foreach($plans as $plan) {
-                           $plan_name = $plan->name;
-                    ?>
-                   <div class="col-sm-3">
-                        <div class="plan-card">
-                            <div class="header">
-                                <h3 class="plan-head">
-
-                                    <?php echo $plan->name;?></h3>
-                            </div>
-                            <div class="plan-price">
-                                <p>plan</p>
-                                <h4><?php echo "$".$plan->price;?>
-                                    <small>
-                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                                    </small>
-                                </h4>
-                            </div>
-                            <div class="plan-details">
-                                <p>Grab this plan for your best Movies to Watch.</p>
-
-                                <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>   
-         
-       <?php } ?>    
+                            // exit();
+                               foreach($plans as $plan) {
+                                  $plan_name = $plan->plans_name;
+                            ?>
+                                    <div class="col-sm-3">
+                                        <div class="plan-card">
+                                            <div class="header">
+                                                <h3 class="plan-head">
+                                                    <?php echo $plan->plans_name;?></h3>
+                                            </div>
+                                            <div class="plan-price">
+                                                <p>plan</p>
+                                                <h4><?php echo "$".$plan->price;?>
+                                                    <small>
+                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    </small>
+                                                </h4>
+                                            </div>
+                                            <div class="plan-details">
+                                                <p>Grab this plan and watch unlimited movies</p>
+                                                <div class="text-right mt-4">
+                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="payment_type" value="one_time">
+                           <?php } ?>
                     </div>
                 </div> 
         <div class="row" >

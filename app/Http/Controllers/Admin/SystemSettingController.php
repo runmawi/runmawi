@@ -11,6 +11,8 @@ class SystemSettingController extends Controller
 {
    public function index(){
        $system = SystemSetting::first();
+       $system_settings = \DB::table('system_settings')->get();
+
        $data = array(
                 'system' => $system
        );
@@ -20,6 +22,7 @@ class SystemSettingController extends Controller
    }
     public function save(Request $request){
         $data = $request->all();
+
         $settings = SystemSetting::find(1);
         if (!empty($request->facebook)){
          $settings->facebook = $request->facebook;   

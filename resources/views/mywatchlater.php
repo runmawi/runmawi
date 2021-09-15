@@ -165,12 +165,8 @@ height: 30px !important;
                     text-align: left !important;
                                max-height: 450px !important;
                 }
-           li.list-group-item {
-    width: 375px;
-}
-           h3 {
-    font-size: 24px !important;
-}
+           li.list-group-item { width: 375px; }
+           h3 { font-size: 24px !important; }
      </style>
   
       <!-- loader Start -->

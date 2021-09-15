@@ -65,7 +65,7 @@
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><i
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><i
                                                 class="ri-delete-bin-line"></i></a>
                                        </div>
                                     </td>

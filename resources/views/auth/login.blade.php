@@ -1,17 +1,11 @@
-
-
-<!--
-
  <?php
    $settings = App\Setting::find(1);
 ?>
--->
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Flicknexs</title>
+      <title>Login | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -68,12 +62,12 @@ i.fa.fa-google-plus {
 }
 </style>
 
- <section class="sign-in-page">
+ <section class="sign-in-page" style="background: url(../img/<?php echo $settings->login_content; ?>) no-repeat scroll 0 0;">
    <div class="container">
       <div class="row  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
              
-              <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
+              <h1 class="km"><?php echo $settings->login_text; ?></h1>
                 
           </div>
          <div class="col-lg-5 col-12 col-md-12 align-self-center">
@@ -168,7 +162,7 @@ i.fa.fa-google-plus {
                </div>
                <div class="">
                   <div class="d-flex justify-content-center  links">
-                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2" style="color:#fff!important;">Sign Up</a>
+                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
                   </div>
                   
                </div>

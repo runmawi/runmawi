@@ -1,68 +1,28 @@
+
+
 @extends('admin.master')
-
-
-<!-- <title>How to upload a file using jQuery AJAX in Laravel 8</title> -->
-
-<!-- Meta -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
 
-<style type="text/css">
-.displaynone{
-display: none;
-}
-</style>
-</head>
-<body>
+    <!-- JS -->
+    <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+
 <div id="video_upload" style="margin-left: 31%;margin-top: 10%;">
-<link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
+ 
 
-<!-- JS -->
-<script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+    <div class='content file'>
+      <!-- Dropzone -->
+      <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' >
+      </form> 
+    </div> 
+    </div> 
 
-  <div class="container">
 
-    <div class="row">
-
-      <div class="col-md-12 col-sm-12 col-xs-12">
-
-        <!-- Response message -->
-        <div class="alert displaynone" id="responseMsg"></div>
-
-        <!-- File preview --> 
-        <div id="filepreview" class="displaynone" > 
-          <img src="" class="displaynone" with="200px" height="200px"><br>
-
-          <a href="#" class="displaynone" >Click Here..</a>
-        </div>
-
-        <!-- Form -->
-        <div class="form-group">
-           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">File    <span class="required">*</span></label>
-           <div class="col-md-6 col-sm-6 col-xs-12">
-
-              <input type='file'  id="file" class='dropzone' accept="video/mp4,video/x-m4v,video/*"  name='trailer' class="form-control">
-            
-              <!-- Error -->
-              <div class='alert alert-danger mt-2 d-none text-danger' id="err_file"></div>
-
-           </div>
-        </div>
-
-        <div class="form-group">
-           <div class="col-md-6">
-              <input type="button" id="submit" value='Submit' class='btn btn-success'>
-           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div style="margin-left: 80%;">
+    <div style="margin-left: 80%;">
 <input type="button" id="Next" value='Next' class='btn btn-secondary'>
 </div>
 
@@ -71,6 +31,7 @@ display: none;
 <div id="video_details">
 
 <style>
+
     .p1{
         font-size: 12px;
     }
@@ -88,63 +49,6 @@ display: none;
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
-<style>
-        span{
-            color: gray;
-        }
-        .progress { position:relative; width:100%; }
-        .bar { background-color: #008000; width:0%; height:20px; }
-         .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
-        [data-tip] {
-	position:relative;
-
-}
-        .subtitle1{
-            display: flex;
-            justify-content: space-between;
-            width: 52%;
-        }
-[data-tip]:before {
-	content:'';
-	/* hides the tooltip when not hovered */
-	display:none;
-	content:'';
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-bottom: 5px solid #1a1a1a;	
-	position:absolute;
-	
-	z-index:8;
-	font-size:0;
-	line-height:0;
-	width:0;
-	height:0;
-}
-[data-tip]:after {
-	display:none;
-	content:attr(data-tip);
-	position:absolute;
-	
-	padding:5px 8px;
-	background:#1a1a1a;
-	color:#fff;
-	z-index:9;
-	font-size: 0.75em;
-	height:18px;
-	line-height:18px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	white-space:nowrap;
-	word-wrap:normal;
-}
-[data-tip]:hover:before,
-[data-tip]:hover:after {
-	display:block;
-}
-   </style>
-
-
 
 @section('content')
 
@@ -170,7 +74,7 @@ display: none;
                                  <div class="row">
                                     <div class="col-sm-6 form-group" >
                                         <label class="p-2">Title :</label>
-                                       <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
+                                       <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="">
                                     </div>
                                     <div class="col-sm-6 form-group" >
                                          <label class="p-2">
@@ -498,12 +402,6 @@ CKEDITOR.replace( 'summary-ckeditor', {
 
 
 
-
-
-
-
-
-
         </div>
 
 </div>
@@ -530,64 +428,44 @@ CKEDITOR.replace( 'summary-ckeditor', {
   $('#Next').hide();
   $('#video_details').hide();
 
-  var bar = $('.bar');
-    var percent = $('.percent');
-    var status = $('#status');
- 
 
-    
-  $(document).ready(function(){
 
-    $('#submit').click(function(){
-   
-      // Get the selected file
-      var files = $('#file')[0].files;
 
-      if(files.length > 0){
-         var fd = new FormData();
-
-         // Append data 
-         fd.append('file',files[0]);
-         fd.append('_token',CSRF_TOKEN);
-
-         // Hide alert 
-         $('#responseMsg').hide();
-
-         // AJAX request 
-         $.ajax({
-           url: "{{URL::to('uploadFile')}}",
-           method: 'post',
-           data: fd,
-           contentType: false,
-           processData: false,
-           dataType: 'json',
-           success: function(value){  
-            //  alert(value) 
-					// console.log(value);
-                    console.log(value.video_id);
-           $('#Next').show();
-           $('#video_id').val(value.video_id);
-           
-
-           },
-           error: function(response){
-              console.log("error : " + JSON.stringify(response) );
-           }
-         });
-      }else{
-         alert("Please select a file.");
-      }
-
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone(".dropzone",{ 
+      //   maxFilesize: 900,  // 3 mb
+        maxFilesize: 500,
+        acceptedFiles: "video/mp4,video/x-m4v,video/*",
     });
-  });
-  $('#Next').click(function(){
+    myDropzone.on("sending", function(file, xhr, formData) {
+       formData.append("_token", CSRF_TOKEN);
+      // console.log(value)
+      this.on("success", function(file, value) {
+            console.log(value.video_title);
+            $('#Next').show();
+           $('#video_id').val(value.video_id);
+           $('#title').val(value.video_title);
+
+           
+        });
+
+    }); 
+
+
+
+    $('#Next').click(function(){
   $('#video_upload').hide();
   $('#Next').hide();
   $('#video_details').show();
 
   });
+    </script>
 
-
-
-  </script>
-
+ 
+<style>
+   .file{
+      margin-right: 30%;
+    margin-left: 30%;
+    margin-top: 10%;
+   }
+</style>

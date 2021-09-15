@@ -761,6 +761,7 @@ padding: 20px 20px;
       opacity: 0;
     }
   }
+}
 .h-100 {height: 540px !important;}
 a {color: var(--iq-body-text) !important;}
 li.list-group-item a:hover{color: var(--iq-primary) !important;}
@@ -917,10 +918,7 @@ h3 {font-size: 2px !important;}
 		    font-size: 3.125rem
 	}
 	.bandetails{
-		text-align: center;
-       
-		
-        
+		text-align: center;  
 	}
 
 	.banhead{
@@ -1120,12 +1118,6 @@ h3 {font-size: 2px !important;}
     margin: 0 auto;
     padding: 10px 100px;
 }
-.form-group input{
-    background-color: #fff;
-    color: #00000;
-}
-
-
 .step p{
     color: #000000;
 }
@@ -1159,15 +1151,6 @@ h3 {font-size: 2px !important;}
     font-size: 12px;
 }
 
-
-
-
-
-
-
-
-
-	
 	.inway{
 		background-color: #4895d1;
 		border-color: #4895d1;
@@ -1692,3 +1675,6 @@ padding: 15px;
 }
 .rental-lists li {display: inline-block;float:right; margin-right: 10px;}
 .rental-lists li:first-child {margin-right: 0px;}
+
+/* Register */
+.login-block h1 {font-size: 1.752em; text-align: center; margin-bottom: 30px;}
