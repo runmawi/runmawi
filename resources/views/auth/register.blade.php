@@ -98,16 +98,16 @@
                         </div>
 
 						<div class="form-group row">
-							<div class="col-md-10 col-sm-offset-1">
-							<div class="pull-right sign-up-buttons">
+							<div class="col-md-10 offset-1">
+							<div class="text-center sign-up-buttons">
 							  <button class="btn btn-primary btn-login" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
 							   <a href="/login" class="btn btn-login">Log In</a>
 							</div>
 							</div>
 						</div>
-                        <div class="row">
-                          <div class="d-flex justify-content-center  links">
-                             Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
+                        <div class="form-group row">
+                          <div class="col-md-10 offset-1 text-center">
+                            <p class="text-white"> Already have an account?<a href="/login" class="text-primary ml-2">Sign In</a></p>
                           </div>
                         </div>
                     </form>
