@@ -69,7 +69,7 @@ $settings = App\Setting::find(1);
 
 </style>
     <body>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/assets/img/home/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
 <div class="container  page-height">
     <div class="row justify-content-center">
         <div class="col-md-4 col-sm-offset-4">

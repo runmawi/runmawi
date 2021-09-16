@@ -10,15 +10,6 @@
                   
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
-<!--
-				<a class="login-logo" href="<?php echo URL::to('/');?>">
-                    <?php
-                   // $settings = App\Setting::find(1);
-                    ?>
-                    
-                    <img src="<?php //echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>">
-                </a>
--->
             
                 <div class="panel-heading"><h1>{{ __('Enter your Info below to Sign-Up for an Account!') }}</h1></div>
 

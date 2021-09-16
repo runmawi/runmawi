@@ -41,7 +41,7 @@ $settings = App\Setting::find(1);
         color: #fff; 
     }
 </style>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/assets/img/home/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
 <div class="container  page-height">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-12 align-self-center">
