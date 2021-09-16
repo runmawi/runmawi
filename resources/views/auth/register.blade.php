@@ -101,7 +101,6 @@
 							<div class="col-md-10 offset-1">
 							<div class="text-center sign-up-buttons">
 							  <button class="btn btn-primary btn-login" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
-							   <a href="/login" class="btn btn-login">Log In</a>
 							</div>
 							</div>
 						</div>
