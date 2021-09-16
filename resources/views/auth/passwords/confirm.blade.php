@@ -1,7 +1,10 @@
+<?php
+$settings = App\Setting::find(1);
+?>
 <html>
     <head>
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-
+        <title>Reset Password | <?php echo $settings->website_name ; ?></title>
 <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/bootstrap.min.css'; ?>" />
 <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/noty.css'; ?>" />
 <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/font-awesome.min.css'; ?>" />
@@ -19,7 +22,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="sign-in-page"style="background:url('<?php echo URL::to('/').'/assets/img/home/Landban.png'; ?>') no-repeat;background-size: cover;">
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/assets/img/home/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -1,6 +1,8 @@
- <?php
-   $settings = App\Setting::find(1);
+<?php
+$settings = App\Setting::find(1);
 ?>
+<html>
+<head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +63,9 @@ i.fa.fa-google-plus {
     padding: 10px !important;
 }
 </style>
+    </head>
 
+<body>
  <section class="sign-in-page" style="background: url(../img/<?php echo $settings->login_content; ?>) no-repeat scroll 0 0;">
    <div class="container">
       <div class="row  align-items-center height-self-center">
@@ -171,6 +175,7 @@ i.fa.fa-google-plus {
       </div>
    </div>
 </section>
+</body>
      @include('footer')
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
@@ -190,5 +195,5 @@ i.fa.fa-google-plus {
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
 
-
+</html>
 
