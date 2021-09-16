@@ -114,13 +114,13 @@ input:checked + .slider:before {
                                 <div>ON</div>
                                 <div>
                             <label class="switch">
-  <input type="checkbox">
+							<input type="checkbox" @if(!isset($payment_settings->live_mode) || (isset($payment_settings->live_mode) && $payment_settings->live_mode))checked="checked" value="1"@else value="0"@endif name="live_mode" id="live_mode" />
   <span class="slider round"></span>
 </label></div>
                                 <div>OFF</div>
                                 </div>
 				        	<div class="make-switch" data-on="success" data-off="warning">
-				              <!--  <input type="checkbox" @if(!isset($payment_settings->live_mode) || (isset($payment_settings->live_mode) && $payment_settings->live_mode))checked="checked" value="1"@else value="0"@endif name="live_mode" id="live_mode" />-->
+				               <!-- <input type="checkbox" @if(!isset($payment_settings->live_mode) || (isset($payment_settings->live_mode) && $payment_settings->live_mode))checked="checked" value="1"@else value="0"@endif name="live_mode" id="live_mode" /> -->
                                 	
 				            </div>
 						</div>

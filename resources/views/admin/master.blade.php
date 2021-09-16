@@ -159,7 +159,6 @@ $uppercase =  ucfirst($request_url);
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
-                         <li><a href="{{ URL::to('admin/roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
                      </ul>
                       
                    </li>
