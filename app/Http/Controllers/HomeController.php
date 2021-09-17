@@ -54,6 +54,7 @@ class HomeController extends Controller
     {
         //$this->middleware('auth');
         $settings = Setting::first();
+        $system_settings = SystemSetting::first();
         $this->videos_per_page = $settings->videos_per_page;
     }
 
@@ -62,14 +63,10 @@ class HomeController extends Controller
         $data = Session::all();
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
-            $system_settings = SystemSetting::first();
 
-            return view('auth.login',compact('system_settings'));
-
-            // return View::make('auth.login', $data);
+            return View::make('auth.login');
 
           }else{
-
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
             $settings = Setting::first();
            
