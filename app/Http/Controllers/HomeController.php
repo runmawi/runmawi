@@ -57,13 +57,16 @@ class HomeController extends Controller
         $this->videos_per_page = $settings->videos_per_page;
     }
 
-    public function FirstLanging(){
+public function FirstLanging(){
         // return View::make('first_landing');
         $data = Session::all();
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
+            $system_settings = SystemSetting::first();
 
-            return View::make('auth.login');
+            return view('auth.login',compact('system_settings'));
+
+            // return View::make('auth.login', $data);
 
           }else{
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
