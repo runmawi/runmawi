@@ -1,5 +1,6 @@
 <?php
 $settings = App\Setting::find(1);
+$system_settings = App\SystemSetting::find(1);
 ?>
 <html>
 <head>
