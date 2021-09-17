@@ -5,6 +5,7 @@ use \App\User as User;
 use \Redirect as Redirect;
 //use Request;
 use App\Setting as Setting;
+use App\SystemSetting as SystemSetting;
 use App\Video as Video;
 use App\Slider as Slider;
 use App\PpvVideo as PpvVideo;
@@ -54,7 +55,6 @@ class HomeController extends Controller
     {
         //$this->middleware('auth');
         $settings = Setting::first();
-        $system_settings = SystemSetting::first();
         $this->videos_per_page = $settings->videos_per_page;
     }
 
@@ -63,8 +63,11 @@ class HomeController extends Controller
         $data = Session::all();
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
+            $system_settings = SystemSetting::first();
 
-            return View::make('auth.login');
+            return view('auth.login',compact('system_settings'));
+
+            // return View::make('auth.login', $data);
 
           }else{
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
