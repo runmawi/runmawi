@@ -144,11 +144,10 @@ i.fa.fa-google-plus {
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                                <div>
-                            <p class="links">Login with using:</p>
-                                    </div>
                                <?php if($system_settings->facebook == 1){ ?>
-
+                                <div>
+                                    <p class="links">Login with using:</p>
+                                </div>
                                 <div>
                                      <a href="{{ url('/auth/redirect/facebook') }}" class="" >
                                      <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
