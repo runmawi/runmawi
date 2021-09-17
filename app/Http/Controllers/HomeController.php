@@ -70,7 +70,6 @@ class HomeController extends Controller
 
           }else{
 
-
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
             $settings = Setting::first();
            
