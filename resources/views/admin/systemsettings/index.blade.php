@@ -41,8 +41,12 @@
 	<form method="POST" action="{{ URL::to('admin/system_settings') }}" accept-charset="UTF-8" enctype="multipart/form-data">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-					<h6 class="panel-title">Facebook Login Details </h6> <div class="panel-options"><small style="color: #000;">To Create Facebook <a href="https://developers.facebook.com/docs/development/create-an-app/" target="_blank">Click Here</a>.</small></div></div>
+				<div class="panel panel-primary mt-3" data-collapsed="0"> 
+                    <div class="panel-heading"> 
+					   <h6 class="panel-title">Facebook Login Details </h6> 
+                        <div class="panel-options"><small style="color: #000;">To Create Facebook <a href="https://developers.facebook.com/docs/development/create-an-app/" target="_blank">Click Here</a>.</small></div>
+                        <hr />   
+                    </div>
 					<div class="panel-body" style="display: block;"> 
                         <div class="row">
                            <p class="col-md-6"><label>Enable Facebook:</label></p> 
@@ -75,9 +79,12 @@
 				</div>
             </div>
             <div class="col-md-6 mt-3">
-                <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<h6 class="panel-title">Google Login Details </h6> 
-                    <div class="panel-options"><small style="color: #000;">To Create Google <a href="https://developers.google.com/identity/sign-in/web/sign-in" target="_blank">Click Here</a>.</small></div></div> 
+                <div class="panel panel-primary" data-collapsed="0"> 
+                    <div class="panel-heading"> 
+					    <h6 class="panel-title">Google Login Details </h6> 
+                        <div class="panel-options"><small style="color: #000;">To Create Google <a href="https://developers.google.com/identity/sign-in/web/sign-in" target="_blank">Click Here</a>.</small></div>
+                        <hr />
+                    </div> 
 					<div class="panel-body" style="display: block;"> 
                         <div class="row">
                          <p class="col-md-6"><label>Enable Google:</label></p> 
@@ -117,7 +124,7 @@
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 		<div class="panel-body mt-3" style="display: flex;
     justify-content: flex-end;">
-<input type="submit" value="Update Payment Settings" class="btn btn-primary " />
+<input type="submit" value="Update Settings" class="btn btn-primary " />
             </div>
 	</form>
 
