@@ -1,142 +1,80 @@
-
-
 @extends('admin.master')
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
-
-    <!-- JS -->
-    <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
-@section('content')
-
-<div style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%">
-<form action="{{URL::to('Audiofile')}}" method= "post"  >
-
-<input type="radio" value="audio_upload" id="audio_upload" name="audiofile">Audio Upload
-<input type="radio" value="audiofile"  id="audiofile" name="audiofile">Audio File
-</div>
-</form>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-
-$(document).ready(function(){
-	$('#video_upload').show();
-	$('#audio_file').hide();
-
-$('#audio_upload').click(function(){
-	$('#video_upload').show();
-	$('#audio_file').hide();
-	$("#video_upload").addClass('collapse');
-	$("#audio_file").removeClass('collapse');
-
-})
-$('#audiofile').click(function(){
-	$('#video_upload').hide();
-	$('#audio_file').show();
-	$("#video_upload").removeClass('collapse');
-	$("#audio_file").addClass('collapse');
-
-	// $('#audio_upload').removeClass('checked'); 
-
-
-})
-});
-
-
-
-
-</script>
-<div id="audio_file" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
-
-<div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file'){{ 'style="display:block"' }}@endif>
-	<label for="mp3_url"><label>Mp3 File URL:</label></label>
-	<input type="text" class="form-control" name="mp3_url" id="mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
-</div>
-    </div> 
-
-<div id="video_upload" style="padding-left: 17% ;margin-top: 10%;margin-bottom: 10%">
- 
-
-    <div class='content file'>
-
-		<h4 class="card-title" style="margin-left: 10%;margin-top: -11%">Add Audio</h4>
-	
-      <!-- Dropzone -->
-      <form action="{{URL::to('uploadAudio')}}" style="margin-left: 25%;margin-right: 34%;margin-top: -11%" method= "post" class='dropzone' >
-      </form> 
-    </div> 
-	<div style="margin-left: 80%;">
-<input type="button" id="Next" value='Next' class='btn btn-secondary'>
-</div>
-    </div> 
-
-</div> 
-    </div> 
-	<input type="hidden" id="base_url" value="<?php echo URL::to('/Audiofile');?>">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   
-<script>
-$.ajaxSetup({
-           headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-
-	$(document).ready(function(){
-
-var url =$('#base_url').val();
-$('#mp3_url').change(function(){
-	alert($('#mp3_url').val());
-	$.ajax({
-        url: url,
-        type: "post",
-data: {
-               _token: '{{ csrf_token() }}',
-               mp3: $('#mp3_url').val()
-
-         },        success: function(value){
-			console.log(value);
-            $('#Next').show();
-
-        }
-    });
-})
-
-});
-	// http://localhost/flicknexs/public/uploads/audios/23.mp3
-</script>
-
-
-	<div id="video_details">
-
-<style>
-
-    .p1{
-        font-size: 12px;
-    }
-    .select2-selection__rendered{
-        background-color: #f7f7f7!important;
-        border: none!important;
-    }
-    .select2-container--default .select2-selection--multiple{
-        border: none!important;
-    }
-    #video{
-        background-color: #f7f7f7!important;
-    }
-</style>
 
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
+<style>
+   
+    .p1{
+        font-size: 12px!important;
+    }
+
+	span{
+		color: gray;
+	}
+    .select2-selection__rendered{
+        background-color: #141414!important;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{
+        border:none!important;
+    }
+	.progress { position:relative; width:100%; }
+	.bar { background-color: #008000; width:0%; height:20px; }
+	.percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
+	[data-tip] {
+		position:relative;
+
+	}
+	.subtitle1{
+		display: flex;
+		justify-content: space-between;
+		width: 50%;
+	}
+	[data-tip]:before {
+		content:'';
+		/* hides the tooltip when not hovered */
+		display:none;
+		content:'';
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid #1a1a1a;	
+		position:absolute;
+
+		z-index:8;
+		font-size:0;
+		line-height:0;
+		width:0;
+		height:0;
+	}
+	[data-tip]:after {
+		display:none;
+		content:attr(data-tip);
+		position:absolute;
+
+		padding:5px 8px;
+		background:#1a1a1a;
+		color:#fff;
+		z-index:9;
+		font-size: 0.75em;
+		height:18px;
+		line-height:18px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		white-space:nowrap;
+		word-wrap:normal;
+	}
+	[data-tip]:hover:before,
+	[data-tip]:hover:after {
+		display:block;
+	}
+	.select2{
+		visibility: visible !important;
+	}
+</style>
+
+@section('content')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -203,7 +141,7 @@ data: {
 								</div> 
 							</div>
 
-							<!-- <div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
+							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									<label for="type" class="mt-2" style="float:left; margin-right:10px; padding-top:1px;">Audio Format</label>
@@ -229,7 +167,7 @@ data: {
 										</audio>
 										@endif
 									</div> 
-								</div> -->
+								</div>
 
 
 								<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
@@ -392,7 +330,6 @@ data: {
 
 								 <div class="mt-2 p-2"  style="display: flex;
     justify-content: flex-end;">
-	<input type="hidden" id="audio_id" name="audio_id" value="">
                                     
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 								<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
@@ -407,11 +344,8 @@ data: {
 			</div>
 		</div>
 	</div>
-	
-				
-	<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
 	<script type="text/javascript">
 
@@ -447,67 +381,7 @@ data: {
 		});
 $('#duration').mask('00:00:00');
 	</script>
-
-
-
-
-  <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
-	
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
-    <script>
-    CKEDITOR.replace( 'summary-ckeditor', {
-        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
-    </script>
-
-
-
- 
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript">
-  var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-
-  $('#Next').hide();
-  $('#video_details').hide();
-
-
-
-
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone(".dropzone",{ 
-      //   maxFilesize: 900,  // 3 mb
-        maxFilesize: 500,
-        acceptedFiles: "image/*,audio/*",
-    });
-    myDropzone.on("sending", function(file, xhr, formData) {
-       formData.append("_token", CSRF_TOKEN);
-    //   console.log(value)
-      this.on("success", function(file, value) {
-            console.log(value.title);
-            $('#Next').show();
-           $('#audio_id').val(value.audio_id);
-           $('#title').val(value.title);
-
-           
-        });
-
-    }); 
-
-
-
-    $('#Next').click(function(){
-  $('#video_upload').hide();
-  $('#Next').hide();
-  $('#video_details').show();
-
-  });
-    </script>
-
-@section('javascript')
+	@section('javascript')
 	@stop
 
 	@stop
