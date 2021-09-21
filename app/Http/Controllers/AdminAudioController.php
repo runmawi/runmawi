@@ -526,7 +526,7 @@ class AdminAudioController extends Controller
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours  3600 + $minutes  60 + $seconds;
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
         $path = public_path().'/uploads/audios/';
