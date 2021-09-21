@@ -566,6 +566,17 @@ if(!empty($artistsdata)){
             }  else {
                 $data['language'] = $data['language'];
             } 
+            
+            if(empty($data['age_restrict'])){
+                $data['age_restrict'] = 0;
+            }  else {
+   // print_r($data['age_restrict']);
+            // exit();
+                $data['age_restrict'] = $data['age_restrict'];
+            } 
+         
+            // $data['age_restrict'] =  $data['age_restrict'];
+
         
     
 //        if(empty($data['featured'])){
@@ -651,7 +662,7 @@ if(!empty($artistsdata)){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $time_seconds = $hours  3600 + $minutes  60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
 
@@ -698,6 +709,7 @@ if(!empty($artistsdata)){
 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->age_restrict=$data['age_restrict'];
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
@@ -1061,5 +1073,61 @@ if(!empty($artistsdata)){
     
             return Redirect::back();
         }
+    public function Mp4url(Request $request)
+    {
+        $data = $request->all();
+        $value = array();
+        
+        if(!empty($data['mp4_url'])) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->mp4_url = $data['mp4_url'];
+            $video->draft = 0;
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return $value;  
+       }
+   
+
+    }
+    public function Embededcode(Request $request)
+    {
+        $data = $request->all();
+        $value = array();
+
+        // echo "<pre>";
+        // print_r($data);
+        // exit();
+        
+        if(!empty($data['embed'])) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->embed_code = $data['embed'];
+            $video->draft = 0;
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return $value;  
+       }
+   
+
+    }
     
 }

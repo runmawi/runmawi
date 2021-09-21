@@ -130,7 +130,17 @@
 						                  @endforeach
                               </select>
                               </div>   
-                                     
+                              <div class="col-sm-6 form-group">
+                                         <label><h5>Age Restrict :</h5></label>
+                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
+                                             <!-- <option>--Video Type--</option> -->
+                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
+                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
+                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
+                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
+                                          
+                                          </select>
+                                      </div>
                                  <div class="col-sm-12 form-group">
                                      
                                       <label>Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
@@ -189,14 +199,14 @@
                                     </div>
                                     </div>
                                     <br>
-                                  <div class="col-sm-6 form-group">
-                                  @if(!empty($video->path) && $video->path != '')
+                             <div class="col-sm-6 form-group">
+                                   <!--     @if(!empty($video->path) && $video->path != '')
                               <video width="200" height="200" controls>
-                              <source src="{{ URL::to('/storage/app/public/'.$video->path) }}" type="video/mp4">
+                              <source src="{{ URL::to('/storage/app/public/'.$video->path) }}" type="video/mp4"> -->
                                     <!-- <source src="{{ $video->path }}" type="video/mp4"> -->
-                              </video>
-                              @endif
-                                         <label><h5>Video Type :</h5></label>
+                              <!-- </video>
+                              @endif -->
+                                         <!-- <label><h5>Video Type :</h5></label>
                                           <select id="type" name="type" class="form-control" required>
                                              <option>--Video Type--</option>
                                              <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
@@ -214,13 +224,13 @@
                                  <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')@else  @endif>
                                     <label for="embed_code">Embed Code:</label>
                                     <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
-                                 </div>
+                                 </div> -->
 
-                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else  @endif>
+                                 <!-- <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else  @endif>
                                   
                                     <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
                                     <p>Upload video</p>
-                                 </div>
+                                 </div> -->
                                     
                                  </div>
                               </div>      

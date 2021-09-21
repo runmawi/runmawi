@@ -10,22 +10,165 @@
 
     <!-- JS -->
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+@section('content')
+<div id="optionradio"  style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%">
+<form action="{{URL::to('Audiofile')}}" method= "post"  >
 
-<div id="video_upload" style="margin-left: 31%;margin-top: 10%;">
+<input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile">Video Upload &nbsp;&nbsp;&nbsp;
+<input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile">Video mp4 &nbsp;&nbsp;&nbsp;
+<input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile">Embed Code
+</div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+   
+$(document).ready(function(){
+	$('#video_upload').show();
+	$('#video_mp4').hide();
+	$('#embedvideo').hide();
+
+
+$('#videoupload').click(function(){
+	$('#video_upload').show();
+	$('#video_mp4').hide();
+	$('#embedvideo').hide();
+	$("#video_upload").addClass('collapse');
+	$("#video_mp4").removeClass('collapse');
+	$("#embed_video").removeClass('collapse');
+
+
+})
+$('#videomp4').click(function(){
+	$('#video_upload').hide();
+	$('#video_mp4').show();
+	$('#embedvideo').hide();
+	$("#video_upload").removeClass('collapse');
+	$("#video_mp4").addClass('collapse');
+	$("#embed_video").removeClass('collapse');
+
+})
+$('#embed_video').click(function(){
+	$('#video_upload').hide();
+	$('#video_mp4').hide();
+	$('#embedvideo').show();
+	$("#video_upload").removeClass('collapse');
+	$("#video_mp4").removeClass('collapse');
+	$("#embed_video").addClass('collapse');
+
+})
+});
+
+
+
+
+</script>
+<div id="embedvideo" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
+
+<div class="new-audio-file mt-3">
+	<label for="embed_code"><label>Embed URL:</label></label>
+	<input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+</div>
+    </div> 
+
+<div id="video_mp4" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
+
+<div class="new-audio-file mt-3" >
+	<label for="mp4_url"><label>Mp4 File URL:</label></label>
+	<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+</div>
+    </div> 
+
+<div id="video_upload" style="padding-left: 17% ;margin-top: -15%;margin-bottom: 20%">
  
 
     <div class='content file'>
+<h4 class="card-title">Add Video</h4>
+
       <!-- Dropzone -->
       <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' >
       </form> 
     </div> 
     </div> 
+   
+
 
 
     <div style="margin-left: 80%;">
 <input type="button" id="Next" value='Next' class='btn btn-secondary'>
 </div>
+</div> 
+    </div> 
+    <input type="hidden" id="embed_url" value="<?php echo URL::to('/embededcode');?>">
+    <input type="hidden" id="mp4url" value="<?php echo URL::to('/mp4url');?>">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+<script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+var url =$('#mp4url').val();
+$('#mp4_url').change(function(){
+	alert($('#mp4_url').val());
+	$.ajax({
+        url: url,
+        type: "post",
+data: {
+               _token: '{{ csrf_token() }}',
+               mp4_url: $('#mp4_url').val()
+
+         },        success: function(value){
+			console.log(value);
+            $('#Next').show();
+           $('#video_id').val(value.video_id);
+
+        }
+    });
+})
+
+});
+	
+</script>
+
+
+<script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+var url =$('#embed_url').val();
+$('#embed_code').change(function(){
+	alert($('#embed_code').val());
+	$.ajax({
+        url: url,
+        type: "post",
+data: {
+               _token: '{{ csrf_token() }}',
+               embed: $('#embed_code').val()
+
+         },        success: function(value){
+			console.log(value);
+            $('#Next').show();
+           $('#video_id').val(value.video_id);
+
+        }
+    });
+})
+
+});
+	// http://localhost/flicknexs/public/uploads/audios/23.mp3
+</script>
 
 
 <div id="video_details">
@@ -156,14 +299,21 @@
                             
                            </div>
                             <div>
-                                <h5>Video Upload</h5>
+                                <h5>Video Trailer</h5>
                             </div>
                             <div class="row ">
                              <div class="col-sm-8 form-group">
                              
                                  <label class="p-2">Upload Trailer :</label><br>
-                                 <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                 <span id="remove" class="danger">Remove</span>
+                                 <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
+                                   
+                                   <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer">
+                                      <p style="font-size: 14px!important;">Drop and drag the video file</p>
+                                      </div>
+                                      <span id="remove" class="danger">Remove</span>
+                                      </div>
+                                 <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                 <span id="remove" class="danger">Remove</span> -->
                              </div>
                             <div class="col-sm-8 form-group">
                                        <!--<p>Upload Trailer video</p>-->
@@ -174,9 +324,9 @@
                               @endif
                                 </div>
                          </div>
-                                <!-- <div class="row mt-5">
+                                <div class="row mt-5">
                                   <div class="col-sm-6 form-group">
-                                         <label><h5>Video Type :</h5></label>
+                                         <!-- <label><h5>Video Type :</h5></label>
                                           <select id="type" name="type" class="form-control" required>
                                              <option>--Video Type--</option>
                                              <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
@@ -188,14 +338,14 @@
                                     </video>
                                  @endif
 
-                                      </div> -->
-                                
+                                      </div>
+                                 -->
                                   
-                                 <div class="d-block position-relative" style="left:80px;top:-50px;">
+                                 <!-- <div class="d-block position-relative" style="left:80px;top:-50px;">
                                  <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')@else  @endif>
                                     <label for="embed_code">Embed Code:</label>
                                     <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
-                                 </div>
+                                 </div> -->
 
                                  <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                   
@@ -434,7 +584,7 @@ CKEDITOR.replace( 'summary-ckeditor', {
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
-        maxFilesize: 100000,
+        maxFilesize: 500,
         acceptedFiles: "video/mp4,video/x-m4v,video/*",
     });
     myDropzone.on("sending", function(file, xhr, formData) {
@@ -455,6 +605,11 @@ CKEDITOR.replace( 'summary-ckeditor', {
 
     $('#Next').click(function(){
   $('#video_upload').hide();
+  $('#video_mp4').hide();
+  $('#embedvideo').hide();
+  $('#optionradio').hide();
+
+
   $('#Next').hide();
   $('#video_details').show();
 

@@ -359,6 +359,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/artists/edit/{id}', 'AdminArtistsController@edit');
     Route::post('/artists/update', 'AdminArtistsController@update');
     Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
+    Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'AdminAudioController@audioupdate'));
 
 //Admin Audio Albums
         Route::get('/audios/albums', 'AdminAudioCategoriesController@albumIndex');
@@ -374,6 +375,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/series/edit/{id}', 'AdminSeriesController@edit');
     Route::post('/series/update', 'AdminSeriesController@update');
     Route::get('/series/delete/{id}', 'AdminSeriesController@destroy');
+    
 
 //Admin Series Season Manage
     Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
@@ -395,7 +397,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
 });
 
-
+Route::post('/embededcode',  'AdminVideosController@Embededcode');
+Route::post('/mp4url',  'AdminVideosController@Mp4url');
+Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');
+Route::post('/Audiofile',  'AdminAudioController@Audiofile');
 Route::post('/uploadFile',  'AdminVideosController@uploadFile');
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::get('/blocked', 'HomeController@Restrict');

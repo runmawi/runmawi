@@ -24,6 +24,7 @@ class HomeSettingsController extends Controller
     }
     public function save_settings(Request $request){
         
+        
         $settings = HomeSetting::first();
         if(!empty($request['featured_videos'])){
             $settings->featured_videos = 1;

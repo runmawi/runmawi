@@ -15,7 +15,7 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 
-<div style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%">
+<div style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%" id="optionradio">
 <form action="{{URL::to('Audiofile')}}" method= "post"  >
 
 <input type="radio" value="audio_upload" id="audio_upload" name="audiofile">Audio Upload
@@ -501,6 +501,8 @@ $('#duration').mask('00:00:00');
 
     $('#Next').click(function(){
   $('#video_upload').hide();
+  $('#optionradio').hide();
+  $('#audio_file').hide();
   $('#Next').hide();
   $('#video_details').show();
 

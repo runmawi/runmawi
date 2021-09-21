@@ -54,8 +54,15 @@
                                         
                                      <div class="make-switch" data-on="success" data-off="warning">
                                        
-                                            <input type="checkbox" id="checkbox" class="theme_color" name="featured_videos"   value="{{ $settings->featured_videos}}" @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif /></div>
-                                    </div>
+                                <div>ON</div>
+                                <div>
+                                   <label class="switch">
+                                <input name="featured_videos" type="checkbox"  @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div>OFF</div>
+                                </div>
+                                        </div>
                                         
                                 </div>
                             </div>    
@@ -67,8 +74,16 @@
                                     <div>
                                       <div class="input-group color-picker">
                                         <div class="make-switch" data-on="success" data-off="warning">
-                                            <input type="checkbox" @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos"/></div>
+                                            <div>ON</div>
+                                <div>
+                                   <label class="switch">
+                                <input type="checkbox"  @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos">
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div>OFF</div>
+                                </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div> 
@@ -77,8 +92,15 @@
                                 <div class="input-group color-picker d-flex align-items-center justify-content-around">
                                     <label class="mt-1"> Category Video </label>
                                        <div class="make-switch" data-on="success" data-off="warning">
-                                            <input type="checkbox" id="checkbox" class="theme_color" name="category_videos"   value="{{ $settings->category_videos}}" @if ($settings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif />
+                                            <div>ON</div>
+                                <div>
+                                   <label class="switch">
+                                <input  type="checkbox"  name="category_videos"   @if ($settings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div>OFF</div>
                                 </div>
+                                        </div>
                             </div>
                         </div>
                 </div> 
