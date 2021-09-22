@@ -1,5 +1,3 @@
-
-
 @extends('admin.master')
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
@@ -11,14 +9,78 @@
     <!-- JS -->
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
-<div id="optionradio"  style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%">
-<form action="{{URL::to('Audiofile')}}" method= "post"  >
+<style>
+    #optionradio {color: #000;}
+    #video_upload {margin-top; 5%;}
+   .file {
+        padding: 30;
+        background: rgba(56, 87, 127, 0.34);
+        border-radius: 10px;
+        text-align: center;
+        margin: 0 auto;
+        width: 75%;
+    }
+    #video_upload .file form{border: 2px dashed;}
+    #video_upload .file form i {display: block; font-size: 50px;}
+</style>
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+        <div class="admin-section-title">
+            <div class="iq-card">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><i class="entypo-archive"></i> Add Video </h4>
+                    </div>
+                    <div class="col-md-8" align="right">
+                        <div id="optionradio"  >
+                            <form action="{{URL::to('Audiofile')}}" method= "post"  >
+                                <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Embedded Video -->        
+                            <div id="embedvideo" style="">
+                                <div class="new-audio-file mt-3">
+                                    <label for="embed_code"><label>Embed URL:</label></label>
+                                    <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+                                </div>
+                            </div> 
 
-<input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile">Video Upload &nbsp;&nbsp;&nbsp;
-<input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile">Video mp4 &nbsp;&nbsp;&nbsp;
-<input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile">Embed Code
-</div>
-</form>
+                            <!-- MP4 Video -->        
+                            <div id="video_mp4" style="">
+                                <div class="new-audio-file mt-3" >
+                                    <label for="mp4_url"><label>Mp4 File URL:</label></label>
+                                    <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                                </div>
+                            </div> 
+
+                            <!-- Video upload -->        
+                            <div id="video_upload" style="">
+                                <div class='content file'>
+                                    <h4 class="card-title">Upload Video</h4>
+                                    <!-- Dropzone -->
+                                    <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
+                                </div> 
+                            </div> 
+   
+                            <div class="text-center" style="margin-top: 30px;">
+                                <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
+                            </div>
+                            <input type="hidden" id="embed_url" value="<?php echo URL::to('/embededcode');?>">
+                            <input type="hidden" id="mp4url" value="<?php echo URL::to('/mp4url');?>">
+                        </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
    
@@ -53,7 +115,7 @@ $('#embed_video').click(function(){
 	$('#embedvideo').show();
 	$("#video_upload").removeClass('collapse');
 	$("#video_mp4").removeClass('collapse');
-	$("#embed_video").addClass('collapse');
+	$("#embed_video").removeClass('collapse');
 
 })
 });
@@ -62,80 +124,40 @@ $('#embed_video').click(function(){
 
 
 </script>
-<div id="embedvideo" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
-
-<div class="new-audio-file mt-3">
-	<label for="embed_code"><label>Embed URL:</label></label>
-	<input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+    </div>
 </div>
-    </div> 
-
-<div id="video_mp4" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
-
-<div class="new-audio-file mt-3" >
-	<label for="mp4_url"><label>Mp4 File URL:</label></label>
-	<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
-</div>
-    </div> 
-
-<div id="video_upload" style="padding-left: 17% ;margin-top: -15%;margin-bottom: 20%">
- 
-
-    <div class='content file'>
-<h4 class="card-title">Add Video</h4>
-
-      <!-- Dropzone -->
-      <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' >
-      </form> 
-    </div> 
-    </div> 
-   
-
-
-
-    <div style="margin-left: 80%;">
-<input type="button" id="Next" value='Next' class='btn btn-secondary'>
-</div>
-</div> 
-    </div> 
-    <input type="hidden" id="embed_url" value="<?php echo URL::to('/embededcode');?>">
-    <input type="hidden" id="mp4url" value="<?php echo URL::to('/mp4url');?>">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    
 <script>
 $.ajaxSetup({
-           headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
+   headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 
-	$(document).ready(function(){
-
-var url =$('#mp4url').val();
-$('#mp4_url').change(function(){
-	alert($('#mp4_url').val());
-	$.ajax({
+$(document).ready(function(){
+    var url =$('#mp4url').val();
+    $('#mp4_url').change(function(){
+    alert($('#mp4_url').val());
+    $.ajax({
         url: url,
         type: "post",
-data: {
+    data: {
                _token: '{{ csrf_token() }}',
                mp4_url: $('#mp4_url').val()
 
          },        success: function(value){
-			console.log(value);
+            console.log(value);
             $('#Next').show();
            $('#video_id').val(value.video_id);
 
         }
-    });
-})
+        });
+    })
 
 });
-	
 </script>
-
 
 <script>
 $.ajaxSetup({
@@ -277,7 +299,7 @@ data: {
                                      
                                  <div class="col-sm-12 form-group">
                                      
-                                      <label>Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                                      <label>Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                      <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" >
                                   
                                      @if(!empty($video->image))
@@ -555,6 +577,7 @@ CKEDITOR.replace( 'summary-ckeditor', {
         </div>
 
 </div>
+
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 	
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
@@ -615,12 +638,3 @@ CKEDITOR.replace( 'summary-ckeditor', {
 
   });
     </script>
-
- 
-<style>
-   .file{
-      margin-right: 30%;
-    margin-left: 30%;
-    margin-top: 10%;
-   }
-</style>

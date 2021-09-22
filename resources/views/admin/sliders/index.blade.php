@@ -47,7 +47,7 @@
 				      
 
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
-                        <label>Image:</label>
+                        <label>Selece the Slider Image (1280x720 px or 16:9 ratio):</label>
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />
                     </div> 
                         
@@ -99,7 +99,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					<p class="p1">Organize the Categories below: </p>
+					<p class="p1">Organize the sliders below: </p>
 				</div>
 				
 				<div class="panel-options">
@@ -147,7 +147,6 @@
     </div></div>
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 </div>
-
 	@section('javascript')
 
 
