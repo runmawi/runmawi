@@ -1,11 +1,7 @@
 @extends('admin.master')
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
 
@@ -14,7 +10,7 @@
 @section('content')
 <style>
     #optionradio {color: #000;}
-    #video_upload {margin-top; 5%;}
+    #video_upload {margin-top: 5%;}
    .file {
         padding: 30;
         background: rgba(56, 87, 127, 0.34);
@@ -32,14 +28,14 @@
             <div class="iq-card">
                 <div class="row">
                     <div class="col-md-4">
-                        <h4><i class="entypo-archive"></i> Add Video </h4>
+                        <h4><i class="entypo-archive"></i> Add Audio </h4>
                     </div>
                     <div class="col-md-8" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
                                 <form action="{{URL::to('Audiofile')}}" method= "post"  >
 
-                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
+                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
                                 <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
 
                                 </form>
@@ -58,15 +54,15 @@
                                 </div>
                             </div>
 
-                            <!-- Video upload -->        
+                            <!-- Audio upload -->        
                             <div id="video_upload" style="">
                                 <div class='content file'>
-                                    <h4 class="card-title" style="margin-left: 10%;margin-top: -11%">Upload Audio</h4>
+                                    <h4 class="card-title">Upload Audio</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('uploadAudio')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
                                 <div>
-                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>
+<!--                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>-->
                                 </div>
                             </div> 
    
@@ -547,6 +543,6 @@ $('#duration').mask('00:00:00');
     </script>
 
 @section('javascript')
-	@stop
+        @stop
 
-	@stop
+@stop

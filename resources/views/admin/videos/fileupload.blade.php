@@ -11,7 +11,7 @@
 @section('content')
 <style>
     #optionradio {color: #000;}
-    #video_upload {margin-top; 5%;}
+    #video_upload {margin-top: 5%;}
    .file {
         padding: 30;
         background: rgba(56, 87, 127, 0.34);
