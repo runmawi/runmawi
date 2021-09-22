@@ -1,5 +1,3 @@
-
-
 @extends('admin.master')
 
 
@@ -14,14 +12,84 @@
     <!-- JS -->
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
+<style>
+    #optionradio {color: #000;}
+    #video_upload {margin-top; 5%;}
+   .file {
+        padding: 30;
+        background: rgba(56, 87, 127, 0.34);
+        border-radius: 10px;
+        text-align: center;
+        margin: 0 auto;
+        width: 75%;
+    }
+    #video_upload .file form{border: 2px dashed;}
+    #video_upload .file form i {display: block; font-size: 50px;}
+</style>
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+        <div class="admin-section-title">
+            <div class="iq-card">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><i class="entypo-archive"></i> Add Video </h4>
+                    </div>
+                    <div class="col-md-8" align="right">
+                        <div id="optionradio"  >
+                            <div style="" id="optionradio">
+                                <form action="{{URL::to('Audiofile')}}" method= "post"  >
 
-<div style="padding-left: 24% ;margin-top: 10%;margin-bottom: 20%" id="optionradio">
-<form action="{{URL::to('Audiofile')}}" method= "post"  >
+                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
+                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
 
-<input type="radio" value="audio_upload" id="audio_upload" name="audiofile">Audio Upload
-<input type="radio" value="audiofile"  id="audiofile" name="audiofile">Audio File
-</div>
-</form>
+                                </form>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!-- MP3 Audio -->        
+                            <div id="audio_file" style="">
+                                <div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file'){{ 'style="display:block"' }}@endif>
+                                    <label for="mp3_url"><label>Mp3 File URL:</label></label>
+                                    <input type="text" class="form-control" name="mp3_url" id="mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
+                                </div>
+                            </div>
+
+                            <!-- Video upload -->        
+                            <div id="video_upload" style="">
+                                <div class='content file'>
+                                    <h4 class="card-title">Upload Audio</h4>
+                                    <!-- Dropzone -->
+                                    <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
+                                </div> 
+                            </div> 
+                            <div id="video_upload" style="">
+                                <div class='content file'>
+                                    <h4 class="card-title" style="margin-left: 10%;margin-top: -11%">Upload Audio</h4>
+                                    <!-- Dropzone -->
+                                    <form action="{{URL::to('uploadAudio')}}" method= "post" class='dropzone' ></form> 
+                                </div> 
+                                <div style="margin-left: 80%;">
+                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>
+                                </div>
+                            </div> 
+   
+                            <div class="text-center" style="margin-top: 30px;">
+                                <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
+                            </div>
+                            <input type="hidden" id="base_url" value="<?php echo URL::to('/Audiofile');?>">
+                        </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
@@ -52,34 +120,10 @@ $('#audiofile').click(function(){
 
 
 </script>
-<div id="audio_file" style="padding-left: 25%;margin-top: -13%;margin-right: 20%;margin-bottom: 10%">
-
-<div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file'){{ 'style="display:block"' }}@endif>
-	<label for="mp3_url"><label>Mp3 File URL:</label></label>
-	<input type="text" class="form-control" name="mp3_url" id="mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
-</div>
-    </div> 
-
-<div id="video_upload" style="padding-left: 17% ;margin-top: 10%;margin-bottom: 10%">
  
-
-    <div class='content file'>
-
-		<h4 class="card-title" style="margin-left: 10%;margin-top: -11%">Add Audio</h4>
-	
-      <!-- Dropzone -->
-      <form action="{{URL::to('uploadAudio')}}" style="margin-left: 25%;margin-right: 34%;margin-top: -11%" method= "post" class='dropzone' >
-      </form> 
     </div> 
-	<div style="margin-left: 80%;">
-<input type="button" id="Next" value='Next' class='btn btn-secondary'>
-</div>
-    </div> 
-
 </div> 
-    </div> 
-	<input type="hidden" id="base_url" value="<?php echo URL::to('/Audiofile');?>">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    
 <script>
 $.ajaxSetup({
