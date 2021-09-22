@@ -61,18 +61,11 @@
                             <!-- Video upload -->        
                             <div id="video_upload" style="">
                                 <div class='content file'>
-                                    <h4 class="card-title">Upload Audio</h4>
-                                    <!-- Dropzone -->
-                                    <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
-                                </div> 
-                            </div> 
-                            <div id="video_upload" style="">
-                                <div class='content file'>
                                     <h4 class="card-title" style="margin-left: 10%;margin-top: -11%">Upload Audio</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('uploadAudio')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
-                                <div style="margin-left: 80%;">
+                                <div>
                                     <input type="button" id="Next" value='Next' class='btn btn-secondary'>
                                 </div>
                             </div> 
