@@ -126,7 +126,7 @@ overflow-hidden {
                             <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">
-                              <a href="<?php echo URL::to('home') ?>">
+                              <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
