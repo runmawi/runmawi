@@ -18,7 +18,7 @@ class AdminVideoCategoriesController extends Controller
       
       public function index(){
           
-        $allCategories = VideoCategory::where('parent_id', '=', 0)->orderBy('order','ASC')->get();
+        $allCategories = VideoCategory::All();
           
           $data = array (
             'allCategories'=>$allCategories

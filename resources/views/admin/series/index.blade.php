@@ -60,7 +60,7 @@
 						<a href="{{ URL::to('play_series') . '/' . $series_value->id }}" class="iq-bg-warning" ><i class="lar la-eye"></i> <!--Visit Site--></a>
 						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><i class="ri-pencil-line"></i> <!--Edit--></a>
 						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><i
-                                                class="ri-delete-bin-line"></i> <!--Delete--></a>
+						onclick="return confirm('Are you sure?')" class="ri-delete-bin-line"></i> <!--Delete--></a>
 					</div>
 				</td>
 			</tr>
