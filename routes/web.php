@@ -390,6 +390,18 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
     
+// Age Restrict    
+    Route::post('/age/store', 'AdminAgeController@store');
+    Route::get('/age/edit/{id}', 'AdminAgeController@edit');
+    Route::post('/age/update', 'AdminAgeController@update');
+    Route::get('/age/delete/{id}', 'AdminAgeController@destroy');
+    Route::get('/restrict', 'HomeController@Restrict');
+    Route::post('/age/destory/{id}', 'AdminAgeController@delete');
+    Route::get('/videos/delete_age_edit/{id}', 'AdminAgeController@editvideo');
+    Route::post('/videos/updatevideo/', 'AdminAgeController@updatevideo');
+
+    
+    
      /*  Email Setting  */
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
@@ -397,6 +409,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
 });
 
+Route::post('/m3u8url',  'AdminVideosController@m3u8url');
 Route::post('/embededcode',  'AdminVideosController@Embededcode');
 Route::post('/mp4url',  'AdminVideosController@Mp4url');
 Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');

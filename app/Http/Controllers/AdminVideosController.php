@@ -35,6 +35,7 @@ use Illuminate\Support\Str;
 use App\Artist;
 use App\Videoartist;
 use GifCreator\GifCreator;
+use App\AgeCategory as AgeCategory;
 
 
 class AdminVideosController extends Controller
@@ -160,6 +161,7 @@ class AdminVideosController extends Controller
             'languages' => Language::all(),
             'subtitles' => Subtitle::all(),
             'artists' => Artist::all(),
+            'age_categories' => AgeCategory::all(),
             'video_artist' => [],
             );
         return View::make('admin.videos.fileupload', $data);
@@ -501,6 +503,7 @@ if(!empty($artistsdata)){
             'subtitles' => Subtitle::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
+            'age_categories' => AgeCategory::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             );
 
@@ -1083,7 +1086,35 @@ if(!empty($artistsdata)){
             $video = new Video();
             $video->disk = 'public';
             $video->original_name = 'public';
+            $video->title = $data['mp4_url'];
             $video->mp4_url = $data['mp4_url'];
+            $video->draft = 0;
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return $value;  
+       }
+   
+
+    }
+    public function m3u8url(Request $request)
+    {
+        $data = $request->all();
+        $value = array();
+        
+        if(!empty($data['m3u8_url'])) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->title = $data['m3u8_url'];
+            $video->m3u8_url = $data['m3u8_url'];
             $video->draft = 0;
             $video->user_id = Auth::user()->id;
             $video->save();
@@ -1113,6 +1144,7 @@ if(!empty($artistsdata)){
             $video = new Video();
             $video->disk = 'public';
             $video->original_name = 'public';
+            $video->title = $data['embed'];
             $video->embed_code = $data['embed'];
             $video->draft = 0;
             $video->user_id = Auth::user()->id;

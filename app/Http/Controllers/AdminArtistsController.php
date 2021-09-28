@@ -12,12 +12,19 @@ use Intervention\Image\Facades\Image;
 use View;
 use Validator;
 use App\Artist as Artist;
+use DB;
 
 
 class AdminArtistsController extends Controller
 {
     public function index(Request $request)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
 
       $search_value = $request->get('s');
         
@@ -36,10 +43,21 @@ class AdminArtistsController extends Controller
             );
 
         return View::make('admin.artist.index', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     public function create()
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Artist',
             'post_route' => URL::to('admin/artists/store'),
@@ -47,10 +65,21 @@ class AdminArtistsController extends Controller
             'admin_user' => Auth::user(),
             );
         return View::make('admin.artist.create_edit', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
      public function store(Request $request)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
     	$data = $request->all();
 
         $image_path = public_path().'/uploads/artists/';
@@ -76,11 +105,21 @@ class AdminArtistsController extends Controller
         $artist_id = $artist->id;
 
         return Redirect::to('admin/artists')->with(array('note' => 'New Artist Successfully Added!', 'note_type' => 'success') );
-    
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     public function edit($id)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $artist = Artist::find($id);
 
         $data = array(
@@ -92,10 +131,21 @@ class AdminArtistsController extends Controller
             );
 
         return View::make('admin.artist.create_edit', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     public function update(Request $request)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $data = $request->all();
         $id = $request->id;
         $artist = Artist::findOrFail($id);
@@ -121,10 +171,21 @@ class AdminArtistsController extends Controller
         $artist->update($data);
 
         return Redirect::to('admin/artists/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Artist!', 'note_type' => 'success') );
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+ }
 
     public function destroy($id)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $artist = Artist::find($id);
 
         $this->deleteArtistImages($artist);
@@ -132,7 +193,12 @@ class AdminArtistsController extends Controller
         Artist::destroy($id);
 
         return Redirect::to('admin/artists')->with(array('note' => 'Successfully Deleted Artist', 'note_type' => 'success') );
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+}
 
     private function deleteArtistImages($artist){
         $ext = pathinfo($artist->image, PATHINFO_EXTENSION);

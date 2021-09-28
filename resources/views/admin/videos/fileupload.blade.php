@@ -35,14 +35,22 @@
                         <div id="optionradio"  >
                             <form action="{{URL::to('Audiofile')}}" method= "post"  >
                                 <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile">m3u8 Url &nbsp;&nbsp;&nbsp;
                                 <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code
+                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code 
                             </form>
                         </div>
                     </div>
                 </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <!-- M3u8 Video --> 
+                            <div id="m3u8_url" style="">
+                                <div class="new-audio-file mt-3">
+                                    <label for="embed_code"><label>m3u8 URL:</label></label>
+                                    <input type="text" class="form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
+                                </div>
+                            </div> 
                             <!-- Embedded Video -->        
                             <div id="embedvideo" style="">
                                 <div class="new-audio-file mt-3">
@@ -73,6 +81,7 @@
                             </div>
                             <input type="hidden" id="embed_url" value="<?php echo URL::to('/embededcode');?>">
                             <input type="hidden" id="mp4url" value="<?php echo URL::to('/mp4url');?>">
+                            <input type="hidden" id="m3u8url" value="<?php echo URL::to('/m3u8url');?>">
                         </div>
                     <hr />
                 </div>
@@ -88,15 +97,20 @@ $(document).ready(function(){
 	$('#video_upload').show();
 	$('#video_mp4').hide();
 	$('#embedvideo').hide();
+	$('#m3u8_url').hide();
+
 
 
 $('#videoupload').click(function(){
 	$('#video_upload').show();
 	$('#video_mp4').hide();
 	$('#embedvideo').hide();
+	$('#m3u8_url').hide();
+
 	$("#video_upload").addClass('collapse');
 	$("#video_mp4").removeClass('collapse');
 	$("#embed_video").removeClass('collapse');
+	$("#m3u8").removeClass('m3u8');
 
 
 })
@@ -104,18 +118,38 @@ $('#videomp4').click(function(){
 	$('#video_upload').hide();
 	$('#video_mp4').show();
 	$('#embedvideo').hide();
+	$('#m3u8_url').hide();
+
 	$("#video_upload").removeClass('collapse');
 	$("#video_mp4").addClass('collapse');
 	$("#embed_video").removeClass('collapse');
+	$("#m3u8").removeClass('m3u8');
+
 
 })
 $('#embed_video').click(function(){
 	$('#video_upload').hide();
 	$('#video_mp4').hide();
 	$('#embedvideo').show();
+	$('#m3u8_url').hide();
+
+	$("#video_upload").removeClass('collapse');
+	$("#video_mp4").removeClass('collapse');
+	$("#embed_video").addClass('collapse');
+	$("#m3u8").removeClass('m3u8');
+
+
+})
+$('#m3u8').click(function(){
+	$('#video_upload').hide();
+	$('#video_mp4').hide();
+	$('#embedvideo').hide();
+	$('#m3u8_url').show();
 	$("#video_upload").removeClass('collapse');
 	$("#video_mp4").removeClass('collapse');
 	$("#embed_video").removeClass('collapse');
+	$("#m3u8").addClass('m3u8');
+
 
 })
 });
@@ -128,6 +162,38 @@ $('#embed_video').click(function(){
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    
+  <script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+var url =$('#m3u8url').val();
+$('#m3u8_video_url').change(function(){
+	alert($('#m3u8_video_url').val());
+	$.ajax({
+        url: url,
+        type: "post",
+data: {
+               _token: '{{ csrf_token() }}',
+               m3u8_url: $('#m3u8_video_url').val()
+
+         },        success: function(value){
+			console.log(value);
+            $('#Next').show();
+           $('#video_id').val(value.video_id);
+
+        }
+    });
+})
+
+});
+	
+</script>
 <script>
 $.ajaxSetup({
    headers: {
@@ -285,17 +351,15 @@ data: {
 						                  @endforeach
                               </select>
                               </div>   
-                                  <div class="col-sm-6 form-group">
-                                         <label><h5>Age Restrict :</h5></label>
-                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
-                                             <!-- <option>--Video Type--</option> -->
-                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
-                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
-                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
-                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
-                                          
-                                          </select>
-                                      </div>
+                                <div class="col-sm-6 form-group">
+                                    <label><h5>Age Restrict :</h5></label>
+                                    <select class="form-control" id="age_restrict" name="age_restrict">
+                                        <option selected disabled="">Choose Age</option>
+                                        @foreach($age_categories as $age)
+                                          <option value="{{ $age->id }}" @if(!empty($video->language) && $video->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                      
                                  <div class="col-sm-12 form-group">
                                      

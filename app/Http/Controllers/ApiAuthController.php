@@ -324,11 +324,11 @@ class ApiAuthController extends Controller
 
     $email_login = array(
       'email' => $request->get('email'),
-      'password' => $request->get('password')
+      'password' => Hash::make($request->get('password'))
     );
     $username_login = array(
       'username' => $request->get('username'),
-      'password' => $request->get('password')
+      'password' => Hash::make($request->get('password'))
     );
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
@@ -3799,6 +3799,70 @@ public function upnextAudio(Request $request){
             'recomendedaudios' => $recomended
         ); 
         return response()->json($response, 200);
+    }
+    
+     public function mywatchlatersaudio(Request $request) {
+
+      $user_id = $request->user_id;
+  
+      /*channel videos*/
+      $audio_ids = Watchlater::select('audio_id')->where('user_id','=',$user_id)->get();
+      $audio_ids_count = Watchlater::select('audio_id')->where('user_id','=',$user_id)->count();
+  
+      if ( $audio_ids_count  > 0) {
+  
+        foreach ($audio_ids as $key => $value1) {
+          $k2[] = $value1->audio_id;
+        }
+        $channel_videos = Audio::whereIn('id', $k2)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/uploads/images/'.$item->image;
+          $item['mp3_url'] = $item->mp3_url;
+          return $item;
+        });
+        $status = "true";
+      }else{
+               $status = "false";
+        $channel_videos = [];
+      }
+      
+      $response = array(
+          'status'=>$status,
+          'channel_videos'=> $channel_videos
+        );
+      return response()->json($response, 200);
+  
+    }
+    
+    public function myFavoriteaudio(Request $request) {
+
+      $user_id = $request->user_id;
+  
+      /*channel videos*/
+      $audio_ids = Favorite::select('audio_id')->where('user_id','=',$user_id)->get();
+      $audio_ids_count = Favorite::select('audio_id')->where('user_id','=',$user_id)->count();
+  
+      if ( $audio_ids_count  > 0) {
+  
+        foreach ($audio_ids as $key => $value1) {
+          $k2[] = $value1->audio_id;
+        }
+        $channel_videos = Audio::whereIn('id', $k2)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/uploads/images/'.$item->image;
+          $item['mp3_url'] = $item->mp3_url;
+          return $item;
+        });
+        $status = "true";
+      }else{
+               $status = "false";
+        $channel_videos = [];
+      }
+      
+      $response = array(
+          'status'=>$status,
+          'channel_videos'=> $channel_videos
+        );
+      return response()->json($response, 200);
+  
     }
 
 }

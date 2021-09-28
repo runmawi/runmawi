@@ -472,8 +472,8 @@ location.reload();
 
 
               handler.open({
-                name: 'Flicknexs',
-                description: 'PAY PAR VIEW',
+                name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+                description: 'Rent a Video',
                 amount: amount * 100
               });
             }

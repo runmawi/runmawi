@@ -18,11 +18,13 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
+use DB;
 
 class AdminThemeSettingsController extends Controller
 {
     
 	public function theme_settings(){
+
 		$settings = SiteTheme::first();
 		$user = Auth::user();
 		$data = array(
@@ -295,7 +297,10 @@ class AdminThemeSettingsController extends Controller
          return view('admin.sliders.index',$data);
       } 
     public function LanguageIndex(){
-          
+                      $id = auth()->user()->id;
+            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package = $user_package->package;
+            if($package == "Pro" || $package == "Business" ){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = VideoLanguage::all();
@@ -304,10 +309,18 @@ class AdminThemeSettingsController extends Controller
             'allCategories'=>$allCategories
           );
         return view('admin.languages.index',$data);
-      }   
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
+  }   
     
     public function LanguageTransIndex(){
-          
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = Language::all();
@@ -316,6 +329,11 @@ class AdminThemeSettingsController extends Controller
             'allCategories'=>$allCategories
           );
         return view('admin.languagestrans.index',$data);
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }      
       }
     
       public function SliderStore(Request $request){
@@ -351,7 +369,7 @@ class AdminThemeSettingsController extends Controller
           $slider->active = $request['active'];
           $slider->save();
             return back()->with('success', 'New Category added successfully.');
-    }      
+          }
     
            public function MobileSliderStore(Request $request){
                
@@ -387,26 +405,48 @@ class AdminThemeSettingsController extends Controller
           $slider->active = $request['active'];
           $slider->save();
             return back()->with('success', 'New Category added successfully.');
-    }
+          
+      }
     
  
     
     
     public function LanguageDelete($id){
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
         VideoLanguage::destroy($id);
        
         return Redirect::to('admin/admin-languages')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
-    }  
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
+  }  
     
     public function LanguageTransDelete($id){
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
         Language::destroy($id);
        
         return Redirect::to('admin/admin-languages-transulates')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+  }
     
     
       public function LanguageTransStore(Request $request){
-          
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
           
               $validatedData = $request->validate([
@@ -426,10 +466,18 @@ class AdminThemeSettingsController extends Controller
              
               $slider->save();
           return back()->with('success', 'New Language added successfully.');
+        }else if($package == "Basic"){
+
+          return view('blocked');
+  
+      }
     }  
     
     public function LanguageStore(Request $request){
-          
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
           
               $validatedData = $request->validate([
@@ -443,25 +491,49 @@ class AdminThemeSettingsController extends Controller
             
               $slider->save();
           return back()->with('success', 'New Language added successfully.');
+        }else if($package == "Basic"){
+
+          return view('blocked');
+  
+      }
     }
     
        public function LanguageTransEdit($id){
-         
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
             $categories = Language::where('id', '=', $id)->get();
             $allCategories = Language::all();
             return view('admin.languagestrans.edit',compact('categories','allCategories'));
-        } 
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
+      } 
     
         public function LanguageEdit($id){
-         
+          $id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package = $user_package->package;
+          if($package == "Pro" || $package == "Business" ){
             $categories = VideoLanguage::where('id', '=', $id)->get();
             $allCategories = VideoLanguage::all();
             return view('admin.languages.edit',compact('categories','allCategories'));
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
         }
     
     
      public function LanguageTransUpdate(Request $request){
-           
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
         $input = $request->all();
         $id = $request['id'];
         $name = $request['name']; 
@@ -470,10 +542,18 @@ class AdminThemeSettingsController extends Controller
         $category->save();
          
         return back()->with('success', 'New Language Updated successfully.');
-    } 
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
+   } 
     
     public function LanguageUpdate(Request $request){
-           
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
         $input = $request->all();
         $id = $request['id'];
         $name = $request['name']; 
@@ -482,7 +562,12 @@ class AdminThemeSettingsController extends Controller
         $category->save();
          
         return back()->with('success', 'New Language Updated successfully.');
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+  }
 
     public function slider_order(Request $request){
 

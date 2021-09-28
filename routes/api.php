@@ -181,4 +181,6 @@ Route::group([
     Route::post('/dislikeaudio', 'ApiAuthController@DisLikeAudio');
     Route::post('/likeaudio', 'ApiAuthController@LikeAudio');
     Route::get('AllAudios', 'ApiAuthController@AllAudios');
+    Route::post('mywatchlatersaudio', 'ApiAuthController@mywatchlatersaudio');
+    Route::post('myFavoriteaudio', 'ApiAuthController@myFavoriteaudio');
 });

@@ -6,8 +6,13 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-
-      ?>
+$id = auth()->user()->id;
+$user_package =    DB::table('users')->where('id', $id)->first();
+$package = $user_package->package;
+// echo "<pre>";
+// print_r();
+// exit();
+?>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -81,8 +86,156 @@ $uppercase =  ucfirst($request_url);
 
 </head>
 <body >
+<?php 
 
+if($package == "Basic"){    ?>
+<div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+  <!-- Sidebar-->
+      <div class="iq-sidebar">
+         <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
+            <a href="<?php echo URL::to('home') ?>" class="header-logo">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <div class="logo-title">
+                  <span class="text-primary text-uppercase"></span>
+               </div>
+            </a>
+            <div class="iq-menu-bt-sidebar">
+               <div class="iq-menu-bt align-self-center">
+                  <div class="wrapper-menu">
+                     <div class="main-circle"><i class="las la-bars"></i></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="sidebar-scrollbar">
+            <nav class="iq-sidebar-menu">
+               <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                   <div class="bod"></div>
+                   <div style="">
+                 
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   </div>
+                  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
+                         <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                    
+          </ul></li>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Series</a></li>
 
+            </ul>
+          </li>
+                    <div style="">
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-music"></i>Audio List</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Albums</a></li>
+            </ul>
+          </li>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Artists</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Artist</a></li>
+
+            </ul>
+          </li>
+          
+                   <li>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     </ul>
+                  </li>
+                    <div >
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                       <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
+                        <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                     </ul>
+                      
+                   </li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                    <div >
+                
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                       </div>
+                  <li>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Translations</a></li>
+                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Transulate Languages</a></li>
+                     </ul>
+                  </li>
+                    <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
+                   
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
+                    <div >
+                   
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                       </div>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
+                   <li><a href="{{ URL::to('/client') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>File Manager</span></a></li>
+                   <li>
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                       class="la la-newspaper-o"></i><span>Pages</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                     </ul>
+                  </li>
+                   
+                    <li>
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Plans</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
+                        <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                         <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                     </ul>
+                  </li>
+                   
+                    <li>
+                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                        <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
+                         <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                          <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                          <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                          <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                     </ul>
+                  </li>
+                  <?php }elseif($package == "Pro"){   ?>
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
@@ -177,7 +330,7 @@ $uppercase =  ucfirst($request_url);
                   </li>
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
                     <div >
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
@@ -189,8 +342,8 @@ $uppercase =  ucfirst($request_url);
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
                      </ul>
                   </li>
                   <li>
@@ -228,361 +381,509 @@ $uppercase =  ucfirst($request_url);
                           <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                      </ul>
                   </li>
-               </ul>
-            </nav>
-         </div>
-      </div>
 
-  <div class="main-content">
-        
-    <div class="row">
-    
-      <!-- TOP Nav Bar -->
-      <div class="iq-top-navbar">
-         <div class="iq-navbar-custom">
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
-               <div class="iq-menu-bt d-flex align-items-center">
+                  <?php }elseif($package == "Business"){ ?>
+                     <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+  <!-- Sidebar-->
+      <div class="iq-sidebar">
+         <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
+            <a href="<?php echo URL::to('home') ?>" class="header-logo">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <div class="logo-title">
+                  <span class="text-primary text-uppercase"></span>
+               </div>
+            </a>
+            <div class="iq-menu-bt-sidebar">
+               <div class="iq-menu-bt align-self-center">
                   <div class="wrapper-menu">
                      <div class="main-circle"><i class="las la-bars"></i></div>
                   </div>
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="<?php echo URL::to('home') ?>" class="header-logo">
-                        <!--<img src="<?/*php echo URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png'*/;?>" class="c-logo" alt="Flicknexs">-->
-                        <div class="logo-title">
-                           <span class="text-primary text-uppercase"><?php $settings = App\Setting::first(); echo $settings->website_name;?></span>
-                        </div>
+               </div>
+            </div>
+         </div>
+         <div id="sidebar-scrollbar">
+            <nav class="iq-sidebar-menu">
+               <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                   <div class="bod"></div>
+                   <div style="">
+                 
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   </div>
+                  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
+                         <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                    
+          </ul></li>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+
+            </ul>
+          </li>
+                    <div style="">
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
+              <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
+            </ul>
+          </li>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
+              <li><a href="{{ URL::to('admin/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
+
+            </ul>
+          </li>
+          
+                   <li>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
+                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     </ul>
+                  </li>
+                    <div >
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                       <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
+                        <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                     </ul>
+                      
+                   </li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                    <div >
+                
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                       </div>
+                  <li>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
+                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Transulate Languages</a></li>
+                     </ul>
+                  </li>
+                    <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
+                   
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
+                    <div >
+                   
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                       </div>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
+                   <li>
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
-                  </div>
-               </div>
-               <div class="iq-search-bar ml-auto">
-                  <form action="#" class="searchbox">
-                    <!-- <input type="text" class="text search-input" placeholder="Search Here...">
-                     <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
-                  </form>
-               </div>
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav ml-auto navbar-list">
-                     <li class="nav-item nav-icon search-content">
-                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                           <i class="ri-search-line"></i>
-                        </a>
-                        <form action="#" class="search-box p-0">
-                           <input type="text" class="text search-input" placeholder="Type here to search...">
-                           <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                        </form>
-                     </li>
-                      <!-- 
-                     <li class="nav-item nav-icon">
-                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                           <i class="ri-notification-2-line"></i>
-                          <!-- <span class="bg-primary dots"></span>--
-                        </a>
-                        <div class="iq-sub-dropdown">
-                           <div class="iq-card shadow-none m-0">
-                              <div class="iq-card-body p-0">
-                                 <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">4</small></h5>
-                                 </div>
-                                 <a href="#" class="iq-sub-card" >
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Emma Watson Barry</h6>
-                                          <small class="float-right font-size-12">Just Now</small>
-                                          <p class="mb-0">95 MB</p>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card" >
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">New customer is join</h6>
-                                          <small class="float-right font-size-12">5 days ago</small>
-                                          <p class="mb-0">Cyst Barry</p>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card" >
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Two customer is left</h6>
-                                          <small class="float-right font-size-12">2 days ago</small>
-                                          <p class="mb-0">Cyst Barry</p>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card" >
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">New Mail from Fenny</h6>
-                                          <small class="float-right font-size-12">3 days ago</small>
-                                          <p class="mb-0">Cyst Barry</p>
-                                       </div>
-                                    </div>
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="nav-item nav-icon dropdown">
-                        <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                           <i class="ri-mail-line"></i>
-                          <!-- <span class="bg-primary dots"></span>--
-                        </a>
-                        <div class="iq-sub-dropdown">
-                           <div class="iq-card shadow-none m-0">
-                              <div class="iq-card-body p-0 ">
-                                 <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
-                                 </div>
-                                 <a href="#" class="iq-sub-card">
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Barry Emma Watson</h6>
-                                          <small class="float-left font-size-12">13 Jun</small>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card">
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
-                                          <small class="float-left font-size-12">20 Apr</small>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card">
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Why do we use it?</h6>
-                                          <small class="float-left font-size-12">30 Jun</small>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card">
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Variations Passages</h6>
-                                          <small class="float-left font-size-12">12 Sep</small>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="#" class="iq-sub-card">
-                                    <div class="media align-items-center">
-                                       <div class="">
-                                          <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/05.jpg" alt="">
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Lorem Ipsum generators</h6>
-                                          <small class="float-left font-size-12">5 Dec</small>
-                                       </div>
-                                    </div>
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                     </li> -->
-                     <li class="line-height pt-3">
-                        <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                            <?php if(Auth::guest()): ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                      <?php else: ?>
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                      <?php endif; ?>
-                        </a>
-                        <div class="iq-sub-dropdown iq-user-dropdown">
-                           <div class="iq-card shadow-none m-0">
-                              <div class="iq-card-body p-0 ">
-                                 <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
-                                    <span class="text-white font-size-12">Available</span>
-                                 </div>
-                                 <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
-                                    <div class="media align-items-center">
-                                       <div class="rounded iq-card-icon iq-bg-primary">
-                                          <i class="ri-file-user-line"></i>
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">My Profile</h6>
-                                          <p class="mb-0 font-size-12">View personal profile details.</p>
-                                       </div>
-                                    </div>
-                                 </a>
-                                 <a href="{{ URL::to('/myprofile') }}" class="iq-sub-card iq-bg-primary-hover">
-                                    <div class="media align-items-center">
-                                       <div class="rounded iq-card-icon iq-bg-primary">
-                                          <i class="ri-profile-line"></i>
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Edit Profile</h6>
-                                          <p class="mb-0 font-size-12">Modify your personal details.</p>
-                                       </div>
-                                    </div>
-                                 </a>
-<!--
-                                 <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                    <div class="media align-items-center">
-                                       <div class="rounded iq-card-icon iq-bg-primary">
-                                          <i class="ri-account-box-line"></i>
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Account settings</h6>
-                                          <p class="mb-0 font-size-12">Manage your account parameters.</p>
-                                       </div>
-                                    </div>
-                                 </a>
--->
-<!--
-                                 <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                    <div class="media align-items-center">
-                                       <div class="rounded iq-card-icon iq-bg-primary">
-                                          <i class="ri-lock-line"></i>
-                                       </div>
-                                       <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Privacy Settings</h6>
-                                          <p class="mb-0 font-size-12">Control your privacy parameters.</p>
-                                       </div>
-                                    </div>
-                                 </a>
--->
-                                 <div class="d-inline-block w-100 text-center p-3">
-                                    <a class="bg-primary iq-sign-btn" href="{{ URL::to('/logout') }}" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </li>
-                  </ul>
-               </div>
+                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                       class="la la-newspaper-o"></i><span>Pages</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                     </ul>
+                  </li>
+                   
+                    <li>
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Plans</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
+                        <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                         <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                     </ul>
+                  </li>
+
+                    <li>
+                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
+                        <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
+                            <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                            <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                            <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                        </ul>
+                    </li>
+                  <?php } ?>
+                 
+               </ul>
             </nav>
          </div>
       </div>
-      <!-- TOP Nav Bar END -->
+
+      <div class="main-content">
+        
+        <div class="row">
+        
+          <!-- TOP Nav Bar -->
+          <div class="iq-top-navbar">
+             <div class="iq-navbar-custom">
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
+                   <div class="iq-menu-bt d-flex align-items-center">
+                      <div class="wrapper-menu">
+                         <div class="main-circle"><i class="las la-bars"></i></div>
+                      </div>
+                      <div class="iq-navbar-logo d-flex justify-content-between">
+                         <a href="<?php echo URL::to('home') ?>" class="header-logo">
+                            <div class="logo-title">
+                               <span class="text-primary text-uppercase"><?php $settings = App\Setting::first(); echo $settings->website_name;?></span>
+                            </div>
+                         </a>
+                      </div>
+                   </div>
+                   <div class="iq-search-bar ml-auto">
+                      <form action="#" class="searchbox">
+                        <!-- <input type="text" class="text search-input" placeholder="Search Here...">
+                         <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
+                      </form>
+                   </div>
+                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
+                      <i class="ri-menu-3-line"></i>
+                   </button>
+                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav ml-auto navbar-list">
+                         <li class="nav-item nav-icon search-content">
+                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                               <i class="ri-search-line"></i>
+                            </a>
+                            <form action="#" class="search-box p-0">
+                               <input type="text" class="text search-input" placeholder="Type here to search...">
+                               <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                            </form>
+                         </li>
+                          <!-- 
+                         <li class="nav-item nav-icon">
+                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                               <i class="ri-notification-2-line"></i>
+                              <!-- <span class="bg-primary dots"></span>--
+                            </a>
+                            <div class="iq-sub-dropdown">
+                               <div class="iq-card shadow-none m-0">
+                                  <div class="iq-card-body p-0">
+                                     <div class="bg-primary p-3">
+                                        <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">4</small></h5>
+                                     </div>
+                                     <a href="#" class="iq-sub-card" >
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Emma Watson Barry</h6>
+                                              <small class="float-right font-size-12">Just Now</small>
+                                              <p class="mb-0">95 MB</p>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card" >
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">New customer is join</h6>
+                                              <small class="float-right font-size-12">5 days ago</small>
+                                              <p class="mb-0">Cyst Barry</p>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card" >
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Two customer is left</h6>
+                                              <small class="float-right font-size-12">2 days ago</small>
+                                              <p class="mb-0">Cyst Barry</p>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card" >
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">New Mail from Fenny</h6>
+                                              <small class="float-right font-size-12">3 days ago</small>
+                                              <p class="mb-0">Cyst Barry</p>
+                                           </div>
+                                        </div>
+                                     </a>
+                                  </div>
+                               </div>
+                            </div>
+                         </li>
+                         <li class="nav-item nav-icon dropdown">
+                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                               <i class="ri-mail-line"></i>
+                              <!-- <span class="bg-primary dots"></span>--
+                            </a>
+                            <div class="iq-sub-dropdown">
+                               <div class="iq-card shadow-none m-0">
+                                  <div class="iq-card-body p-0 ">
+                                     <div class="bg-primary p-3">
+                                        <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
+                                     </div>
+                                     <a href="#" class="iq-sub-card">
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/01.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Barry Emma Watson</h6>
+                                              <small class="float-left font-size-12">13 Jun</small>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card">
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/02.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
+                                              <small class="float-left font-size-12">20 Apr</small>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card">
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/03.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Why do we use it?</h6>
+                                              <small class="float-left font-size-12">30 Jun</small>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card">
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/04.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Variations Passages</h6>
+                                              <small class="float-left font-size-12">12 Sep</small>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="#" class="iq-sub-card">
+                                        <div class="media align-items-center">
+                                           <div class="">
+                                              <img class="avatar-40 rounded" src="assets/admin/dashassets/images/user/05.jpg" alt="">
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Lorem Ipsum generators</h6>
+                                              <small class="float-left font-size-12">5 Dec</small>
+                                           </div>
+                                        </div>
+                                     </a>
+                                  </div>
+                               </div>
+                            </div>
+                         </li> -->
+                         <li class="line-height pt-3">
+                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                                <?php if(Auth::guest()): ?>
+                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                          <?php else: ?>
+                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                          <?php endif; ?>
+                            </a>
+                            <div class="iq-sub-dropdown iq-user-dropdown">
+                               <div class="iq-card shadow-none m-0">
+                                  <div class="iq-card-body p-0 ">
+                                     <div class="bg-primary p-3">
+                                        <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
+                                        <span class="text-white font-size-12">Available</span>
+                                     </div>
+                                     <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
+                                        <div class="media align-items-center">
+                                           <div class="rounded iq-card-icon iq-bg-primary">
+                                              <i class="ri-file-user-line"></i>
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">My Profile</h6>
+                                              <p class="mb-0 font-size-12">View personal profile details.</p>
+                                           </div>
+                                        </div>
+                                     </a>
+                                     <a href="{{ URL::to('/myprofile') }}" class="iq-sub-card iq-bg-primary-hover">
+                                        <div class="media align-items-center">
+                                           <div class="rounded iq-card-icon iq-bg-primary">
+                                              <i class="ri-profile-line"></i>
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Edit Profile</h6>
+                                              <p class="mb-0 font-size-12">Modify your personal details.</p>
+                                           </div>
+                                        </div>
+                                     </a>
+    <!--
+                                     <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                        <div class="media align-items-center">
+                                           <div class="rounded iq-card-icon iq-bg-primary">
+                                              <i class="ri-account-box-line"></i>
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Account settings</h6>
+                                              <p class="mb-0 font-size-12">Manage your account parameters.</p>
+                                           </div>
+                                        </div>
+                                     </a>
+    -->
+    <!--
+                                     <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                        <div class="media align-items-center">
+                                           <div class="rounded iq-card-icon iq-bg-primary">
+                                              <i class="ri-lock-line"></i>
+                                           </div>
+                                           <div class="media-body ml-3">
+                                              <h6 class="mb-0 ">Privacy Settings</h6>
+                                              <p class="mb-0 font-size-12">Control your privacy parameters.</p>
+                                           </div>
+                                        </div>
+                                     </a>
+    -->
+                                     <div class="d-inline-block w-100 text-center p-3">
+                                        <a class="bg-primary iq-sign-btn" href="{{ URL::to('/logout') }}" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </li>
+                      </ul>
+                   </div>
+                </nav>
+             </div>
+          </div>
+          <!-- TOP Nav Bar END -->
+        
+        </div>
+        
+        <!--<hr />-->
     
+        <div id="main-admin-content">
+    
+          @yield('content')
+                
+    
+        </div>
+        
+        <!-- Footer -->
+        <footer class="iq-footer">
+          <div class="container-fluid">
+             <div class="row">
+                <div class="col-lg-6">
+                   <ul class="list-inline mb-0">
+                      <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                      <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+                   </ul>
+                </div>
+                <div class="col-lg-6 text-right">
+                   Copyright 2021 <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
+                </div>
+             </div>
+          </div>
+       </footer>
+      </div>
+      
+      
     </div>
     
-    <!--<hr />-->
-
-    <div id="main-admin-content">
-
-      @yield('content')
+      <!-- Sample Modal (Default skin) -->
+      <!--<div class="modal fade" id="sample-modal-dialog-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
             
-
-    </div>
-    
-    <!-- Footer -->
-    <footer class="iq-footer">
-      <div class="container-fluid">
-         <div class="row">
-            <div class="col-lg-6">
-               <ul class="list-inline mb-0">
-                  <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
-                  <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
-               </ul>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Widget Options - Default Modal</h4>
             </div>
-            <div class="col-lg-6 text-right">
-               Copyright 2021 <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
+            
+            <div class="modal-body">
+              <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
             </div>
-         </div>
-      </div>
-   </footer>
-  </div>
-  
-  
-</div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>-->
+      
+      <!-- Sample Modal (Skin inverted) -->
+      <!--<div class="modal invert fade" id="sample-modal-dialog-2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Widget Options - Inverted Skin Modal</h4>
+            </div>
+            
+            <div class="modal-body">
+              <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>-->
+      
+      <!-- Sample Modal (Skin gray) -->
+      <!--<div class="modal gray fade" id="sample-modal-dialog-3">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Widget Options - Gray Skin Modal</h4>
+            </div>
+            
+            <div class="modal-body">
+              <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>-->
 
-  <!-- Sample Modal (Default skin) -->
-  <!--<div class="modal fade" id="sample-modal-dialog-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Widget Options - Default Modal</h4>
-        </div>
-        
-        <div class="modal-body">
-          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-  
-  <!-- Sample Modal (Skin inverted) -->
-  <!--<div class="modal invert fade" id="sample-modal-dialog-2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Widget Options - Inverted Skin Modal</h4>
-        </div>
-        
-        <div class="modal-body">
-          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-  
-  <!-- Sample Modal (Skin gray) -->
-  <!--<div class="modal gray fade" id="sample-modal-dialog-3">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Widget Options - Gray Skin Modal</h4>
-        </div>
-        
-        <div class="modal-body">
-          <p>Now residence dashwoods she excellent you. Shade being under his bed her. Much read on as draw. Blessing for ignorant exercise any yourself unpacked. Pleasant horrible but confined day end marriage. Eagerness furniture set preserved far recommend. Did even but nor are most gave hope. Secure active living depend son repair day ladies now.</p>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-   <?php 
+  <?php 
    if (isset($page) && $page =='admin-dashboard') {
             $visitor_count = TotalVisitorcount();
             $chart_details = "[$total_subscription, $total_recent_subscription, $total_videos, $visitor_count]";
@@ -601,8 +902,10 @@ $uppercase =  ucfirst($request_url);
    ?>
 
 
+
+
   <!-- Imported styles on this page -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
+  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
@@ -788,6 +1091,7 @@ var chart_01_lable = $('#chart_01_lable').val();
                 });
             });
         </script>
+                           
     
 </body>
 </html>

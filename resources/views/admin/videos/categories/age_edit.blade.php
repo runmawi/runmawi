@@ -23,18 +23,14 @@
 </div>-->
 <div class="iq-card">
 <div class="modal-body">
-	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/update') }}" method="post" enctype="multipart/form-data">
+	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/age/update') }}" method="post" enctype="multipart/form-data">
        
-         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+         <div class="form-group ">
 
-                        <label>Name:</label>
+                        <label>AGE:</label>
 
-                        <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">
-                        @if ($errors->has('name'))
-                            <span class="text-red" role="alert">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
+                        <input type="text" id="age" name="age" value="{{ $categories[0]->age }}" class="form-control" placeholder="Enter Name">
+        
 
                     </div>
 
@@ -51,7 +47,7 @@
                     </div>
         
         
-                <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
+                <!-- <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
                         <label>Display In Home page:</label>
                         <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_home == 1) { echo "checked";} ?>>Yes
                         <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>>No
@@ -88,7 +84,7 @@
                             </span>
                         @endif
 
-                    </div>
+                    </div> -->
         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     </form>

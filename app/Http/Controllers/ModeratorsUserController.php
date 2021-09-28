@@ -63,12 +63,15 @@ use Illuminate\Support\Facades\Cache;
 use App\Audio as Audio;
 use File;
 
-
 class ModeratorsUserController extends Controller
 {   
 
   public function index()
   {
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -83,11 +86,19 @@ class ModeratorsUserController extends Controller
 
   
        return view('moderator.index',$data);
+      }else if($package == "Basic"){
+
+        return view('blocked');
+    
+    }
   }
 
   public function store(Request $request)
   {
-
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
     $input = $request->all();
     // echo "<pre>";  
     // print_r($input);
@@ -113,15 +124,7 @@ $request->validate([
     // $moderatorsuser->hashedpassword = $request->picture;
     $moderatorsuser->user_role = $request->user_role;
     $moderatorsuser->user_permission = $permission;
-    if($request->picture == ""){
-      // print_r('oldtesting pic');
-      // exit();
-      $moderatorsuser->picture  = "Default.png";
-    }else{
-      // print_r('testing pic');
-      // exit();
-        $moderatorsuser->picture = $file->getClientOriginalName();
-    }
+
 
 
     $logopath = URL::to('/public/uploads/picture/');
@@ -141,6 +144,15 @@ if($picture != '') {
      $moderatorsuser->picture  = $logopath.'/'.$file->getClientOriginalName();
      $file->move($path, $moderatorsuser->picture);
     
+}
+if($request->picture == ""){
+  // print_r('oldtesting pic');
+  // exit();
+  $moderatorsuser->picture  = "Default.png";
+}else{
+  // print_r('testing pic');
+  // exit();
+    $moderatorsuser->picture = $file->getClientOriginalName();
 }
 
     $moderatorsuser->save();
@@ -168,11 +180,19 @@ if($picture != '') {
     return view('moderator.view',$data);
    
   // return redirect('/moderator')->with('success', 'Users saved!');
-  }
+}else if($package == "Basic"){
+
+  return view('blocked');
+
+}
+}
 
   public function edit($id)
   {
-
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
 $moderators = ModeratorsUser::find($id);
 $useraccess = UserAccess::where('user_id', '=', $id)->get();
 $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
@@ -194,12 +214,20 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
 
   
        return view('moderator.create_edit',$data);
+      }else if($package == "Basic"){
+
+        return view('blocked');
+    
+    }
   }
 
 
   public function update(Request $request)
   {
-
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
 $data = $request->all();
 
   // $data_delete = UserAccess::destroy('user_id', '=', $id);
@@ -259,22 +287,38 @@ foreach($data['user_permission'] as $value){
 
   
        return \Redirect::back();
+      }else if($package == "Basic"){
+
+        return view('blocked');
+    
+    }
   }
 
   
   public function delete($id)
   {
-
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
 
         $moderators = ModeratorsUser::find($id);
 
         ModeratorsUser::destroy($id);
   
        return \Redirect::back();
+      }else if($package == "Basic"){
+
+        return view('blocked');
+    
+    }
   }
   public function view()
   {
-
+    $id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package = $user_package->package;
+    if($package == "Pro" || $package == "Business" ){
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -289,12 +333,17 @@ foreach($data['user_permission'] as $value){
 
   
        return view('moderator.view',$data);
+      }else if($package == "Basic"){
+
+        return view('blocked');
+    
+    }
   }
 
   public function test(Request $request)
   {
 
- 
+
     $user = ModeratorsUser::where('email', '=', $request['email'])->first();
     Hash::check('password', $request['password']);
     
@@ -303,10 +352,10 @@ foreach($data['user_permission'] as $value){
     
     // $user_data =json_decode($user);
 
-    $user_id = ModeratorsUser::where('email', '=', $request['email'])->first('id');
+    $user_id = $user->id;
+   
     if($user_id != ""){
     $id = json_decode($user_id,true);
-    $id = $id['id'];
 
     }else{
       return false;

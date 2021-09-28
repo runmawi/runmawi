@@ -12,11 +12,16 @@ use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use DB;
+
 
 class AdminLiveCategoriesController extends Controller
 {
       public function index(){
-          
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = LiveCategory::all();
@@ -29,11 +34,19 @@ class AdminLiveCategoriesController extends Controller
          
         return view('admin.livestream.categories.index',$data);
          
-      }
+      }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
+  }
     
     
      public function store(Request $request){
-          
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
             
               $validatedData = $request->validate([
@@ -76,19 +89,35 @@ class AdminLiveCategoriesController extends Controller
           
             LiveCategory::create($input);
             return back()->with('success', 'New Category added successfully.');
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
        }
     
     public function edit($id){
-         
+      $id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package = $user_package->package;
+      if($package == "Pro" || $package == "Business" ){
             $categories = LiveCategory::where('id', '=', $id)->get();
 
             $allCategories = LiveCategory::all();
             return view('admin.livestream.categories.edit',compact('categories','allCategories'));
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
         }
+      }
     
     
         public function update(Request $request){
-           
+          $id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package = $user_package->package;
+          if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
             
              $validatedData = $request->validate([
@@ -139,12 +168,20 @@ class AdminLiveCategoriesController extends Controller
 
             return Redirect::to('admin/livestream/categories')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
             
-            }
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
+      }
     
         
     
         public function destroy($id){
-            
+          $id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package = $user_package->package;
+          if($package == "Pro" || $package == "Business" ){
             LiveCategory::destroy($id);
             
             $child_cats = LiveCategory::where('parent_id', '=', $id)->get();
@@ -154,7 +191,12 @@ class AdminLiveCategoriesController extends Controller
                 $cats->save();
             }
             return Redirect::to('admin/livestream/categories')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+          }else if($package == "Basic"){
+
+            return view('blocked');
+    
         }
+      }
     
     
     

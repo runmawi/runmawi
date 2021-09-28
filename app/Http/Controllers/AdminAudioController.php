@@ -37,6 +37,8 @@ use Illuminate\Support\Str;
 use App\Artist;
 use App\Audioartist;
 use App\AudioAlbums;
+use DB;
+
 
 
 class AdminAudioController extends Controller
@@ -48,7 +50,12 @@ class AdminAudioController extends Controller
      */
     public function index(Request $request)
     {
+        $id = auth()->user()->id;
 
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
       $search_value = $request->get('s');
         
         if(!empty($search_value)):
@@ -66,6 +73,11 @@ class AdminAudioController extends Controller
             );
 
         return View::make('admin.audios.index', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     /**
@@ -75,6 +87,12 @@ class AdminAudioController extends Controller
      */
     public function create()
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
             'post_route' => URL::to('admin/audios/audioupdate'),
@@ -87,6 +105,11 @@ class AdminAudioController extends Controller
             'audio_artist' => [],
             );
         return View::make('admin.audios.create_edit', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
         // 'post_route' => URL::to('admin/audios/store'),
 
     }
@@ -98,7 +121,12 @@ class AdminAudioController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $validator = Validator::make($data = $request->all(), Audio::$rules);
         
         if ($validator->fails())
@@ -197,7 +225,11 @@ class AdminAudioController extends Controller
        
 
         return Redirect::to('admin/audios')->with(array('note' => 'New Audio Successfully Added!', 'note_type' => 'success') );
-    
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     /**
@@ -208,6 +240,12 @@ class AdminAudioController extends Controller
      */
      public function edit($id)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $audio = Audio::find($id);
 
         $data = array(
@@ -224,6 +262,11 @@ class AdminAudioController extends Controller
             );
 
         return View::make('admin.audios.edit', $data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     /**
@@ -234,6 +277,12 @@ class AdminAudioController extends Controller
      */
     public function update(Request $request)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $input = $request->all();
         $id = $request->id;
         $audio = Audio::findOrFail($id);
@@ -341,7 +390,11 @@ class AdminAudioController extends Controller
 
 
         return Redirect::to('admin/audios/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Audio!', 'note_type' => 'success') );
+    }else if($package == "Basic"){
+
+        return view('blocked');
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -351,6 +404,13 @@ class AdminAudioController extends Controller
      */
     public function destroy($id)
     {
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
+            
         $audio = Audio::find($id);
 
         $this->deleteAudioImages($audio);
@@ -360,7 +420,12 @@ class AdminAudioController extends Controller
         Audioartist::where('audio_id',$id)->delete();
 
         return Redirect::to('admin/audios')->with(array('note' => 'Successfully Deleted Audio', 'note_type' => 'success') );
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+}
 
 
     private function deleteAudioImages($audio){

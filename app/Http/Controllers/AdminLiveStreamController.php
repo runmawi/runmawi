@@ -17,13 +17,17 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
-
+use DB;
 
 class AdminLiveStreamController extends Controller
 {
     
     public function index()
         {
+            $id = auth()->user()->id;
+            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package = $user_package->package;
+            if($package == "Pro" || $package == "Business" ){
             $all = LiveStream::all();
             if(!empty($search_value)):
                 $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
@@ -40,7 +44,12 @@ class AdminLiveStreamController extends Controller
                 );
 
             return View('admin.livestream.index', $data);
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
         }
+    }
     /**
      * Show the form for creating a new video
      *
@@ -48,6 +57,10 @@ class AdminLiveStreamController extends Controller
      */
        public function create()
         {
+            $id = auth()->user()->id;
+            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package = $user_package->package;
+            if($package == "Pro" || $package == "Business" ){
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('admin/livestream/store'),
@@ -57,7 +70,13 @@ class AdminLiveStreamController extends Controller
                 'languages' => Language::all(),
                 );
             return View::make('admin.livestream.create_edit', $data);
+        
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
         }
+    }
     
        /**
      * Store a newly created video in storage.
@@ -67,7 +86,10 @@ class AdminLiveStreamController extends Controller
     public function store(Request $request)
     {
         
-        
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
         
         $data = $request->all();
         
@@ -155,11 +177,20 @@ class AdminLiveStreamController extends Controller
      
         
          return Redirect::to('admin/livestream')->with(array('note' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
     }
     
     
     public function edit($id)
     {
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
        $video = LiveStream::find($id);
         
         
@@ -175,11 +206,20 @@ class AdminLiveStreamController extends Controller
             );
 
         return View::make('admin.livestream.create_edit', $data); 
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+}
     
     
      public function update(Request $request)
     {
+        $id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+        if($package == "Pro" || $package == "Business" ){
         $data = $request->all();       
         $id = $data['id'];
         $video = LiveStream::findOrFail($id);  
@@ -266,8 +306,12 @@ class AdminLiveStreamController extends Controller
       
 
         return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Video!', 'note_type' => 'success') );
-    }
     
+}else if($package == "Basic"){
+
+    return view('blocked');
+
+}
     
-    
+}
 }

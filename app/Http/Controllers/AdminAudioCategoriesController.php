@@ -14,11 +14,17 @@ use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use DB;
 
 class AdminAudioCategoriesController extends Controller
 {
       public function index(){
-          
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $categories = AudioCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = AudioCategory::all();
@@ -31,12 +37,21 @@ class AdminAudioCategoriesController extends Controller
           );
          
         return view('admin.audios.categories.index',$data);
-         
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
       }
     
     
      public function store(Request $request){
-          
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
             
               $validatedData = $request->validate([
@@ -79,19 +94,39 @@ class AdminAudioCategoriesController extends Controller
           
             AudioCategory::create($input);
             return back()->with('success', 'New Category added successfully.');
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }                                                                                                   
        }
     
     public function edit($id){
-         
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
             $categories = AudioCategory::where('id', '=', $id)->get();
 
             $allCategories = AudioCategory::all();
             return view('admin.audios.categories.edit',compact('categories','allCategories'));
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
+        }
         }
     
     
         public function update(Request $request){
-           
+            $id = auth()->user()->id;
+
+            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package = $user_package->package;
+    
+            if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
             
              $validatedData = $request->validate([
@@ -141,13 +176,23 @@ class AdminAudioCategoriesController extends Controller
             $category->save();
 
             return Redirect::to('admin/audios/categories')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
-            
+                }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
             }
     
         
     
         public function destroy($id){
-            
+            $id = auth()->user()->id;
+
+            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package = $user_package->package;
+    
+            if($package == "Pro" || $package == "Business" ){
+                
             AudioCategory::destroy($id);
             
             $child_cats = AudioCategory::where('parent_id', '=', $id)->get();
@@ -157,12 +202,23 @@ class AdminAudioCategoriesController extends Controller
                 $cats->save();
             }
             return Redirect::to('admin/audios/categories')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+        }else if($package == "Basic"){
+
+            return view('blocked');
+    
         }
+    }
     
     
          /*Albums section */
     
     public function albumIndex(){
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $allAlbums = AudioAlbums::all();
         $allCategories = AudioCategory::all();
         $data = array(
@@ -170,11 +226,20 @@ class AdminAudioCategoriesController extends Controller
             'allAlbums' => $allAlbums,
         );
         return view('admin.audios.albums.index',$data);
-   
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     public function storeAlbum(Request $request){
-        
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
         $input = $request->all();
         
         
@@ -209,13 +274,21 @@ class AdminAudioCategoriesController extends Controller
 
         AudioAlbums::create($input);
         return back()->with('success', 'New Album added successfully.');
+    }else if($package == "Basic"){
 
+        return view('blocked');
+
+    }
     }
 
     public function updateAlbum(Request $request){
+        $id = auth()->user()->id;
 
         
-        
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
                
         $request = $request->all();
         
@@ -256,15 +329,39 @@ class AdminAudioCategoriesController extends Controller
         if(isset($audio)){
             return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Updated Albums', 'note_type' => 'success') );
         }
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
+    }
     }
 
     public function destroyAlbum($id){
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
+
         AudioAlbums::destroy($id);
        
         return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Deleted Albums', 'note_type' => 'success') );
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+}
 
     public function editAlbum($id){
+        $id = auth()->user()->id;
+
+        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package = $user_package->package;
+
+        if($package == "Pro" || $package == "Business" ){
+
         $categories = AudioAlbums::where('id', '=', $id)->get();
         $allAlbums = AudioAlbums::all();
         $allCategories = AudioCategory::all();
@@ -275,7 +372,12 @@ class AdminAudioCategoriesController extends Controller
             );
         
         return view('admin.audios.albums.edit',$data);
+    }else if($package == "Basic"){
+
+        return view('blocked');
+
     }
+ }
 
      public function createAlbumSlug($title, $id = 0)
             {
