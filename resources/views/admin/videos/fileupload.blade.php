@@ -67,11 +67,13 @@
 
                             <!-- Video upload -->        
                             <div id="video_upload" style="">
-                                <div class='content file'>
-                                    <h4 class="card-title">Upload Video</h4>
+                            <div class='content file'>
+                                    <h4 class="card-title">Upload Full Video Here</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
+                            <p style="margin-top: -3%;margin-left: 45%;">Trailers Can Be Uploaded From Video Edit Screen</p>
+                                
                             </div> 
    
                             <div class="text-center" style="margin-top: 30px;">

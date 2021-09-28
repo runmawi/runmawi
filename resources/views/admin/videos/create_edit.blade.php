@@ -1,5 +1,7 @@
 @extends('admin.master')
+<?php 
 
+?>
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
@@ -131,13 +133,15 @@
                               </select>
                               </div>   
                               <div class="col-sm-6 form-group">
-                              <label><h5>Age Restrict :</h5></label>
-                                         <select class="form-control" id="age_restrict" name="age_restrict">
-                                    <option selected disabled="">Choose Age</option>
-                                    @foreach($age_categories as $age)
-							                  <option value="{{ $age->age }}" @if(!empty($video->language) && $video->age_restrict == $age->age)selected="selected"@endif>{{ $age->slug }}</option>
-						                  @endforeach
-                              </select>
+                                         <label><h5>Age Restrict :</h5></label>
+                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
+                                             <!-- <option>--Video Type--</option> -->
+                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
+                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
+                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
+                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
+                                          
+                                          </select>
                                       </div>
                                  <div class="col-sm-12 form-group">
                                      
@@ -182,60 +186,28 @@
                             <div>
                                 <h5>Video Upload</h5>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6 form-group">
-                                    <label class="p-2">Upload Trailer :</label><br>
-                                    <div style="position: relative;"class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
-                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                        <!--<p>Upload Trailer video</p>-->
-                                        <p style="font-size: 14px!important;">Drop and drag the video file</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 form-group">
-                                    @if(!empty($video->trailer) && $video->trailer != '')
-                                    <video width="200" height="200" controls>
-                                        <source src="{{ $video->trailer }}" type="video/mp4">
-                                    </video>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="row">
-                             <div class="col-sm-6 form-group">
-                                   <!--     @if(!empty($video->path) && $video->path != '')
+                            <div class="row ">
+                             <div class="col-sm-8 form-group">
+                             @if(!empty($video->trailer) && $video->trailer != '')
                               <video width="200" height="200" controls>
-                              <source src="{{ URL::to('/storage/app/public/'.$video->path) }}" type="video/mp4"> -->
-                                    <!-- <source src="{{ $video->path }}" type="video/mp4"> -->
-                              <!-- </video>
-                              @endif -->
-                                         <!-- <label><h5>Video Type :</h5></label>
-                                          <select id="type" name="type" class="form-control" required>
-                                             <option>--Video Type--</option>
-                                             <option value="file" @if(!empty($video->type) && $video->type == 'file'){{ 'selected' }}@endif>Video File</option>
-                                             <option value="embed" @if(!empty($video->type) && $video->type == 'embed'){{ 'selected' }}@endif >Embed Code</option>
-                                          </select>   
-                                      </div>
-                              <div class="">
-                                  
-                                 @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file'))
-                                    <video width="200" height="200" controls>
-                                    <source src="{{ URL::to('/storage/app/public/').'/'.$video->mp4_url }}" type="video/mp4">
-                                    </video>
-                                 @endif
-                                 <div class="d-block position-relative" style="left:80px;top:-50px;">
-                                 <div class="new-video-embed" @if(!empty($video->type) && $video->type == 'embed')@else  @endif>
-                                    <label for="embed_code">Embed Code:</label>
-                                    <textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($video->embed_code)){{ $video->embed_code }}@endif</textarea>
-                                 </div> -->
+                                    <source src="{{ $video->trailer }}" type="video/mp4">
+                              </video>
+                              @endif
+                              <br>
 
-                                 <!-- <div class="new-video-file form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else  @endif>
-                                  
-                                    <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video" id="video">
-                                    <p>Upload video</p>
-                                 </div> -->
-                                    
-                                 </div>
-                              </div>      
-                                 
+                                 <label class="p-2">Upload Trailer :</label><br>
+                               <div style="margin-top: 38%;"class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
+                                 <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                       <!--<p>Upload Trailer video</p>-->
+                                       <p style="font-size: 14px!important;">Drop and drag the video file</p>
+                                    </div>
+                                    <!-- </div> -->
+                                    <br>
+                             <!-- <div class="col-sm-6 form-group"> -->
+                         
+                            
+                                
+                             <div style="margin-top: 37%;">
                                
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
         <div class="panel-title">Subtitles (srt or txt)<a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
@@ -251,6 +223,7 @@
           @endforeach
           
         </div> 
+      </div>
       </div>
 
          <div class="row">
