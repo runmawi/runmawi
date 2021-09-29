@@ -201,6 +201,7 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
+
       $data = array(
    
           'roles' => $moderatorsrole,
@@ -232,10 +233,6 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
 $data = $request->all();
 
   // $data_delete = UserAccess::destroy('user_id', '=', $id);
-
-// echo "<pre>";  
-// print_r($data_delete);
-// exit();
 
 $user_permission = $data['user_permission'];
 $permission = implode(",",$user_permission);

@@ -1,7 +1,10 @@
 @extends('admin.master')
 @section('content')
-
-
+<?php
+    //   echo "<pre>";  
+    // print_r($moderators->user_role);
+    // exit();
+    ?>
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -21,12 +24,7 @@
 		<h3><i class="entypo-globe"></i>Update Moderator Users</h3> 
 	</div>
 	<div class="clear"></div>
-<?php
 
-// echo "<pre>";
-// print_r( $permission);
-// exit();
-?>
 
                     <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                         @csrf
@@ -93,6 +91,7 @@
                         <div class="form-group row">
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
 
+                            <input id="picture" type="hidden" class="form-control" id= "picture" name="picture"  value="">
                            
                                 <input id="picture" type="file" class="form-control" id= "picture" name="picture"  value="DefaultImageName">
                                <p class="text" id= "error_picture"> </p>
@@ -116,7 +115,7 @@
                                     @if($roles->count() > 0)
                                     @foreach($roles as $value)
                                     <!-- <option value="{{$value->id}}">{{$value->role_name}}</option> -->
-                                    <option value="{{$value->id}}" @if(!empty($moderators->role)){{ 'selected' }}@endif>{{$value->role_name}}</option>
+                                    <option value="{{$value->id}}" @if(!empty($moderators->user_role)){{ 'selected' }}@endif>{{$value->role_name}}</option>
 
                                     @endForeach
                                     @else
@@ -192,18 +191,18 @@
                     <script src="jquery-3.5.1.min.js"></script>
 
                     <script>
-                        $(document).ready(function(){
-                        $('#submit').click(function(){
-                            if($('#picture').val() == ""){
-                            $('#error_picture').text('Picture Is Requried');
-                            $('#error_picture').css('color', 'red');
+                    //     $(document).ready(function(){
+                    //     $('#submit').click(function(){
+                    //         if($('#picture').val() == ""){
+                    //         $('#error_picture').text('Picture Is Requried');
+                    //         $('#error_picture').css('color', 'red');
 
-                                return false;
-                            }else{
-                                return true;
-                            }
-                        });
-                    });
+                    //             return false;
+                    //         }else{
+                    //             return true;
+                    //         }
+                    //     });
+                    // });
 
 
                     </script>
