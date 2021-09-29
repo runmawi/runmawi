@@ -74,7 +74,10 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
-
+        $data['password_hash'] = "";
+        $data = session()->all();
+       
+        if(!empty($data['password_hash'])){
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time()); 
@@ -153,7 +156,87 @@ class ChannelController extends Controller
             }
  
        return view('video', $data);
+    }else{
     
+        $get_video_id = \App\Video::where('slug',$slug)->first(); 
+        $vid = $get_video_id->id;
+        $current_date = date('Y-m-d h:i:s a', time()); 
+
+            
+        
+         $view_increment = $this->handleViewCount_movies($vid);
+        if ( !Auth::guest() ) {
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+            $view = new RecentView;
+            $view->video_id = $vid;
+            $view->user_id = Auth::user()->id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
+           $user_id = Auth::user()->id;
+           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
+           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
+          if ($watch_count >0 ){
+              $watchtime = $watch_id->currentTime;
+          }else {
+            $watchtime = 0;
+          }
+           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+           $user_id = Auth::user()->id;
+
+           $categoryVideos = \App\Video::where('id',$vid)->first();
+           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          $videocategory = $videocategory[0];
+           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+           $playerui = Playerui::first();
+           $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
+
+                $wishlisted = false;
+                if(!Auth::guest()):
+                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                endif;
+                    $watchlater = false;
+                 if(!Auth::guest()):
+                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
+                    endif;
+                 $data = array(
+                     'video' => $categoryVideos,
+                     'videocategory' => $videocategory,
+                     'recomended' => $recomended,
+                     'ppv_exist' => $ppv_exist,
+                     'ppv_price' => 100,
+                     'watchlatered' => $watchlater,
+                     'mywishlisted' => $wishlisted,
+                     'watched_time' => $watchtime,
+                     'like_dislike' =>$like_dislike,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+
+                 );
+             
+        } else {
+
+           
+            $categoryVideos = \App\Video::where('id',$vid)->first();
+            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+    $playerui = Playerui::first();
+    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+
+            $data = array(
+                 'video' => $categoryVideos,
+                 'recomended' => $recomended,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+                 'watched_time' => 0,
+
+            );
+
+            }
+ 
+       return view('video_before_login', $data);
+    }
         }
     
     public function PlayPpv($vid)

@@ -73,14 +73,12 @@
                                                              data-original-title="Edit" href="{{ URL::to('admin/moderatorsuser/edit/') }}/{{$user->id}}" ><i class="ri-pencil-line"></i></a> 
                                             <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                                              data-original-title="Delete" href="{{ URL::to('admin/moderatorsuser/delete/') }}/{{$user->id}}" ><i
-                                                                class="ri-delete-bin-line"></i></a></div>
+                                                             onclick="return confirm('Are you sure?')"   class="ri-delete-bin-line"></i></a></div>
 
                                         </td>
                                     </tr>
                                     @endforeach
                             </table>
-           
-				
 				</div>
 		
 			</div>

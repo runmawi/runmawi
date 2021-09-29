@@ -2,15 +2,15 @@
 
 @include('header')
 
-<div class="container">
+<div class="container" style="background-color: white">; 
     <div class="row justify-content-center page-height">	
         	<div class="col-md-10 col-sm-offset-1">
                 
 			<div class="login-block nomargin">
 
-            <h1 class="my_profile">
+            <h1 class="my_profile" style="color: black;">
                 <i class="fa fa-edit"></i> 
-                <?php echo __('Stripe Transacton History');?>
+                <?php echo __('Transacton History');?>
             </h1>
                 
             

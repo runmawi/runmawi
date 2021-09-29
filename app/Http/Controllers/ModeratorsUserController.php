@@ -295,6 +295,8 @@ foreach($data['user_permission'] as $value){
   
   public function delete($id)
   {
+    // print_r($id);
+    // exit();
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -1289,6 +1291,8 @@ return true;
 public function livestream(Request $request)
 {
   $data = $request->all();
+  // print_r($data);
+  // exit();
   $livestream = json_decode($data['livestream']);
   $title =$livestream->title;
   $slug =$livestream->slug;
@@ -1307,10 +1311,7 @@ public function livestream(Request $request)
   $footer =$livestream->footer;
   $user_id =$livestream->user_id;
   $image = $data['image'];
-// echo "<pre>";
 
-// print_r($data);
-// exit();
    
 $image = (isset($data['image'])) ? $data['image'] : '';
 $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
@@ -1395,13 +1396,18 @@ $movie->slug =$livestream->slug;
 $movie->image =$file->getClientOriginalName();
 $movie->mp4_url =$livestream->mp4_url;
 $movie->year =$livestream->year;
+$movie->user_id =$user_id;
+
 
 $movie->save();
 // $shortcodes = $request['short_code'];
 // $languages = $request['language'];
 
 
+// echo "<pre>";
 
+// print_r($data);
+// exit();
 
 return true;
 }

@@ -1,198 +1,342 @@
-<?php //include('../header.php');?>
+<!doctype html>
+<html lang="en-US">
+   <head>
+      <?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
+// print_r($uppercase);
+// exit();
+      ?>
+      <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+    <!-- Responsive -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   </head>
+    <style>
+        #main-header{ color: #fff; }
+        .svg{ color: #fff; } 
+    </style>
+   <body>
+      <!-- loader Start -->
+     <!-- <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>-->
+      <!-- loader END -->
+     <!-- Header -->
+      <header id="main-header">
+         <div class="main-header">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <nav class="navbar navbar-expand-lg navbar-light p-0">
+                        <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
+                           data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                           aria-expanded="false" aria-label="Toggle navigation">
+                           <div class="navbar-toggler-icon" data-toggle="collapse">
+                              <span class="navbar-menu-icon navbar-menu-icon--top"></span>
+                              <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
+                              <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                           </div>
+                        </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                           <div class="menu-main-menu-container">
+          
+                             
+                           </div>
+                        </div>
+                        <div class="mobile-more-menu">
+                           <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
+                              data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
+                           <i class="ri-more-line"></i>
+                           </a>
+                           <div class="more-menu" aria-labelledby="dropdownMenuButton">
+                              <div class="navbar-right position-relative">
+                                 <ul class="d-flex align-items-center justify-content-end list-inline m-0">
+                                    
+                                <li class="hidden-xs">
+                                          <div id="navbar-search-form">
+                                            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+                                              <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
+                                              <div>
+                                                <i class="fa fa-search">
+                                                </i>
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+                                              </div>
+                                            </form>
+                                          </div>
+                                          <div id="search_list" class="search_list" style="position: absolute;">
+                                          </div> 
+                                        </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="navbar-right menu-right">
+                           <ul class="d-flex align-items-center list-inline m-0">
+                              <li class="nav-item nav-icon">
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
+                                 <i class="ri-search-line"></i>
+                                 </a>
+                                 <div class="search-box iq-search-bar d-search">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
+                                       <div class="form-group position-relative">
+                                          <input type="text" name="search" class="text search-input font-size-12 searches"
+                                             placeholder="type here to search...">
+                                          <i class="search-link ri-search-line"></i>
+                                       </div>
+                                    </form>
+                                 </div>
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                       <div class="iq-card-body">
+                                   <div id="search_list" class="search_list search-toggle device-search" >
+                                           </div> </div></div>
+                              </li>
+                              <li class="nav-item nav-icon">
+                                 <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
+                                       class="noti-svg">
+                                       <path fill="none" d="M0 0h24v24H0z" />
+                                       <path
+                                          d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
+                                    </svg>
+                                    <span class="bg-danger dots"></span>
+                                 </a>-->
+                                 <div class="iq-sub-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                       <div class="iq-card-body">
+                                          <a href="#" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
+                                                   alt="streamit" />
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 ">Boot Bitty</h6>
+                                                   <small class="font-size-12"> just now</small>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="#" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
+                                                   alt="streamit" />
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 ">The Last Breath</h6>
+                                                   <small class="font-size-12">15 minutes ago</small>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="#" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
+                                                   alt="streamit" />
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 ">The Hero Camp</h6>
+                                                   <small class="font-size-12">1 hour ago</small>
+                                                </div>
+                                             </div>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </li>
+                              <li class="nav-item nav-icon">
+                                 <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
+                                    data-toggle="search-toggle">
+                                 <?php if(Auth::guest()): ?>
+                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                      <?php else: ?>
+                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                      <?php endif; ?>
+                                 </a>
+                                   <?php if(Auth::guest()): ?>
+                                  <div class="iq-sub-dropdown iq-user-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <a href="<?php echo URL::to('login') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Signin</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-logout-circle-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Signup</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                   <?php elseif(Auth::user()->role == 'registered'): ?>
+                                   <div class="iq-sub-dropdown iq-user-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-file-user-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Manage Profile</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Watch Later</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-logout-circle-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Logout</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                  <?php else: ?>
+                                 <div class="iq-sub-dropdown iq-user-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-file-user-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Manage Profile</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Watch Later</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Pricing Plan</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                           <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Admin</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <i class="ri-logout-circle-line text-primary"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Logout</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                  <?php endif; ?>
+                              </li>
+                           </ul>
+                        </div>
+                     </nav>
+                   
+                  </div>
+               </div>
+            </div>
+         </div>
+          
+          
+           <script>
+               $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+});
+          </script>
+          
+      </header>
 <head>
     <?php 
     $jsonString = file_get_contents(base_path('assets/country_code.json'));   
     $jsondata = json_decode($jsonString, true); 
 ?>
 
-	<!--<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="HelloVideo Admin Panel" />
-	<meta name="author" content="" />
-
-	<title><?php $settings = App\Setting::first(); echo $settings->website_name;?></title>
-
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/font-awesome/css/font-awesome.min.css'; ?>">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/bootstrap.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/animate.min.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/core.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/theme.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/forms.css'; ?>">
-	<link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/custom.css'; ?>">
-    <script src="<?= THEME_URL ?>/assets/js/admin-homepage.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	@yield('css')
-
-	<script src="<?= URL::to('/').'/assets/admin/admin/js/jquery-1.11.0.min.js'; ?>"></script>
-	<script src="<?= THEME_URL .'/assets/admin/admin/js/bootstrap-colorpicker.min.js'; ?>" id="script-resource-13"></script>
-	<script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
 	
-	<script>$.noConflict();</script>-->
-    <!-- Required meta tags -->
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>Flicknexs</title>
-   <!-- Favicon -->
-   <link rel="shortcut icon" href="<?= URL::to('/'). '/assets/admin/dashassets/images/fl-logo.png';?>" />
-   <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
-    
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-
-   <!--datatable CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
-   <!-- Typography CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/typography.css';?>" />
-   <!-- Style CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
-   <!-- Responsive CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-    
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-	<!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
-
-	<!-- HTML5 shim and Respond.js') }} IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
-	<![endif]-->
-<style>
-
-    .top-left-logo img {
-        opacity: 0.9;
-        overflow: hidden;
-    }
-    .visitbtn{
-        width: 100px !important;
-    }
-    
-</style>
-    <style>
-    .form-popup {
-  display: none;
-    }
-    .personal{
-        border-top: 1px solid #999;
-        padding-bottom: 20px;
-    }
-    .Subplan{
-        border-top: 1px solid #999;
-        padding-bottom: 20px;
-    }
-    .Profile{
-        border-top: 1px solid #999;
-        padding-bottom: 20px;
-    }
-     .card{
-        border-top: 1px solid #999;
-         padding-bottom: 20px;
-    }
-    .details-back{
-       background-color: transparent;
-        margin: 40px auto;
-    }
-    .btn-primary {
-    background: #ffffff;
-    border-color: #4895d1;
-}
-    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
-    background-color: #4895d1;
-    border-color: #4895d1;
-    color: #fff;
-}
-    .data-back{
-        background-color: #333;
-    opacity: 0.5;
-   padding: 20px;
-    }
-    .editbtn{
-        float: right;
-    }
-    input.form-control#email {
-     background-color: #1a1b20; 
-   
-    color: #fff;
-    box-shadow: none;
-}
-    input.form-control#password {
-   background-color: #1a1b20; 
-    
-    color: #fff;
-    box-shadow: none;
-}
-    #update_profile_form .form-control {
-    background: #1a1b20 !important;
-   
-    color: #fff;
-}
-        select{
-            width: 100% !important;
-        }
-        .content-page {
-    overflow: hidden;
-     margin-left: 0px !important; 
-     padding: unset !important; 
-    min-height: 100vh;
-    -webkit-transition: all 0.3s ease-out 0s;
-    -moz-transition: all 0.3s ease-out 0s;
-    -ms-transition: all 0.3s ease-out 0s;
-    -o-transition: all 0.3s ease-out 0s;
-    transition: all 0.3s ease-out 0s;
-    margin-top: 110px;
-}
-        #mobile{
-            height: 25px!important;
-        }
-        .iq-top-navbar {
-    padding: 0 15px 0 30px;
-    min-height: 73px;
-    position: fixed;
-    top: 0;
-    left: auto;
-    /* right: 0; */
-    width: 100%;
-    display: inline-block;
-    z-index: 99;
-    background: var(--iq-light-card);
-    margin: 0;
-    transition: all 0.45s ease 0s;
-}
-        .iq-footer {
-    background: var(--iq-light-card);
-    padding: 15px;
-    margin-left: 0px !important; 
-    -webkit-transition: all 0.3s ease-out 0s;
-    -moz-transition: all 0.3s ease-out 0s;
-    -ms-transition: all 0.3s ease-out 0s;
-    -o-transition: all 0.3s ease-out 0s;
-    transition: all 0.3s ease-out 0s;
-}
-        .form-control {
-    height: 45px;
-    line-height: 27px;
-    background: transparent !important;
-    border: 1px solid var(--iq-body-text);
-    font-size: 14px;
-    color: var(--iq-white);
-    border-radius: 0;
-}
-          .form-control:focus {
-     color: var(--iq-white) !important;
-    background-color: #fff;
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-}
-</style>
-
-</head>
 
 
 <div class="main-content">
@@ -202,7 +346,7 @@
         <!-- TOP Nav Bar -->
       <div class="iq-top-navbar">
          <div class="iq-navbar-custom">
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
+            <nav style="display:none;"  class="navbar navbar-expand-lg navbar-light p-0">
                <div class="iq-menu-bt d-flex align-items-center">
                   <div class="wrapper-menu">
                      <div class="main-circle"><i class="las la-bars"></i></div>
@@ -739,24 +883,227 @@
             
 
 		</div>
-		
-		<!-- Footer -->
-		<footer class="iq-footer">
-      <div class="container-fluid">
-         <div class="row">
-            <div class="col-lg-6">
-               <ul class="list-inline mb-0">
-                  <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
-                  <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
-               </ul>
+		<?php $settings = App\Setting::first(); ?>
+<footer class="mb-0">
+         <div class="container-fluid">
+            <div class="block-space">
+               <div class="row align-items-center">
+                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                     <div class="d-flex mt-2">
+                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
+                        <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-skype-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-linkedin-fill"></i>
+                        </a>
+                        <a href="#" class="s-icon">
+                        <i class="ri-whatsapp-fill"></i>
+                        </a>
+                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                     </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
+                     <ul class="f-link list-unstyled mb-0">
+                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                     </ul>
+                  </div>
+                  <!--<div class="col-lg-3 col-md-4">
+                     <ul class="f-link list-unstyled mb-0">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Help</a></li>
+                     </ul>
+                  </div>-->
+                  
+                  <div class="col-lg-3 col-md-4">
+                      <div class="row">
+                     <ul class="f-link list-unstyled mb-0 catag">
+                        <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
+                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
+                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
+                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
+                         
+                          </ul>
+                          <ul class="f-link list-unstyled mb-0">
+                        
+                         <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
+                          </ul>
+                      </div>
+                      
+                      <!--<ul class="f-link list-unstyled mb-0">
+                        
+						<?php 
+                        
+                        $pages = App\Page::all();
+                        
+                        foreach($pages as $page): ?>
+                        <?php if ( $page->slug != 'promotion' ){ ?>
+							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                        <?php } ?>
+						<?php endforeach; ?>
+					</ul>-->
+				</div>
+                   <div class="col-lg-3 col-md-4 p-0">
+                     <!--<ul class="f-link list-unstyled mb-0">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Cotact Us</a></li>
+                        <li><a href="#">Legal Notice</a></li>
+                     </ul>-->
+                      <ul class="f-link list-unstyled mb-0">
+                        
+						<?php 
+                        
+                        $pages = App\Page::all();
+                        
+                        foreach($pages as $page): ?>
+                        <?php if ( $page->slug != 'promotion' ){ ?>
+							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                        <?php } ?>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+                  
+                   </div>
+               </div>
             </div>
-            <div class="col-lg-6 text-right">
-               Copyright 2020 <a href="<?php echo URL::to('home') ?>">Flicknexs</a> All Rights Reserved.
+         <div class="copyright py-2">
+            <div class="container-fluid">
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
             </div>
          </div>
-      </div>
-   </footer>
-	</div>
+      </footer>
+          <!-- back-to-top End -->
+     <!-- back-to-top End -->
+      <!-- jQuery, Popper JS -->
+      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <!-- Bootstrap JS -->
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <!-- Slick JS -->
+      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <!-- owl carousel Js -->
+      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <!-- select2 Js -->
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <!-- Magnific Popup-->
+      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <!-- Slick Animation-->
+      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <!-- Custom JS-->
+      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+       <script>
+    $(document).ready(function () {
+      $(".thumb-cont").hide();
+      $(".show-details-button").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).show();
+      });
+		$(".closewin").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).hide();
+      });
+    });
+  </script>
+<script>
+function about(evt , id) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    
+  }
+	
+  document.getElementById(id).style.display = "block";
+ 
+}
+// Get the element with id="defaultOpen" and click on it
+//document.getElementById("defaultOpen").click();
+</script>
+<!--<script>
+  // Prevent closing from click inside dropdown
+  $(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
+    
+  // make it as accordion for smaller screens
+  if ($(window).width() < 992) {
+    $('.dropdown-menu a').click(function(e){
+      e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.submenu').hide();
+      }
+                       )
+    }
+                               );
+  }
+</script>-->
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.searches').on('keyup',function() {
+      var query = $(this).val();
+      //alert(query);
+      // alert(query);
+       if (query !=''){
+      $.ajax({
+        url:"<?php echo URL::to('/search');?>",
+        type:"GET",
+        data:{
+          'country':query}
+        ,
+        success:function (data) {
+          $('.search_list').html(data);
+        }
+      }
+            )
+       } else {
+            $('.search_list').html("");
+       }
+    }
+                     );
+    $(document).on('click', 'li', function(){
+      var value = $(this).text();
+      $('.search').val(value);
+      $('.search_list').html("");
+    }
+                  );
+  }
+                   );
+</script>
+<!--<script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>-->
+
+</body>
+</html>
 	
 	
 </div>
