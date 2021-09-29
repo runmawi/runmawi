@@ -68,8 +68,8 @@ class ModeratorsUserController extends Controller
 
   public function index()
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
       $moderatorsrole = ModeratorsRole::all();
@@ -95,8 +95,8 @@ class ModeratorsUserController extends Controller
 
   public function store(Request $request)
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
     $input = $request->all();
@@ -189,14 +189,15 @@ if($request->picture == ""){
 
   public function edit($id)
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+
+
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
 $moderators = ModeratorsUser::find($id);
 $useraccess = UserAccess::where('user_id', '=', $id)->get();
 $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
-
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -224,8 +225,8 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
 
   public function update(Request $request)
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
 $data = $request->all();
@@ -297,8 +298,8 @@ foreach($data['user_permission'] as $value){
   
   public function delete($id)
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
 
@@ -315,8 +316,8 @@ foreach($data['user_permission'] as $value){
   }
   public function view()
   {
-    $id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $id)->first();
+    $package_id = auth()->user()->id;
+    $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
       $moderatorsrole = ModeratorsRole::all();

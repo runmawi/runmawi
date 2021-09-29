@@ -297,8 +297,8 @@ class AdminThemeSettingsController extends Controller
          return view('admin.sliders.index',$data);
       } 
     public function LanguageIndex(){
-                      $id = auth()->user()->id;
-            $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
             if($package == "Pro" || $package == "Business" ){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
@@ -317,8 +317,8 @@ class AdminThemeSettingsController extends Controller
   }   
     
     public function LanguageTransIndex(){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
@@ -412,8 +412,8 @@ class AdminThemeSettingsController extends Controller
     
     
     public function LanguageDelete($id){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
         VideoLanguage::destroy($id);
@@ -427,8 +427,8 @@ class AdminThemeSettingsController extends Controller
   }  
     
     public function LanguageTransDelete($id){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
         Language::destroy($id);
@@ -443,8 +443,8 @@ class AdminThemeSettingsController extends Controller
     
     
       public function LanguageTransStore(Request $request){
-        $id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
@@ -474,8 +474,8 @@ class AdminThemeSettingsController extends Controller
     }  
     
     public function LanguageStore(Request $request){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
@@ -499,8 +499,8 @@ class AdminThemeSettingsController extends Controller
     }
     
        public function LanguageTransEdit($id){
-        $id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" ){
             $categories = Language::where('id', '=', $id)->get();
@@ -514,8 +514,8 @@ class AdminThemeSettingsController extends Controller
       } 
     
         public function LanguageEdit($id){
-          $id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package_id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" ){
             $categories = VideoLanguage::where('id', '=', $id)->get();
@@ -530,8 +530,8 @@ class AdminThemeSettingsController extends Controller
     
     
      public function LanguageTransUpdate(Request $request){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
         $input = $request->all();
@@ -550,8 +550,8 @@ class AdminThemeSettingsController extends Controller
    } 
     
     public function LanguageUpdate(Request $request){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
         $input = $request->all();

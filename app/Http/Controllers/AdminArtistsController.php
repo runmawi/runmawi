@@ -19,9 +19,8 @@ class AdminArtistsController extends Controller
 {
     public function index(Request $request)
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -52,9 +51,8 @@ class AdminArtistsController extends Controller
 
     public function create()
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -74,9 +72,8 @@ class AdminArtistsController extends Controller
 
      public function store(Request $request)
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -114,9 +111,8 @@ class AdminArtistsController extends Controller
 
     public function edit($id)
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -140,9 +136,8 @@ class AdminArtistsController extends Controller
 
     public function update(Request $request)
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -180,9 +175,8 @@ class AdminArtistsController extends Controller
 
     public function destroy($id)
     {
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){

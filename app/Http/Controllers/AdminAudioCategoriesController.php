@@ -19,9 +19,8 @@ use DB;
 class AdminAudioCategoriesController extends Controller
 {
       public function index(){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -46,9 +45,8 @@ class AdminAudioCategoriesController extends Controller
     
     
      public function store(Request $request){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -102,9 +100,8 @@ class AdminAudioCategoriesController extends Controller
        }
     
     public function edit($id){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -121,9 +118,8 @@ class AdminAudioCategoriesController extends Controller
     
     
         public function update(Request $request){
-            $id = auth()->user()->id;
-
-            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package_id = auth()->user()->id;
+            $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
     
             if($package == "Pro" || $package == "Business" ){
@@ -186,9 +182,8 @@ class AdminAudioCategoriesController extends Controller
         
     
         public function destroy($id){
-            $id = auth()->user()->id;
-
-            $user_package =    DB::table('users')->where('id', $id)->first();
+            $package_id = auth()->user()->id;
+            $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
     
             if($package == "Pro" || $package == "Business" ){
@@ -213,9 +208,8 @@ class AdminAudioCategoriesController extends Controller
          /*Albums section */
     
     public function albumIndex(){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -234,9 +228,8 @@ class AdminAudioCategoriesController extends Controller
     }
 
     public function storeAlbum(Request $request){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -282,10 +275,8 @@ class AdminAudioCategoriesController extends Controller
     }
 
     public function updateAlbum(Request $request){
-        $id = auth()->user()->id;
-
-        
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -337,9 +328,8 @@ class AdminAudioCategoriesController extends Controller
     }
 
     public function destroyAlbum($id){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){
@@ -355,9 +345,8 @@ class AdminAudioCategoriesController extends Controller
 }
 
     public function editAlbum($id){
-        $id = auth()->user()->id;
-
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" ){

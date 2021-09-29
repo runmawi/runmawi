@@ -18,8 +18,8 @@ use DB;
 class AdminLiveCategoriesController extends Controller
 {
       public function index(){
-        $id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $id)->first();
+        $package_id = auth()->user()->id;
+        $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->get();
@@ -43,8 +43,8 @@ class AdminLiveCategoriesController extends Controller
     
     
      public function store(Request $request){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
@@ -97,8 +97,8 @@ class AdminLiveCategoriesController extends Controller
        }
     
     public function edit($id){
-      $id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $id)->first();
+      $package_id = auth()->user()->id;
+      $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" ){
             $categories = LiveCategory::where('id', '=', $id)->get();
@@ -114,8 +114,8 @@ class AdminLiveCategoriesController extends Controller
     
     
         public function update(Request $request){
-          $id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package_id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" ){
             $input = $request->all();
@@ -178,8 +178,8 @@ class AdminLiveCategoriesController extends Controller
         
     
         public function destroy($id){
-          $id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $id)->first();
+          $package_id = auth()->user()->id;
+          $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" ){
             LiveCategory::destroy($id);

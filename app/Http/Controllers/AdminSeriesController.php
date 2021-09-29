@@ -387,12 +387,15 @@ class AdminSeriesController extends Controller
     public function destroy($id)
     {
         $series = Series::find($id);
+        
 
 
         //$this->deleteSeriesImages($series);
 
         Series::destroy($id);
         Seriesartist::where('series_id',$id)->delete();
+        Episode::where('series_id',$id)->delete();
+
 //        SeriesResolution::where('series_id', '=', $id)->delete();
 //        SeriesSubtitle::where('series_id', '=', $id)->delete();
 
