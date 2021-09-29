@@ -5,6 +5,7 @@
   .slider.round:before {
     border-radius: 50%;
   }
+#user_permissions .switch {float: right;}
   .switch {
     position: relative;
     display: inline-block;
