@@ -73,7 +73,8 @@ class TvshowsController extends Controller
      $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
      $latest_episodes = Episode::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
      $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
-
+     $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+     
      $pages = Page::all();
      $data = array(
       'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(12),
@@ -81,6 +82,7 @@ class TvshowsController extends Controller
       'trendings' => $trending_episodes,
       'latest_episodes' => $latest_episodes,
       'featured_episodes' => $featured_episodes,
+      'latest_series' => $latest_series,
       'current_page' => 1,
       'genres' => $genre,
       'pagination_url' => '/series',
