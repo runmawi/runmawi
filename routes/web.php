@@ -27,7 +27,7 @@ Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 
 Route::group(['middleware' => ['restrictIp']], function() {
 
-    Route::get('/stripe/billings-details', 'PaymentController@ViewStripe');
+Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('locale/{locale}', function ($locale){
         Session::put('locale', $locale);
         return redirect()->back();
