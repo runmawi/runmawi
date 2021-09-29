@@ -186,7 +186,7 @@
                             <div>
                                 <h5>Video Upload</h5>
                             </div>
-                            <div class="row ">
+                            <div class="row">
                              <div class="col-sm-8 form-group">
                              @if(!empty($video->trailer) && $video->trailer != '')
                               <video width="200" height="200" controls>
@@ -196,7 +196,7 @@
                               <br>
 
                                  <label class="p-2">Upload Trailer :</label><br>
-                               <div style="margin-top: 38%;"class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
+                               <div style="position: relative;"class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                                        <!--<p>Upload Trailer video</p>-->
                                        <p style="font-size: 14px!important;">Drop and drag the video file</p>
@@ -206,8 +206,10 @@
                              <!-- <div class="col-sm-6 form-group"> -->
                          
                             
-                                
-                             <div style="margin-top: 37%;">
+                                </div> 
+                            </div>
+                             <div class="row">
+                             <div class="col-sm-12 form-group">
                                
                               <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
         <div class="panel-title">Subtitles (srt or txt)<a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
@@ -225,6 +227,7 @@
         </div> 
       </div>
       </div>
+                            </div>
 
          <div class="row">
                               <!--<div class="col-sm-6 form-group">

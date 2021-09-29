@@ -65,6 +65,7 @@ class AdminVideosController extends Controller
 
         return View('admin.videos.index', $data);
     }
+    
     public function uploadFile(Request $request){
 
         $value = array();
@@ -88,28 +89,34 @@ class AdminVideosController extends Controller
         $mp4_url = $data['file'];
         
         if($mp4_url != '') {
-        $ffprobe = \FFMpeg\FFProbe::create();
-        $disk = 'public';
-        $data['duration'] = $ffprobe->streams($request->file)
-        ->videos()
-        ->first()                  
-        ->get('duration'); 
+        // $ffprobe = \FFMpeg\FFProbe::create();
+        // $disk = 'public';
+        // $data['duration'] = $ffprobe->streams($request->file)
+        // ->videos()
+        // ->first()                  
+        // ->get('duration'); 
         
         $rand = Str::random(16);
         $path = $rand . '.' . $request->file->getClientOriginalExtension();
+    
         $request->file->storeAs('public', $path);
         $thumb_path = 'public';
+        
         
         // $this->build_video_thumbnail($request->file,$path, $data['slug']);
         
          $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-         $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
-        
+        //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+         $storepath  = URL::to('/storage/app/public/'.$original_name);
+         $str = explode(".mp4",$path);
+         $path =$str[0];
+
          $video = new Video();
          $video->disk = 'public';
          $video->title = $file_folder_name;
          $video->original_name = 'public';
-         $video->path = $storepath;
+         $video->path = $path;
+         $video->mp4_url = $path;
          $video->draft = 0;
          $video->save(); 
         
@@ -137,8 +144,7 @@ class AdminVideosController extends Controller
         }
 
         // return response()->json($value);
-        }
-        
+        }  
   
      /**
      * Show the form for creating a new video

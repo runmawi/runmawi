@@ -1,3 +1,9 @@
+<?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
+?>
 <!DOCTYPE html>
 <html>
 <head>
