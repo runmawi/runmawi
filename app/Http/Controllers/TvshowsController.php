@@ -93,8 +93,9 @@ class TvshowsController extends Controller
      return View::make('tv-home', $data);
    }
 
-   public function play_episode($id)
+   public function play_episode($series_name,$episode_name,$id)//
    {
+        
    	$settings = Setting::first();
    	if(Auth::guest()):
             return Redirect::to('/login');
@@ -176,8 +177,9 @@ class TvshowsController extends Controller
         }
      }
 
-     public function play_series($id)
+     public function play_series($name,$id)
     {
+    
     	$settings = Setting::first();
         if(Auth::guest()):
             return Redirect::to('/login');

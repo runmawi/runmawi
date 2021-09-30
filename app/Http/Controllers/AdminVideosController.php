@@ -65,7 +65,6 @@ class AdminVideosController extends Controller
 
         return View('admin.videos.index', $data);
     }
-    
     public function uploadFile(Request $request){
 
         $value = array();
@@ -107,16 +106,17 @@ class AdminVideosController extends Controller
         
          $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
         //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
-         $storepath  = URL::to('/storage/app/public/'.$original_name);
-         $str = explode(".mp4",$path);
-         $path =$str[0];
+        //  $str = explode(".mp4",$path);
+        //  $path =$str[0];
+         $storepath  = URL::to('/storage/app/public/'.$path);
 
          $video = new Video();
          $video->disk = 'public';
          $video->title = $file_folder_name;
          $video->original_name = 'public';
          $video->path = $path;
-         $video->mp4_url = $path;
+         $video->mp4_url = $storepath;
+         $video->type = 'mp4_url';
          $video->draft = 0;
          $video->save(); 
         
@@ -144,7 +144,8 @@ class AdminVideosController extends Controller
         }
 
         // return response()->json($value);
-        }  
+        }
+        
   
      /**
      * Show the form for creating a new video
@@ -1094,6 +1095,7 @@ if(!empty($artistsdata)){
             $video->original_name = 'public';
             $video->title = $data['mp4_url'];
             $video->mp4_url = $data['mp4_url'];
+            $video->type = 'mp4_url';
             $video->draft = 0;
             $video->user_id = Auth::user()->id;
             $video->save();
@@ -1121,6 +1123,7 @@ if(!empty($artistsdata)){
             $video->original_name = 'public';
             $video->title = $data['m3u8_url'];
             $video->m3u8_url = $data['m3u8_url'];
+            $video->type = 'm3u8_url';
             $video->draft = 0;
             $video->user_id = Auth::user()->id;
             $video->save();
@@ -1152,6 +1155,7 @@ if(!empty($artistsdata)){
             $video->original_name = 'public';
             $video->title = $data['embed'];
             $video->embed_code = $data['embed'];
+            $video->type = 'embed';
             $video->draft = 0;
             $video->user_id = Auth::user()->id;
             $video->save();

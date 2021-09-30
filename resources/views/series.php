@@ -6,6 +6,8 @@
         align-items: center;
     }
 </style>
+
+<?php //dd($season) ?>
 <div class="container" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -47,9 +49,11 @@
 				</nav>
 				<div class="tab-content" id="nav-tabContent">
 					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+<!-- $series->title -->
+						
 						<?php foreach($season as $key => $seasons):  
 							foreach($seasons->episodes as $key => $episodes): ?>
-								<a href="<?php echo URL::to('episode').'/'.$episodes->id;?>">
+								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->title.'/'.$episodes->id;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >

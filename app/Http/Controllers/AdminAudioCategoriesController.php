@@ -118,6 +118,7 @@ class AdminAudioCategoriesController extends Controller
     
     
         public function update(Request $request){
+            
             $package_id = auth()->user()->id;
             $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;

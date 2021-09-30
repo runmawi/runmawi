@@ -46,8 +46,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     /*TV-shows*/
     Route::get('tv-shows', 'TvshowsController@index');
-    Route::get('episode/{id}', 'TvshowsController@play_episode');
-    Route::get('play_series/{id}', 'TvshowsController@play_series');
+    Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
+    Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
 
     /* Audio Pages */
     Route::get('audios', 'ThemeAudioController@audios');

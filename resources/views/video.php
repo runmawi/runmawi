@@ -11,6 +11,8 @@
    <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
    
 <?php
+// dd($video);
+// exit();
     // print_r($watched_time);
    if(!Auth::guest()) {  
    if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
@@ -27,7 +29,12 @@
             if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
           <?php if($video->type == 'embed'): ?>
             <div id="video_container" class="fitvid">
-              <?= $video->embed_code ?>
+              <?php
+               if(!empty($video->embed_code)){
+                echo $video->embed_code;
+              }else{
+                echo $video->trailer;
+              } ?>
             </div>
           <?php  elseif($video->type == 'file'): ?>
 
@@ -87,13 +94,48 @@
                 <?php } ?></p>
             </div>
             </div>
-          <?php  else: ?>
-            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <?php  elseif($video->type == 'mp4_url'):  ?>
+              
+                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                 <!-- Current time: <div id="current_time"></div> -->
                 <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
-                    <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->mp4_url; ?>" type='video/mp4' label='auto' > 
+                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer; } ?>" type='video/mp4' label='auto' > 
+                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                    <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "German"){?>
+                    <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "Spanish"){ ?>
+                    <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                    <?php } if($value['sub_language'] == "Hindi"){ ?>
+                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                    <?php }
+                    } } else {  } ?>  
+                </video>
+  
+                <div class="playertextbox hide">
+                    <!--<h2>Up Next</h2>-->
+                    <p><?php if(isset($videonext)){ ?>
+                    <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                    <?php }elseif(isset($videoprev)){ ?>
+                    <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                    <?php } ?>
+
+                    <?php if(isset($videos_category_next)){ ?>
+                    <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                    <?php }elseif(isset($videos_category_prev)){ ?>
+                    <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                    <?php } ?></p>
+                </div>
+            </div>
+    <?php  else: ?>
+                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                <!-- Current time: <div id="current_time"></div> -->
+                <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+<!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+
+                    <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type='application/x-mpegURL' label='auto' > 
                     <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                     <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
                     <?php } if($value['sub_language'] == "German"){?>
@@ -122,8 +164,6 @@
                 </div>
             </div>
     <?php endif; ?>
-        
-
       <?php else: ?>
 
         <div id="subscribers_only">
