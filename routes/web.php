@@ -431,6 +431,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+Route::get('admin/moderator/role', 'ModeratorsUserController@RolesPermission');
+Route::post('admin/rolepermission/create', 'ModeratorsUserController@RolesPermissionStore');
 
 use Carbon\Carbon as Carbon;
 

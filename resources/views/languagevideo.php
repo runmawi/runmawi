@@ -240,7 +240,6 @@ height: 30px !important;
     
       <!-- Header End -->
 
-
             
          <section id="iq-favorites">
             <div class="container-fluid">
@@ -249,9 +248,11 @@ height: 30px !important;
                      <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
+                     
+
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                                     <?php  if(isset($lang_videos)) :
+                                     <?php  if(isset($lang_videos)) {
 			foreach($lang_videos as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('home') ?>">
@@ -294,7 +295,9 @@ height: 30px !important;
                            </li>
                            
                             <?php endforeach; 
-		                                   endif; ?>
+		                                  }else{
+                                        echo "No Video ";
+                                      } ?>
                         </ul>
                      </div>
                   </div>
@@ -378,7 +381,7 @@ height: 30px !important;
 endif; */?>
              
          
-                                  <?php  if(isset($lang_videos)) :
+                                  <?php  if(isset($lang_videos)) {
 			foreach($lang_videos as $watchlater_video): ?>
                                 <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
@@ -476,12 +479,14 @@ endif; */?>
 	</div></div>
 
 <?php endforeach; 
-endif; ?>
+}else{
+  echo "No Video ";
+} ?>
 </section>
 <!--End Of MainContent-->
 <script type="text/javascript">
     $(document).ready(function(){
-      $('.bd-example-modal-xl<?= $watchlater_video->id;?>').modal({
+      $('.bd-example-modal-xl<?php  if(empty($watchlater_video->id)){ echo "No Videos Found" ; }else{ echo $watchlater_video->id; };?>').modal({
           show: false
       }).on('hidden.bs.modal', function(){
           $(this).find('video')[0].pause();
@@ -740,7 +745,7 @@ function about(evt , id) {
  	/*on video Play*/
  	function playstart() {
  		// if($("#video_player").data('authenticated')){
-		// 	$.post('<?= URL::to('watchhistory');?>', { video_id : '<?= $watchlater_video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
+		// 	$.post('<?= URL::to('watchhistory');?>', { video_id : '<?// $watchlater_video->id ?>', _token: '<?= csrf_token(); ?>' }, function(data){});
 		// 	$.post('<?= URL::to('recommendedcategories');?>', { videocategoryid : $('.videocategoryid').data('videocategoryid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 
 		// } else {
@@ -776,13 +781,14 @@ function about(evt , id) {
     window.player = player
     player.updateSrc([
       {
-        src: '<?= $watchlater_video->trailer; ?>',
+        
+        src: 'if(empty($watchlater_video->id)){ echo "No Videos Found" ; }else{ echo $watchlater_video->id; };?>',
         type: 'video/mp4',
         label: 'SD',
         res: 360
       },
       {
-        src: '<?= $watchlater_video->trailer; ?>',
+        src: 'if(empty($watchlater_video->id)){ echo "No Videos Found" ; }else{ echo $watchlater_video->id; };?>',
         type: 'video/mp4',
         label: 'HD',
         res: 720

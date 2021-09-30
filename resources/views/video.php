@@ -130,12 +130,13 @@
                 </div>
             </div>
     <?php  else: ?>
-                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                 <!-- Current time: <div id="current_time"></div> -->
                 <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
                     <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type='application/x-mpegURL' label='auto' > 
+
                     <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                     <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
                     <?php } if($value['sub_language'] == "German"){?>

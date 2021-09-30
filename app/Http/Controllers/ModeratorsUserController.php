@@ -100,11 +100,12 @@ class ModeratorsUserController extends Controller
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" ){
     $input = $request->all();
+    $role = ModeratorsRole::where('id','=',$request->user_role)->get();
+
     // echo "<pre>";  
-    // print_r($input);
+    // print_r($role[0]->user_permission);
     // exit();
-    $user_permission = $request->user_permission;
- $permission = implode(",",$user_permission);
+    $permission = $role[0]->user_permission;
   
 
 $request->validate([
@@ -156,16 +157,16 @@ if($request->picture == ""){
 }
 
     $moderatorsuser->save();
-    $user_id = $moderatorsuser->id;
+    // $user_id = $moderatorsuser->id;
 
-    foreach($request->user_permission as $value){
-    $userrolepermissiom = new UserAccess;
-    $userrolepermissiom->user_id = $user_id;
-    $userrolepermissiom->role_id = $request->user_role;
-    $userrolepermissiom->permissions_id = $value;
-    $userrolepermissiom->save();
+    // foreach($request->user_permission as $value){
+    // $userrolepermissiom = new UserAccess;
+    // $userrolepermissiom->user_id = $user_id;
+    // $userrolepermissiom->role_id = $request->user_role;
+    // $userrolepermissiom->permissions_id = $value;
+    // $userrolepermissiom->save();
 
-    }
+    // }
     $moderatorsrole = ModeratorsRole::all();
     $moderatorspermission = ModeratorsPermission::all();
     $moderatorsuser = ModeratorsUser::all();    
@@ -186,7 +187,70 @@ if($request->picture == ""){
 
 }
 }
+public function RolesPermission(Request $request)
+{
+  $package_id = auth()->user()->id;
+  $user_package =    DB::table('users')->where('id', $package_id)->first();
+  $package = $user_package->package;
+  if($package == "Pro" || $package == "Business" ){
+    $moderatorsrole = ModeratorsRole::all();
+    $moderatorspermission = ModeratorsPermission::all();
+    $moderatorsuser = ModeratorsUser::all();
+    $data = array(
+ 
+        'roles' => $moderatorsrole,
+        'permission' => $moderatorspermission,
+        'moderatorsuser' => $moderatorsuser,
 
+
+      );
+     return view('moderator.moderators_roles',$data);
+    }else if($package == "Basic"){
+
+      return view('blocked');
+  
+  }
+}
+public function RolesPermissionStore(Request $request)
+{
+  $input = $request->all();
+  // echo "<pre>";  
+  // print_r($input);
+  // exit();
+$request->session()->flash('notification', 'Successfully Registered Role');
+
+  $user_permission = $request->user_permission;
+$permission = implode(",",$user_permission);
+// echo "<pre>";  
+// print_r($permission);
+// exit();
+  $package_id = auth()->user()->id;
+  $user_package =    DB::table('users')->where('id', $package_id)->first();
+  $package = $user_package->package;
+  if($package == "Pro" || $package == "Business" ){
+    $user_roles = new ModeratorsRole;
+    $user_roles->role_name = $input['role_name'];
+    $user_roles->user_permission = $permission;
+    $user_roles->save();
+
+    $moderatorsrole = ModeratorsRole::all();
+    $moderatorspermission = ModeratorsPermission::all();
+    $moderatorsuser = ModeratorsUser::all();
+    $data = array(
+ 
+        'roles' => $moderatorsrole,
+        'permission' => $moderatorspermission,
+        'moderatorsuser' => $moderatorsuser,
+
+
+      );
+     return view('moderator.moderators_roles',$data);
+    }else if($package == "Basic"){
+
+      return view('blocked');
+  
+  }
+}
   public function edit($id)
   {
 
@@ -197,7 +261,7 @@ if($request->picture == ""){
     if($package == "Pro" || $package == "Business" ){
 $moderators = ModeratorsUser::find($id);
 $useraccess = UserAccess::where('user_id', '=', $id)->get();
-$permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
+// $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -208,7 +272,7 @@ $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
           'permission' => $moderatorspermission,
           'moderatorsuser' => $moderatorsuser,
           'moderators' => $moderators,
-          'moderatorspermission' => $permission,
+          // 'moderatorspermission' => $permission,
           'useraccess' => $useraccess,
 
 
@@ -234,8 +298,8 @@ $data = $request->all();
 
   // $data_delete = UserAccess::destroy('user_id', '=', $id);
 
-$user_permission = $data['user_permission'];
-$permission = implode(",",$user_permission);
+// $user_permission = $data['user_permission'];
+// $permission = implode(",",$user_permission);
 $id = $data['id'];
 $moderatorsuser = ModeratorsUser::find($id);
 $moderatorsuser['username'] = $data['username'];
@@ -243,7 +307,7 @@ $moderatorsuser['email'] = $data['email_id'];
 $moderatorsuser['mobile_number'] = $data['mobile_number'];
 $moderatorsuser['description'] = $data['description'];
 $moderatorsuser['user_role'] = $data['user_role'];
-$moderatorsuser['user_permission'] = $permission;
+// $moderatorsuser['user_permission'] = $permission;
 
   $logopath = URL::to('/public/uploads/picture/');
   $path = public_path().'/uploads/picture/';
@@ -271,17 +335,17 @@ $user_id = $moderatorsuser->id;
 
 
 // $userrolepermissiom = UserAccess::where('user_id', '=', $id)->get();
-$data_delete = UserAccess::where('user_id','=',$id)->delete();
+// $data_delete = UserAccess::where('user_id','=',$id)->delete();
 
-foreach($data['user_permission'] as $value){
-  $userrolepermissiom = new UserAccess;
-  $userrolepermissiom->user_id = $user_id;
-  $userrolepermissiom->role_id = $request->user_role;
-  $userrolepermissiom->permissions_id = $value;
-  $userrolepermissiom->save();
+// foreach($data['user_permission'] as $value){
+//   $userrolepermissiom = new UserAccess;
+//   $userrolepermissiom->user_id = $user_id;
+//   $userrolepermissiom->role_id = $request->user_role;
+//   $userrolepermissiom->permissions_id = $value;
+//   $userrolepermissiom->save();
   
 
-}
+// }
 
   
        return \Redirect::back();

@@ -18,6 +18,7 @@ use Hash;
 use DB;
 use Illuminate\Support\Facades\Cache;
 //use Image;
+use App\SystemSetting as SystemSetting;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class LiveStreamController extends Controller
@@ -36,7 +37,9 @@ class LiveStreamController extends Controller
     public function Play($vid)
         {
         
+          $data = session()->all();
        
+        if(!empty($data['password_hash'])){
            $categoryVideos = LiveStream::where('id',$vid)->first();
            $user_id = Auth::user()->id;
            $settings = Setting::first(); 
@@ -62,6 +65,10 @@ class LiveStreamController extends Controller
            );
 
            return view('livevideo', $data);
+          }else{
+            $system_settings = SystemSetting::first();
 
+            return view('auth.login',compact('system_settings'));
+          }
         }
 }

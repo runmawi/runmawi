@@ -139,7 +139,7 @@
                     <br>
                     <br>
                     <br> <br>
-                    <div id="user_permissions" class="buttons">
+                    <!-- <div id="user_permissions" class="buttons">
 
                     <div >
                                                 
@@ -150,17 +150,16 @@
                             ?>
                     @foreach($permission as $permissions)
                     <div  class="col-md-4" style="width: 33%; float: left;">
-                                <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
+                                <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;">
                                 {{$permissions->name}}
                                 <label class="switch">
 
                                     <?php
-                                       foreach($moderatorspermission as $permission){
-                                        $permissions_id[] = $permission->permissions_id;
-                                    }
+                                    //    foreach($moderatorspermission as $permission){
+                                    //     $permissions_id[] = $permission->permissions_id;
+                                    // }
                                     // if(in_array($permissions->id,$permissions_id )){ 
                                         ?>
-                    <input type="checkbox" name="user_permission[]" value="{{ $permissions->id }}" {{ in_array($permissions->id,$permissions_id) ? ' checked' : '' }}> 
                                     <?php //} ?>
                                     <span class="slider round"></span>
                                 </label>
@@ -168,7 +167,7 @@
                     @endForeach
 
 
-                    </div>
+                    </div> -->
 
                     </div>
                     <br>

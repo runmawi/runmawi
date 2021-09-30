@@ -183,7 +183,7 @@ if($package == "Basic"){    ?>
                   </li>
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Sliders</span></a></li>
                     <div >
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
@@ -196,8 +196,9 @@ if($package == "Basic"){    ?>
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i> Add Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i> All Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add Role</a></li>
                      </ul>
                   </li>
                   <li>
@@ -330,7 +331,7 @@ if($package == "Basic"){    ?>
                   </li>
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Sliders</span></a></li>
                     <div >
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
@@ -342,8 +343,9 @@ if($package == "Basic"){    ?>
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                      </ul>
                   </li>
                   <li>
@@ -477,7 +479,7 @@ if($package == "Basic"){    ?>
                   </li>
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Mobile Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Sliders</span></a></li>
                     <div >
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
@@ -489,8 +491,9 @@ if($package == "Basic"){    ?>
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>ADD Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>ALL Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                      </ul>
                   </li>
                   <li>

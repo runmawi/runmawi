@@ -2,7 +2,6 @@
 
 
 <style>
-
 .pagination>li>a, .pagination>li>span {
     position: relative;
     float: left;
@@ -46,46 +45,50 @@
 </style>
 
 
-<div class="container movlistt">
-    
-    <div class="new-art">
-        <h4 class="Continue Watching text-left padding-top-40" style="color:black;">BOP LIVE VIDEOS</h4>
-	    <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
-    </div>
-    
+<div class="container-fluid movlistt">
     
     <div class="row">
-        <?php if(isset($videos)) :
+      <div class="col-sm-12 overflow-hidden">
+         <div class="iq-main-header d-flex align-items-center justify-content-between">
+            <h4 class="main-title">Live Videos</h4>
+<!--            <a href="show-single.html" class="text-primary">View all</a>-->
+         </div>
+      </div>
+   </div>
+    
+      <!-- MainContent -->
+   <div class="main-content">
+      <section class="movie-detail ">
+         <div class="row">
+             <?php if(isset($videos)) :
             foreach($videos as $video): ?>
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 new-art">
-                <article class="block expand">
-                    <a class="block-thumbnail" href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
-                        <div class="play-button">
-                            <div class="play-block">
-                                <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-                            </div>
-                            <div class="detail-block">
-                            <p class="movie-title"><?= ucfirst($video->title); ?></p>
-                            <p class="movie-rating">
-                                <span class="star-rate"><i class="fa fa-star"></i><?= $video->rating;?></span>
-                                <span class="viewers"><i class="fa fa-eye"></i>(<?= $video->views;?>)</span>
-                                <span class="running-time"><i class="fa fa-clock-o"></i><?=$video->duration; ?></span>
-                            </p>
-                            </div>
-                        </div>
-                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>">
-                    </a>
-                     <div class="block-contents">
-                        <p class="movie-title padding"><?php echo $video->title; ?></p>
+            <div class="col-1-5 col-md-6 iq-mb-30">
+                 <div class="epi-box">
+                    <div class="epi-img position-relative">
+                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
+                       <div class="episode-play-info">
+                          <div class="episode-play">
+                             <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                                <i class="ri-play-fill"></i>
+                             </a>
+                          </div>
+                       </div>
                     </div>
-                </article>
+                    <div class="epi-desc p-3">
+                       <div class="d-flex align-items-center justify-content-between">
+                          <span class="text-white"><?= ucfirst($video->title); ?></span>
+                       </div>
+                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
+                       </a>
+                    </div>
+                 </div>
             </div>
-        <?php endforeach; 
+              <?php endforeach; 
         endif; ?>
-        
+         </div>
+      </section>
     </div>
-    
-    
 </div>
 
 <?php include('footer.blade.php');?>
