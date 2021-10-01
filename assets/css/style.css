@@ -792,14 +792,6 @@ margin-right: -15px !important;
 }
 ul.list-group {text-align: left !important;max-height: 450px !important;}
 li.list-group-item {width: 375px;}
-h3 {font-size: 2px !important;}
-
-
-
-
-
-
-
 	.land{
 		background-color: #fff;
 		 overflow: hidden;
@@ -1679,3 +1671,8 @@ padding: 15px;
 /* Register */
 .login-block h1 {font-size: 1.752em; text-align: center; margin-bottom: 30px;}
 .reset-help { font-size: 14px; color: #58c5e1; }
+
+/* My Profile */
+.table.recent_table thead th {color: #fff;}
+.table.recent_table tr td {color: #fff;}
+#personal_det p{color: #fff;}

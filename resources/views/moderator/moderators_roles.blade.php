@@ -16,15 +16,14 @@
 <div id="user_roles-container">
 <!-- This is where -->
 	<div class="user_roles-section-title">
-        <div class=”panel-body” id="message">
-    @if (session()->has('notification'))
-    <div class="notification">
-        {!! session('notification') !!}
-    </div>
-@endif
-</div>
+
            
 		<h3><i class="entypo-globe"></i> Roles & Permission</h3> 
+                @if(session()->has('message'))
+            <div class="alert alert-success " id="successMessage">
+                {{ session()->get('message') }}
+            </div>
+        @endif
         <form method="POST" action="{{ URL::to('admin/rolepermission/create') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -37,37 +36,7 @@
                                 <input id="role_name" type="text" class="form-control" name="role_name"  autocomplete="role_name" autofocus>
                             </div>
                         </div>
-                        <!-- <div class="col-md-6" style="width: 50%; float: left;">
-                                    
-                        <label for="permission"><h5>Permission</h5></label>
-
-                        </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
-                        
-                        <label for="Add"><h5>Add</h5></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label for="Update"><h5>Update</h5></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label for="View"><h5>View</h5></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label for="view"><h5>Delete</h5></label>
-                        </div>
-
-
-
-
-                        <div class="col-md-6" style="width: 50%; float: left;">
-                                    
-                        <label for="permission"><h5>Video</h5></label><br>
-                        <label for="permission"><h5>Audio</h5></label>
-
-
-                        </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
-                        <input type="checkbox" name="permission[]" id="video_add" value="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="permission[]" id="video_update" value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="permission[]" id="video_edit" value="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="permission[]" id="video_delete" value="4">
-
-
-                        </div> -->
+            
                         <div >
                                
                                <label for="user_permission" class=" col-form-label text-md-right">{{ __('User Permission') }}</label>
@@ -105,7 +74,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('#message').fadeOut(120);
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
     })
 </script>
 @stop

@@ -82,15 +82,7 @@ i.fa.fa-google-plus {
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" width="200" style="margin-bottom:1rem;">
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide">
-                        <button class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
+                    @endif
                      <form method="POST" action="{{ route('login') }}" class="mt-4">
                          @csrf
 						   <input type="hidden" name="previous" value="{{ url()->previous() }}">

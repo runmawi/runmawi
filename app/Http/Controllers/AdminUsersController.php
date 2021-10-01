@@ -304,7 +304,8 @@ class AdminUsersController extends Controller
         
     	$user_id = Auth::user()->id;
     	$user_details = User::find($user_id);
-        
+        // print_r($user_details->stripe_id);
+        // exit();
     	$data = array(
     		'user' => $user_details,
     		'post_route' => URL::to('/profile/update')

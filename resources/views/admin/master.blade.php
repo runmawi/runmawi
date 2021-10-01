@@ -199,6 +199,8 @@ if($package == "Basic"){    ?>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i> Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i> All Moderators</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add Role</a></li>
+                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>All Role</a></li>
+
                      </ul>
                   </li>
                   <li>
@@ -346,6 +348,7 @@ if($package == "Basic"){    ?>
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
+                        <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
                      </ul>
                   </li>
                   <li>
@@ -494,6 +497,8 @@ if($package == "Basic"){    ?>
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
+
                      </ul>
                   </li>
                   <li>

@@ -24,7 +24,17 @@
 		<h3><i class="entypo-globe"></i>Update Moderator Users</h3> 
 	</div>
 	<div class="clear"></div>
-
+	@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage">
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif	
 
                     <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                         @csrf
@@ -115,7 +125,7 @@
                                     @if($roles->count() > 0)
                                     @foreach($roles as $value)
                                     <!-- <option value="{{$value->id}}">{{$value->role_name}}</option> -->
-                                    <option value="{{$value->id}}" @if(!empty($moderators->user_role)){{ 'selected' }}@endif>{{$value->role_name}}</option>
+                                    <option value="{{ $value->id }}" @if(!empty($moderators->user_role)){{ 'selected' }}@endif>{{ $value->role_name }}</option>
 
                                     @endForeach
                                     @else
@@ -125,50 +135,6 @@
                         </select>         
                         </div>
                         </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br> <br>
-                    <!-- <div id="user_permissions" class="buttons">
-
-                    <div >
-                                                
-                    <label for="user_permission" class=" col-form-label text-md-right">{{ __('User Permission') }}</label>
-                    </div>
-                    <?php
-                         
-                            ?>
-                    @foreach($permission as $permissions)
-                    <div  class="col-md-4" style="width: 33%; float: left;">
-                                <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;">
-                                {{$permissions->name}}
-                                <label class="switch">
-
-                                    <?php
-                                    //    foreach($moderatorspermission as $permission){
-                                    //     $permissions_id[] = $permission->permissions_id;
-                                    // }
-                                    // if(in_array($permissions->id,$permissions_id )){ 
-                                        ?>
-                                    <?php //} ?>
-                                    <span class="slider round"></span>
-                                </label>
-                    </div>
-                    @endForeach
-
-
-                    </div> -->
-
                     </div>
                     <br>
                                             <div class="form-group row mb-0">
@@ -202,6 +168,13 @@
                     //         }
                     //     });
                     // });
-
-
                     </script>
+
+                    <script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>

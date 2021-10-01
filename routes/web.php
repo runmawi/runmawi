@@ -434,9 +434,12 @@ Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::get('admin/moderator/role', 'ModeratorsUserController@RolesPermission');
 Route::post('admin/rolepermission/create', 'ModeratorsUserController@RolesPermissionStore');
 
+Route::get('admin/moderator/Allview', 'ModeratorsUserController@AllRoleView');
+Route::get('admin/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
+Route::get('admin/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
+Route::post('admin/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
+
 use Carbon\Carbon as Carbon;
-
-
 
 
 //categories_audio

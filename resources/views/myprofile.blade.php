@@ -43,7 +43,7 @@ $uppercase =  ucfirst($request_url);
       </div>-->
       <!-- loader END -->
      <!-- Header -->
-      <header id="main-header">
+      <header id="main-header" style="padding: 15px 0;">
          <div class="main-header">
             <div class="container-fluid">
                <div class="row">
@@ -440,271 +440,190 @@ $uppercase =  ucfirst($request_url);
 		</div>
 		
 		<!--<hr />-->
+    
+        <!-- MainContent -->
+    <section class="m-profile setting-wrapper pt-0">        
+        <div class="container">
+            <h4 class="main-title mb-4">Account Setting</h4>
+            <div class="row">
+                <div class="col-lg-4 mb-3">
+                    <div class="sign-user_card text-center mb-3">
+                        <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                        <a href="#updatepic" class="edit-icon text-primary">Edit</a>
+                    </div>
+<div class="row">
+    
+<!--
+        <div class="col-sm-6">
+            <div class="sign-user_card text-center mb-3">
+            <?php if ( Auth::user()->role != 'admin') { ?>
+                <div class="row">
+                    <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ ?>
+                        <h3> Plan Details:</h3>
+                        <p style="margin-left: 19px;margin-top: 8px"><?php echo CurrentSubPlanName(Auth::user()->id);?></p>
+                    <?php } ?>
+                        <div class="col-sm-12 col-xs-12 padding-top-30">
+                        <?php 
+                        $paypal_id = Auth::user()->paypal_id;
+                        if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
+                        $paypal_subscription = PaypalSubscriptionStatus();
+                        } else {
+                        $paypal_subscription = "";  
+                        }
 
-		<div id="main-admin-content">
+                        $stripe_plan = SubscriptionPlan();
+                        if ( $user->subscribed($stripe_plan) && empty(Auth::user()->paypal_id) ) { 
+                        if ($user->subscription($stripe_plan)->ended()) { ?>
+                        <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
+                        <?php } else { ?>
+                        <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
+                        <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a>
+                        <?php  } } 
+                        elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
+                        {   ?>
+                            <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
 
-			<div id="content-page" class="content-page">
-      <div class="container-fluid">
-         <div class="row profile-content ">
-            <div class="col-12 col-md-12 col-lg-6 align-self-center">
-               <div class="iq-card">
-                  <div class="iq-card-body profile-page" id="avatar">
-                     <div class="profile-header">
-                        <div class="cover-container text-center">
-                           <!--<img src="../assets/images/user/1.jpg" alt="profile-bg" class="rounded-circle img-fluid">-->
-                            <img height="100" width="100" class="rounded-circle img-fluid" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
-                           <div class="profile-detail mt-3">
-                              <h3><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h3>
-                             <!-- <p class="text-primary">Web designer</p>
-                              <p>Phasellus faucibus mollis pharetra. Proin blandit ac massa.Morbi nulla dolor, ornare at commodo non, feugiat non nisi.</p>-->
-                           </div>
-                           <div class="iq-social d-inline-block align-items-center">
-                              <ul class="list-inline d-flex p-0 mb-0 align-items-center">
-                                 <li>
-                                    <a href="https://www.facebook.com/webnexs/" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                 </li>
-                                 <li>
-                                    <a href="https://twitter.com/webnexstech" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                 </li>
-                                 <li>
-                                    <a href="https://www.youtube.com/channel/UC-d56PhtNHTAMNvZ3idGVZw" target="_blank" class="avatar-40 rounded-circle bg-primary mr-2 youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
-                                 </li>
-                                 <li >
-                                    <a href="https://in.pinterest.com/webnexs/" class="avatar-40 rounded-circle bg-primary pinterest"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
-                                 </li>
-                              </ul>
-                           </div>
+                        <?php } else { echo $paypal_subscription; ?>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <?php } ?>
                         </div>
-                     </div>
-                  </div>
-               </div>
-                <div class="iq-card">
-                    <div class="row" id="subscribe" >
-                        <div class="col-md-12" >
-                            <div class="iq-card-body">
-                                <ul class="list-inline p-0 mb-0">
-                                    <li>
-                                        <div class="row align-items-center justify-content-between mb-3 mt-3">
-                                            <div class="col-sm-6">
-                                                <?php if ( Auth::user()->role != 'admin') { ?>
-                                                   <div class="row">
-                                                    <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ ?>
-                                                        <h3> Plan Details:</h3>
-                                                        <p style="margin-left: 19px;margin-top: 8px"><?php echo CurrentSubPlanName(Auth::user()->id);?></p>
-                                                    <?php } ?>
-                                                    <div class="col-sm-12 col-xs-12 padding-top-30">
-                                                        <?php 
-                                                            $paypal_id = Auth::user()->paypal_id;
-                                                            if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
-                                                            $paypal_subscription = PaypalSubscriptionStatus();
-                                                            } else {
-                                                              $paypal_subscription = "";  
-                                                            }
 
-                                                         $stripe_plan = SubscriptionPlan();
-                                                         if ( $user->subscribed($stripe_plan) && empty(Auth::user()->paypal_id) ) { 
-                                                            if ($user->subscription($stripe_plan)->ended()) { ?>
-                                                                 <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
-                                                           <?php } else { ?>
-                                                           <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
-                                                                <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a>
-                                                         <?php  } } 
-                                                        elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
-                                                              {   ?>
-                                                              <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <div class="col-sm-12 col-xs-12 padding-top-30">
+                            <?php
+                            $billing_url = URL::to('/').'/paypal/billings-details';
+                            if (!empty(Auth::user()->paypal_id)){
+                            echo "<p><a href='".$billing_url."' class='plan-types'> <i class='fa fa-caret-right'></i> View Billing Details</a></p>";
+                            } 
+                            ?>
+                            <?php if ( $user->subscribed($stripe_plan) ) { 
+                            if ($user->subscription($stripe_plan)->ended()) { ?>
+                            <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
+                            <?php } else { ?>
+                            <p><a href="<?=URL::to('/upgrade-subscription');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
+                            <?php  } } ?>
 
-                                                        <?php } else { echo $paypal_subscription; ?>
-                                                            <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
-                                                        <?php } ?>
-                                                    </div>
-                                
-                                                    <div class="col-sm-12 col-xs-12 padding-top-30">
-                                                        <?php
-                                                            $billing_url = URL::to('/').'/paypal/billings-details';
-                                                            if (!empty(Auth::user()->paypal_id)){
-                                                              echo "<p><a href='".$billing_url."' class='plan-types'> <i class='fa fa-caret-right'></i> View Billing Details</a></p>";
-                                                            } 
-                                                        ?>
-                                                         <?php if ( $user->subscribed($stripe_plan) ) { 
-                                                            if ($user->subscription($stripe_plan)->ended()) { ?>
-                                                                 <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
-                                                           <?php } else { ?>
-                                                               <p><a href="<?=URL::to('/upgrade-subscription');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
-                                                         <?php  } } ?>
+                            <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
+                            <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p>
+                            <?php } ?>
 
-                                                        <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
-                                                             <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p>
-                                                        <?php } ?>
+                            <?php if ($user->subscribed($stripe_plan)) { ?>
+                            <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
+                            <?php } ?>
+                        </div>
+                    </div>
+            <?php } ?> 
+            </div>
+        </div>
+-->
+        <div class="col-sm-12">
+            <div class="sign-user_card text-center mb-3">
+                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
+            </div>
+        </div>
+</div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="sign-user_card mb-3" id="personal_det">
+                        <h5 class="mb-3 pb-3 a-border">Personal Details</h5>
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">Email</span>
+                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                            </div>   
+                        </div>
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">Username</span>
+                                <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                            </div>   
+                        </div>
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">Password</span>
+                                <p class="mb-0">**********</p>
+                            </div>
+                        </div>
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">Phone</span>
+                                <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                            </div>
 
-                                                        <?php if ($user->subscribed($stripe_plan)) { ?>
-                                                                    <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                                <?php } ?>                             
-                                            </div>
-                                            <div class="col-sm-6">
-<!--                                                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>	-->
-                                                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                        </div>
+<!--
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">Language</span>
+                                <p class="mb-0">English</p>
+                            </div>
+                        </div>
+                        <h5 class="mb-3 mt-4 pb-3 a-border">Billing Details</h5>
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-md-8 r-mb-15">
+                                <p>Your next billing date is 19 September 2020.</p>
+                                <a href="#" class="btn btn-hover">Cancel Membership</a>
+                            </div>
+                            <div class="col-md-4 text-md-right text-left">
+                                <a href="#" class="text-primary">Update Payment info</a>
+                            </div>
+                        </div>
+                        <h5 class="mb-3 mt-4 pb-3 a-border">Plan Details</h5>
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <p>Premium</p>                                
+                            </div>
+                            <div class="col-md-4 text-md-right text-left">
+                                <a href="pricing-plan.html" class="text-primary">Change Plan</a>
+                            </div>
+                        </div>
+-->
+<!--
+                        <h5 class="mb-3 pb-3 mt-4 a-border">Setting</h5>
+                        <div class="row">
+                            <div class="col-12 setting">
+                                <a href="#" class="text-body d-block mb-1">Recent device streaming activity</a>
+                                <a href="#" class="text-body d-block mb-1">Sign out of all devices </a>
+                                <a href="#" class="text-body d-block">Download your person information</a>
+                            </div>                            
+                        </div>
+-->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="sign-user_card">
+                        <h4 class="card-title mb-0">Plan Details</h4>
+                        <div class="row align-items-center justify-content-between mb-3 mt-3">
+                            <div class="col-sm-4">
+                                <h6>Subcriptions</h6>                                       
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary editbtn" >Edit </a>        
                             </div>
                         </div>
                     </div>
                 </div>
-             </div>
-            
-               <div class="col-12 col-md-12 col-lg-6" >
-                <div class="iq-card">
-                    <div class="row" id="personal">
-                    <div class="col-md-12" >
-                  <div class="iq-card-header d-flex justify-content-between align-items-center mb-0 ">
-                     <div class="iq-header-title">
-                        <h4 class="card-title mb-0">Personal Details</h4>
-                     </div>
-                  </div> 
-                  <div class="iq-card-body">
-                     <ul class="list-inline p-0 mb-0">
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-6">
-                                 <h6>Username</h6>                                       
-                              </div>
-                              <div class="col-sm-6">
-                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>                                       
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-6">
-                                 <h6>Email</h6>                                       
-                              </div>
-                              <div class="col-sm-6">
-                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>                                       
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-6">
-                                 <h6>Phone</h6>                                       
-                              </div>
-                              <div class="col-sm-6">
-                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>                                       
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-4">
-                                 <h6>Password</h6>                                       
-                              </div>
-                               <div class="col-sm-4"></div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-6">
-                                 <h6>Twitter</h6>                                       
-                              </div>
-                              <div class="col-sm-6">
-                                 <p class="mb-0">@Flicknexs</p>                                       
-                              </div>
-                           </div>
-                        </li>                              
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-6">
-                                 <h6>Facebook</h6>                                       
-                              </div>
-                              <div class="col-sm-6">
-                                 <p class="mb-0">@Flick_nexs</p>                                       
-                              </div>
-                           </div>
-                        </li>
-                        <li>
-                           <div class="row align-items-center justify-content-between mb-3">
-                              <div class="col-sm-8"></div>
-                               <div class="col-sm-4">
-                                  <button type="button" class="btn btn-primary editbtn" onclick="openForm()">Edit Profile</button>                                     
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-                    </div>
-                   </div></div>
-              </div>
-            </div>
-           
-          <div class="row">
-          <div class="col-12 col-md-12 col-lg-6" >
-           <div class="iq-card">
-                    <div class="row" id="subplan">
-                        <div class="col-md-12" >
-                          <div class="iq-card-header d-flex justify-content-between align-items-center mb-0 ">
-                             <div class="iq-header-title">
-                                <h4 class="card-title mb-0">Plan Details</h4>
-                             </div>
-                          </div> 
-                          <div class="iq-card-body">
-                             <ul class="list-inline p-0 mb-0">
-                                <li>
-                                   <div class="row align-items-center justify-content-between mb-3 mt-3">
-                                      <div class="col-sm-4">
-                                         <h6>Subcriptions</h6>                                       
-                                      </div>
-                                      <div class="col-sm-4">
-                                         <p class="mb-0">Free Plan</p>                                       
-                                      </div>
-                                        <div class="col-sm-4">
-                                         <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary editbtn" >Edit </a>                                       
-                                      </div>
-                                   </div>
-                                </li>
-                             </ul>
-                          </div>
-                        </div>
-                   </div>
-               </div>
-          </div>
-          <div class="col-12 col-md-12 col-lg-6" >
-           <div class="iq-card">
-                    <div class="row" id="Profile">
-                    <div class="col-md-12" >
-                  <div class="iq-card-header d-flex justify-content-between align-items-center mb-0 ">
-                     <div class="iq-header-title">
+                <div class="col-lg-6 mb-3" id="updatepic">
+                    <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-0">Manage Profile</h4>
-                     </div>
-                  </div> 
-                  <div class="iq-card-body">
-                     <ul class="list-inline p-0 mb-0">
-                        <li>
-                           <div class="row align-items-center  mb-3 mt-3">
-                              <div class="col-sm-4">
-                                   <!--<label for="avatar">My Avatar - Elite_<?php echo $user->id;?></label>-->
-						       <img height="50" width="50" class="img-fluid rounded-normal" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>" />
-                                 								               
-                              </div>
-                                <div class="col-sm-6 mt-5">
-                                     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                        <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
-                                                     <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                           <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account">{{ __('Update Profile') }}</button>                   
-                                    </form>								               
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
+                        <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
+                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                        <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                        </form>		
                     </div>
-                   </div>
-               </div>
-          </div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="main-admin-content">
+        <div id="content-page" class="content-page">
+            <div class="container-fluid">  
 <!--
           <div class="row">
                 <div class="col-12 col-md-12 col-lg-6" >
@@ -751,7 +670,7 @@ $uppercase =  ucfirst($request_url);
                      </div>
                       <div class="iq-card-body">
                         <div class="table-responsive">
-                           <table class="data-tables table movie_table" style="width:100%">
+                           <table class="data-tables table movie_table recent_table" style="width:100%">
                               <thead>
                                  <tr>
                                     <th style="width:20%;">Video</th>
@@ -820,7 +739,7 @@ $uppercase =  ucfirst($request_url);
 					</div>
 				</div>-->
                 <!--popup-->
-                <div class="form-popup " id="myForm" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;padding:40px;">
+                <div class="form-popup " id="myForm" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;padding:40px;display:none;">
                 <div class="col-sm-4 details-back">
 					<div class="row data-back">
 						<div class="well-in col-sm-12 col-xs-12" >
@@ -889,7 +808,7 @@ $uppercase =  ucfirst($request_url);
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt=""> </a>
                      <div class="d-flex mt-2">
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
