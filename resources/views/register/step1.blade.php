@@ -1,10 +1,28 @@
 @extends('layouts.app')
 
+<!doctype html>
+<html lang="en-US">
+   <head>
+      <?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
+// print_r($uppercase);
+// exit();
+      ?>
+      <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-  <!-- Favicon -->
-      <link rel="shortcut icon" href="assets/images/fl-logo.png" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -148,7 +166,7 @@ i.fa.fa-google-plus {
     }
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/assets/img/home/vod-header.png'; ?>') no-repeat;background-size: cover;">
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -295,9 +313,8 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                       <img src="<?php echo URL::to('/').'/assets/img/logo.png/'; ?>" style="margin-bottom:1rem;">
-                     <h3 class="mb-3 text-center">Sign Up</h3>
-                          </div>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up</h3>
+                      </div>
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">

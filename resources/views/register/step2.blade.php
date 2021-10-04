@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
-@section('content')
 @include('/header')
+@section('content')
+
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
@@ -138,23 +138,28 @@
             @endif
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
-                <div class="panel-heading"><h1>Choose You Plan</h1></div>
+                <div class="panel-heading"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body">
                        <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
                             <img  width="200" height="50" src="<?php echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
                            </button>
+<!--
                           <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
-                              <img  width="200" height="50" src="<?php echo URL::to('/assets/img/PayPal-Logo.png');?>"></button>
+                              <img  width="200" height="50" src="<?php echo URL::to('/assets/img/PayPal-Logo.png');?>">
+                           </button>
+-->
                         </div>
 
     
                          
     <div id="stripe_pg" class="tabcontent" style="display:block;">  
+<!--
         <label for="chkPassport">
                     <input type="checkbox" id="chkPassport" />
                      Click here for Recurring subscription!
         </label>
+-->
     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register2?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register2'; } ?>" method="POST" id="payment-form" enctype="multipart/form-data">
     
      <div class="tab-content">
@@ -180,8 +185,8 @@
                                 </h4>
                             </div>
                             <div class="plan-details">
-                                <p>Grab this plan for your best Movies to Watch.</p>
-                                <div class=" mt-4">
+                                <p class="text-black">Grab this plan for your best Movies to Watch.</p>
+                                <div class=" mt-4 text-center">
                                     <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>

@@ -79,7 +79,7 @@ i.fa.fa-google-plus {
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                      <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" width="200" style="margin-bottom:1rem;">
+                      <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif

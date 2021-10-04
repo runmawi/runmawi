@@ -14,10 +14,10 @@ $discount_price = $discount_percentage;
 
 <div class="row" id="signup-form">
     
-     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1" >
+     <div class="col-md-8 offset-2">
     <div class="overlay payment-loader">
             <div class="panel-heading">
-              <div class="row nomargin text-center">
+              <div class="nomargin text-center mb-3">
                   
                     <h1 class="panel-title"><?php echo __('Pay Now');?></h1>
               </div>
@@ -30,7 +30,7 @@ $discount_price = $discount_percentage;
 					</div>
 				</div>
 				<!-- Stripe Elements Placeholder -->
-				<div id="card-element"></div>
+				<div id="card-element" style="color: #fff;height: 45px;background: #262626;padding: 13px;margin-bottom: 20px;border-radius: 5px;"></div>
 				<div class="sign-up-buttons pay-button">
 					<button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
 						Pay Now
@@ -38,15 +38,15 @@ $discount_price = $discount_percentage;
 				</div>
 			</div>
 		
-			<div class="payment-option">
+			<div class="payment-option  text-white" style="margin-top: 50px;">
 				<div class="invoice"><h1>Invoice</h1></div>
-					 <svg class="svg-inline--fa fa-file fa-w-12" aria-hidden="true" data-prefix="far" data-icon="file" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48z"></path></svg><!-- <i class="far fa-file"></i> -->
+<!--					  <i class="far fa-file"></i> -->
 					 <h4 class="billing-head detail_name" id="detail_name"><?=$plan_details->plans_name;?></h4>
 				 <p class="grey-border"></p>
 				 <div class="">
 					 <p class="pay-prtext">Grab this plan for your best Movies to Watch.</p>
 				 </div>
-				 <div class="table-responsive">
+				 <div class="table-responsive invoice-table">
                      
                      <?php if (NewSubscriptionCoupon() == 1 ) { ?>
 					 <table class="table white-bg m-0 mt-3">
@@ -61,11 +61,11 @@ $discount_price = $discount_percentage;
                                       <?php echo NewSubscriptionCouponCode();?> - (50% of 1st Month Subscription) 
                                   </td>
 							 </tr>
-							 <tr>
+							 <tr class="table-secondary">
 								 <td>Discount Amount</td>
 								 <td class="detail_stripe_coupon"  id="detail_stripe_coupon"><?="$".$discount_price;?></td>
 							 </tr>
-							 <tr class="table-secondary">
+							 <tr>
 								 <td>Total</td>
 								 <td class="total_price"  id="total_price"><?php echo "$";?><?php echo ($plan_details->price) - ($discount_price);?></td>
 							 </tr>
@@ -82,11 +82,11 @@ $discount_price = $discount_percentage;
 								  <td>Discount Coupon</td>
 								  <td class="detail_stripe_coupon"  id="detail_stripe_coupon">-</td>
 							 </tr>
-							 <tr>
+							 <tr class="table-secondary">
 								 <td>Discount Amount</td>
 								 <td class="detail_stripe_coupon"  id="detail_stripe_coupon">-</td>
 							 </tr>
-							 <tr class="table-secondary">
+							 <tr>
 								 <td>Total</td>
 								 <td class="total_price"  id="total_price"><?php echo "$".$plan_details->price;?></td>
 							 </tr>

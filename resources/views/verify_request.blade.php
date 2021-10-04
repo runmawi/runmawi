@@ -1,8 +1,31 @@
 @extends('layouts.app')
 
-@section('content')
 @include('/header')
+
+@section('content')
+<!doctype html>
+<html lang="en-US">
+   <head>
+      <?php
+$uri_path = $_SERVER['REQUEST_URI']; 
+$uri_parts = explode('/', $uri_path);
+$request_url = end($uri_parts);
+$uppercase =  ucfirst($request_url);
+// print_r($uppercase);
+// exit();
+      ?>
+      <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
 <style>
+
     .content{
         padding-top: 100px !important;
     }

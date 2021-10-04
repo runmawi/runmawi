@@ -1433,9 +1433,7 @@ td{
     background-color: rgb(66 66 66 / 51%) !important;
     outline: none;
     color: gray;
-    border:none;
-    height: 60px;
-    
+    border:none; 
 }
 
 .ab{
@@ -1671,6 +1669,14 @@ padding: 15px;
 /* Register */
 .login-block h1 {font-size: 1.752em; text-align: center; margin-bottom: 30px;}
 .reset-help { font-size: 14px; color: #58c5e1; }
+.plan-card {background-color: #eee; border-radius: 5px; overflow: hidden; margin-bottom: 1em;}
+.plan-head {padding: 5px; font-size: 1.28em; text-transform: capitalize; color: #000; margin: 0; }
+.plan-price { background-color: #000; padding: 3px 15px;}
+.plan-price p {font-size: 1.14em; text-transform: capitalize; margin-bottom: .5em !important; font-weight: 500; text-align: left !important; margin-top: 0 !important; color: #fff; }
+.plan-price h4 { font-size: 1.5em; font-weight: 400; color: #c3ab06;}
+.plan-details { padding: 5px; color: #999;}
+.invoice-table tr.table-secondary td {color: #000;}
+.invoice-table tr td {color: #fff;}
 
 /* My Profile */
 .table.recent_table thead th {color: #fff;}
