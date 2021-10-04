@@ -97,6 +97,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 //Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
 });
 
+Route::post('admin/profile/update', 'AdminUsersController@myprofileupdate');
+Route::post('admin/profileupdate', 'AdminUsersController@ProfileImage');
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
 Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');

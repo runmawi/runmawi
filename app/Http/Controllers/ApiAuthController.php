@@ -761,7 +761,6 @@ public function verifyandupdatepassword(Request $request)
                   }
 
          $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
-        
          $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
          $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
     
@@ -1829,6 +1828,8 @@ public function verifyandupdatepassword(Request $request)
       $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
       $audio_categories_count = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
+      $artist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
+
 
       if ($audios_count > 0) {
         $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -1893,12 +1894,20 @@ public function verifyandupdatepassword(Request $request)
         $ppv_category = 0;
       }
 
+      if ($artist_count > 0) {
+
+        $artist = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
+
+      } else {
+        $artist = 0;
+      }
       $response = array(
         'channelvideos' => $videos,
         'channel_category' => $video_category,
         'search_value' => $search_value,
         'audios' => $audios,
         'albums' => $albums,
+        'cast ' => $artist,
         'audio_categories' => $audio_categories,
 
       );
@@ -3865,4 +3874,47 @@ public function upnextAudio(Request $request){
   
     }
 
+    public function Alllanguage(Request $request) {
+
+      $all_languages = Language::all();
+      $count_all_languages = count($all_languages);
+      $response = array(
+          'status'=>'true',
+          'all_languages' => $all_languages,
+          'count_all_languages' => $count_all_languages
+
+      ); 
+      return response()->json($response, 200);
+  }
+
+  public function VideoLanguage(Request $request) {
+
+    $user_id = $request->user_id;
+    $lanid = $request->language_id;
+
+
+    /*channel videos*/
+    $language_videos = Video::where('language', '=', $lanid)->get();
+    $count_language_videos = Video::where('language', '=', $lanid)->count();
+
+    $response = array(
+        'language_videos'=> $language_videos,
+        'count_language_videos'=> $count_language_videos,
+
+      );
+    return response()->json($response, 200);
+
+  }
+  public function FeaturedVideo(Request $request) {
+
+    $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+    $count_featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+    $response = array(
+        'status'=>'true',
+        'featured_videos' => $featured_videos,
+        'count_featured_videos' => $count_featured_videos
+
+    ); 
+    return response()->json($response, 200);
+}
 }

@@ -312,6 +312,82 @@ class AdminUsersController extends Controller
     		);
     	return View::make('myprofile', $data);
     }
+    public function ProfileImage(Request $request){
+      
+    $input = $request->all();
+    //   echo "<pre>";
+    //   print_r($input);
+    // exit();
+
+   $id = $request['user_id'];
+
+   $path = public_path().'/uploads/avatars/';         
+   $input['email'] = $request['email'];  
+   
+   $path = public_path().'/uploads/avatars/';        
+   $logo = $request['avatar'];        
+   
+   if($logo != '') {   
+     //code for remove old file
+     if($logo != ''  && $logo != null){
+          $file_old = $path.$logo;
+         if (file_exists($file_old)){
+          unlink($file_old);
+         }
+     }
+     //upload new file
+     $file = $logo;
+     $input['avatar']  = $file->getClientOriginalName();
+     $file->move($path, $input['avatar']);
+    
+}
+ 
+   $user_update = User::find($id);
+   $user_update->avatar = $file->getClientOriginalName();
+   $user_update->save();
+   
+   return Redirect::back();
+
+}
+    public function myprofileupdate(Request $request){
+            // echo "<pre>";
+      
+        $input = $request->all();
+        
+        // print_r($input);
+        // exit();
+       $id = $request['user_id'];
+       
+       $user = User::find($id);        
+
+       
+       if ( empty($request['email'])){
+           return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
+           
+       } else {
+           
+            $request['email'] = $request['email'];
+       }
+
+
+
+       if(empty($request['password'])) {
+           $input['password'] = $user->password;
+       } 
+       else { 
+               $input['password'] = $request['password']; 
+           }
+      
+       $user_update = User::find($id);
+       $user_update->email = $input['email'];
+       $user_update->password = Hash::make($input['password']);
+       $user_update->mobile = $input['mobile'];
+       $user_update->username = $input['username'];
+       $user_update->save();
+       
+       return Redirect::back();
+ 
+    }
     
     public function refferal() {
     	return View::make('refferal');

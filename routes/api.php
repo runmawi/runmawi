@@ -183,4 +183,7 @@ Route::group([
     Route::get('AllAudios', 'ApiAuthController@AllAudios');
     Route::post('mywatchlatersaudio', 'ApiAuthController@mywatchlatersaudio');
     Route::post('myFavoriteaudio', 'ApiAuthController@myFavoriteaudio');
+        Route::get('Alllanguage','ApiAuthController@Alllanguage');
+    Route::post('VideoLanguage','ApiAuthController@VideoLanguage');
+    Route::get('FeaturedVideo ','ApiAuthController@FeaturedVideo');
 });

@@ -16,6 +16,7 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
@@ -79,6 +80,7 @@ $uppercase =  ucfirst($request_url);
                                             <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
                                               <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                               <div>
+                    
                                                 <i class="fa fa-search">
                                                 </i>
                                                 <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
@@ -92,6 +94,7 @@ $uppercase =  ucfirst($request_url);
                               </div>
                            </div>
                         </div>
+                        
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
@@ -102,7 +105,8 @@ $uppercase =  ucfirst($request_url);
                                  <div class="search-box iq-search-bar d-search">
                                     <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                       <div class="form-group position-relative">
+                     
+                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
@@ -453,15 +457,18 @@ $uppercase =  ucfirst($request_url);
                         <a href="#updatepic" class="edit-icon text-primary">Edit</a>
                     </div>
 <div class="row">
-    
+<?php
+       
+         ?>
 <!--
         <div class="col-sm-6">
             <div class="sign-user_card text-center mb-3">
             <?php if ( Auth::user()->role != 'admin') { ?>
                 <div class="row">
-                    <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ ?>
+                    <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
+                       ?>
                         <h3> Plan Details:</h3>
-                        <p style="margin-left: 19px;margin-top: 8px"><?php echo CurrentSubPlanName(Auth::user()->id);?></p>
+                        <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->stripe_plan)){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p>
                     <?php } ?>
                         <div class="col-sm-12 col-xs-12 padding-top-30">
                         <?php 
@@ -524,7 +531,9 @@ $uppercase =  ucfirst($request_url);
 </div>
                 </div>
                 <div class="col-lg-8">
-                    <div class="sign-user_card mb-3" id="personal_det">
+                    <div style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;" class="sign-user_card mb-3" id="personal_det">
+                    <div class="col-md-6" align="right"><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a></div>
+		                  </div>
                         <h5 class="mb-3 pb-3 a-border">Personal Details</h5>
                         <div class="row align-items-center justify-content-between mb-3">
                             <div class="col-md-8">
@@ -551,6 +560,69 @@ $uppercase =  ucfirst($request_url);
                             </div>
 
                         </div>
+                        <!-- Add New Modal -->
+	<div class="modal fade" id="add-new">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+                    <h4 class="modal-title">Update Profile</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
+				</div>
+				
+				<div class="modal-body">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/profile/update') }}" method="post">
+						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                
+						    <div class="form-group">
+		                        <label> Username:</label>
+		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+                            </div>
+                        
+                            <div class="form-group">
+		                        <label> Email:</label>
+		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+                            </div> 
+                        
+                        
+                            <div class="form-group">
+		                        <label>Password:</label><br>
+		                        <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  >
+		                    </div> 
+                        
+                        
+                            <div class="form-group">
+		                         <label> Phone:</label>
+		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                            </div>
+
+				    </form>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<style>
+   .form-control {
+   background-color: #F2F5FA;
+    border: 1px solid transparent;
+    height: 45px;
+    position: relative;
+    color: #000000!important;
+    font-size: 16px;
+    width: 100%;
+    -webkit-border-radius: 6px;
+    height: 45px;
+    border-radius: 4px;
+   }
+</style>
+
 <!--
                         <div class="row align-items-center justify-content-between">
                             <div class="col-md-8">
@@ -609,8 +681,10 @@ $uppercase =  ucfirst($request_url);
                 <div class="col-lg-6 mb-3" id="updatepic">
                     <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-0">Manage Profile</h4>
-                        <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
+						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
                         <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
                         <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
@@ -1248,5 +1322,15 @@ var chart_01_lable = $('#chart_01_lable').val();
 });
 </script>
 <?php } ?>
+<script type="text/javascript">
 
+jQuery(document).ready(function($){
+
+
+   // Add New Category
+   $('#submit-new-cat').click(function(){
+      $('#new-cat-form').submit();
+   });
+});
+</script>
 
