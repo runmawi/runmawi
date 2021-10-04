@@ -219,7 +219,7 @@
                                             </div>
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
-                                                <div class=" mt-4">
+                                                <div class=" mt-4 text-center">
                                                     <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                                 </div>
                                             </div>
@@ -291,7 +291,7 @@
 					<div class="plan-details">
 						<p>Grab this plan for your best Movies to Watch.</p>
                        
-                        <div class=" mt-4">
+                        <div class=" mt-4 text-center">
 							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
 						</div>
 <!--
@@ -342,7 +342,7 @@
                             <div class="plan-details">
                                 <p>Grab this plan for your best Movies to Watch.</p>
 
-                                <div class=" mt-4">
+                                <div class=" mt-4 text-center">
                                     <button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
