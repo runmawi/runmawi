@@ -129,7 +129,7 @@ class SignupController extends Controller
             $register = $request->session()->get('register');
             $settings = \App\Setting::first();
             if($settings->free_registration == 1) {
-                return view('auth.step1',compact('register'));
+                return view('register.step1',compact('register'));
             } else {
                 return view('register.step1',compact('register'));
             }
