@@ -139,13 +139,13 @@ i.fa.fa-google-plus {
                               <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
                                                             
                            </div> 
-                         <div class="custom-control custom-checkbox" align="left" style="" >
+                         <div class="mt-3" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
-                                  <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                  <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-								<label class="form-check-label nv" for="remember">
+								<label class="form-check-label text-white" for="remember">
 									{{ __('Keep me signed in') }}
 								</label>
                             
