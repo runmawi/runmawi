@@ -59,9 +59,9 @@ $settings = App\Setting::find(1);
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">
                       <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 			</div>
-                <div class="card-body">
+                <div class="card-body pt-0">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success" role="alert" style="font-size: 15px;">
                             {{ session('status') }}
                         </div>
                     @endif
@@ -71,7 +71,7 @@ $settings = App\Setting::find(1);
 
                         <div class="form-group row">
                             <div class="col-sm-offset-1 col-sm-12">
-                                <input id="email" type="email" class="formy-control @error('email') is-invalid @enderror" name="email" placeholder= "email@example.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder= "email@example.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
 								<p class="reset-help">We will send you an email with instructions on how to reset your password.</p>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">

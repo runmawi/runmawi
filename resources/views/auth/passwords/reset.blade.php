@@ -7,14 +7,9 @@ $settings = App\Setting::find(1);
         <title>Reset Password | <?php echo $settings->website_name ; ?></title>
         <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
         <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/bootstrap.min.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/noty.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/font-awesome.min.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/hellovideo-fonts.css'; ?>" />
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
-
         <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/style.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/rrssb.css'; ?>" />
         <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/animate.min.css'; ?>" />
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -74,7 +69,7 @@ $settings = App\Setting::find(1);
     <div class="row justify-content-center">
         <div class="col-md-4 col-sm-offset-4">
             <div class="sign-user_card login-block text-center forgot-box">
-                <h2 class="mb-3 text-center">{{ __('Reset Password') }}</h2>
+                <h2 class="mb-3 text-center text-white">{{ __('Reset Password') }}</h2>
 				<div class="card-body">
 					<form method="POST" action="{{ route('password.update') }}">
 						@csrf
@@ -82,10 +77,9 @@ $settings = App\Setting::find(1);
 						<input type="hidden" name="token" value="{{ $token }}">
 
 						<div class="form-group row">
-							
 
 							<div class="col-md-12">
-								<label for="email" class="col-form-label text-left">{{ __('E-Mail Address') }}</label>
+								<label for="email" class="col-form-label text-left" style="font-size: 17px;">{{ __('E-Mail Address') }}</label>
 								<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
 								@error('email')
@@ -96,7 +90,7 @@ $settings = App\Setting::find(1);
 							</div>					
 
 							<div class="col-md-12">
-								<label for="password" class="col-form-label text-left">{{ __('Create Password') }}</label>
+								<label for="password" class="col-form-label text-left" style="font-size: 17px;">{{ __('Create Password') }}</label>
 								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
 								@error('password')
@@ -107,7 +101,7 @@ $settings = App\Setting::find(1);
 							</div>
 
 							<div class="col-md-12">
-								<label for="password-confirm" class="col-form-label text-left">{{ __('Confirm Password') }}</label>
+								<label for="password-confirm" class="col-form-label text-left" style="font-size: 17px;">{{ __('Confirm Password') }}</label>
 								<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
 							</div>
 						</div>

@@ -63,6 +63,13 @@ $system_settings = App\SystemSetting::find(1);
 i.fa.fa-google-plus {
     padding: 10px !important;
 }
+    .demo_cred {
+    background: #5c5c5c69;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px dashed #51bce8;
+    text-align: left;
+}    
 </style>
     </head>
 
@@ -80,6 +87,14 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                      <?php if($settings->demo_mode == 1) { ?>
+                        <div class="demo_cred">
+                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
+                            <p class="links"><strong>Email</strong>: admin@admin.com</p>
+                            <p class="links mb-0"><strong>Password</strong>: Webnexs123!@#</p>
+                        </div>
+                      <?php } else  { ?>
+                      <?php } ?>
                        @if (Session::has('message'))
                        <div class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif

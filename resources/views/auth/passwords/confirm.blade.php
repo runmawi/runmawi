@@ -7,12 +7,9 @@ $settings = App\Setting::find(1);
         <title>Reset Password | <?php echo $settings->website_name ; ?></title>
 <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/bootstrap.min.css'; ?>" />
 <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/noty.css'; ?>" />
-<link rel="stylesheet" href="<?= THEME_URL .'/assets/css/font-awesome.min.css'; ?>" />
-<link rel="stylesheet" href="<?= THEME_URL . '/assets/css/hellovideo-fonts.css'; ?>" />
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
 <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/style.css'; ?>" />
-<link rel="stylesheet" href="<?= THEME_URL . '/assets/css/rrssb.css'; ?>" />
 <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/animate.min.css'; ?>" />
 <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -29,7 +26,7 @@ $settings = App\Setting::find(1);
             <div class="card">
                 <div class="card-header" style="color:#fff!important;">{{ __('Confirm Password') }}</div>
 
-                <div class="card-body" style="color:#000000!important;">
+                <div class="card-body pt-0">
                     {{ __('Please confirm your password before continuing.') }}
 
                     <form method="POST" action="{{ route('password.confirm') }}">
