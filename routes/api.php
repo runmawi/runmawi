@@ -186,7 +186,7 @@ Route::group([
         Route::get('Alllanguage','ApiAuthController@Alllanguage');
     Route::post('VideoLanguage','ApiAuthController@VideoLanguage');
     Route::get('FeaturedVideo ','ApiAuthController@FeaturedVideo');
-    Route::get('RecentViews ','ApiAuthController@RecentViews');
+    Route::post('RecentViews ','ApiAuthController@RecentViews');
     Route::get('RecentlyViewed ','ApiAuthController@RecentlyViewed');
     Route::post('AddRecentAudio ','ApiAuthController@AddRecentAudio');
 });

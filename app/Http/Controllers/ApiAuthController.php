@@ -1897,7 +1897,14 @@ public function verifyandupdatepassword(Request $request)
 
       if ($artist_count > 0) {
 
-        $artist = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
+        $artist =  DB::table('artists')
+        ->join('video_artists', 'artists.id', '=', 'video_artists.artist_id')
+        ->join('videos', 'video_artists.video_id', '=', 'videos.id')
+        ->select('videos.*')
+        ->where('artist_name', 'LIKE', '%'.$search_value.'%')
+        ->get();
+    
+        // $artist = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
 
       } else {
         $artist = 0;
@@ -3917,9 +3924,11 @@ public function upnextAudio(Request $request){
     ); 
     return response()->json($response, 200);
 }
-public function RecentViews() {
+public function RecentViews(Request $request) {
 
-  $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
+  $user_id = $request->user_id;
+
+  $recent_videos = RecentView::where('user_id', '=',$user_id )->orderBy('id', 'desc')->take(10)->get();
 
   $count_recent_videos = count($recent_videos);
 
@@ -3931,7 +3940,7 @@ public function RecentViews() {
   return response()->json($response, 200);
 }
 
-public function RecentlyViewed(){
+public function RecentlyViewedVideos(){
         
     $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
     foreach($recent_videos as $key => $value){
