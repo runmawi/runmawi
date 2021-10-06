@@ -7,6 +7,7 @@ use App\Setting as Setting;
 use \Redirect as Redirect;
 use App\Slider as Slider;
 use App\PpvVideo as PpvVideo;
+use App\RecentView as RecentView;
 use App\PpvCategory as PpvCategory;
 use App\VerifyNumber as VerifyNumber;
 use App\Subscription as Subscription;
@@ -63,7 +64,6 @@ class ThemeAudioController extends Controller{
      */
     public function index($slug,$name = '')
       {
-       
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
@@ -112,7 +112,12 @@ class ThemeAudioController extends Controller{
            
             $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
             $audio = $audio->id;
-      
+
+            $view = new RecentView;
+            $view->audio_id = $audio;
+            $view->user_id = Auth::user()->id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
              if (!empty($audio)) {
               $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
               $albumID = $check_audio_details->album_id;

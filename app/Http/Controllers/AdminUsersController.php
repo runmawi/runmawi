@@ -6,6 +6,7 @@ use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use \App\MobileApp as MobileApp;
 use \App\MobileSlider as MobileSlider;
+use App\RecentView as RecentView;
 use URL;
 use Auth;
 use Hash;
@@ -15,6 +16,7 @@ use View;
 use Flash;
 use App\Subscription as Subscription;
 use \App\Video as Video;
+use App\VideoCategory as VideoCategory;
 use \App\PpvVideo as PpvVideo;
 use \App\CountryCode as CountryCode;
 use App;
@@ -304,10 +306,18 @@ class AdminUsersController extends Controller
         
     	$user_id = Auth::user()->id;
     	$user_details = User::find($user_id);
-        // print_r($user_details->stripe_id);
-        // exit();
+        $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
+        foreach($recent_videos as $key => $value){
+        $videos[] = Video::Where('id', '=',$value->video_id)->take(10)->get();
+        }
+        $videocategory = VideoCategory::all();
+
+        $video = array_unique($videos);
     	$data = array(
+    		'videos' => $video,
+    		'videocategory' => $videocategory,
     		'user' => $user_details,
+
     		'post_route' => URL::to('/profile/update')
     		);
     	return View::make('myprofile', $data);

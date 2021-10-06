@@ -6,6 +6,7 @@ use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use URL;
 use App\Test as Test;
+use App\RecentView as RecentView;
 use App\Setting as Setting;
 use App\Series as Series;
 use App\SeriesSeason as SeriesSeason;
@@ -3905,16 +3906,76 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
 
   }
-  public function FeaturedVideo(Request $request) {
+  public function FeaturedVideo() {
 
     $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
     $count_featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
     $response = array(
-        'status'=>'true',
         'featured_videos' => $featured_videos,
         'count_featured_videos' => $count_featured_videos
 
     ); 
     return response()->json($response, 200);
 }
+public function RecentViews() {
+
+  $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
+
+  $count_recent_videos = count($recent_videos);
+
+  $response = array(
+      'recent_videos' => $recent_videos,
+      'count_recent_videos' => $count_recent_videos
+
+  ); 
+  return response()->json($response, 200);
+}
+
+public function RecentlyViewed(){
+        
+    $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
+    foreach($recent_videos as $key => $value){
+    $videos[] = Video::Where('id', '=',$value->video_id)->take(10)->get();
+    }
+    $videocategory = VideoCategory::all();
+    $video = array_unique($videos);
+    $response = array(
+      'videos' => $video,
+      'videocategory' => $videocategory,
+
+  ); 
+  return response()->json($response, 200);
+}
+public function AddRecentAudio(Request $request){
+        
+  $user_id = $request->user_id;
+  $audio_id = $request->audio_id;
+  if($request->audio_id != ''){
+      $view = new RecentView;
+            $view->audio_id = $audio_id;
+            $view->user_id = $user_id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
+
+            $message = "Added  to  Audio to Recent Views";
+      $response = array(
+
+        "status" => "true",
+        'message'=> $message,
+      );
+     
+    } else {
+      $message = "Not Added  to  Audio to Recent Views Need Audio ID";
+
+      $response = array(
+        'status'=>'false',
+         'message'=> $message
+
+      );
+
+    }
+  return response()->json($response, 200);
+
+  }
+
 }

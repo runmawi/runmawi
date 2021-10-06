@@ -314,7 +314,8 @@ class HomeController extends Controller
                   $new_user->referrer_id = $referred_user_id;
                   $new_user->coupon_expired = $coupon_expired;
                   $new_user->email = $email;
-                  $new_user->password = $get_password;
+                //   $new_user->password = $get_password;
+                $new_user->password = Hash::make($get_password);
                   $new_user->activation_code = $string;
                   $new_user->save();
                   $settings = Setting::first();

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en-US">
    <head>
+
       <?php
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -733,6 +734,7 @@ $uppercase =  ucfirst($request_url);
 
           </div>
 -->
+
           <div class="row">
           <div class="col-md-12">
                   <div class="iq-card" id="recentviews">
@@ -757,28 +759,35 @@ $uppercase =  ucfirst($request_url);
                                  </tr>
                               </thead>
                               <tbody>
-                             
+                              @foreach($videos as $video)
+                              @foreach($video as $val)
+                              @foreach($videocategory as $category)
+
                                  <tr>
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'}}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
-                                          </div>
+                                          <a href="javascript:void(0);"><img
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $val->image }}"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>  </div>
                                           <div class="media-body text-white text-left ml-3">
                                              <p class="mb-0"></p>
                                              <small> </small>
                                           </div>
                                        </div>
                                     </td>
-                                    <td><i class="lar la-star mr-2"></i></td>
-                                    <td></td>
-                                    <td>
-                                       <i class="lar la-eye "></i>
-                                    </td>
+                                    <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
+                                    <td> @if($category->id == $val->video_category_id) {{ $category->name }} @else  @endif</td> 
+                                    <td>{{ $val->views }}</td> 
                                   
-                                     <td>21 July,2020</td> 
+                                     <td>{{ $val->created_at }}</td> 
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
+                                 @endforeach                                   
+
+                                 @endforeach
+                                 @endforeach
+
                                   
                               </tbody>
                            </table>
