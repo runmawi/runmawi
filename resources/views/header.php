@@ -230,8 +230,9 @@ $uppercase =  ucfirst($request_url);
                                      <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                       <?php else: ?>
                                 <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                     <p class="mt-3">Welcome! <?php echo Auth::user()->username ; ?> <i class="ri-arrow-down-s-line"></i></p>
                                       <?php endif; ?>
-                                     <p class="mt-3">Welcome  <?php echo Auth::user()->username ; ?></p>
+                                     
                                  </a>
                                    <?php if(Auth::guest()): ?>
                                   <div class="iq-sub-dropdown iq-user-dropdown">
