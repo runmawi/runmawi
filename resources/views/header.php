@@ -223,45 +223,44 @@ $uppercase =  ucfirst($request_url);
                                     </div>
                                  </div>
                               </li>
+                               <?php if(Auth::guest()): ?>
                               <li class="nav-item nav-icon">
-                                 <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
+                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card setting-dropdown">
+                                        <div class="media align-items-center">
+                                            <div class="right-icon">
+                                                <i class="ri-settings-4-line text-primary"></i>
+                                            </div>
+                                            <div class="media-body ml-3">
+                                                <h6 class="mb-0 ">Signin</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                               </li>
+                               <li class="nav-item nav-icon">
+                                  <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card setting-dropdown">
+                                     <div class="media align-items-center">
+                                        <div class="right-icon">
+                                           <i class="ri-logout-circle-line text-primary"></i>
+                                        </div>
+                                        <div class="media-body ml-3">
+                                           <h6 class="mb-0 ">Signup</h6>
+                                        </div>
+                                     </div>
+                                  </a>
+                               </li>
+                              <?php else: ?>
+                               <li class="nav-item nav-icon">
+                                    <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                 <?php if(Auth::guest()): ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                      <?php else: ?>
-                                <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                     <p class="mt-3" style="font-size: 16px;">Welcome! <?php echo Auth::user()->username ; ?> <i class="ri-arrow-down-s-line"></i></p>
-                                      <?php endif; ?>
+                                        <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                        <p class="mt-3" style="font-size: 16px;">Welcome! <?php echo Auth::user()->username ; ?> <i class="ri-arrow-down-s-line"></i></p>
+                                    </a>
+                               </li>
+                              <?php endif; ?>
                                      
-                                 </a>
-                                   <?php if(Auth::guest()): ?>
-                                  <div class="iq-sub-dropdown iq-user-dropdown">
-                                    <div class="iq-card shadow-none m-0">
-                                       <div class="iq-card-body p-0 pl-3 pr-3">
-                                          <a href="<?php echo URL::to('login') ?>" class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Signin</h6>
-                                                </div>
-                                             </div>
-                                          </a>
-                                          <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                   <i class="ri-logout-circle-line text-primary"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Signup</h6>
-                                                </div>
-                                             </div>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                   <?php elseif(Auth::user()->role == 'registered'): ?>
+                                                                   
+                                   <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
@@ -376,7 +375,6 @@ $uppercase =  ucfirst($request_url);
                                     </div>
                                  </div>
                                   <?php endif; ?>
-                              </li>
                            </ul>
                         </div>
                      </nav>
