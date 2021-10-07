@@ -26,6 +26,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\SystemSetting as SystemSetting;
 use DateTime;
 use Session;
 
@@ -303,6 +304,17 @@ class AdminUsersController extends Controller
     } 
     
     public function myprofile(){
+
+        $data = Session::all();
+        // $session_password = $data['password_hash'];
+        if (empty($data['password_hash'])) {
+            $system_settings = SystemSetting::first();
+
+            return view('auth.login',compact('system_settings'));
+
+            // return View::make('auth.login', $data);
+
+          }else{
         
     	$user_id = Auth::user()->id;
     	$user_details = User::find($user_id);
@@ -321,6 +333,7 @@ class AdminUsersController extends Controller
     		'post_route' => URL::to('/profile/update')
     		);
     	return View::make('myprofile', $data);
+          }
     }
     public function ProfileImage(Request $request){
       

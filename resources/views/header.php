@@ -6,7 +6,7 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-// print_r($uppercase);
+// dd($uppercase);
 // exit();
       ?>
       <!-- Required meta tags -->
@@ -229,8 +229,9 @@ $uppercase =  ucfirst($request_url);
                                  <?php if(Auth::guest()): ?>
                                      <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                       <?php else: ?>
-                                 <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                       <?php endif; ?>
+                                     <p class="mt-3">Welcome  <?php echo Auth::user()->username ; ?></p>
                                  </a>
                                    <?php if(Auth::guest()): ?>
                                   <div class="iq-sub-dropdown iq-user-dropdown">

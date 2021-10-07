@@ -720,6 +720,7 @@ if(!empty($artistsdata)){
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->age_restrict=$data['age_restrict'];
+         $video->access=$data['access'];
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
@@ -888,8 +889,8 @@ if(!empty($artistsdata)){
             }
             
             $data = $request->all();
-            //    echo "<pre>";
-        // print_r($data['age_restrict']);
+        //        echo "<pre>";
+        // print_r($data['access']);
         // exit();
             $validatedData = $request->validate([
                 'title' => 'required|max:255'
@@ -959,9 +960,9 @@ if(!empty($artistsdata)){
                     $data['video_gif'] = '';
                 }
                
-                if(empty($data['type'])){
-                    $data['type'] = '';
-                }
+                // if(empty($data['type'])){
+                //     $data['type'] = '';
+                // }
     
                  if(empty($data['status'])){
                     $data['status'] = 0;
@@ -1042,6 +1043,7 @@ if(!empty($artistsdata)){
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
              $video->age_restrict =  $data['age_restrict'];
+             $video->access =  $data['access'];
              $video->update($data);
     
              if(!empty($data['artists'])){

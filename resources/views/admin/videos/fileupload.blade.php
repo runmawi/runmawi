@@ -470,6 +470,15 @@ data: {
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 form-group mt-3">
+                                 <label class="p-2">Subscriber (only paid subscription users):</label>
+                              <select id="access" name="access"  class="form-control" >
+                                <option value="subscriber" >Subscriber (only paid subscription users)</option>
+                                 <option value="registered" >Registered Users (free registration must be enabled)</option>   
+                              </select>
+                              </div> 
+
+                                <div class="row">
+                                    <div class="col-sm-6 form-group mt-3">
                                         <label class="">Movie Language:</label>
                                         <select class="form-control" id="language" name="language">
                                             <option selected disabled="">Choose Language</option>

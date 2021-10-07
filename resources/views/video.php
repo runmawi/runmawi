@@ -9,13 +9,23 @@
    <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
    <input type="hidden" id="videoslug" value="<?php if(isset($video->slug)) { echo $video->slug; } else{ echo "0";}?>">
    <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
-   
+   <style>
+     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
+    font-size: 2.4em;
+    text-align: center;
+    padding-top: 20%; 
+}
+   </style>
 <?php
-// dd($video);
+
 // exit();
-    // print_r($watched_time);
-   if(!Auth::guest()) {  
+if($video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered'){
+
+    // dd($watched_time);
+   if(!Auth::guest()) {
+       
    if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
+<?php //dd(Auth::user()->role); ?>
 
   <div id="video_bg">
     <div class=" page-height">
@@ -206,7 +216,22 @@
         </video> 
 
         </div>
-  <?php } } ?>
+  <?php } } 
+}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered'){ ?>
+  <div id="subscribers_only">
+  <h2 style ="margin-left:14%">Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <div class="clear"></div>
+  <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+    <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+      <button style="margin-left: 27%;" id="button">Become a subscriber to watch this video</button>
+    </form>
+  <?php else: ?>
+    <form method="get" action="<?= URL::to('signup') ?>">
+      <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+    </form>
+  <?php endif; ?>
+</div>
+<?php } ?>
 <!-- For Guest users -->      
   <?php if(Auth::guest()) {  ?>
     <div id="video" class="fitvid" style="margin: 0 auto;">
@@ -247,7 +272,7 @@
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <div id="videoplay" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
                             <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                         <?php } ?>
                     </div>
@@ -520,20 +545,20 @@ location.reload();
             }
 
 //watchlater
-      $('.watchlater').click(function(){
-        if($(this).data('authenticated')){
-          $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-          $(this).toggleClass('active');
-          $(this).html("");
-              if($(this).hasClass('active')){
-                $(this).html('<i class="ri-add-circle-fill"></i>');
-              }else{
-                $(this).html('<i class="ri-add-circle-line"></i>');
-              }
-        } else {
-          window.location = '<?= URL::to('login') ?>';
-        }
-      });
+      // $('.watchlater').click(function(){
+      //   if($(this).data('authenticated')){
+      //     $.post('<?// URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?// csrf_token(); ?>' }, function(data){});
+      //     $(this).toggleClass('active');
+      //     $(this).html("");
+      //         if($(this).hasClass('active')){
+      //           $(this).html('<i class="ri-add-circle-fill"></i>');
+      //         }else{
+      //           $(this).html('<i class="ri-add-circle-line"></i>');
+      //         }
+      //   } else {
+      //     window.location = '<?= URL::to('login') ?>';
+      //   }
+      // });
 
       //My Wishlist
       $('.mywishlist').click(function(){
@@ -556,6 +581,20 @@ location.reload();
     <script type="text/javascript">
 $(document).ready(function(){
 $('#videoPlayer').bind('contextmenu',function() { return false; });
+});
+
+$('#videoplay').on('click',function(event) {
+        event.preventDefault();
+// window.player = videojs("videoPlayer", { techOrder: ["html5", "flash"] }, function() {
+    videojs_player = this;
+    videojs_player.src({ src: "<?= $video->trailer; ?>", type: 'video/mp4'})
+    
+    // videojs_player.on("click", function(event){
+    //     event.preventDefault();
+    //     alert('click');
+    // });
+    
+    videojs_player.play();
 });
 </script>
     
