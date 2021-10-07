@@ -190,24 +190,25 @@
                                 <label class="p-2">Upload Trailer :</label>
                             </div>
                             <div class="row">
-                                <div class="col-sm-4 form-group">
+                                <div class="col-sm-6">
+                                    <div style="" class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
+                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                        <p style="font-size: 14px!important;">Drop and drag the video file</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
                                     @if(!empty($video->trailer) && $video->trailer != '')
                                     <video width="200" height="200" controls>
                                         <source src="{{ $video->trailer }}" type="video/mp4">
                                     </video>
                                     @endif
                                 </div>
-                                <div class="col-sm-8">
-                                    <div style="" class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
-                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                        <p style="font-size: 14px!important;">Drop and drag the video file</p>
-                                    </div>
-                                </div>
+
                             </div>
                             <div style="row">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
-                                        <div class="panel-title">Subtitles (srt or txt)
+                                        <div class="panel-title" style="color: #000;">Subtitles (srt or txt)
                                             <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
                                                 <i class="las la-exclamation-circle"></i>
                                             </a>:
@@ -218,7 +219,7 @@
                                     </div> 
                                     <div class="panel-body" style="display: block;"> 
                                         @foreach($subtitles as $subtitle)
-                                        <div class="col-sm-6 form-group">
+                                        <div class="col-sm-6 form-group" style="float: left;">
                                             <div class="align-items-center" style="clear:both;" >
                                                 <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
                                                 <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
