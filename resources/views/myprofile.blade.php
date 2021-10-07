@@ -36,6 +36,15 @@ $uppercase =  ucfirst($request_url);
     <style>
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
+        .form-control {
+    height: 45px;
+    line-height: 29px!important;
+    background: #33333391;
+    border: 1px solid var(--iq-body-text);
+    font-size: 14px;
+    color: var(--iq-secondary);
+    border-radius: 4px;
+}
     </style>
    <body>
       <!-- loader Start -->
@@ -531,11 +540,15 @@ $uppercase =  ucfirst($request_url);
         </div>
 </div>
                 </div>
-                <div class="col-lg-8">
-                    <div style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;" class="sign-user_card mb-3" id="personal_det">
-                    <div class="col-md-6" align="right"><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a></div>
-		                  </div>
-                        <h5 class="mb-3 pb-3 a-border">Personal Details</h5>
+                <div class="col-lg-8"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
+                    <div class="sign-user_card mb-3" id="personal_det">
+                    <div class="col-md-12" >
+                        <div class="d-flex align-items-baseline justify-content-between">
+                        <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
+                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
+                            </div></div>
+                        </div>
+                        <div class="a-border"></div>
                         <div class="row align-items-center justify-content-between mb-3">
                             <div class="col-md-8">
                                 <span class="text-light font-size-13">Email</span>
@@ -560,7 +573,7 @@ $uppercase =  ucfirst($request_url);
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
 
-                        </div>
+                        </div> </div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -664,10 +677,10 @@ $uppercase =  ucfirst($request_url);
                     </div>
                 </div>
             </div>
-            
+            <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-3">
-                    <div class="sign-user_card">
+                    <div class="sign-user_card" style="height: 183px;">
                         <h4 class="card-title mb-0">Plan Details</h4>
                         <div class="row align-items-center justify-content-between mb-3 mt-3">
                             <div class="col-sm-4">
@@ -694,6 +707,7 @@ $uppercase =  ucfirst($request_url);
                 </div>
             </div>
         </div>
+        
     </section>
 
     <div id="main-admin-content">

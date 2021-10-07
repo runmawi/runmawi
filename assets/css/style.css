@@ -383,7 +383,7 @@ video { display: block; width: 100%; height: 100%; }
 
 /*-----------------------*/
 .setting a:hover { color: var(--iq-primary) !important; }
-.edit-icon { position: absolute; right: 25px; top: 25px; }
+.edit-icon { position: absolute; right: 50px; top: 25px; }
 .setting-wrapper .btn-hover { white-space: normal; }
 .pricing .table th { border-top: none; }
 .pricing .table th { border-bottom: 1px solid var(--iq-body-bg);}
