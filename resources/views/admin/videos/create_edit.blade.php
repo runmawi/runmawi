@@ -187,7 +187,9 @@
                                 <h5>Video Upload</h5>
                             </div>
                             <div class="row">
-                                <label class="p-2">Upload Trailer :</label><br>
+                                <label class="p-2">Upload Trailer :</label>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-4 form-group">
                                     @if(!empty($video->trailer) && $video->trailer != '')
                                     <video width="200" height="200" controls>
@@ -217,8 +219,8 @@
                                     <div class="panel-body" style="display: block;"> 
                                         @foreach($subtitles as $subtitle)
                                         <div class="col-sm-6 form-group">
-                                            <div class="subtitle1 align-items-center" style="clear:both;" >
-                                                <label for="embed_code"  style="">Upload Subtitle {{ $subtitle->language }}</label>
+                                            <div class="align-items-center" style="clear:both;" >
+                                                <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
                                                 <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
                                                 <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
                                                 <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
