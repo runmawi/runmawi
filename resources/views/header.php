@@ -256,12 +256,7 @@ $uppercase =  ucfirst($request_url);
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                         <p class="mt-3" style="font-size: 16px;">Welcome! <?php echo Auth::user()->username ; ?> <i class="ri-arrow-down-s-line"></i></p>
                                     </a>
-                               </li>
-                              <?php endif; ?>
-                                     
-                                <?php if(Auth::guest()): ?>
-                               
-                                   <?php elseif(Auth::user()->role == 'registered'): ?>
+                                   <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
@@ -376,6 +371,9 @@ $uppercase =  ucfirst($request_url);
                                     </div>
                                  </div>
                                   <?php endif; ?>
+                               </li>
+                              <?php endif; ?>
+                                   
                            </ul>
                         </div>
                      </nav>
