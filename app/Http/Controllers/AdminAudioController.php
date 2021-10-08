@@ -78,6 +78,7 @@ class AdminAudioController extends Controller
 
     }
     }
+    
 
     /**
      * Show the form for creating a new audio
@@ -617,6 +618,17 @@ class AdminAudioController extends Controller
 
         $audio->update($data);
 
+        $audio = Audio::findOrFail($id);
+        $users = User::all();
+        if($audio['draft'] == 1){
+            foreach ($users as $key => $user) {
+                $userid[]= $user->id;
+           // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
+            }
+            foreach ($userid as $key => $user_id) {
+          send_password_notification('Notification From FLICKNEXS','New Audio Added','',$user_id);
+           }
+       }
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);

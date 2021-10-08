@@ -357,3 +357,29 @@ function GetAllVideoCategory(){
     $all_category = App\VideoCategory::all();
     return  $all_category; 
 }
+
+function send_password_notification($title,$message,$video_name='',$video_img='',$user_id){
+    $fcm_postt ="https://fcm.googleapis.com/fcm/send";
+    $settings = App\Setting::first();
+    $server_key = $settings->notification_key;
+    $notification_icon = $settings->notification_icon;
+    $users = App\User::where('token', '!=', '')->where('id','=',$user_id)->get();
+    $userdata = App\User::where('token', '!=', '')->where('id','=',$user_id)->first();
+ 
+        $user = $userdata->token;
+        $headers = array('Authorization:key='.$server_key,'Content-Type:application/json');
+        $field = array('to'=>$user,'notification'=>array('title'=> $title,'body'=>strip_tags($message),'tag'=> $video_name,'icon'=> $video_img,'link'=> URL::to('/public/uploads/') . '/settings/' . $notification_icon));
+        $payload =json_encode($field);
+        $curl_session = curl_init();
+        curl_setopt($curl_session, CURLOPT_URL, $fcm_postt);
+        curl_setopt($curl_session, CURLOPT_POST, true);
+        curl_setopt($curl_session, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl_session, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($curl_session, CURLOPT_POSTFIELDS, $payload);
+        curl_exec($curl_session);
+        curl_close($curl_session);
+        DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message]);
+    return true;
+}

@@ -1146,3 +1146,4 @@ Route::get('admin/allmoderator', 'ModeratorsUserController@view');
 Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
 Route::get('admin/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
 Route::post('admin/moderatoruser/update', 'ModeratorsUserController@update');
+Route::get('/live_search', 'AdminVideosController@live_search');

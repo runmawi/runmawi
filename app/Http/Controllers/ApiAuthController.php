@@ -156,6 +156,7 @@ class ApiAuthController extends Controller
       $user->ccode = $user_data['ccode'];
       $user->mobile = $user_data['mobile'];
       $user->avatar = $avatar;
+      $user->password = Hash::make($request->get('password'));
             $user->referrer_id = $referred_user_id;
             $user->token = $input['token'];
       $user->referral_token = $ref_token;
@@ -163,7 +164,7 @@ class ApiAuthController extends Controller
       $user->save();
       $userdata = User::where('email', '=', $request->get('email'))->first();
       $userid = $userdata->id;
-       // send_password_notification('Notification From ELITECLUB','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+        send_password_notification('Notification From FLICKNEXS','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
             
     } else {
       if($user != null){
@@ -290,7 +291,7 @@ class ApiAuthController extends Controller
 
 
 
-                        //send_password_notification('Notification From ELITECLUB','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
+                        send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }else{
              $response = array('status'=>'true',
                                 'message' => 'Registered Successfully.');
@@ -325,11 +326,11 @@ class ApiAuthController extends Controller
 
     $email_login = array(
       'email' => $request->get('email'),
-      'password' => Hash::make($request->get('password'))
+      'password' => $request->get('password')
     );
     $username_login = array(
       'username' => $request->get('username'),
-      'password' => Hash::make($request->get('password'))
+      'password' => $request->get('password')
     );
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
@@ -470,7 +471,7 @@ class ApiAuthController extends Controller
       $user = User::find($user_id->id);
       $user->password = $request->password;
       $user->save();
-          /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);*/
+          send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);
       $response = array(
         'status'=>'true',
         'message'=>'Password changed successfully.'
@@ -585,7 +586,7 @@ public function verifyandupdatepassword(Request $request)
           'status'=>'true',
           'message'=>'Password changed successfully.'
         );
-                  /*send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id);*/
+                  send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id);
 
       } else {
         $response = array(
@@ -1081,7 +1082,7 @@ public function verifyandupdatepassword(Request $request)
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
       );
-    /*send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);*/
+    send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
         return response()->json($response, 200);
    }
 
@@ -1573,7 +1574,7 @@ public function verifyandupdatepassword(Request $request)
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
         );
-        /*send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);*/
+        send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
       }
@@ -3986,5 +3987,31 @@ public function AddRecentAudio(Request $request){
   return response()->json($response, 200);
 
   }
+
+  public function SubscriptionEndNotification() {
+
+    $stripe_plan = SubscriptionPlan();
+
+    $users = User::all();
+    foreach($users as $user){
+
+    if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
+        $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
+        $end_date= date('d-m-Y', strtotime($ends_at. ' - ' ."7 days")); 
+        if(!empty($end_date)){
+          send_password_notification('Notification From FLICKNEXS','Your Subscription Auto Renewal Before 7 days','',$user->id);
+        }else{
+        }
+    }else{
+        $ends_at = "";
+    }
+  }
+  
+    $response = array(
+        'status'=>'true',
+        'message'=>'success',
+    );
+    return response()->json($response, 200);
+}
 
 }

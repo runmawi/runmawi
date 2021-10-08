@@ -36,7 +36,7 @@ use App\Artist;
 use App\Videoartist;
 use GifCreator\GifCreator;
 use App\AgeCategory as AgeCategory;
-
+use DB;
 
 class AdminVideosController extends Controller
 {
@@ -46,7 +46,7 @@ class AdminVideosController extends Controller
             {
                 return redirect('/home');
             }
-       
+
       // $search_value = Request::get('s');
         
         if(!empty($search_value)):
@@ -65,6 +65,85 @@ class AdminVideosController extends Controller
 
         return View('admin.videos.index', $data);
     }
+
+    public function live_search(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+         $video_categories = DB::table('video_categories')->get();
+         $video_languages = DB::table('video_languages')->get();
+         $slug = URL::to('/category/videos');
+         $edit = URL::to('admin/videos/edit');
+         $delete = URL::to('admin/videos/delete');
+      if($query != '')
+      {
+       $data = DB::table('videos')
+         ->where('title', 'like', '%'.$query.'%')
+         ->orderBy('created_at', 'desc')
+         ->paginate(9);
+         
+      }
+      else
+      {
+
+      }
+      foreach($data as $row){
+            $language = $row->language;
+            $video_category = $row->video_category_id;
+        }
+        $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
+        $language = DB::table('video_languages')->where('id','=',$language)->get();
+        foreach($video_category as $category){
+            $category = $category->name;
+        }
+        foreach($language as $lang){
+            $lang = $lang->name;
+        }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->title.'</td>
+        <td>'.$row->rating.'</td>
+        <td>'.$category.'</td>
+         <td>'.$row->draft.'</td>
+        <td>'.$lang.'</td>
+         <td>'.$row->views.'</td>
+         <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+        </a>".'
+        '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+        </a>".'
+        '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+        </a>".'
+        </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+
     public function uploadFile(Request $request){
 
         $value = array();
@@ -1045,7 +1124,21 @@ if(!empty($artistsdata)){
              $video->age_restrict =  $data['age_restrict'];
              $video->access =  $data['access'];
              $video->update($data);
-    
+
+             $video = Video::findOrFail($id);
+             $users = User::all();
+             if($video['draft'] == 1){
+             foreach ($users as $key => $user) {
+                //  $userid[]= $user->id;
+                if(!empty($user->token)){
+            send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
+                }
+             }
+        //      foreach ($userid as $key => $user_id) {
+        //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
+        //     }
+         
+            }
              if(!empty($data['artists'])){
                 $artistsdata = $data['artists'];
                 unset($data['artists']);
