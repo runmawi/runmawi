@@ -200,7 +200,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div style="" class="form_video-upload" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
+                                    <div style="position: relative" class="form_video-upload"  @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif>
                                         <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                                         <p style="font-size: 14px!important;">Drop and drag the video file</p>
                                     </div>
@@ -214,7 +214,7 @@
                                 </div>
 
                             </div>
-                            <div style="row">    
+                            <div style="row mt-3">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
                                         <div class="panel-title" style="color: #000;">Subtitles (srt or txt)
@@ -254,17 +254,17 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label class="">Rating:</label>
+                                    <label class="p-2">Rating:</label>
                                     <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label class="p-2">Subscriber (only paid subscription users):</label>
+                                    <label class="p-2">User Access:</label>
                                     <select id="access" name="access"  class="form-control" >
-                                        <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+                                        <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber ( Must subscribe to watch )</option>
                                         <!-- <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option> -->
-                                        <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>   
+                                        <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users( Must register to watch )</option>   
                                         <?php if($settings->ppv_status == 1){ ?>
-                                        <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>>PPV Users (Padi registration must be enabled)</option>   
+                                        <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
                                         <?php } else{ } ?>
                                     </select>
                                 </div> 
