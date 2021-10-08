@@ -94,14 +94,24 @@ class AdminVideosController extends Controller
             $language = $row->language;
             $video_category = $row->video_category_id;
         }
-        $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
-        $language = DB::table('video_languages')->where('id','=',$language)->get();
-        foreach($video_category as $category){
-            $category = $category->name;
-        }
-        foreach($language as $lang){
-            $lang = $lang->name;
-        }
+            $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
+            $language = DB::table('video_languages')->where('id','=',$language)->get();
+            foreach($video_category as $category){
+                $category_name = $category->name;
+            }
+            if(empty($category_name)){
+                $category = "empty";
+            }else{
+            $category = $category_name;
+            }
+            foreach($language as $lang){
+                $lang_name = $lang->name;
+            }
+            if(empty($lang_name)){
+                $lang = "empty";
+            }else{
+            $lang = $lang_name;
+            }
       $total_row = $data->count();
       if($total_row > 0)
       {
