@@ -448,7 +448,7 @@ data: {
                                     </div>
                                 </div>      
 -->
-                            <div style="row mt-3">    
+                            <div class="row mt-3">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
                                         <div class="panel-title" style="color: #000;">Subtitles (srt or txt)
@@ -732,6 +732,7 @@ CKEDITOR.replace( 'summary-ckeditor', {
   $('#embedvideo').hide();
   $('#optionradio').hide();
   $('.content_videopage').hide();
+  $('#content_videopage').hide();
 
 
   $('#Next').hide();
