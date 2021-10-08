@@ -3,7 +3,8 @@
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -18,16 +19,20 @@
                         <div class="iq-card-header-toolbar d-flex align-items-center">
                            <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
                         </div>
+                        <div class="form-group">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
+                    </div>
                      </div>
-                     <div class="iq-card-body">
+                     <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="data-tables table movie_table " style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
                               <thead>
                                  <tr>
                                     <th>Title</th>
                                     <th>Rating</th>
                                     <th>Category</th>
-                                    <th>Release Year</th>
+                                    <!-- <th>Release Year</th> -->
+                                    <th>Status</th>
                                     <th>Language</th>
                                     <!--<th style="width: 20%;">Description</th>-->
                                      <th>Views</th>
@@ -52,7 +57,8 @@
                                     </td>
                                     <td>{{ $video->rating }}</td>
                                     <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td>
-                                    <td>{{ $video->year }}</td>
+                                    <!-- <td>{{ $video->year }}</td> -->
+                                    <td>{{ $video->draft }}</td>
                                     <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
@@ -85,7 +91,32 @@
             </div>
          </div>
       
+         <script>
+$(document).ready(function(){
 
+ fetch_customer_data();
+
+ function fetch_customer_data(query = '')
+ {
+  $.ajax({
+   url:"{{ URL::to('/live_search') }}",
+   method:'GET',
+   data:{query:query},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+   }
+  })
+ }
+
+ $(document).on('keyup', '#search', function(){
+  var query = $(this).val();
+  fetch_customer_data(query);
+ });
+});
+</script>
 @section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
