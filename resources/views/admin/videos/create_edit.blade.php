@@ -186,6 +186,15 @@
                             <div>
                                 <h5>Video Upload</h5>
                             </div>
+                            <div class="row mt-5">
+                                <div class="col-sm-6 form-group">
+                                    @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file' || $video->type == 'mp4_url' || $video->type == 'm3u8_url' ))
+                                    <video width="200" height="200" controls>
+                                    <source src="<?=$video->mp4_url; ?>" type="video/mp4">
+                                    </video>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="row">
                                 <label class="p-2">Upload Trailer :</label>
                             </div>
@@ -238,6 +247,17 @@
                                     <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
                                 </div> 
                                 <div class="col-sm-6 form-group">
+                                    <label class="">Year:</label>
+                                    <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="">Rating:</label>
+                                    <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+                                </div>
+                                <div class="col-sm-6 form-group">
                                     <label class="p-2">Subscriber (only paid subscription users):</label>
                                     <select id="access" name="access"  class="form-control" >
                                         <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
@@ -249,17 +269,8 @@
                                     </select>
                                 </div> 
                                 
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6 form-group">
-                                    <label class="">Year:</label>
-                                    <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
-                                </div>
                             <!--
-                            <div class="col-sm-6 form-group">
-                            <label class="p-2">Year:</label>
-                            <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+                            <div class="col-sm-6 form-group">>
                             <label class="">Movie Language:</label>
                             <select class="form-control" id="language" name="language">
                             <option selected disabled="">Choose Language</option>
@@ -269,23 +280,14 @@
                             </select>
                             </div>
                             -->
-                                <div class="col-sm-6 form-group">
-                                    <label class="">Rating:</label>
-                                    <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
-                                </div>
+                                
                             </div>
                             <div class="row">
-                            <div class="row">
-                                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                                        <label class="">PPV Price:</label>
-                                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                                    </div>
-                            <div class="row">
-                            <!-- <div class="col-sm-6 form-group">
-                            <label class="p-2">Rating:</label>
-                            <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
-                            </div>-->
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                    <label class="">PPV Price:</label>
+                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                </div>
+                                <div class="col-sm-6 form-group mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
                                             <div class="panel-title"> Status Settings</div> 

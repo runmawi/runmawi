@@ -1,4 +1,6 @@
-@include('header')
+<?php include('videolayout/header.php');?>
+ 
+<?php include('header.php');?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -390,4 +392,7 @@ settings: "unslick" // destroys slick
     </script>
  <script src="https://vjs.zencdn.net/7.8.3/video.js"></script>
 
-@extends('footer')
+
+<?php include('footer.blade.php');?>
+
+<?php include('videolayout/footer.php');?>
