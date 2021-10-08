@@ -194,7 +194,11 @@
 						
 					</div>
 				</div>
-                <div class="panel panel-primary" id="Pay_Per_view_Hours" data-collapsed="0">
+			</div>
+        </div>
+        <div class="row mt-3">
+           <div class="col-sm-6" id="Pay_Per_view_Hours">
+               <div class="panel panel-primary"  data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title"><label>Pay Per view Hours</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body"> 
 						<p class="p1">Hours :</p>
@@ -206,14 +210,12 @@
 						</div>
 					</div>
 				</div>
-
-			</div>
-            
+           </div>
            <div class="col-sm-6" id="PPV_Global_Price"> 
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title"><label>PPV Global Price</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body"> 
-						<p class="p1">PPV Price (USD):</p>
+						<p class="p1">PPV / Movie Price (USD):</p>
 						<div class="form-group">
 				        	<div class="make-switch" data-on="success" data-off="warning">
                                 
