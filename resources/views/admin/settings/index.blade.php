@@ -194,7 +194,7 @@
 						
 					</div>
 				</div>
-                <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel panel-primary" id="Pay_Per_view_Hours" data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title"><label>Pay Per view Hours</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body"> 
 						<p class="p1">Hours :</p>
@@ -209,7 +209,7 @@
 
 			</div>
             
-           <div class="col-sm-6"> 
+           <div class="col-sm-6" id="PPV_Global_Price"> 
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading"> <div class="panel-title"><label>PPV Global Price</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body"> 
@@ -501,6 +501,18 @@
                 this.value = this.checked ? 1 : 0;
             
         }).change();
+
+		
+		$('#Pay_Per_view_Hours').hide();
+		$('#PPV_Global_Price').hide();
+
+				if($('#ppv_status').is(":checked")) {
+					$('#Pay_Per_view_Hours').show();
+					$('#PPV_Global_Price').show();
+				} else {
+					$('#Pay_Per_view_Hours').hide();
+					$('#PPV_Global_Price').hide();
+				}
 
 	</script>
 

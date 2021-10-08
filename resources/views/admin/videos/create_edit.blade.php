@@ -243,6 +243,9 @@
                                         <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                         <!-- <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option> -->
                                         <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>   
+                                        <?php if($settings->ppv_status == 1){ ?>
+                                        <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>>PPV Users (Padi registration must be enabled)</option>   
+                                        <?php } else{ } ?>
                                     </select>
                                 </div> 
                                 
@@ -271,7 +274,12 @@
                                     <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                                 </div>
                             </div>
-                             
+                            <div class="row">
+                            <div class="row">
+                                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                        <label class="">PPV Price:</label>
+                                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                    </div>
                             <div class="row">
                             <!-- <div class="col-sm-6 form-group">
                             <label class="p-2">Rating:</label>
@@ -339,7 +347,18 @@
 				
 			}
 		});
+        $(document).ready(function(){
+    $('#ppv_price').hide();
+    
+		$("#access").change(function(){
+			if($(this).val() == 'ppv'){
+				$('#ppv_price').show();
 
+			}else{
+				$('#ppv_price').hide();				
+			}
+		});
+    });
 		tinymce.init({
 			relative_urls: false,
 		    selector: '#details',

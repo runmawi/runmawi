@@ -474,7 +474,10 @@ data: {
                               <select id="access" name="access"  class="form-control" >
                                 <option value="subscriber" >Subscriber (only paid subscription users)</option>
                                  <option value="registered" >Registered Users (free registration must be enabled)</option>   
-                              </select>
+                               <?php if($settings->ppv_status == 1){ ?>
+                                 <option value="ppv" >PPV Users (Padi registration must be enabled)</option>   
+                                 <?php } else{ } ?>
+                                </select>
                               </div> 
 
                                 <div class="row">
@@ -492,7 +495,12 @@ data: {
                                         <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                        <label class="">PPV Price:</label>
+                                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-sm-6 mt-3"> 
                                         <div class="panel panel-primary" data-collapsed="0"> 
@@ -562,8 +570,18 @@ $('#remove').click(function(){
 });
 });
 
+$(document).ready(function(){
+    $('#ppv_price').hide();
+    
+		$("#access").change(function(){
+			if($(this).val() == 'ppv'){
+				$('#ppv_price').show();
 
-
+			}else{
+				$('#ppv_price').hide();				
+			}
+		});
+});
 	$(document).ready(function(){
     $('.js-example-basic-multiple').select2();
     
@@ -582,6 +600,7 @@ $('#remove').click(function(){
 				
 			}
 		});
+
 
 		tinymce.init({
 			relative_urls: false,

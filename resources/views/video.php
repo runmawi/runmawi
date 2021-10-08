@@ -19,7 +19,7 @@
 <?php
 
 // exit();
-if($video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered'){
+if($video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
     // dd($watched_time);
    if(!Auth::guest()) {
@@ -111,7 +111,7 @@ if($video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $vide
                 <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
-                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer; } ?>" type='video/mp4' label='auto' > 
+                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
                     <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                     <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
                     <?php } if($value['sub_language'] == "German"){?>

@@ -7,9 +7,7 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-// print_r($uppercase);
-// exit();
-      ?>
+ ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
@@ -684,10 +682,17 @@ $uppercase =  ucfirst($request_url);
                         <h4 class="card-title mb-0">Plan Details</h4>
                         <div class="row align-items-center justify-content-between mb-3 mt-3">
                             <div class="col-sm-4">
-                                <h6>Subcriptions</h6>                                       
-                            </div>
+                       <?php  if($user_role == 'registered'){ ?>
+                              <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
+                              <h6>Subcriptions</h6>                                       
+                           <?php }elseif($user_role == 'subscriber'){ ?>
+                              <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                              <br>                                       
+                              <h6>Subcriptions</h6>  
+                           <?php } ?>
+                           </div>
                             <div class="col-sm-6">
-                                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary editbtn" >Edit </a>        
+                                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                             </div>
                         </div>
                     </div>

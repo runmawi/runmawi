@@ -36,6 +36,7 @@ use App\Artist;
 use App\Videoartist;
 use GifCreator\GifCreator;
 use App\AgeCategory as AgeCategory;
+use App\Setting as Setting;
 use DB;
 
 class AdminVideosController extends Controller
@@ -247,6 +248,8 @@ class AdminVideosController extends Controller
             {
                 return redirect('/home');
             }
+            $settings = Setting::first();
+
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
             'post_route' => URL::to('admin/videos/fileupdate'),
@@ -258,6 +261,7 @@ class AdminVideosController extends Controller
             'subtitles' => Subtitle::all(),
             'artists' => Artist::all(),
             'age_categories' => AgeCategory::all(),
+            'settings' => $settings,
             'video_artist' => [],
             );
         return View::make('admin.videos.fileupload', $data);
@@ -586,6 +590,7 @@ if(!empty($artistsdata)){
         {
             return redirect('/home');
         }
+        $settings = Setting::first();
         
        $video = Video::find($id);
         $data = array(
@@ -599,6 +604,7 @@ if(!empty($artistsdata)){
             'subtitles' => Subtitle::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
+            'settings' => $settings,
             'age_categories' => AgeCategory::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             );
@@ -810,6 +816,7 @@ if(!empty($artistsdata)){
          $languages=$request['sub_language'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
+         $video->ppv_price =$data['ppv_price'];
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
@@ -1132,18 +1139,19 @@ if(!empty($artistsdata)){
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
              $video->age_restrict =  $data['age_restrict'];
+         $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
              $video->update($data);
 
              $video = Video::findOrFail($id);
              $users = User::all();
              if($video['draft'] == 1){
-             foreach ($users as $key => $user) {
-                //  $userid[]= $user->id;
-                if(!empty($user->token)){
-            send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
-                }
-             }
+            //  foreach ($users as $key => $user) {
+            //     //  $userid[]= $user->id;
+            //     if(!empty($user->token)){
+            // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
+            //     }
+            //  }
         //      foreach ($userid as $key => $user_id) {
         //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
         //     }

@@ -29,6 +29,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\SystemSetting as SystemSetting;
 use DateTime;
 use Session;
+use DB;
 
 class AdminUsersController extends Controller
 {
@@ -317,6 +318,22 @@ class AdminUsersController extends Controller
           }else{
         
     	$user_id = Auth::user()->id;
+    	$user_role = Auth::user()->role;
+       
+        if($user_role == 'registered'){
+            $role_plan  = $user_role;
+        }elseif($user_role == 'subscriber'){
+            $user_role = DB::table('subscriptions')
+       ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+       ->select('plans.plans_name')
+       ->where('subscriptions.user_id','=',$user_id  )
+       ->get();
+       $role_plan = $user_role[0]->plans_name;
+    //    print_r($role_plan);
+    //    exit();
+        }
+    	$user_role = Auth::user()->role;
+
     	$user_details = User::find($user_id);
         $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
         foreach($recent_videos as $key => $value){
@@ -329,7 +346,8 @@ class AdminUsersController extends Controller
     		'videos' => $video,
     		'videocategory' => $videocategory,
     		'user' => $user_details,
-
+    		'role_plan' => $role_plan,
+    		'user_role' => $user_role,
     		'post_route' => URL::to('/profile/update')
     		);
     	return View::make('myprofile', $data);
