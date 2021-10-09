@@ -68,8 +68,8 @@
 						<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 							<p class="p1">Add the video slug in the textbox below:</p> 
-							<input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" />
-                            <!-- value="@if(!empty($video->slug)){{ $video->slug }}@endif"-->
+							<input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" 
+                            value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
 						</div> 
 					</div>
 
