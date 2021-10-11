@@ -222,7 +222,7 @@ class AdminAudioController extends Controller
         }
        
 
-        return Redirect::to('admin/audios')->with(array('note' => 'New Audio Successfully Added!', 'note_type' => 'success') );
+        return Redirect::to('admin/audios')->with(array('message' => 'New Audio Successfully Added!', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');
@@ -385,7 +385,7 @@ class AdminAudioController extends Controller
         }
 
 
-        return Redirect::to('admin/audios/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Audio!', 'note_type' => 'success') );
+        return Redirect::to('admin/audios/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Audio!', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');
@@ -414,7 +414,7 @@ class AdminAudioController extends Controller
 
         Audioartist::where('audio_id',$id)->delete();
 
-        return Redirect::to('admin/audios')->with(array('note' => 'Successfully Deleted Audio', 'note_type' => 'success') );
+        return Redirect::to('admin/audios')->with(array('message' => 'Successfully Deleted Audio', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');

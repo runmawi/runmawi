@@ -33,6 +33,17 @@
                 <h4><i class="entypo-video"></i> Live Videos</h4>
                 
 			</div>
+			@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
                 <a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
@@ -97,7 +108,14 @@
 		});
 
 	</script>
-
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 	@stop
 
 @stop

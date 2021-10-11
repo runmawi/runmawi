@@ -580,7 +580,7 @@ if(!empty($artistsdata)){
 //        VideoResolution::where('video_id', '=', $id)->delete();
 //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where('video_id',$id)->delete();
-        return Redirect::to('admin/videos')->with(array('note' => 'Successfully Deleted Video', 'note_type' => 'success') );
+        return Redirect::to('admin/videos')->with(array('message' => 'Successfully Deleted Video', 'note_type' => 'success') );
     }
     
     
@@ -857,7 +857,7 @@ if(!empty($artistsdata)){
         }
 
 
-        return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Video!', 'note_type' => 'success') );
+        return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
 
     private function getCleanFileName($filename){
@@ -1194,7 +1194,7 @@ if(!empty($artistsdata)){
             }
     
     
-            return Redirect::back();
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
         }
     public function Mp4url(Request $request)
     {

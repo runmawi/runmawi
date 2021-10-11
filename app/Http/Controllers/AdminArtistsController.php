@@ -101,7 +101,7 @@ class AdminArtistsController extends Controller
         $artist = Artist::create($data);
         $artist_id = $artist->id;
 
-        return Redirect::to('admin/artists')->with(array('note' => 'New Artist Successfully Added!', 'note_type' => 'success') );
+        return Redirect::to('admin/artists')->with(array('message' => 'New Artist Successfully Added!', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');
@@ -165,7 +165,7 @@ class AdminArtistsController extends Controller
 
         $artist->update($data);
 
-        return Redirect::to('admin/artists/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Artist!', 'note_type' => 'success') );
+        return Redirect::to('admin/artists/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Artist!', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');
@@ -186,7 +186,7 @@ class AdminArtistsController extends Controller
 
         Artist::destroy($id);
 
-        return Redirect::to('admin/artists')->with(array('note' => 'Successfully Deleted Artist', 'note_type' => 'success') );
+        return Redirect::to('admin/artists')->with(array('message' => 'Successfully Deleted Artist', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');

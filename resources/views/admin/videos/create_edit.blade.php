@@ -78,6 +78,17 @@
                            <h4 class="card-title">Add Video</h4>
                         </div>
                      </div>
+                     @if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
                      <div class="iq-card-body">
                          <h5>Video Info Details</h5>
                         <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
@@ -414,7 +425,14 @@
 			   this.value = this.checked ? 1 : 0;
 			}).change();
       </script>
-
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 @section('javascript')
 	@stop
 

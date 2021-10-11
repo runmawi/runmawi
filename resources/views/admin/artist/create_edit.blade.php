@@ -30,6 +30,17 @@
                <hr>
 	<!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
 </div>
+@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 	<div class="admin-section-title">
 	@if(!empty($artist->id))
 		<h3>{{ $artist->name }}</h3> 
@@ -37,6 +48,7 @@
 		<h4><i class="entypo-plus"></i> Create Artist</h4> 
 	@endif
 	</div>
+	
 	<div class="clear"></div>
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
@@ -128,7 +140,16 @@
 
 
 	</script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 	@stop
 
 @stop

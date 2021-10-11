@@ -207,7 +207,7 @@ class AdminUsersController extends Controller
 //             $request['password'] = $password; }
 // //        
 //         $user = User::create($input);
-        return Redirect::to('admin/users')->with(array('note' => 'Successfully Created New User', 'note_type' => 'success') );
+        return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );
     }
     
     
@@ -288,7 +288,7 @@ class AdminUsersController extends Controller
         $user_update->username = $input['username'];
         $user_update->save();
         
-        return Redirect::to('admin/users')->with(array('note' => 'Successfully Created New User', 'note_type' => 'success') );
+        return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );
     }
     
     
@@ -519,7 +519,7 @@ class AdminUsersController extends Controller
             $file->move($path, $input['splash_image']);
           }
           $settings->update($input);
-          return Redirect::to('admin/mobileapp')->with(array('note' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
+          return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
     }  
 
     
@@ -538,14 +538,14 @@ class AdminUsersController extends Controller
         \Session::flush();
         
         
-        return Redirect::to('/')->with(array('note' => 'You are logged out done', 'note_type' => 'success') );
+        return Redirect::to('/')->with(array('message' => 'You are logged out done', 'note_type' => 'success') );
     }
     
     public function destroy($id)
         {
 
             User::destroy($id);
-            return Redirect::to('admin/users')->with(array('note' => 'Successfully Deleted User', 'note_type' => 'success') );
+            return Redirect::to('admin/users')->with(array('message' => 'Successfully Deleted User', 'note_type' => 'success') );
         }
         public function export(Request $request) {
 

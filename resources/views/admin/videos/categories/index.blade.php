@@ -23,6 +23,17 @@
 			<div class="col-md-6">
 				<h4><i class="entypo-archive"></i> Video Categories</h4>
 			</div>
+			@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
@@ -247,6 +258,15 @@
 				})
 			}
 		</script>
+
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 	@stop
 
 @stop

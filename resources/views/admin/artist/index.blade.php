@@ -26,6 +26,17 @@
 			<h4><i class="entypo-newspaper"></i> Manage Artist</h4>
            
 		</div>
+		@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 		<div class="col-md-4">	
 			<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" name="s" id="search-input" value="<?= Request::get('s'); ?>" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 		</div>
@@ -52,7 +63,7 @@
 			<td>
 				<p class="d-flex align-items-center list-user-action">
 					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="lar la-eye"></i> </a>
-					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" class="iq-bg-danger"><i
+					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
                                                 class="ri-delete-bin-line"></i></a>
 				</p>
 			</td>
@@ -61,7 +72,8 @@
 	</table>
 </div>
 	<div class="clear"></div>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
 	<div class="pagination-outter"><?= $artists->appends(Request::only('s'))->render(); ?></div>
 	<script src="{{ Url::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
@@ -79,4 +91,12 @@
 		});
 
 	</script>
+	<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 	@stop

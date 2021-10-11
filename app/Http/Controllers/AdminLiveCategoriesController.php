@@ -88,7 +88,7 @@ class AdminLiveCategoriesController extends Controller
            }
           
             LiveCategory::create($input);
-            return back()->with('success', 'New Category added successfully.');
+            return back()->with('message', 'New Category added successfully.');
           }else if($package == "Basic"){
 
             return view('blocked');
@@ -166,7 +166,7 @@ class AdminLiveCategoriesController extends Controller
             
             $category->save();
 
-            return Redirect::to('admin/livestream/categories')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
+            return Redirect::to('admin/livestream/categories')->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
             
           }else if($package == "Basic"){
 
@@ -190,7 +190,7 @@ class AdminLiveCategoriesController extends Controller
                 $cats->parent_id = 0;
                 $cats->save();
             }
-            return Redirect::to('admin/livestream/categories')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+            return Redirect::to('admin/livestream/categories')->with(array('message' => 'Successfully Deleted Category', 'note_type' => 'success') );
           }else if($package == "Basic"){
 
             return view('blocked');

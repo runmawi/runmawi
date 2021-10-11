@@ -32,6 +32,17 @@
 	<div class="admin-section-title">
 		<h5><i class="entypo-credit-card"></i> Mobile Settings</h5> 
 	</div>
+	@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 	<div class="clear"></div>
 
 	<form method="POST" action="{{ URL::to('admin/mobile_app/store') }}" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -177,6 +188,14 @@
 		});
 		</script>
     
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 <script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>
 @stop
 

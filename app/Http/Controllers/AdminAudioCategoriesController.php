@@ -91,7 +91,7 @@ class AdminAudioCategoriesController extends Controller
            }
           
             AudioCategory::create($input);
-            return back()->with('success', 'New Category added successfully.');
+            return back()->with('message', 'New Category added successfully.');
         }else if($package == "Basic"){
 
             return view('blocked');
@@ -197,7 +197,7 @@ class AdminAudioCategoriesController extends Controller
                 $cats->parent_id = 0;
                 $cats->save();
             }
-            return Redirect::to('admin/audios/categories')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+            return Redirect::to('admin/audios/categories')->with(array('message' => 'Successfully Deleted Category', 'note_type' => 'success') );
         }else if($package == "Basic"){
 
             return view('blocked');
@@ -267,7 +267,7 @@ class AdminAudioCategoriesController extends Controller
 
 
         AudioAlbums::create($input);
-        return back()->with('success', 'New Album added successfully.');
+        return back()->with('message', 'New Album added successfully.');
     }else if($package == "Basic"){
 
         return view('blocked');
@@ -319,7 +319,7 @@ class AdminAudioCategoriesController extends Controller
         
         
         if(isset($audio)){
-            return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Updated Albums', 'note_type' => 'success') );
+            return Redirect::to('admin/audios/albums')->with(array('message' => 'Successfully Updated Albums', 'note_type' => 'success') );
         }
     }else if($package == "Basic"){
 
@@ -337,7 +337,7 @@ class AdminAudioCategoriesController extends Controller
 
         AudioAlbums::destroy($id);
        
-        return Redirect::to('admin/audios/albums')->with(array('note' => 'Successfully Deleted Albums', 'note_type' => 'success') );
+        return Redirect::to('admin/audios/albums')->with(array('message' => 'Successfully Deleted Albums', 'note_type' => 'success') );
     }else if($package == "Basic"){
 
         return view('blocked');

@@ -445,7 +445,7 @@ if($watermark != '') {
 }
     $playerui->save();
       
-    return Redirect::to('admin/players')->with(array('note' => 'Successfully Updated Player Setting UI!', 'note_type' => 'success') );
+    return Redirect::to('admin/players')->with(array('message' => 'Successfully Updated Player Setting UI!', 'note_type' => 'success') );
   }
 
   public function playerui_settings_episode() {

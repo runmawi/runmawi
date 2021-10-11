@@ -3,7 +3,17 @@
 	<button type="button"class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
 	
 </div>
-
+@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/audios/albums/update') }}" method="post" enctype="multipart/form-data">
        
@@ -82,4 +92,12 @@
 			$('#update-cat-form').submit();
 		});
 	});
+</script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
 </script>

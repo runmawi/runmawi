@@ -30,6 +30,17 @@
                     <div class="col-md-4">
                         <h4><i class="entypo-archive"></i> Add Audio </h4>
                     </div>
+					@if (Session::has('message'))
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                        @endif
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
                     <div class="col-md-8" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
@@ -541,6 +552,14 @@ $('#duration').mask('00:00:00');
 
   });
     </script>
+	<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 
 @section('javascript')
         @stop

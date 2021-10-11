@@ -96,12 +96,12 @@ i.fa.fa-google-plus {
                       <?php } else  { ?>
                       <?php } ?>
                        @if (Session::has('message'))
-                       <div class="alert alert-info">{{ Session::get('message') }}</div>
+                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif
                         @if(count($errors) > 0)
                         @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide">
-                        <button class="close" data-close="alert"></button>
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
                         <span>{{ $message }}</span>
                         </div>
                         @endforeach
@@ -205,6 +205,16 @@ i.fa.fa-google-plus {
       </div>
    </div>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 </body>
      @include('footer')
       <!-- jQuery, Popper JS -->

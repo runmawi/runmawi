@@ -154,7 +154,7 @@ class AdminLiveStreamController extends Controller
 
      
         
-         return Redirect::to('admin/livestream')->with(array('note' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+         return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
     }
     
     
@@ -271,7 +271,7 @@ class AdminLiveStreamController extends Controller
         $video->update($data);
       
 
-        return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Video!', 'note_type' => 'success') );
+        return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
     
     
