@@ -39,11 +39,18 @@ class LiveStreamController extends Controller
         
           $data = session()->all();
        
-        if(!empty($data['password_hash'])){
            $categoryVideos = LiveStream::where('id',$vid)->first();
+        if(!empty($data['password_hash'])){
            $user_id = Auth::user()->id;
+          }
+
            $settings = Setting::first(); 
+        if(!empty($data['password_hash'])){
+
            $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
+          }else{
+            $ppv_exist = [];
+          }
 
             $wishlisted = false;
             if(!Auth::guest()):
@@ -65,10 +72,10 @@ class LiveStreamController extends Controller
            );
 
            return view('livevideo', $data);
-          }else{
-            $system_settings = SystemSetting::first();
+          // }else{
+          //   $system_settings = SystemSetting::first();
 
-            return view('auth.login',compact('system_settings'));
-          }
+          //   return view('auth.login',compact('system_settings'));
+          // }
         }
 }

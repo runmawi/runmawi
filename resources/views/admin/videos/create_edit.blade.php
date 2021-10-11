@@ -425,6 +425,8 @@
 			   this.value = this.checked ? 1 : 0;
 			}).change();
       </script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
