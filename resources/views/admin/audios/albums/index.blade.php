@@ -45,7 +45,7 @@
                      				<td><?php if($album->album != '') { ?><img src="{{ URL::to('/public/uploads/albums/') . '/'.$album->album }}" width="50"><?php }else{} ?></td>
                      				<td class="list-user-action">
                                         <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('/admin/audios/albums/edit/') }}/{{ $album->id }}" class="edit"><i class="ri-pencil-line"></i></a> 
-                     				<a href="{{ URL::to('/admin/audios/albums/delete/') }}/{{ $album->id }}" class=" iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                     				<a href="{{ URL::to('/admin/audios/albums/delete/') }}/{{ $album->id }}" onclick="return confirm('Are you sure?')"   class=" iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
                      			</tr>
 
 								@endforeach

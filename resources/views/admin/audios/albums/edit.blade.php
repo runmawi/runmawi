@@ -1,8 +1,11 @@
-<div class="modal-header">
+<!-- <div class="modal-header">
     <h4 class="modal-title">Update Album</h4>
 	<button type="button"class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
 	
-</div>
+</div> -->
+
+@extends('admin.master')
+
 @if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif
@@ -14,6 +17,16 @@
                         </div>
                         @endforeach
                         @endif
+                        <div id="content-page" class="content-page">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Update Audio Albums</h4>
+                        </div>
+                     </div>
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/audios/albums/update') }}" method="post" enctype="multipart/form-data">
        
@@ -85,6 +98,8 @@
 	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
+</div>    </div>    </div>    </div>    </div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
 <script>
 	$(document).ready(function(){
