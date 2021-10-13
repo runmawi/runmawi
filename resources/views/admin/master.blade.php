@@ -230,12 +230,13 @@ if($package == "Basic"){    ?>
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
-                        <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
-                         <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
-                          <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
-                          <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
-                          <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                       <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
+                            <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                            <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                            <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                      </ul>
                   </li>
                   <?php }elseif($package == "Pro"){   ?>
@@ -378,12 +379,13 @@ if($package == "Basic"){    ?>
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                         <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
-                         <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
-                          <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
-                          <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
-                          <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                            <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                            <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                      </ul>
                   </li>
 

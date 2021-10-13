@@ -32,7 +32,7 @@ class SettingsServiceProvider extends ServiceProvider
 		\Config::set('app.port',$email_settings->email_port);
 		\Config::set('app.username',$email_settings->user_email);
 		\Config::set('app.password',$email_settings->email_password);
-		\Config::set('app.address',$email_settings->user_email);
+		\Config::set('app.address',$email_settings->secure);
 
 
         

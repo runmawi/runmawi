@@ -65,7 +65,7 @@
 					</div> 
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title"><label>Email Port</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
@@ -73,18 +73,18 @@
 					</div> 
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title"><label>Secure </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
 	<select id="secure" name="secure" class="form-control" required>
-		<option value="TRUE" @if(!empty($email_settings->secure) && $email_settings->secure == 'TRUE'){{ 'selected' }}@endif> TRUE</option>
-		<option value="FALSE" @if(!empty($email_settings->secure) && $email_settings->secure == 'FALSE'){{ 'selected' }}@endif >FALSE</option>
+		<option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'SSL'){{ 'selected' }}@endif> TRUE</option>
+		<option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'TLS'){{ 'selected' }}@endif >FALSE</option>
 	</select>
 					</div> 
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title"><label>Email User</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
@@ -92,7 +92,7 @@
 					</div> 
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title"><label>Email Password</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
@@ -109,7 +109,11 @@
             </div>
 	</form>
 
-        
+                  </div>
+             </div>
+    </div>
+</div>
+
  
 
 @stop
