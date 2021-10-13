@@ -36,7 +36,7 @@
                         <div class="col-md-12">
 
                         <div class="form-group row">
-                            <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
+                            <label for="name" class=" col-form-label text-md-right"><label>{{ __('User Name') }}</label></label>
                             <input id="id" type="hidden" class="form-control" name="id" value="{{  $roles->id }}"  autocomplete="username" autofocus>
 
                                 <input id="name" type="text" class="form-control" name="username" value="{{ $roles->role_name }}"  autocomplete="username" autofocus>
@@ -46,13 +46,13 @@
                     <div id="user_permissions" class="buttons">
                     <div >
                                                 
-                    <label for="user_permission" class=" col-form-label text-md-right">{{ __('User Permission') }}</label>
+                    <label for="user_permission" class=" col-form-label text-md-right"> {{ __('User Permission') }} </label>
                     </div>
                     @foreach($permission as $permissions)
                                
-                               <div  class="col-md-4" style="width: 33%; float: left;">
-                                           <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
-                                           {{$permissions->name}}
+                               <div  class="col-md-4 d-flex" style="width: 33%; float:left;">
+                                           
+                                        <div>  <label  style="color:#000000!important;">{{$permissions->name}}</label></div>
                                            <label class="switch">
                             <input class="form-check-input" type="checkbox" name="user_permission[]" value="{{$permissions->id}}" {{ (in_array($permissions->id, $moderatorspermission)) ? ' checked' : '' }}> 
 
@@ -66,7 +66,6 @@
 
                     </div>
 
-                    </div>
                     <br>
                                             <div class="form-group row mb-0">
                                                 <div class="col-md-12 offset-md-4">

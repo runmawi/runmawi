@@ -76,7 +76,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					<p class="p1">Organize the Languages below: </p>
+					<label class="">Organize the Languages below: </label>
 				</div>
 				
 				<div class="panel-options">

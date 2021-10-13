@@ -139,7 +139,7 @@
 
 <div  class="col-md-4" style="width: 33%; float: left;">
             <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
-            {{$permissions->name}}
+          <label>  {{$permissions->name}}</label>
             <label class="switch">
                       <input type="checkbox"  name="user_permission[]" checked="checked" value="{{$permissions->id}}">
                 <span class="slider round"></span>
@@ -173,7 +173,7 @@
 
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-12 offset-md-4">
+                            <div class="col-md-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>

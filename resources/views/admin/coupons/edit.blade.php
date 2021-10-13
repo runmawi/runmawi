@@ -44,8 +44,9 @@
                 <input type="hidden" name="id" id="id" value="{{ $edit_coupons[0]->id }}" />
 
               <div class="modal-footer">
-                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/coupons') }}">Close</a>
+              
                 <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
+                    <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/coupons') }}">Close</a>
             </div>
         </form>
 </div>

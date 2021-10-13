@@ -22,7 +22,7 @@
      <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
-				<h4><i class="entypo-archive"></i>  Plans </h4>
+				<h4><i class="entypo-archive"></i> Coupons </h4>
 			</div>
             <div class="col-md-6" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
@@ -56,8 +56,9 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					
 					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
@@ -73,11 +74,10 @@
                         @foreach($coupons as $coupon )
 
                             <li class="dd-item">
-
-                               <div class="dd-handle"> {{ $coupon->coupon_code }} </div>
+                                <div class="d-flex justify-content-between" style="width:30%;">
+                               <div class="dd-handle"> <label>{{ $coupon->coupon_code }}</label> </div>
                                <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/coupons/edit/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/coupons/delete/{{ $coupon->id }}" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/coupons/delete/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div></div>
                             </li>
 
                         @endforeach

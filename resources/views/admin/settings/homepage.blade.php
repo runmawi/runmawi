@@ -42,25 +42,25 @@
 <form action="{{ URL::to('/admin/home-settings/save')}}" method="post" enctype="multipart/form-data">
     @csrf
 		<div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading"> <div class="panel-title">Listing Home Page video</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+            <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
                         <div class="row align-items-center">
                            <div class="col-sm-4">
-                                <div class="input-group color-picker d-flex align-items-center justify-content-around" style="width: ;">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                     
                                         <div>
                                     <label class="mt-1"> Featured Video </label></div>
                                     <div>
                                         
-                                     <div class="make-switch" data-on="success" data-off="warning">
+                                     <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
                                        
-                                <div>ON</div>
+                                <div><label class="mr-1">ON</label></div>
                                 <div>
                                    <label class="switch">
                                 <input name="featured_videos" type="checkbox"  @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
                                 <span class="slider round"></span>
                                 </label></div>
-                                <div>OFF</div>
+                                         <div><label class="ml-1">OFF</label></div>
                                 </div>
                                         </div>
                                         
@@ -73,14 +73,14 @@
                                     <label class="mt-1"> Latest Video </label></div>
                                     <div>
                                       <div class="input-group color-picker">
-                                        <div class="make-switch" data-on="success" data-off="warning">
-                                            <div>ON</div>
+                                        <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                            <div><label class="mr-1">ON</label></div>
                                 <div>
                                    <label class="switch">
                                 <input type="checkbox"  @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos">
                                 <span class="slider round"></span>
                                 </label></div>
-                                <div>OFF</div>
+                                <div><label class="ml-1">OFF</label></div>
                                 </div>
                                         </div>
 
@@ -91,14 +91,14 @@
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-around">
                                     <label class="mt-1"> Category Video </label>
-                                       <div class="make-switch" data-on="success" data-off="warning">
-                                            <div>ON</div>
+                                       <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                            <div><label class="mr-1">ON</label></div>
                                 <div>
                                    <label class="switch">
                                 <input  type="checkbox"  name="category_videos"   @if ($settings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
                                 <span class="slider round"></span>
                                 </label></div>
-                                <div>OFF</div>
+                                <div><label class="ml-1">OFF</label></div>
                                 </div>
                                         </div>
                             </div>

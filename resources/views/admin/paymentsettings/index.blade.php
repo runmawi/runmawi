@@ -112,7 +112,7 @@ input:checked + .slider:before {
 						<div class="form-group">
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                 <div>ON</div>
-                                <div>
+                                <div class="mt-1">
                             <label class="switch">
 							<input type="checkbox" @if(!isset($payment_settings->live_mode) || (isset($payment_settings->live_mode) && $payment_settings->live_mode))checked="checked" value="1"@else value="0"@endif name="live_mode" id="live_mode" />
   <span class="slider round"></span>

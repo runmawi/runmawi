@@ -24,7 +24,7 @@
 		<h4>{{ $series->title }}</h4> 
                 </div>
             <div>
-		<a href="{{ URL::to('series') . '/' . $series->id }}" target="_blank" class="btn btn-info">
+		<a href="{{ URL::to('series') . '/' . $series->id }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
 	@else
@@ -226,7 +226,7 @@
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
+						<div class="panel-body mt-3"> 
 							<label for="access" style="float:left; margin-right:10px;">Who is allowed to view this series?</label>
 							<select class="form-control" id="access" name="access">
 								<option value="guest" @if(!empty($series->access) && $series->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
@@ -284,8 +284,8 @@
             <div class="col-md-8">
                 <h3>Season & Episodes</h3> 
             </div>
-			<div class="col-md-4">
-				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-info"><i class="fa fa-plus-circle"></i>Create Season</a>
+			<div class="col-md-4 d-flex justify-content-end">
+				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Create Season</a>
 			</div>
 		</div>
 		<div class="row p-3">

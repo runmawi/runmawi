@@ -51,13 +51,13 @@
                         <div class="row">
                            <p class="col-md-6"><label>Enable Facebook:</label></p> 
                             <div  class="d-flex justify-content-around align-items-center" style="width:30%;">
-                                <div>ON</div>
+                                <div><label>ON</label></div>
                                 <div>
                             <label class="switch">
   <input name="facebook" type="checkbox"  @if(!isset($system->facebook) || (isset($system->facebook) && $system->facebook))checked="checked" value="1"@else value="0"@endif>
   <span class="slider round"></span>
 </label></div>
-                                <div>OFF</div>
+                                <div><label>OFF</label></div>
                                 </div>
                            <!-- <div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->facebook) || (isset($system->facebook) && $system->facebook))checked="checked" value="1"@else value="0"@endif name="facebook" id="facebook" />
@@ -89,13 +89,13 @@
                         <div class="row">
                          <p class="col-md-6"><label>Enable Google:</label></p> 
                             <div class="d-flex justify-content-around align-items-center" style="width:30%;">
-                                <div>ON</div>
+                                <div><label>ON</label></div>
                                 <div>
                             <label class="switch">
   <input name="google" type="checkbox" @if(!isset($system->google) || (isset($system->google) && $system->google))checked="checked" value="1"@else value="0"@endif >
   <span class="slider round"></span>
 </label></div>
-                                <div>OFF</div>
+                                <div><label>OFF</label></div>
                                 </div>
                             <!--<div class="make-switch col-md-6" data-on="success" data-off="warning">
 				                <input type="checkbox" @if(!isset($system->google) || (isset($system->google) && $system->google))checked="checked" value="1"@else value="0"@endif name="google" id="google" />

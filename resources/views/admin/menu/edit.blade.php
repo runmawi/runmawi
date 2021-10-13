@@ -17,8 +17,8 @@
          <input name="url" id="url" placeholder="URL Slug" class="form-control" value="{{ $menu->url }}" /> 
         
              <label for="categories" style="font-size:12px;">Categories (Need to Display video categories in this Menu) ? </label><br>
-             <input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/> None 
-             <input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> />Video Categories
+             <input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/>  <label class="ml-1">None</label>
+             <input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> /><label class="ml-1">Video Categories</label>
         
         <input type="hidden" name="id" id="id" value="{{ $menu->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
@@ -26,8 +26,9 @@
 </div>
 
 <div class="modal-footer">
-	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/menu') }}">Close</a>
+	
 	<button type="button" class="btn btn-primary" id="submit-update-menu">Update</button>
+    <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/menu') }}">Close</a>
 </div>
 
     </div></div>

@@ -192,7 +192,7 @@
 			@endif
 
 			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
 </div>
 			</div><!-- row -->
 

@@ -31,7 +31,9 @@ $uppercase =  ucfirst($request_url);
         <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.css">
      <?php } else{ } ?>
     <link rel="stylesheet" href="css/videojs-seek-buttons.css">
-<?php if($playerui_settings->watermark == 1){ ?>
+<?php if($playerui_settings->watermark == 1){ 
+// dd($playerui_settings->watermark);
+?>
     <style>
           .vjs-watermark img {
                 width: <?php echo $playerui_settings->watermar_width; ?>;
@@ -75,6 +77,12 @@ $uppercase =  ucfirst($request_url);
     if($playerui_settings->thumbnail == 1){  ?>
              <script src="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.js"></script>
             <script src="js/thumbnails.js"></script>
+     <?php } else{ } ?>
+     <?php 
+    if($playerui_settings->watermark == 1){  ?>
+             <script src="js/watermark.js"></script>
+                <script type="text/javascript" src="js/videojs-watermark.min.js"></script>
+
      <?php } else{ } ?>
 </head>
 

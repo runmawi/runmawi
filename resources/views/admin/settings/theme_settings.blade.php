@@ -39,13 +39,13 @@
                            <div class="col-sm-4">
                                 <div class="input-group color-picker" style="width: 50%;">
                                     <label class="mt-2">Dark Mode</label>
-                                    <input type="color" class="form-control"  name="dark_bg_color" data-format="hex" value="{{ $settings->dark_bg_color}}" />
+                                    <input type="color" class="form-control ml-1"  name="dark_bg_color" data-format="hex" value="{{ $settings->dark_bg_color}}" />
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker" style="width: 50%;">
                                     <label class="mt-2">Light Mode</label>
-                                    <input type="color" class="form-control"  name="light_bg_color" data-format="hex" value="{{ $settings->light_bg_color}}" />
+                                    <input type="color" class="form-control ml-1"  name="light_bg_color" data-format="hex" value="{{ $settings->light_bg_color}}" />
                                 </div>
                             </div>
                         </div>
@@ -53,23 +53,23 @@
             
             
             <div class="panel-heading mt-3"> 
-                <div class="panel-title"> Site Logo</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                <div class="panel-title"> <label>Site Logo</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
             </div> 
 			   <div class="panel-body"> 
                        <div class="row mt-3">
-                           <div class="col-sm-4">
+                           <div class="col-sm-6">
                                 <div class="input-group color-picker" >
                                     <label class="mt-2">Dark Mode</label>
-                                    <input type="file" class="form-control"  name="dark_mode_logo"  value="" />
+                                    <input type="file" class="form-control ml-2"  name="dark_mode_logo"  value="" />
                                 </div>
                                 <img class="mt-3" src="{{ URL::to('/public/uploads/settings/'.$settings->dark_mode_logo)}}">
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker" >
                                     <label class="mt-2">Light Mode</label>
-                                    <input type="file" class="form-control"  name="light_mode_logo" value="" />   
+                                    <input type="file" class="form-control ml-2"  name="light_mode_logo" value="" />   
                                 </div>
-                                 <img class="mt-3"  src="{{ URL::to('/public/uploads/settings/'.$settings->light_mode_logo)}}">
+                                 <img class="mt-3 text-center"  src="{{ URL::to('/public/uploads/settings/'.$settings->light_mode_logo)}}">
                             </div>
                         </div>
             </div> 

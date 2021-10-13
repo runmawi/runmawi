@@ -37,7 +37,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Categories below: 
+					<label>Organize the Categories below:</label> 
 				</div>
 				
 				<div class="panel-options">
@@ -71,7 +71,7 @@
                                             <div class="flex align-items-center list-user-action">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                                              data-original-title="Edit" href="{{ URL::to('admin/moderatorsuser/edit/') }}/{{$user->id}}" ><i class="ri-pencil-line"></i></a> 
-                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                            <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                                              data-original-title="Delete" href="{{ URL::to('admin/moderatorsuser/delete/') }}/{{$user->id}}" ><i
                                                              onclick="return confirm('Are you sure?')"   class="ri-delete-bin-line"></i></a></div>
 

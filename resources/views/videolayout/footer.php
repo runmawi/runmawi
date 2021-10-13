@@ -15,7 +15,10 @@
    
 
 <?php 
-    if($playerui_settings->watermark == 1){  ?>
+    if($playerui_settings->watermark == 1){  
+// dd($playerui_settings->watermark);
+      
+      ?>
                 <script src="js/watermark.js"></script>
                 <script type="text/javascript" src="js/videojs-watermark.min.js"></script>
 

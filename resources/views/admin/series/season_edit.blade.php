@@ -27,7 +27,7 @@
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
-		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-info">
+		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
@@ -217,7 +217,7 @@
 
  <div class="mt-3" style="display: flex;
     justify-content: flex-end;">
-                     <input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" /></div>
+                     <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" /></div>
 			
 
 		</form>

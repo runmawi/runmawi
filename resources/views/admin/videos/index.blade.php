@@ -16,12 +16,14 @@
                         <div class="iq-header-title">
                            <h4 class="card-title">Video Lists</h4>
                         </div>
-                        <div class="iq-card-header-toolbar d-flex align-items-center">
-                           <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
-                        </div>
-                        <div class="form-group">
+                        
+                        
+                         <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                             <div class="form-group mr-2">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                     </div>
+                           <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
+                        </div>
                      </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">

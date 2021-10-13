@@ -51,7 +51,7 @@
 		<div class="row">
 
 			<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Splash Screen</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title"><label>Splash Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body " style="display: block; > 
                     
 					@if(!empty($mobile_settings->splash_image))

@@ -134,15 +134,17 @@
 							else:
 								$second_parent_id = $menu_item->parent_id;
 							endif; ?>
+                    <div class="d-flex">
 							<ol class="dd-list">
 							<?php $depth += 1; ?>
 						@endif
 
-
-							<div class="dd-handle mt-2">{{ $menu_item->name}}</div>
+                                <div class="d-flex justify-content-between" style="width:30%;">
+							<div class="dd-handle mt-3">{{ $menu_item->name}}</div>
 							<div class=" align-items-center list-user-action mt-2"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
+</div>
 
 						<?php $previous_item = $menu_item; ?>
 
@@ -151,7 +153,7 @@
 						
 
 					</ol>
-						
+						</div>
 				</div>
 		
 			</div>

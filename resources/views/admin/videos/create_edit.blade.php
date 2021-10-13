@@ -143,7 +143,7 @@
 						                  @endforeach
                               </select>
                               </div>   
-                              <div class="col-sm-6 form-group">
+                              <div class="col-sm-6 form-group mt-3">
                                          <label><h5>Age Restrict :</h5></label>
                                           <select id="age_restrict" name="age_restrict" class="form-control" required>
                                              <!-- <option>--Video Type--</option> -->
@@ -325,8 +325,8 @@
                               @endif
 
                               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                              <div class="col-12 form-group ">
-                                 <button type="submit" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+                              <div class="col-12 d-flex justify-content-end form-group ">
+                                 <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
                                  <button type="reset" class="btn btn-danger">cancel</button>
                               </div>
                         </form>
