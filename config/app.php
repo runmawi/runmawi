@@ -7,7 +7,6 @@ if( ! defined ( "THEME_URL" ) ):
 endif;
     //Enter your Info below to Sign-Up for an Account!
 
-    $email_settings = \DB::table('email_settings')->get();
 
 return [
 
@@ -129,12 +128,12 @@ return [
     'key' => env('APP_KEY'),
 
 	'mail' => env('MAIL_MAILER') ?: 'smtp',
-	'host' => env('MAIL_HOST') ?: $email_settings[0]->host_email,
-	'port' => env('MAIL_PORT') ?: $email_settings[0]->email_port,
-	'username' => env('MAIL_USERNAME') ?: $email_settings[0]->user_email,
-	'password' => env('MAIL_PASSWORD') ?: $email_settings[0]->email_password,
+	'host' => env('MAIL_HOST') ?: null,
+	'port' => env('MAIL_PORT') ?: null,
+	'username' => env('MAIL_USERNAME') ?: null,
+	'password' => env('MAIL_PASSWORD') ?: null,
 	'encryption' => env('MAIL_ENCRYPTION') ?: 'tls',
-	'address' => env('MAIL_FROM_ADDRESS') ?: $email_settings[0]->user_email,
+	'address' => env('MAIL_FROM_ADDRESS') ?: null,
 
 
 
