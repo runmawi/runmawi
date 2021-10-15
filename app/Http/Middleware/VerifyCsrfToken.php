@@ -121,15 +121,16 @@ class VerifyCsrfToken extends Middleware
 'http://dev-flick.webnexs.org/livestreamcategory_destroy',
 
 'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
-'http://dev-flick.webnexs.org/deletecountry',
 
+
+'http://dev-flick.webnexs.org/Fileupload',
+'http://dev-flick.webnexs.org/updatefile',
+'http://dev-flick.webnexs.org/mp4url_data',
+'http://dev-flick.webnexs.org/m3u8url_data',
+'http://dev-flick.webnexs.org/Embed_Data',
+'http://dev-flick.webnexs.org/Audioupload',
+'http://dev-flick.webnexs.org/fileAudio',
+'http://dev-flick.webnexs.org/edit_audio',
+'http://dev-flick.webnexs.org/deletecountry',
     ];
 }

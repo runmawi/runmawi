@@ -147,6 +147,7 @@ data: {
 
          },        success: function(value){
 			console.log(value);
+			$('#audio_id').val(value.audio_id);
             $('#Next').show();
 
         }

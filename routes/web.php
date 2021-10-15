@@ -435,8 +435,10 @@ Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::get('admin/moderator/role', 'ModeratorsUserController@RolesPermission');
 Route::post('admin/rolepermission/create', 'ModeratorsUserController@RolesPermissionStore');
-
 Route::get('admin/moderator/Allview', 'ModeratorsUserController@AllRoleView');
+Route::get('admin/moderator/commission', 'ModeratorsUserController@Commission');
+Route::post('admin/add/commission', 'ModeratorsUserController@AddCommission');
+
 Route::get('admin/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
 Route::get('admin/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
 Route::post('admin/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
@@ -453,9 +455,12 @@ Route::get('categories_audio',function(){
 
 //audios_list
 Route::get('audios_list',function(){
-    $response=DB::table('audios')->get();
+    $response=DB::table('audio')->get();
     return response()->json($response,200);
 });
+
+
+
 //audio_albums
 Route::get('audio_albums',function(){
     $response=DB::table('audio_albums')->get();
@@ -739,7 +744,10 @@ Route::get('permission',function(){
     return response()->json($response,200);
 });
 
-
+Route::get('age_categorie',function(){
+    $response=DB::table('age_categories')->get();
+    return response()->json($response,200);
+});
 
 
 // Test 
@@ -1142,6 +1150,22 @@ Route::post('livestreamcategory_update', 'ModeratorsUserController@livestreamcat
 // livestreamcategory_destroy 
 
 Route::post('livestreamcategory_destroy', 'ModeratorsUserController@livestreamcategory_destroy');
+Route::post('Fileupload', 'ModeratorsUserController@Fileupload');
+Route::post('updatefile', 'ModeratorsUserController@updatefile');
+Route::post('mp4url_data', 'ModeratorsUserController@mp4url_data');
+Route::post('m3u8url_data', 'ModeratorsUserController@m3u8url_data');
+Route::post('Embed_Data', 'ModeratorsUserController@Embed_Data');
+Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
+Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
+
+
+
+
+
+
+
+
+
 Route::get('admin/allmoderator', 'ModeratorsUserController@view');
 Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
 Route::get('admin/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');

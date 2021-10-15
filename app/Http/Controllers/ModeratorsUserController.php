@@ -62,6 +62,8 @@ use App\AudioAlbums as AudioAlbums;
 use Illuminate\Support\Facades\Cache;
 use App\Audio as Audio;
 use File;
+use App\VideoCommission as VideoCommission;
+
 
 class ModeratorsUserController extends Controller
 {   
@@ -2362,9 +2364,73 @@ return true;
 }
 
 
-
-
 public function audios(Request $request)
+{
+  $data = $request->all();
+  $audios = json_decode($data['audios']);
+$image = $data['image'];
+$id = $audios->audio_id ;
+// echo "<pre>";
+// print_r($audios);
+// exit();
+$audio = Audio::findOrFail($id);
+
+
+$path = public_path().'/uploads/audios/';
+        
+$image = $request['image'];
+
+$path = public_path().'/uploads/audios/';
+        
+$image = $request['image'];
+
+if($image != '') {   
+     //code for remove old file
+
+  if($image != ''  && $image != null){
+     $file_old = $path.$image;
+     if (file_exists($file_old)){
+         unlink($file_old);
+     }
+ }
+        //upload new file
+ $file = $image;
+ $input['image']  = $file->getClientOriginalName();
+ $file->move($path, $input['image']);
+} else {
+ $input['image']  = 'default.jpg';
+}
+
+// $audio = Audio::create($data);
+$arr = $audios->artists;
+$artists = implode(",",$arr);
+
+$audio->title = $audios->title;
+$audio->slug = $audios->slug;
+$audio->details = $audios->details;
+$audio->description = $audios->description;
+$audio->artists = $artists;
+$audio->album_id = $audios->album_id;
+$audio->audio_category_id = $audios->audio_category_id;
+$audio->rating = $audios->rating;
+$audio->language = $audios->language;
+$audio->year = $audios->year;
+$audio->access = $audios->access;
+$audio->featured = $audios->featured;
+$audio->banner = $audios->banner;
+$audio->active = $audios->active;
+$audio->access = $audios->access;
+$audio->draft = 1;
+$audio->user_id = $audios->user_id;
+$audio->image = $file->getClientOriginalName() ;
+$audio->update($data);
+$audio_id = $audio->id;
+$audio_upload = ['audio_upload'];
+return true;
+}
+
+
+public function audiosold(Request $request)
 {
   $data = $request->all();
   $audios = json_decode($data['audios']);
@@ -2378,17 +2444,6 @@ $image = $request['image'];
 //   echo "<pre>";
 //   print_r($audios);
 // exit();
-
-
- /*Slug*/
-// if ($audios->slug != '') {
-//     $data['slug'] = $this->createSlug($audios->slug);
-// }
-
-// if($request->slug == ''){
-//     $data['slug'] = $this->createSlug($data['title']);    
-// }
-
 
 
 
@@ -2437,6 +2492,9 @@ $audio->access = $audios->access;
 $audio->featured = $audios->featured;
 $audio->banner = $audios->banner;
 $audio->active = $audios->active;
+$audio->access = $audios->access;
+// $audio->audio_id = $audios->audio_id;
+
 $audio->user_id = $audios->user_id;
 $audio->image = $file->getClientOriginalName() ;
 
@@ -2451,21 +2509,6 @@ $audio_id = $audio->id;
 
 $audio_upload = ['audio_upload'];
 
-// if($audio_upload){
-//     $ffmpeg = FFMpeg\FFMpeg::create();
-//     $audioupload = $ffmpeg->open($data['audio_upload']);
-
-//     $audioupload
-//     ->save(new ffmpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$audio->id.'.mp3');
-
-//     $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$audio->id.'.mp3'; 
-
-//     $update_url = Audio::find($audio_id);
-
-//     $update_url->mp3_url = $data['mp3_url'];
-
-//     $update_url->save();  
-// }
 
 return true;
 }
@@ -2501,7 +2544,9 @@ public function update_video(Request $request)
   $update_video = json_decode($data['video_data']);
 $id = $update_video->id;
 $video = Video::findOrFail($id);
-
+// echo "<pre>";
+// print_r($update_video);
+// exit();
 if($update_video->slug == ''){
     $data['slug'] = ($update_video->title);    
 }
@@ -2511,10 +2556,8 @@ $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
 $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
 $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
 
-$update_mp4 = $data['video'];
-// echo "<pre>";
-// print_r($update_mp4);
-// exit();
+// $update_mp4 = $data['video'];
+
 if(empty($update_video->active)){
 $update_video->active = 0;
 } 
@@ -2618,16 +2661,16 @@ if($trailer != '') {
 }  
 
 
-if( isset( $update_mp4 ) && $request->hasFile('video')){   
-  //code for remove old file
-    $rand = Str::random(16);
-    $path = $rand . '.' . $request->video->getClientOriginalExtension();
-    $request->video->storeAs('public', $path);
-    $data['mp4_url'] = $path;
+// if( isset( $update_mp4 ) && $request->hasFile('video')){   
+//   //code for remove old file
+//     $rand = Str::random(16);
+//     $path = $rand . '.' . $request->video->getClientOriginalExtension();
+//     $request->video->storeAs('public', $path);
+//     $data['mp4_url'] = $path;
  
-    $original_name = URL::to('/').'/storage/app/public/'.$path;
+//     $original_name = URL::to('/').'/storage/app/public/'.$path;
 
-}
+// }
 
 
 if(isset($update_video->duration)){
@@ -2649,6 +2692,10 @@ $shortcodes = $update_video->short_code;
 $languages=$update_video->sub_language;
 $video->description = strip_tags($update_video->description);
 $video->details = $update_video->details;
+$video->age_restrict = $update_video->age_restrict;
+$video->access = $update_video->access;
+$video->ppv_price = $update_video->ppv_price;
+
 
 $video->update($data);
 
@@ -2959,13 +3006,14 @@ public function edit_audio(Request $request){
 public function update_audio(Request $request){
 
   $data = $request->all();
-  // print_r($data);
-  //       exit();
+
   $audios = json_decode($data['audios']);
   $id = $audios->id;
         $audio = Audio::findOrFail($id);
 
-
+        // echo "<pre>";
+        // print_r($audios);
+        //       exit();
      
         /*Slug*/
         if ($audio->slug != $audios->slug) {
@@ -3013,7 +3061,7 @@ public function update_audio(Request $request){
             $audios->featured = 0;
         }
         $arr = $audios->artists;
-$artists = implode(",",$arr);
+        $artists = implode(",",$arr);
         $audio->title = $audios->title;
         $audio->slug = $audios->slug;
         $audio->type = $audios->type;
@@ -3030,6 +3078,7 @@ $artists = implode(",",$arr);
         $audio->featured = $audios->featured;
         $audio->banner = $audios->banner;
         $audio->active = $audios->active;
+        $audio->draft = 1;
         $audio->user_id = $audios->user_id;
         $audio->image = $file->getClientOriginalName() ;
 
@@ -3040,34 +3089,6 @@ $artists = implode(",",$arr);
         } else {
         
         $audio_upload = $data['audio_upload'];
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // if($audio_upload){
-        //     $ffmpeg = FFMpeg\FFMpeg::create();
-        //     $audio = $ffmpeg->open($data['audio_upload']);
-
-        //     $audio
-        //     ->save(new FFMpeg\Format\Audio\Mp3('libmp3lame'), 'content/uploads/audios/'.$id.'.mp3');
-
-        //     $data['mp3_url'] = URL::to('/').'/content/uploads/audios/'.$id.'.mp3'; 
-
-        //     $update_url = Audio::find($id);
-
-        //     $update_url->mp3_url = $data['mp3_url'];
-
-        //     $update_url->save();  
-        // }
 
         }
 
@@ -4028,17 +4049,502 @@ public function livestreamcategory_destroy(Request $request){
 
 
 
+  public function updatefile(Request $request)
+  {
+ 
+      
+      $data = $request->all();
+      $video_data =json_decode($data['video_data']);
+
+
+      $english = $data['english'];
+      $german = $data['german'];
+      $spanish = $data['spanish'];
+      $hindi = $data['hindi'];
+      $subtitle_upload =array($english ,$german ,$spanish ,$hindi);
+  //        echo "<pre>";
+  // print_r($video_data);
+  // exit();
+     
+      
+     
+          $id = $video_data->video_id;
+      
+          $video = Video::findOrFail($id);
+          
+      
+         $image = (isset($data['image'])) ? $data['image'] : '';
+         $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+         $files = (isset($subtitle_upload)) ? $subtitle_upload : '';
+      
+          if(empty($video_data->active)){
+          $video_data->active = 0;
+          } 
+      
+
+       if(empty($video_data->webm_url)){
+          $video_data->webm_url = 0;
+          }  else {
+              $video_data->webm_url =  $video_data->webm_url;
+          }  
+
+          if(empty($video_data->ogg_url)){
+              $video_data->ogg_url = 0;
+          }  else {
+              $video_data->ogg_url =  $video_data->ogg_url;
+          }  
+
+          if(empty($video_data->year)){
+              $video_data->year = 0;
+          }  else {
+              $video_data->year =  $video_data->year;
+          }   
+      
+          if(empty($video_data->language)){
+              $video_data->language = 0;
+          }  else {
+              $video_data->language = $video_data->language;
+          } 
+      
+  
+//        if(empty($video_data->featured)){
+//            $video_data->featured = 0;
+//        }  
+          if(empty($video_data->featured)){
+              $video_data->featured = 0;
+          } 
+           if(!empty($video_data->embed_code)){
+              $video_data->embed_code = $video_data->embed_code;
+          } 
+
+
+          if(empty($video_data->active)){
+              $video_data->active = 0;
+          } 
+            if(empty($video_data->video_gif)){
+              $video_data->video_gif = '';
+          }
+         
+          // if(empty($video_data->type)){
+          //     $video_data->type = '';
+          // }
+
+           if(empty($video_data->status)){
+              $video_data->status = 0;
+          }   
+
+//            if(empty($data['path'])){
+//                $data['path'] = 0;
+//            }  
+
+         
+
+
+      $path = public_path().'/uploads/videos/';
+      $image_path = public_path().'/uploads/images/';
+        
+       if($image != '') {   
+            //code for remove old file
+            if($image != ''  && $image != null){
+                 $file_old = $image_path.$image;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $data['image']  = $file->getClientOriginalName();
+            $file->move($image_path, $data['image']);
+
+       } else {
+           $data['image'] = $video->image;
+       }
+      
+      
+      if($trailer != '') {   
+            //code for remove old file
+            if($trailer != ''  && $trailer != null){
+                 $file_old = $path.$trailer;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $trailer;
+            $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+            $file->move($path, $trailer_vid);
+            $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+
+       } else {
+           $data['trailer'] = $video->trailer;
+       }  
+      
+       if(isset($video_data->duration)){
+              //$str_time = $data
+              $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $video_data->duration);
+              sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+              $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+              $video_data->duration = $time_seconds;
+      }
+
+
+    
+
+      $shortcodes = $video_data->short_code;
+      $languages=$video_data->sub_language;
+       $video->description = strip_tags($video_data->description);
+       $video->draft = 1;
+       $video->age_restrict =  $video_data->age_restrict;
+       $video->ppv_price =$video_data->ppv_price;
+       $video->access =  $video_data->access;
+       
+       $video->update($data);
+
+       $video = Video::findOrFail($id);
+       $users = User::all();    
+      
+$shortcodes = $video_data->short_code;
+$languages=$video_data->sub_language;
+
+if(!empty( $files != ''  && $files != null)){
+
+
+ foreach ($files as $key => $val) {
+
+     if(!empty($files[$key])){
+       
+         $destinationPath ='public/uploads/subtitles/';
+
+         $filename = $video->id.$shortcodes[$key].'.srt';
+
+
+         $files[$key]->move($destinationPath, $filename);
+
+            $video_subtitle = new VideosSubtitle;
+
+              $video_subtitle->video_id = $video->id;
+    
+              $video_subtitle->sub_language = $languages[$key];
+              $video_subtitle->shortcode = $shortcodes[$key];
+              $video_subtitle->url = URL::to('/').'/public/uploads/subtitles/'.$filename;
+              // $video_subtitle->user_id = $video_data->user_id;
+     $video_subtitle->save();
+
+     }
+ }
+}
+
+$artistsdata = $video_data->artists;
+
+if(!empty($artistsdata)){
+ foreach ($artistsdata as $key => $value) {
+     $artist = new Videoartist;
+     $artist->video_id = $video->id;
+     $artist->artist_id = $value;
+     $artist->user_id = $video_data->user_id;
+
+     $artist->save();
+ }
+ 
+}
+
+      return true;
+  }
+  public function Fileupload(Request $request){
+
+    $value = array();
+    $data = $request->all();
+    $video_data =json_decode($data['video_data']);
+  
+  // echo "<pre>"; print_r($data);exit();
+    $validator = Validator::make($request->all(), [
+       'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+       
+    ]);
+    $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+    
+    $path = public_path().'/uploads/videos/';
+    
+    
+    $file = $request->file->getClientOriginalName();
+    $newfile = explode(".mp4",$file);
+    $file_folder_name = $newfile[0];
+  
+    
+    
+    $mp4_url = $data['file'];
+    
+    if($mp4_url != '') {
+    
+    $rand = Str::random(16);
+    $path = $rand . '.' . $request->file->getClientOriginalExtension();
+  
+    $request->file->storeAs('public', $path);
+    $thumb_path = 'public';  
+     $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+  
+     $storepath  = URL::to('/storage/app/public/'.$path);
+  
+     $video = new Video();
+     $video->disk = 'public';
+     $video->title = $file_folder_name;
+     $video->original_name = 'public';
+     $video->path = $path;
+     $video->mp4_url = $storepath;
+     $video->user_id = $video_data->user_id;
+     $video->type = 'mp4_url';
+     $video->draft = 0;
+     $video->save(); 
+    
+     $video_id = $video->id;
+   $video_title = Video::find($video_id);
+   $title =$video_title->title; 
+  
+  
+    $value['success'] = 1;
+    $value['message'] = 'Uploaded Successfully!';
+    $value['video_id'] = $video_id;
+    $value['video_title'] = $title;
+  
+    
+    return $value;
+    
+    }
+    
+    else {
+     $value['success'] = 2;
+     $value['message'] = 'File not uploaded.'; 
+        // $video = Video::create($data);
+    return response()->json($value);
+    
+    }
+  
+    // return response()->json($value);
+    }
+  
+  public function mp4url_data(Request $request)
+    {
+        $data = $request->all();
+        $mp4_url_data =json_decode($data['mp4_url_data']);
+        //         echo "<pre>";
+        // print_r($mp4_url_data);
+        // exit();
+        if(!empty($mp4_url_data->mp4_url)) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->title = $mp4_url_data->mp4_url;
+            $video->mp4_url = $mp4_url_data->mp4_url;
+            $video->type = 'mp4_url';
+            $video->draft = 0;
+            $video->user_id = $mp4_url_data->user_id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return response()->json($value);
+          }
+   
+
+    }
+    public function m3u8url_data(Request $request)
+    {
+        $data = $request->all();
+        $m3u8_url_data =json_decode($data['m3u8_url_data']);
+        
+        // echo "<pre>";
+        // print_r($m3u8_url_data);
+        // exit();
+        if(!empty($m3u8_url_data->m3u8_url)) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->title = $m3u8_url_data->m3u8_url;
+            $video->m3u8_url = $m3u8_url_data->m3u8_url;
+            $video->type = 'm3u8_url';
+            $video->draft = 0;
+            $video->user_id = $m3u8_url_data->user_id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return response()->json($value);
+          }
+   
+
+    }
+    public function Embed_Data(Request $request)
+    {
+        $data = $request->all();
+        $embed_data =json_decode($data['embed_data']);
+
+        // echo "<pre>";
+        // print_r($embed_data);
+        // exit();
+        
+        if(!empty($embed_data->embed)) {
+             
+            $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            $video->title = $embed_data->embed;
+            $video->embed_code = $embed_data->embed;
+            $video->type = 'embed';
+            $video->draft = 0;
+            $video->user_id = $embed_data->user_id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return response()->json($value);
+          }
+   
+
+    }
 
 
 
+    public function Audioupload(Request $request)
+    {
 
 
+        $data = $request->all();
+        $audio_data =json_decode($data['audios']);
+        $audio_upload = $data['file'];
+        $ext = $audio_upload->extension();
+
+                $file = $request->file->getClientOriginalName();
+                // print_r($file);exit();
+        
+                $newfile = explode(".mp4",$file);
+                $mp3titile = $newfile[0];
+
+                $audio = new Audio();
+                // $audio->disk = 'public';
+                $audio->title = $mp3titile;
+                $audio->user_id = $audio_data->user_id;
+
+                $audio->save(); 
+                $audio_id = $audio->id;
+
+                if($audio_upload) {
+   
+                    if($ext == 'mp3'){
+                     
+                        $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+        
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+                    }else{
+                        $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                        // echo "<pre>";
+                        // print_r($audio_upload);
+                        // exit();  
+                        FFMpeg::open($audio_upload->getClientOriginalName())
+                        ->export()
+                        ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                        ->toDisk('public')
+                        ->save('audios/'. $audio->id.'.mp3');
+                        unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
+        
+                     
+                     
+                    }  
+                    $update_url = Audio::find($audio_id);
+                    $title =$update_url->title; 
+                  //   $update_url = Audio::find($audio_id);
+
+                    $update_url->mp3_url = $data['mp3_url'];
+                    $update_url->user_id = $audio_data->user_id;
+                    $update_url->save();  
+                     $value['success'] = 1;
+                     $value['message'] = 'Uploaded Successfully!';
+                     $value['audio_id'] = $audio_id;
+                     $value['title'] = $title;
+
+                     return response()->json($value);
+                  
+                    }
+                    else {
+                     $value['success'] = 2;
+                     $value['message'] = 'File not uploaded.'; 
+                        // $video = Video::create($data);
+                        return response()->json($value);
+                    
+                    }
+
+    }
 
 
+    public function fileAudio(Request $request)
+    {
+      $data = $request->all();
+      $audio_data =json_decode($data['audios']);
+          //   echo "<pre>";
+          //  print_r($audio_data);
+          //  exit();
+    $audio = new Audio();
+    $audio->mp3_url = $audio_data->mp3;
+    $audio->user_id = $audio_data->user_id;
+    $audio->save(); 
+    $audio_id = $audio->id;
+    
+
+    $value['success'] = 1;
+    $value['message'] = 'Uploaded Successfully!';
+    $value['audio_id'] = $audio_id;
+    return response()->json($value);
+
+    }                    
 
 
+    public function Commission(Request $request){
+     
 
+      $commission = VideoCommission::first();
+      
+      $data = array(
+                'commission' => $commission,
+        );
+      return view('moderator.commission', $data);
+      
+    }
 
+    public function AddCommission(Request $request){
+     
+      
+      $data = $request->all();
+      // echo "<pre>";
+      // print_r($data);exit();
+	  	$commission = VideoCommission::find(1);
+      // $commission = new VideoCommission();
+
+      $commission->percentage = $data['percentage'];
+      $commission->user_id = Auth::user()->id;
+      $commission->save(); 
+
+      $commission = VideoCommission::first();
+      $data = array(
+                'commission' => $commission,
+        );
+        return view('moderator.commission', $data)->with('message','Successfully Updated Percentage!');
+      
+    }
 
 
 
