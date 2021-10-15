@@ -1822,7 +1822,9 @@ public function verifyandupdatepassword(Request $request)
     {
 
       $search_value =  $request['search'];
-        
+      $video_category_id =  $request['category_id'];
+
+     
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
@@ -1831,7 +1833,13 @@ public function verifyandupdatepassword(Request $request)
       $audio_categories_count = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $artist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
-
+      $video_categories_count =  DB::table('video_categories')
+      ->join('videos', 'videos.video_category_id', '=', 'video_categories.id')
+      ->select('videos.*')
+      ->where('title', 'LIKE', '%'.$search_value.'%')
+      ->where('video_category_id', '=', $video_category_id )
+      ->count();
+   
 
       if ($audios_count > 0) {
         $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -1910,6 +1918,17 @@ public function verifyandupdatepassword(Request $request)
       } else {
         $artist = 0;
       }
+      if ($video_categories_count > 0) {
+
+        $video_categories =  DB::table('video_categories')
+        ->join('videos', 'videos.video_category_id', '=', 'video_categories.id')
+        ->select('videos.*')
+        ->where('title', 'LIKE', '%'.$search_value.'%')
+        ->where('video_category_id', '=', $video_category_id )
+        ->get();
+      } else {
+        $video_categories = 0;
+      }
       $response = array(
         'channelvideos' => $videos,
         'channel_category' => $video_category,
@@ -1918,6 +1937,8 @@ public function verifyandupdatepassword(Request $request)
         'albums' => $albums,
         'cast ' => $artist,
         'audio_categories' => $audio_categories,
+        'video_categories' => $video_categories,
+
 
       );
 
