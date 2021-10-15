@@ -555,7 +555,27 @@ return back()->with('message', 'Successfully Roles Updated!.');
     }
   }
   if(!empty($id)){
+     
+    $settings =  DB::table('settings')->first();
 
+    $ppv_price = $settings->ppv_price;
+    
+    $Revenue =  DB::table('ppv_purchases')
+    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    ->select('videos.*')
+    ->where('videos.user_id', '=', $id )
+    ->get();
+    
+    $Revenue_count =  DB::table('ppv_purchases')
+    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    ->select('videos.*')
+    ->where('videos.user_id', '=', $id )
+    ->count();
+    
+    $total_Revenue = $Revenue_count * $ppv_price.'$';
+
+    $total_video_uploaded =  Video::where('user_id','=',$id)->count();
+    
     $userrolepermissiom=DB::table('user_accesses')
     ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
     ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
@@ -570,6 +590,10 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $data = array(
       'user_data' =>  $user_data,
        'userrolepermissiom' => $userrolepermissiom, 
+       'total_Revenue' => $total_Revenue, 
+       'total_video_uploaded' => $total_video_uploaded, 
+
+
 
     );
       return $data ;
@@ -4546,7 +4570,45 @@ if(!empty($artistsdata)){
       
     }
 
+    public function Dashboard_Revenue(Request $request){
+     
+      
+      $data = $request->all();
+        
+      $user_id =json_decode($data['id']);
+      $id = $user_id->id;
+ 
+        if(!empty($id)){
+ 
+          $settings =  DB::table('settings')->first();
+      
+          $ppv_price = $settings->ppv_price;
+      
+          $Revenue =  DB::table('ppv_purchases')
+          ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+          ->select('videos.*')
+          ->where('videos.user_id', '=', $id )
+          ->get();
+      
+          $Revenue_count =  DB::table('ppv_purchases')
+          ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+          ->select('videos.*')
+          ->where('videos.user_id', '=', $id )
+          ->count();
+      $total_video_uploaded =  Video::where('user_id','=',$id)->count();
+      
+          $total_Revenue = $Revenue_count * $ppv_price.'$';
+      
+         
+        }
+          $data = array(
+             'total_Revenue' => $total_Revenue, 
+             'total_video_uploaded' => $total_video_uploaded, 
 
+          );
+            return $data ;      
+    }
+ 
 
 
 }

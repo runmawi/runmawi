@@ -131,6 +131,8 @@ class VerifyCsrfToken extends Middleware
 'http://dev-flick.webnexs.org/Audioupload',
 'http://dev-flick.webnexs.org/fileAudio',
 'http://dev-flick.webnexs.org/edit_audio',
+'http://dev-flick.webnexs.org/Dashboard_Revenue',
 'http://dev-flick.webnexs.org/deletecountry',
+
     ];
 }
