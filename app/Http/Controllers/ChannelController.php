@@ -124,11 +124,12 @@ class ChannelController extends Controller
                     endif;
 
 
+                    $ppv_video_play = [];
 
                     $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
                     $ppv_setting = \DB::table('settings')->first();
                     $ppv_setting_hours= $ppv_setting->ppv_hours;
-                    //   dd($ppv_setting_hours);
+                      // dd(Auth::user()->id);
             
                     if(!empty($ppv_video)){
                     foreach($ppv_video as $key => $value){
@@ -142,11 +143,10 @@ class ChannelController extends Controller
                         $now = $d->format('Y-m-d h:i:s a');
                       
                     if($now >= $ppv_hours){
-                    //  dd($ppv_hours);                     
 
                       if($vid == $value->video_id){
                         $ppv_video_play = $value;
-                        // dd($ppv_video_play);
+                        dd($ppv_video_play);
 
                       }else{
                         $ppv_video_play = null;
@@ -157,12 +157,10 @@ class ChannelController extends Controller
                                 ->update([
                                     'status' => 'inactive'
                                     ]);
-
                     }
                     $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
                     }
                     }
-            
             
             
             
