@@ -17,11 +17,11 @@
 }
    </style>
 <?php
+// $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 
 // exit();
-if($video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
-    // dd($watched_time);
    if(!Auth::guest()) {
        
    if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>

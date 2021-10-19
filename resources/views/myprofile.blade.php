@@ -756,7 +756,7 @@ $uppercase =  ucfirst($request_url);
 
           <div class="row">
           <div class="col-md-12">
-                  <div class="iq-card" id="recentviews">
+                  <div class="iq-card" id="recentviews" style="background-color:#191919;">
                      <div class="iq-card-header d-flex justify-content-between" >
                         <div class="iq-header-title">
                            <h4 class="card-title">Recently Viewd Items</h4>
@@ -764,7 +764,7 @@ $uppercase =  ucfirst($request_url);
                         
                      </div>
                       <div class="iq-card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive " >
                            <table class="data-tables table movie_table recent_table" style="width:100%">
                               <thead>
                                  <tr>

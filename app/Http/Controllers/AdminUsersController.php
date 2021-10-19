@@ -320,7 +320,7 @@ class AdminUsersController extends Controller
     	$user_id = Auth::user()->id;
     	$user_role = Auth::user()->role;
        
-        if($user_role == 'registered'){
+        if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
         }elseif($user_role == 'subscriber'){
             $user_role = DB::table('subscriptions')
@@ -340,6 +340,7 @@ class AdminUsersController extends Controller
         $videos[] = Video::Where('id', '=',$value->video_id)->take(10)->get();
         }
         $videocategory = VideoCategory::all();
+
 
         $video = array_unique($videos);
     	$data = array(

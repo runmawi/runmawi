@@ -254,7 +254,7 @@ $uppercase =  ucfirst($request_url);
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome! <?php echo Auth::user()->username ; ?> <i class="ri-arrow-down-s-line"></i></p>
+                                        <p class="mt-3" style="font-size: 16px;">Welcome <?php echo Auth::user()->username.' '.'!'  ; ?> <i class="ri-arrow-down-s-line"></i></p>
                                     </a>
                                    <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">

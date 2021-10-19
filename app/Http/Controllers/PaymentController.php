@@ -135,7 +135,7 @@ public function RentPaypal(Request $request)
     ]);
 
     DB::table('ppv_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $to_time]
+      ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $to_time, 'status' => 'active']
     ]);
 
     return 1;

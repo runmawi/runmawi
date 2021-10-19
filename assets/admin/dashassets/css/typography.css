@@ -95,7 +95,7 @@ th { }
 .table-striped tbody tr:nth-of-type(odd) { background:/* var(--iq-body-bg)*/#fff; }
 .table td, .table th { vertical-align: middle; }
 .table thead th {
-    border-bottom: 2px solid var(--iq-body-bg);
+  /*  border-bottom: 2px solid var(--iq-body-bg);*/
 }
 .table td, .table th{/*border-top: 1px solid #808080 /*var(--iq-body-bg)*/;
 }

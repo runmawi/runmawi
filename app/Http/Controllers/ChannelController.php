@@ -30,6 +30,8 @@ use Session;
 use App\Playerui as Playerui;
 use App\MoviesSubtitles as MoviesSubtitles;
 // use App\Video as Video;
+use Carbon\Carbon;
+use DateTime;
 
 
 
@@ -120,6 +122,71 @@ class ChannelController extends Controller
                         $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
                         $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
                     endif;
+
+
+
+                    $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
+                    $ppv_setting = \DB::table('settings')->first();
+                    $ppv_setting_hours= $ppv_setting->ppv_hours;
+                    //   dd($ppv_setting_hours);
+            
+                    if(!empty($ppv_video)){
+                    foreach($ppv_video as $key => $value){
+                      $date = $value->created_at;
+                    
+                      $time = date('h:i:s', strtotime($date));
+                      $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
+                     
+                        $d = new \DateTime('now');
+                        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+                        $now = $d->format('Y-m-d h:i:s a');
+                      
+                    if($now >= $ppv_hours){
+                    //  dd($ppv_hours);                     
+
+                      if($vid == $value->video_id){
+                        $ppv_video_play = $value;
+                        // dd($ppv_video_play);
+
+                      }else{
+                        $ppv_video_play = null;
+                      }
+                    }else{
+                        // dd($now);                     
+                        PpvPurchase::where('video_id', $vid)
+                                ->update([
+                                    'status' => 'inactive'
+                                    ]);
+
+                    }
+                    $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+                    }
+                    }
+            
+            
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                  $data = array(
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
@@ -132,6 +199,8 @@ class ChannelController extends Controller
                      'like_dislike' =>$like_dislike,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
+    		'ppv_video_play' => $ppv_video_play,
+
 
                  );
              

@@ -199,11 +199,15 @@
                             </div>
                             <div class="row mt-5">
                                 <div class="col-sm-6 form-group">
+                                    <?php if(!empty($video->embed_code  || $video->mp4_url  || $video->m3u8_url )) { ?>
                                     @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file' || $video->type == 'mp4_url' || $video->type == 'm3u8_url' ))
                                     <video width="200" height="200" controls>
                                     <source src="<?=$video->mp4_url; ?>" type="video/mp4">
                                     </video>
                                     @endif
+                                    <?php }else{
+                                        echo "NO Video Uploaded";
+                                        }?>
                                 </div>
                             </div>
                             <div class="row">
@@ -217,11 +221,15 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 form-group">
+                                <?php if(!empty($video->trailer) && $video->trailer != '') { ?>
                                     @if(!empty($video->trailer) && $video->trailer != '')
                                     <video width="200" height="200" controls>
                                         <source src="{{ $video->trailer }}" type="video/mp4">
                                     </video>
                                     @endif
+                                    <?php }else{
+                                        echo "NO Video Uploaded";
+                                        }?>
                                 </div>
 
                             </div>

@@ -526,7 +526,7 @@ OWL Carousel
 Select 2
 ------------------------------------------------ */
 .iq-custom-select { position: relative; }
-.iq-custom-select .select2-container--bootstrap4 .select2-selection, .select2-dropdown { background-color: var(--iq-body-bg); border: none; border-radius: 0; color: #fff; }
+.iq-custom-select .select2-container--bootstrap4 .select2-selection, .select2-dropdown { background-color: #fff; border: none; border-radius: 0; color: #000000; }
 .select2-dropdown { top: 0; box-shadow: 0 12px 34px 0 rgba(19, 10, 10, 1); }
 .iq-custom-select select { box-shadow: none; }
 .select2-container--bootstrap4 .select2-dropdown .select2-results__option[aria-selected=true] { background-color: var(--iq-body-bg); }
