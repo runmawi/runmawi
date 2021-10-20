@@ -105,6 +105,90 @@
                         </div>
                 </div> 
             
+
+
+
+                <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around">
+                                    <div>
+                                    <label class="mt-1"> Live Video </label></div>
+                                    <div>
+                                      <div class="input-group color-picker">
+                                        <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                            <div><label class="mr-1">ON</label></div>
+                                <div>
+                                   <label class="switch">
+                                <input type="checkbox"  @if ($settings->live_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_videos" id="live_videos">
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div><label class="ml-1">OFF</label></div>
+                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div> 
+                            </div> 
+
+
+
+
+
+
+
+
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around">
+                                    <div>
+                                    <label class="mt-1"> Audios</label></div>
+                                    <div>
+                                      <div class="input-group color-picker">
+                                        <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                            <div><label class="mr-1">ON</label></div>
+                                <div>
+                                   <label class="switch">
+                                <input type="checkbox"  @if ($settings->audios == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="audios" id="audios">
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div><label class="ml-1">OFF</label></div>
+                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div> 
+
+
+
+
+
+
+
+
+                                                        <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-around">
+                                    <div>
+                                    <label class="mt-1"> Albums </label></div>
+                                    <div>
+                                      <div class="input-group color-picker">
+                                        <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                            <div><label class="mr-1">ON</label></div>
+                                <div>
+                                   <label class="switch">
+                                <input type="checkbox"  @if ($settings->albums == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="albums" id="albums">
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div><label class="ml-1">OFF</label></div>
+                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div> 
+
+
+
             </div>  
                 <div class="mt-2 p-2"  style="display: flex;
     justify-content: flex-end;">

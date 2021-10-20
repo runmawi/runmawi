@@ -330,6 +330,7 @@
                             
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
+                                 <input type="hidden" id="type" name="type" value="{{ $video->type }}" />
                               @endif
 
                               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />

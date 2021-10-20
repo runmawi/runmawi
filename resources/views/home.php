@@ -14,7 +14,9 @@
  </svg>
 </section>
 <!-- Slider End -->
-
+<?php
+// dd($LiveStream);
+?>
 
 <!-- MainContent -->
 <div class="main-content">
@@ -33,6 +35,44 @@
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <?php include('partials/home/latest-videos.php'); ?>
+              </div>
+           </div>
+        </div>
+</section>
+<?php } ?>
+
+<?php if($home_settings->live_videos == 1){ ?>
+    <section id="iq-favorites">
+        <div class="fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <?php include('partials/home/live-videos.php'); ?>
+              </div>
+           </div>
+        </div>
+</section>
+<?php } ?>
+
+
+<?php if($home_settings->audios == 1){ ?>
+    <section id="iq-favorites">
+        <div class="fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <?php include('partials/home/latest-audios.php'); ?>
+              </div>
+           </div>
+        </div>
+</section>
+<?php } ?>
+
+
+<?php if($home_settings->albums == 1){ ?>
+    <section id="iq-favorites">
+        <div class="fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <?php include('partials/home/latest-albums.php'); ?>
               </div>
            </div>
         </div>

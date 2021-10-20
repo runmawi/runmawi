@@ -15,10 +15,13 @@
     text-align: center;
     padding-top: 20%; 
 }
+.vjs-seek-to-live-control {
+            display: none !important;
+        }
    </style>
 <?php
-// $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 
+// $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
 if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
@@ -65,6 +68,7 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
 
                       foreach($subtitles as $key => $value){
 
+
                         if($value['sub_language'] == "English"){
                           ?>
                           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -105,6 +109,7 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
             </div>
             </div>
             <?php  elseif($video->type == 'mp4_url'):  ?>
+            
               
                   <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                 <!-- Current time: <div id="current_time"></div> -->
@@ -112,14 +117,14 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
                     <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
-                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-                    <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-                    <?php } if($value['sub_language'] == "German"){?>
-                    <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-                    <?php } if($value['sub_language'] == "Spanish"){ ?>
-                    <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-                    <?php } if($value['sub_language'] == "Hindi"){ ?>
-                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+                    <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+                    <?php } if($value->sub_language == "German"){?>
+                    <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+                    <?php } if($value->sub_language == "Spanish"){ ?>
+                    <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+                    <?php } if($value->sub_language == "Hindi"){ ?>
+                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
                     <?php }
                     } } else {  } ?>  
                 </video>
@@ -443,7 +448,7 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
     
     </div>
     <script type="text/javascript"> 
-        videojs('videoPlayer').videoJsResolutionSwitcher(); 
+        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="clear"></div>

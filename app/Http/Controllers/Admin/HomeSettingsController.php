@@ -46,6 +46,24 @@ class HomeSettingsController extends Controller
         if(empty($request['category_videos'])){
             $settings->category_videos = 0;
         } 
+        if(!empty($request['live_videos'])){
+            $settings->live_videos = 1;
+        } 
+        if(empty($request['live_videos'])){
+            $settings->live_videos = 0;
+        } 
+        if(!empty($request['audios'])){
+            $settings->audios = 1;
+        } 
+        if(empty($request['audios'])){
+            $settings->audios = 0;
+        } 
+        if(!empty($request['albums'])){
+            $settings->albums = 1;
+        } 
+        if(empty($request['albums'])){
+            $settings->albums = 0;
+        } 
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

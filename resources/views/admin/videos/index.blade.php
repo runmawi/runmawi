@@ -19,6 +19,13 @@
                         
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                         <div class="form-group mr-2">                  
+                    <label class="p-2">Videos By CPP Users:</label>
+                                    <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
+                                    <option value="">Select Videos</option>
+                                        <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
+                                    </select>
+                  </div>
                              <div class="form-group mr-2">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                     </div>
@@ -136,6 +143,36 @@ $(document).ready(function(){
 
 	</script>
 
+<script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+$('#cpp_user_videos').change(function(){
+   var val = $('#cpp_user_videos').val();
+   if(val == "cpp_videos"){
+	$.ajax({
+   url:"{{ URL::to('/cppusers_videodata') }}",
+   method:'get',
+   data:{query:val},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+   }
+    });
+   }
+})
+
+});
+	
+</script>
 	@stop
 
 @stop

@@ -41,6 +41,8 @@ use GeoIPLocation;
 use Stevebauman\Location\Facades\Location;
 use Carbon;
 use Session;
+use App\LiveStream as LiveStream;
+use App\AudioAlbums as AudioAlbums;
 
 class HomeController extends Controller
 {
@@ -59,6 +61,8 @@ class HomeController extends Controller
     }
 
     public function FirstLanging(){
+            //  echo "<pre>";print_r('$cnt_watching');exit();
+
         // return View::make('first_landing');
         $data = Session::all();
         // $session_password = $data['password_hash'];
@@ -99,7 +103,6 @@ class HomeController extends Controller
              }else{
                  $cnt_watching = '';
              }
-             //echo "<pre>";print_r($cnt_watching);exit();
              $data = array(
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
@@ -123,7 +126,8 @@ class HomeController extends Controller
                  'trending_videos' => $trending_videos,
                  'suggested_videos' => $suggested_videos,
            'video_categories' => VideoCategory::all(),
-                 'home_settings' => HomeSetting::first()
+                 'home_settings' => HomeSetting::first(),
+
              );
              //echo "<pre>";print_r($data['latest_videos']);exit;
              return View::make('home', $data);
@@ -201,7 +205,11 @@ class HomeController extends Controller
                  'trending_videos' => $trending_videos,
                  'suggested_videos' => $suggested_videos,
            'video_categories' => VideoCategory::all(),
-                 'home_settings' => HomeSetting::first()
+                 'home_settings' => HomeSetting::first(),
+                 'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
+                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
+                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
+
              );
              //echo "<pre>";print_r($data['latest_videos']);exit;
              return View::make('home', $data);

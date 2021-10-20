@@ -59,7 +59,7 @@
                                              data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><i class="ri-pencil-line"></i></a>
-                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
+                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
                                              data-original-title="Delete" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><i
                                                 class="ri-delete-bin-line"></i></a>
                                        </div>

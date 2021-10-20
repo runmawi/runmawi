@@ -1,4 +1,6 @@
+// alert('test');
 // alert($( "#logo_path" ).val());
+
 // console.log($( "#logo_path" ).val());
 var watermark_logo = $( "#logo_path" ).val();
 var player = videojs('videoPlayer',{
@@ -49,6 +51,8 @@ var player = videojs('videoPlayer',{
       
   // })
   });
+  player.videoJsResolutionSwitcher(); 
+
 player.watermark({
   file: watermark_logo,
   xpos: 0,

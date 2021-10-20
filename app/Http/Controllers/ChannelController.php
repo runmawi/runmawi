@@ -111,7 +111,7 @@ class ChannelController extends Controller
           $videocategory = $videocategory[0];
            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
            $playerui = Playerui::first();
-           $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
+           $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
 
                 $wishlisted = false;
                 if(!Auth::guest()):

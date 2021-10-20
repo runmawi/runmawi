@@ -154,6 +154,92 @@ class AdminVideosController extends Controller
      }
     }
 
+    public function CPPVideos(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+         $video_categories = DB::table('video_categories')->get();
+         $video_languages = DB::table('video_languages')->get();
+         $slug = URL::to('/category/videos');
+         $edit = URL::to('admin/videos/edit');
+         $delete = URL::to('admin/videos/delete');
+      if($query != '')
+      {
+         $data = DB::table('videos')
+            ->select('videos.*')
+            ->join('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+      }
+      else
+      {
+
+      }
+      foreach($data as $row){
+            $language = $row->language;
+            $video_category = $row->video_category_id;
+        }
+            $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
+            $language = DB::table('video_languages')->where('id','=',$language)->get();
+            foreach($video_category as $category){
+                $category_name = $category->name;
+            }
+            if(empty($category_name)){
+                $category = "empty";
+            }else{
+            $category = $category_name;
+            }
+            foreach($language as $lang){
+                $lang_name = $lang->name;
+            }
+            if(empty($lang_name)){
+                $lang = "empty";
+            }else{
+            $lang = $lang_name;
+            }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->title.'</td>
+        <td>'.$row->rating.'</td>
+        <td>'.$category.'</td>
+         <td>'.$row->draft.'</td>
+        <td>'.$lang.'</td>
+         <td>'.$row->views.'</td>
+         <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+        </a>".'
+        '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+        </a>".'
+        '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+        </a>".'
+        </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
 
     public function uploadFile(Request $request){
 
@@ -675,8 +761,7 @@ if(!empty($artistsdata)){
             if(empty($data['age_restrict'])){
                 $data['age_restrict'] = 0;
             }  else {
-   // print_r($data['age_restrict']);
-            // exit();
+  
                 $data['age_restrict'] = $data['age_restrict'];
             } 
          
@@ -817,6 +902,7 @@ if(!empty($artistsdata)){
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
          $video->ppv_price =$data['ppv_price'];
+         $video->type =$data['type'];
          $video->description = strip_tags($data['description']);
          $video->update($data);
 
