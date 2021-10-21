@@ -80,8 +80,32 @@ class ChannelController extends Controller
         $data = session()->all();
        
         if(!empty($data['password_hash'])){
+
+
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
+
+
+        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        if(!empty($PPV_settings)){
+           $ppv_rent_price =  $PPV_settings->ppv_price;
+            // echo "<pre>";print_r($PPV_settings);exit();
+        }else{
+          $Video_ppv = Video::where('id','=',$vid)->first();
+            $ppv_rent_price = null ;
+            if($Video_ppv->ppv_price != ""){
+              // echo "<pre>";print_r('$Video_ppv');exit();
+              $ppv_rent_price = $Video_ppv->ppv_price;
+            }else{
+            // echo "<pre>";print_r($Video_ppv);exit();
+            $ppv_rent_price = $Video_ppv->ppv_price;
+          }
+
+        }
+
+
+
+
         $current_date = date('Y-m-d h:i:s a', time()); 
 
             
@@ -195,6 +219,7 @@ class ChannelController extends Controller
                      'mywishlisted' => $wishlisted,
                      'watched_time' => $watchtime,
                      'like_dislike' =>$like_dislike,
+                     'ppv_rent_price' =>$ppv_rent_price,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
     		'ppv_video_play' => $ppv_video_play,

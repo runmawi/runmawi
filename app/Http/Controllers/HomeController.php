@@ -154,7 +154,17 @@ class HomeController extends Controller
     
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
             $settings = Setting::first();
-           
+            $PPV_settings = Setting::where('ppv_status','=',1)->first();
+            if(!empty($PPV_settings)){
+               $ppv_gobal_price =  $PPV_settings->ppv_price;
+                // echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
+
+            }else{
+                // echo "<pre>";print_r('ppv_status');exit();
+                $ppv_gobal_price = null ;
+
+            }
+            
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
              
@@ -181,7 +191,7 @@ class HomeController extends Controller
              }else{
                  $cnt_watching = '';
              }
-             //echo "<pre>";print_r($cnt_watching);exit();
+
              $data = array(
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
@@ -203,8 +213,9 @@ class HomeController extends Controller
                   'settings'=>$settings,
                   'pages'=>$pages,
                  'trending_videos' => $trending_videos,
+                 'ppv_gobal_price' => $ppv_gobal_price,
                  'suggested_videos' => $suggested_videos,
-           'video_categories' => VideoCategory::all(),
+                'video_categories' => VideoCategory::all(),
                  'home_settings' => HomeSetting::first(),
                  'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
                  'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),

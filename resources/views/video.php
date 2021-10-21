@@ -117,6 +117,10 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
                     <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
+                    <!-- <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?sd" type='video/mp4' label='SD' res='480' />
+                    <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?hd" type='video/mp4' label='HD' res='1080'/>
+                    <source src="<?php// if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?phone" type='video/mp4' label='phone' res='144'/>
+                    <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?4k" type='video/mp4' label='4k' res='2160'/> -->
                     <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
                     <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
                     <?php } if($value->sub_language == "German"){?>
@@ -404,7 +408,7 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
                   </div>
                   
                   <div class="col-sm-4">
-                    <a onclick="pay(<?php echo PvvPrice();?>)">
+                    <a onclick="pay(<?php echo $ppv_rent_price ;?>)">
                         <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
                     </a>
                   </div>

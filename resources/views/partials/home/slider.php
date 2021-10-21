@@ -1,3 +1,4 @@
+
 <!-- Sliders -->
 <?php if(isset($sliders)) :
     foreach($sliders as $key => $slider_video): ?>

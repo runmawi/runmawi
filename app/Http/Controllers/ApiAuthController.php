@@ -1926,6 +1926,7 @@ public function verifyandupdatepassword(Request $request)
         ->where('title', 'LIKE', '%'.$search_value.'%')
         ->where('video_category_id', '=', $video_category_id )
         ->get();
+        $image_url = URL::to('/').'/public/uploads/images/' ;
       } else {
         $video_categories = 0;
       }
@@ -1938,7 +1939,7 @@ public function verifyandupdatepassword(Request $request)
         'cast ' => $artist,
         'audio_categories' => $audio_categories,
         'video_categories' => $video_categories,
-
+        'image_url' => $image_url,
 
       );
 
