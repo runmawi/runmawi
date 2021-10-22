@@ -24,7 +24,7 @@
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
                 </div>
                 <div class="hover-buttons">
-                <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ?>/<?= $latest_episode->id ; } ?>">
+                <a class="btn btn-primary btn-hover" href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ?>/<?= $latest_episode->id ; } ?>">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                     Play Now
                   </a>

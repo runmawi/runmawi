@@ -36,7 +36,7 @@
                                        </a>
                                    </div>
                                    <div class="block-social-info mt-3">
-                                   <ul class="music-play-lists d-flex justify-content-around">
+                                   <ul class="list-inline p-0 m-0 music-play-lists">
                                        
                                       <!-- <li ><span><i class="ri-volume-mute-fill"></i></span></li>
                                       <li><span><i class="ri-heart-fill"></i></span></li> -->
