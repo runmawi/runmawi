@@ -1165,7 +1165,7 @@ Route::get('/admin/email_template', 'AdminEmailTemplate@index');
 Route::get('/admin/template/view/{id}', 'AdminEmailTemplate@View');
 Route::get('/admin/template/edit/{id}', 'AdminEmailTemplate@Edit');
 Route::post('/admin/template/update', 'AdminEmailTemplate@Update');
-Route::get('/template_search', 'AdminEmailTemplate@Template_search')
+Route::get('/template_search', 'AdminEmailTemplate@Template_search');
 
 
 
