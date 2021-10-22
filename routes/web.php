@@ -1160,9 +1160,12 @@ Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
 
 
-
-
-
+// Email Template
+Route::get('/admin/email_template', 'AdminEmailTemplate@index');
+Route::get('/admin/template/view/{id}', 'AdminEmailTemplate@View');
+Route::get('/admin/template/edit/{id}', 'AdminEmailTemplate@Edit');
+Route::post('/admin/template/update', 'AdminEmailTemplate@Update');
+Route::get('/template_search', 'AdminEmailTemplate@Template_search')
 
 
 

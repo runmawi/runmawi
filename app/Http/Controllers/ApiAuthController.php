@@ -339,10 +339,17 @@ class ApiAuthController extends Controller
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
       if($settings->free_registration && !Auth::user()->stripe_active){
-        Auth::user()->role = 'registered';
+        // Auth::user()->role = 'registered';
+        // print_r(Auth::user()->role); exit();
+        if(Auth::user()->role == 'registered'){
         $user = User::find(Auth::user()->id);
         $user->role = 'registered';
         $user->save();
+        }else if(Auth::user()->role == 'admin'){
+        $user = User::find(Auth::user()->id);
+        $user->role = 'admin';
+        $user->save();
+        }
       }
 
       if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
