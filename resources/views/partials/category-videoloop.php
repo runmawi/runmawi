@@ -77,6 +77,13 @@
 
                                         </a>
                                     </div>
+                                      <div class="block-social-info">
+                          <ul class="list-inline p-0 m-0 music-play-lists">
+                             <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                             <li><span><i class="ri-heart-fill"></i></span></li> -->
+                             <li><span><i class="ri-add-line"><?php echo $category_video->ppv_price ; ?></i></span></li>
+                          </ul>
+                       </div>
                                     <!--
                            <div>
                                <button class="show-details-button" data-id="<?= $category_video->id;?>">
@@ -86,13 +93,7 @@
                                        </button></div>
 -->
                                 </div>
-                                <div class="block-social-info">
-                          <ul class="list-inline p-0 m-0 music-play-lists">
-                             <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                             <li><span><i class="ri-heart-fill"></i></span></li> -->
-                             <li><span><i class="ri-add-line"><?php echo $category_video->ppv_price ; ?></i></span></li>
-                          </ul>
-                       </div>
+                              
                             </div>
                     </li>
                     <?php     } elseif(!empty($ppv_gobal_price) && $category_video->ppv_price == null  ){ 
