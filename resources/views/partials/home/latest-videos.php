@@ -11,7 +11,7 @@
                           <a href="<?php echo URL::to('home') ?>">
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                   <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt=""> -->
                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>
