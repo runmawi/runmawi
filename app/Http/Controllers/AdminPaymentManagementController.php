@@ -6,6 +6,8 @@ use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use App\EmailTemplate;
+use App\Video;
+use App\VideoCommission;
 use Laravel\Cashier\Invoice;
 use URL;
 use Auth;
@@ -57,73 +59,112 @@ class AdminPaymentManagementController extends Controller
     public function SubscriptionIndex()
     {
 
+    //    $user = User::where('role', '!=' , 'admin')->get();
+       $subscription = DB::table('subscriptions')
+       ->select('subscriptions.*','users.*')
+       ->join('users', 'subscriptions.user_id', '=', 'users.id')
+       ->where('users.role', '!=' , 'admin')
+       ->get();
 
-
-
-    	// $users = User::all();
-        // foreach($users as $user){
-        // dd($user->invoices());
-
-        // $invoices[] = $user->invoices();
-        // }
-        // // dd($invoices);
-
-        // $date = date('m/d/Y',strtotime("-1 days"));
-        // foreach($invoices as $invoice){
-        //     $data_invoices[] = $invoice;
-        //     }
-        //     foreach($data_invoices as $values){
-        //     foreach($values as $value){  
-        //       $created_date = date('m/d/Y', $value->created); 
-            
-        //     if($date == $created_date){
-        //       $update_date = date('Y-m-d H:i:s', $value->created); 
-
-        //         // echo "<pre>";
-        //         // print_r($value);
-        //         User::where('stripe_id', $value->customer)
-        //                     ->update([
-        //                         'previous_update_date' => $update_date
-        //                         ]);
-
-        //             }
-        //         }  
-        //     }
-
-
-        // dd('test');
+        // dd($user);
         $data = array(
-            'subscription' => '$subscription',
+            'subscription' => $subscription,
             );
         return View('admin.payment.subscription_payment', $data);
         
     }
+
+    public function SubscriptionView($id)
+    {
+        // dd($id);
+        $subscription = DB::table('subscriptions')
+        ->select('subscriptions.*','users.*')
+        ->join('users', 'subscriptions.user_id', '=', 'users.id')
+        ->where('subscriptions.user_id', '=' , $id)
+        ->get();
+        // dd($subscription);
+ 
+        $data = array(
+            'subscription' => $subscription,
+            );
+        return View('admin.payment.subscription_view', $data);
+    }
+
     public function PayPerViewIndex()
     {
-       
+        $PayPerView = DB::table('ppv_purchases')
+        ->select('ppv_purchases.*','videos.*','users.*')
+        ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+        ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
+        // ->where('users.role', '!=' , 'admin')
+        ->get();
+//         $video = Video::where('id','=',103)->first();  
+//         $commssion = VideoCommission::first();
+//         $percentage = $commssion->percentage; 
+//         $ppv_price = $video->ppv_price;
+//         $admin_commssion = ($percentage * 100) / $ppv_price ;
+//         $turnover = 10000;
+// $overheads = 12500;
+// $difference = abs($turnover-$overheads);
+//         $moderator_commssion = $ppv_price - $percentage;
+//          dd($admin_commssion);
+         $data = array(
+             'payperView' => $PayPerView,
+             );
+         return View('admin.payment.ppv_payment', $data);
+    }
+
+    public function PayPerView($id)
+    {
+        // dd($id);
+ 
+        $PayPerView = DB::table('ppv_purchases')
+        ->select('ppv_purchases.*','videos.*','users.*')
+        ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+        ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
+        ->where('ppv_purchases.video_id', '=' , $id)
+        ->get();
+        // dd($PayPerView);
+ 
+        $data = array(
+            'payperView' => $PayPerView,
+            );
+        return View('admin.payment.ppv_view', $data);
     }
    
-    public function Template_search(Request $request)
+    public function Subscription_search(Request $request)
     {
         if($request->ajax())
      {
 
       $output = '';
       $query = $request->get('query');
-         $view = URL::to('admin/template/view');
-         $edit = URL::to('admin/template/edit');
+         $view = URL::to('admin/subscription/view');
+        //  $edit = URL::to('admin/template/edit');
       if($query != '')
       {
-       $data = DB::table('email_templates')
-         ->where('template_type', 'like', '%'.$query.'%')
-         ->orderBy('created_at', 'desc')
-         ->paginate(9);
-         
+        $data = DB::table('subscriptions')
+        ->select('subscriptions.*','users.*')
+        ->join('users', 'subscriptions.user_id', '=', 'users.id')
+        ->where('users.username', 'like', '%'.$query.'%')
+        ->orWhere('users.user_type', 'like', '%'.$query.'%')
+        ->orWhere('users.card_type', 'like', '%'.$query.'%')
+        // ->where('users.role', '!=' , 'admin')
+        ->orderBy('subscriptions.created_at', 'desc')
+        ->paginate(9);
+        // ->get();
+        // echo "<pre>";
+        // print_r($data);exit();
+    //    $data = DB::table('email_templates')
+    //      ->where('template_type', 'like', '%'.$query.'%')
+    //      ->orderBy('created_at', 'desc')
+    //      ->paginate(9);
       }
       else
       {
 
       }
+      $i = 1 ;
       $total_row = $data->count();
       if($total_row > 0)
       {
@@ -131,18 +172,23 @@ class AdminPaymentManagementController extends Controller
        {
         $output .= '
         <tr>
-        <td>'.$row->id.'</td>
-        <td>'.$row->template_type.'</td>
-        <td>'.$row->heading.'</td>
+        <td>'.$i++.'</td>
+        <td>'.$row->username.'</td>
+        <td>'.$row->user_type.'</td>
+        <td>'.$row->stripe_id.'</td>
+        <td>'.$row->card_type.'</td>
+        <td>'.'₹'. $row->price.'</td>
+        <td>'.$row->ends_at.'</td>
+        <td>'.$row->stripe_status.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $view/$row->id'><i class='lar la-eye'></i>
-        </a>".'
-        '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
         </a>".'
         </td>
         </tr>
         ';
        }
       }
+    //   '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+    //     </a>".'
       else
       {
        $output = '
@@ -159,4 +205,95 @@ class AdminPaymentManagementController extends Controller
       echo json_encode($data);
      }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function PayPerView_search(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+         $view = URL::to('admin/ppvpayment/view');
+        //  $edit = URL::to('admin/template/edit');
+      if($query != '')
+      {
+        $data =  DB::table('ppv_purchases')
+        ->select('ppv_purchases.*','videos.*','users.*')
+        ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+        ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
+        ->where('users.username', 'like', '%'.$query.'%')
+        ->orWhere('videos.title', 'like', '%'.$query.'%')
+        ->orWhere('users.card_type', 'like', '%'.$query.'%')
+        ->orderBy('ppv_purchases.created_at', 'desc')
+        ->paginate(9);
+        // ->get();
+        // echo "<pre>";
+        // print_r($data);exit();
+    //    $data = DB::table('email_templates')
+    //      ->where('template_type', 'like', '%'.$query.'%')
+    //      ->orderBy('created_at', 'desc')
+    //      ->paginate(9);
+      } 
+      else
+      {
+
+      }
+      $i = 1 ;
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$i++.'</td>
+        <td>'.$row->username.'</td>
+        <td>'.$row->title.'</td>
+        <td>'.$row->stripe_id.'</td>
+        <td>'.$row->card_type.'</td>
+        <td>'.'₹'. $row->total_amount.'</td>
+        <td>'.'₹'.$row->admin_commssion.'</td>
+        <td>'.'₹'.$row->moderator_commssion.'</td>
+        <td>'.$row->status.'</td>
+
+         <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $view/$row->video_id'><i class='lar la-eye'></i>
+        </a>".'
+        </td>
+        </tr>
+        ';
+       }
+      }
+    //   '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+    //     </a>".'
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+}
+
 }

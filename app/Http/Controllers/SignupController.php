@@ -350,6 +350,7 @@ public function PostcreateStep2(Request $request)
    $validatedData = $request->validate([
     'plan_name' => 'required'
     ]);
+    
 
        $request->session()->put('planname', $request['plan_name']);
        $register = $request->session()->get('register');
@@ -402,7 +403,7 @@ public function createStep3(Request $request)
             }
            return view('register.step3', [
                         'intent' => $user->createSetupIntent()
-                        ,compact('register')
+                        
                     ]);
 
 
@@ -432,6 +433,7 @@ public function createStep3(Request $request)
         }*/
        
         $payment_type = $request->payment_type;
+    // print_r($payment_type);exit();
         if ( $payment_type == "one_time") {
                         $user_email = $request->session()->get('register.email');
                         $user = User::where('email',$user_email)->first();
@@ -490,7 +492,7 @@ public function createStep3(Request $request)
                             'plan' => ucfirst($plandetail->plans_name),
                             'price' => $plandetail->price,
                             'billing_interval' => $plandetail->billing_interval,
-                    //                                'next_billing' => $nextPaymentAttemptDate,
+                                                //    'next_billing' => $nextPaymentAttemptDate,
                         ), function($message) use ($request,$user){
                             $message->from(AdminMail(),'Flicknexs');
                             $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));

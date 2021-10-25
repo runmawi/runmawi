@@ -30,42 +30,35 @@
                                  <tr>
                                     <th>ID</th>
                                     <th>Username</th>
-                                    <th>Subscription Title</th>
+                                    <th>Video Title</th>
                                     <th>Payment ID</th>
                                     <th>Payment Mode</th>
                                     <th>Padi Amount</th>
-                                    <th>Expiry Date</th>
+                                    <th>Admin Amount</th>
+                                    <th>Moderator Amount</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  <?php $i = 1 ; ?>
-                              @foreach($subscription as $payment)
+                              @foreach($payperView as $payment)
                                  <tr>
                                  <td> <p class="mb-0">{{ $i++ }}</p></td>
                                  <td> <p class="mb-0"></p>{{ $payment->username }}</td>
-                                 <td> <p class="mb-0">{{ $payment->user_type }}</p></td>
+                                 <td> <p class="mb-0">{{ $payment->title }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->stripe_id }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->card_type }}</p></td>
-
+                                 <td> <p class="mb-0">₹ {{ $payment->total_amount }}</p></td>
+                                 <td> <p class="mb-0">₹ {{ $payment->admin_commssion }}</p></td>
+                                 <td> <p class="mb-0">₹ {{ $payment->moderator_commssion }}</p></td>
                                     <td>
-                                       <div class="media align-items-center">
-                                          <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">₹ {{ $payment->price }}</p>
-                                          </div>
-                                       </div>
-                                    </td>
-                                    <td>
-                                    <p class="mb-0">{{ $payment->ends_at }}</p>
-                                    </td>
-                                    <td>
-                                    <p class="mb-0">{{ $payment->stripe_status }}</p>
+                                    <p class="mb-0">{{ $payment->status }}</p>
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('admin/subscription/view') . '/' . $payment->user_id }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('admin/ppvpayment/view') . '/' . $payment->video_id }}"><i class="lar la-eye"></i></a>
                                           <!-- <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/subscription/edit') . '/' . 1 }}"><i class="ri-pencil-line"></i></a> -->
                                        </div>
@@ -74,7 +67,7 @@
                                  @endforeach
                               </tbody>
                            </table>
-                           <div class="clear"></div>
+                           <!-- <div class="clear"></div> -->
 
 		
 		</div>
@@ -93,7 +86,7 @@ $(document).ready(function(){
  function fetch_customer_data(query = '')
  {
   $.ajax({
-   url:"{{ URL::to('/subscription_search') }}",
+   url:"{{ URL::to('/PayPerView_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',

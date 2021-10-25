@@ -21,6 +21,8 @@ use DB;
 use Carbon\Carbon;
 use Cartalyst\Stripe\Stripe;
 use Mail;
+use App\Video;
+use App\VideoCommission;
 
 class PaymentController extends Controller
 {
@@ -122,11 +124,19 @@ public function RentPaypal(Request $request)
 
   public function purchaseVideo(Request $request)
   {
-    $setting = Setting::first();   
+    $setting = Setting::first();  
     $ppv_hours = $setting->ppv_hours;
     $to_time =  Carbon::now()->addHour($ppv_hours);
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
+    $video = Video::where('id','=',$video_id)->first();  
+    // $video = Video::where('id','=',103)->first();  
+    $commssion = VideoCommission::first();
+    $percentage = $commssion->percentage; 
+    $ppv_price = $video->ppv_price;
+    $admin_commssion = ($percentage/100) * $ppv_price ;
+    $moderator_commssion = $ppv_price - $percentage;
+
     $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
     $charge = $stripe->charges()->create([
       'source' => $request->get('tokenId'),
@@ -135,7 +145,7 @@ public function RentPaypal(Request $request)
     ]);
 
     DB::table('ppv_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $to_time, 'status' => 'active']
+      ['user_id' => $user_id, 'video_id' => $video_id,  'total_amount' => $ppv_price,'admin_commssion' => $admin_commssion, 'moderator_commssion' => $moderator_commssion, 'to_time' => $to_time, 'status' => 'active']
     ]);
 
     return 1;

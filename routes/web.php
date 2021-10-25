@@ -1159,7 +1159,6 @@ Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
 Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
 
-
 // Email Template
 Route::get('/admin/email_template', 'AdminEmailTemplateController@index');
 Route::get('/admin/template/view/{id}', 'AdminEmailTemplateController@View');
@@ -1172,7 +1171,11 @@ Route::get('/template_search', 'AdminEmailTemplateController@Template_search');
 Route::get('admin/payment/total_revenue', 'AdminPaymentManagementController@index');
 Route::get('admin/payment/subscription', 'AdminPaymentManagementController@SubscriptionIndex');
 Route::get('admin/payment/PayPerView', 'AdminPaymentManagementController@PayPerViewIndex');
-Route::post('admin/payment/', 'AdminEmailTemplateController@Update');
+Route::post('admin/payment/', 'AdminPaymentManagementController@Update');
+Route::get('/admin/subscription/view/{id}', 'AdminPaymentManagementController@SubscriptionView');
+Route::get('/admin/ppvpayment/view/{id}', 'AdminPaymentManagementController@PayPerView');
+Route::get('/subscription_search', 'AdminPaymentManagementController@Subscription_search');
+Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
 
 
 Route::get('admin/allmoderator', 'ModeratorsUserController@view');

@@ -1071,9 +1071,16 @@ if(!empty($artistsdata)){
             }
             
             $data = $request->all();
-        //        echo "<pre>";
-        // print_r($data['access']);
-        // exit();
+            //    echo "<pre>";
+   
+        if(empty($data['ppv_price'])){
+          
+            $settings = Setting::where('ppv_status','=',1)->first();
+            $data['ppv_price'] = $settings->ppv_price;
+            }  else {
+                print_r('$data');
+                exit();
+            }  
             $validatedData = $request->validate([
                 'title' => 'required|max:255'
             ]);
