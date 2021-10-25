@@ -1168,6 +1168,12 @@ Route::post('/admin/template/update', 'AdminEmailTemplate@Update');
 Route::get('/template_search', 'AdminEmailTemplate@Template_search');
 
 
+//payment management
+Route::get('admin/payment/total_revenue', 'AdminPaymentManagementController@index');
+Route::get('admin/payment/subscription', 'AdminPaymentManagementController@SubscriptionIndex');
+Route::get('admin/payment/PayPerView', 'AdminPaymentManagementController@PayPerViewIndex');
+Route::post('admin/payment/', 'AdminEmailTemplateController@Update');
+
 
 Route::get('admin/allmoderator', 'ModeratorsUserController@view');
 Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');

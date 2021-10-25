@@ -225,6 +225,17 @@ if($package == "Basic"){    ?>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                      </ul>
                   </li>
+                  <li>
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Payment Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/payment/total_revenue') }}"><i class="las la-user-plus"></i>Total Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/payment/subscription') }}"><i class="las la-eye"></i>Subscription Payments</a></li>
+                         <li><a href="{{ URL::to('admin/payment/PayPerView') }}"><i class="las la-eye"></i>PayPerView Payments</a></li>
+                     </ul>
+                  </li>
                    
                     <li>
                      <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i
@@ -236,6 +247,7 @@ if($package == "Basic"){    ?>
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                      </ul>
@@ -376,7 +388,18 @@ if($package == "Basic"){    ?>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                      </ul>
                   </li>
-                   
+                  
+                  <li>
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Payment Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/payment/total_revenue') }}"><i class="las la-user-plus"></i>Total Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/payment/subscription') }}"><i class="las la-eye"></i>Subscription Payments</a></li>
+                         <li><a href="{{ URL::to('admin/payment/PayPerView') }}"><i class="las la-eye"></i>PayPerView Payments</a></li>
+                     </ul>
+                  </li>
                     <li>
                      <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
@@ -387,6 +410,7 @@ if($package == "Basic"){    ?>
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                      </ul>
@@ -529,6 +553,18 @@ if($package == "Basic"){    ?>
                      </ul>
                   </li>
 
+                  <li>
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Payment Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="payments" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/payment/total_revenue') }}"><i class="las la-user-plus"></i>Total Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/payment/subscription') }}"><i class="las la-eye"></i>Subscription Payments</a></li>
+                         <li><a href="{{ URL::to('admin/payment/PayPerView') }}"><i class="las la-eye"></i>PayPerView Payments</a></li>
+                     </ul>
+                  </li>
+
                     <li>
                         <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
                         <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -537,6 +573,7 @@ if($package == "Basic"){    ?>
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                         </ul>
