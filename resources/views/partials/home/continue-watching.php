@@ -18,6 +18,13 @@
                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
+                  
+                     <div class="corner-text-wrapper">
+        <div class="corner-text">
+         <p class="p-tag" style="">FREE!</p>
+          </div>
+    </div>
+                  
                 </div>
                 <div class="block-description">
                     

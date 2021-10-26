@@ -23,7 +23,7 @@
 
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
-if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+if(!empty($ppv_video_play)   ||  $video->global_ppv == 0 && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
    if(!Auth::guest()) {
        
@@ -117,10 +117,7 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
 
                     <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
-                    <!-- <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?sd" type='video/mp4' label='SD' res='480' />
-                    <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?hd" type='video/mp4' label='HD' res='1080'/>
-                    <source src="<?php// if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?phone" type='video/mp4' label='phone' res='144'/>
-                    <source src="<?php //if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>?4k" type='video/mp4' label='4k' res='2160'/> -->
+                 
                     <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
                     <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
                     <?php } if($value->sub_language == "German"){?>
@@ -327,9 +324,10 @@ if(!empty($ppv_video_play)  || $video->access == 'subscriber' && Auth::user()->r
                     </li>
                     <!-- PPV button -->
                     <li>
-                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
+                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) { ?>
+                          <!-- && ($video->global_ppv == 1 ) -->
                             <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                            <?php echo __('Rent');?> </button>
+                            <?php echo __('Rents');?> </button>
                         <?php } ?>
                     </li>
                     <li>

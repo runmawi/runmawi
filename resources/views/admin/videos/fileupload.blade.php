@@ -529,6 +529,18 @@ data: {
                                     <label class="">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                                 </div>
+                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                <?php if($settings->ppv_status == 1){ ?>
+                                    <label for="global_ppv">Is this video Is Global PPV:</label>
+                                    <input type="checkbox" name="global_ppv" value="1" id="global_ppv" />
+                                    <?php } else{ ?>
+                                        <div class="global_ppv_status">
+                                        <!-- <label for="global_ppv">Is this video Is PPV:</label>
+                                    <input type="checkbox" name="global_ppv" value="1" id="global_ppv" /> -->
+                                        </div>
+                                        <?php } ?>
+                                </div>
+                                        
                                 <div class="col-sm-6 mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
@@ -599,16 +611,37 @@ $('#remove').click(function(){
 
 $(document).ready(function(){
     $('#ppv_price').hide();
+    $('#global_ppv_status').hide();
     
 		$("#access").change(function(){
 			if($(this).val() == 'ppv'){
 				$('#ppv_price').show();
+				$('#global_ppv_status').show();
 
 			}else{
-				$('#ppv_price').hide();				
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
 			}
 		});
 });
+
+// $(document).ready(function(){
+//     $('#global_ppv_status').hide();
+// 		$("#access").change(function(){
+// 			if($(this).val() == 'ppv'){
+// 				$('#global_ppv_status').show();
+
+// 			}else{
+// 				$('#global_ppv_status').hide();				
+// 			}
+// 		});
+// });
+
+
+
+
+
 	$(document).ready(function(){
     $('.js-example-basic-multiple').select2();
     

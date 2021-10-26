@@ -197,14 +197,14 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
      border-radius:4px!important; 
     background-color: transparent;
     font-weight: 700;
-    border:1px solid #fff;
+    border:1px solid hsla(0,0%,100%,.8);
     color:#fff!important;
 }
 .bd:hover{
      border-radius:4px!important; 
     background-color: #fff;
     font-weight: 700;
-    border:1px solid #fff;
+    border:1px solid hsla(0,0%,100%,.8);
     color:#000000!important;
 }
 /*---------------------*/
@@ -1461,7 +1461,7 @@ td{
 }
 .black{
     background-color: ;
-    border:1px solid rgba(109,109,110,0.5);
+    border:1px solid hsla(0,0%,100%,.8);
     color:#fff !important;
     padding: 10px 20px;
     margin-left: 10px;
@@ -1693,3 +1693,58 @@ padding: 15px;
 .table.recent_table thead th {color: #fff;}
 .table.recent_table tr td {color: #fff;}
 #personal_det p{color: #fff;}
+.corner-text-wrapper {
+  -webkit-transform: rotate(45deg);  
+     -moz-transform: rotate(45deg);  
+      -ms-transform: rotate(45deg);  
+       -o-transform: rotate(45deg);  
+          transform: rotate(45deg);
+    clip: rect(0px, 141.421px, 70.7107px, 0px);
+  height: 10.421px;
+    position: absolute;
+    right: 24.2893px;
+    top: -41.7107px;
+    width: 37.421px;
+    z-index: 1;
+}
+.corner-text {
+  color: white;
+ -webkit-transform: rotate(-45deg);  
+     -moz-transform: rotate(-45deg); 
+      -ms-transform: rotate(-45deg); 
+       -o-transform: rotate(-45deg); 
+          transform: rotate(-45deg);
+    left: 20px;
+    top: 15px;
+   
+    display: block;
+    height: 100px;
+    position: absolute;
+    width: 100px;
+    z-index: 2;
+}
+.corner-text span {
+     
+  position: relative;
+ 
+  top: -185px;
+  left: 10px;
+  display: block;
+  text-align: center;
+}
+.p-tag{
+    color: #fff!important;
+    position: absolute;
+    top: 15px;
+    left: 57px;
+    background-color: rgba(0,0,0,0.4);
+    padding: 3px;
+    font-size: 10px;
+    border: 1px solid hsla(0,0%,100%,.8);
+   /* border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;*/
+    border-radius: 3px;
+     font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  
+   
+}

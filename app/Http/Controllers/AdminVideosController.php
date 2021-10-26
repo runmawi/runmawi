@@ -1071,16 +1071,19 @@ if(!empty($artistsdata)){
             }
             
             $data = $request->all();
-            //    echo "<pre>";
-   
+    //            echo "<pre>";
+    //  print_r($data);
+        
+    //             exit();
         if(empty($data['ppv_price'])){
           
             $settings = Setting::where('ppv_status','=',1)->first();
             $data['ppv_price'] = $settings->ppv_price;
             }  else {
-                print_r('$data');
-                exit();
             }  
+
+
+        
             $validatedData = $request->validate([
                 'title' => 'required|max:255'
             ]);
@@ -1090,9 +1093,15 @@ if(!empty($artistsdata)){
                 // echo "<pre>";
             
                 $video = Video::findOrFail($id);
-                // print_r($video);
-        
-                // exit();
+              
+
+
+
+
+                if(!empty($data['global_ppv'])){
+                    $video->global_ppv = $data['global_ppv'] ;
+                    }  else {
+                    }  
                 if($request->slug == ''){
                     $data['slug'] = $this->createSlug($data['title']);    
                 }
