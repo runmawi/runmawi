@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use DB;
 use App\User;
 use Hash;
+use App\EmailTemplate;
+use Mail;
 
 class ResetPasswordController extends Controller
 {
@@ -59,8 +61,9 @@ class ResetPasswordController extends Controller
           $user = User::where('email', $request->email)
                       ->update(['password' => Hash::make($request->password)]);
 
-          DB::table('password_resets')->where(['email'=> $request->email])->delete();
-
+                        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+            
+            
           return redirect('/login')->with('message', 'Your password has been changed!');
         }
     }
@@ -70,8 +73,36 @@ public function reset(Request $request)
     $updatePassword = DB::table('password_resets')
                             ->where(['email' => $request->email])
                             ->first();
-    
+
+    $user =   User::where('email','=',$request->email)->get();
+    // $to_email = $request->email;
+    $template = EmailTemplate::where('id','=', 8)->get(); 
+
+    foreach($template as $key => $value){
+        $heading = $value->heading;
+        $template_type = $value->template_type;
+
+    }
+    // dd($heading);exit();
+
+
+      Mail::send('emails.changed_password', array(
+                            'heading' => $heading,
+                            'email' => $request->email,
+                            'username' => $user[0]->username,
+                         
+                        ), function($message) use ($user){
+                            $message->from(AdminMail(),'Flicknexs');
+                            $message->to($user[0]->email,$user[0]->username);
+                            $message->subject('Password is changed successfully');
+            
+                        });
+
+
+
        if(!$updatePassword){
+    // dd($updatePassword);
+
             return back()->withInput()->with('error', 'Invalid token!');
         } else {
 
@@ -79,6 +110,8 @@ public function reset(Request $request)
                       ->update(['password' => Hash::make($request->password)]);
 
           DB::table('password_resets')->where(['email'=> $request->email])->delete();
+           
+
 
           return redirect('/login')->with('message', 'Your password has been changed!');
         }

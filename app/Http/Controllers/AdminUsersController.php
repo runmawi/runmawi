@@ -336,9 +336,14 @@ class AdminUsersController extends Controller
 
     	$user_details = User::find($user_id);
         $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
-        foreach($recent_videos as $key => $value){
+        $recent_view = $recent_videos->unique('video_id');
+
+        foreach($recent_view as $key => $value){
         $videos[] = Video::Where('id', '=',$value->video_id)->take(10)->get();
         }
+        // dd($videos);
+        // $recent_view = $videos->unique('slug');
+
         $videocategory = VideoCategory::all();
 
 

@@ -718,6 +718,7 @@ if(!empty($artistsdata)){
         
        
             $id = $data['id'];
+            
             $video = Video::findOrFail($id);
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
@@ -856,38 +857,38 @@ if(!empty($artistsdata)){
                 $data['duration'] = $time_seconds;
         }
 
-        if( $mp4_url2 != ''){   
+        // if( $mp4_url2 != ''){   
 
-            $ffprobe = \FFMpeg\FFProbe::create();
-            $disk = 'public';
-            $data['duration'] = $ffprobe->streams($request->video)
-            ->videos()
-            ->first()                  
-            ->get('duration'); 
+        //     $ffprobe = \FFMpeg\FFProbe::create();
+        //     $disk = 'public';
+        //     $data['duration'] = $ffprobe->streams($request->video)
+        //     ->videos()
+        //     ->first()                  
+        //     ->get('duration'); 
 
 
 
-              //code for remove old file
-                $rand = Str::random(16);
-                $path = $rand . '.' . $request->video->getClientOriginalExtension();
-                $request->video->storeAs('public', $path);
-                $data['mp4_url'] = $path;
-                $data['path'] = $rand;
+        //       //code for remove old file
+        //         $rand = Str::random(16);
+        //         $path = $rand . '.' . $request->video->getClientOriginalExtension();
+        //         $request->video->storeAs('public', $path);
+        //         $data['mp4_url'] = $path;
+        //         $data['path'] = $rand;
 
-                $thumb_path = 'public';
-                $this->build_video_thumbnail($request->video,$path, $data['slug']);
+        //         $thumb_path = 'public';
+        //         $this->build_video_thumbnail($request->video,$path, $data['slug']);
              
-            // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-                $original_name = URL::to('/').'/storage/app/public/'.$path;
-                $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-                $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-                $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-                $converted_name = ConvertVideoForStreaming::handle($path);
+        //     // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+        //         $original_name = URL::to('/').'/storage/app/public/'.$path;
+        //         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        //         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        //         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        //         $converted_name = ConvertVideoForStreaming::handle($path);
 
-                ConvertVideoForStreaming::dispatch($video);
+        //         ConvertVideoForStreaming::dispatch($video);
                
 
-         }
+        //  }
         
       
        
@@ -896,6 +897,14 @@ if(!empty($artistsdata)){
         }else {
             $video->embed_code = '';
         }
+        if(!empty($data['global_ppv'])){
+        // dd($data['global_ppv']);
+
+         $video->global_ppv =$data['global_ppv'];
+        }else{
+         $video->global_ppv = null;
+        }   
+
 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
@@ -1075,12 +1084,7 @@ if(!empty($artistsdata)){
     //  print_r($data);
         
     //             exit();
-        if(empty($data['ppv_price'])){
-          
-            $settings = Setting::where('ppv_status','=',1)->first();
-            $data['ppv_price'] = $settings->ppv_price;
-            }  else {
-            }  
+    
 
 
         
@@ -1094,8 +1098,20 @@ if(!empty($artistsdata)){
             
                 $video = Video::findOrFail($id);
               
+                if(empty($data['ppv_price'])){
+                    $settings = Setting::where('ppv_status','=',1)->first();
+                    if(!empty($settings)){
+                    // dd($settings);
+                        $data['ppv_price'] = $settings->ppv_price;
+                        $video->global_ppv = 1 ;
+                    }
+                    }  else {
+                    }  
 
-
+                if(!empty($data['ppv_price'])){
+                    $video->global_ppv = 1 ;
+                    }  else {
+                    }  
 
 
                 if(!empty($data['global_ppv'])){
@@ -1241,7 +1257,7 @@ if(!empty($artistsdata)){
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
              $video->age_restrict =  $data['age_restrict'];
-         $video->ppv_price =$data['ppv_price'];
+            $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
              $video->update($data);
 

@@ -37,6 +37,7 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);
+      $template = App\EmailTemplate::where('id','=', 4)->get(); 
 
         $token = Str::random(60);
 
@@ -47,7 +48,7 @@ class ForgotPasswordController extends Controller
         Mail::send('auth.password.verify',['token' => $token], function($message) use ($request) {
                   $message->from($request->email);
                   $message->to('thirunask7@gmail.com');
-                  $message->subject('Reset Password Notification');
+                  $message->subject($template[0]->heading);
                });
 
         return back()->with('message', 'We have e-mailed your password reset link!');

@@ -23,7 +23,7 @@ class AdminDashboardController extends Controller
    
     public function Index()
     {
-        
+        // exit();
            if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
@@ -40,6 +40,7 @@ class AdminDashboardController extends Controller
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
         $top_rated_videos = Video::where("rating",">",7)->get();
         $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
+        $recent_view = $recent_views->unique('video_id');
         $page = 'admin-dashboard';
         $data = array(
                 'settings' => $settings,
@@ -47,7 +48,7 @@ class AdminDashboardController extends Controller
                 'total_recent_subscription' => $total_recent_subscription,
                 'total_videos' => $total_videos,
                 'top_rated_videos' => $top_rated_videos,
-                'recent_views' => $recent_views,
+                'recent_views' => $recent_view,
                 'page' => $page,
                 'total_ppvvideos' => $total_ppvvideos
         );

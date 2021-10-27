@@ -10,11 +10,10 @@ $discount_price = $discount_percentage;
 ?>
 <div style=" background: #edf2f7;">
     <div class="content" style="background: #fff;margin: 5%;">
-    <a class="navbar-brand" href="<?php echo URL::to('/');?>">
             <?php $settings = App\Setting::find(1); ?>
-            <img style="margin-left: 39%;" src="<?php echo URL::to('/').'/public/uploads/settings/' . $settings->logo; ?>" width="80" height="80">
-    </a>
-<hr>
+			<a style="margin-left: 39%;" class="navbar-brand" href="<?php echo URL::to('/') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" > </a>
+
+<!-- <hr>
 <h2 style="color:#3d4852;margin-left: 5%;">Hello  {{$plan_id }} </h2> <br>
     <p style="color:#718096;margin-left: 5%;"> Welcome to your <b>{{ $plan_id}}</b> of <b>Flicknexs</b>.</p>
 <br>
@@ -24,9 +23,24 @@ $discount_price = $discount_percentage;
 		<tr><td>Membership:</td><td>Subscriber</td></tr>
 		<tr><td>Plan Type:</td><td>{{ $plan_id }}</td></tr>
 	</table>
-	 <?= URL::to('login/') ?>.<br/>
-	<br/>
+	 <?// URL::to('login/') ?>.<br/>
+	<br/> -->
+	<div>
+	<?php $template = App\EmailTemplate::where('id','=',23)->get();  ?>
+
+	<!-- <h2><?php //echo $template[0]->template_type;?></h2> -->
+
+	<p>          Dear <?php echo $uname;?>      ,       </p>
+	<p>          Welcome to <?php echo $settings->website_name;?>.       </p>
+	<p>          Thank you for registering on <?php echo $settings->website_name;?> and subscribing to Plan <?php echo $plan_details->plans_name;?>.       </p>
+	<p>          Click here to confirm your account and you can start watching our videos anytime.       </p>
+	<p>          To view your billing history and invoices please click here.       </p>
+	<p>          if you need further assistance, please contact us by support@webnexs.com.       </p>
+
+	<p>    Sincerely,       </p>
+	<p>    Team <?php echo $settings->website_name;?>       </p>
+
 </div>
-<?php echo MailSignature();?>      
+	<p>     <?php echo MailSignature();?>       </p>
 </div>
 </div>

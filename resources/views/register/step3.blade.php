@@ -253,8 +253,42 @@ $discount_price = $discount_percentage;
             }
         );
         if (error) {
-            swal("Your Payment is failed !");
-              $("#card-button").html('Pay Now');
+
+				var plan_data = $("#plan_name").val();
+                var final_payment = $(".final_payment").val();
+
+				$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+	$.ajax({
+        url: base_url+'/Paymentfailed',
+        type: "post",
+data: {
+               _token: '{{ csrf_token() }}',
+               plan_data: plan_data,
+               error: error,
+               amount: final_payment,
+
+
+         },        success: function(data){
+
+
+        }
+    });
+
+});
+                
+          
+					//    swal("Your Payment is failed !");
+					   if(swal("Your Payment is failed !")){
+							alert('test')
+					   }
         } else {
         	
                 var plan_data = $("#plan_name").val();

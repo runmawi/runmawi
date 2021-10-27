@@ -503,7 +503,9 @@ data: {
                                         <option value="registered" >Registered Users( Must register to watch )</option>   
                                         <?php if($settings->ppv_status == 1){ ?>
                                         <option value="ppv" >PPV Users (Pay per movie)</option>   
-                                        <?php } else{ } ?>
+                                        <?php } else{ ?>
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
+                                        <?php } ?>
                                     </select>
                                 </div> 
                                 <div class="col-sm-6 form-group mt-3">

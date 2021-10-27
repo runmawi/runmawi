@@ -1176,6 +1176,7 @@ Route::get('/admin/subscription/view/{id}', 'AdminPaymentManagementController@Su
 Route::get('/admin/ppvpayment/view/{id}', 'AdminPaymentManagementController@PayPerView');
 Route::get('/subscription_search', 'AdminPaymentManagementController@Subscription_search');
 Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
+Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
 
 
 Route::get('admin/allmoderator', 'ModeratorsUserController@view');

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 use Image;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\EmailTemplate;
 
 class SignupController extends Controller
 {
@@ -409,6 +410,40 @@ public function createStep3(Request $request)
 
             }
 
+
+    public function PaymentFailed(Request $request)
+    {
+        $user_email = $request->session()->get('register.email');
+        $user = User::where("email","=",$user_email)->first();
+        $plans = Plan::where("plan_id","=",$request->plan_data)->first();
+        $user_id = $user->id;
+        $name = $user->username; 
+        $price = $plans->price;
+        $plan = $plans->plans_name;
+        $error = $request->error;
+        $error_message = $error['message'];
+
+        // echo "<pre>";print_r($error['message']);exit();
+
+        $template = EmailTemplate::where('id','=',6)->first(); 
+        Mail::send('emails.paymentfailed', array(
+            /* 'activation_code', $user->activation_code,*/
+            'name'=>$user->username, 
+            'price' => $price, 
+            'plan' => $plan, 
+            'heading'=> $template->heading,
+            'error'=> $error,
+            ), function($message) use ($request,$user) {
+            $message->from(AdminMail(),'Flicknexs');
+            $message->to($request->session()->get('register.email'), $user->username)->subject('Payment failed');
+             });
+
+         $response = array(
+            'status' => 'success'
+            );
+            return response()->json($response);   
+    }  
+
     public function PostcreateStep3(Request $request)
     {
       if ($request->has('ref')) {
@@ -554,6 +589,7 @@ public function createStep3(Request $request)
                                 ['user_id' => $user_id, 'stripe_id'=>$user->stripe_id, 'stripe_plan'=>$plan,'name'=>$user->username, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
                             ]);
 
+                            
 
                           Mail::send('emails.subscriptionmail', array(
                           /* 'activation_code', $user->activation_code,*/
@@ -561,12 +597,13 @@ public function createStep3(Request $request)
                           'days' => $plan_details->days, 
                           'price' => $plan_details->price, 
                           'ends_at' => $date,
+                          'uname' => $uname,
                           'created_at' => $current_date), function($message) use ($request,$user) {
                                                 $message->from(AdminMail(),'Flicknexs');
                                                  $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
                                             });
 
-                                           } else {
+                                           }     else {
                      $stripe->charges->create([
                               'amount' =>  $sub_price * 100,
                               'currency' => 'USD',
@@ -590,6 +627,8 @@ public function createStep3(Request $request)
                           'days' => $plan_details->days, 
                           'price' => $plan_details->price, 
                           'ends_at' => $date,
+                          'uname' => $uname,
+
                           'created_at' => $current_date), function($message) use ($request,$user) {
                                                 $message->from(AdminMail(),'Flicknexs');
                                                  $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));

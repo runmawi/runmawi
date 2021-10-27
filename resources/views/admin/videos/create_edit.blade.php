@@ -95,6 +95,8 @@
                            <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
+                                    <input type="hidden" class="form-control"  name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                    <input type="hidden" class="form-control"  name="global_ppv" id="price" value="@if(!empty($video->global_ppv)){{ $video->global_ppv }}@endif">
                                     <div class="col-sm-6 form-group" >
                                         <label class="p-2">Title :</label>
                                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
@@ -284,9 +286,12 @@
                                         <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users( Must register to watch )</option>   
                                         <?php if($settings->ppv_status == 1){ ?>
                                         <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-                                        <?php } else{ } ?>
+                                        <?php } else{ ?>
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
+                                        <?php } ?>
                                     </select>
                                 </div> 
+                                
                                 
                             <!--
                             <div class="col-sm-6 form-group">>
