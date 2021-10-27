@@ -426,6 +426,8 @@ public function createStep3(Request $request)
         // echo "<pre>";print_r($error['message']);exit();
 
         $template = EmailTemplate::where('id','=',6)->first(); 
+        $heading =$template->heading; 
+
         Mail::send('emails.paymentfailed', array(
             /* 'activation_code', $user->activation_code,*/
             'name'=>$user->username, 
@@ -433,9 +435,9 @@ public function createStep3(Request $request)
             'plan' => $plan, 
             'heading'=> $template->heading,
             'error'=> $error,
-            ), function($message) use ($request,$user) {
+            ), function($message) use ($request,$user,$heading) {
             $message->from(AdminMail(),'Flicknexs');
-            $message->to($request->session()->get('register.email'), $user->username)->subject('Payment failed');
+            $message->to($request->session()->get('register.email'), $user->username)->subject($heading);
              });
 
          $response = array(

@@ -5,14 +5,14 @@
 
         <!-- <h2><?php //echo $heading;?></h2> -->
         <div>
-       <p>          Dear <?php echo $name;?>,       </p>
-       <p>          Your <?php echo $name;?> transaction for <?php echo $price;?> on <?php echo $plan;?> has failed due to <?php echo $error['message']; ?>. This may be a temporary problem, please try again in a few minutes or get in touch with us at support email if the problem persists.       </p>
-       <p>          Your <?php echo $name;?> .       </p>
-       <p>      Thanks, <?php echo $settings->website_name;?>       </p>
+       <p>&nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $name;?>,&nbsp;&nbsp;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Your <?php echo $name;?> transaction for <?php echo $price;?> on <?php echo $plan;?> has failed due to <?php echo $error['message']; ?>. This may be a temporary problem, please try again in a few minutes or get in touch with us at support email if the problem persists.&nbsp;&nbsp;&nbsp;</p>
+       <p>&nbsp;&nbsp;&nbsp;&nbsp;Your <?php echo $name;?> .&nbsp;&nbsp;&nbsp;       </p>
+       <p>&nbsp;&nbsp;&nbsp;Thanks, <?php echo $settings->website_name;?>&nbsp;&nbsp;&nbsp;</p>
 
            <!-- <a href="<?php// echo URL::to('/').'/password/reset/'.$token ;?>">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ;?> -->
            <br>
-           <p>  <?php echo MailSignature();?>       </p>
+           <p>&nbsp;&nbsp;&nbsp;  <?php echo MailSignature();?>&nbsp;&nbsp;&nbsp;       </p>
 
     </div>
     </div>

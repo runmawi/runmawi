@@ -129,7 +129,7 @@
                                 </div> -->
            
 
-<div id="user_permissions" class="buttons">
+<!-- <div id="user_permissions" class="buttons">
 
 <div >
                                
@@ -138,7 +138,7 @@
 @foreach($permission as $permissions)
 
 <div  class="col-md-4" style="width: 33%; float: left;">
-            <!-- <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;"> -->
+            <div class="col-md-6" style="width: 50%; float: left;" style="width: 50%; float: left;">
           <label>  {{$permissions->name}}</label>
             <label class="switch">
                       <input type="checkbox"  name="user_permission[]" checked="checked" value="{{$permissions->id}}">
@@ -152,7 +152,7 @@
 
 </div>
 
-</div>
+</div> -->
 
 
 

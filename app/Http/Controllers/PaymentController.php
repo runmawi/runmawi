@@ -23,6 +23,8 @@ use Cartalyst\Stripe\Stripe;
 use Mail;
 use App\Video;
 use App\VideoCommission;
+use App\EmailTemplate;
+
 
 class PaymentController extends Controller
 {
@@ -128,6 +130,9 @@ public function RentPaypal(Request $request)
     $ppv_hours = $setting->ppv_hours;
     $to_time =  Carbon::now()->addHour($ppv_hours);
     $user_id = Auth::user()->id;
+    $username = Auth::user()->username;
+    $email = Auth::user()->email;
+
     $video_id = $request->get('video_id');
     $video = Video::where('id','=',$video_id)->first();  
     // $video = Video::where('id','=',103)->first();  
@@ -147,6 +152,22 @@ public function RentPaypal(Request $request)
     DB::table('ppv_purchases')->insert([
       ['user_id' => $user_id, 'video_id' => $video_id,  'total_amount' => $ppv_price,'admin_commssion' => $admin_commssion, 'moderator_commssion' => $moderator_commssion, 'to_time' => $to_time, 'status' => 'active']
     ]);
+
+    $template = EmailTemplate::where('id','=',11)->first();
+    $heading =$template->heading; 
+    //   echo "<pre>";
+    // print_r($heading);
+    // exit();
+
+    Mail::send('emails.payperview_rent', array(
+        /* 'activation_code', $user->activation_code,*/
+        'name'=> $username, 
+        'email' => $email, 
+
+        ), function($message) use ($request,$username,$heading,$email) {
+        $message->from(AdminMail(),'Flicknexs');
+        $message->to($email, $username)->subject($heading.$username);
+        });
 
     return 1;
   }

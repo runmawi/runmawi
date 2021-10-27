@@ -30,17 +30,17 @@ $discount_price = $discount_percentage;
 
 	<!-- <h2><?php //echo $template[0]->template_type;?></h2> -->
 
-	<p>          Dear <?php echo $uname;?>      ,       </p>
-	<p>          Welcome to <?php echo $settings->website_name;?>.       </p>
-	<p>          Thank you for registering on <?php echo $settings->website_name;?> and subscribing to Plan <?php echo $plan_details->plans_name;?>.       </p>
-	<p>          Click here to confirm your account and you can start watching our videos anytime.       </p>
-	<p>          To view your billing history and invoices please click here.       </p>
-	<p>          if you need further assistance, please contact us by support@webnexs.com.       </p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $uname;?>,&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Welcome to <?php echo $settings->website_name;?>.&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Thank you for registering on <?php echo $settings->website_name;?> and subscribing to Plan <?php echo $plan_details->plans_name;?>.&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Click here to confirm your account and you can start watching our videos anytime.&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;To view your billing history and invoices please click here.&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;if you need further assistance, please contact us by support@webnexs.com.&nbsp;&nbsp;&nbsp;</p>
 
-	<p>    Sincerely,       </p>
-	<p>    Team <?php echo $settings->website_name;?>       </p>
+	<p>&nbsp;&nbsp;&nbsp;    Sincerely,&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;    Team <?php echo $settings->website_name;?>&nbsp;&nbsp;&nbsp;</p>
 
 </div>
-	<p>     <?php echo MailSignature();?>       </p>
+	<p>&nbsp;&nbsp;&nbsp;     <?php echo MailSignature();?>&nbsp;&nbsp;&nbsp;</p>
 </div>
 </div>

@@ -63,7 +63,8 @@ use Illuminate\Support\Facades\Cache;
 use App\Audio as Audio;
 use File;
 use App\VideoCommission as VideoCommission;
-
+use Mail;
+use App\EmailTemplate;
 
 class ModeratorsUserController extends Controller
 {   
@@ -182,6 +183,33 @@ if($request->picture == ""){
 
 
     );
+
+                $template = EmailTemplate::where('id','=',13)->first();
+                $heading =$template->heading; 
+                //   echo "<pre>";
+                // print_r($heading);
+                // exit();
+    
+                Mail::send('emails.partner_registration', array(
+                    /* 'activation_code', $user->activation_code,*/
+                    'name'=> $request->username, 
+                    'email' => $request->email_id, 
+                    'password' => $request->password, 
+    
+                    ), function($message) use ($request,$template,$heading) {
+                    $message->from(AdminMail(),'Flicknexs');
+                    $message->to($request->email_id, $request->username)->subject($heading.$request->username);
+                    });
+
+  
+    
+
+
+
+
+
+
+
     return back()->with('message', 'Successfully Users saved!.');
 
     // return view('moderator.view',$data);

@@ -30,6 +30,8 @@ use App\SystemSetting as SystemSetting;
 use DateTime;
 use Session;
 use DB;
+use Mail;
+use App\EmailTemplate;
 
 class AdminUsersController extends Controller
 {
@@ -207,6 +209,28 @@ class AdminUsersController extends Controller
 //             $request['password'] = $password; }
 // //        
 //         $user = User::create($input);
+// Welcome on sub-user registration
+            $template = EmailTemplate::where('id','=',10)->first();
+            $heading =$template->heading; 
+            //   echo "<pre>";
+            // print_r($heading);
+            // exit();
+
+            Mail::send('emails.sub_user', array(
+                /* 'activation_code', $user->activation_code,*/
+                'name'=>$request['username'], 
+                'email' => $request['email'], 
+                'password' => $request['passwords'], 
+
+                ), function($message) use ($request,$user,$heading) {
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($request['email'], $request['username'])->subject($heading.$request['username']);
+                });
+
+
+
+
+
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );
     }
     
