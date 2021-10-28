@@ -6,7 +6,7 @@
 $plan_id = session()->get('become_plan');
 $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
 
-
+// dd($plan_details);
 ?>
 <style>
 /*.stripe{
@@ -155,6 +155,7 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
               $("#card-button").html('Pay Now');
         } else {
                 var plan_data = $("#plan_name").val();
+                // alert(plan_data);
                 var coupon_code = $("#coupon_code").val();
                 var py_id = setupIntent.payment_method;
 

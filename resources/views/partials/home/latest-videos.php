@@ -45,7 +45,7 @@
                                        
                                       <!-- <li ><span><i class="ri-volume-mute-fill"></i></span></li>
                                       <li><span><i class="ri-heart-fill"></i></span></li> d-flex justify-content-around-->
-                                      <li><span><i class="ri-add-line"><?php echo $watchlater_video->ppv_price ; ?></i></span></li>
+<!--                                      <li><span><i class="ri-add-line"><?php echo $watchlater_video->ppv_price ; ?></i></span></li>-->
                                        
                                    </ul>
                                 </div>

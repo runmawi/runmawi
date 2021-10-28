@@ -80,7 +80,7 @@ class ApiAuthController extends Controller
 
   public function signup(Request $request)
   {
-        $input = $request->all();
+    $input = $request->all();
     $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
 
     $stripe_plan = SubscriptionPlan();

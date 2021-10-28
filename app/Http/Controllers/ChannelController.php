@@ -153,36 +153,55 @@ class ChannelController extends Controller
                     $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
                     $ppv_setting = \DB::table('settings')->first();
                     $ppv_setting_hours= $ppv_setting->ppv_hours;
-                      // dd(Auth::user()->id);
+                      // dd($ppv_hours);
             
                     if(!empty($ppv_video)){
                     foreach($ppv_video as $key => $value){
-                      $date = $value->created_at;
+                      $to_time = $value->to_time;
                     
-                      $time = date('h:i:s', strtotime($date));
-                      $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
+                      // $time = date('h:i:s', strtotime($date));
+                      // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
                      
                         $d = new \DateTime('now');
                         $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
                         $now = $d->format('Y-m-d h:i:s a');
-                      
-                    if($now >= $ppv_hours){
+                        // dd($to_time);                     
+                        // "2021-10-28 03:19:38 pm"
+                        // "2021-10-28 05:14:25 pm"
+                      if($to_time >=  $now){
+                        if($vid == $value->video_id){
+                          $ppv_video_play = $value;
+                        // dd($ppv_video_play);    
 
-                      if($vid == $value->video_id){
-                        $ppv_video_play = $value;
-                        dd($ppv_video_play);
-
-                      }else{
-                        $ppv_video_play = null;
-                      }
+    
+                        }else{
+                          $ppv_video_play = null;
+                        }                 
                     }else{
-                        // dd($now);                     
+                        // dd('$now');                     
                         PpvPurchase::where('video_id', $vid)
                                 ->update([
                                     'status' => 'inactive'
                                     ]);
                     }
                     $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+
+                    // if($now == $ppv_hours){
+
+                    //   if($vid == $value->video_id){
+                    //     $ppv_video_play = $value;
+
+                    //   }else{
+                    //     $ppv_video_play = null;
+                    //   }
+                    // }else{
+                    //     // dd($now);                     
+                    //     PpvPurchase::where('video_id', $vid)
+                    //             ->update([
+                    //                 'status' => 'inactive'
+                    //                 ]);
+                    // }
+                    // $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
                     }
                     }
             

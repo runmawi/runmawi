@@ -1,4 +1,8 @@
-
+<style>
+.vjs-seek-to-live-control {
+            display: none !important;
+        }
+</style>
    <!-- video js -->
    <!-- <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script> -->
         <script src="https://cdn.sc.gl/videojs-hotkeys/0.2/videojs.hotkeys.min.js"></script>
@@ -6,7 +10,7 @@
       <script type="text/javascript" src="js/videojs-contrib-hls.min.js"></script>
         <!-- <script type="text/javascript" src="js/videojs-contrib-hls.js"></script> -->
           <!-- <script src="js/forward.js"></script> -->
-  	<script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
+  	<!-- <script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script> -->
 
           <?php 
     if($playerui_settings->thumbnail == 1){  ?>

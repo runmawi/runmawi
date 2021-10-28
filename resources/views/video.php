@@ -23,6 +23,8 @@
 
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
+
+
 if(!empty($ppv_video_play)   ||  $video->global_ppv == 0 && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
    if(!Auth::guest()) {
@@ -206,6 +208,7 @@ if(!empty($ppv_video_play)   ||  $video->global_ppv == 0 && $video->access == 's
     else { ?>       
         <div id="video" class="fitvid" style="margin: 0 auto;">
         
+        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
         <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
             
             <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />

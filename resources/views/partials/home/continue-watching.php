@@ -44,10 +44,12 @@
 
                    </div>
                     <div class="block-social-info mt-3">
+<!--
                    <ul class="list-inline p-0 m-0 music-play-lists">
                       
                       <li><span><i class="ri-add-line"><?php echo $cont_video->ppv_price ; ?></i></span></li>
                    </ul>
+-->
                 </div>
 
                     <!--<div >

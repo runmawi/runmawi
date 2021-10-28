@@ -22,6 +22,8 @@ use Image;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\EmailTemplate;
+use App\PaymentSetting;
+
 
 class SignupController extends Controller
 {
@@ -513,7 +515,7 @@ public function createStep3(Request $request)
                          
 
                     } else {
-                           
+                       
                         try {
                             $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
                         } catch (IncompletePayment $exception) {
@@ -542,100 +544,152 @@ public function createStep3(Request $request)
                         $user->save();
                     }
              } else {
-
-                $length = 10;
-        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
-        $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
-    if (!empty($request->token)){
-        $user_data['token'] =  $request->token;
-    } else {
-      $user_data['token'] =  '';
-    }
-                $current_date = date('Y-m-d h:i:s');    
-                $setting = Setting::first();
-                $ppv_hours = $setting->ppv_hours;
                 $user_email = $request->session()->get('register.email');
-                $user = User::where("email","=",$user_email)->first();
-                $user_id = $user->id;
-                $price = $request->amount;
-                $paymentMethod = $request->get('py_id');
-                $plan = $request->get('plan');
-                $paymentMethods = $user->paymentMethods();
-                $apply_coupon = NewSubscriptionCouponCode();
-                $stripe_plan = SubscriptionPlan();
-                $plandetail = Plan::where('plan_id',"=",$plan)->first();          
-                $plan_details = Plan::where("plan_id","=",$plan)->first();
-                $next_date = $plan_details->days;
-                $date = Carbon::parse($current_date)->addDays($next_date);
-                $sub_price = $plan_details->price;
-                //$stripe = new \Stripe\StripeClient('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');
-                $stripe = new \Stripe\StripeClient('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt');
-                $sub_total = $sub_price - DiscountPercentage();
-                    if ( NewSubscriptionCoupon() == 1 ) {
-                            $stripe->charges->create([
-                                  'amount' =>  $sub_total * 100,
-                                  'currency' => 'USD',
-                                  'source' => $request->stripToken,
-                                  /*'source' => 'tok_visa',*/
-                                  'description' => 'New Subscription using One Time subscription method'
-                                ]);    
-                            $user = User::find($user_id);
-                            $user->role = "subscriber";
-                            $user->payment_type = "one_time";
-                            $user->card_type = "stripe";
-                            $user->save();
-                            $email = $user_email;
-                            $uname = $user->username;
-                                DB::table('subscriptions')->insert([
-                                ['user_id' => $user_id, 'stripe_id'=>$user->stripe_id, 'stripe_plan'=>$plan,'name'=>$user->username, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
-                            ]);
+                        $user = User::where('email',$user_email)->first();
+                        $paymentMethod = $request->get('py_id');
+                        $plan = $request->get('plan');
+                        $paymentMethods = $user->paymentMethods();
+                        $apply_coupon = NewSubscriptionCouponCode();
+                        $stripe_plan = SubscriptionPlan();
+                        $plandetail = Plan::where('plan_id',$plan)->first();
+                try {
+                    $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+                    $user->role = 'subscriber';
+                    $user->payment_type = 'recurring';
+                    $user->card_type = 'stripe';
+                    $user->active = 1;
+                    $user->save();
+
+               } catch (IncompletePayment $exception) {
+                   
+                   return redirect()->route(
+                       'cashier.payment',
+                       [$exception->payment->id, 'redirect' => route('home')]
+                   );
+               }
+
+              
+           \Mail::send('emails.subscriptionmail', array(
+             /*'activation_code', $user->activation_code,*/
+               'name' => $user->username,
+               'uname' => $user->username,
+               'paymentMethod' => $paymentMethod,
+               'plan' => ucfirst($plandetail->plans_name),
+               'price' => $plandetail->price,
+               'billing_interval' => $plandetail->billing_interval,
+               /*'next_billing' => $nextPaymentAttemptDate,*/
+           ), function($message) use ($request,$user){
+               $message->from(AdminMail(),'Eliteclub');
+               $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+           });
+                
+        //         $length = 10;
+        // $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
+        // $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
+        // if (!empty($request->token)){
+        //     $user_data['token'] =  $request->token;
+        // } else {
+        // $user_data['token'] =  '';
+        // }
+        //         $current_date = date('Y-m-d h:i:s');    
+        //         $setting = Setting::first();
+        //         $ppv_hours = $setting->ppv_hours;
+        //         $user_email = $request->session()->get('register.email');
+        //         $user = User::where("email","=",$user_email)->first();
+        //         $user_id = $user->id;
+        //         $price = $request->amount;
+        //         $paymentMethod = $request->get('py_id');
+        //         $plan = $request->get('plan');
+        //         $paymentMethods = $user->paymentMethods();
+        //         $apply_coupon = NewSubscriptionCouponCode();
+        //         $stripe_plan = SubscriptionPlan();
+        //         $plandetail = Plan::where('plan_id',"=",$plan)->first();          
+        //         $plan_details = Plan::where("plan_id","=",$plan)->first();
+        //         $next_date = $plan_details->days;
+        //         $date = Carbon::parse($current_date)->addDays($next_date);
+        //         $sub_price = $plan_details->price;
+        //         //$stripe = new \Stripe\StripeClient('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');
+        //         $payment_settings = PaymentSetting::first();
+        //         $mode = $payment_settings->live_mode ;
+        //         if($mode == 0){
+        //             $test_secret_key = $payment_settings->test_secret_key ;
+        //             $test_publishable_key = $payment_settings->test_publishable_key ;
+        //         }elseif($mode == 1){
+        //             $live_secret_key = $payment_settings->live_secret_key ;
+        //             $live_publishable_key = $payment_settings->live_publishable_key ;
+        //         }else{
+        //             $test_secret_key= null;
+        //             $test_publishable_key= null;
+        //             $live_secret_key= null;
+        //             $live_publishable_key= null;
+        //         }
+        //         $stripe = new \Stripe\StripeClient($test_publishable_key);
+        //         $sub_total = $sub_price - DiscountPercentage();
+        //             if ( NewSubscriptionCoupon() == 1 ) {
+        //                     $stripe->charges->create([
+        //                           'amount' =>  $sub_total * 100,
+        //                           'currency' => 'USD',
+        //                           'source' => $request->stripToken,
+        //                           /*'source' => 'tok_visa',*/
+        //                           'description' => 'New Subscription using One Time subscription method'
+        //                         ]);    
+        //                     $user = User::find($user_id);
+        //                     $user->role = "subscriber";
+        //                     $user->payment_type = "one_time";
+        //                     $user->card_type = "stripe";
+        //                     $user->save();
+        //                     $email = $user_email;
+        //                     $uname = $user->username;
+        //                         DB::table('subscriptions')->insert([
+        //                         ['user_id' => $user_id, 'stripe_id'=>$user->stripe_id, 'stripe_plan'=>$plan,'name'=>$user->username, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+        //                     ]);
 
                             
 
-                          Mail::send('emails.subscriptionmail', array(
-                          /* 'activation_code', $user->activation_code,*/
-                            'name'=>$user->username, 
-                          'days' => $plan_details->days, 
-                          'price' => $plan_details->price, 
-                          'ends_at' => $date,
-                          'uname' => $uname,
-                          'created_at' => $current_date), function($message) use ($request,$user) {
-                                                $message->from(AdminMail(),'Flicknexs');
-                                                 $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
-                                            });
+        //                   Mail::send('emails.subscriptionmail', array(
+        //                   /* 'activation_code', $user->activation_code,*/
+        //                     'name'=>$user->username, 
+        //                   'days' => $plan_details->days, 
+        //                   'price' => $plan_details->price, 
+        //                   'ends_at' => $date,
+        //                   'uname' => $uname,
+        //                   'created_at' => $current_date), function($message) use ($request,$user) {
+        //                                         $message->from(AdminMail(),'Flicknexs');
+        //                                          $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+        //                                     });
 
-                                           }     else {
-                     $stripe->charges->create([
-                              'amount' =>  $sub_price * 100,
-                              'currency' => 'USD',
-                              'source' => $request->stripToken,
-                             /* 'source' => 'tok_visa',*/
-                              'description' => 'New Subscription using One Time subscription method',
-                            ]);    
-                            $user = User::find($user_id);
-                            $user->role = "subscriber";
-                            $user->payment_type = "one_time";
-                            $user->card_type ="stripe";
-                            $user->save();
-                            $email = $user_email;
-                            $uname = $user->username;
-                            DB::table('subscriptions')->insert([
-                                ['user_id' => $user_id, 'stripe_id'=>$user->stripe_id, 'stripe_plan'=>$plan,'name'=>$user->username, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
-                            ]);
-                              Mail::send('emails.subscriptionmail', array(
-                               /* 'activation_code', $user->activation_code,*/
-                                'name'=>$user->username, 
-                          'days' => $plan_details->days, 
-                          'price' => $plan_details->price, 
-                          'ends_at' => $date,
-                          'uname' => $uname,
+        //                                    }     else {
+        //              $stripe->charges->create([
+        //                       'amount' =>  $sub_price * 100,
+        //                       'currency' => 'USD',
+        //                       'source' => $request->stripToken,
+        //                      /* 'source' => 'tok_visa',*/
+        //                       'description' => 'New Subscription using One Time subscription method',
+        //                     ]);    
+        //                     $user = User::find($user_id);
+        //                     $user->role = "subscriber";
+        //                     $user->payment_type = "one_time";
+        //                     $user->card_type ="stripe";
+        //                     $user->save();
+        //                     $email = $user_email;
+        //                     $uname = $user->username;
+        //                     DB::table('subscriptions')->insert([
+        //                         ['user_id' => $user_id, 'stripe_id'=>$user->stripe_id, 'stripe_plan'=>$plan,'name'=>$user->username, 'days' => $plan_details->days, 'price' => $plan_details->price, 'ends_at' => $date,'created_at' => $current_date,'stripe_status' => 'active']
+        //                     ]);
+        //                       Mail::send('emails.subscriptionmail', array(
+        //                        /* 'activation_code', $user->activation_code,*/
+        //                         'name'=>$user->username, 
+        //                   'days' => $plan_details->days, 
+        //                   'price' => $plan_details->price, 
+        //                   'ends_at' => $date,
+        //                   'uname' => $uname,
 
-                          'created_at' => $current_date), function($message) use ($request,$user) {
-                                                $message->from(AdminMail(),'Flicknexs');
-                                                 $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
-                                            });
-             }
+        //                   'created_at' => $current_date), function($message) use ($request,$user) {
+        //                                         $message->from(AdminMail(),'Flicknexs');
+        //                                          $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+        //                                     });
+        //      }
             
              }
                 $response = array(

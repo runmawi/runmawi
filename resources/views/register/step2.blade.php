@@ -199,7 +199,7 @@
            <div id="AddPassport" >
                     <div class="row">
                         <?php 
-                            $plans = App\Plan::where('payment_type','=','one_time')->get();
+                            $plans = App\Plan::where('payment_type','=','recurring')->get();
                                foreach($plans as $plan) {
                                   $plan_name = $plan->plans_name;
                             ?>

@@ -70,7 +70,7 @@ border-radius: 25px !important;
     }
 .vjs-texttrack-settings { display: none; }
 .video-js .vjs-big-play-button{ border: none !important; }
-    #video_container{height: 80%;padding-top: 20px !important;width: 75%; margin:0 auto ;}
+    #video_container{height: 100%;padding-top: 20px !important;width: 100%; margin:0 auto ;}
 /*    #video_bg_dim {background: #1a1b20;}*/
     .video-js .vjs-tech {outline: none;}
     

@@ -468,7 +468,7 @@ $uppercase =  ucfirst($request_url);
 <?php
        
          ?>
-<!--
+
         <div class="col-sm-6">
             <div class="sign-user_card text-center mb-3">
             <?php if ( Auth::user()->role != 'admin') { ?>
@@ -530,7 +530,7 @@ $uppercase =  ucfirst($request_url);
             <?php } ?> 
             </div>
         </div>
--->
+
         <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
