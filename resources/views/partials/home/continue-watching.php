@@ -5,11 +5,7 @@
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
-         <?php 
-               foreach($cnt_watching as $cont_video): 
-                if(!empty($cont_video->ppv_price || !empty($ppv_gobal_price))){
-               
-               ?>
+         <?php foreach($cnt_watching as $cont_video): ?>
        <li class="slide-item">
           <a href="<?php echo URL::to('home') ?>">
              <div class="block-images position-relative">
@@ -21,7 +17,16 @@
                   
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
-                            <p class="p-tag" style=""><?php echo $cont_video->ppv_price; ?></p>
+                            <p class="p-tag" style="">
+                                <?php if(!empty($cont_video->ppv_price || !empty($ppv_gobal_price))) {
+                                        echo $cont_video->ppv_price; 
+                                        } elseif(!empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){
+                                        echo $ppv_gobal_price;
+                                        }elseif(empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){
+                                        echo "Free!";
+                                        }
+                                ?>
+                            </p>
                         </div>
                     </div>
                   
@@ -61,7 +66,7 @@
           </a>
        </li>
 
-        <?php } elseif(!empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){ 
+        <?php  
                           // dd($watchlater_video->id);
                           ?>
                                  <li class="slide-item">
@@ -75,7 +80,7 @@
                 </div>
                  <div class="corner-text-wrapper">
                         <div class="corner-text">
-                            <p class="p-tag" style=""><?php echo $ppv_gobal_price; ?></p>
+                            <p class="p-tag" style=""><?php  ?></p>
                         </div>
                     </div>
                 <div class="block-description">
@@ -112,7 +117,7 @@
           </a>
        </li>
 
-        <?php }elseif(empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){ 
+        <?php  
                           // dd($watchlater_video->id);
                           ?>
                                                         <li class="slide-item">
@@ -171,9 +176,7 @@
           </a>
        </li>
 
-        <?php }
-                          endforeach; 
-               ?>
+        <?php endforeach; ?>
     </ul>
 </div>
 <?php endif; ?>
