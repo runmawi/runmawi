@@ -15,12 +15,13 @@
                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>
-                                      <div class="corner-text-wrapper">
-        <div class="corner-text">
-           <p class="p-tag">FREE!</p>
-          </div>
-    </div>
-                                </div>
+                                     <div class="corner-text-wrapper">
+                                         <div class="corner-text-wrapper">
+                                            <div class="corner-text">
+                                                <p class="p-tag" style=""><?php echo $watchlater_video->ppv_price ; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <div class="block-description">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                    <h6><?php echo __($watchlater_video->title); ?></h6>
@@ -40,15 +41,6 @@
                                       
                                        </a>
                                    </div>
-                                   <div class="block-social-info mt-3">
-                                   <ul class="list-inline p-0 m-0 music-play-lists">
-                                       
-                                      <!-- <li ><span><i class="ri-volume-mute-fill"></i></span></li>
-                                      <li><span><i class="ri-heart-fill"></i></span></li> -->
-<!--                                      <li><span><i class="ri-add-line"><?php echo $watchlater_video->ppv_price ; ?></i></span></li>-->
-                                       
-                                   </ul>
-                                </div>
 <!--
                                     <div>
                                         <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
@@ -76,6 +68,13 @@
                                  <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                    </video>
                              </div>
+                               <div class="corner-text-wrapper">
+                                     <div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                            <p class="p-tag" style=""><?php echo $ppv_gobal_price ; ?></p>
+                                        </div>
+                                    </div>
+                                </div>
                              <div class="block-description">
                                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                 <h6><?php echo __($watchlater_video->title); ?></h6>
@@ -94,15 +93,6 @@
                                    Play Now
                                     </a>
                                 </div>
-                                <div class="block-social-info mt-3">
-                                <ul class="music-play-lists d-flex justify-content-around">
-                                    
-                                   <!-- <li ><span><i class="ri-volume-mute-fill"></i></span></li>
-                                   <li><span><i class="ri-heart-fill"></i></span></li> -->
-                                   <li><span><i class="ri-add-line"></i><?php echo $ppv_gobal_price ; ?></span></li>
-                                    
-                                </ul>
-                             </div>
 <!--
                                  <div>
                                      <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
@@ -131,6 +121,13 @@
                                  <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                    </video>
                              </div>
+                               <div class="corner-text-wrapper">
+                                     <div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                            <p class="p-tag" style=""><?php echo "Free"; ?></p>
+                                        </div>
+                                    </div>
+                                </div>
                              <div class="block-description">
                                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                 <h6><?php echo __($watchlater_video->title); ?></h6>
@@ -150,15 +147,6 @@
                                    
                                     </a>
                                 </div>
-                                <div class="block-social-info mt-3">
-                                <ul class="music-play-lists d-flex justify-content-around">
-                                    
-                                   <!-- <li ><span><i class="ri-volume-mute-fill"></i></span></li> -->
-                                   <!-- <li><span><i class="ri-heart-fill"></i></span></li> -->
-                                   <li><span><i class="ri-add-line"><?php echo "Free"; ?></i></span></li>
-                                    
-                                </ul>
-                             </div>
 <!--
                                  <div>
                                      <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">

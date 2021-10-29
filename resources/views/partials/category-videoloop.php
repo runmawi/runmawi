@@ -46,7 +46,7 @@
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
                     <?php  if(isset($videos)) :
                        foreach($videos as $category_video):
-                        if(!empty($category_video->ppv_price || !empty($ppv_gobal_price))){
+                        
                         ?>
                     <li class="slide-item">
                             <div class="block-images position-relative">
@@ -55,14 +55,24 @@
                                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>
-                                  <div class="corner-text-wrapper">
-        <div class="corner-text">
-          <p class="p-tag">FREE!</p>
-          </div>
-    </div>
+                                <div class="corner-text-wrapper">
+                                    <div class="corner-text">
+                                        <p class="p-tag">
+                                            
+                                            <?php if(!empty($category_video->ppv_price || !empty($ppv_gobal_price))) {
+                                                   echo $category_video->ppv_price ; 
+                                                } elseif(!empty($ppv_gobal_price) && $category_video->ppv_price == null) {
+                                                    echo $ppv_gobal_price ;
+                                                } elseif(empty($ppv_gobal_price) && $category_video->ppv_price == null) {
+                                                    echo "Free"; 
+                                                }
+                                            ?>
+                                        
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="block-description">
-                                    <a
-                                        href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                         <h6>
                                             <?php echo __($category_video->title); ?>
                                         </h6>
@@ -82,128 +92,20 @@
 
                                         </a>
                                     </div>
-                                      <div class="block-social-info">
-                          <ul class="list-inline p-0 m-0 music-play-lists">
-                             <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                             <li><span><i class="ri-heart-fill"></i></span></li> -->
-                             <li><span><i class="ri-add-line"><?php echo $category_video->ppv_price ; ?></i></span></li>
-                          </ul>
-                       </div>
-                                    <!--
+
+                        <!--
                            <div>
                                <button class="show-details-button" data-id="<?= $category_video->id;?>">
                                    <span class="text-center thumbarrow-sec">
                                        <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                    </span>
                                        </button></div>
--->
+                        -->
                                 </div>
                               
                             </div>
                     </li>
-                    <?php     } elseif(!empty($ppv_gobal_price) && $category_video->ppv_price == null  ){ 
-                          // dd($watchlater_video->id);
-                          ?> 
-                                              <li class="slide-item">
-                            <div class="block-images position-relative">
-                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid" alt=""> -->
-                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
-                                            </video>
-                                <div class="block-description">
-                                    <a
-                                        href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <h6>
-                                            <?php echo __($category_video->title); ?>
-                                        </h6>
-                                    </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $category_video->duration); ?>
-                                        </span>
-                                    </div>
-                                    <div class="hover-buttons">
-                                        <a type="button" class="btn btn-primary btn-hover"
-                                            href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Play Now
-
-                                        </a>
-                                    </div>
-                                    <!--
-                           <div>
-                               <button class="show-details-button" data-id="<?= $category_video->id;?>">
-                                   <span class="text-center thumbarrow-sec">
-                                       <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                   </span>
-                                       </button></div>
--->
-                                </div>
-                                <div class="block-social-info">
-                          <ul class="list-inline p-0 m-0 music-play-lists">
-                             <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                             <li><span><i class="ri-heart-fill"></i></span></li> -->
-                             <li><span><i class="ri-add-line"><?php echo $ppv_gobal_price ; ?></i></span></li>
-                          </ul>
-                       </div>
-                            </div>
-                    </li>
-                    <?php   }    elseif(empty($ppv_gobal_price) && $category_video->ppv_price == null  ){  
-                          // dd($watchlater_video->id);
-                          ?> 
-                                              <li class="slide-item">
-                            <div class="block-images position-relative">
-                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid" alt=""> -->
-                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
-                                            </video>
-                                <div class="block-description">
-                                    <a
-                                        href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <h6>
-                                            <?php echo __($category_video->title); ?>
-                                        </h6>
-                                    </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $category_video->duration); ?>
-                                        </span>
-                                    </div>
-                                    <div class="hover-buttons">
-                                        <a type="button" class="btn btn-primary btn-hover"
-                                            href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Play Now
-
-                                        </a>
-                                    </div>
-                                    <!--
-                           <div>
-                               <button class="show-details-button" data-id="<?= $category_video->id;?>">
-                                   <span class="text-center thumbarrow-sec">
-                                       <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                   </span>
-                                       </button></div>
--->
-                                </div>
-                                <div class="block-social-info">
-                          <ul class="list-inline p-0 m-0 music-play-lists">
-                             <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                             <li><span><i class="ri-heart-fill"></i></span></li> -->
-                             <li><span><i class="ri-add-line"><?php echo "Free"; ?></i></span></li>
-                          </ul>
-                       </div>
-                            </div>
-                    </li>
-                    <?php 
-                   }
-                          
+                    <?php           
                           endforeach; 
                      endif; ?>
                 </ul>

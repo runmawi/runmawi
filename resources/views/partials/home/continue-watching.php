@@ -19,11 +19,11 @@
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
                   
-                     <div class="corner-text-wrapper">
-        <div class="corner-text">
-         <p class="p-tag" style="">FREE!</p>
-          </div>
-    </div>
+                    <div class="corner-text-wrapper">
+                        <div class="corner-text">
+                            <p class="p-tag" style=""><?php echo $cont_video->ppv_price; ?></p>
+                        </div>
+                    </div>
                   
                 </div>
                 <div class="block-description">
@@ -43,14 +43,6 @@
                         
 
                    </div>
-                    <div class="block-social-info mt-3">
-<!--
-                   <ul class="list-inline p-0 m-0 music-play-lists">
-                      
-                      <li><span><i class="ri-add-line"><?php echo $cont_video->ppv_price ; ?></i></span></li>
-                   </ul>
--->
-                </div>
 
                     <!--<div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
@@ -81,6 +73,11 @@
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
                 </div>
+                 <div class="corner-text-wrapper">
+                        <div class="corner-text">
+                            <p class="p-tag" style=""><?php echo $ppv_gobal_price; ?></p>
+                        </div>
+                    </div>
                 <div class="block-description">
                     
                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
@@ -94,17 +91,9 @@
                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
                       Play Now
                       
-                          </a> 
-                        
-
+                          </a>                         
                    </div>
-                    <div class="block-social-info mt-3">
-                   <ul class=" music-play-lists d-flex justify-content-around">
-                      <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                      <li><span><i class="ri-heart-fill"></i></span></li> -->
-                      <li><span><i class="ri-add-line"><?php echo $ppv_gobal_price ; ?></i></span></li>
-                   </ul>
-                </div>
+
 
                     <!--<div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
@@ -135,6 +124,11 @@
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
                 </div>
+                 <div class="corner-text-wrapper">
+                        <div class="corner-text">
+                            <p class="p-tag" style=""><?php echo "Free!"; ?></p>
+                        </div>
+                    </div>
                 <div class="block-description">
                     
                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
