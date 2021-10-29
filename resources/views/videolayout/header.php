@@ -65,6 +65,9 @@ $uppercase =  ucfirst($request_url);
         .vjs-seek-to-live-control {
             display: none !important;
         }
+        .vjs-picture-in-picture-control{
+            display: none !important;
+        }
 
 	</style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

@@ -218,16 +218,18 @@ public function RentPaypal(Request $request)
                 $plan_name =  CurrentSubPlanName(Auth::user()->id);
                 $start_date =  SubStartDate(Auth::user()->id);
                 $ends_at =  SubEndDate(Auth::user()->id);
-        
-                \Mail::send('emails.cancel', array(
+                $template = EmailTemplate::where('id','=', 31)->first(); 
+                $heading = $template->heading; 
+
+                \Mail::send('emails.cancelsubscription', array(
                     'name' => $user->username,
                     'plan_name' => $plan_name,
                     'start_date' => $start_date,
                     'ends_at' => $ends_at,
                  
-                ), function($message) use ($user){
+                ), function($message) use ($user,$heading,$plan_name){
                     $message->from(AdminMail(),'Flicknexs');
-                    $message->to($user->email, $user->username)->subject('Subscription Renewal');
+                    $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
                 });
                 return redirect::to('myprofile');
        }
@@ -445,8 +447,9 @@ public function RentPaypal(Request $request)
                     'status' => 'success'
                 );
               return response()->json($response)*/
-
-               $user_email = Auth::user()->email;
+              $user_email = $request->session()->get('register.email');
+              // $user = User::where('email',$user_email)->first();
+              //  $user_email = Auth::user()->email;
                     $user_id = Auth::user()->user_id;
                     $user = User::where('email',$user_email)->first();
                     $paymentMethod = $request->get('py_id');
@@ -458,7 +461,10 @@ public function RentPaypal(Request $request)
                     $apply_coupon = NewSubscriptionCouponCode();
                     $stripe_plan = SubscriptionPlan();
                     $plandetail = Plan::where('plan_id',$plan)->first();
-                
+                    $plan_name = ucfirst($plandetail->plans_name);
+                    $template = EmailTemplate::where('id','=', 24)->first(); 
+                    $heading = $template->heading; 
+                    // Name Subscription Activated!
                      
                     if ( NewSubscriptionCoupon() == 1 || ExistingSubscription($user_id) == 0  ) {
                       try {
@@ -469,16 +475,16 @@ public function RentPaypal(Request $request)
                                   [$exception->payment->id, 'redirect' => route('home')]
                               );
                           }
-                      \Mail::send('emails.subscriptionmail', array(
+                      \Mail::send('emails.pruchase_subscription', array(
                           'name' => $user->username,
                           'paymentMethod' => $paymentMethod,
                           'plan' => ucfirst($plandetail->plans_name),
                           'price' => $plandetail->price,
                           'billing_interval' => $plandetail->billing_interval,
                           /*'next_billing' => $nextPaymentAttemptDate,*/
-                      ), function($message) use ($request,$user){
-                          $message->from(AdminMail(),'Eliteclub');
-                          $message->to($user->email, $user->username)->subject($request->get('subject'));
+                      ), function($message) use ($request,$user,$plan_name,$heading){
+                          $message->from(AdminMail(),'Flicknexs');
+                          $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
                       });
                           $user->role = 'subscriber';
                           $user->card_type = 'stripe';
@@ -492,16 +498,17 @@ public function RentPaypal(Request $request)
                       
                           if (!empty($coupon_code)){
                                  $user->newSubscription($stripe_plan, $plan)->withCoupon($coupon_code)->create($paymentMethod);
-                                    \Mail::send('emails.subscriptionmail', array(
-                                          'name' => $user->username,
-                                          'paymentMethod' => $paymentMethod,
-                                          'plan' => ucfirst($plandetail->plans_name),
-                                          'price' => $plandetail->price,
-                                          'billing_interval' => $plandetail->billing_interval,
-                                      ), function($message) use ($request,$user){
-                                          $message->from(AdminMail(),'Eliteclub');
-                                          $message->to($user->email, $user->username)->subject($request->get('subject'));
-                                      });
+                                 \Mail::send('emails.pruchase_subscription', array(
+                                  'name' => $user->username,
+                                  'paymentMethod' => $paymentMethod,
+                                  'plan' => ucfirst($plandetail->plans_name),
+                                  'price' => $plandetail->price,
+                                  'billing_interval' => $plandetail->billing_interval,
+                                  /*'next_billing' => $nextPaymentAttemptDate,*/
+                              ), function($message) use ($request,$user,$plan_name,$heading){
+                                  $message->from(AdminMail(),'Flicknexs');
+                                  $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
+                              });
                                           $user->role = 'subscriber';
                                           $user->payment_type = $payment_type;
                                           $user->card_type = 'stripe';
@@ -510,16 +517,17 @@ public function RentPaypal(Request $request)
 
                           }else {
                                 $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
-                                      \Mail::send('emails.subscriptionmail', array(
-                                          'name' => $user->username,
-                                          'paymentMethod' => $paymentMethod,
-                                          'plan' => ucfirst($plandetail->plans_name),
-                                          'price' => $plandetail->price,
-                                          'billing_interval' => $plandetail->billing_interval,
-                                      ), function($message) use ($request,$user){
-                                          $message->from(AdminMail(),'Eliteclub');
-                                          $message->to($user->email, $user->username)->subject($request->get('subject'));
-                                      });
+                                \Mail::send('emails.pruchase_subscription', array(
+                                  'name' => $user->username,
+                                  'paymentMethod' => $paymentMethod,
+                                  'plan' => ucfirst($plandetail->plans_name),
+                                  'price' => $plandetail->price,
+                                  'billing_interval' => $plandetail->billing_interval,
+                                  /*'next_billing' => $nextPaymentAttemptDate,*/
+                              ), function($message) use ($request,$user,$plan_name,$heading){
+                                  $message->from(AdminMail(),'Flicknexs');
+                                  $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
+                              });
                                           $user->role = 'subscriber';
                                           $user->payment_type = $payment_type;
                                           $user->card_type = 'stripe';

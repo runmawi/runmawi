@@ -493,7 +493,7 @@ $uppercase =  ucfirst($request_url);
                         <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
                         <?php } else { ?>
                         <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
-                        <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a>
+                        <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> -->
                         <?php  } } 
                         elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
                         {   ?>
