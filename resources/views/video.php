@@ -23,9 +23,11 @@
 
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
+// echo "<pre>";
+// print_r($video); exit();
 
 
-if(!empty($ppv_video_play)   ||  $video->global_ppv == 0 && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == 'subscriber' || Auth::user()->role == 'subscriber' ||  $video->global_ppv == null && $video->access == 'registered' || Auth::user()->role == 'registered' ||  $video->global_ppv == 0 && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
    if(!Auth::guest()) {
        
