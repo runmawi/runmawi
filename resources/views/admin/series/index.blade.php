@@ -57,7 +57,7 @@
 				<td valign="bottom"><p>{{ $series_value->genre_id }}</p></td>
 				<td>
 					<div class="d-flex align-items-center list-user-action">
-						<a href="{{ URL::to('play_series') . '/' . $series_value->id }}" class="iq-bg-warning" ><i class="lar la-eye"></i> <!--Visit Site--></a>
+						<a href="{{ URL::to('play_series') . '/' .$series_value->title. '/' .$series_value->id }}" class="iq-bg-warning" ><i class="lar la-eye"></i> <!--Visit Site--></a>
 						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><i class="ri-pencil-line"></i> <!--Edit--></a>
 						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><i
 						onclick="return confirm('Are you sure?')" class="ri-delete-bin-line"></i> <!--Delete--></a>

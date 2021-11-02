@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 
 @endsection
+
 @section('content')
 <div id="content-page" class="content-page">
             <div class="container-fluid">
@@ -42,7 +43,7 @@
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/plans/store') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/coupons/store') }}" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
 						    <div class="form-group">
@@ -77,7 +78,7 @@
                                 <div class="d-flex justify-content-between" style="width:30%;">
                                <div class="dd-handle"> <label>{{ $coupon->coupon_code }}</label> </div>
                                <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/coupons/edit/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/coupons/delete/{{ $coupon->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div></div>
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/coupons/delete/{{ $coupon->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div></div>
                             </li>
 
                         @endforeach
@@ -90,6 +91,8 @@
     </div>
 </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 	<script type="text/javascript">
 
 		jQuery(document).ready(function($){

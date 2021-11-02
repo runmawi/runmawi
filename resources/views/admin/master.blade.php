@@ -10,7 +10,7 @@ $id = auth()->user()->id;
 $user_package =    DB::table('users')->where('id', $id)->first();
 $package = $user_package->package;
 // echo "<pre>";
-// print_r();
+// print_r(auth()->user()->role);
 // exit();
 ?>
   <meta charset="utf-8">
@@ -88,7 +88,7 @@ $package = $user_package->package;
 <body >
 <?php 
 
-if($package == "Basic"){    ?>
+if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Basic" && auth()->user()->role == "registered" ){    ?>
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
@@ -252,7 +252,7 @@ if($package == "Basic"){    ?>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                      </ul>
                   </li>
-                  <?php }elseif($package == "Pro"){   ?>
+                  <?php }elseif($package == "Pro" && auth()->user()->role = "subscriber" || $package == "Pro" && auth()->user()->role == "registered" ){   ?>
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
@@ -416,7 +416,7 @@ if($package == "Basic"){    ?>
                      </ul>
                   </li>
 
-                  <?php }elseif($package == "Business"){ ?>
+                  <?php }elseif($package == "Business" && auth()->user()->role = "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
@@ -558,7 +558,169 @@ if($package == "Basic"){    ?>
                         class="las la-film"></i><span>Payment Management</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
-                     <ul id="payments" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                     <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/payment/total_revenue') }}"><i class="las la-user-plus"></i>Total Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/payment/subscription') }}"><i class="las la-eye"></i>Subscription Payments</a></li>
+                         <li><a href="{{ URL::to('admin/payment/PayPerView') }}"><i class="las la-eye"></i>PayPerView Payments</a></li>
+                     </ul>
+                  </li>
+
+                    <li>
+                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-settings-4-line "></i><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
+                        <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Site Settings</a></li>
+                            <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
+                            <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
+                            <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
+                            <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                        </ul>
+                    </li>
+                  <?php } elseif(auth()->user()->role = "admin"){ ;?>
+                     <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+  <!-- Sidebar-->
+      <div class="iq-sidebar">
+         <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
+            <a href="<?php echo URL::to('home') ?>" class="header-logo">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <div class="logo-title">
+                  <span class="text-primary text-uppercase"></span>
+               </div>
+            </a>
+            <div class="iq-menu-bt-sidebar">
+               <div class="iq-menu-bt align-self-center">
+                  <div class="wrapper-menu">
+                     <div class="main-circle"><i class="las la-bars"></i></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="sidebar-scrollbar">
+            <nav class="iq-sidebar-menu">
+               <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                   <div class="bod"></div>
+                   <div style="">
+                 
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   </div>
+                  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
+                         <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                    
+          </ul></li>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+
+            </ul>
+          </li>
+                    <div style="">
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
+              <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
+            </ul>
+          </li>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
+              <li><a href="{{ URL::to('admin/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
+
+            </ul>
+          </li>
+          
+                   <li>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
+                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     </ul>
+                  </li>
+                    <div >
+                  
+                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                       <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
+                        <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                     </ul>
+                      
+                   </li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                    <div >
+                
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                       </div>
+                  <li>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
+                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Transulate Languages</a></li>
+                     </ul>
+                  </li>
+                    <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
+                   
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Sliders</span></a></li>
+                    <div >
+                   
+                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                       </div>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
+                   <li>
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                       class="la la-newspaper-o"></i><span>Pages</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                     </ul>
+                  </li>
+                   
+                    <li>
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Plans</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
+                        <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                         <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                     </ul>
+                  </li>
+
+                  <li>
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Payment Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/payment/total_revenue') }}"><i class="las la-user-plus"></i>Total Revenues</a></li>
                         <li><a href="{{ URL::to('admin/payment/subscription') }}"><i class="las la-eye"></i>Subscription Payments</a></li>
                          <li><a href="{{ URL::to('admin/payment/PayPerView') }}"><i class="las la-eye"></i>PayPerView Payments</a></li>

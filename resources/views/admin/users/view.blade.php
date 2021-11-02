@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <th class="headings">User ID</th>
-          <td>Elite_{{ $users->id }}</td>
+          <td>Flicknexs_{{ $users->id }}</td>
         </tr>
 
         <tr>

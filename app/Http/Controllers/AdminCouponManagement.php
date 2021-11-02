@@ -36,6 +36,18 @@ class AdminCouponManagement extends Controller
          );
         return view('admin.coupons.index',compact('coupons'));
     }
+
+    public function store(Request $request) {
+        $validatedData = $request->validate([
+            'coupon_code' => 'required|max:255'
+        ]);
+        $input = $request->all();
+        $coupons = new Coupon;
+    	$coupons->coupon_code = $request['coupon_code'];
+        $coupons->save();
+        
+        return Redirect::back()->with(array('note' => 'You have been successfully Added New Coupon', 'note_type' => 'success'));
+    }
     
      public function edit($id) {
     	 $edit_coupons =  Coupon::where('id', '=', $id)->get();

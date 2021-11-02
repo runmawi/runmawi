@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\EmailTemplate;
 use App\PaymentSetting;
+use App\Subscription;
+use Session;
 
 
 class SignupController extends Controller
@@ -544,7 +546,7 @@ public function createStep3(Request $request)
                         $user->save();
                     }
              } else {
-                $user_email = $request->session()->get('register.email');
+                        $user_email = $request->session()->get('register.email');
                         $user = User::where('email',$user_email)->first();
                         $paymentMethod = $request->get('py_id');
                         $plan = $request->get('plan');
@@ -559,6 +561,21 @@ public function createStep3(Request $request)
                     $user->card_type = 'stripe';
                     $user->active = 1;
                     $user->save();
+                    $subscription = Subscription::where('user_id',$user->id)->first();
+                    $subscription->price = $plandetail->price;
+                    $subscription->name = $user->username;
+                    $subscription->save();
+                    $data = Session::all();
+                    // if (empty($data['password_hash'])) {
+                    // }else{
+                    //     if(Auth::user()->role == 'subscriber'){
+                    //     $subscription = Subscription::where('user_id',Auth::user()->id)->first();
+                    //     $subscription->price = $plandetail->price;
+                    //     $subscription->save();
+                    //     }else{
+
+                    //     }
+                    // }
 
                } catch (IncompletePayment $exception) {
                    

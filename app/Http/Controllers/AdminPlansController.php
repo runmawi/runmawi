@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
 use Response;
+use App\PaylPlan;
 
 
 class AdminPlansController extends Controller
@@ -84,7 +85,7 @@ public function PaypalIndex()
     }    
     public function PaypalDelete($id) {
     	
-        PaylPlan::where('id',$id)->delete();
+        PaypalPlan::where('id',$id)->delete();
 
     	return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
 

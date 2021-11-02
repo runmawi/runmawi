@@ -469,6 +469,10 @@ public function RentPaypal(Request $request)
                     if ( NewSubscriptionCoupon() == 1 || ExistingSubscription($user_id) == 0  ) {
                       try {
                            $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+                           $subscription = Subscription::where('user_id',$user->id)->first();
+                           $subscription->price = $plandetail->price;
+                           $subscription->name = $user->username;
+                           $subscription->save();
                           } catch (IncompletePayment $exception) {
                               return redirect()->route(
                                   'cashier.payment',
@@ -491,6 +495,10 @@ public function RentPaypal(Request $request)
                           $user->active = 1;
                           $user->payment_type = $payment_type;
                           $user->save();
+                          $subscription = Subscription::where('user_id',$user->id)->first();
+                          $subscription->price = $plandetail->price;
+                          $subscription->name = $user->username;
+                          $subscription->save();
 
               } else {
 
@@ -514,6 +522,10 @@ public function RentPaypal(Request $request)
                                           $user->card_type = 'stripe';
                                           $user->active = 1;
                                           $user->save();
+                                          $subscription = Subscription::where('user_id',$user->id)->first();
+                                          $subscription->price = $plandetail->price;
+                                          $subscription->name = $user->username;
+                                          $subscription->save();
 
                           }else {
                                 $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
@@ -533,6 +545,10 @@ public function RentPaypal(Request $request)
                                           $user->card_type = 'stripe';
                                           $user->active = 1;
                                           $user->save();
+                                          $subscription = Subscription::where('user_id',$user->id)->first();
+                                          $subscription->price = $plandetail->price;
+                                          $subscription->name = $user->username;
+                                          $subscription->save();
                           }
                      
                   } catch (IncompletePayment $exception) {

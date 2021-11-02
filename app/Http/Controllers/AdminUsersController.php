@@ -59,7 +59,7 @@ class AdminUsersController extends Controller
         $total_user_subscription = User::where('role','=','subscriber')->count();
         
         
-       $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
+       $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
        $top_rated_videos = Video::where("rating",">",7)->get();
       
     //    $total_revenew = Subscription::all();
@@ -73,7 +73,7 @@ class AdminUsersController extends Controller
         else:
             $users = User::all();
         endif;
-// print_r($total_subscription);
+// print_r($total_revenew);
 // exit();
 		$data = array(
 			'users' => $users,

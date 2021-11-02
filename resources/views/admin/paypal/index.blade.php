@@ -104,7 +104,7 @@
 							<tr>
                                <td>{{ $k+1 }}</td>
                                <td>{{ $plan->name }}</td>
-                               <td class="list-user-action"><a href="{{ URL::to('/') }}/admin/paypalplans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/paypalplans/delete/{{ $plan->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                               <td class="list-user-action"><a href="{{ URL::to('/') }}/admin/paypalplans/edit/{{ $plan->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/')}}/admin/paypalplans/delete/{{ $plan->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
                            </tr>
 
 							@endforeach
@@ -117,7 +117,10 @@
 			</div>
     </div>
 </div>
+
     </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 	<script type="text/javascript">
 
 		jQuery(document).ready(function($){
