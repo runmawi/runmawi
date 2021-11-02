@@ -23,7 +23,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
       $search_value = $request->get('s');
         
@@ -55,7 +55,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Artist',
             'post_route' => URL::to('admin/artists/store'),
@@ -76,7 +76,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     	$data = $request->all();
 
         $image_path = public_path().'/uploads/artists/';
@@ -115,7 +115,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $artist = Artist::find($id);
 
         $data = array(
@@ -140,7 +140,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $data = $request->all();
         $id = $request->id;
         $artist = Artist::findOrFail($id);
@@ -179,7 +179,7 @@ class AdminArtistsController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $artist = Artist::find($id);
 
         $this->deleteArtistImages($artist);

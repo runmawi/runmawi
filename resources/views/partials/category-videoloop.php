@@ -59,11 +59,11 @@
                                     <div class="corner-text">
                                         <p class="p-tag">
                                             
-                                            <?php if(!empty($category_video->ppv_price || !empty($ppv_gobal_price))) {
+                                            <?php if(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price ; 
-                                                } elseif(!empty($ppv_gobal_price) && $category_video->ppv_price == null) {
-                                                    echo $ppv_gobal_price ;
-                                                } elseif(empty($ppv_gobal_price) && $category_video->ppv_price == null) {
+                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                                    echo $category_video->global_ppv ;
+                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo "Free"; 
                                                 }
                                             ?>

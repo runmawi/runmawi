@@ -472,6 +472,7 @@ public function createStep3(Request $request)
                 endif;
             $user_data['role'] = 'registered';
         }*/
+                $current_date = date('Y-m-d h:i:s');    
        
         $payment_type = $request->payment_type;
     // print_r($payment_type);exit();
@@ -561,9 +562,14 @@ public function createStep3(Request $request)
                     $user->card_type = 'stripe';
                     $user->active = 1;
                     $user->save();
+                    $next_date = $plandetail->days;
+                    $date = Carbon::parse($current_date)->addDays($next_date);
                     $subscription = Subscription::where('user_id',$user->id)->first();
                     $subscription->price = $plandetail->price;
                     $subscription->name = $user->username;
+                    $subscription->days = $plandetail->days;
+                    $subscription->ends_at = $date;
+
                     $subscription->save();
                     $data = Session::all();
                     // if (empty($data['password_hash'])) {

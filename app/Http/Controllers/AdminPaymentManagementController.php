@@ -22,14 +22,20 @@ class AdminPaymentManagementController extends Controller
 {
     public function index()
     {
-        $revenue =  DB::table('subscriptions')
-        ->join('plans', 'subscriptions.stripe_id', '=', 'plans.plan_id')
+        $revenue =  DB::table('plans')
         ->select(('plans.price'))
+        ->join('subscriptions','subscriptions.stripe_plan', '=', 'plans.plan_id')
         ->get();
+
+
+
+// dd($revenue);
+
         $subscription_revenue = 0 ;
         foreach($revenue as $key => $value){
         foreach($value as $key => $price){
             $subscription_revenue += $price;
+        
         }
     }
     $video_revenue =  DB::table('videos')
@@ -40,10 +46,12 @@ class AdminPaymentManagementController extends Controller
     foreach($video_revenue as $key => $value){
     foreach($value as $key => $ppv_price){
         $ppv_revenue += $ppv_price;
+
     }
+
 }
-    // echo "<pre>";
-    // print_r($ppv_revenue);
+
+
     // exit();
 
         // SELECT SUM(plans.price) FROM `subscriptions` INNER JOIN plans on subscriptions.stripe_id = plans.plan_id;

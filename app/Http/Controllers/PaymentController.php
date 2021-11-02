@@ -464,6 +464,9 @@ public function RentPaypal(Request $request)
                     $plan_name = ucfirst($plandetail->plans_name);
                     $template = EmailTemplate::where('id','=', 24)->first(); 
                     $heading = $template->heading; 
+                    $current_date = date('Y-m-d h:i:s');    
+                    $next_date = $plandetail->days;
+                    $date = Carbon::parse($current_date)->addDays($next_date);
                     // Name Subscription Activated!
                      
                     if ( NewSubscriptionCoupon() == 1 || ExistingSubscription($user_id) == 0  ) {
@@ -472,6 +475,8 @@ public function RentPaypal(Request $request)
                            $subscription = Subscription::where('user_id',$user->id)->first();
                            $subscription->price = $plandetail->price;
                            $subscription->name = $user->username;
+                           $subscription->days = $plandetail->days;
+                           $subscription->ends_at = $date;
                            $subscription->save();
                           } catch (IncompletePayment $exception) {
                               return redirect()->route(
@@ -498,6 +503,9 @@ public function RentPaypal(Request $request)
                           $subscription = Subscription::where('user_id',$user->id)->first();
                           $subscription->price = $plandetail->price;
                           $subscription->name = $user->username;
+                           $subscription->days = $plandetail->days;
+                           $subscription->ends_at = $date;
+
                           $subscription->save();
 
               } else {
@@ -525,7 +533,13 @@ public function RentPaypal(Request $request)
                                           $subscription = Subscription::where('user_id',$user->id)->first();
                                           $subscription->price = $plandetail->price;
                                           $subscription->name = $user->username;
+                                          $subscription->days = $plandetail->days;
+                                          $subscription->ends_at = $date;
                                           $subscription->save();
+                                          $response = array(
+                                            'status' => 'success'
+                                          );
+                                          return response()->json($response);
 
                           }else {
                                 $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
@@ -548,7 +562,13 @@ public function RentPaypal(Request $request)
                                           $subscription = Subscription::where('user_id',$user->id)->first();
                                           $subscription->price = $plandetail->price;
                                           $subscription->name = $user->username;
+                                          $subscription->days = $plandetail->days;
+                                          $subscription->ends_at = $date;
                                           $subscription->save();
+                                          $response = array(
+                                            'status' => 'success'
+                                          );
+                                          return response()->json($response);
                           }
                      
                   } catch (IncompletePayment $exception) {

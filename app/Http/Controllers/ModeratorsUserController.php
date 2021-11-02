@@ -74,7 +74,7 @@ class ModeratorsUserController extends Controller
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -101,15 +101,16 @@ class ModeratorsUserController extends Controller
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $input = $request->all();
     $role = ModeratorsRole::where('id','=',$request->user_role)->get();
+    // echo "<pre>";  
+    // print_r($role);
+    // exit();
     $permission = $role[0]->user_permission;
     $userrolepermissiom = explode(",",$permission);
     // print_r ();
-    // echo "<pre>";  
-    // print_r($permission);
-    // exit();
+ 
     
   
 
@@ -226,7 +227,7 @@ public function RolesPermission(Request $request)
   $package_id = auth()->user()->id;
   $user_package =    DB::table('users')->where('id', $package_id)->first();
   $package = $user_package->package;
-  if($package == "Pro" || $package == "Business" ){
+  if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $moderatorsrole = ModeratorsRole::all();
     $moderatorspermission = ModeratorsPermission::all();
     $moderatorsuser = ModeratorsUser::all();
@@ -262,7 +263,7 @@ $permission = implode(",",$user_permission);
   $package_id = auth()->user()->id;
   $user_package =    DB::table('users')->where('id', $package_id)->first();
   $package = $user_package->package;
-  if($package == "Pro" || $package == "Business" ){
+  if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $user_roles = new ModeratorsRole;
     $user_roles->role_name = $input['role_name'];
     $user_roles->user_permission = $permission;
@@ -297,7 +298,7 @@ $permission = implode(",",$user_permission);
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $moderators = ModeratorsUser::find($id);
 $useraccess = UserAccess::where('user_id', '=', $id)->get();
 // $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
@@ -333,7 +334,7 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
       $moderatorsrole = ModeratorsRole::find($id);
       $permission = $moderatorsrole['user_permission'];
@@ -372,7 +373,7 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $data = $request->all();
 $role = ModeratorsRole::where('id','=',$request->user_role)->get();
 $permission = $role[0]->user_permission;
@@ -443,7 +444,7 @@ return back()->with('message', 'Successfully User Updated!.');
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $data = $request->all();
 
 $id = $data['id'];
@@ -473,7 +474,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
         $moderators = ModeratorsUser::find($id);
 
@@ -492,7 +493,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
         $moderators = ModeratorsUser::find($id);
 
@@ -510,7 +511,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -537,7 +538,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
-    if($package == "Pro" || $package == "Business" ){
+    if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
       $roles = ModeratorsRole::paginate(10);
       $moderatorsrole = ModeratorsRole::all();

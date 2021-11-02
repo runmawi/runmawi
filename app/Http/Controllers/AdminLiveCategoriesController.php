@@ -19,9 +19,10 @@ class AdminLiveCategoriesController extends Controller
 {
       public function index(){
         $package_id = auth()->user()->id;
+        // dd('test');
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = LiveCategory::all();
@@ -46,7 +47,7 @@ class AdminLiveCategoriesController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
             
               $validatedData = $request->validate([
@@ -100,7 +101,7 @@ class AdminLiveCategoriesController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = LiveCategory::where('id', '=', $id)->get();
 
             $allCategories = LiveCategory::all();
@@ -117,7 +118,7 @@ class AdminLiveCategoriesController extends Controller
           $package_id = auth()->user()->id;
           $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
-          if($package == "Pro" || $package == "Business" ){
+          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
             
              $validatedData = $request->validate([
@@ -181,7 +182,7 @@ class AdminLiveCategoriesController extends Controller
           $package_id = auth()->user()->id;
           $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
-          if($package == "Pro" || $package == "Business" ){
+          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             LiveCategory::destroy($id);
             
             $child_cats = LiveCategory::where('parent_id', '=', $id)->get();

@@ -54,7 +54,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $search_value = $request->get('s');
         
         if(!empty($search_value)):
@@ -91,7 +91,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
             'post_route' => URL::to('admin/audios/audioupdate'),
@@ -124,7 +124,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $validator = Validator::make($data = $request->all(), Audio::$rules);
         
         if ($validator->fails())
@@ -242,7 +242,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $audio = Audio::find($id);
 
         $data = array(
@@ -278,7 +278,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
         $id = $request->id;
         $audio = Audio::findOrFail($id);
@@ -404,7 +404,7 @@ class AdminAudioController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             
         $audio = Audio::find($id);
 

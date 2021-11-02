@@ -23,7 +23,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $categories = AudioCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = AudioCategory::all();
@@ -49,7 +49,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
             
               $validatedData = $request->validate([
@@ -104,7 +104,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = AudioCategory::where('id', '=', $id)->get();
 
             $allCategories = AudioCategory::all();
@@ -123,7 +123,7 @@ class AdminAudioCategoriesController extends Controller
             $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
     
-            if($package == "Pro" || $package == "Business" ){
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
             
              $validatedData = $request->validate([
@@ -187,7 +187,7 @@ class AdminAudioCategoriesController extends Controller
             $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
     
-            if($package == "Pro" || $package == "Business" ){
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
                 
             AudioCategory::destroy($id);
             
@@ -213,7 +213,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $allAlbums = AudioAlbums::all();
         $allCategories = AudioCategory::all();
         $data = array(
@@ -233,7 +233,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
         
         
@@ -280,7 +280,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
                
         $request = $request->all();
         
@@ -333,7 +333,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
         AudioAlbums::destroy($id);
        
@@ -350,7 +350,7 @@ class AdminAudioCategoriesController extends Controller
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
         $categories = AudioAlbums::where('id', '=', $id)->get();
         $allAlbums = AudioAlbums::all();

@@ -300,7 +300,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
-            if($package == "Pro" || $package == "Business" ){
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = VideoLanguage::all();
@@ -320,7 +320,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
         $allCategories = Language::all();
@@ -415,7 +415,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         VideoLanguage::destroy($id);
        
         return Redirect::to('admin/admin-languages')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
@@ -430,7 +430,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         Language::destroy($id);
        
         return Redirect::to('admin/admin-languages-transulates')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
@@ -446,7 +446,7 @@ class AdminThemeSettingsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
           
               $validatedData = $request->validate([
@@ -477,7 +477,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
           
               $validatedData = $request->validate([
@@ -502,7 +502,7 @@ class AdminThemeSettingsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
-        if($package == "Pro" || $package == "Business" ){
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = Language::where('id', '=', $id)->get();
             $allCategories = Language::all();
             return view('admin.languagestrans.edit',compact('categories','allCategories'));
@@ -517,7 +517,7 @@ class AdminThemeSettingsController extends Controller
           $package_id = auth()->user()->id;
           $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
-          if($package == "Pro" || $package == "Business" ){
+          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = VideoLanguage::where('id', '=', $id)->get();
             $allCategories = VideoLanguage::all();
             return view('admin.languages.edit',compact('categories','allCategories'));
@@ -533,7 +533,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
         $id = $request['id'];
         $name = $request['name']; 
@@ -553,7 +553,7 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" ){
+      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
         $id = $request['id'];
         $name = $request['name']; 
