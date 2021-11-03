@@ -766,7 +766,9 @@ if(!empty($artistsdata)){
                 $data['age_restrict'] = $data['age_restrict'];
             } 
          
-            // $data['age_restrict'] =  $data['age_restrict'];
+            // $data['age_restrict'] =  $data['age_restrict'];;
+            // $dd($data);
+
 
         
     

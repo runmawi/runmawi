@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
+
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');

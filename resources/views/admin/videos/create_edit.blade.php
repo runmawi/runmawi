@@ -96,7 +96,6 @@
                               <div class="col-lg-12">
                                  <div class="row">
                                     <input type="hidden" class="form-control"  name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                                    <input type="hidden" class="form-control"  name="global_ppv" id="price" value="@if(!empty($video->global_ppv)){{ $video->global_ppv }}@endif">
                                     <div class="col-sm-6 form-group" >
                                         <label class="p-2">Title :</label>
                                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
@@ -287,7 +286,7 @@
                                         <?php if($settings->ppv_status == 1){ ?>
                                         <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
                                         <?php } else{ ?>
-                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
+                                        <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
                                         <?php } ?>
                                     </select>
                                 </div> 
@@ -310,6 +309,17 @@
                                 <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                     <label class="">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                </div>
+                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                <?php if($settings->ppv_status == 1){ ?>
+                                    <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
+                                    <input type="checkbox" name="global_ppv" id="global_ppv"  {{$video->global_ppv == '1' ? 'checked' : ''}}  />
+                                    <?php } else{ ?>
+                                        <div class="global_ppv_status">
+                                        <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
+                                    <input type="checkbox" name="global_ppv" id="global_ppv" {{$video->global_ppv == '1' ? 'checked' : ''}}   />
+                                        </div>
+                                        <?php } ?>
                                 </div>
                                 <div class="col-sm-6 form-group mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
@@ -375,17 +385,35 @@
 			}
 		});
         $(document).ready(function(){
-    $('#ppv_price').hide();
+    // $('#ppv_price').hide();
+    if($("#access").val() == 'ppv'){
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
     
 		$("#access").change(function(){
 			if($(this).val() == 'ppv'){
 				$('#ppv_price').show();
+				$('#global_ppv_status').hide();
 
 			}else{
-				$('#ppv_price').hide();				
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').show();				
+
 			}
 		});
     });
+
+// alert();
+
+ 
+
 		tinymce.init({
 			relative_urls: false,
 		    selector: '#details',

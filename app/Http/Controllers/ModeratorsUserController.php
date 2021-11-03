@@ -4115,16 +4115,14 @@ public function livestreamcategory_destroy(Request $request){
       $spanish = $data['spanish'];
       $hindi = $data['hindi'];
       $subtitle_upload =array($english ,$german ,$spanish ,$hindi);
-  //        echo "<pre>";
-  // print_r($video_data);
-  // exit();
+
      
       
      
           $id = $video_data->video_id;
       
           $video = Video::findOrFail($id);
-          
+       
       
          $image = (isset($data['image'])) ? $data['image'] : '';
          $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -4243,7 +4241,7 @@ public function livestreamcategory_destroy(Request $request){
 
 
     
-
+     
       $shortcodes = $video_data->short_code;
       $languages=$video_data->sub_language;
        $video->description = strip_tags($video_data->description);
@@ -4251,12 +4249,12 @@ public function livestreamcategory_destroy(Request $request){
        $video->age_restrict =  $video_data->age_restrict;
        $video->ppv_price =$video_data->ppv_price;
        $video->access =  $video_data->access;
-       
+
        $video->update($data);
 
        $video = Video::findOrFail($id);
        $users = User::all();    
-      
+
 $shortcodes = $video_data->short_code;
 $languages=$video_data->sub_language;
 
@@ -4282,6 +4280,7 @@ if(!empty( $files != ''  && $files != null)){
               $video_subtitle->shortcode = $shortcodes[$key];
               $video_subtitle->url = URL::to('/').'/public/uploads/subtitles/'.$filename;
               // $video_subtitle->user_id = $video_data->user_id;
+
      $video_subtitle->save();
 
      }
@@ -4298,9 +4297,11 @@ if(!empty($artistsdata)){
      $artist->user_id = $video_data->user_id;
 
      $artist->save();
+     
  }
  
 }
+
 
       return true;
   }
