@@ -73,7 +73,27 @@
 		                         <label> Price (USD):</label>
 		                         <input type="text" id="price" name="price" value="" class="form-control" placeholder="Price">
                             </div>
-
+							<div class="form-group">
+		                        <label>Video Quality:</label>
+		                        <input type="text" id="video_quality" name="video_quality" value="" class="form-control" placeholder="Quality">
+		                    </div>  
+							<div class="form-group">
+		                        <label>Resolution :</label>
+		                        <input type="text" id="resolution" name="resolution" value="" class="form-control" placeholder="Resolution">
+		                    </div>  
+							<div>
+							<label> Devices :</label>
+							</div>
+						
+                               @foreach($devices as $val)
+							   <div class="col-md-4 d-flex" style="width: 33%; float:left;" >
+						<label> {{ $val->devices_name }}</label>
+						<label class="switch">
+									<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
+							<span class="slider round"></span>
+						</label>
+                               </div>
+                               @endForeach
 				    </form>
 				</div>
 				

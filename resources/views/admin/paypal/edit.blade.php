@@ -42,36 +42,62 @@
                <div class="col-md-6">
                         <div class="form-group">
                             <label>  Plans Name:</label>
-                            <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->name }}" class="form-control" placeholder="Enter ">
+                            <input type="text" id="name" name="plans_name" value="{{ $edit_plan->name }}" class="form-control" placeholder="Enter ">
                         </div>
                         
                             <div class="form-group">
 		                        <label> Plan ID:</label>
-		                        <input type="text" id="plans_id" name="plan_id" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
+		                        <input type="text" id="plans_id" name="plan_id" value="{{ $edit_plan->plan_id }}" class="form-control" placeholder="Plan ID">
                             </div> 
-            
+                        <div class="form-group">
+                        <label>Video Quality:</label>
+                            <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan->video_quality }}" class="form-control" placeholder="Quality">
+                        </div> 
                             
                </div>
                <div class="col-md-6">
                    <div class="form-group">
 		                        <label> Price:</label>
-		                        <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
+		                        <input type="text" id="price" name="price" value="{{ $edit_plan->price }}" class="form-control" placeholder="Price">
                             </div>
                         <div class="form-group">
                           <label>Payment Type:</label><br>
                           One Time Payment : 
-                            <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
+                            <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan->payment_type=='one_time') checked='checked' @endif>
                           Recurring : 
-                            <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
+                            <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan->payment_type=='recurring') checked='checked' @endif>
                           </div> 
+                        <div class="form-group">
+
+                          <label>Resolution :</label>
+                <input type="text" id="resolution" name="resolution"  value="{{ $edit_plan->resolution }}" class="form-control" placeholder="Resolution">
+            </div>  
+            <div class="form-group">
+
+            <label> Devices :</label>
+            </div>
+            @foreach($devices as $val)
+            <div class="col-md-4 d-flex" style="width: 33%; float:left;">                                           
+            <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
+                <label class="switch">
+            <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
+                    <span class="slider round"></span>
+                </label>
+             </div>
+                               
+            @endForeach
+            
                </div>
+
+
+            <div>
             </div>
             
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
             
                      
 
-                <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
+                <input type="hidden" name="id" id="id" value="{{ $edit_plan->id }}" />
 
               <div class="modal-footer">
                 <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/paypalplans') }}">Close</a>

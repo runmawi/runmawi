@@ -1186,3 +1186,10 @@ Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
 Route::get('admin/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
 Route::post('admin/moderatoruser/update', 'ModeratorsUserController@update');
 Route::get('/live_search', 'AdminVideosController@live_search');
+
+
+Route::get('/admin/devices', 'AdminPlansController@DevicesIndex');
+Route::post('/admin/devices/store', 'AdminPlansController@DevicesStore');
+Route::get('/admin/devices/edit/{id}', 'AdminPlansController@DevicesEdit');
+Route::get('/admin/devices/delete/{id}', 'AdminPlansController@DevicesDelete');
+Route::post('/admin/devices/update', 'AdminPlansController@DevicesUpdate');

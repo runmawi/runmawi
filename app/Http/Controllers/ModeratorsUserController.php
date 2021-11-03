@@ -347,7 +347,7 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
  
 
       $moderatorspermission = ModeratorsPermission::all();
-
+// dd($role_permission);
       $data = array(
    
           'roles' => $moderatorsrole,

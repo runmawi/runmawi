@@ -24,6 +24,7 @@ use Image;
 use View;
 use Response;
 use App\PaylPlan;
+use App\Devices;
 
 
 class AdminPlansController extends Controller
@@ -33,11 +34,12 @@ class AdminPlansController extends Controller
     {
       $slug = Str::slug('Laravel 5 Framework', '-');
         $plans = Plan::all();
+        $devices = Devices::all();
         
          $data = array(
         	'plans' => $plans,
-             'allplans'=> $plans
-        	
+             'allplans'=> $plans,
+             'devices'=> $devices,        	
         	);
          return view('admin.plans.index',$data);
     }   
@@ -48,18 +50,25 @@ public function PaypalIndex()
         $slug = Str::slug('Laravel 5 Framework', '-');
         
         $plans = PaypalPlan::all();
+        $devices = Devices::all();
          $data = array(
         	'plans' => $plans,
-             'allplans'=> $plans
+             'allplans'=> $plans,
+             'devices'=> $devices,        	
         	
         	);
          return view('admin.paypal.index', $data);
     }
     
      public function edit($id) {
-    	 $edit_plan =  Plan::where('id', '=', $id)->get();
+    	 $edit_plan =  Plan::find($id);
+         $permission = $edit_plan['devices'];
+         $user_devices = explode(",",$permission);
+         $devices = Devices::all();
          $data = array(
-        	'edit_plan' => $edit_plan
+        	'edit_plan' => $edit_plan,
+        	'user_devices' => $user_devices,
+        	'devices' => $devices,
         	);
         return view('admin.plans.edit',$data);
 
@@ -67,9 +76,14 @@ public function PaypalIndex()
     
     public function PaypalEdit($id) {
     	 
-         $edit_plan =  PaypalPlan::where('id', '=', $id)->get();
+         $edit_plan =  PaypalPlan::find($id);
+         $permission = $edit_plan['devices'];
+         $user_devices = explode(",",$permission);
+         $devices = Devices::all();
          $data = array(
-        	'edit_plan' => $edit_plan
+        	'edit_plan' => $edit_plan,
+            'user_devices' => $user_devices,
+        	'devices' => $devices,
         	);
         return view('admin.paypal.edit',$data);
 
@@ -100,6 +114,8 @@ public function PaypalIndex()
                 'price' => 'required|max:255',
                 'type' => 'required|max:255'
             ]);  
+                $devices = $request->devices;
+                $plan_devices = implode(",",$devices);
                 $new_plan = new Plan;
                 $new_plan->plans_name = $request->plans_name;
                 $new_plan->days = $request->days;
@@ -107,6 +123,9 @@ public function PaypalIndex()
                 $new_plan->price = $request->price;
                 $new_plan->plan_id = $request->plan_id;
                 $new_plan->type = $request->type;
+                $new_plan->video_quality = $request->video_quality;
+                $new_plan->resolution = $request->resolution;
+                $new_plan->devices = $plan_devices;
                 $new_plan->billing_interval = $request->billing_interval;
                 $c_count = Plan::where('plan_id', '=', $new_plan->plan_id)->count();
                     if ( $c_count == 0) {
@@ -122,12 +141,16 @@ public function PaypalIndex()
            $validatedData = $request->validate([
                 'plans_name' => 'required|max:255',
             ]);       
-            
+            $devices = $request->devices;
+            $plan_devices = implode(",",$devices);
                 $new_plan = new PaypalPlan;
                 $new_plan->name = $request->plans_name;
                 $new_plan->payment_type = $request->payment_type;
                 $new_plan->price = $request->price;
                 $new_plan->plan_id = $request->plan_id;
+                $new_plan->video_quality = $request->video_quality;
+                $new_plan->resolution = $request->resolution;
+                $new_plan->devices = $plan_devices;
      
             $c_count = PaypalPlan::where('plan_id', '=', $new_plan->plan_id)->count();
             if ( $c_count == 0) {
@@ -147,14 +170,26 @@ public function PaypalIndex()
             'type' => 'required|max:255',
         ]);
         $input = $request->all();
+        if(!empty($request->video_quality)){
+            $video_quality = $request->video_quality;
+        }else{
+            $video_quality = null;
+        }
+        $devices = $input['devices'];
+        $plan_devices = implode(",",$devices);
+
         $id = $request->id;
         $plans = Plan::find($id);
+
     	$plans->plans_name = $request->plans_name;
  		$plans->days = $request->days;
  		$plans->payment_type = $request->payment_type;
  		$plans->price  = $request->price;
         $plans->plan_id  = $request->plan_id;
         $plans->type  = $request->type;
+        $plans->video_quality = $input['video_quality'];
+        $plans->resolution = $input['resolution'];
+        $plans->devices = $plan_devices;
  		$plans->billing_interval  = $request->billing_interval;
 		$plans_count = Plan::where('plans_name', '=', $plans->plans_name)->count();
         $plans->save();
@@ -168,16 +203,88 @@ public function PaypalIndex()
             'plan_id' => 'required|max:255',
             'price' => 'required|max:255',
         ]);
+        
         $input = $request->all();
+        
+        $devices = $input['devices'];
+        $plan_devices = implode(",",$devices);
         $id = $request['id'];
         $plans = PaypalPlan::find($id);
     	$plans->name = $request['plans_name'];
     	$plans->price = $request['price'];
     	$plans->payment_type = $request['payment_type'];
+        $plans->video_quality = $input['video_quality'];
+        $plans->resolution = $input['resolution'];
+        $plans->devices = $plan_devices;
         $plans->plan_id  = $request['plan_id'];
         $plans->save();
         
         return Redirect::to('admin/paypalplans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
     }
+
+    public function DevicesIndex()
+    {
+        
+         $devices = Devices::all();
+        
+         $data = array(
+                   'devices' => $devices        	
+         );
+        return view('admin.devices.index',compact('devices'));
+    }
+
+    public function DevicesStore(Request $request) {
+
+        $input = $request->all();
+        $devices = new Devices;
+    	$devices->devices_name = $request['devices_name'];
+    	$devices->user_id = Auth::User()->id;
+        $devices->save();
+        
+        return Redirect::back()->with(array('note' => 'You have been successfully Added New Devices', 'note_type' => 'success'));
+    }
+    
+     public function DevicesEdit($id) {
+    	 $edit_devices =  Devices::where('id', '=', $id)->first();
+         
+         $data = array(
+        	   'devices' => $edit_devices
+        	);
+        return view('admin.devices.edit',$data);
+
+    }
+    
+    
+    public function DevicesDelete($id) {
+    	
+        Devices::where('id',$id)->delete();
+
+    	return Redirect::back()->with(array('note' => 'You have been successfully Added New Devices', 'note_type' => 'success'));
+
+    }
+
+      public function DevicesUpdate(Request $request) {
+
+        $input = $request->all();
+        $id = $request['id'];
+        $devices = Devices::find($id);
+        $devices->devices_name = $request['devices_name'];
+    	$devices->user_id = Auth::User()->id;
+        $devices->save();
+        
+        return Redirect::back()->with(array('note' => 'You have been successfully Added New Coupon', 'note_type' => 'success'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     
 }

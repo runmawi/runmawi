@@ -223,6 +223,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                         <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
                   </li>
                   <li>
@@ -386,6 +387,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                         <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
+
                      </ul>
                   </li>
                   
@@ -550,6 +553,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                         <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
                   </li>
 
@@ -712,6 +716,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
+                         <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
                   </li>
 

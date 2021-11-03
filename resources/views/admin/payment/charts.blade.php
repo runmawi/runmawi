@@ -42,7 +42,9 @@
 .highcharts-data-table tr:hover {
   background: #f1f7ff;
 }
-
+.highcharts-credits{
+  display: none !important;
+}
 
 input[type="number"] {
 	min-width: 50px;
