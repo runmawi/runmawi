@@ -8,13 +8,13 @@
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center text-center">
-                        <h1 class=""><?php echo __($data['category_title']);?></h1>
+                        <h2 class=""><?php echo __($data['category_title']);?></h2>
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-0">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
                                     @foreach($data['categoryVideos']  as $category_video) 
-                                    <li class="slide-item col-sm-3 col-md-3 col-xs-12 margin-bottom-30">
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
@@ -30,13 +30,13 @@
                                                         <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $category_video->duration); ?></span>
                                                     </div>
                                                     <div class="hover-buttons">
-                                                        <a  class="btn btn-primary btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                        <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                             <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
                                                         </a>
                                                     </div>
 <!--
                                                     <div>
-                                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_video->id;?>">
+                                                        <button type="buttonbtn btn-primary btn-hover" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_video->id;?>">
                                                             <span class="text-center thumbarrow-sec">
                                                                 <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                             </span>
