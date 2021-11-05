@@ -10,13 +10,14 @@ pipelines:
     - parallel:
       - step:
           name: 'Build and Test'
-            script:
-                  - pipe: atlassian/ftp-deploy:0.3.7
+          deployment: test
+          script:
+            - pipe: atlassian/ftp-deploy:0.3.7
               variables:
                 USER: $FTP_USERNAME
                 PASSWORD: $FTP_PASSWORD
                 SERVER: $FTP_HOST
-                REMOTE_PATH: /public_html/flick
+                REMOTE_PATH: /public_html
                 DELETE_FLAG: 'false' # Don't delete existing files
                 EXTRA_ARGS: "--exclude=.bitbucket/ --exclude=.git/ --exclude=bitbucket-pipelines.yml --exclude=.gitignore" # Ignore these
 
