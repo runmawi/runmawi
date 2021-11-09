@@ -14,4 +14,10 @@
   --iq-body-border: #393750;
   --iq-gold: #E6C75F;
   --iq-black: #000000;
+    --A1_COLOR: #192133;
+    --A2_COLOR: #334366;
+    --A3_COLOR: rgba(34, 167, 240, 1);
+    --A4_COLOR: rgba(34, 167, 240, 1);
+      --iq-body-bg1: rgba(36, 37, 42, 1);
+
 }

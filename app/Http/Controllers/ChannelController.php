@@ -76,6 +76,7 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
+
         $data['password_hash'] = "";
         $data = session()->all();
        
@@ -418,4 +419,267 @@ class ChannelController extends Controller
     }
     
 
+
+
+
+
+
+    public function Wishlist_play_videos($slug)
+    {
+
+        $data['password_hash'] = "";
+        $data = session()->all();
+       
+        if(!empty($data['password_hash'])){
+
+
+        $get_video_id = \App\Video::where('slug',$slug)->first(); 
+        $vid = $get_video_id->id;
+        $wishlist = new Wishlist;
+        $wishlist->video_id = $vid;
+        $wishlist->user_id = Auth::User()->id;
+        $wishlist->save();
+
+        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        if(!empty($PPV_settings)){
+           $ppv_rent_price =  $PPV_settings->ppv_price;
+            // echo "<pre>";print_r($PPV_settings);exit();
+        }else{
+          $Video_ppv = Video::where('id','=',$vid)->first();
+            $ppv_rent_price = null ;
+            if($Video_ppv->ppv_price != ""){
+              // echo "<pre>";print_r('$Video_ppv');exit();
+              $ppv_rent_price = $Video_ppv->ppv_price;
+            }else{
+            // echo "<pre>";print_r($Video_ppv);exit();
+            $ppv_rent_price = $Video_ppv->ppv_price;
+          }
+
+        }
+
+
+
+
+        $current_date = date('Y-m-d h:i:s a', time()); 
+
+            
+        
+         $view_increment = $this->handleViewCount_movies($vid);
+        if ( !Auth::guest() ) {
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+            $view = new RecentView;
+            $view->video_id = $vid;
+            $view->user_id = Auth::user()->id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
+           $user_id = Auth::user()->id;
+           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
+           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
+          if ($watch_count >0 ){
+              $watchtime = $watch_id->currentTime;
+          }else {
+            $watchtime = 0;
+          }
+           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+           $user_id = Auth::user()->id;
+
+           $categoryVideos = \App\Video::where('id',$vid)->first();
+           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          $videocategory = $videocategory[0];
+           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+           $playerui = Playerui::first();
+           $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+
+                $wishlisted = false;
+                if(!Auth::guest()):
+                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                endif;
+                    $watchlater = false;
+                 if(!Auth::guest()):
+                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
+                    endif;
+
+
+                    $ppv_video_play = [];
+
+                    $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
+                    $ppv_setting = \DB::table('settings')->first();
+                    $ppv_setting_hours= $ppv_setting->ppv_hours;
+                      // dd($ppv_hours);
+            
+                    if(!empty($ppv_video)){
+                    foreach($ppv_video as $key => $value){
+                      $to_time = $value->to_time;
+                    
+                      // $time = date('h:i:s', strtotime($date));
+                      // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
+                     
+                        $d = new \DateTime('now');
+                        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+                        $now = $d->format('Y-m-d h:i:s a');
+                        // dd($to_time);                     
+                        // "2021-10-28 03:19:38 pm"
+                        // "2021-10-28 05:14:25 pm"
+                      if($to_time >=  $now){
+                        if($vid == $value->video_id){
+                          $ppv_video_play = $value;
+                        // dd($ppv_video_play);    
+
+    
+                        }else{
+                          $ppv_video_play = null;
+                        }                 
+                    }else{
+                        // dd('$now');                     
+                        PpvPurchase::where('video_id', $vid)
+                                ->update([
+                                    'status' => 'inactive'
+                                    ]);
+                    }
+                    $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+
+                    // if($now == $ppv_hours){
+
+                    //   if($vid == $value->video_id){
+                    //     $ppv_video_play = $value;
+
+                    //   }else{
+                    //     $ppv_video_play = null;
+                    //   }
+                    // }else{
+                    //     // dd($now);                     
+                    //     PpvPurchase::where('video_id', $vid)
+                    //             ->update([
+                    //                 'status' => 'inactive'
+                    //                 ]);
+                    // }
+                    // $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+                    }
+                    }
+            
+
+                 $data = array(
+                     'video' => $categoryVideos,
+                     'videocategory' => $videocategory,
+                     'recomended' => $recomended,
+                     'ppv_exist' => $ppv_exist,
+                     'ppv_price' => 100,
+                     'watchlatered' => $watchlater,
+                     'mywishlisted' => $wishlisted,
+                     'watched_time' => $watchtime,
+                     'like_dislike' =>$like_dislike,
+                     'ppv_rent_price' =>$ppv_rent_price,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+    		'ppv_video_play' => $ppv_video_play,
+
+
+                 );
+             
+        } else {
+
+           
+            $categoryVideos = \App\Video::where('id',$vid)->first();
+            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+    $playerui = Playerui::first();
+    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+
+            $data = array(
+                 'video' => $categoryVideos,
+                 'recomended' => $recomended,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+                 'watched_time' => 0,
+
+            );
+
+            }
+ 
+       return view('video', $data);
+    }else{
+    
+        $get_video_id = \App\Video::where('slug',$slug)->first(); 
+        $vid = $get_video_id->id;
+        $current_date = date('Y-m-d h:i:s a', time()); 
+
+            
+        
+         $view_increment = $this->handleViewCount_movies($vid);
+        if ( !Auth::guest() ) {
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+            $view = new RecentView;
+            $view->video_id = $vid;
+            $view->user_id = Auth::user()->id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
+           $user_id = Auth::user()->id;
+           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
+           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
+          if ($watch_count >0 ){
+              $watchtime = $watch_id->currentTime;
+          }else {
+            $watchtime = 0;
+          }
+           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+           $user_id = Auth::user()->id;
+
+           $categoryVideos = \App\Video::where('id',$vid)->first();
+           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          $videocategory = $videocategory[0];
+           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+           $playerui = Playerui::first();
+           $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
+
+                $wishlisted = false;
+                if(!Auth::guest()):
+                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                endif;
+                    $watchlater = false;
+                 if(!Auth::guest()):
+                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
+                    endif;
+                 $data = array(
+                     'video' => $categoryVideos,
+                     'videocategory' => $videocategory,
+                     'recomended' => $recomended,
+                     'ppv_exist' => $ppv_exist,
+                     'ppv_price' => 100,
+                     'watchlatered' => $watchlater,
+                     'mywishlisted' => $wishlisted,
+                     'watched_time' => $watchtime,
+                     'like_dislike' =>$like_dislike,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+
+                 );
+             
+        } else {
+
+           
+            $categoryVideos = \App\Video::where('id',$vid)->first();
+            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+    $playerui = Playerui::first();
+    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+
+            $data = array(
+                 'video' => $categoryVideos,
+                 'recomended' => $recomended,
+                 'playerui_settings' => $playerui,
+                 'subtitles' => $subtitle,
+                 'watched_time' => 0,
+
+            );
+
+            }
+ 
+       return view('video_before_login', $data);
+    }
+        }
+    
 }

@@ -1,34 +1,30 @@
 <!--  Continue watching -->
+
 <?php  if(isset($cnt_watching)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
-         <?php foreach($cnt_watching as $cont_video): ?>
+         <?php 
+               foreach($cnt_watching as $cont_video): 
+                if(!empty($cont_video->ppv_price || !empty($ppv_gobal_price))){
+               
+               ?>
        <li class="slide-item">
           <a href="<?php echo URL::to('home') ?>">
              <div class="block-images position-relative">
                 <div class="img-box">
-                   <img  data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt=""> 
+                   <img  data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt="" width="300"> 
                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
                   
-                    <div class="corner-text-wrapper">
-                        <div class="corner-text">
-                            <p class="p-tag" style="">
-                                <?php if(!empty($cont_video->ppv_price || !empty($ppv_gobal_price))) {
-                                        echo $cont_video->ppv_price; 
-                                        } elseif(!empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){
-                                        echo $ppv_gobal_price;
-                                        }elseif(empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){
-                                        echo "Free!";
-                                        }
-                                ?>
-                            </p>
-                        </div>
-                    </div>
+                     <div class="corner-text-wrapper">
+        <div class="corner-text">
+         <p class="p-tag" style="">FREE!</p>
+          </div>
+    </div>
                   
                 </div>
                 <div class="block-description">
@@ -39,15 +35,25 @@
                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
                    </div>
                    <div class="hover-buttons">
-                      <a  class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                      <a  class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
                       
                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                      Play Now
+                      Watch Now
                       
                           </a> 
-                        
+                       
 
                    </div>
+                    <div>
+                        <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a>
+                    </div>
+                   <!-- <div class="block-social-info mt-3">
+                   <ul class="list-inline p-0 m-0 music-play-lists">
+                      
+                      <li><span><i class="ri-add-line"><?php echo $cont_video->ppv_price ; ?></i></span></li>
+                   </ul>
+                </div>-->
 
                     <!--<div >
                         <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
@@ -66,7 +72,117 @@
           </a>
        </li>
 
-        <?php endforeach; ?>
+        <?php } elseif(!empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){ 
+                          // dd($watchlater_video->id);
+                          ?>
+                                 <li class="slide-item">
+          <a href="<?php echo URL::to('home') ?>">
+             <div class="block-images position-relative">
+                <div class="img-box">
+                   <img  data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt=""> 
+                  <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
+                    <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
+                    </video>-->
+                </div>
+                <div class="block-description">
+                    
+                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
+                   <div class="movie-time d-flex align-items-center my-2">
+                      <div class="badge badge-secondary p-1 mr-2">13+</div>
+                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
+                   </div>
+                   <div class="hover-buttons">
+                      <a  class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                      
+                      <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                      Play Now
+                      
+                          </a> 
+                        
+
+                   </div>
+                    <div class="block-social-info mt-3">
+                   <ul class=" music-play-lists d-flex justify-content-around">
+                      <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                      <li><span><i class="ri-heart-fill"></i></span></li> -->
+                      <li><span><i class="ri-add-line"><?php echo $ppv_gobal_price ; ?></i></span></li>
+                   </ul>
+                </div>
+
+                    <!--<div >
+                        <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
+                            <span class="text-center thumbarrow-sec">
+                                <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
+                                <p style="color:#fff;font-size:12px;text-align:center;">More Details</p>
+                            </span>
+                                </button></div>-->
+
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $cont_video->cnt_watch[0]->watch_percentage;?>%">
+                  </div>
+              </div>  
+             </div>
+          </a>
+       </li>
+
+        <?php }elseif(empty($ppv_gobal_price) && $cont_video->ppv_price == null  ){ 
+                          // dd($watchlater_video->id);
+                          ?>
+                                                        <li class="slide-item">
+          <a href="<?php echo URL::to('home') ?>">
+             <div class="block-images position-relative">
+                <div class="img-box">
+                   <img  data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt=""> 
+                  <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
+                    <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
+                    </video>-->
+                </div>
+                <div class="block-description">
+                    
+                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
+                   <div class="movie-time d-flex align-items-center my-2">
+                      <div class="badge badge-secondary p-1 mr-2">13+</div>
+                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
+                   </div>
+                   <div class="hover-buttons">
+                      <a  class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                      
+                      <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                      Play Now
+                      
+                          </a> 
+                        
+
+                   </div>
+                    <div class="block-social-info mt-3">
+                   <ul class=" music-play-lists d-flex justify-content-around">
+                      <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                      <li><span><i class="ri-heart-fill"></i></span></li> -->
+                      <li><span><i class="ri-add-line"><?php echo "Free"; ?></i></span></li>
+                   </ul>
+                </div>
+
+                    <!--<div >
+                        <button class="show-details-button hover" data-id="<?= $cont_video->id;?>">
+                            <span class="text-center thumbarrow-sec">
+                                <!--<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
+                                <p style="color:#fff;font-size:12px;text-align:center;">More Details</p>
+                            </span>
+                                </button></div>-->
+
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $cont_video->cnt_watch[0]->watch_percentage;?>%">
+                  </div>
+              </div>  
+             </div>
+          </a>
+       </li>
+
+        <?php }
+                          endforeach; 
+               ?>
     </ul>
 </div>
 <?php endif; ?>
