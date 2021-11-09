@@ -43,6 +43,8 @@ use Carbon;
 use Session;
 use App\LiveStream as LiveStream;
 use App\AudioAlbums as AudioAlbums;
+use App\UserLogs as UserLogs;
+
 
 class HomeController extends Controller
 {
@@ -151,7 +153,44 @@ class HomeController extends Controller
 
 
           }else{
-    
+            $logged = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+            if(!empty($logged)){
+                // dd($logged);
+                $today_old_log = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                $ip = getenv('HTTP_CLIENT_IP');    
+                $data = \Location::get($ip);
+                $userIp = $data->ip;
+                $countryName = $data->countryName;
+                $regionName = $data->regionName;
+                $cityName = $data->cityName;
+                // dd($data);
+                $new_login = new UserLogs;
+                $new_login->user_id = Auth::User()->id;
+                $new_login->user_ip = $userIp;
+                $new_login->countryname = $countryName;
+                $new_login->regionname = $regionName;
+                $new_login->cityname = $cityName;
+                $new_login->save();
+            }else{
+
+                $ip = getenv('HTTP_CLIENT_IP');    
+                $data = \Location::get($ip);
+                $userIp = $data->ip;
+                $countryName = $data->countryName;
+                $regionName = $data->regionName;
+                $cityName = $data->cityName;
+                // dd($data);
+                $new_login = new UserLogs;
+                $new_login->user_id = Auth::User()->id;
+                $new_login->user_ip = $userIp;
+                $new_login->countryname = $countryName;
+                $new_login->regionname = $regionName;
+                $new_login->cityname = $cityName;
+                $new_login->save();
+            }
+
+
+            $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
             $settings = Setting::first();
             $PPV_settings = Setting::where('ppv_status','=',1)->first();

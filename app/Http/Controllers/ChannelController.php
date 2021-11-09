@@ -19,6 +19,8 @@ use App\Episode;
 use App\ContinueWatching as ContinueWatching;
 use App\LikeDislike as LikeDislike;
 use App\VideoCategory;
+use App\RegionView;
+use App\UserLogs;
 use URL;
 use Auth;
 use View;
@@ -104,21 +106,47 @@ class ChannelController extends Controller
 
         }
 
-
-
-
         $current_date = date('Y-m-d h:i:s a', time()); 
-
-            
-        
          $view_increment = $this->handleViewCount_movies($vid);
         if ( !Auth::guest() ) {
+
+
+          $ip = getenv('HTTP_CLIENT_IP');    
+          $data = \Location::get($ip);
+          $userIp = $data->ip;
+          $countryName = $data->countryName;
+          $regionName = $data->regionName;
+          $cityName = $data->cityName;
+          // dd($data);
           $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
             $view = new RecentView;
             $view->video_id = $vid;
             $view->user_id = Auth::user()->id;
             $view->visited_at = date('Y-m-d');
             $view->save();
+
+
+
+            $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+            if(!empty($regionview)){
+                // dd($logged);
+                $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                // dd($data);
+                $region = new RegionView;
+                $region->user_id = Auth::User()->id;
+                $region->user_ip = $userIp;
+                $region->video_id = $vid;
+                $region->countryname = $countryName;
+                $region->save();
+            }else{
+                $region = new RegionView;
+                $region->user_id = Auth::User()->id;
+                $region->user_ip = $userIp;
+                $region->video_id = $vid;
+                $region->countryname = $countryName;
+                $region->save();
+            }
+
            $user_id = Auth::user()->id;
            $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
            $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
@@ -166,9 +194,7 @@ class ChannelController extends Controller
                         $d = new \DateTime('now');
                         $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
                         $now = $d->format('Y-m-d h:i:s a');
-                        // dd($to_time);                     
-                        // "2021-10-28 03:19:38 pm"
-                        // "2021-10-28 05:14:25 pm"
+
                       if($to_time >=  $now){
                         if($vid == $value->video_id){
                           $ppv_video_play = $value;
@@ -187,46 +213,10 @@ class ChannelController extends Controller
                     }
                     $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
 
-                    // if($now == $ppv_hours){
-
-                    //   if($vid == $value->video_id){
-                    //     $ppv_video_play = $value;
-
-                    //   }else{
-                    //     $ppv_video_play = null;
-                    //   }
-                    // }else{
-                    //     // dd($now);                     
-                    //     PpvPurchase::where('video_id', $vid)
-                    //             ->update([
-                    //                 'status' => 'inactive'
-                    //                 ]);
-                    // }
-                    // $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
                     }
                     }
             
             
-            
-            
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                  $data = array(
@@ -249,7 +239,33 @@ class ChannelController extends Controller
              
         } else {
 
-           
+          $ip = getenv('HTTP_CLIENT_IP');    
+          $data = \Location::get($ip);
+          $userIp = $data->ip;
+          $countryName = $data->countryName;
+          $regionName = $data->regionName;
+          $cityName = $data->cityName;
+          // dd($data);
+
+            $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+            if(!empty($regionview)){
+                // dd($logged);
+                $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                // dd($data);
+                $region = new RegionView;
+                $region->user_id = Auth::User()->id;
+                $region->user_ip = $userIp;
+                $region->video_id = $vid;
+                $region->countryname = $countryName;
+                $region->save();
+            }else{
+                $region = new RegionView;
+                $region->user_id = Auth::User()->id;
+                $region->user_ip = $userIp;
+                $region->video_id = $vid;
+                $region->countryname = $countryName;
+                $region->save();
+            }
             $categoryVideos = \App\Video::where('id',$vid)->first();
             $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();

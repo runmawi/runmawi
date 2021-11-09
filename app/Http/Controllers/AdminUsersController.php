@@ -32,10 +32,128 @@ use Session;
 use DB;
 use Mail;
 use App\EmailTemplate;
+use App\UserLogs;
+use App\Region;
+use App\RegionView;
+
+
+
 
 class AdminUsersController extends Controller
 {
+
+    public function AnalyticsRevenue(){
+        // $ip = \Request::ip();    
+    // $ip = getenv('HTTP_CLIENT_IP');    ;
+    // $data = \Location::get($ip);
+    // $userIp = $data->ip;
+    // $countryName = $data->countryName;
+    // $regionName = $data->regionName;
+    // $cityName = $data->cityName;
+    // dd($data);
+    $today_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
+    $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
+    $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
+
+
+    $data = array(
+        'today_log' => $today_log,
+        'lastweek_log' => $lastweek_log,
+        'month_log' => $month_log,
+        );
+           return \View::make('admin.analytics.revenue',$data);
+    } 
+
+    public function ViewsRegion(){
+
+    $Country = Region::get();
+    // dd($Country);
+    $data = array(
+        'Country' => $Country,
+
+        );
+           return \View::make('admin.analytics.views_by_region',$data);
+    }
     
+    public function RegionVideos(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+
+ 
+      if($query != '')
+      {
+        $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
+        $data = DB::table('videos')
+        ->select('videos.*','region_views.countryname')
+        ->join('region_views', 'region_views.video_id', '=', 'videos.id')
+        ->orderBy('created_at', 'desc')
+        ->where('region_views.countryname','=',$regions->name)
+        ->paginate(9);
+        // echo "<pre>"; print_r($data);exit();
+
+      }
+      else
+      {
+
+      }
+        $i = 1 ; 
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$i++.'</td>
+        <td>'.$row->title.'</td>
+         <td>'.$row->countryname.'</td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+    // <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+    // </a>".'
+    // '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+    // </a>".'
+    // '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+    // </a>".'
+    // </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
    public function index(Request $request)
 	{

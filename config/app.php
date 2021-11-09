@@ -200,6 +200,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
         App\Providers\SocialServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
 
         
     ],
@@ -261,6 +262,8 @@ return [
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Nexmo' => \Nexmo\Laravel\Facade\Nexmo::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Location' => 'Stevebauman\Location\Facades\Location',
+
     ],
 
 ];

@@ -1193,3 +1193,15 @@ Route::post('/admin/devices/store', 'AdminPlansController@DevicesStore');
 Route::get('/admin/devices/edit/{id}', 'AdminPlansController@DevicesEdit');
 Route::get('/admin/devices/delete/{id}', 'AdminPlansController@DevicesDelete');
 Route::post('/admin/devices/update', 'AdminPlansController@DevicesUpdate');
+
+Route::get('/admin/analytics/revenue', 'AdminUsersController@AnalyticsRevenue');
+Route::get('/admin/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
+Route::get('/admin/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
+Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
+
+
+Route::get('/admin/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
+Route::post('/admin/currency/store', 'AdminCurrencySettings@StoreCurrencySettings');
+Route::post('/admin/currency/update', 'AdminCurrencySettings@UpdateCurrencySettings');
+Route::get('/admin/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
+Route::get('/admin/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');

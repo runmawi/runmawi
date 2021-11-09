@@ -158,6 +158,18 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Users Signed Up</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Views By Region</a></li>
+                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Revenue by region</a></li>
+                     </ul>
+                  </li>
                     <div >
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
@@ -251,6 +263,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                            <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
+
                      </ul>
                   </li>
                   <?php }elseif($package == "Pro" && auth()->user()->role = "subscriber" || $package == "Pro" && auth()->user()->role == "registered" ){   ?>
@@ -321,6 +335,17 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>
                   </li>
                     <div >
@@ -416,6 +441,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                            <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                      </ul>
                   </li>
 
@@ -489,6 +515,17 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
+                     </ul>
+                  </li>
                     <div >
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
@@ -580,6 +617,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                            <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                         </ul>
                     </li>
                   <?php } elseif(auth()->user()->role = "admin"){ ;?>
@@ -652,6 +690,17 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
+                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
+                     </ul>
+                  </li>s
                     <div >
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
@@ -743,6 +792,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
+                            <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                         </ul>
                     </li>
                   <?php } ?>
@@ -1295,6 +1345,64 @@ var chart_01_lable = $('#chart_01_lable').val();
         };
 
         var chart = new ApexCharts(document.querySelector("#view-chart-03"), options);
+        chart.render();
+    }
+});
+
+
+
+if(jQuery('#view-chart-13').length){
+        var options = {
+          series: [{
+          name: 'This Month',
+          data: [44, 55,30,60,7000]
+        }, {
+          name: 'Last Month',
+          data: [35, 41,20,40,100]
+        }],
+        colors:['#e20e02', '#007aff'],
+          chart: {
+          type: 'bar',
+          height: 230,
+          foreColor: '#D1D0CF'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: <?php echo "[".$cate_chart."]";?>,
+        },
+        yaxis: {
+          title: {
+            text: ''
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+            enabled: false,
+          y: {
+            formatter: function (val) {
+              return "$ " + val + " thousands"
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#view-chart-13"), options);
         chart.render();
     }
 });
