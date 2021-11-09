@@ -298,7 +298,7 @@ data: {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script>
 
-    <div id="content-page" class="content-page">
+    <div id="content-page" class="content-page1">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
@@ -533,12 +533,12 @@ data: {
                                 </div>
                                 <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                 <?php if($settings->ppv_status == 1){ ?>
-                                    <label for="global_ppv">* Even for subscribed user, this video will be a PPV video:</label>
+                                    <label for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="global_ppv" value="1" id="global_ppv" />
                                     <?php } else{ ?>
                                         <div class="global_ppv_status">
-                                        <label for="global_ppv">* Even for subscribed user, this video will be a PPV video:</label>
-                                    <input type="checkbox" name="global_ppv" value="1" id="global_ppv" />
+                                        <!-- <label for="global_ppv">Is this video Is PPV:</label>
+                                    <input type="checkbox" name="global_ppv" value="1" id="global_ppv" /> -->
                                         </div>
                                         <?php } ?>
                                 </div>
@@ -613,7 +613,7 @@ $('#remove').click(function(){
 
 $(document).ready(function(){
     $('#ppv_price').hide();
-    $('#global_ppv_status').hide();             
+    $('#global_ppv_status').hide();
     
 		$("#access").change(function(){
 			if($(this).val() == 'ppv'){
