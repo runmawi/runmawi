@@ -59,7 +59,7 @@ input[type="number"] {
                   <div class="iq-card">
                      <div class="iq-card-header  justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">User Signed Up</h4>
+                           <h4 class="card-title">View By Region</h4>
                      </div>
                             </div>
                             <div class="iq-card-header-toolbar d-flex align-items-baseline">
@@ -70,6 +70,15 @@ input[type="number"] {
                     @foreach($Country as $value)
                     <option name="country" value="{{ $value->id }}" >{{ $value->name }}</option>
                     @endforeach
+                </select>
+                  </div>
+                  </div>
+                  <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                         <div class="form-group mr-2">                  
+                         <label class="p-2">All Country :</label>
+                <select class="form-control" id="allcountry" name="allcountry">
+                    <option selected disabled="">Choose Country</option>
+                    <option name="allcountry" value="allcountry" >Select All Country</option>
                 </select>
                   </div>
                   </div>
@@ -172,6 +181,68 @@ $.ajaxSetup({
 
 });
 
+
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+	$(document).ready(function(){
+    $('#allcountry').change(function(){
+   var country = $('#allcountry').val();
+//    alert(country);
+   if(country == 'allcountry'){
+	$.ajax({
+   url:"{{ URL::to('/Allregionvideos') }}",
+   method:'get',
+   data:{query:country},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'Analytics'
+  },
+  tooltip: {
+  },
+  accessibility: {
+    point: {
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+      }
+    }
+  },
+  series: [{
+    name: 'Videos Viewed By Region',
+    colorByPoint: true,
+    data: [{
+      name: 'By Region',
+      y: data.total_data,
+    }]
+  }]
+});
+
+   }
+    });
+   }
+})
+
+});
 
 
 
