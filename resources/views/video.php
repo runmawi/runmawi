@@ -292,7 +292,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
         </div>
         <!-- Year, Running time, Age -->
           <div class="d-flex align-items-center text-white text-detail">
-             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict);?></span>
+             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
              <span class="ml-3"><?php echo __($video->duration);?></span>
              <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
           </div>
@@ -387,10 +387,25 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                             </div>
                         </li>
                     </ul>
+
                 </div>
+            <!-- </div> -->
+
+            <?php   } ?>
+            <h4>Caste & crew</h4>
+          <?php
+            foreach($artists as $key => $artist){
+            foreach($artist as $key => $value){
+          ?>
+            <p class="trending-dec w-100 mb-0 text-white mt-2" >Directed by : <?php echo $value->artist_name ; ?> </p>&nbsp;&nbsp;
+            <p class="trending-dec w-100 mb-0 text-white" >Description by  :  <?php echo $value->description ; ?></p>&nbsp;&nbsp;
+            <!-- <p class="trending-dec w-100 mb-0 text-white" >Produced by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp;
+            <p class="trending-dec w-100 mb-0 text-white" >Music by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp;
+            <p class="trending-dec w-100 mb-0 text-white" >Description by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp; -->
+     <?php } }  ?>
+            
             </div>
-            <?php   }?>
-        
+
         <div class="text-white">
             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
         </div>

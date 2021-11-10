@@ -467,6 +467,16 @@ public function RentPaypal(Request $request)
                     $current_date = date('Y-m-d h:i:s');    
                     $next_date = $plandetail->days;
                     $date = Carbon::parse($current_date)->addDays($next_date);
+
+
+                    $ip = getenv('HTTP_CLIENT_IP');    
+                    $data = \Location::get($ip);
+                    $userIp = $data->ip;
+                    $countryName = $data->countryName;
+                    $regionName = $data->regionName;
+                    $cityName = $data->cityName;
+
+                    
                     // Name Subscription Activated!
                      
                     if ( NewSubscriptionCoupon() == 1 || ExistingSubscription($user_id) == 0  ) {
@@ -476,6 +486,9 @@ public function RentPaypal(Request $request)
                            $subscription->price = $plandetail->price;
                            $subscription->name = $user->username;
                            $subscription->days = $plandetail->days;
+                           $subscription->regionname = $regionName;
+                           $subscription->countryname = $countryName;
+                           $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
                            $subscription->save();
                           } catch (IncompletePayment $exception) {
@@ -504,8 +517,10 @@ public function RentPaypal(Request $request)
                           $subscription->price = $plandetail->price;
                           $subscription->name = $user->username;
                            $subscription->days = $plandetail->days;
+                           $subscription->regionname = $regionName;
+                           $subscription->countryname = $countryName;
+                           $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
-
                           $subscription->save();
 
               } else {
@@ -535,6 +550,9 @@ public function RentPaypal(Request $request)
                                           $subscription->name = $user->username;
                                           $subscription->days = $plandetail->days;
                                           $subscription->ends_at = $date;
+                                          $subscription->regionname = $regionName;
+                                          $subscription->countryname = $countryName;
+                                          $subscription->cityname = $cityName;
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'
@@ -564,6 +582,9 @@ public function RentPaypal(Request $request)
                                           $subscription->name = $user->username;
                                           $subscription->days = $plandetail->days;
                                           $subscription->ends_at = $date;
+                                          $subscription->regionname = $regionName;
+                                          $subscription->countryname = $countryName;
+                                          $subscription->cityname = $cityName;
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'

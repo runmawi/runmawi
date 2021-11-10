@@ -1,4 +1,4 @@
- <?php include('header.php');?>
+<?php include('header.php');?>
   <link href="<?php echo URL::to('/').'/assets/dist/videojs-watermark.css';?>" rel="stylesheet">
 <link href="<?php echo URL::to('/').'/assets/dist/videojs-resolution-switcher.css';?>" rel="stylesheet">
 <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
@@ -9,27 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 
        <style>
-           .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    opacity: 1;
-    z-index: 9;
-    top: -28px;
-    background: var(--iq-primary) 0% 0% no-repeat padding-box;
-    margin: 0 0 0 20px;
-    line-height: 5px;
-    box-shadow: 0px 9px 19px #01041b0d;
-    font-size: 0;
-    transform: none;
-    color: var(--iq-white);
-    -webkit-transition: all 0.4s ease-in-out 0s;
-    -moz-transition: all 0.4s ease-in-out 0s;
-    transition: all 0.4s ease-in-out 0s;
-}
+         
            .video-js{height: 500px !important;}
 .video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -251,14 +231,19 @@ height: 30px !important;
                      
 
                      <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <ul class="category-page list-inline  row p-0 mb-0">
                                      <?php  if(isset($lang_videos)) {
 			foreach($lang_videos as $watchlater_video): ?>
-                           <li class="slide-item">
+                           <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                         <div class="corner-text-wrapper">
+        <div class="corner-text">
+         <p class="p-tag" style="">FREE!</p>
+          </div>
+    </div>
                                     </div>
                                     <div class="block-description">
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
@@ -269,12 +254,12 @@ height: 30px !important;
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                             <button type="button" class="btn btn-primary btn-hover" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
+                                             <a type="button" class="text-white" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
                                           <span class=" ">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now
                                           </span>
-                                              </button>	
+                                              </a>	
                                        </div>
                                         <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">

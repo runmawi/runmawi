@@ -21,6 +21,8 @@ use App\LikeDislike as LikeDislike;
 use App\VideoCategory;
 use App\RegionView;
 use App\UserLogs;
+use App\Videoartist;
+use App\Artist;
 use URL;
 use Auth;
 use View;
@@ -66,10 +68,21 @@ class ChannelController extends Controller
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
         $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
         $category_title = \App\VideoCategory::where('id',$category_id)->pluck('name');
-            
+        $settings = Setting::first();
+        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        if(!empty($PPV_settings)){
+            $ppv_gobal_price =  $PPV_settings->ppv_price;
+            //  echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
+
+         }else{
+            //  echo "<pre>";print_r('ppv_status');exit();
+             $ppv_gobal_price = null ;
+
+         }
         $data = array(
                 'category_title'=>$category_title[0],
-                'categoryVideos'=>$categoryVideos
+                'categoryVideos'=>$categoryVideos,
+                'ppv_gobal_price' => $ppv_gobal_price,
             );
         
        return view('categoryvids',['data'=>$data]);
@@ -87,7 +100,15 @@ class ChannelController extends Controller
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
+        // echo "<pre>"; 
+        $cast = Videoartist::where('video_id','=',$vid)->get();
+          foreach($cast as $key => $artist){
+            $artists[] = Artist::where('id','=',$artist->artist_id)->get();
 
+          }
+          // print_r();
+          // exit();
+  
 
         $PPV_settings = Setting::where('ppv_status','=',1)->first();
         if(!empty($PPV_settings)){
@@ -232,6 +253,7 @@ class ChannelController extends Controller
                      'ppv_rent_price' =>$ppv_rent_price,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
+                 'artists' => $artists,
     		'ppv_video_play' => $ppv_video_play,
 
 
@@ -277,6 +299,7 @@ class ChannelController extends Controller
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
+                 'artists' => $artists,
                  'watched_time' => 0,
 
             );

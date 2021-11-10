@@ -1,5 +1,5 @@
 <!-- Header -->
-  @include('header')   
+@include('header')   
 <!-- Header End -->
 <!-- MainContent -->
       <div class="main-content">
@@ -7,18 +7,30 @@
             <div class="container-fluid">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header align-items-center text-center">
+                     <div class="iq-main-header align-items-center">
                         <h2 class=""><?php echo __($data['category_title']);?></h2>
                      </div>
                      <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-0">
+                        <ul class="category-page list-inline  row p-0 mb-3">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
                                     @foreach($data['categoryVideos']  as $category_video) 
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
+                                                <div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                          <?php  if(!empty($category_video->ppv_price)){?>
+                                          <p class="p-tag"><?php echo $category_video->ppv_price; ?></p>
+                                          <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                            <p class="p-tag"><?php echo $category_video->global_ppv; ?></p>
+                                                    <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
+                                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                                 </div>
 
                                                 <div class="block-description">

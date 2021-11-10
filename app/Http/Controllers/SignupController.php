@@ -475,6 +475,13 @@ public function createStep3(Request $request)
                 $current_date = date('Y-m-d h:i:s');    
        
         $payment_type = $request->payment_type;
+        $ip = getenv('HTTP_CLIENT_IP');    
+        $data = \Location::get($ip);
+        $userIp = $data->ip;
+        $countryName = $data->countryName;
+        $regionName = $data->regionName;
+        $cityName = $data->cityName;
+
     // print_r($payment_type);exit();
         if ( $payment_type == "one_time") {
                         $user_email = $request->session()->get('register.email');
@@ -568,8 +575,10 @@ public function createStep3(Request $request)
                     $subscription->price = $plandetail->price;
                     $subscription->name = $user->username;
                     $subscription->days = $plandetail->days;
+                    $subscription->regionname = $regionName;
+                    $subscription->countryname = $countryName;
+                    $subscription->cityname = $cityName;
                     $subscription->ends_at = $date;
-
                     $subscription->save();
                     $data = Session::all();
                     // if (empty($data['password_hash'])) {

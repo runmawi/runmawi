@@ -1205,3 +1205,10 @@ Route::post('/admin/currency/store', 'AdminCurrencySettings@StoreCurrencySetting
 Route::post('/admin/currency/update', 'AdminCurrencySettings@UpdateCurrencySettings');
 Route::get('/admin/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
 Route::get('/admin/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
+Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
+
+Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
+Route::get('/Planstate', 'AdminUsersController@PlanState');
+Route::get('/Plancity', 'AdminUsersController@PlanCity');
+Route::post('/getState', 'AdminUsersController@GetState');
+Route::post('/getCity', 'AdminUsersController@GetCity');

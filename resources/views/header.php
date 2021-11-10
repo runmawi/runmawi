@@ -29,6 +29,7 @@ $uppercase =  ucfirst($request_url);
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    </head>
     <style>
@@ -45,7 +46,7 @@ $uppercase =  ucfirst($request_url);
      <!-- Header -->
       <header id="main-header">
          <div class="main-header">
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding: 0px 40px!important;">
                <div class="row">
                   <div class="col-sm-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -59,6 +60,7 @@ $uppercase =  ucfirst($request_url);
                            </div>
                         </a>
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                         
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
@@ -81,7 +83,7 @@ $uppercase =  ucfirst($request_url);
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
-                                          <li class="dropdown menu-item">
+ <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>
@@ -90,6 +92,23 @@ $uppercase =  ucfirst($request_url);
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php } elseif ( $menu->in_menu == "movies") { 
+                                        $cat = App\VideoCategory::all();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $languages as $language){ ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                  <?php echo $language->name;?> 
                                                 </a>
                                               </li>
                                               <?php } ?>
@@ -263,7 +282,8 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-file-user-line text-primary"></i>
+                                                    
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -273,7 +293,7 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -283,7 +303,7 @@ $uppercase =  ucfirst($request_url);
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Rented Movies</h6>
@@ -293,7 +313,7 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-logout-circle-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -307,10 +327,16 @@ $uppercase =  ucfirst($request_url);
                                  <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                           <a class="p-0">
+                                               <!--<div class="toggle mt-3 text-right">
+  <input type="checkbox" id="toggle" />
+  <label for="toggle"></label>
+</div>-->
+                                           </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-file-user-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -320,7 +346,7 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                 <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -330,7 +356,7 @@ $uppercase =  ucfirst($request_url);
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Rented Movies</h6>
@@ -340,7 +366,7 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                  <img src="<?php echo URL::to('/').'/assets/icons/plan.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Pricing Plan</h6>
@@ -350,7 +376,7 @@ $uppercase =  ucfirst($request_url);
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-settings-4-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Admin</h6>
@@ -360,7 +386,7 @@ $uppercase =  ucfirst($request_url);
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <i class="ri-logout-circle-line text-primary"></i>
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -375,7 +401,8 @@ $uppercase =  ucfirst($request_url);
                               <?php endif; ?>
                                    
                            </ul>
-                        </div>
+                        
+</div>
                      </nav>
                    
                   </div>
@@ -387,6 +414,20 @@ $uppercase =  ucfirst($request_url);
            <script>
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
+});
+          </script>
+          <script>
+              const toggle = document.getElementById('toggle');
+const body = document.body;
+
+toggle.addEventListener('input', (e) => {
+  const isChecked = e.target.checked;
+  
+  if(isChecked) {
+    body.classList.add('dark-theme');
+  } else {
+    body.classList.remove('dark-theme');
+  }
 });
           </script>
           

@@ -613,12 +613,26 @@ class HomeController extends Controller
     
     public function LatestVideos()
     {
-        $date = \Carbon\Carbon::today()->subDays(25);
+        $date = \Carbon\Carbon::today()->subDays(30);
 //            'videos' => Video::where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->simplePaginate(10),
 //        
-        $latest_videos = Video::where('active', '=', '1')->where('created_at','>=',$date)->get();
+        // $latest_videos = Video::where('active', '=', '1')->where('created_at','>=',$date)->get();
+        $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
+        // dd($latest_videos);
+        $settings = Setting::first();
+        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        if(!empty($PPV_settings)){
+            $ppv_gobal_price =  $PPV_settings->ppv_price;
+            //  echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
+
+         }else{
+            //  echo "<pre>";print_r('ppv_status');exit();
+             $ppv_gobal_price = null ;
+
+         }
         $data = array(
-            'latest_videos'=>$latest_videos
+            'latest_videos'=>$latest_videos,
+            'ppv_gobal_price' => $ppv_gobal_price,
         );
         
         return View('latestvideo',$data);

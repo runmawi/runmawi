@@ -1830,6 +1830,8 @@ public function verifyandupdatepassword(Request $request)
 
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
+      $video_artist_id =  $request['artist_id'];
+
 
      
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -1846,7 +1848,12 @@ public function verifyandupdatepassword(Request $request)
       ->where('title', 'LIKE', '%'.$search_value.'%')
       ->where('video_category_id', '=', $video_category_id )
       ->count();
-   
+      $video_artist_count =  DB::table('video_artists')
+      ->join('videos', 'videos.id', '=', 'video_artists.video_id')
+      ->select('videos.*')
+      ->where('title', 'LIKE', '%'.$search_value.'%')
+      ->where('video_artists.artist_id', '=', $video_artist_id )
+      ->count();
 
       if ($audios_count > 0) {
         $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -1892,7 +1899,7 @@ public function verifyandupdatepassword(Request $request)
       });
 
       } else {
-        $ppv_videos = 0;
+        $ppv_videos = [];
       } 
 
       if ($video_category_count > 0) {
@@ -1908,7 +1915,7 @@ public function verifyandupdatepassword(Request $request)
         $ppv_category = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
 
       } else {
-        $ppv_category = 0;
+        $ppv_category = [];
       }
 
       if ($artist_count > 0) {
@@ -1923,7 +1930,7 @@ public function verifyandupdatepassword(Request $request)
         // $artist = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
 
       } else {
-        $artist = 0;
+        $artist = [];
       }
       if ($video_categories_count > 0) {
 
@@ -1934,9 +1941,22 @@ public function verifyandupdatepassword(Request $request)
         ->where('video_category_id', '=', $video_category_id )
         ->get();
       } else {
-        $video_categories = 0;
+        $video_categories = [];
       }
       $url_image = URL::to('/').'/public/uploads/images/' ;
+
+      if ($video_artist_count > 0) {
+
+        $video_artist =  DB::table('video_artists')
+        ->join('videos', 'videos.id', '=', 'video_artists.video_id')
+        ->select('videos.*')
+        ->where('title', 'LIKE', '%'.$search_value.'%')
+        ->where('video_artists.artist_id', '=', $video_artist_id )
+        ->get();
+      } else {
+        $video_artist = [];
+      }
+
 
       $response = array(
         'channelvideos' => $videos,
@@ -1948,6 +1968,7 @@ public function verifyandupdatepassword(Request $request)
         'audio_categories' => $audio_categories,
         'video_categories' => $video_categories,
         'url_image' => $url_image,
+        'video_artist' => $video_artist,
 
       );
 
