@@ -121,21 +121,21 @@ $uppercase =  ucfirst($request_url);
                                             </a>
                                           </li>
                                           <?php } } ?>
-                                          <li class="nav-item dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              Movies <!--<i class="fa fa-angle-down"></i>-->
-                                            </a>
-                                              <ul class="dropdown-menu categ-head">
-                                                  <?php foreach ( $languages as $language) { ?>
+                                          <!-- <li class="nav-item dropdown menu-item"> -->
+                                            <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">   -->
+                                              <!-- Movies <i class="fa fa-angle-down"></i> -->
+                                            <!-- </a> -->
+                                              <!-- <ul class="dropdown-menu categ-head"> -->
+                                                  <?php //foreach ( $languages as $language) { ?>
                                                   <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                                      <?php echo $language->name;?> 
-                                                    </a>
-                                                  </li>
+                                                    <!-- <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
+                                                      <?php //echo $language->name;?> 
+                                                    <!-- </a> -->
+                                                  <!-- </li> -->
 
-                                                <?php } ?>
-                                                </ul>
-                                            </li>
+                                                <?php //} ?>
+                                                <!-- </ul> -->
+                                            <!-- </li> -->
                                           <li class="">
                                             <!--<a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
                                                                                                font-weight: bold;
