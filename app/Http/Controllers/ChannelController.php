@@ -197,7 +197,7 @@ class ChannelController extends Controller
                         $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
                     endif;
 
-
+                    
                     $ppv_video_play = [];
 
                     $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
@@ -238,7 +238,7 @@ class ChannelController extends Controller
                     }
             
             
-
+                $artists = [];
 
                  $data = array(
                      'video' => $categoryVideos,
