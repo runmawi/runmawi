@@ -314,7 +314,7 @@
                                        </div>
                                     </td>
                                     <td><i class="lar la-star mr-2"></i> {{ $video_detail->rating }}</td>
-                                    <td>{{ $video_detail->categories->name }}</td>
+                                    <td>//{{ $video_detail->categories->name }}</td>
                                     <td>
                                        {{ $video_detail->views }}<i class="lar la-eye "></i>
                                     </td>
