@@ -1640,6 +1640,8 @@ $movie->banner =$livestream->banner;
 $movie->duration =$livestream->duration;
 $movie->footer =$livestream->footer;
 $movie->slug =$livestream->slug;
+$movie->ppv_price =$livestream->ppv_price;
+$movie->access =$livestream->access;
 // $movie->status =$livestream->status;
 $movie->image =$file->getClientOriginalName();
 $movie->mp4_url =$livestream->mp4_url;
@@ -4006,6 +4008,8 @@ public function livestream_update(Request $request){
   $video['image'] =$file->getClientOriginalName();
   $video['mp4_url'] =$livestream->mp4_url;
   $video['year'] =$livestream->year;
+  $video['ppv_price'] =$livestream->ppv_price;
+  $video['access'] =$livestream->access;
   
   $video->save();
 
@@ -4108,7 +4112,9 @@ public function livestreamcategory_destroy(Request $request){
       
       $data = $request->all();
       $video_data =json_decode($data['video_data']);
-
+      // echo "<pre>";
+      // print_r($video_data);
+      // exit();
 
       $english = $data['english'];
       $german = $data['german'];
@@ -4128,7 +4134,7 @@ public function livestreamcategory_destroy(Request $request){
          $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
          $files = (isset($subtitle_upload)) ? $subtitle_upload : '';
       
-          if(empty($video_data->active)){
+          if(!empty($video_data->active)){
           $video_data->active = 0;
           } 
       
@@ -4169,7 +4175,7 @@ public function livestreamcategory_destroy(Request $request){
           } 
 
 
-          if(empty($video_data->active)){
+          if(!empty($video_data->active)){
               $video_data->active = 0;
           } 
             if(empty($video_data->video_gif)){
@@ -4246,6 +4252,10 @@ public function livestreamcategory_destroy(Request $request){
       $languages=$video_data->sub_language;
        $video->description = strip_tags($video_data->description);
        $video->draft = 1;
+       $video->active = 0;
+       $video->video_category_id = $video_data->video_category_id ;
+       $video->language = $video_data->language ;
+       $video->rating = $video_data->rating ;
        $video->age_restrict =  $video_data->age_restrict;
        $video->ppv_price =$video_data->ppv_price;
        $video->access =  $video_data->access;

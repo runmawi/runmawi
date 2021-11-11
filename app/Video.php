@@ -25,6 +25,10 @@ class Video extends Model
 		return $this->belongsTo('App\VideoCategory','video_category_id','id');
 	}
 
+	public function cppuser(){
+		return $this->belongsTo('App\ModeratorsUser','user_id','id');
+	}
+
 	public function videoresolutions(){
 		return $this->hasMany('App\VideoResolution','video_id','id');
 	}

@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 @section('content')
-<?php //dd($cppuser); ?>
+
      <div id="content-page" class="content-page">
          <div class="container-fluid">
             <div class="row">
@@ -19,17 +19,9 @@
                         
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
-                         <div class="form-group mr-2">                  
-                    <label class="p-2">Videos By CPP Users:</label>
-                                    <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
-                                    <option value="">Select Videos</option>
-                                        <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
-                                    </select>
-                  </div>
                              <div class="form-group mr-2">
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
+                    <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
                     </div>
-                           <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
                         </div>
                      </div>
                      <div class="iq-card-body table-responsive">
@@ -37,18 +29,13 @@
                            <table class="table table-striped table-bordered table movie_table " style="width:100%">
                               <thead>
                                  <tr>
+                                     
                                     <th>Title</th>
-                                    <th>Rating</th>
-                                    <th>Category</th>
-                                    <!-- <th>Release Year</th> -->
-                                    <th>Uploaded by</th>
                                     <th>Video Type</th>
+                                    <th>Rating</th>
                                     <th>Video Access</th>
                                     <th>Status</th>
-                                    <th>Language</th>
-                                    <!--<th style="width: 20%;">Description</th>-->
-                                     <th>Views</th>
-                                    <th>Action</th>
+                                    <th >Action</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -63,21 +50,13 @@
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
                                              <p class="mb-0">{{ $video->title }}</p>
-                                             <!-- <small>2h 15m</small> -->
                                           </div>
                                        </div>
                                     </td>
-                                    <td>{{ $video->rating }}</td>
-                                    <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td>
-                                    <!-- <td>{{ $video->year }}</td> -->
-                                    <!-- <td>{{ $video->draft }}</td> -->
-                                    <!-- <td>
-                                   
-                                    </td> -->
-                                    <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else Uploaded by Admin @endif</td>
-
                                     <td>{{ $video->type }}</td>
+                                    <td>{{ $video->rating }}</td>
                                     <td>{{ $video->access }}</td>
+                                    
                                     <td>
                                     <?php if($video->active == 0){
                                         echo "Pending"; ?>
@@ -86,35 +65,20 @@
                                     <?php }elseif($video->active == 2){ 
                                         echo "Rejected";?>
                                     <?php }?>
-                                   </td>  
-
-                                    
-                                    
-                             
-                                    <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
-                                    <td>
-                                       <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
-                                        {{ $video->views }}<i class="lar la-eye "></i>
-                                    </td>
-                                    <td>
+                                   </td>                                
+                                    <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
-                                          <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
-                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
-                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                          <a class="iq-bg-warning" 
+                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
+                                          <a class="iq-bg-success" 
+                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:red"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>
                                  @endforeach
-
                               </tbody>
                            </table>
                            <div class="clear"></div>
-
-		<div class="pagination-outter"><?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
                         </div>

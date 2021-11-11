@@ -11,6 +11,7 @@
 </style>
 @stop
  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 @section('content')
 <div id="content-page" class="content-page">
@@ -218,13 +219,20 @@
 							<select class="form-control" id="access" name="access">
 								<option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+								<option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif >PPV Users (Pay per movie)</option>   
 							</select>
 							<div class="clear"></div>
 						</div> 
 					</div>
 				</div>
+			
+				<div class="col-sm-6 form-group mt-3" id="ppv_price">
+					<label class="">PPV Price:</label>
+					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="">
+					<div class="clear"></div>
 
-				
+					</div>
+					</div>
 
 				<div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
@@ -245,14 +253,13 @@
 								<input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div>
-								<label for="footer" >Is this video display in footer:</label>
-								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
+								<!-- <label for="footer" >Is this video display in footer:</label>
+								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
 							</div>
 						</div> 
 					</div>
 				</div>
-
-			</div><!-- row -->
+			<!-- row -->
 
 			@if(!isset($video->user_id))
 				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
@@ -277,13 +284,34 @@
 	
 	@section('javascript')
 
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 
 	<script type="text/javascript">
 
+	$(document).ready(function(){
+		if($("#access").val() == 'ppv'){
+				$('#ppv_price').show();
+			}else{
+				$('#ppv_price').hide();		
+
+			}
+    // $('#ppv_price').hide();
+	// alert()
+
+		$("#access").change(function(){
+			// alert('test');
+			if($(this).val() == 'ppv'){
+				$('#ppv_price').show();
+			}else{
+				$('#ppv_price').hide();		
+
+			}
+		});
+});
 	$ = jQuery;
 
 	$(document).ready(function(){
@@ -353,6 +381,8 @@
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+
+
 </script>
 	@stop
 

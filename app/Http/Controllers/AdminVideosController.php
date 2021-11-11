@@ -34,6 +34,7 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
 use App\Artist;
 use App\Videoartist;
+use App\ModeratorsUser;
 use GifCreator\GifCreator;
 use App\AgeCategory as AgeCategory;
 use App\Setting as Setting;
@@ -74,57 +75,42 @@ class AdminVideosController extends Controller
 
       $output = '';
       $query = $request->get('query');
-         $video_categories = DB::table('video_categories')->get();
-         $video_languages = DB::table('video_languages')->get();
+
          $slug = URL::to('/category/videos');
          $edit = URL::to('admin/videos/edit');
          $delete = URL::to('admin/videos/delete');
       if($query != '')
       {
-       $data = DB::table('videos')
-         ->where('title', 'like', '%'.$query.'%')
-         ->orderBy('created_at', 'desc')
+         $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
+         ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+         ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+         ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+         ->where('videos.title', 'like', '%'.$query.'%')
          ->paginate(9);
-         
+
       }
       else
       {
 
       }
-      foreach($data as $row){
-            $language = $row->language;
-            $video_category = $row->video_category_id;
-        }
-            $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
-            $language = DB::table('video_languages')->where('id','=',$language)->get();
-            foreach($video_category as $category){
-                $category_name = $category->name;
-            }
-            if(empty($category_name)){
-                $category = "empty";
-            }else{
-            $category = $category_name;
-            }
-            foreach($language as $lang){
-                $lang_name = $lang->name;
-            }
-            if(empty($lang_name)){
-                $lang = "empty";
-            }else{
-            $lang = $lang_name;
-            }
+
       $total_row = $data->count();
       if($total_row > 0)
       {
        foreach($data as $row)
        {
+        if($row->active == 0){ $active = "Pending" ; }elseif($row->active == 1){ $active = "Approved" ; } else{ $active = "Rejected" ;}
+        $username = $row->username ? 'Upload By'.' '.$row->username : "Upload By Admin";
         $output .= '
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
-        <td>'.$category.'</td>
-         <td>'.$row->draft.'</td>
-        <td>'.$lang.'</td>
+        <td>'.$row->categories_name.'</td>
+        <td>'.$username.'</td>
+         <td>'. $active.'</td>
+         <td>'.$row->type.'</td>
+         <td>'.$row->access.'</td>
+        <td>'.$row->languages_name.'</td>
          <td>'.$row->views.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>".'
@@ -161,57 +147,40 @@ class AdminVideosController extends Controller
 
       $output = '';
       $query = $request->get('query');
-         $video_categories = DB::table('video_categories')->get();
-         $video_languages = DB::table('video_languages')->get();
+
          $slug = URL::to('/category/videos');
          $edit = URL::to('admin/videos/edit');
          $delete = URL::to('admin/videos/delete');
       if($query != '')
       {
-         $data = DB::table('videos')
-            ->select('videos.*')
-            ->join('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
-            ->orderBy('created_at', 'desc')
+            $data = Video::select('videos.*','moderators_users.username','video_languages.name as languages_name','video_categories.name as categories_name')
+            ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+            ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+            ->Join('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
             ->paginate(9);
+ 
       }
       else
       {
 
       }
-      foreach($data as $row){
-            $language = $row->language;
-            $video_category = $row->video_category_id;
-        }
-            $video_category = DB::table('video_categories')->where('id','=',$video_category)->get();
-            $language = DB::table('video_languages')->where('id','=',$language)->get();
-            foreach($video_category as $category){
-                $category_name = $category->name;
-            }
-            if(empty($category_name)){
-                $category = "empty";
-            }else{
-            $category = $category_name;
-            }
-            foreach($language as $lang){
-                $lang_name = $lang->name;
-            }
-            if(empty($lang_name)){
-                $lang = "empty";
-            }else{
-            $lang = $lang_name;
-            }
+   
       $total_row = $data->count();
       if($total_row > 0)
       {
        foreach($data as $row)
        {
+if($row->active == 0){ $active = "Pending" ; }elseif($row->active == 1){ $active = "Approved" ; } else{ $active = "Rejected" ;}
         $output .= '
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
-        <td>'.$category.'</td>
-         <td>'.$row->draft.'</td>
-        <td>'.$lang.'</td>
+        <td>'.$row->categories_name.'</td>
+        <td>'.$row->username.'</td>
+         <td>'. $active.'</td>
+         <td>'.$row->type.'</td>
+         <td>'.$row->access.'</td>
+        <td>'.$row->languages_name.'</td>
          <td>'.$row->views.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>".'
@@ -1404,5 +1373,46 @@ if(!empty($artistsdata)){
    
 
     }
+
+    public function CPPVideosIndex()
+    {
+
+        $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
+        $videos =    Video::where('active', '=',0)
+            ->join('moderators_users', 'videos.user_id', '=', 'moderators_users.id')
+            ->select('moderators_users.username', 'videos.*')
+            ->orderBy('videos.created_at', 'DESC')->paginate(9);
+            $data = array(
+                'videos' => $videos,
+                );
     
+            return View('admin.videos.videoapproval.approval_index', $data);
+       }
+       public function CPPVideosApproval($id)
+       {
+   
+        //    echo "<pre>";
+        //    print_r($id);
+           $video = Video::findOrFail($id);
+           $video->active = 1;
+           $video->save();
+        //    exit();
+           
+
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+
+          }
+
+          public function CPPVideosReject($id)
+          {
+      
+            $video = Video::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+ 
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+   
+             }
 }

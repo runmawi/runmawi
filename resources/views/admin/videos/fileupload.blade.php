@@ -379,7 +379,7 @@ data: {
 
                                             <div class="col-sm-12 form-group">
                                                 <label>Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                                                <input type="file" accept="video/mp4,video/x-m4v,video/*" name="image" id="image" >
+                                                <input type="file" name="image" id="image" >
                                                 @if(!empty($video->image))
                                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                                 @endif

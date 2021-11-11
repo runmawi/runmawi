@@ -1212,3 +1212,7 @@ Route::get('/Planstate', 'AdminUsersController@PlanState');
 Route::get('/Plancity', 'AdminUsersController@PlanCity');
 Route::post('/getState', 'AdminUsersController@GetState');
 Route::post('/getCity', 'AdminUsersController@GetCity');
+Route::get('/cppusers_videodata', 'AdminVideosController@CPPVideos');
+Route::get('/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
+Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
+Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');

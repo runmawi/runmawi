@@ -24,10 +24,10 @@
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
 // echo "<pre>";
-// print_r($video); exit();
+// print_r($ppv_video_play); exit();
 
 
-if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == 'subscriber' || Auth::user()->role == 'subscriber' ||  $video->global_ppv == null && $video->access == 'registered' || Auth::user()->role == 'registered' ||  $video->global_ppv == 0 && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'subscriber' || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
    if(!Auth::guest()) {
        
@@ -329,7 +329,9 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                     </li>
                     <!-- PPV button -->
                     <li>
-                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) { ?>
+                        <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) { ?>
+                        <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+
                           <!-- && ($video->global_ppv == 1 ) -->
                             <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
                             <?php echo __('Rents');?> </button>

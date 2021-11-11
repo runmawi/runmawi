@@ -71,7 +71,7 @@ class AdminLiveStreamController extends Controller
         
         $data = $request->all();
         
-        
+        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|max:255',
@@ -138,6 +138,15 @@ class AdminLiveStreamController extends Controller
         if(empty($data['status'])){
             $data['status'] = 0;
         }  
+        if(empty($data['banner'])){
+            $data['banner'] = 0;
+        }  
+        if(empty($data['ppv_price'])){
+            $data['ppv_price'] = null;
+        }  
+        if(empty($data['access'])){
+            $data['access'] = 0;
+        }  
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -146,8 +155,27 @@ class AdminLiveStreamController extends Controller
                 $data['duration'] = $time_seconds;
         }
 
-    
-        $movie = LiveStream::create($data);
+        $movie = new LiveStream;
+
+        $movie->title =$data['title'];
+        $movie->details =$data['details'];
+        $movie->video_category_id =$data['video_category_id'];
+        $movie->description =$data['description'];
+        $movie->featured =$data['featured'];
+        $movie->language =$data['language'];
+        $movie->banner =$data['banner'];
+        $movie->duration =$data['duration'];
+        $movie->ppv_price =$data['ppv_price'];
+        $movie->access =$data['access'];
+        // $movie->footer =$data['footer'];
+        $movie->slug =$data['slug'];
+        $movie->image =$file->getClientOriginalName();
+        $movie->mp4_url =$data['mp4_url'];
+        $movie->year =$data['year'];
+        $movie->user_id =Auth::User()->id;
+        $movie->save();
+
+        // $movie = LiveStream::create($data);
       
         $shortcodes = $request['short_code'];
         $languages = $request['language'];
@@ -266,7 +294,8 @@ class AdminLiveStreamController extends Controller
        
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
-
+         $data['ppv_price'] = $request['ppv_price'];
+         $data['access'] = $request['access'];
 
         $video->update($data);
       
