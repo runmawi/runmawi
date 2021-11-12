@@ -19,10 +19,10 @@
                         
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                    <!-- <label class="p-2">Videos By CPP Users:</label> -->
                          <div class="form-group mr-2">                  
-                    <label class="p-2">Videos By CPP Users:</label>
                                     <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
-                                    <option value="">Select Videos</option>
+                                    <option value="">Select Videos By CPP</option>
                                         <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
                                     </select>
                   </div>
@@ -78,15 +78,14 @@
 
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->access }}</td>
-                                    <td>
-                                    <?php if($video->active == 0){
-                                        echo "Pending"; ?>
-                                    <?php }elseif($video->active == 1){
-                                        echo "Approved"; ?>
-                                    <?php }elseif($video->active == 2){ 
-                                        echo "Rejected";?>
+                                   
+                                    <?php if($video->active == 0){ ?>
+                                       <td class = "bg-warning"> <?php echo "Pending"; ?></td>
+                                    <?php }elseif($video->active == 1){ ?>
+                                       <td class = "bg-success"> <?php  echo "Approved"; ?></td>
+                                    <?php }elseif($video->active == 2){ ?>
+                                       <td class = "bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>
-                                   </td>  
 
                                     
                                     

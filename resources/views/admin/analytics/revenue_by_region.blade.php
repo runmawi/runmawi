@@ -69,6 +69,7 @@ input[type="number"] {
                          <label>Country :</label>
                 <select class="form-control" id="country" name="country">
                     <option selected disabled="">Choose Country</option>
+                    <option name="Allcountry" value="Allcountry" >Choose All Country</option>
                     @foreach($Country as $value)
                     <option name="country" value="{{ $value->id }}" >{{ $value->name }}</option>
                     @endforeach
@@ -78,16 +79,43 @@ input[type="number"] {
                 <label for="state">State</label>
                 <select class="form-control" id="state-dropdown" name="state">
                     <option selected disabled="">Choose State</option>
+                    <option name="Allstate" value="Allstate" >Choose All State</option>
                 </select>
                   </div>
                          <div class="col-sm-4">                  
                 <label for="city">City</label>
                 <select class="form-control" id="city-dropdown" name="city">
                     <option selected disabled="">Choose City</option>
+                    <option name="Allcity" value="Allcity" >Choose All City</option>
                 </select>
                   </div>
               </div>
               </div>
+              <!-- <div class="col-sm-12">
+                    <div class="row">
+                         <div class="col-sm-4">                  
+                         <label>ALL Country</label>
+                <select class="form-control" id="Allcountry" name="country">
+                    <option selected disabled="">Choose Country</option>
+                    <option name="Allcountry" value="Allcountry" >Choose All Country</option>
+                </select>
+                  </div>
+                     <div class="col-sm-4">                  
+                <label for="state">ALL State</label>
+                <select class="form-control" id="Allstate" name="Allstate">
+                    <option selected disabled="">Choose State</option>
+                    <option name="Allstate" value="Allstate" >Choose All State</option>
+                </select>
+                  </div>
+                         <div class="col-sm-4">                  
+                <label for="city">ALL City</label>
+                <select class="form-control" id="Allcity" name="Allcity">
+                    <option selected disabled="">Choose City</option>
+                    <option name="Allcity" value="Allcity" >Choose All City</option>
+                </select>
+                  </div>
+              </div>
+              </div> -->
               <!-- </div> -->
 
 
@@ -130,7 +158,62 @@ input[type="number"] {
 $(document).ready(function() {
 $('#country').on('change', function() {
 var country_id = this.value;
-$("#state-dropdown").html('');
+if(country_id == "Allcountry"){
+// alert(country_id)
+
+	$.ajax({
+   url:"{{ URL::to('/PlanAllCountry') }}",
+   method:'get',
+   data:{query:country_id},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+    $('#city-dropdown').append('<option value="Allcity">Select All City</option>'); 
+
+
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'All Country Revenue'
+  },
+  tooltip: {
+  },
+  accessibility: {
+    point: {
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+      }
+    }
+  },
+  series: [{
+    name: 'Revenue By Region',
+    colorByPoint: true,
+    data: [{
+      name: 'By Region',
+      y: data.total_data,
+    }]
+  }]
+});
+
+   }
+    });
+}
+else{
+// alert('country_id')
+  $("#state-dropdown").html('');
 $.ajax({
 url:"{{url('/getState')}}",
 type: "POST",
@@ -141,13 +224,18 @@ _token: '{{csrf_token()}}'
 dataType : 'json',
 success: function(result){
 $('#state-dropdown').html('<option value="">Select State</option>'); 
+$('#state-dropdown').append('<option value="Allstate">Choose All State</option>'); 
 $.each(result.states,function(key,value){
 $("#state-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
 });
 $('#city-dropdown').html('<option value="">Select State First</option>'); 
 }
 });
-});    
+}
+}); 
+
+
+
 $('#state-dropdown').on('change', function() {
 var state_id = this.value;
 $("#city-dropdown").html('');
@@ -161,6 +249,7 @@ _token: '{{csrf_token()}}'
 dataType : 'json',
 success: function(result){
 $('#city-dropdown').html('<option value="">Select City</option>'); 
+$('#city-dropdown').append('<option value="Allcity">Choose All City</option>'); 
 $.each(result.cities,function(key,value){
 $("#city-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
 });
@@ -169,130 +258,132 @@ $("#city-dropdown").append('<option value="'+value.name+'">'+value.name+'</optio
 });
 });
 
-// $.ajaxSetup({
-//            headers: {
-//                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             }
-//     });
-// 	$(document).ready(function(){
-//     $('#country').change(function(){
-//    var country = $('#country').val();
-// //    alert(country);
-//    if(country == country){
-// 	$.ajax({
-//    url:"{{ URL::to('/Plancountry') }}",
-//    method:'get',
-//    data:{query:country},
-//    dataType:'json',
-//    success:function(data)
-//    {
-//     $('tbody').html(data.table_data);
-//     $('#total_records').text(data.total_data);
 
-//     Highcharts.chart('container', {
-//   chart: {
-//     plotBackgroundColor: null,
-//     plotBorderWidth: null,
-//     plotShadow: false,
-//     type: 'pie'
-//   },
-//   title: {
-//     text: 'Country Wish Revenue'
-//   },
-//   tooltip: {
-//   },
-//   accessibility: {
-//     point: {
-//     }
-//   },
-//   plotOptions: {
-//     pie: {
-//       allowPointSelect: true,
-//       cursor: 'pointer',
-//       dataLabels: {
-//         enabled: true,
-//       }
-//     }
-//   },
-//   series: [{
-//     name: 'Revenue By Region',
-//     colorByPoint: true,
-//     data: [{
-//       name: 'By Region',
-//       y: data.total_data,
-//     }]
-//   }]
-// });
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+	$(document).ready(function(){
+    $('#state-dropdown').change(function(){
+   var Allstate = $('#state-dropdown').val();
+  //  alert(Allstate);
+   if(Allstate == Allstate){
+	$.ajax({
+   url:"{{ URL::to('/Planstate') }}",
+   method:'get',
+   data:{query:Allstate},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
 
-//    }
-//     });
-//    }
-// })
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'All State Revenue'
+  },
+  tooltip: {
+  },
+  accessibility: {
+    point: {
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+      }
+    }
+  },
+  series: [{
+    name: 'Revenue By Region',
+    colorByPoint: true,
+    data: [{
+      name: 'By Region',
+      y: data.total_data,
+    }]
+  }]
+});
 
-// });
+   }
+    });
+   }
+})
+
+});
 
 
-// $.ajaxSetup({
-//            headers: {
-//                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             }
-//     });
-// 	$(document).ready(function(){
-//     $('#state').change(function(){
-//    var state = $('#state').val();
-// //    alert(country);
-//    if(state == state){
-// 	$.ajax({
-//    url:"{{ URL::to('/Planstate') }}",
-//    method:'get',
-//    data:{query:state},
-//    dataType:'json',
-//    success:function(data)
-//    {
-//     $('tbody').html(data.table_data);
-//     $('#total_records').text(data.total_data);
 
-//     Highcharts.chart('container', {
-//   chart: {
-//     plotBackgroundColor: null,
-//     plotBorderWidth: null,
-//     plotShadow: false,
-//     type: 'pie'
-//   },
-//   title: {
-//     text: 'State Wish Revenue'
-//   },
-//   tooltip: {
-//   },
-//   accessibility: {
-//     point: {
-//     }
-//   },
-//   plotOptions: {
-//     pie: {
-//       allowPointSelect: true,
-//       cursor: 'pointer',
-//       dataLabels: {
-//         enabled: true,
-//       }
-//     }
-//   },
-//   series: [{
-//     name: 'Revenue By Region',
-//     colorByPoint: true,
-//     data: [{
-//       name: 'By Region',
-//       y: data.total_data,
-//     }]
-//   }]
-// });
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+	$(document).ready(function(){
+    $('#city-dropdown').change(function(){
+   var Allcity = $('#city-dropdown').val();
+//    alert(country);
+   if(Allcity == "Allcity"){
+	$.ajax({
+   url:"{{ URL::to('/PlanAllCity') }}",
+   method:'get',
+   data:{query:Allcity},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
 
-//    }
-//     });
-//    }
-// })
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'All City Revenue'
+  },
+  tooltip: {
+  },
+  accessibility: {
+    point: {
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+      }
+    }
+  },
+  series: [{
+    name: 'Revenue By Region',
+    colorByPoint: true,
+    data: [{
+      name: 'By Region',
+      y: data.total_data,
+    }]
+  }]
+});
 
-// });
+   }
+    });
+   }
+})
+
+});
 
 
 $.ajaxSetup({
@@ -356,6 +447,8 @@ $.ajaxSetup({
 })
 
 });
+
+
 
 
 

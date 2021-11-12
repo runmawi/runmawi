@@ -1216,3 +1216,5 @@ Route::get('/cppusers_videodata', 'AdminVideosController@CPPVideos');
 Route::get('/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
 Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
 Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
+Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
+Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');

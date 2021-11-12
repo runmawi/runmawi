@@ -177,7 +177,6 @@ if($row->active == 0){ $active = "Pending" ; }elseif($row->active == 1){ $active
         <td>'.$row->rating.'</td>
         <td>'.$row->categories_name.'</td>
         <td>'.$row->username.'</td>
-         <td>'. $active.'</td>
          <td>'.$row->type.'</td>
          <td>'.$row->access.'</td>
         <td>'.$row->languages_name.'</td>

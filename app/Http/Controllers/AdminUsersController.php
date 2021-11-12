@@ -1037,7 +1037,7 @@ class AdminUsersController extends Controller
         ->join('region_views', 'region_views.video_id', '=', 'videos.id')
         ->orderBy('created_at', 'desc')
         ->where('region_views.countryname','=',$regions->name)
-        ->paginate(9);
+        ->paginate(19);
         // echo "<pre>"; print_r($data);exit();
 
       }
@@ -1198,6 +1198,115 @@ class AdminUsersController extends Controller
      }
     }
 
+    public function PlanAllCity(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+
+      if($query != '')
+      {
+
+        $data = DB::table('subscriptions')
+        ->select('users.username','plans.plans_name')
+        ->join('users', 'users.id', '=', 'subscriptions.user_id')
+        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->paginate(9);
+
+      }
+      else
+      {
+
+      }
+        $i = 1 ; 
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$i++.'</td>
+        <td>'.$row->username.'</td>
+         <td>'.$row->plans_name.'</td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+
+    public function PlanAllCountry(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+
+      if($query != '')
+      {
+
+        $data = DB::table('subscriptions')
+        ->select('users.username','plans.plans_name')
+        ->join('users', 'users.id', '=', 'subscriptions.user_id')
+        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->paginate(9);
+
+      }
+      else
+      {
+
+      }
+        $i = 1 ; 
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$i++.'</td>
+        <td>'.$row->username.'</td>
+         <td>'.$row->plans_name.'</td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
     public function PlanState(Request $request)
     {
         if($request->ajax())
@@ -1213,7 +1322,7 @@ class AdminUsersController extends Controller
         ->select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        ->where('subscriptions.regionname','=',$query)
+        // ->where('subscriptions.regionname','=',$query)
         ->paginate(9);
         // echo "<pre>"; print_r($data);exit();
 

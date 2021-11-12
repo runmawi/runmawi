@@ -200,9 +200,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i> Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i> All Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i> View Moderators</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add Role</a></li>   
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>All Role</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Commission </a></li>
 
                      </ul>
@@ -242,14 +242,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   </li>
                    
                   <div >
-                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div>
+                  <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
                      <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="las la-film"></i><span>Analytics </span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Users Signed Up</a></li>
+                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Revenue by region</a></li>
                      </ul>
@@ -385,9 +385,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
-                        <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
+                        <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
 
                      </ul>
@@ -428,14 +428,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </ul>
                   </li>
                   <div >
-                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div>
+                  <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
                      <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="las la-film"></i><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>
@@ -568,9 +568,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
-                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
 
                      </ul>
@@ -610,14 +610,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </ul>
                   </li>
                   <div >
-                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div>
+                  <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
                      <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="las la-film"></i><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>
@@ -747,9 +747,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>All Moderators</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
-                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>All Role</a></li>
+                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
 
                      </ul>
@@ -789,14 +789,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      </ul>
                   </li>
                   <div >
-                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div>
+                  <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
                      <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-film"></i><span>Analytics Management</span><i
+                        class="las la-film"></i><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Revenues</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>

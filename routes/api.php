@@ -190,4 +190,6 @@ Route::group([
     Route::get('RecentlyViewed ','ApiAuthController@RecentlyViewed');
     Route::post('AddRecentAudio ','ApiAuthController@AddRecentAudio');
     Route::get('SubscriptionEndNotification ','ApiAuthController@SubscriptionEndNotification');
+    Route::post('SubscriptionPayment','ApiAuthController@SubscriptionPayment');
+    Route::get('SubscriberedUsers ','ApiAuthController@SubscriberedUsers');
 });

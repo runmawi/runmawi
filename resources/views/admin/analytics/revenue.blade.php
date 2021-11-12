@@ -60,7 +60,7 @@
                   <div class="iq-card">
                      <div class="iq-card-header  justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">User Signed Up</h4>
+                           <h4 class="card-title">Users Analytics</h4>
                         </div>
                         </div>
                             <!-- <div class="row"> -->

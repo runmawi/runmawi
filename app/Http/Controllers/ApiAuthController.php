@@ -4065,4 +4065,84 @@ public function AddRecentAudio(Request $request){
     return response()->json($response, 200);
 }
 
+
+
+
+public function SubscriptionPayment(Request $request){
+        
+
+  // $request['user_id'];
+  $user_id = $request->user_id;
+  $name = $request->name;
+  $days = $request->days;
+  $price = $request->price;
+  $stripe_id = $request->stripe_id;
+  $stripe_status = $request->stripe_status;
+  $stripe_plan = $request->stripe_plan;
+  $created_at = $request->created_at;
+  $countryname = $request->countryname;
+  $regionname = $request->regionname;
+  $cityname = $request->cityname;
+
+  if($request->stripe_plan != ''){
+            $next_date = $days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+            $subscription = new Subscription;
+            $subscription->user_id  =  $user_id ;
+            $subscription->name  =  $name ;
+            $subscription->days  =  $days ;
+            $subscription->price  =  $price ;
+            $subscription->stripe_id  =  $stripe_id ;
+            $subscription->stripe_status   =  $stripe_status ;
+            $subscription->stripe_plan =  $stripe_plan;
+            $subscription->created_at =  $created_at;
+            $subscription->countryname = $countryname;
+            $subscription->regionname = $regionname;
+            $subscription->cityname = $cityname;
+            $subscription->ends_at = $date;
+            $subscription->save();
+
+            $message = "Added  to  Subscription";
+      $response = array(
+
+        "status" => "true",
+        'message'=> $message,
+      );
+     
+    } else {
+      $message = "Not Added  to  Subscription";
+
+      $response = array(
+        'status'=>'false',
+         'message'=> $message
+
+      );
+
+    }
+  return response()->json($response, 200);
+
+  }                                                                   
+
+
+
+  public function SubscriberedUsers() {
+
+    $stripe_plan = SubscriptionPlan();
+
+    $subscription_count = Subscription::all()->count();
+    if ($subscription_count > 0 ) {
+      $subscription = Subscription::all();
+        }else{
+    $subscription = [];
+    }
+    $response = array(
+        'status'=>'true',
+        'subscription'=> $subscription,
+    );
+    return response()->json($response, 200);
+}
+
+
+
+
 }

@@ -1,6 +1,7 @@
 @extends('admin.master')
 
 @section('content')
+<?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
 <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
 		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
   <div id="content-page" class="content-page">
@@ -86,7 +87,9 @@
                                  @foreach($users as $user)
                                     <tr>
                                        <td>
-                                          <img src="../assets/images/user/01.jpg" class="img-fluid avatar-50" alt="author-profile">
+                                       <img src="{{ URL::to('/') . '/public/uploads/avatars/' . $user->avatar }}"
+                                       class="img-fluid avatar-50" alt="author-profile">
+                                          <!-- <img src="../assets/images/user/01.jpg" class="img-fluid avatar-50" alt="author-profile"> -->
                                        </td>
                                        <td>@if(!empty($user->username)){{$user->username}} @else {{$user->name}} @endif</td>
                                        <td>{{$user->mobile}}</td>

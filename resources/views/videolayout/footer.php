@@ -28,6 +28,8 @@
                 <script type="text/javascript" src="js/videojs-watermark.min.js"></script>
 
      <?php } else{ } ?>
+    <script src="js/videojs-contrib-hls.js"></script>  
+
      <script type="text/javascript" src="js/videoplayer.js"></script>
 
             <!-- <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> -->

@@ -71,7 +71,7 @@
                                           <a class="iq-bg-warning" 
                                           onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:red"></i></span></a>
+                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>
