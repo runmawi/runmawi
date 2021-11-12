@@ -1218,3 +1218,6 @@ Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval'
 Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
 Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
 Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
+Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
+Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
+Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');

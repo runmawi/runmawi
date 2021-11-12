@@ -19,6 +19,7 @@ $package = $user_package->package;
   <title><?php echo $uppercase; ?> | <?php $settings = App\Setting::first(); echo $settings->website_name;?></title>
   <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
   <meta name="author" content="webnexs" />
+  <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
  <!-- <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
@@ -133,10 +134,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
+          <div style=""> 
+                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Pending Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -321,10 +326,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
+          <div style=""> 
+                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Pending Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -503,10 +512,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
+          <div style=""> 
+                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Pending Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -682,10 +695,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
+          <div style=""> 
+                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Pending Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -1438,6 +1455,7 @@ if(jQuery('#view-chart-13').length){
                 });
             });
         </script>
+  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
                            
     
 </body>

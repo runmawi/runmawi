@@ -23,7 +23,11 @@
 <style>
    
 </style>
-
+<?php 
+// foreach($videos as $video){
+// 	dd($video->cppuser->username);
+// }
+?>
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
@@ -58,7 +62,11 @@
 				<thead>
 					<tr>
 						<th><label>Image</label></th>
-						<th><label>Name</label></th>
+						<th><label>Title</label></th>
+						<th><label>User Name</label></th>
+						<th><label>Video Type</label></th>
+						<th><label>Video Access</label></th>
+						<th><label>Status</label></th>
 						<th><label>Description</label></th>
 						<th><label>Action</label></th>
 					</tr>
@@ -68,6 +76,21 @@
 					<tr>
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
+						<td> <?php echo @$video->cppuser->username; ?></td>
+						<?php if($video->access == "ppv" ){ ?>
+						<td> <?php echo "Paid"; ?></td>
+					<?php }else{ ?>
+						<td> <?php  echo "Free"; ?></td>
+					<?php }?>  
+						<td>{{ $video->access }}</td>
+						<?php if($video->active == 0){ ?>
+						<td class="bg-warning"> <?php echo "Pending"; ?></td>
+					<?php }elseif($video->active == 1){ ?>
+						<td class="bg-success"> <?php  echo "Approved"; ?></td>
+					<?php }elseif($video->active == 2){ ?>
+						<td class="bg-danger"> <?php  echo "Rejected"; ?></td>
+					<?php }?>  
+
 						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
 						<td class="d-flex align-items-center list-user-action">
                             <a href="{{ URL::to('live/play/') . '/' . $video->id }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a>

@@ -1542,12 +1542,18 @@ public function livestream(Request $request)
   // print_r($data);
   // exit();
   $livestream = json_decode($data['livestream']);
+  if(!empty($livestream->video_category_id)){
+    $video_category_id = $livestream->video_category_id;
+  }else{
+    $video_category_id = 0;
+  
+  }
   $title =$livestream->title;
   $slug =$livestream->slug;
   $mp4_url =$livestream->mp4_url;
   $details =$livestream->details;
   $description =$livestream->description;
-  $video_category_id =$livestream->video_category_id;
+  $video_category_id =$video_category_id;
   $rating =$livestream->rating;
   $language =$livestream->language;
   $year =$livestream->year;
@@ -1556,7 +1562,6 @@ public function livestream(Request $request)
   $featured =$livestream->featured;
   $active =$livestream->active;
   $banner =$livestream->banner;
-  $footer =$livestream->footer;
   $user_id =$livestream->user_id;
   $image = $data['image'];
 
@@ -1628,21 +1633,25 @@ if(isset($data['duration'])){
 }
 
 
+
+
+
+
 $movie = new LiveStream;
 
 $movie->title =$livestream->title;
+$slug =$livestream->slug;
 $movie->details =$livestream->details;
-$movie->video_category_id =$livestream->video_category_id;
+$movie->video_category_id =$video_category_id;
 $movie->description =$livestream->description;
 $movie->featured =$livestream->featured;
 $movie->language =$livestream->language;
 $movie->banner =$livestream->banner;
 $movie->duration =$livestream->duration;
-$movie->footer =$livestream->footer;
+// $movie->footer =$livestream->footer;
 $movie->slug =$livestream->slug;
 $movie->ppv_price =$livestream->ppv_price;
 $movie->access =$livestream->access;
-// $movie->status =$livestream->status;
 $movie->image =$file->getClientOriginalName();
 $movie->mp4_url =$livestream->mp4_url;
 $movie->year =$livestream->year;
@@ -3990,6 +3999,11 @@ public function livestream_update(Request $request){
          $livestream->duration = $time_seconds;
  }
 
+if(!empty($video['active'])){
+  $active = $video['active'];
+}else{
+  $active = 0;
+}
 
   // $shortcodes =$livestream->mp4_url->short_code;
   // $languages =$livestream->mp4_url->language;
@@ -4004,7 +4018,7 @@ public function livestream_update(Request $request){
   $video['duration'] =$livestream->duration;
   $video['footer'] =$livestream->footer;
   $video['slug'] =$livestream->slug;
-  // $video['status'] =$livestream->status;
+  $video['active'] =$active;
   $video['image'] =$file->getClientOriginalName();
   $video['mp4_url'] =$livestream->mp4_url;
   $video['year'] =$livestream->year;

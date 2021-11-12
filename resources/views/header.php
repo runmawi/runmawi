@@ -7,7 +7,7 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 // dd($uppercase);
-// exit();
+// exit();UA-42534483-14
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
@@ -430,7 +430,7 @@ toggle.addEventListener('input', (e) => {
   }
 });
           </script>
-          
+  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
       </header>
       <!-- Header End -->
      

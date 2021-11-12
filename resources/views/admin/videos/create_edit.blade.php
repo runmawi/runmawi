@@ -199,6 +199,12 @@
                                 <h5>Video Upload</h5>
                             </div>
                             <div class="row mt-5">
+                            <?php  if(!empty($video->embed_code)){ ?>
+                                <div class="col-sm-6 form-group">
+                                <label for="embed_code"><label>Embed URL:</label></label>
+                                    <input type="text" class="form-control" name="embed_code" value="@if(!empty($video->embed_code)){{ $video->embed_code }}@endif"  />
+                                </div>
+                                <?php   }elseif(!empty($video->mp4_url) && !empty($video->path)){ ?>
                                 <div class="col-sm-6 form-group">
                                     <?php if(!empty($video->embed_code  || $video->mp4_url  || $video->m3u8_url )) { ?>
                                     @if(!empty($video->type) && ($video->type == 'upload' || $video->type == 'file' || $video->type == 'mp4_url' || $video->type == 'm3u8_url' ))
@@ -210,6 +216,17 @@
                                         echo "NO Video Uploaded";
                                         }?>
                                 </div>
+                                <?php   } elseif(!empty($video->mp4_url)){ ?>
+                                <div class="col-sm-6 form-group">
+                                <label for="mp4_url"><label>Mp4 URL:</label>
+                                    <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($video->mp4_url)){{ $video->mp4_url }}@endif" />
+                                </div>
+                                <?php  }elseif(!empty($video->m3u8_url)){ ?>
+                                <div class="col-sm-6 form-group">
+                                <label for="m3u8_url"><label>m3u8 URL:</label>
+                                    <input type="text" class="form-control" name="m3u8_url" id="m3u8_url" value="@if(!empty($video->m3u8_url)){{ $video->m3u8_url }}@endif">
+                                </div>
+                                   <?php } ?>
                             </div>
                             <div class="row">
                                 <label class="p-2">Upload Trailer :</label>
@@ -322,6 +339,18 @@
                                         <?php } ?>
                                 </div>
                                 <div class="col-sm-6 form-group mt-3"> 
+                                    <label for="enable">Is this video :</label>
+                                        <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
+                                    <div><label class="mr-1">Enable</label></div>
+                                 <div>
+                                   <label class="switch">
+                                <input type="checkbox"  @if ($video->enable == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="enable" id="enable">
+                                <span class="slider round"></span>
+                                </label></div>
+                                <div><label class="ml-1">Disable</label></div>
+                                </div>
+                                </div>
+                                <div class="col-sm-6 form-group mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
                                             <div class="panel-title"> Status Settings</div> 
@@ -338,10 +367,16 @@
                                                 <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                             </div>
                                             <div class="clear"></div>
+                                            <div>
+                                                <label for="banner">Is this video Banner:</label>
+                                                <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
+                                            </div>
+                                            <div class="clear"></div>
                                         </div> 
                                     </div>
-                                </div>
+                                    
                             </div>
+                        </div>
                             
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />

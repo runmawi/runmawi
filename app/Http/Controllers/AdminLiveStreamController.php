@@ -303,6 +303,37 @@ class AdminLiveStreamController extends Controller
         return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
     
-    
+    public function CPPLiveVideosIndex()
+    {
+
+        // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+        $videos =    LiveStream::where('active', '=',0)
+            ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
+            ->select('moderators_users.username', 'live_streams.*')
+            ->orderBy('live_streams.created_at', 'DESC')->paginate(9);
+            // dd($videos);
+            $data = array(
+                'videos' => $videos,
+                );
+
+            return View('admin.livestream.livevideoapproval.live_video_approval', $data);
+       }
+       public function CPPLiveVideosApproval($id)
+       {
+           $video = LiveStream::findOrFail($id);
+           $video->active = 1;
+           $video->save();
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+          }
+
+          public function CPPLiveVideosReject($id)
+          {
+            $video = LiveStream::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+             }
     
 }

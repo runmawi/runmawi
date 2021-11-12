@@ -35,4 +35,8 @@ class LiveStream extends Model
 	public function languages(){
 		return $this->belongsTo('Language','language','id');
 	}
+	
+	public function cppuser(){
+		return $this->belongsTo('App\ModeratorsUser','user_id','id');
+	}
 }

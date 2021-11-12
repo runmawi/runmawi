@@ -99,7 +99,7 @@ class AdminVideosController extends Controller
       {
        foreach($data as $row)
        {
-        if($row->active == 0){ $active = "Pending" ; }elseif($row->active == 1){ $active = "Approved" ; } else{ $active = "Rejected" ;}
+        if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Approved" ;$class="bg-success"; } else{ $active = "Rejected" ;$class="bg-danger";}
         $username = $row->username ? 'Upload By'.' '.$row->username : "Upload By Admin";
         $output .= '
         <tr>
@@ -107,8 +107,8 @@ class AdminVideosController extends Controller
         <td>'.$row->rating.'</td>
         <td>'.$row->categories_name.'</td>
         <td>'.$username.'</td>
-         <td>'. $active.'</td>
-         <td>'.$row->type.'</td>
+        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
+        <td>'.$row->type.'</td>
          <td>'.$row->access.'</td>
         <td>'.$row->languages_name.'</td>
          <td>'.$row->views.'</td>
@@ -170,13 +170,14 @@ class AdminVideosController extends Controller
       {
        foreach($data as $row)
        {
-if($row->active == 0){ $active = "Pending" ; }elseif($row->active == 1){ $active = "Approved" ; } else{ $active = "Rejected" ;}
+if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Approved" ;$class="bg-success"; } else{ $active = "Rejected" ;$class="bg-danger";}
         $output .= '
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
         <td>'.$row->categories_name.'</td>
         <td>'.$row->username.'</td>
+         <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
          <td>'.$row->type.'</td>
          <td>'.$row->access.'</td>
         <td>'.$row->languages_name.'</td>
@@ -874,7 +875,41 @@ if(!empty($artistsdata)){
         }else{
          $video->global_ppv = null;
         }   
-
+        if(!empty($data['enable'])){
+            // dd($data['global_ppv']);
+    
+             $enable =$data['enable'];
+            }else{
+             $enable = 0;
+            }   
+            if(!empty($data['banner'])){
+                // dd($data['global_ppv']);
+        
+                 $banner =$data['banner'];
+                }else{
+                 $banner = 0;
+                }   
+                if(!empty($data['embed_code'])){
+                    // dd($data['global_ppv']);
+    
+                $embed_code =$data['embed_code'];
+                 }else{
+                $embed_code = null;
+            }   
+            if(!empty($data['mp4_url'])){
+            // dd($data['global_ppv']);
+    
+                $mp4_url =$data['mp4_url'];
+            }else{
+                $mp4_url = null;
+            }   
+            if(!empty($data['m3u8_url'])){
+                // dd($data['global_ppv']);
+        
+                    $m3u8_url =$data['m3u8_url'];
+                }else{
+                    $m3u8_url = null;
+                }   
 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
@@ -883,7 +918,10 @@ if(!empty($artistsdata)){
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
          $video->description = strip_tags($data['description']);
-         $video->update($data);
+         $video->banner =  $banner;
+         $video->enable =  $enable;
+        //  dd($data['enable']);
+         $video->save();
 
          if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -1229,6 +1267,9 @@ if(!empty($artistsdata)){
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
+             $video->banner =  $data['banner'];
+            $video->enable =  1;
+
              $video->update($data);
 
              $video = Video::findOrFail($id);

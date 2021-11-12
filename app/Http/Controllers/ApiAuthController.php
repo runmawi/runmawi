@@ -4086,6 +4086,7 @@ public function SubscriptionPayment(Request $request){
 
   if($request->stripe_plan != ''){
             $next_date = $days;
+            $current_date = date('Y-m-d h:i:s');    
             $date = Carbon::parse($current_date)->addDays($next_date);
             $subscription = new Subscription;
             $subscription->user_id  =  $user_id ;

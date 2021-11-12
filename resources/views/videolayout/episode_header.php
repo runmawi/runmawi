@@ -41,6 +41,8 @@ $uppercase =  ucfirst($request_url);
 // exit();
     if($playerui_settings->watermark == 1){ 
          ?>
+   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+
     <!-- <link rel="stylesheet" href="css/videojs.watermark.css"> -->
     <style>
         /* .vjs-watermark img {
@@ -118,6 +120,7 @@ $uppercase =  ucfirst($request_url);
 
     <!-- <script src="/dist/videojs-preview-thumbnails.js"></script> -->
 
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
 </head>
 

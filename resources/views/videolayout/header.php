@@ -13,6 +13,8 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
 
@@ -93,6 +95,8 @@ $uppercase =  ucfirst($request_url);
                 <script type="text/javascript" src="js/videojs-watermark.min.js"></script> -->
 
      <?php } else{ } ?>
+  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
