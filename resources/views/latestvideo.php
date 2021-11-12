@@ -2,11 +2,11 @@
 
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding: 0px 40px!important;">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
-                        <h1 class="vid-title">Latest Videos</h1>                     
+                        <h3 class="vid-title">Latest Videos</h3>                     
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
@@ -38,11 +38,14 @@
                                        </div>
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="btn btn-hover">
+                                          <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
+                                          Watch Now
                                           </span>
                                            </a>
+                                           <div>
+                                           <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a></div>
                                        </div>
                                        <div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $latest_video->id;?>">

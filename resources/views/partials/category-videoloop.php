@@ -84,13 +84,16 @@
                                         </span>
                                     </div>
                                     <div class="hover-buttons">
-                                        <a type="button" class="btn btn-primary btn-hover"
+                                        <a type="button" class="text-white"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
 
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Play Now
+                                            Watch Now
 
                                         </a>
+                                        <div>
+                                       <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a></div>
                                     </div>
 
                         <!--
