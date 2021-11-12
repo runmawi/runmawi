@@ -1740,7 +1740,7 @@ padding: 15px;
     color: #000000!important;
     position: absolute;
     top: 8px;
-    left: 50px;
+    left: 60px;
     background-color: #00a8e1;
     padding: 5px;
     font-size: 12px;
@@ -1749,6 +1749,7 @@ padding: 15px;
     font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 700;
     border-top: none;
+    border-right: none;
     border-bottom-left-radius: 15px;
    
    

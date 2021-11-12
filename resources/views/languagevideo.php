@@ -257,9 +257,12 @@ height: 30px !important;
                                              <a type="button" class="text-white" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
                                           <span class=" ">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
+                                          Watch Now
                                           </span>
-                                              </a>	
+                                              </a>
+                                           <div>
+                                           <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a></div>
                                        </div>
                                         <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">

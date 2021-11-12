@@ -38,12 +38,15 @@
                                     
                                     
                                    <div class="hover-buttons">
-                                       <a class="btn btn-primary btn-hover" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+                                       <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
                                     
                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                      Play Now
+                                      Watch Now
                                       
                                        </a>
+                                        <div>
+                                       <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a></div>
                                    </div>
 <!--
                                     <div>

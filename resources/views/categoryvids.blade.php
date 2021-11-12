@@ -11,7 +11,7 @@
                         <h2 class=""><?php echo __($data['category_title']);?></h2>
                      </div>
                      <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-3">
+                        <ul class="category-page list-inline  row p-0 mb-4">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
                                     @foreach($data['categoryVideos']  as $category_video) 
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
@@ -43,8 +43,11 @@
                                                     </div>
                                                     <div class="hover-buttons">
                                                         <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
+                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
                                                         </a>
+                                                         <div>
+                                       <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a></div>
                                                     </div>
 <!--
                                                     <div>
