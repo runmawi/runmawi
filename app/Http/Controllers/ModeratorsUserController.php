@@ -119,6 +119,19 @@ $request->validate([
       'password' => 'min:6',
       'confirm_password' => 'required_with:password|same:password|min:6'
   ]);
+  if(!empty($request->confirm_password)){
+    $confirm_password = $moderatorsuser->confirm_password;
+}else{
+  $confirm_password = $moderatorsuser->password;
+}
+if(!empty($request->ccode)){
+  $ccode = $moderatorsuser->ccode;
+  }else{
+    $ccode = 0;
+  }
+
+
+
     $moderatorsuser = new ModeratorsUser;
     $moderatorsuser->username = $request->username;
     $moderatorsuser->email = $request->email_id;
@@ -128,6 +141,8 @@ $request->validate([
     $moderatorsuser->hashedpassword = $password;
     $moderatorsuser->confirm_password = $request->confirm_password;
     $moderatorsuser->description = $request->description;
+    $moderatorsuser->status = 1;
+    $moderatorsuser->ccode = $ccode;
     // $moderatorsuser->hashedpassword = $request->picture;
     $moderatorsuser->user_role = $request->user_role;
     $moderatorsuser->user_permission = $permission;
@@ -202,14 +217,6 @@ if($request->picture == ""){
                     $message->to($request->email_id, $request->username)->subject($heading.$request->username);
                     });
 
-  
-    
-
-
-
-
-
-
 
     return back()->with('message', 'Successfully Users saved!.');
 
@@ -222,6 +229,52 @@ if($request->picture == ""){
 
 }
 }
+
+
+
+public function PendingUsers()
+{
+
+    // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+    $users =    ModeratorsUser::where('status', '=',0)->orderBy('created_at', 'DESC')->paginate(9);
+        // dd($videos);
+        $data = array(
+            'users' => $users,
+            );
+
+        return View('moderator.userapproval', $data);
+   }
+   public function CPPModeratorsApproval($id)
+   {
+       $users = ModeratorsUser::findOrFail($id);
+       $users->status = 1;
+       $users->save();
+       return \Redirect::back()->with('message','User Has Been Approved ');
+
+      }
+
+      public function CPPModeratorsReject($id)
+      {
+        $users = ModeratorsUser::findOrFail($id);
+        $users->status = 2;
+        $users->save();            
+        return \Redirect::back()->with('message','User Has Been Rejected');
+
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public function RolesPermission(Request $request)
 {
   $package_id = auth()->user()->id;
@@ -382,6 +435,7 @@ $userrolepermissioms = explode(",",$permission);
 
 // $user_permission = $data['user_permission'];
 // $permission = implode(",",$user_permission);
+$updated_at = date('Y-m-d h:i:s');    
 $id = $data['id'];
 $moderatorsuser = ModeratorsUser::find($id);
 $moderatorsuser['username'] = $data['username'];
@@ -389,6 +443,7 @@ $moderatorsuser['email'] = $data['email_id'];
 $moderatorsuser['mobile_number'] = $data['mobile_number'];
 $moderatorsuser['description'] = $data['description'];
 $moderatorsuser['user_role'] = $data['user_role'];
+$moderatorsuser['updated_at'] = $updated_at;
 $moderatorsuser['user_permission'] = $permission;
 
   $logopath = URL::to('/public/uploads/picture/');
@@ -523,8 +578,6 @@ return back()->with('message', 'Successfully Roles Updated!.');
 
 
         );
-
-  
        return view('moderator.view',$data);
       }else if($package == "Basic"){
 

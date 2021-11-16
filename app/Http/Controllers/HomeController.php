@@ -70,8 +70,9 @@ class HomeController extends Controller
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
             $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
 
-            return view('auth.login',compact('system_settings'));
+            return view('auth.login',compact('system_settings','user'));
 
             // return View::make('auth.login', $data);
 

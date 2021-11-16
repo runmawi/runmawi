@@ -331,9 +331,11 @@ i.fa.fa-google-plus {
                                 </div>
                                 <div class="col-md-12">
                                 <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
+                                </span>
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback" id="email_error" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -600,7 +602,42 @@ i.fa.fa-google-plus {
     node.val(node.val().replace(/[^a-z,^A-Z ]/g,'') ); }
 );
 </script>
+<script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
 
+
+	$(document).ready(function(){
+        $('#email_error').hide();
+
+$('#email').change(function(){
+    alert(($('#email').val()));
+
+	var email = $('#email').val();
+	$.ajax({
+        url:"{{ URL::to('/emailvalidation') }}",
+        method:'GET',
+data: {
+               _token: '{{ csrf_token() }}',
+               email: $('#email').val()
+
+         },        success: function(value){
+			console.log(value.email);
+            if(value.user_exits == "yes"){
+            $('#email_error').show();
+            }else{
+            $('#email_error').hide();
+            }
+        }
+    });
+})
+
+});
+	
+</script>
 <script type="text/javascript">
     
 function format(item, state) {
@@ -629,6 +666,10 @@ $(document).ready(function() {
   });
 
 });
+
+
+
+
    $(document).ready(function () {
       // $('.input-phone').intlInputPhone();
     //$('.js-example-basic-single').select2();

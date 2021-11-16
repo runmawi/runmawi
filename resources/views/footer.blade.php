@@ -1,4 +1,6 @@
 <?php $settings = App\Setting::first(); ?>
+<?php $user = App\User::where('id','=',1)->first(); ?>
+
 <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
@@ -27,7 +29,10 @@
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
+                        <?php if($user->package == 'Pro' ){ ?> 
+                          <li><a href="{{ URL::to('/cpp/register/') }}">Content Partner Portal</a></li>
+                        <?php }else{ }?>
                      </ul>
                   </div>
                   <!--<div class="col-lg-3 col-md-4">

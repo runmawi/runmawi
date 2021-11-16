@@ -14,7 +14,9 @@ class ModeratorsUser extends Model
      *
      * @var array
      */
+
                 
+    protected $guarded = ['id'];
 
     protected $fillable = [
         // 'id',
@@ -52,4 +54,12 @@ class ModeratorsUser extends Model
 
 	protected $table = 'moderators_users';
 
+    public function getAuthPassword()
+    {
+     return $this->password;
+    }
+
+    public function total_videos(){
+        return $this->belongsTo('App\Video','id','user_id');
+    }
 }

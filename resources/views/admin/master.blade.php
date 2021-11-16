@@ -206,6 +206,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i> Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i> View Moderators</a></li>
+                        <li><a href="{{ URL::to('/cpp/restrict/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add Role</a></li>   
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -395,6 +396,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -582,6 +584,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -650,7 +653,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                         </ul>
                     </li>
-                  <?php } elseif(auth()->user()->role = "admin"){ ;?>
+                  <?php } elseif(auth()->user()->role = "admin" && $package == "Pro" && $package == "Business"){ ;?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
@@ -765,6 +768,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>

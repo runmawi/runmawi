@@ -1,0 +1,239 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\ModeratorsPermission;
+use App\ModeratorsRole;
+use App\ModeratorsUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use URL;
+use App\UserAccess;
+use Hash;
+use Illuminate\Support\Facades\DB;
+use App\Video as Video;
+use App\VideoCategory as VideoCategory;
+use Image;
+use App\Menu as Menu;
+use App\Country as Country;
+use App\Slider as Slider;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\VideoResolution as VideoResolution;
+use App\VideosSubtitle as VideosSubtitle;
+use App\Language as Language;
+use App\VideoLanguage as VideoLanguage;
+use App\Subtitle as Subtitle;
+use App\Setting as Setting;
+use App\PaymentSetting as PaymentSetting;
+use App\SystemSetting as SystemSetting;
+use App\HomeSetting as HomeSetting;
+use Illuminate\Support\Str;
+use \App\MobileApp as MobileApp;
+use \App\MobileSlider as MobileSlider;
+use App\ThemeSetting as ThemeSetting;
+use App\SiteTheme as SiteTheme;
+use App\Page as Page;
+use App\LiveStream as LiveStream;
+use App\LiveCategory as LiveCategory;
+use \App\User as User;
+use Auth;
+use App\Role as Role;
+use App\Playerui as Playerui;
+use App\Plan as Plan;
+use App\PaypalPlan as PaypalPlan;
+use App\Coupon as Coupon;
+use App\Series as Series;
+use \App\Genre as Genre;
+use App\Episode as Episode;
+use \App\SeriesSeason as SeriesSeason;
+use App\Artist;
+use App\Seriesartist;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use ffmpeg\FFProbe;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
+use App\Http\Requests\StoreVideoRequest;
+use App\Jobs\ConvertVideoForStreaming;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\Videoartist;
+use App\AudioCategory as AudioCategory;
+use App\AudioAlbums as AudioAlbums;
+use Illuminate\Support\Facades\Cache;
+use App\Audio as Audio;
+use File;
+use App\VideoCommission as VideoCommission;
+use Mail;
+use App\EmailTemplate;
+use App\Settings;
+use App\Subscription;
+use App\PpvVideo;
+use App\RecentView;
+
+
+
+
+
+class ModeratorsLoginController extends Controller
+{   
+
+  public function index()
+  {
+
+    $settings = Setting::first();
+    $user = User::where('id','=',1)->first();
+
+    return view('moderator.register',compact('settings','user'));
+
+  }
+
+  public function Signin()
+  {
+
+    $settings = Setting::first();
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('moderator.login',compact('system_settings','user','settings'));
+  }
+
+  public function Login(Request $request)
+  {
+    $input = $request->all();
+
+    $userexits = ModeratorsUser::where('email','=',$input['email'])->first();
+    // 
+    if($userexits->status == 1){
+    $user = ModeratorsUser::where('status','=',1)->where('email','=',$input['email'])->where('password','=',$input['password'])->first();
+
+    if(!empty($user)){
+
+
+        
+         $settings = Setting::first();
+        
+         $total_subscription = Subscription::where('stripe_status','=','active')->count();
+        
+         $total_videos = Video::where('active','=',1)->count();
+        
+         $total_ppvvideos = PpvVideo::where('active','=',1)->count();
+         
+        $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
+        $top_rated_videos = Video::where("rating",">",7)->get();
+        $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
+        $recent_view = $recent_views->unique('video_id');
+        $page = 'admin-dashboard';
+        $data = array(
+                'settings' => $settings,
+                'total_subscription' => $total_subscription,
+                'total_recent_subscription' => $total_recent_subscription,
+                'total_videos' => $total_videos,
+                'top_rated_videos' => $top_rated_videos,
+                'recent_views' => $recent_view,
+                'page' => $page,
+                'total_ppvvideos' => $total_ppvvideos
+        );
+        
+		return \View::make('admin.dashboard', $data);
+    }else{
+        if($userexits->status == 0){
+            $message = "Your Request have been Pending";
+            return back()->with('message', $message);
+        }else{
+            $message = "Your Request have been rejected";
+            return back()->with('message', $message);
+        }
+    }
+    }
+
+
+  }
+
+  public function Store(Request $request)
+  {
+    $input = $request->all();
+    $request->validate([
+      'email_id' => 'required|email|unique:moderators_users,email',
+      'password' => 'min:6',
+  ]);
+// dd(AdminMail());
+    $moderatorsuser = new ModeratorsUser;
+    $moderatorsuser->username = $request->username;
+    $moderatorsuser->email = $request->email_id;
+    $moderatorsuser->mobile_number = $request->mobile_number;
+    $moderatorsuser->password = $request->password;
+    $password = Hash::make($request->password);
+    $moderatorsuser->hashedpassword = $password;
+    $moderatorsuser->confirm_password = $request->password;
+    $moderatorsuser->ccode = $request->ccode;
+    $moderatorsuser->description = $request->description;
+    $moderatorsuser->status = 0;
+    $logopath = URL::to('/public/uploads/picture/');
+    $path = public_path().'/uploads/picture/';
+    $picture = $request['picture'];
+if($picture != '') {   
+     //code for remove old file
+     if($picture != ''  && $picture != null){
+          $file_old = $path.$picture;
+         if (file_exists($file_old)){
+          unemail($file_old);
+         }
+     }
+     //upload new file
+     $file = $picture;
+     $moderatorsuser->picture  = $logopath.'/'.$file->getClientOriginalName();
+     $file->move($path, $moderatorsuser->picture);
+    
+}
+if($request->picture == ""){
+  $moderatorsuser->picture  = "Default.png";
+}else{
+ 
+    $moderatorsuser->picture = $file->getClientOriginalName();
+}
+    $moderatorsuser->save();
+    $user_id = $moderatorsuser->id;
+
+
+
+    $template = EmailTemplate::where('id','=',13)->first();
+    $heading =$template->heading; 
+    $string = Str::random(60); 
+    $settings = Setting::first();
+
+    Mail::send('emails.cpp_verify', array(
+        /* 'activation_code', $user->activation_code,*/
+        'activation_code'=> $string, 
+        'website_name' => $settings->website_name, 
+
+        ), function($message) use ($request,$template,$heading) {
+        $message->from(AdminMail(),'Flicknexs');
+        $message->to($request->email_id, $request->username)->subject($heading.$request->username);
+        });
+    // \Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name),
+    //  function($message)  use ($request) {
+    //       $message->to($request->email_id, $request->username)->subject('Verify your email address');
+    //    });
+     return redirect('/cpp/verify-request')->with('message', 'Successfully Users saved!.');
+
+
+
+                // $template = EmailTemplate::where('id','=',13)->first();
+                // $heading =$template->heading; 
+                //   echo "<pre>";
+                // print_r($heading);
+                // exit();
+    
+
+
+    return back()->with('message', 'Successfully Users saved!.');
+
+  }
+
+  public function VerifyRequest(Request $request)
+  {
+  
+   return \View::make('verify_request');
+  
+  }
+
+}

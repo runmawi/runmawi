@@ -57,15 +57,24 @@
                                     <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Description</th>
+                                    <!-- <th>Total Videos</th> -->
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                                     @foreach($moderatorsuser as $user)
                                     <tr id="{{ $user->id }}">
-                                    	<td valign="bottom" class="text-center"><img src="{{ $user->picture }}" width="50" height="50"></td>
+                                    	<td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/picture/' . $user->picture }}" width="50" height="50"></td>
                                         <td valign="bottom"><p>{{ $user->username }}</p></td>
                                         <td valign="bottom"><p>{{ $user->email }}</p></td>
                                         <td valign="bottom"><p>{{ $user->mobile_number }}</p></td>
                                         <td valign="bottom"><p>{{ $user->description }}</p></td>
+                                        <?php if($user->status == 0){ ?>
+                                       <td class="bg-warning"> <?php echo "Pending"; ?></td>
+                                        <?php }elseif($user->status == 1){ ?>
+                                        <td class="bg-success"> <?php  echo "Approved"; ?></td>
+                                        <?php }elseif($user->status == 2){ ?>
+                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
+                                        <?php }?> 
 
                                         <td>
                                             <div class="flex align-items-center list-user-action">

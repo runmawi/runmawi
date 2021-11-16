@@ -76,6 +76,23 @@ class SignupController extends Controller
             ,compact('register')
         ]);
     }
+
+    public function EmailValidation(Request $request) {
+      $email = $request->get('email');
+        
+        $uid = Auth::user();
+        $user = User::where('email',$email)->first();
+        if (!empty($user))
+        {
+            $value['user_exits'] = "yes";
+            return $value;  
+
+        }else{
+            $value['user_exits'] = "no";
+            return $value;  
+        }
+
+    }
     
     
     

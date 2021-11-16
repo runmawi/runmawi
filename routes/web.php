@@ -1221,3 +1221,16 @@ Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
 Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
 Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
+Route::get('cpp/register/',  'ModeratorsLoginController@index')->name('CPPRegister');
+Route::post('cpp/login',  'ModeratorsLoginController@Login')->name('CPPLogin');
+Route::get('cpp/signin',  'ModeratorsLoginController@Signin')->name('CPPSignin');
+Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
+Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
+
+
+
+Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
+Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
+Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
+
+Route::get('/emailvalidation', 'SignupController@EmailValidation');
