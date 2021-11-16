@@ -188,7 +188,7 @@ $uppercase =  ucfirst($request_url);
                                     </a>
                                </li>
                                <li class="nav-item nav-icon">
-                                  <a href="<?php echo URL::to('/cpp/register/') ?>" class="iq-sub-card">
+                                  <a href="<?php echo URL::to('/cpp/logout') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
                                            <i class="ri-logout-circle-line text-primary"></i>

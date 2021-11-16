@@ -413,6 +413,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
 });
 
+
 Route::post('/m3u8url',  'AdminVideosController@m3u8url');
 Route::post('/embededcode',  'AdminVideosController@Embededcode');
 Route::post('/mp4url',  'AdminVideosController@Mp4url');
@@ -1222,6 +1223,9 @@ Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex
 Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
 Route::get('cpp/register/',  'ModeratorsLoginController@index')->name('CPPRegister');
+
+
+
 Route::post('cpp/login',  'ModeratorsLoginController@Login')->name('CPPLogin');
 Route::get('cpp/signin',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
@@ -1234,3 +1238,112 @@ Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModerato
 Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
 
 Route::get('/emailvalidation', 'SignupController@EmailValidation');
+
+
+// CPP USer 
+
+
+Route::get('/cpp/dashboard', 'ModeratorsLoginController@IndexDashboard');
+Route::get('/cpp/logout', 'ModeratorsLoginController@logout');
+
+
+//  CPP Video Management
+Route::get('/cpp/videos', 'CPPAdminVideosController@CPPindex');
+Route::get('/cpp/videos/edit/{id}', 'CPPAdminVideosController@CPPedit');
+Route::get('/cpp/videos/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPdestroy'));
+Route::get('/cpp/videos/create', 'CPPAdminVideosController@CPPcreate');
+Route::post('/cpp/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPfileupdate'));
+Route::post('/cpp/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore'));
+Route::post('/cpp/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
+
+Route::get('/cpp/cppusers_videodata', 'CPPAdminVideosController@CPPVideo');
+Route::get('/cpp/live_search', 'CPPAdminVideosController@CPPlive_search');
+Route::post('/cpp/m3u8url',  'CPPAdminVideosController@CPPm3u8url');
+Route::post('/cpp/embededcode',  'CPPAdminVideosController@CPPEmbededcode');
+Route::post('/cpp/mp4url',  'CPPAdminVideosController@CPPMp4url');
+Route::post('/cpp/uploadFile',  'CPPAdminVideosController@CPPuploadFile');
+
+
+
+// CPP Video Categories 
+
+Route::post('/cpp/videos/categories/store', array('before' => 'demo', 'uses' => 'CPPAdminVideoCategoriesController@CPPstore'));
+Route::post('/cpp/videos/categories/order', array('before' => 'demo', 'uses' => 'CPPAdminVideoCategoriesController@CPPorder'));
+Route::get('/cpp/videos/categories/edit/{id}', 'CPPAdminVideoCategoriesController@CPPedit');
+Route::post('/cpp/videos/categories/update','CPPAdminVideoCategoriesController@CPPupdate');
+Route::get('/cpp/videos/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminVideoCategoriesController@CPPdestroy'));
+Route::post('/cpp/category_order', 'CPPAdminVideoCategoriesController@CPPcategory_order');
+Route::get('/cpp/videos/categories', 'CPPAdminVideoCategoriesController@CPPindex');
+
+
+// CPP Audios Categories 
+
+Route::get('/cpp/audios', 'CPPAdminAudioController@CPPindex');
+Route::get('/cpp/audios/edit/{id}', 'CPPAdminAudioController@CPPedit');
+Route::post('/cpp/audios/update', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPupdate'));
+Route::get('/cpp/audios/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPdestroy'));
+Route::get('/cpp/audios/create', 'CPPAdminAudioController@CPPcreate');
+Route::post('/cpp/audios/store', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPstore'));
+Route::post('/cpp/uploadAudio',  'CPPAdminAudioController@CPPuploadAudio');
+Route::post('/cpp/Audiofile',  'CPPAdminAudioController@CPPAudiofile');
+Route::post('/cpp/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate'));
+
+
+//CPP Audio Categories
+Route::get('/cpp/audios/categories', 'CPPAdminAudioCategoriesController@CPPindex');
+Route::post('/cpp/audios/categories/store', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPstore'));
+Route::post('/cpp/audios/categories/order', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPorder'));
+Route::get('/cpp/audios/categories/edit/{id}', 'CPPAdminAudioCategoriesController@CPPedit');
+Route::post('/cpp/audios/categories/update', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPupdate'));
+Route::get('/cpp/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPdestroy'));
+
+
+//Artist Routes
+Route::get('/cpp/artists', 'CPPAdminArtistsController@CPPindex');
+Route::get('/cpp/artists/create', 'CPPAdminArtistsController@CPPcreate');
+Route::post('/cpp/artists/store',  'CPPAdminArtistsController@CPPstore');
+Route::get('/cpp/artists/edit/{id}', 'CPPAdminArtistsController@CPPedit');
+Route::post('/cpp/cpp/artists/update', 'CPPAdminArtistsController@CPPupdate');
+Route::get('/cpp/artists/delete/{id}','CPPAdminArtistsController@CPPdestroy');
+Route::post('/cpp/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate'));
+
+//Admin Audio Albums
+    Route::get('/cpp/audios/albums', 'CPPAdminAudioCategoriesController@CPPalbumIndex');
+    Route::post('/cpp/audios/albums/store', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPstoreAlbum'));
+    Route::post('/cpp/audios/albums/order', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPorderAlbum'));
+    Route::get('/cpp/audios/albums/edit/{id}', 'CPPAdminAudioCategoriesController@CPPeditAlbum');
+    Route::post('/cpp/audios/albums/update', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPupdateAlbum'));
+    Route::get('/cpp/audios/albums/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPdestroyAlbum'));
+
+
+    // CPP Page 
+
+
+    Route::get('/cpp/pages', 'CPPAdminPageController@CPPindex');
+    Route::get('/cpp/pages/create', 'CPPAdminPageController@CPPcreate');
+    Route::post('/cpp/pages/store', 'CPPAdminPageController@CPPstore');
+    Route::get('/cpp/pages/edit/{id}', 'CPPAdminPageController@CPPedit');
+    Route::post('/cpp/pages/update', 'CPPAdminPageController@CPPupdate');
+    Route::get('/cpp/pages/delete/{id}','CPPAdminPageController@CPPdestroy');
+
+    // CPP Livestream 
+
+
+
+    Route::get('/cpp/livestream', 'CPPAdminLiveStreamController@CPPindex');
+    Route::get('/cpp/livestream/edit/{id}', 'CPPAdminLiveStreamController@CPPedit');
+    Route::post('/cpp/livestream/update','CPPAdminLiveStreamController@CPPupdate');
+    Route::get('/cpp/livestream/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveStreamController@CPPdestroy'));
+    Route::get('/cpp/livestream/create', 'CPPAdminLiveStreamController@CPPcreate');
+    Route::post('/cpp/livestream/store', array('before' => 'demo', 'uses' => 'CPPAdminLiveStreamController@CPPstore'));
+
+
+    // CPP Livestream Categories
+
+
+    Route::get('/cpp/livestream/categories', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPindex'));
+    Route::post('/cpp/livestream/categories/store', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPstore'));
+    Route::post('/cpp/livestream/categories/order', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPorder'));
+    Route::get('/cpp/livestream/categories/edit/{id}', 'CPPAdminLiveCategoriesController@CPPedit');
+    Route::post('/cpp/livestream/categories/update','CPPAdminLiveCategoriesController@CPPupdate');
+    Route::get('/cpp/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPdestroy'));

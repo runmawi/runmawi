@@ -4109,7 +4109,12 @@ public function SubscriptionPayment(Request $request){
         "status" => "true",
         'message'=> $message,
       );
-     
+      if($stripe_status == "active"){
+      $user = new User();
+      $user->role = "subscriber";
+      // $user->active = 1;
+      $user->save();
+      }
     } else {
       $message = "Not Added  to  Subscription";
 

@@ -103,7 +103,7 @@ i.fa.fa-google-plus {
                         @endif
                                               
                   </div>
-                     <form method="POST" action="{{ route('cpp.login') }}" class="mt-4">
+                     <form method="POST" action="{{ URL::to('cpp/login') }}" class="mt-4">
                      <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 
                          @csrf
