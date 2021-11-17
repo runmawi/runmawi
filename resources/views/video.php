@@ -393,8 +393,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                 </div>
             </div>
             <?php   } ?>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-xs-12">
+
             <h4>Cast & crew</h4>
           <?php
             foreach($artists as $key => $artist){
@@ -407,8 +406,6 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
             <p class="trending-dec w-100 mb-0 text-white" >Description by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp; -->
      <?php } }  ?>
             
-            </div>
-
         <div class="text-white">
             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
         </div>
@@ -629,7 +626,6 @@ $('#videoplay').on('click',function(event) {
     videojs_player.play();
 });
 </script>
-        </div>
     </div>
 <?php include('footer.blade.php');?>
 
