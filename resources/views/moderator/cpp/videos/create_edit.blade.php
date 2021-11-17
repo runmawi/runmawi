@@ -92,7 +92,7 @@
                      <div class="iq-card-body">
                          <h5>Video Info Details</h5>
                         <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-                           <div class="row">
+                        <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
                                     <input type="hidden" class="form-control"  name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
@@ -146,14 +146,12 @@
                               </div>   
                               <div class="col-sm-6 form-group mt-3">
                                          <label><h5>Age Restrict :</h5></label>
-                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
-                                             <!-- <option>--Video Type--</option> -->
-                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
-                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
-                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
-                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
-                                          
-                                          </select>
+                                         <select class="form-control" id="age_restrict" name="age_restrict">
+                                                    <option selected disabled="">Choose Age</option>
+                                                    @foreach($age_categories as $age)
+                                                        <option value="{{ $age->slug }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
+                                                    @endforeach
+                                                </select>
                                       </div>
                                  <div class="col-sm-12 form-group">
                                      
@@ -218,13 +216,15 @@
                                 </div>
                                 <?php   } elseif(!empty($video->mp4_url)){ ?>
                                 <div class="col-sm-6 form-group">
-                                <label for="mp4_url"><label>Mp4 URL:</label>
+                                <label for="mp4_url">Mp4 URL:</label>
                                     <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($video->mp4_url)){{ $video->mp4_url }}@endif" />
                                 </div>
                                 <?php  }elseif(!empty($video->m3u8_url)){ ?>
-                                <div class="col-sm-6 form-group">
-                                <label for="m3u8_url"><label>m3u8 URL:</label>
+                                <div class="col-sm-12 form-group">
+                                    <div class="col-sm-8">
+                                <label for="m3u8_url">m3u8 URL:</label>
                                     <input type="text" class="form-control" name="m3u8_url" id="m3u8_url" value="@if(!empty($video->m3u8_url)){{ $video->m3u8_url }}@endif">
+                                    </div>
                                 </div>
                                    <?php } ?>
                             </div>
@@ -465,7 +465,7 @@
 	
 
    function NumAndTwoDecimals(e , field) {
-       alert(); 
+    //    alert(); 
         var val = field.value;
         var re = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)$/g;
         var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;

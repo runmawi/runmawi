@@ -185,7 +185,7 @@ $.ajaxSetup({
 
 var url =$('#m3u8url').val();
 $('#m3u8_video_url').change(function(){
-	alert($('#m3u8_video_url').val());
+	// alert($('#m3u8_video_url').val());
 	$.ajax({
         url: url,
         type: "post",
@@ -216,7 +216,7 @@ $.ajaxSetup({
 $(document).ready(function(){
     var url =$('#mp4url').val();
     $('#mp4_url').change(function(){
-    alert($('#mp4_url').val());
+    // alert($('#mp4_url').val());
     $.ajax({
         url: url,
         type: "post",
@@ -248,7 +248,7 @@ $.ajaxSetup({
 
 var url =$('#embed_url').val();
 $('#embed_code').change(function(){
-	alert($('#embed_code').val());
+	// alert($('#embed_code').val());
 	$.ajax({
         url: url,
         type: "post",
@@ -311,7 +311,7 @@ data: {
                         <div class="iq-card-body">
                             <h5>Video Info Details</h5>
                             <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-                                <div class="row">
+                            <div class="row">
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-sm-6 form-group" >
@@ -372,7 +372,7 @@ data: {
                                                 <select class="form-control" id="age_restrict" name="age_restrict">
                                                     <option selected disabled="">Choose Age</option>
                                                     @foreach($age_categories as $age)
-                                                        <option value="{{ $age->id }}" @if(!empty($video->language) && $video->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+                                                        <option value="{{ $age->slug }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -543,6 +543,7 @@ data: {
                                         <?php } ?>
                                 </div>
                                         
+                                        
                                 <!-- <div class="col-sm-6 mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
@@ -685,7 +686,7 @@ $(document).ready(function(){
 	
 
    function NumAndTwoDecimals(e , field) {
-       alert(); 
+    //    alert(); 
         var val = field.value;
         var re = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)$/g;
         var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;

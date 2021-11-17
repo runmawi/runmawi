@@ -372,7 +372,7 @@ data: {
                                                 <select class="form-control" id="age_restrict" name="age_restrict">
                                                     <option selected disabled="">Choose Age</option>
                                                     @foreach($age_categories as $age)
-                                                        <option value="{{ $age->id }}" @if(!empty($video->language) && $video->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+                                                        <option value="{{ $age->slug }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

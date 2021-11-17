@@ -713,11 +713,10 @@ if(!empty($artistsdata)){
             $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
             $file->move($path, $trailer_vid);
             $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
-
-       } else {
-           $data['trailer'] = $video->trailer;
-       }  
-       $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+               $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+            } else {
+                $data['trailer'] = $video->trailer;
+            }  
     //    dd($trailer);
         
            $update_mp4 = $request->get('video');
@@ -818,11 +817,12 @@ if(!empty($artistsdata)){
               $file = $image;
               $data['image']  = $file->getClientOriginalName();
               $file->move($image_path, $data['image']);
+         $video->image  = $file->getClientOriginalName();
+
 
          } else {
              $data['image'] = $video->image;
          }
-         $video->image  = $file->getClientOriginalName();
         
         
 

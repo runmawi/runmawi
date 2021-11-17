@@ -146,14 +146,12 @@
                               </div>   
                               <div class="col-sm-6 form-group mt-3">
                                          <label><h5>Age Restrict :</h5></label>
-                                          <select id="age_restrict" name="age_restrict" class="form-control" required>
-                                             <!-- <option>--Video Type--</option> -->
-                                             <option value="3" @if(!empty($video->age_restrict) && $video->age_restrict == '3'){{ 'selected' }}@endif> 3 Plus</option>
-                                             <option value="8" @if(!empty($video->age_restrict) && $video->age_restrict == '8'){{ 'selected' }}@endif >8 Plus</option>
-                                             <option value="13" @if(!empty($video->age_restrict) && $video->age_restrict == '13'){{ 'selected' }}@endif >13 Plus</option>
-                                             <option value="18" @if(!empty($video->age_restrict) && $video->age_restrict == '18'){{ 'selected' }}@endif >18 Plus</option>
-                                          
-                                          </select>
+                                         <select class="form-control" id="age_restrict" name="age_restrict">
+                                                    <option selected disabled="">Choose Age</option>
+                                                    @foreach($age_categories as $age)
+                                                        <option value="{{ $age->slug }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
+                                                    @endforeach
+                                                </select>
                                       </div>
                                  <div class="col-sm-12 form-group">
                                      
