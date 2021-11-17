@@ -172,6 +172,7 @@ class AdminLiveStreamController extends Controller
         $movie->image =$file->getClientOriginalName();
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
+        $movie->active = 1 ;
         $movie->user_id =Auth::User()->id;
         $movie->save();
 
@@ -296,6 +297,7 @@ class AdminLiveStreamController extends Controller
          $languages = $request['language'];
          $data['ppv_price'] = $request['ppv_price'];
          $data['access'] = $request['access'];
+         $data['active'] = 1 ;
 
         $video->update($data);
       

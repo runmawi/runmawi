@@ -348,6 +348,26 @@ function TotalVisitorcount(){
     return  $sum_visitor; 
 }
 
+function TotalVideocount(){
+    $video_count = App\Video::all()->count('id');
+    
+    return  $video_count; 
+}
+
+function TotalSubscribercount(){
+
+    $totalsubscribercount = App\Subscription::all()->count('id');
+    
+    return  $totalsubscribercount; 
+}
+
+function TotalNewSubscribercount(){
+
+    $newsubscribercount = App\Subscription::whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+    
+    return  $newsubscribercount; 
+}
+
 function GetWebsiteName(){
     $setting = App\Setting::first();
     return  $setting->website_name; 

@@ -83,7 +83,7 @@
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
-                            <p style="margin-top: -3%;margin-left: 45%;">Trailers Can Be Uploaded From Video Edit Screen</p>
+                            <p style="margin-top: -3%;margin-left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trailers Can Be Uploaded From Video Edit Screen</p>
                                 
                             </div> 
    

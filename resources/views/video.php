@@ -471,6 +471,8 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                 </div>
     
     </div>
+<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
+
     <script type="text/javascript"> 
         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>
@@ -529,12 +531,13 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
             });
  
             function pay(amount) {
+              var publishable_key = $('#publishable_key').val();
 
               var video_id = $('#video_id').val();
 
               var handler = StripeCheckout.configure({
 
-                key: 'pk_test_hklBv33GegQSzdApLK6zWuoC00pEBExjiP',
+                key: publishable_key,
                 locale: 'auto',
                 token: function (token) {
 // You can access the token ID with `token.id`.

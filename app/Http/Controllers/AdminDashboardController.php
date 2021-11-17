@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use \App\User as User;
 use \App\Setting as Setting;
 use \App\Video as Video;
+use \App\VideoCategory as VideoCategory;
 use \App\PpvVideo as PpvVideo;
 use \App\Subscription as Subscription;
 use \Redirect as Redirect;
@@ -28,7 +29,13 @@ class AdminDashboardController extends Controller
             {
                 return redirect('/home');
             }
-        
+        $videocategory = VideoCategory::get();
+        foreach($videocategory as $key => $category){
+            // $video_category['name_category'] = $category->name;
+            $video_category[$category->name] = Video::where('video_category_id','=',$category->id)->count();
+        }
+        // dd($video_category);
+
          $settings = Setting::first();
         
          $total_subscription = Subscription::where('stripe_status','=','active')->count();
@@ -50,7 +57,9 @@ class AdminDashboardController extends Controller
                 'top_rated_videos' => $top_rated_videos,
                 'recent_views' => $recent_view,
                 'page' => $page,
-                'total_ppvvideos' => $total_ppvvideos
+                'total_ppvvideos' => $total_ppvvideos,
+                'video_category' => $video_category
+
         );
         
 		return View::make('admin.dashboard', $data);

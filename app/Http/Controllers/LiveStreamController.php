@@ -16,6 +16,10 @@ use Auth;
 use View;
 use Hash;
 use DB;
+use Session;
+use App\PaymentSetting;
+
+
 use Illuminate\Support\Facades\Cache;
 //use Image;
 use App\SystemSetting as SystemSetting;
@@ -62,11 +66,31 @@ class LiveStreamController extends Controller
              if(!Auth::guest()):
                     $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'live')->first();
              endif;
-
+             $session = Session::all();
+            //  dd($session['password_hash']);
+             if(!empty($session['password_hash'])){
+              $password_hash = $session['password_hash'];
+             }else{
+              $password_hash = "";
+             }
+             $payment_settings = PaymentSetting::first();  
+              $mode = $payment_settings->live_mode ;
+                if($mode == 0){
+                    $secret_key = $payment_settings->test_secret_key ;
+                    $publishable_key = $payment_settings->test_publishable_key ;
+                }elseif($mode == 1){
+                    $secret_key = $payment_settings->live_secret_key ;
+                    $publishable_key = $payment_settings->live_publishable_key ;
+                }else{
+                    $secret_key= null;
+                    $publishable_key= null;
+                }            
            $data = array(
                  'video' => $categoryVideos,
+                 'password_hash' => $password_hash,
+                 'publishable_key' => $publishable_key,
                  'ppv_exist' => $ppv_exist,
-                 'ppv_price' => $settings->ppv_price,
+                 'ppv_price' => $categoryVideos->ppv_price,
                  'watchlatered' => $watchlater,
                  'mywishlisted' => $wishlisted
            );

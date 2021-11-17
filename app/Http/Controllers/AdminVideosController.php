@@ -915,6 +915,7 @@ if(!empty($artistsdata)){
          $languages=$request['sub_language'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
+         $video->active=1;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
          $video->description = strip_tags($data['description']);
@@ -1264,6 +1265,7 @@ if(!empty($artistsdata)){
              $languages=$request['sub_language'];
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
+            $video->active = 1 ;
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
@@ -1339,6 +1341,7 @@ if(!empty($artistsdata)){
             $video->mp4_url = $data['mp4_url'];
             $video->type = 'mp4_url';
             $video->draft = 0;
+            $video->active = 1 ;
             $video->user_id = Auth::user()->id;
             $video->save();
             
@@ -1367,6 +1370,7 @@ if(!empty($artistsdata)){
             $video->m3u8_url = $data['m3u8_url'];
             $video->type = 'm3u8_url';
             $video->draft = 0;
+            $video->active = 1 ;
             $video->user_id = Auth::user()->id;
             $video->save();
             
@@ -1399,6 +1403,7 @@ if(!empty($artistsdata)){
             $video->embed_code = $data['embed'];
             $video->type = 'embed';
             $video->draft = 0;
+            $video->active = 1 ;
             $video->user_id = Auth::user()->id;
             $video->save();
             
@@ -1407,6 +1412,7 @@ if(!empty($artistsdata)){
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
             $value['video_id'] = $video_id;
+            
 
             return $value;  
        }

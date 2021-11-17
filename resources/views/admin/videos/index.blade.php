@@ -112,8 +112,12 @@
                               </tbody>
                            </table>
                            <div class="clear"></div>
-
-		<div class="pagination-outter"><?= $videos->appends(Request::only('s'))->render(); ?></div>
+		<div class="pagination-outter" style="margin-left: 800;">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- showing 1 to 5 of 2095 -->
+      <h6>Showing {{ $videos->firstItem() }} - {{ $videos->lastItem() }} of {{ $videos->total() }} </h6>
+      <!-- (for page {{ $videos->currentPage() }} ) -->
+      <?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
                         </div>

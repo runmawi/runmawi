@@ -33,7 +33,7 @@
                                     <th>Subscription Title</th>
                                     <th>Payment ID</th>
                                     <th>Payment Mode</th>
-                                    <th>Padi Amount</th>
+                                    <th>Paid Amount</th>
                                     <th>Expiry Date</th>
                                     <th>Status</th>
                                     <th>Action</th>

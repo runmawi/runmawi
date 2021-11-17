@@ -39,7 +39,7 @@
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
 <?php
- if(!empty($data['password_hash'])){
+ if(!empty($password_hash)){
 if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
 <div id="video_bg"> 
         <div class="container">
@@ -69,7 +69,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                 </div>
             </div>
 
-            <?php } } else { ?>       
+            <?php  } else { ?>       
                 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
                     <div id="video_bg_dim" <?php if ($video->access == 'guest' || ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
@@ -82,7 +82,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php } }?>
             
             <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
@@ -372,6 +372,8 @@ settings: "unslick" // destroys slick
 });
 </script>
 
+<input type="hidden" id="purchase_url" name="purchase_url" value="<?php echo URL::to("/purchase-live") ?>">
+<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -379,6 +381,12 @@ settings: "unslick" // destroys slick
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <script type="text/javascript">
+var livepayment = $('#purchase_url').val();
+var publishable_key = $('#publishable_key').val();
+
+
+// alert(livepayment);
+
 $(document).ready(function () {  
 $.ajaxSetup({
 headers: {
@@ -388,12 +396,11 @@ headers: {
 });
 
 function pay(amount) {
-
 var video_id = $('#video_id').val();
 
 var handler = StripeCheckout.configure({
 
-key: 'pk_test_z8OQoKfyOCjAxMfPD7MbzBy200bWaBdwRI',
+key: publishable_key,
 locale: 'auto',
 token: function (token) {
 // You can access the token ID with `token.id`.
@@ -403,9 +410,9 @@ console.log(token);
 $('#token_response').html(JSON.stringify(token));
 
 $.ajax({
-url: '{{ URL::to("/purchase-live") }}',
+url: livepayment,
 method: 'post',
-data: { tokenId: token.id, amount: amount , video_id: video_id },
+data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
 success: (response) => {
 swal("You have done  Payment !");
 setTimeout(function() {

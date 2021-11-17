@@ -44,6 +44,8 @@ use Session;
 use App\LiveStream as LiveStream;
 use App\AudioAlbums as AudioAlbums;
 use App\UserLogs as UserLogs;
+use App\CurrencySetting as CurrencySetting;
+
 
 
 class HomeController extends Controller
@@ -231,8 +233,11 @@ class HomeController extends Controller
              }else{
                  $cnt_watching = '';
              }
-
+             $currency = CurrencySetting::first();
+            //  $currency->symbol
+            //  dd($currency);
              $data = array(
+                'currency' => $currency,
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                 //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
                  'banner' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
@@ -633,9 +638,12 @@ class HomeController extends Controller
              $ppv_gobal_price = null ;
 
          }
+         $currency = CurrencySetting::first();
+
         $data = array(
             'latest_videos'=>$latest_videos,
             'ppv_gobal_price' => $ppv_gobal_price,
+            'currency'=>$currency,
         );
         
         return View('latestvideo',$data);

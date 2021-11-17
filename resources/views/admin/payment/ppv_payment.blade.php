@@ -33,7 +33,7 @@
                                     <th>Video Title</th>
                                     <th>Payment ID</th>
                                     <th>Payment Mode</th>
-                                    <th>Padi Amount</th>
+                                    <th>Paid Amount</th>
                                     <th>Admin Amount</th>
                                     <th>Moderator Amount</th>
                                     <th>Status</th>

@@ -543,7 +543,7 @@ data: {
                                         <?php } ?>
                                 </div>
                                         
-                                <div class="col-sm-6 mt-3"> 
+                                <!-- <div class="col-sm-6 mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
                                             <div class="panel-title">
@@ -572,7 +572,7 @@ data: {
                                         </div> 
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                                 @if(isset($video->id))
                                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />

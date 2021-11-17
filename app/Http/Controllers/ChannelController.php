@@ -23,6 +23,7 @@ use App\RegionView;
 use App\UserLogs;
 use App\Videoartist;
 use App\Artist;
+use App\PaymentSetting;
 use URL;
 use Auth;
 use View;
@@ -36,6 +37,7 @@ use App\MoviesSubtitles as MoviesSubtitles;
 // use App\Video as Video;
 use Carbon\Carbon;
 use DateTime;
+use App\CurrencySetting as CurrencySetting;
 
 
 
@@ -79,10 +81,14 @@ class ChannelController extends Controller
              $ppv_gobal_price = null ;
 
          }
+         $currency = CurrencySetting::first();
+        //  dd($currency);
         $data = array(
+                'currency'=> $currency,
                 'category_title'=>$category_title[0],
                 'categoryVideos'=>$categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
+
             );
         
        return view('categoryvids',['data'=>$data]);
@@ -239,13 +245,25 @@ class ChannelController extends Controller
             
             
                 $artists = [];
-
+                $payment_settings = PaymentSetting::first();  
+                $mode = $payment_settings->live_mode ;
+                  if($mode == 0){
+                      $secret_key = $payment_settings->test_secret_key ;
+                      $publishable_key = $payment_settings->test_publishable_key ;
+                  }elseif($mode == 1){
+                      $secret_key = $payment_settings->live_secret_key ;
+                      $publishable_key = $payment_settings->live_publishable_key ;
+                  }else{
+                      $secret_key= null;
+                      $publishable_key= null;
+                  }    
                  $data = array(
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
                      'ppv_exist' => $ppv_exist,
                      'ppv_price' => 100,
+                    'publishable_key' => $publishable_key,
                      'watchlatered' => $watchlater,
                      'mywishlisted' => $wishlisted,
                      'watched_time' => $watchtime,

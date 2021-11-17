@@ -62,7 +62,7 @@
 			<td valign="bottom"><p>{{ $artist->artist_name }}</p></td>
 			<td>
 				<p class="d-flex align-items-center list-user-action">
-					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="lar la-eye"></i> </a>
+					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="ri-pencil-line"></i> </a>
 					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
                                                 class="ri-delete-bin-line"></i></a>
 				</p>

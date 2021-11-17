@@ -60,9 +60,9 @@
                                         <p class="p-tag">
                                             
                                             <?php if(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price ; 
+                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv ;
+                                                    echo $category_video->global_ppv .' '.$currency->symbol;
                                                 } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo "Free"; 
                                                 }

@@ -350,7 +350,7 @@
                                 <div><label class="ml-1">Disable</label></div>
                                 </div>
                                 </div>
-                                <div class="col-sm-6 form-group mt-3"> 
+                                <!-- <div class="col-sm-6 form-group mt-3"> 
                                     <div class="panel panel-primary" data-collapsed="0"> 
                                         <div class="panel-heading"> 
                                             <div class="panel-title"> Status Settings</div> 
@@ -376,7 +376,7 @@
                                     </div>
                                     
                             </div>
-                        </div>
+                        </div> -->
                             
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />

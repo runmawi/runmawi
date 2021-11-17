@@ -20,9 +20,9 @@
                     <div class="corner-text-wrapper">
                     <div class="corner-text">
                         <?php  if(!empty($cont_video->ppv_price)){?>
-                        <p class="p-tag"><?php echo $cont_video->ppv_price; ?></p>
+                        <p class="p-tag"><?php echo $cont_video->ppv_price.' '.$currency->symbol; ?></p>
                         <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
-                        <p class="p-tag"><?php echo $cont_video->global_ppv; ?></p>
+                        <p class="p-tag"><?php echo $cont_video->global_ppv.' '.$currency->symbol; ?></p>
                         <?php }elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null ){ ?>
                         <p class="p-tag"><?php echo "Free"; ?></p>
                         <?php } ?>

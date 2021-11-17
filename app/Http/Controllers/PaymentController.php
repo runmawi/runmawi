@@ -24,7 +24,7 @@ use Mail;
 use App\Video;
 use App\VideoCommission;
 use App\EmailTemplate;
-
+use App\PaymentSetting;
 
 class PaymentController extends Controller
 {
@@ -102,13 +102,31 @@ public function RentPaypal(Request $request)
 
   public function StoreLive(Request $request)
   {
-    $daten = date('m/d/Y h:i:s a', time());    
+    $daten = date('m-d-Y h:i:s ', time());    
     $setting = Setting::first();   
     $ppv_hours = $setting->ppv_hours;
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d H:i:s',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
     $date = date('YYYY-MM-DD');
-    $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+
+    $stripe = Stripe::make($secret_key, '2020-03-02');
     $charge = $stripe->charges()->create([
       'source' => $request->get('tokenId'),
       'currency' => 'USD',
@@ -116,7 +134,7 @@ public function RentPaypal(Request $request)
     ]);
 
     DB::table('live_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id]
+      ['user_id' => $user_id, 'video_id' => $video_id, 'expired_date' => $to_time, 'to_time' => $to_time]
     ]);
 
 
@@ -149,8 +167,19 @@ public function RentPaypal(Request $request)
     $ppv_price = $video->ppv_price;
     $admin_commssion = ($percentage/100) * $ppv_price ;
     $moderator_commssion = $ppv_price - $percentage;
-
-    $stripe = Stripe::make('sk_test_FIoIgIO9hnpVUiWCVj5ZZ96o005Yf8ncUt', '2020-03-02');
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+    $stripe = Stripe::make($secret_key, '2020-03-02');
     $charge = $stripe->charges()->create([
       'source' => $request->get('tokenId'),
       'currency' => 'USD',

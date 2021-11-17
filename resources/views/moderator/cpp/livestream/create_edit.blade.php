@@ -234,7 +234,7 @@
 					</div>
 					</div>
 
-				<div class="col-sm-6"> 
+				<!-- <div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -253,12 +253,12 @@
 								<input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div>
-								<!-- <label for="footer" >Is this video display in footer:</label>
-								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
+								<label for="footer" >Is this video display in footer:</label>
+								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 							</div>
 						</div> 
 					</div>
-				</div>
+				</div> -->
 			<!-- row -->
 
 			@if(!isset($video->user_id))
