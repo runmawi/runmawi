@@ -185,7 +185,7 @@ $.ajaxSetup({
 
 var url =$('#m3u8url').val();
 $('#m3u8_video_url').change(function(){
-	alert($('#m3u8_video_url').val());
+	// alert($('#m3u8_video_url').val());
 	$.ajax({
         url: url,
         type: "post",
@@ -216,7 +216,7 @@ $.ajaxSetup({
 $(document).ready(function(){
     var url =$('#mp4url').val();
     $('#mp4_url').change(function(){
-    alert($('#mp4_url').val());
+    // alert($('#mp4_url').val());
     $.ajax({
         url: url,
         type: "post",
@@ -248,7 +248,7 @@ $.ajaxSetup({
 
 var url =$('#embed_url').val();
 $('#embed_code').change(function(){
-	alert($('#embed_code').val());
+	// alert($('#embed_code').val());
 	$.ajax({
         url: url,
         type: "post",
@@ -685,7 +685,7 @@ $(document).ready(function(){
 	
 
    function NumAndTwoDecimals(e , field) {
-       alert(); 
+    //    alert(); 
         var val = field.value;
         var re = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)$/g;
         var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;

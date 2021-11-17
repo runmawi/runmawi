@@ -2,12 +2,14 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+	<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <style>
     .highcharts-figure, .highcharts-data-table table {
   min-width: 300px; 
@@ -83,14 +85,24 @@ input[type="number"] {
                   </div>
                   </div> -->
               </div>
+              <div class="col-sm-12 ">
+                        <figure class="highcharts-figure">
+                                <div id="container"></div>
+                                </figure>
+                                </div> 
+                                <!-- </div>  -->
+                     </div>
+                     <!-- <p id="chart_data" style="margin-left: 80%;" >Total Viewed Videos</p><div id="chart_data1" style="margin-left:50%;"></div> -->
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table " id="page" style="width:100%">
                               <thead>
                                  <tr>
                                     <th>ID</th>
-                                    <th>Title</th>
-                                     <th>Country Name</th>
+                                    <th>Video Name</th>
+                                    <th>Country Name</th>
+                                    <th>Views By Country</th>
+                                     <!-- <th>Country Name</th> -->
                                      <!-- <th>Action</th> -->
                                  </tr>
                               </thead>
@@ -99,14 +111,7 @@ input[type="number"] {
                               </tbody>
                            </table>
                            <div class="clear"></div>
-                           <div class="col-sm-12 ">
-                        <figure class="highcharts-figure">
-                                <div id="container"></div>
-                                </figure>
-                                </div> 
-                         
-                                <!-- </div>  -->
-                     </div>
+                          
 
 
                         </div>
@@ -115,7 +120,7 @@ input[type="number"] {
          </div>
 
 @stop
-
+<input type="hidden" id="url" name="url" value="{{ URL::to('/Allregionvideos') }}">
 <script>
 
 
@@ -125,12 +130,15 @@ $.ajaxSetup({
             }
     });
 	$(document).ready(function(){
+    $('#chart_data').hide();
+    var url = $('#url').val();
     $('#country').change(function(){
    var country = $('#country').val();
-  //  alert(country);
    if(country == "allcountry"){
+  //  alert(url);
+
 	$.ajax({
-   url:"{{ URL::to('/Allregionvideos') }}",
+   url:url,
    method:'get',
    data:{query:country},
    dataType:'json',
@@ -138,6 +146,9 @@ $.ajaxSetup({
    {
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
+    $('#page').DataTable();
+    $('#chart_data').show();
+    $('#chart_data1').text(data.total_data);
 
     Highcharts.chart('container', {
   chart: {

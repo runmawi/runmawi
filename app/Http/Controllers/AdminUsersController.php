@@ -996,10 +996,9 @@ class AdminUsersController extends Controller
     public function ViewsRegion(){
 
     $Country = Region::get();
-    // dd($Country);
+
     $data = array(
         'Country' => $Country,
-
         );
            return \View::make('admin.analytics.views_by_region',$data);
     }
@@ -1032,7 +1031,12 @@ class AdminUsersController extends Controller
       if($query != '')
       {
         $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
-        $data = DB::table('videos')
+        $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->where('region_views.countryname','=',$regions->name)->get();
+        // echo "<pre>";
+        // print_r($region_views);
+        // exit();
+        $data = $region_views->groupBy('countryname');
+        $data1 = DB::table('videos')
         ->select('videos.*','region_views.countryname')
         ->join('region_views', 'region_views.video_id', '=', 'videos.id')
         ->orderBy('created_at', 'desc')
@@ -1046,7 +1050,7 @@ class AdminUsersController extends Controller
 
       }
         $i = 1 ; 
-      $total_row = $data->count();
+      $total_row = $data1->count();
       if($total_row > 0)
       {
        foreach($data as $row)
@@ -1054,8 +1058,9 @@ class AdminUsersController extends Controller
         $output .= '
         <tr>
         <td>'.$i++.'</td>
-        <td>'.$row->title.'</td>
-         <td>'.$row->countryname.'</td>
+         <td>'.$row[0]->title.'</td>
+         <td>'.$row[0]->countryname.'</td>
+         <td>'.count($row).'</td>
         </tr>
         ';
        }
@@ -1096,7 +1101,19 @@ class AdminUsersController extends Controller
  
       if($query != '')
       {
-        $data = DB::table('videos')
+        // foreach($region_views as $video){
+        //     $data[$video->countryname] = RegionView::();
+        // }
+
+        $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->get();
+        $data = $region_views->groupBy('countryname');
+
+        
+        // echo "<pre>";
+        // print_r($grouped);
+        // exit();
+
+        $data1 = DB::table('videos')
         ->select('videos.*','region_views.countryname')
         ->join('region_views', 'region_views.video_id', '=', 'videos.id')
         ->orderBy('created_at', 'desc')
@@ -1109,16 +1126,17 @@ class AdminUsersController extends Controller
 
       }
         $i = 1 ; 
-      $total_row = $data->count();
+      $total_row = $data1->count();
       if($total_row > 0)
       {
-       foreach($data as $row)
+       foreach($data as $key => $row)
        {
         $output .= '
         <tr>
         <td>'.$i++.'</td>
-        <td>'.$row->title.'</td>
-         <td>'.$row->countryname.'</td>
+         <td>'.$row[0]->title.'</td>
+         <td>'.$row[0]->countryname.'</td>
+         <td>'.count($row).'</td>
         </tr>
         ';
        }

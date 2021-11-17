@@ -108,7 +108,9 @@ class HomeController extends Controller
              }else{
                  $cnt_watching = '';
              }
+             $currency = CurrencySetting::first();
              $data = array(
+             'currency' => $currency,
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
@@ -151,9 +153,7 @@ class HomeController extends Controller
         $data = Session::all();
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
-
             return View::make('auth.login');
-
 
           }else{
             $logged = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
@@ -234,6 +234,7 @@ class HomeController extends Controller
                  $cnt_watching = '';
              }
              $currency = CurrencySetting::first();
+             
             //  $currency->symbol
             //  dd($currency);
              $data = array(

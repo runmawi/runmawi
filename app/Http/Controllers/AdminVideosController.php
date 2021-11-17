@@ -684,7 +684,6 @@ if(!empty($artistsdata)){
         $validatedData = $request->validate([
             'title' => 'required|max:255'
         ]);
-        
        
             $id = $data['id'];
             
@@ -697,6 +696,29 @@ if(!empty($artistsdata)){
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
            $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+
+        $path = public_path().'/uploads/videos/';
+
+           if(!empty($trailer)) {   
+            //code for remove old file
+            if($trailer != ''  && $trailer != null){
+                 $file_old = $path.$trailer;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $trailer;
+            $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+            $file->move($path, $trailer_vid);
+            $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+
+       } else {
+           $data['trailer'] = $video->trailer;
+       }  
+       $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+    //    dd($trailer);
         
            $update_mp4 = $request->get('video');
             if(empty($data['active'])){
@@ -750,7 +772,9 @@ if(!empty($artistsdata)){
              if(!empty($data['embed_code'])){
                 $data['embed_code'] = $data['embed_code'];
             } 
-
+            if(!empty($data['m3u8_url'])){
+                $data['m3u8_url'] = $data['m3u8_url'];
+            } 
 
             if(empty($data['active'])){
                 $data['active'] = 0;
@@ -780,7 +804,6 @@ if(!empty($artistsdata)){
             }
 
 
-        $path = public_path().'/uploads/videos/';
         $image_path = public_path().'/uploads/images/';
           
          if($image != '') {   
@@ -799,26 +822,10 @@ if(!empty($artistsdata)){
          } else {
              $data['image'] = $video->image;
          }
+         $video->image  = $file->getClientOriginalName();
         
         
-        if($trailer != '') {   
-              //code for remove old file
-              if($trailer != ''  && $trailer != null){
-                   $file_old = $path.$trailer;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $randval = Str::random(16);
-              $file = $trailer;
-              $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
-              $file->move($path, $trailer_vid);
-              $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
 
-         } else {
-             $data['trailer'] = $video->trailer;
-         }  
         
          if(isset($data['duration'])){
                 //$str_time = $data
@@ -905,7 +912,6 @@ if(!empty($artistsdata)){
             }   
             if(!empty($data['m3u8_url'])){
                 // dd($data['global_ppv']);
-        
                     $m3u8_url =$data['m3u8_url'];
                 }else{
                     $m3u8_url = null;
@@ -916,6 +922,9 @@ if(!empty($artistsdata)){
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
          $video->active=1;
+         $video->m3u8_url=$m3u8_url ;
+         $video->mp4_url=$mp4_url ;
+         $video->embed_code=$embed_code ;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
          $video->description = strip_tags($data['description']);

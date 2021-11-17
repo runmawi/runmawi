@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    protected $table = 'Currencies';
+    protected $table = 'currencies';
 	protected $guarded = array();
 	public static $rules = array();
 

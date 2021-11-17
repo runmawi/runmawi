@@ -218,13 +218,15 @@
                                 </div>
                                 <?php   } elseif(!empty($video->mp4_url)){ ?>
                                 <div class="col-sm-6 form-group">
-                                <label for="mp4_url"><label>Mp4 URL:</label>
+                                <label for="mp4_url">Mp4 URL:</label>
                                     <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($video->mp4_url)){{ $video->mp4_url }}@endif" />
                                 </div>
                                 <?php  }elseif(!empty($video->m3u8_url)){ ?>
-                                <div class="col-sm-6 form-group">
-                                <label for="m3u8_url"><label>m3u8 URL:</label>
+                                <div class="col-sm-12 form-group">
+                                    <div class="col-sm-8">
+                                <label for="m3u8_url">m3u8 URL:</label>
                                     <input type="text" class="form-control" name="m3u8_url" id="m3u8_url" value="@if(!empty($video->m3u8_url)){{ $video->m3u8_url }}@endif">
+                                    </div>
                                 </div>
                                    <?php } ?>
                             </div>
@@ -465,7 +467,7 @@
 	
 
    function NumAndTwoDecimals(e , field) {
-       alert(); 
+    //    alert(); 
         var val = field.value;
         var re = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)$/g;
         var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;
