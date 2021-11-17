@@ -391,10 +391,11 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                     </ul>
 
                 </div>
-            <!-- </div> -->
-
+            </div>
             <?php   } ?>
-            <h4>Caste & crew</h4>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-xs-12">
+            <h4>Cast & crew</h4>
           <?php
             foreach($artists as $key => $artist){
             foreach($artist as $key => $value){
@@ -465,11 +466,10 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
 -->
         
     <div class="video-list you-may-like">
-            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
-                <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
+        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
+            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>
-                </div>
-    
+            </div>
     </div>
 <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
 
@@ -629,9 +629,8 @@ $('#videoplay').on('click',function(event) {
     videojs_player.play();
 });
 </script>
-    
-  </div>
-
+        </div>
+    </div>
 <?php include('footer.blade.php');?>
 
 <?php include('videolayout/footer.php');?>
