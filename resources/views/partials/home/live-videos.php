@@ -11,7 +11,16 @@
                                 <div class="img-box">
                                 <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
-                                 </a>                       
+                                 </a>      
+                                 <div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                          <?php  if(!empty($video->ppv_price)){?>
+                                          <p class="p-tag"><?php echo $video->ppv_price.' '.$currency->symbol; ?></p>
+                                          <?php }elseif($video->ppv_price == null ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>                 
                                 </div>
                                 <div class="block-description">
                                 <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">

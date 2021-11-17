@@ -267,6 +267,7 @@
 
 			@if(isset($video->id))
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
+				<input type="hidden"  name="ppv_price" id="price" value="$video->ppv_price">
 			@endif
 
 			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />

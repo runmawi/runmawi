@@ -11,6 +11,7 @@ use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
 use App\Subtitle as Subtitle;
+use App\Setting as Setting;
 use App\Tag as Tag;
 use Auth;
 use Hash;
@@ -154,7 +155,14 @@ class AdminLiveStreamController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
+        $settings = Setting::first();
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'] ;
+        }elseif($settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }else{
+            $ppv_price = null;
+        }
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
@@ -165,7 +173,7 @@ class AdminLiveStreamController extends Controller
         $movie->language =$data['language'];
         $movie->banner =$data['banner'];
         $movie->duration =$data['duration'];
-        $movie->ppv_price =$data['ppv_price'];
+        $movie->ppv_price =$ppv_price;
         $movie->access =$data['access'];
         // $movie->footer =$data['footer'];
         $movie->slug =$data['slug'];
