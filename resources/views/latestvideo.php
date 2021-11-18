@@ -4,7 +4,7 @@
     color: #000000!important;
     position: absolute;
     top: 8px;
-    left: 55px;
+    left: 47px;
     background-color: #00a8e1;
     padding: 5px;
     font-size: 12px;
