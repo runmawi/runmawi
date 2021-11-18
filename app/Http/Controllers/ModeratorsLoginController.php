@@ -108,7 +108,7 @@ class ModeratorsLoginController extends Controller
 
     if(!empty($user)){
       $id = $user->id;
-
+      if(!empty($user->user_permission)){
       $userrolepermissiom=DB::table('user_accesses')
       ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
       ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
@@ -160,6 +160,10 @@ class ModeratorsLoginController extends Controller
         );
         
 		return \View::make('moderator.dashboard', $data);
+      }else{
+        $message = "Please Wait TO Give Yours Access";
+        return back()->with('message', $message);
+      }
     }else{
         if($userexits->status == 0){
             $message = "Your Request have been Pending";

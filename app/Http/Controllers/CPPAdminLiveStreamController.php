@@ -112,7 +112,7 @@ class CPPAdminLiveStreamController extends Controller
          } 
         
        
-        $data['user_id'] = $user_id;
+        $data['user_id'] = Auth::user()->id;
         
 //        unset($data['tags']);
         
@@ -161,7 +161,14 @@ class CPPAdminLiveStreamController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-
+        $settings = Setting::first();
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'] ;
+        }elseif($settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }else{
+            $ppv_price = null;
+        }
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
@@ -172,14 +179,15 @@ class CPPAdminLiveStreamController extends Controller
         $movie->language =$data['language'];
         $movie->banner =$data['banner'];
         $movie->duration =$data['duration'];
-        $movie->ppv_price =$data['ppv_price'];
+        $movie->ppv_price =$ppv_price;
         $movie->access =$data['access'];
         // $movie->footer =$data['footer'];
         $movie->slug =$data['slug'];
         $movie->image =$file->getClientOriginalName();
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
-        $movie->user_id =$user_id;
+        $movie->active = 1 ;
+        $movie->user_id =Auth::User()->id;
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -228,8 +236,7 @@ class CPPAdminLiveStreamController extends Controller
         $data = $request->all();       
         $id = $data['id'];
         $video = LiveStream::findOrFail($id);  
-        
-         $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|max:255',
             'description' => 'required',
@@ -307,12 +314,9 @@ class CPPAdminLiveStreamController extends Controller
          $languages = $request['language'];
          $data['ppv_price'] = $request['ppv_price'];
          $data['access'] = $request['access'];
-
-         $data['user_id'] = $request['user_id'];
-
+         $data['active'] = 1 ;
 
         $video->update($data);
-      
 
         return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
