@@ -1,3 +1,22 @@
+<style>
+  .p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 55px;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 15px;
+}
+
+</style>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">Latest Videos</a></h4>                      
                  </div>
@@ -17,9 +36,9 @@
                                      <div class="corner-text-wrapper">
                                         <div class="corner-text">
                                           <?php  if(!empty($watchlater_video->ppv_price)){?>
-                                          <p class="p-tag"><?php echo $watchlater_video->ppv_price.' '.$currency->symbol; ?></p>
+                                          <p class="p-tag1"><?php echo $watchlater_video->ppv_price.' '.$currency->symbol; ?></p>
                                           <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
-                                            <p class="p-tag"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>

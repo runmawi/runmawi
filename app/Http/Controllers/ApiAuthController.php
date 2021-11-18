@@ -778,7 +778,7 @@ public function verifyandupdatepassword(Request $request)
       'wishlist' => $wishliststatus,
       'curr_time' => $curr_time,
       'ppv_video_status' => $ppv_video_status,
-            'main_genre' => $videos_cat[0]->name,
+      'main_genre' => $videos_cat[0]->name,
       'watchlater' => $watchlaterstatus,
       'favorite' => $favoritestatus,
       'ppv_exist' => $ppv_exist,
@@ -4102,18 +4102,14 @@ public function SubscriptionPayment(Request $request){
             $subscription->cityname = $cityname;
             $subscription->ends_at = $date;
             $subscription->save();
-            if($stripe_status == "active"){
-              $user = new User();
-              $user->role = "subscriber";
-              // $user->active = 1;
-              $user->save();
-              }
+            $user =  User::findOrFail($user_id);
+            $user->role = "subscriber";
+            $user->save();
             $message = "Added  to  Subscription";
             $response = array(
               "status" => "true",
               'message'=> $message,
             );
-          
     } else {
       $message = "Not Added  to  Subscription";
 

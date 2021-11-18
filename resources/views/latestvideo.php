@@ -1,5 +1,23 @@
 <?php include('header.php'); ?>
+<style>
+  .p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 55px;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 15px;
+}
 
+</style>
  <!-- MainContent -->
 <section id="iq-favorites">
             <div class="container-fluid" style="padding: 0px 40px!important;">
@@ -21,9 +39,9 @@
                                     <div class="corner-text-wrapper">
                                         <div class="corner-text">
                                           <?php  if(!empty($latest_video->ppv_price)){?>
-                                          <p class="p-tag"><?php echo $latest_video->ppv_price.' '.$currency->symbol; ?></p>
+                                          <p class="p-tag1"><?php echo $latest_video->ppv_price.' '.$currency->symbol; ?></p>
                                           <?php }elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)){ ?>
-                                            <p class="p-tag"><?php echo $latest_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <p class="p-tag1"><?php echo $latest_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>

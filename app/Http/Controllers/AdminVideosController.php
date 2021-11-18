@@ -910,13 +910,23 @@ if(!empty($artistsdata)){
             }else{
                 $mp4_url = null;
             }   
-            if(!empty($data['m3u8_url'])){
-                // dd($data['global_ppv']);
-                    $m3u8_url =$data['m3u8_url'];
-                }else{
-                    $m3u8_url = null;
-                }   
 
+                if(!empty($data['m3u8_url'])){
+                    // dd($data['global_ppv']);
+                        $m3u8_url =$data['m3u8_url'];
+                    }else{
+                        $m3u8_url = null;
+                    }    
+                    if(!empty($data['title'])){
+                        // dd($data['global_ppv']);
+                        $video->title =$data['title'];
+                        }else{
+                        }  
+                        if(!empty($data['slug'])){
+                            // dd($data['global_ppv']);
+                            $video->slug =$data['slug'];
+                            }else{
+                            }  
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->age_restrict=$data['age_restrict'];

@@ -74,25 +74,25 @@ $uppercase =  ucfirst($request_url);
 	</style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-    <!-- <script src="js/videojs-ie8.min.js"></script>   -->
-    <!-- <script src='js/video.js'></script>   -->
-    <!-- <script src="js/videojs-flash.js"></script>   -->
-    <!-- <script src="js/videojs-contrib-hls.js"></script>   -->
-	<!-- <script src="assets/videojs-watermark/dist/videojs-watermark.js"></script> -->
-  	<!-- <script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script> -->
+    <script src="js/videojs-ie8.min.js"></script>  
+    <script src='js/video.js'></script>  
+    <script src="js/videojs-flash.js"></script>  
+    <script src="js/videojs-contrib-hls.js"></script>  
+	<script src="assets/videojs-watermark/dist/videojs-watermark.js"></script>
+  	<script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
 
 <!-- old scr cdn -->
 
-       <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
+       <script src="https://www.paypalobjects.com/api/checkout.js"></script>
  <?php 
     if($playerui_settings->thumbnail == 1){  ?>
-             <!-- <script src="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.js"></script>
-            <script src="js/thumbnails.js"></script> -->
+             <script src="https://players.brightcove.net/videojs-thumbnails/videojs.thumbnails.js"></script>
+            <script src="js/thumbnails.js"></script>
      <?php } else{ } ?>
      <?php 
     if($playerui_settings->watermark == 1){  ?>
-             <!-- <script src="js/watermark.js"></script>
-                <script type="text/javascript" src="js/videojs-watermark.min.js"></script> -->
+             <script src="js/watermark.js"></script>
+                <script type="text/javascript" src="js/videojs-watermark.min.js"></script>
 
      <?php } else{ } ?>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>

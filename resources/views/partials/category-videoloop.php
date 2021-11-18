@@ -28,7 +28,25 @@
 
     }
 </style>
+<style>
+  .p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 55px;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 15px;
+}
 
+</style>
 <div class="">
     <div class="row">
         <div class="col-sm-12 overflow-hidden">
@@ -57,7 +75,7 @@
                                             </video>
                                 <div class="corner-text-wrapper">
                                     <div class="corner-text">
-                                        <p class="p-tag">
+                                        <p class="p-tag1">
                                             
                                             <?php if(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
