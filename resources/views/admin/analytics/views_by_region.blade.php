@@ -101,7 +101,8 @@ input[type="number"] {
                                     <th>ID</th>
                                     <th>Video Name</th>
                                     <th>Country Name</th>
-                                    <th>Views By Country</th>
+                                    <th>IP Number</th>
+                                    <th>Views</th>
                                      <!-- <th>Country Name</th> -->
                                      <!-- <th>Action</th> -->
                                  </tr>

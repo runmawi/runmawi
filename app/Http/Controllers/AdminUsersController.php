@@ -1060,6 +1060,7 @@ class AdminUsersController extends Controller
         <td>'.$i++.'</td>
          <td>'.$row[0]->title.'</td>
          <td>'.$row[0]->countryname.'</td>
+         <td>'.$row[0]->user_ip.'</td>
          <td>'.count($row).'</td>
         </tr>
         ';
@@ -1136,6 +1137,7 @@ class AdminUsersController extends Controller
         <td>'.$i++.'</td>
          <td>'.$row[0]->title.'</td>
          <td>'.$row[0]->countryname.'</td>
+         <td>'.$row[0]->user_ip.'</td>
          <td>'.count($row).'</td>
         </tr>
         ';
