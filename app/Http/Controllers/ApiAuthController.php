@@ -4102,19 +4102,18 @@ public function SubscriptionPayment(Request $request){
             $subscription->cityname = $cityname;
             $subscription->ends_at = $date;
             $subscription->save();
-
+            if($stripe_status == "active"){
+              $user = new User();
+              $user->role = "subscriber";
+              // $user->active = 1;
+              $user->save();
+              }
             $message = "Added  to  Subscription";
-      $response = array(
-
-        "status" => "true",
-        'message'=> $message,
-      );
-      if($stripe_status == "active"){
-      $user = new User();
-      $user->role = "subscriber";
-      // $user->active = 1;
-      $user->save();
-      }
+            $response = array(
+              "status" => "true",
+              'message'=> $message,
+            );
+          
     } else {
       $message = "Not Added  to  Subscription";
 
