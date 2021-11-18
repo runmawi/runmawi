@@ -33,7 +33,7 @@
     color: #000000!important;
     position: absolute;
     top: 8px;
-    left: 55px;
+    left: 48px;
     background-color: #00a8e1;
     padding: 5px;
     font-size: 12px;
