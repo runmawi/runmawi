@@ -76,12 +76,12 @@ $uppercase =  ucfirst($request_url);
 	</style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-    <script src="js/videojs-ie8.min.js"></script>  
+    <!-- <script src="js/videojs-ie8.min.js"></script>  
     <script src='js/video.js'></script>  
     <script src="js/videojs-flash.js"></script>  
     <script src="js/videojs-contrib-hls.js"></script>  
 	<script src="assets/videojs-watermark/dist/videojs-watermark.js"></script>
-  	<script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
+  	<script src="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.js"></script> -->
 
 <!-- old scr cdn -->
 

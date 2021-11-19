@@ -6,6 +6,7 @@
             display: none !important;
         }
 </style>
+
 <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
     <script src="//googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.min.js"></script>
     <script src="//googleads.github.io/videojs-ima/dist/videojs.ima.js"></script>

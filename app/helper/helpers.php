@@ -403,3 +403,8 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
         DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message]);
     return true;
 }
+
+function get_adurl($ad_id){
+    $adsurl = App\Advertisement::where('id',$ad_id)->first()->ads_path;
+    return  $adsurl; 
+}

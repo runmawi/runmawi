@@ -68,6 +68,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
 
 
 
+
                     <?php
                     if($playerui_settings['subtitle'] == 1 ){
 

@@ -273,7 +273,7 @@ class ChannelController extends Controller
                  'subtitles' => $subtitle,
                  'artists' => $artists,
     		'ppv_video_play' => $ppv_video_play,
-
+            'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
 
                  );
              
@@ -319,7 +319,7 @@ class ChannelController extends Controller
                  'subtitles' => $subtitle,
                  'artists' => $artists,
                  'watched_time' => 0,
-
+                 'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
             );
 
             }
@@ -381,7 +381,7 @@ class ChannelController extends Controller
                      'like_dislike' =>$like_dislike,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
-
+                 'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
                  );
              
         } else {
@@ -399,7 +399,7 @@ class ChannelController extends Controller
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
                  'watched_time' => 0,
-
+                 'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
             );
 
             }
