@@ -32,6 +32,7 @@
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
                           <li><a href="{{ URL::to('/cpp/register/') }}">Content Partner Portal</a></li>
+                          <li><a href="{{ URL::to('/advertiser/register/') }}">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>

@@ -149,6 +149,11 @@ i.fa.fa-google-plus {
 								</label>
                               </div>  
                           <hr style="color:#1e1e1e;">
+                         <div class="mt-3">
+                          <div class="d-flex justify-content-center links">
+                             New to Content Partner Portal? <a href="<?= URL::to('/cpp/register')?>" class="text-primary ml-2">Register</a>Here!
+                          </div>                        
+                       </div>
                      </form>
                   </div>
                </div>
