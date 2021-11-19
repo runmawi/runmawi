@@ -108,7 +108,7 @@ class ModeratorsLoginController extends Controller
 
     if(!empty($user)){
       $id = $user->id;
-      if(!empty($user->user_permission)){
+      // if(!empty($user->user_permission)){
       $userrolepermissiom=DB::table('user_accesses')
       ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
       ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
@@ -160,10 +160,10 @@ class ModeratorsLoginController extends Controller
         );
         
 		return \View::make('moderator.dashboard', $data);
-      }else{
-        $message = "Please Wait TO Give Yours Access";
-        return back()->with('message', $message);
-      }
+      // }else{
+      //   $message = "Please Wait TO Give Yours Access";
+      //   return back()->with('message', $message);
+      // }
     }else{
         if($userexits->status == 0){
             $message = "Your Request have been Pending";
@@ -186,6 +186,7 @@ class ModeratorsLoginController extends Controller
       'password' => 'min:6',
   ]);
 // dd(AdminMail());
+$string = Str::random(60); 
     $moderatorsuser = new ModeratorsUser;
     $moderatorsuser->username = $request->username;
     $moderatorsuser->email = $request->email_id;
@@ -196,6 +197,7 @@ class ModeratorsLoginController extends Controller
     $moderatorsuser->confirm_password = $request->password;
     $moderatorsuser->ccode = $request->ccode;
     $moderatorsuser->description = $request->description;
+    $moderatorsuser->activation_code = $string;
     $moderatorsuser->status = 0;
     $logopath = URL::to('/public/uploads/picture/');
     $path = public_path().'/uploads/picture/';
@@ -266,6 +268,25 @@ if($request->picture == ""){
   
   }
 
+  public function Verify($activation_code){
+    $user = ModeratorsUser::where('activation_code', '=', $activation_code)->first();
+    $fetch_user = ModeratorsUser::where('activation_code', '=', $activation_code)->first();
+    if($user){
+        $user = User::where('activation_code', $activation_code)
+                  ->update(['activation_code' => null,'active' => 1]);
+
+        $mobile = $fetch_user->mobile;
+        session()->put('register.email',$fetch_user->email);
+          return redirect('/cpp/signin')->with('message', 'You have successfully verified your account. Please login below.');
+      } else {
+        // print_r('expression');
+        // exit;
+        return redirect('/cpp/signin')->with('message', 'You have successfully verified your account. Please login below.');
+
+        //  return redirect('/cpp/signin')->with('message', 'Invalid Activation.');
+    }
+   
+}
   public function IndexDashboard()
     {
         $user = Session::get('user'); 

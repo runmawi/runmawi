@@ -1,14 +1,6 @@
 @extends('admin.master')
 @section('content')
-		<style>
-   .iq-user-box {
-    height: 25px;
-    width: 25px;
-    margin-right: 10px;
-    border-radius: 5px;
-      }
-      </style>
-  <!--[hook_admin_dashboard_widgets_start]-->
+	<!--[hook_admin_dashboard_widgets_start]-->
 		
 		  <!-- Page Content  -->
 <?php
@@ -161,13 +153,13 @@
                         <div id="view-chart-01">
                         </div>
                         <div class="row mt-1">
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-primary"><p>{{ TotalSubscribercount() }}</p></div>
+                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total  <br> 
+                                          <p class="mb-0 font-size-14 line-height"> Total  
                                           Subscriber's
                                           </p>
                                        </div>
@@ -175,27 +167,27 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-warning"><p>{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
+                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">
-                                           New <br>Subscriber's
+                                           New Subscriber's
                                           </p>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-info"><p>{{ TotalVideocount() }}</p></div>
+                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total <br>
+                                          <p class="mb-0 font-size-14 line-height"> Total 
                                                 Video's
                                           </p>
                                        </div>
@@ -203,13 +195,13 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-success"><p>{{  $visitor }}</p></div>
+                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">  Total <br>
+                                          <p class="mb-0 font-size-14 line-height">  Total
                                           Visitor's
                                           </p>
                                        <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
@@ -234,7 +226,7 @@
                      <div class="iq-card-body p-0">
                         <!-- <div id="view-chart-03"></div> -->
                         <?php
-                        foreach($video_category as $key => $value){ ?>
+                        foreach(@ $video_category as $key => $value){ ?>
                            <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
                            <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>

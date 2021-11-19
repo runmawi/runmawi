@@ -393,6 +393,10 @@ content Page
 -----------------------------------------------------------------------*/
 .content-page { overflow: hidden; margin-left: 300px; padding: 125px 15px 0;-webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .content-page1 { overflow: hidden; margin-left: 300px; padding: 60px 15px 0; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
+.media-body{
+    border-left :1px solid #f1f1f1;
+    padding-left: 10px;
+}
 .iq-user-dropdown { width: 350px; }
 body.sidebar-main .content-page { margin-left: 80px; }
 .iq-dropdown { padding: 0px 5px; }
@@ -403,7 +407,7 @@ body.sidebar-main .content-page { margin-left: 80px; }
 .iq-rated-box:focus{outline:none!important;}
 .iq-feature-list { padding: 15px 15px; }
 .iq-user-list .iq-card { background-color: /*var(--iq-body-bg);*/ }
-.iq-user-box { height: 15px; width: 15px; margin-right: 10px; border-radius: 5px; }
+.iq-user-box { height: 30px;  margin-right: 10px; border-radius: 5px;padding: 2px;min-width: 35px;text-align: center; }
 .img-border-radius { border-radius: var(--iq-border-radius); }
 .iq-icon-box-top { height: 40px; width: 40px; line-height: 40px; text-align: center; font-size: 20px; text-decoration: none;display: flex;
     justify-content: center;

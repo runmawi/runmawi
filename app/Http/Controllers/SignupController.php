@@ -24,6 +24,7 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\EmailTemplate;
 use App\PaymentSetting;
 use App\Subscription;
+use App\SubscriptionPlan;
 use Session;
 
 
@@ -349,9 +350,11 @@ public function createStep2(Request $request)
                 session(['referrer' => $request->query('ref')]);
             }
     
-
-            
-
+            // $plans = DB::table('subscription_plans')->select('plans_name')->distinct()->get();
+            // $plans = SubscriptionPlan::distinct('plans_name')->get();
+            $plans = SubscriptionPlan::get();
+            $plans_data = $plans->groupBy('plans_name');
+            // dd($data);
             $user_mail = session()->get('register.email');
             $user_count = User::where("email","=",$user_mail)->where("active","=",1)->count();
 
@@ -361,7 +364,7 @@ public function createStep2(Request $request)
                  return redirect('/')->with('message', 'You have successfully verified your account. Please login below.');
             }else{
                 $register = $request->session()->get('register');
-                return view('register.step2',compact('register'));
+                return view('register.step2',compact('register'), compact('plans_data'));
             }
 
     }

@@ -231,6 +231,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                        <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
@@ -441,6 +442,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                        <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
 
@@ -648,6 +650,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                        <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
@@ -852,6 +855,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/plans') }}"><i class="las la-user-plus"></i>Manage Stripe plans</a></li>
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li>
+                        <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                          <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li>
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>

@@ -265,6 +265,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/plans/delete/{id}', 'AdminPlansController@delete');
     Route::post('/plans/update', 'AdminPlansController@update');
 
+    Route::get('/subscription-plans', 'AdminPlansController@subscriptionindex');
+    Route::post('/subscription-plans/store','AdminPlansController@subscriptionstore');
+    Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
+    Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
+    Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
+
+
 
     Route::get('/paypalplans', 'AdminPlansController@PaypalIndex');
     Route::post('/paypalplans/store','AdminPlansController@PaypalStore');
@@ -1248,7 +1255,7 @@ Route::post('cpp/login',  'ModeratorsLoginController@Login')->name('CPPLogin');
 Route::get('cpp/signin',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
 Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
-
+Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');
 
 
 Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
