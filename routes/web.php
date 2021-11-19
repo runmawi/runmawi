@@ -411,6 +411,24 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
 
+    /*Ads Management starts*/
+    Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
+    Route::get('/ads_categories', 'AdminAdvertiserController@ads_categories');
+    Route::get('/ads_list', 'AdminAdvertiserController@ads_list');
+    Route::get('/ads_plans', 'AdminAdvertiserController@ads_plans');   
+    Route::get('/ads_revenue', 'AdminAdvertiserController@ads_revenue');   
+    Route::get('/adscategoryedit/{id}', 'AdminAdvertiserController@adscategoryedit');    
+    Route::get('/ads_category_delete/{id}', 'AdminAdvertiserController@ads_category_delete');    
+    Route::post('/add_ads_category', 'AdminAdvertiserController@add_ads_category');    
+    Route::post('/edit_ads_category', 'AdminAdvertiserController@edit_ads_category');
+    Route::get('/adsplanedit/{id}', 'AdminAdvertiserController@adsplanedit');    
+    Route::get('/ads_plan_delete/{id}', 'AdminAdvertiserController@ads_plan_delete');    
+    Route::post('/add_ads_plan', 'AdminAdvertiserController@add_ads_plan');    
+    Route::post('/edit_ads_plan', 'AdminAdvertiserController@edit_ads_plan');    
+    Route::post('/save_ads_status', 'AdminAdvertiserController@save_ads_status');  
+    Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
+    /*Ads Management ends*/
+
 });
 
 

@@ -52,6 +52,7 @@ class AdminSettingsController extends Controller
 		$settings->enable_https = $request['enable_https'];
 		$settings->free_registration = $request['free_registration'];
 		$settings->activation_email = $request->get('activation_email');
+    $settings->ads_on_videos = $request['ads_on_videos'];
 		$settings->premium_upgrade = $request['premium_upgrade'];
 		$settings->facebook_page_id = $request['facebook_page_id'];
 		$settings->google_page_id = $request['google_page_id'];
@@ -215,6 +216,10 @@ class AdminSettingsController extends Controller
         if(empty($settings->notification_icon)){
 			$settings->notification_icon = '';
 		}
+
+    if(empty($settings->ads_on_videos)){
+      $settings->ads_on_videos = 0;
+    }
 
         //		if(empty($activation_email) || $settings->activation_email = 0){
         //			$settings->activation_email= 0;

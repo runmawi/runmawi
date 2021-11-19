@@ -1,0 +1,12 @@
+{
+    "name": "webnexs/avod",
+    "description": "Advertisement package for flicknexs",
+    "type": "project",
+    "minimum-stability": "dev",
+     "autoload": {
+        "psr-4": {
+            "Webnexs\\Avod\\": "src/"
+        }
+    },
+    "require": {}
+}

@@ -282,6 +282,26 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
 
                      </ul>
                   </li>
+                  <!-- Ads Menu starts -->
+                  @if($settings->ads_on_videos == 1)
+                  <div>
+                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                </div>
+                <li>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads Categories</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads List</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Plans</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Revenue</span></a></li>
+                @endif
+                  <!-- Ads Menu ends -->
                   <?php }elseif($package == "Pro" && auth()->user()->role = "subscriber" || $package == "Pro" && auth()->user()->role == "registered" ){   ?>
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
@@ -468,7 +488,26 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                      </ul>
                   </li>
+                  <!-- Ads Menu starts -->
+                  @if($settings->ads_on_videos == 1)
+                  <div>
+                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                </div>
+                <li>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads Categories</span></a></li>
 
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads List</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Plans</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Revenue</span></a></li>
+                @endif
+                  <!-- Ads Menu ends -->
                   <?php }elseif($package == "Business" && auth()->user()->role = "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
@@ -653,6 +692,26 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                         </ul>
                     </li>
+                    <!-- Ads Menu starts -->
+                  @if($settings->ads_on_videos == 1)
+                  <div>
+                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                </div>
+                <li>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads Categories</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads List</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Plans</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Revenue</span></a></li>
+                @endif
+                  <!-- Ads Menu ends -->
                   <?php } elseif(auth()->user()->role = "admin" && $package == "Pro" && $package == "Business"){ ;?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
@@ -837,6 +896,26 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                         </ul>
                     </li>
+                    <!-- Ads Menu starts -->
+                  @if($settings->ads_on_videos == 1)
+                  <div>
+                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                </div>
+                <li>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads Categories</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads List</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Plans</span></a></li>
+
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Revenue</span></a></li>
+                @endif
+                  <!-- Ads Menu ends -->
                   <?php } ?>
                  
                </ul>

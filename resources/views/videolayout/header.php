@@ -20,6 +20,8 @@ $uppercase =  ucfirst($request_url);
 
     <!-- video js -->
     <link href="assets/video.js/dist/video-js.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.css" />
+    <link rel="stylesheet" href="//googleads.github.io/videojs-ima/dist/videojs.ima.css" />
 	<link href="assets/videojs-watermark/dist/videojs-watermark.css" rel="stylesheet">
   	<link href="assets/videojs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->

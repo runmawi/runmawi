@@ -72,10 +72,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+       'advertisers' => [
+            'driver' => 'eloquent',
+            'model' => App\Advertiser::class,
+        ],
     ],
 
     /*

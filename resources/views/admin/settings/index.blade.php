@@ -458,7 +458,24 @@
         </div>
       
 
-    
+    	<div class="panel panel-primary mt-3" data-collapsed="0">
+			<div class="panel-heading"> <div class="panel-title"><label>Advertisement</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+			<div class="panel-body"> 
+				<div class="row">
+					<div class="col-md-4 align-center">
+                        <div class="row" >
+						<p class="col-md-8 p1">Enable Advertisement on Videos:</p>
+
+						<div class="form-group col-md-4">
+				        	<div class="make-switch" data-on="success" data-off="warning">
+				                <input type="checkbox" @if(!isset($settings->ads_on_videos) || (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked" value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
+				            </div>
+						</div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 		<input type="submit" value="Update Settings" class="btn btn-primary pull-right" />
 

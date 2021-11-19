@@ -61,3 +61,9 @@ player.watermark({
   opacity: 0.5,
   
 });
+var adTagUrl =  $( "#adsurl" ).val();
+var options = {
+  id: 'videoPlayer',
+  adTagUrl: adTagUrl
+};
+player.ima(options);
