@@ -508,22 +508,9 @@ data: {
                                         <?php } ?>
                                     </select>
                                 </div> 
-                                <div class="col-sm-6 form-group mt-3">
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label class="p-2">Movie Language:</label>
-                                            <select class="form-control" id="language" name="language">
-                                                <option selected disabled="">Choose Language</option>
-                                                @foreach($languages as $language)
-                                                    <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label class="p-2">Rating:</label>
-                                            <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
-                                        </div>
-                                    </div>
+                                <div class="col-sm-6 form-group mt-3">                                       
+                                    <label class="p-2">Rating:</label>
+                                    <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
                                 </div>
                             </div>
                             <div class="row">
@@ -574,8 +561,8 @@ data: {
                                 </div>
                             </div>
                             <div>
-                                    <h5>Advertisement for videos</h5>
-                                </div>
+                                <h5>Advertisement for videos</h5>
+                            </div>
                             <div class="row">
 
                                 <div class="col-sm-6 form-group mt-3">
