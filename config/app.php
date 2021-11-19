@@ -181,7 +181,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\PermissionsServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
-
+        Webnexs\Avod\AvodServiceProvider::class,
         /*
          * Package Service Providers...
          */

@@ -128,7 +128,7 @@ $uppercase =  ucfirst($request_url);
                                               <!-- <ul class="dropdown-menu categ-head"> -->
                                                   <?php //foreach ( $languages as $language) { ?>
                                                   <li>
-                                                    <!-- <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
+                                                    <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
                                                       <?php //echo $language->name;?> 
                                                     <!-- </a> -->
                                                   <!-- </li> -->
