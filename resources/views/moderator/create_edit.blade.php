@@ -125,7 +125,7 @@
                                     @if($roles->count() > 0)
                                     @foreach($roles as $value)
                                     <!-- <option value="{{$value->id}}">{{$value->role_name}}</option> -->
-                                    <option value="{{ $value->id }}" @if(!empty($moderators->user_role)){{ 'selected' }}@endif>{{ $value->role_name }}</option>
+                                    <option value="{{ $value->id }}" @if(!empty($moderators->user_role) && $moderators->user_role == $value->id){{ 'selected' }}@endif>{{ $value->role_name }}</option>
 
                                     @endForeach
                                     @else

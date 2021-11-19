@@ -101,14 +101,23 @@ class ModeratorsLoginController extends Controller
     $input = $request->all();
 
     $userexits = ModeratorsUser::where('email','=',$input['email'])->first();
-    // 
+
+    // if($userexits->status == 1){
+    //   dd($userexits);
+
+    // }elseif($userexits->status == 0){
+    //   dd('$userexits');
+
+    // }else{
+
+    // }
     if($userexits->status == 1){
+
     $user = ModeratorsUser::where('status','=',1)->where('email','=',$input['email'])->where('password','=',$input['password'])->first();
     Session::put('user', $user);
 
     if(!empty($user)){
       $id = $user->id;
-      // if(!empty($user->user_permission)){
       $userrolepermissiom=DB::table('user_accesses')
       ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
       ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
@@ -158,22 +167,13 @@ class ModeratorsLoginController extends Controller
                 'page' => $page,
                 'total_ppvvideos' => $total_ppvvideos
         );
-        
 		return \View::make('moderator.dashboard', $data);
-      // }else{
-      //   $message = "Please Wait TO Give Yours Access";
-      //   return back()->with('message', $message);
-      // }
-    }else{
-        if($userexits->status == 0){
-            $message = "Your Request have been Pending";
-            return back()->with('message', $message);
-        }else{
-            $message = "Your Request have been rejected";
-            return back()->with('message', $message);
-        }
     }
-    }
+    }elseif($userexits->status == 0){
+      return redirect('/cpp/login')->with('message', 'Your Request have been Pending');
+      }else{
+          return redirect('/cpp/login')->with('message', 'Your Request have been rejected');
+      }
 
 
   }
@@ -185,7 +185,7 @@ class ModeratorsLoginController extends Controller
       'email_id' => 'required|email|unique:moderators_users,email',
       'password' => 'min:6',
   ]);
-// dd(AdminMail());
+// dd($input);
 $string = Str::random(60); 
     $moderatorsuser = new ModeratorsUser;
     $moderatorsuser->username = $request->username;
@@ -194,6 +194,7 @@ $string = Str::random(60);
     $moderatorsuser->password = $request->password;
     $password = Hash::make($request->password);
     $moderatorsuser->hashedpassword = $password;
+    $moderatorsuser->user_permission = "1,2,3,4,5,9,10,11,12,26,27,39,40,41,42,43";
     $moderatorsuser->confirm_password = $request->password;
     $moderatorsuser->ccode = $request->ccode;
     $moderatorsuser->description = $request->description;
@@ -224,6 +225,18 @@ if($request->picture == ""){
 }
     $moderatorsuser->save();
     $user_id = $moderatorsuser->id;
+    $str = "1,2,3,4,5,9,10,11,12,26,27,39,40,41,42,43";
+    $userrolepermissiom = explode(",",$str);
+    foreach($userrolepermissiom as $key => $value){
+
+    $userrolepermissiom = new UserAccess;
+    $userrolepermissiom->user_id = $user_id;
+    // $userrolepermissiom->role_id = $request->user_role;
+    $userrolepermissiom->permissions_id = $value;
+    $userrolepermissiom->save();
+
+    }
+
 
 
 
@@ -354,6 +367,8 @@ if($request->picture == ""){
     $settings = Setting::first();
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
+    return redirect('/cpp/login')->with('message', 'Successfully Logged Out.');
+
     return view('moderator.login',compact('system_settings','user','settings'));
     // return \View::make('auth.login');
     

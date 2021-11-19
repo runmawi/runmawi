@@ -71,6 +71,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/register2', 'SignupController@createStep2');
     Route::post('/paywithpaypal', 'SignupController@PayWithPapal');
     Route::get('/signupverify', 'HomeController@SignUpVerify');
+    // Route::post('/cardstep', 'SignupController@PostcardcreateStep2');
     Route::post('/register2', 'SignupController@PostcreateStep2');
     Route::get('/register3', 'SignupController@createStep3');
 
@@ -1247,12 +1248,12 @@ Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
 Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
 Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
-Route::get('cpp/register/',  'ModeratorsLoginController@index')->name('CPPRegister');
+Route::get('cpp/signup/',  'ModeratorsLoginController@index')->name('CPPRegister');
 
 
-
-Route::post('cpp/login',  'ModeratorsLoginController@Login')->name('CPPLogin');
-Route::get('cpp/signin',  'ModeratorsLoginController@Signin')->name('CPPSignin');
+Route::get('/cpp',  'ModeratorsLoginController@Signin')->name('CPPSignin');
+Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
+Route::get('cpp/login',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
 Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
 Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');

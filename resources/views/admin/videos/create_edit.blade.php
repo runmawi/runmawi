@@ -387,7 +387,8 @@
                                     <select class="form-control" name="ads_id">
                                         <option value="0">Select Ads</option>
                                         @foreach($ads as $ad)
-                                        <option value="{{$ad->id}}">{{$ad->ads_name}}</option>
+                                    <option value="{{ $ad->id }}" @if(!empty($video->ads_id) && $video->ads_id == $ad->id){{ 'selected' }}@endif>{{ $ad->ads_name }}</option>
+                                        <!-- <option value="{{$ad->id}}">{{$ad->ads_name}}</option> -->
                                         @endforeach
                                     </select>
                                 </div>
@@ -395,9 +396,12 @@
                                     <label class="">Choose Ad Roll</label>
                                     <select class="form-control" name="ad_roll">
                                         <option value="0">Select Ad Roll</option>
-                                        <option value="1">Pre</option>
+                                        <!-- <option value="1">Pre</option>
                                         <option value="2">Mid</option>
-                                        <option value="3">Post</option>
+                                        <option value="3">Post</option> -->
+                                        <option value="1" @if(!empty($video->ad_roll) && $video->ad_roll == '1'){{ 'selected' }}@endif>Pre</option> 
+                                        <option value="2" @if(!empty($video->ad_roll) && $video->ad_roll == '2'){{ 'selected' }}@endif>Mid</option> 
+                                        <option value="3" @if(!empty($video->ad_roll) && $video->ad_roll == '3'){{ 'selected' }}@endif>Post</option> 
                                     </select>
                                 </div>
                             </div>

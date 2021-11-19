@@ -103,7 +103,7 @@ i.fa.fa-google-plus {
                         @endif
                                               
                   </div>
-                     <form method="POST" action="{{ URL::to('cpp/login') }}" class="mt-4">
+                     <form method="POST" action="{{ URL::to('cpp/home') }}" class="mt-4">
                      <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 
                          @csrf
@@ -149,11 +149,6 @@ i.fa.fa-google-plus {
 								</label>
                               </div>  
                           <hr style="color:#1e1e1e;">
-                         <div class="mt-3">
-                          <div class="d-flex justify-content-center links">
-                             New to Content Partner Portal? <a href="<?= URL::to('/cpp/register')?>" class="text-primary ml-2">Register</a>Here!
-                          </div>                        
-                       </div>
                      </form>
                   </div>
                </div>
