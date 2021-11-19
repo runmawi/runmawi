@@ -146,7 +146,7 @@
                </div>    
                <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/cpp/signin')?>" class="text-primary ml-2">Sign In</a>
+                     Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>
             </div>
