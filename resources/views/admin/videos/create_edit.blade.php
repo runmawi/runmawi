@@ -377,6 +377,30 @@
                                     
                             </div>
                         </div>
+                        <div>
+                                    <h5>Advertisement for videos</h5>
+                                </div>
+                            <div class="row">
+
+                                <div class="col-sm-6 form-group mt-3">
+                                    <label class="">Choose Ad Name</label>
+                                    <select class="form-control" name="ads_id">
+                                        <option value="0">Select Ads</option>
+                                        @foreach($ads as $ad)
+                                        <option value="{{$ad->id}}">{{$ad->ads_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 form-group mt-3">
+                                    <label class="">Choose Ad Roll</label>
+                                    <select class="form-control" name="ad_roll">
+                                        <option value="0">Select Ad Roll</option>
+                                        <option value="1">Pre</option>
+                                        <option value="2">Mid</option>
+                                        <option value="3">Post</option>
+                                    </select>
+                                </div>
+                            </div>
                             
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />

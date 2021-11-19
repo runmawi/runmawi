@@ -13,6 +13,8 @@ use App\VideoCategory as VideoCategory;
 use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
+use App\AdsVideo as AdsVideo;
+use App\Advertisement as Advertisement;
 use App\VideoLanguage as VideoLanguage;
 use App\Subtitle as Subtitle;
 use App\Tag as Tag;
@@ -311,6 +313,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'button_text' => 'Add New Video',
             'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
+            'ads' => Advertisement::where('status','=',1)->get(),
             'video_subtitle' => VideosSubtitle::all(),
             'languages' => Language::all(),
             'subtitles' => Subtitle::all(),
@@ -615,6 +618,27 @@ if(!empty($artistsdata)){
             }
             
         }
+         /*Advertisement Video update starts*/
+            if($data['ads_id'] != 0){
+                if($data['ad_roll'] != 0){
+                    if($data['ad_roll'] == 1){
+                        $roll = "Pre";
+                    }elseif($data['ad_roll'] == 2){
+                        $roll = "Mid";
+                    }else{
+                        $roll = "Post";
+                    }
+                    $ad_video = new AdsVideo;
+                    $ad_video->video_id = $video->id;
+                    $ad_video->ads_id = $data['ads_id'];
+                    $ad_video->ad_roll = $roll;
+                    $ad_video->save();
+                }else{
+                    return Redirect::to('admin/videos')->with(array('message' => 'Please choose Ad Roll', 'note_type' => 'error') );
+                }
+
+            }
+            /*Advertisement Video update ends*/ 
         
           return redirect('admin/videos')
             ->with(
@@ -655,6 +679,7 @@ if(!empty($artistsdata)){
             'button_text' => 'Update Video',
             'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
+            'ads' => Advertisement::where('status','=',1)->get(),
             'video_subtitle' => VideosSubtitle::all(),
             'subtitles' => Subtitle::all(),
             'languages' => Language::all(),
@@ -686,7 +711,27 @@ if(!empty($artistsdata)){
         ]);
        
             $id = $data['id'];
-            
+            /*Advertisement Video update starts*/
+            if($data['ads_id'] != 0){
+                if($data['ad_roll'] != 0){
+                    if($data['ad_roll'] == 1){
+                        $roll = "Pre";
+                    }elseif($data['ad_roll'] == 2){
+                        $roll = "Mid";
+                    }else{
+                        $roll = "Post";
+                    }
+                    $ad_video = new AdsVideo;
+                    $ad_video->video_id = $id;
+                    $ad_video->ads_id = $data['ads_id'];
+                    $ad_video->ad_roll = $roll;
+                    $ad_video->save();
+                }else{
+                    return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('message' => 'Please choose Ad Roll', 'note_type' => 'error') );
+                }
+
+            }
+            /*Advertisement Video update ends*/ 
             $video = Video::findOrFail($id);
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
