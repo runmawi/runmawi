@@ -27,13 +27,11 @@
         border-top: 0px !important;
 
     }
-</style>
-<style>
-  .p-tag1 {
+    .p-tag1 {
     color: #000000!important;
     position: absolute;
     top: 8px;
-    left: 48px;
+    left: 10px!important;
     background-color: #00a8e1;
     padding: 5px;
     font-size: 12px;

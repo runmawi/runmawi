@@ -213,6 +213,26 @@ height: 30px !important;
                 border-top: 0px !important;
    
 }
+        .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 22px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
        </style>
   
 

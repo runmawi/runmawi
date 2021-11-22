@@ -1,23 +1,4 @@
 <!--  Continue watching -->
-<style>
-  .p-tag1 {
-    color: #000000!important;
-    position: absolute;
-    top: 8px;
-    left: 55px;
-    background-color: #00a8e1;
-    padding: 5px;
-    font-size: 12px;
-    border: 3px solid #000000;
-    border-radius: 3px;
-    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 700;
-    border-top: none;
-    border-right: none;
-    border-bottom-left-radius: 15px;
-}
-
-</style>
 <?php  if(isset($cnt_watching)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
