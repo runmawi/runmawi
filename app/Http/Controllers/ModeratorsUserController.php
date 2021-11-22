@@ -120,12 +120,12 @@ $request->validate([
       'confirm_password' => 'required_with:password|same:password|min:6'
   ]);
   if(!empty($request->confirm_password)){
-    $confirm_password = $moderatorsuser->confirm_password;
+    $confirm_password = $request->confirm_password;
 }else{
-  $confirm_password = $moderatorsuser->password;
+  $confirm_password = $request->password;
 }
 if(!empty($request->ccode)){
-  $ccode = $moderatorsuser->ccode;
+  $ccode = $request->ccode;
   }else{
     $ccode = 0;
   }
