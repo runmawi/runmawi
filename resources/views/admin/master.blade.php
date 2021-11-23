@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <?php
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-$id = auth()->user()->id;
-$user_package =    DB::table('users')->where('id', $id)->first();
-$package = $user_package->package;
-// echo "<pre>";
-// print_r(auth()->user()->role);
-// exit();
-?>
+$data = Session::all();
+
+
+if (!empty($data['password_hash'])) {
+   $id = auth()->user()->id;
+   $user_package =    DB::table('users')->where('id', $id)->first();
+   $package = $user_package->package;
+   ?>
+<input type="hidden" id="session" value="session">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -88,7 +96,7 @@ $package = $user_package->package;
 </head>
 <body >
 <?php 
-
+// exit();
 if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Basic" && auth()->user()->role == "registered" ){    ?>
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
@@ -1543,7 +1551,16 @@ if(jQuery('#view-chart-13').length){
             });
         </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
-                           
+  <?php }else{ ?>
+<input type="hidden" id="yes_session" value="yes_session">
+<?php } ?>
+  <script>
+      // alert('$session');
+      var session = $('#yes_session').val();
+      if(session == "yes_session" ){
+          window.location = '<?= URL::to('/') ?>';
+      }
+   </script>         
     
 </body>
 </html>
