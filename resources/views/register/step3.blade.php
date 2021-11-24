@@ -3,13 +3,17 @@
 @section('content')
 <?php 
 
-$plan_id = session()->get('planname');
+// $plan_id = session()->get('plan_id');
+$plan_id = session()->get('plan_id');
+$payment_type = session()->get('payment_type');
 
+// print_r($plan_id);exit();
 $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
 $plan_price = $plan_details->price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;
 ?>
+<input type="hidden" id="payment_type" name="payment_type" value="<?php echo $payment_type ;?>">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 
 <div class="row" id="signup-form">
@@ -24,7 +28,7 @@ $discount_price = $discount_percentage;
             </div>         
             <div class="panel-body">
 				<div class="form-group row">
-					<input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ session()->get('planname') }}">
+					<input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ session()->get('plan_id') }}">
 					<div class="col-md-6"> 
 						<input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
 					</div>

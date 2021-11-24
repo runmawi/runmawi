@@ -369,15 +369,52 @@ public function createStep2(Request $request)
 
     }
 
+    public function PostcardcreateStep2(Request $request)
+    {
+       $validatedData = $request->validate([
+        'modal_plan_name' => 'required',
+        'modal_plan_name' => 'required'
+        ]);
+        // print_r($request['plan_name']);
+        // exit();
+    
+           $request->session()->put('planname', $request['plan_name']);
+           $register = $request->session()->get('register');
+                   //$register->fill($validatedData);
+           $plan_name = $request->get('register.email');
+           if ($request->has('ref')) {
+            session(['referrer' => $request->query('ref')]);
+        }
+        $data = array(
+            'plan_name' => $request['plan_name'], 
+    );
+    
+    return \View::make('register.card-step', $data);
+        if ($request->has('ref')) {
+                                   //session(['referrer' => $request->query('ref')]);
+          return redirect('/register3?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
+        }
+        else {
+         return redirect('/register3');
+        }
+    }
 
 public function PostcreateStep2(Request $request)
 {
    $validatedData = $request->validate([
-    'plan_name' => 'required'
-    ]);
-    
+    // 'modal_plan_name' => 'required',
 
-       $request->session()->put('planname', $request['plan_name']);
+    ]);
+    // SELECT * FROM `subscription_plans` WHERE plans_name = 'Monthly' AND type = 'Stripe';
+
+    // print_r($request['plan_name']);
+
+    if($request->payment_method == "Stripe"){
+    $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
+
+       $request->session()->put('planname', $request->modal_plan_name);
+       $request->session()->put('plan_id', $plans->plan_id);
+       $request->session()->put('payment_type', $plans->payment_type);
        $register = $request->session()->get('register');
                //$register->fill($validatedData);
        $plan_name = $request->get('register.email');
@@ -392,6 +429,38 @@ public function PostcreateStep2(Request $request)
     else {
      return redirect('/register3');
     }
+}elseif($request->payment_method == "PayPal"){
+    $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
+    // echo"<pre>";
+    // print_r($plans);
+    // exit();
+    $request->session()->put('planname', $request->modal_plan_name);
+    $request->session()->put('plan_id', $plans->plan_id);
+    $request->session()->put('payment_type', $plans->payment_type);
+    $request->session()->put('days', $plans->days);
+    $request->session()->put('price', $plans->price);
+    $request->session()->put('user_id', $plans->user_id);
+
+    $register = $request->session()->get('register');
+            //$register->fill($validatedData);
+    $plan_name = $request->get('register.email');
+    if ($request->has('ref')) {
+     session(['referrer' => $request->query('ref')]);
+ }
+ $data = array(
+    'plans' => $plans,
+ );
+
+ if ($request->has('ref')) {
+                            //session(['referrer' => $request->query('ref')]);
+//    return redirect('/register3?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
+return redirect('/subscribe/paypal');
+
+ }
+ else {
+        return redirect('/subscribe/paypal');
+ }
+}
 }
     
     
@@ -581,7 +650,8 @@ public function createStep3(Request $request)
                         $paymentMethods = $user->paymentMethods();
                         $apply_coupon = NewSubscriptionCouponCode();
                         $stripe_plan = SubscriptionPlan();
-                        $plandetail = Plan::where('plan_id',$plan)->first();
+                        $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+                        // $plandetail = Plan::where('plan_id',$plan)->first();
                 try {
                     $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
                     $user->role = 'subscriber';

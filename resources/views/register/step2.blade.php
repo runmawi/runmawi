@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('/header')
 @section('content')
-
+<?// dd($plans_data); ?>
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
@@ -140,16 +140,16 @@
 			<div class="login-block">
                 <div class="panel-heading"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body">
-                       <div class="tab">
+                       <!-- <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
                             <img  width="200" height="50" src="<?php echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
                            </button>
-<!--
+
                           <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
                               <img  width="200" height="50" src="<?php echo URL::to('/assets/img/PayPal-Logo.png');?>">
                            </button>
--->
-                        </div>
+
+                        </div> -->
 
     
                          
@@ -160,25 +160,26 @@
                      Click here for Recurring subscription!
         </label>
 -->
-    <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register2?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register2'; } ?>" method="POST" id="payment-form" enctype="multipart/form-data">
-    
+    <!-- <form action="<?php// echo URL::to('/').'/cardstep'; ?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
      <div class="tab-content">
                 <div id="dvPassport" style="display: none" class="tab-pane fade in active">
                   <div class="row">
             <?php 
-                $plans = App\Plan::where('payment_type','=','recurring')->get();
-                   foreach($plans as $plan) {
-                      $plans_name = $plan->plans_name;
+                // $plans = App\Plan::where('payment_type','=','recurring')->get();
+                if(!empty($plans_data)){
+                    // dd($plans_data);                                             
+                   foreach($plans_data as $plan) {
+                      $plans_name = $plan[0]->plans_name;
                 ?>
                     <div class="col-sm-3">
                         <div class="plan-card">
                             <div class="header">
                                 <h3 class="plan-head">
-                                    <?php echo $plan->plans_name;?></h3>
+                                    <?php echo $plan[0]->plans_name;?></h3>
                             </div>
                             <div class="plan-price">
                                 <p>plan</p>
-                                <h4><?php echo "$".$plan->price;?>
+                                <h4><?php echo "$".$plan[0]->price;?>
                                     <small>
                                     <?php if ($plans_name == 'Monthly') { echo 'for a Month'; } else if ($plans_name == 'Yearly') { echo 'for 1 Year'; } else if ($plans_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plans_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                     </small>
@@ -187,31 +188,32 @@
                             <div class="plan-details">
                                 <p class="text-black">Grab this plan for your best Movies to Watch.</p>
                                 <div class=" mt-4 text-center">
-                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan[0]->plan_id;?>"  >Pay Now</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-               <?php } ?>
+               <?php } 
+               }?>
 		</div>
          </div>
          
            <div id="AddPassport" >
                     <div class="row">
                         <?php 
-                            $plans = App\Plan::where('payment_type','=','recurring')->get();
-                               foreach($plans as $plan) {
-                                  $plan_name = $plan->plans_name;
+                            // $plans = App\Plan::where('payment_type','=','recurring')->get();
+                               foreach($plans_data as $key => $plan) {
+                                  $plan_name = $plan[0]->plans_name;
                             ?>
                                     <div class="col-sm-3">
                                         <div class="plan-card">
                                             <div class="header">
                                                 <h3 class="plan-head">
-                                                    <?php echo $plan->plans_name;?></h3>
+                                                    <?php echo $plan[0]->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
                                                 <p>plan</p>
-                                                <h4><?php echo "$".$plan->price;?>
+                                                <h4><?php echo "$".$plan[0]->price;?>
                                                     <small>
                                                     <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                                     </small>
@@ -220,7 +222,13 @@
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
                                                 <div class=" mt-4 text-center">
-                                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                    
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
+                                            </button>
+
+                                                <!-- Launch demo modal
+                                                </button>
+                                                    <button type="submit" class="btn btn-primary" data-price="<?php //echo $plan[0]->price;?>" data-name="<?php// echo //$plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php// echo //$plan[0]->plans_name;?>" >Pay Now</button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -229,6 +237,8 @@
                     </div>
                 </div>   
         </div> 
+
+        
         @csrf
              @if ($errors->any())
                 <div class="alert alert-danger">
@@ -239,119 +249,66 @@
                     </ul>
                 </div>
             @endif
-    
-         <div class="form-group row">
-             <div class="col-md-11 col-sm-offset-1">
-                <div class="sign-up-buttons" align="center">
-<!--				    <button class="btn btn-primary btn-login" type="submit" name="create-account">{{ __('Pay Now') }}</button>-->
-                    <p> <span>Or</span></p>
-				        <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-secondary">
-                            <?php echo __('Skip');?>
-                        </a>
+            <div class="modal fade" id="add-new">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+                    <h4 class="modal-title">Payment Gate Way</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
 				</div>
-             </div>
-             
-         </div>
-       
-        
-        
-        
-        </form>
-         
-        </div>
-<div id="paypal_pg" class="tabcontent">
-        <label for="chkPassports">
-                    <input type="checkbox" id="chkPassports" />
-                     Click here for Recurring subscription!
-        </label>
-     <form action="<?php if (isset($ref) ) { echo URL::to('/').'/paywithpaypal?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/paywithpaypal'; } ?>" method="POST" id="payment-form" enctype="multipart/form-data">
-      
-  <div id="dvPassports" style="display: none" class="tab-pane fade in active">
-      <div class="row">
-            <?php 
-           $plans = App\PaypalPlan::where('payment_type','=','recurring')->get();
-           foreach($plans as $plan) {
-               $plan_name = $plan->name;
-        ?>
-           <div class="col-sm-3">
-				<div class="plan-card">
-					<div class="header">
-						<h3 class="plan-head">
-                            
-                            <?php echo $plan->name;?></h3>
-					</div>
-					<div class="plan-price">
-						<p>plan</p>
-						<h4><?php echo "$".$plan->price;?>
-							<small>
-							<?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-							</small>
-						</h4>
-					</div>
-					<div class="plan-details">
-						<p>Grab this plan for your best Movies to Watch.</p>
-                       
-                        <div class=" mt-4 text-center">
-							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
-						</div>
-<!--
-						<div class="text-right mt-4">
-							<a class="btn btn-primary" href="/invoice">Pay Now</a>
-						</div>
--->
-					</div>
-				</div>
-			</div>   
-             <?php } ?> 
-          </div>
-         </div>
-       
-        @csrf
-         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+				
+				<div class="modal-body">
+                <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register2?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register2'; } ?>" method="POST" id="payment-form" enctype="multipart/form-data">
 
-               <div id="AddPassports" >
-                    <div class="row">
-                    <?php 
-                       $plans = App\PaypalPlan::where('payment_type','=','one_time')->get();
-                       foreach($plans as $plan) {
-                           $plan_name = $plan->name;
-                    ?>
-                   <div class="col-sm-3">
-                        <div class="plan-card">
-                            <div class="header">
-                                <h3 class="plan-head">
+					<!-- <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/register2') }}" method="post"> -->
+						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="hidden" name="modal_plan_name" id="modal_plan_name" value="" />
+                        <div class="form-group"> 
+                            <label class="radio-inline">
+                            <input type="radio" id="tres_important" name="payment_method" value="Stripe">Stripe</label>
 
-                                    <?php echo $plan->name;?></h3>
-                            </div>
-                            <div class="plan-price">
-                                <p>plan</p>
-                                <h4><?php echo "$".$plan->price;?>
-                                    <small>
-                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                                    </small>
-                                </h4>
-                            </div>
-                            <div class="plan-details">
-                                <p>Grab this plan for your best Movies to Watch.</p>
-
-                                <div class=" mt-4 text-center">
-                                    <button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="name" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
-                                </div>
-                            </div>
+                            <label class="radio-inline">
+                            <input type="radio" id="important" name="payment_method" value="PayPal">PayPal</label>
                         </div>
-                    </div>   
-         
-       <?php } ?>    
-                    </div>
-                </div> 
+
+				    </form>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function($){
+
+
+        // Add New Category
+        $('#submit-new-cat').click(function(){
+            $('#payment-form').submit();
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
    
          <div class="form-group row">
                 <div class="col-md-10 col-sm-offset-1">
@@ -396,7 +353,12 @@ document.getElementById("defaultOpen").click();
 </script>
 
 <script>
-    
+    $(".plans_name_choose").click(function(){
+        // alert($(this).val());
+        $("#modal_plan_name").val($(this).val());
+
+    });
+
     $("input[name='name']").change(function(){
        $('#paypal-button-container').html("");
         var pid = $(this).val();

@@ -1373,3 +1373,15 @@ Route::post('/cpp/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPA
     Route::get('/cpp/livestream/categories/edit/{id}', 'CPPAdminLiveCategoriesController@CPPedit');
     Route::post('/cpp/livestream/categories/update','CPPAdminLiveCategoriesController@CPPupdate');
     Route::get('/cpp/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPdestroy'));
+
+// Paypal Controllers
+
+Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));
+// route for post request
+// Route::post('paypal', array('as' => 'paypal','uses' => 'PaypalController@postPaymentWithpaypal',));
+// route for check status responce
+Route::get('paypal', array('as' => 'status','uses' => 'PaypalController@getPaymentStatus',));
+
+Route::get('/subscribe/paypal', 'paypalcontroller@paypalredirect')->name('paypal.redirect');
+Route::get('/subscribe/paypal/return', 'paypalcontroller@paypalreturn')->name('paypal.return');
+// Route::get('create_paypal_plan', 'PaypalController@create_plan');
