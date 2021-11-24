@@ -31,8 +31,8 @@
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
-                          <li><a href="{{ URL::to('/cpp/signup/') }}">Content Partner Portal</a></li>
-                          <li><a href="{{ URL::to('/advertiser/register/') }}">Advertiser Portal</a></li>
+                          <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
+                          <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>
@@ -103,6 +103,7 @@
             </div>
          </div>
       </footer>
+
           <!-- back-to-top End -->
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
@@ -222,6 +223,35 @@ function myFunction() {
   }
 }
 </script>-->
-
+<script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
+<script type="text/javascript">
+  /*$( document ).ready(function() {
+    $('.play-video').hoverPlay({
+      callbacks: {
+        play: function(el, video) {
+          video.play();
+          el.addClass('hoverPlay');
+        },
+        pause: function(el, video) {
+          video.pause();
+          el.removeClass('hoverPlay');
+        },
+        click: function(el, video, e) {
+          e.preventDefault();
+        }
+      }
+    });
+  });*/
+  var video = $(".play-video");
+  
+        // Check if video is ready to play
+        $(video).on('canplay', function () {
+            $(video).mouseenter(function () {
+                $(this).get(0).play();
+            }).mouseleave(function () {
+                $(this).get(0).pause();
+            })
+        });
+</script>
 </body>
 </html>

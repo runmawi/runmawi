@@ -23,7 +23,7 @@
                                                 <div class="corner-text-wrapper">
                                         <div class="corner-text">
                                           <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" style="left:20px!important"><?php echo $category_video->ppv_price.' '.$data['currency']->symbol; ?></p>
+                                          <p class="p-tag1" style="left:20px!important"><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$data['currency']->symbol; ?></p>
                                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>

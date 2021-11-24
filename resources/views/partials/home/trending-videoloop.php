@@ -20,7 +20,7 @@
                                             <div class="corner-text">
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
                                                 <?php  if(!empty($watchlater_video->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $watchlater_video->ppv_price.' '.$currency->symbol; ?></p>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>

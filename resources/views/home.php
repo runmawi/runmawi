@@ -884,26 +884,7 @@ endif; ?>
                 <?php } ?>
         </section> 
 </div>
-<script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
-<script type="text/javascript">
-  $( document ).ready(function() {
-    $('.play-video').hoverPlay({
-      callbacks: {
-        play: function(el, video) {
-          video.play();
-          el.addClass('hoverPlay');
-        },
-        pause: function(el, video) {
-          video.pause();
-          el.removeClass('hoverPlay');
-        },
-        click: function(el, video, e) {
-          e.preventDefault();
-        }
-      }
-    });
-  });
-</script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
   var lazyloadImages = document.querySelectorAll("img.lazy");    
