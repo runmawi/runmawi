@@ -142,8 +142,8 @@
 	@section('javascript')
 
 
-	<script type="text/javascript" src="{{ '/saka/application/assets/admin/js/tinymce/tinymce.min.js' }}"></script>
-	<script type="text/javascript" src="{{ '/saka/application/assets/js/jquery.mask.min.js' }}"></script>
+	<script type="text/javascript" src="{{ '/application/assets/admin/js/tinymce/tinymce.min.js' }}"></script>
+	<script type="text/javascript" src="{{ '/application/assets/js/jquery.mask.min.js' }}"></script>
 
 	<script type="text/javascript">
 
