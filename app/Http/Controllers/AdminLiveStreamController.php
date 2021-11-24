@@ -25,7 +25,11 @@ class AdminLiveStreamController extends Controller
     
     public function index()
         {
-            $all = LiveStream::all();
+           
+            // exit();
+            // dd();
+            
+
             if(!empty($search_value)):
                 $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
             else:
@@ -177,6 +181,8 @@ class AdminLiveStreamController extends Controller
         $movie->access =$data['access'];
         // $movie->footer =$data['footer'];
         $movie->slug =$data['slug'];
+        $movie->publish_type =$data['publish_type'];
+        $movie->publish_time =$data['publish_time'];
         $movie->image =$file->getClientOriginalName();
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
@@ -211,7 +217,7 @@ class AdminLiveStreamController extends Controller
             'languages' => Language::all(),
             );
 
-        return View::make('admin.livestream.create_edit', $data); 
+        return View::make('admin.livestream.edit', $data); 
     }
     
     public function destroy($id)
@@ -303,13 +309,19 @@ class AdminLiveStreamController extends Controller
        
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
+
          $data['ppv_price'] = $request['ppv_price'];
          $data['access'] = $request['access'];
          $data['active'] = 1 ;
 
-        $video->update($data);
-      
 
+        $video->update($data);
+        
+        $video->publish_status = $request['publish_status'];
+        $video->publish_type = $request['publish_type'];
+        $video->publish_time = $request['publish_time'];
+        $video->save();
+        // dd($request['publish_time']);
         return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
     

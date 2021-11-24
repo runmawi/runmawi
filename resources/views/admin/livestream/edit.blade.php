@@ -1,4 +1,4 @@
-@extends('moderator.master')
+@extends('admin.master')
 <style>
     .p1{
         font-size: 12px!important;
@@ -180,7 +180,7 @@
 					<p class="p1">Select a Video Language Below:</p>
 					<select class="form-control" id="language" name="language">
 						@foreach($languages as $language)
-							<option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
+							<option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						@endforeach
 					</select>
 				</div> 
@@ -195,14 +195,9 @@
 				</div> 
 			</div>
 			</div>
-			</div>
-
-            
-			
+			</div>			
 			<div class="clear"></div>
-			<div class="row mt-3"> 
-			<div class="col-sm-6">
-		
+			<div class="row mt-3"> 		
 			<div class="col-sm-6"> 
 			<div class="panel panel-primary" data-collapsed="0"> 
 				<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -210,7 +205,6 @@
 					<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
 					<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
 				</div> 
-			</div>
 			</div>
 			</div>
 
@@ -221,13 +215,15 @@
                     <p class="p1">Publish Type</p>
 					<div class="form-group"> 
                             <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now <br>
-							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}>Publish Now <br>
+							<input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}>Publish Later
                         </div></div> 
 			</div>
 			</div>
 			</div>
 
+            
+			
 			<div class="clear"></div>
 			<div class="row mt-3"> 
 
@@ -237,17 +233,9 @@
 			<div class="clear"></div>
 			</div>
 			</div>
-			
-			<div class="clear"></div>
+
 			<div class="row mt-3"> 
-				<div class="col-sm-6"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-						</div> 
-					</div>
+
                     <div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0"> 
@@ -259,18 +247,20 @@
 							</select>
 							<div class="clear"></div>
 						</div> 
+						
 					</div>
-				</div>
-			
-				<div class="col-sm-6 form-group mt-3" id="ppv_price">
+					<div class="col-sm-6" id="ppv_price">
 					<label class="">PPV Price:</label>
 					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
 					<div class="clear"></div>
-
 					</div>
 					</div>
+				</div>
+				
+			
+			
 
-				<!-- <div class="col-sm-6"> 
+				<div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -289,19 +279,22 @@
 								<input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div>
-								<label for="footer" >Is this video display in footer:</label>
-								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
+								<!-- <label for="footer" >Is this video display in footer:</label>
+								<input type="checkbox" @if(!empty($video->footer) && $video->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
 							</div>
 						</div> 
 					</div>
-				</div> -->
+				</div>
 			<!-- row -->
 
 			@if(!isset($video->user_id))
+				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 			@endif
 
 			@if(isset($video->id))
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
+				<input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >
+				<input type="hidden"  name="ppv_price" id="price" value="$video->ppv_price">
 			@endif
 
 			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
@@ -326,6 +319,7 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 
 	<script type="text/javascript">
+
 $(document).ready(function(){
 	$('#publishlater').hide();
 	$('#publish_now').click(function(){
@@ -343,6 +337,9 @@ $(document).ready(function(){
 		$('#publishlater').hide();		
 	}
 });
+
+
+
 	$(document).ready(function(){
 		if($("#access").val() == 'ppv'){
 				$('#ppv_price').show();
@@ -363,6 +360,10 @@ $(document).ready(function(){
 			}
 		});
 });
+
+
+
+
 	$ = jQuery;
 
 	$(document).ready(function(){

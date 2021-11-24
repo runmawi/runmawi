@@ -584,7 +584,22 @@ data: {
                                     </select>
                                 </div>
                             </div>
+                            <div>
+                                <h5>Publish Type</h5>
+                            </div>
+                            <div class="row">
 
+                                <div class="col-sm-6 form-group mt-3">
+                                    <!-- <label class="">Type</label> -->
+                                    <input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+                       
+                                </div>
+                                <div class="col-sm-6 form-group mt-3" id="publishlater">
+                                <label class="">Publish Time</label>
+			                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" >
+                                </div>
+                            </div>
                                 @if(isset($video->id))
                                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                                 @endif
@@ -604,10 +619,36 @@ data: {
     </div>
 </div>
       <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      
   <script type="text/javascript">
- $ = jQuery;
+$ = jQuery;
+$('#publishlater').hide();
+
+ $(document).ready(function(){
+	$('#publish_now').click(function(){
+		// alert($('#publish_now').val());
+		$('#publishlater').hide();
+	});
+	$('#publish_later').click(function(){
+		// alert($('#publish_later').val());
+		$('#publishlater').show();
+	});
+
+	if($("#publish_now").val() == 'publish_now'){
+	$('#publishlater').show();
+	}else if($("#publish_later").val() == 'publish_later'){
+		$('#publishlater').hide();		
+	}
+});
+
+
+
+
+
  $('#remove').hide();
  
 $(document).ready(function(){

@@ -180,7 +180,7 @@
 					<p class="p1">Select a Video Language Below:</p>
 					<select class="form-control" id="language" name="language">
 						@foreach($languages as $language)
-							<option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
+							<option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						@endforeach
 					</select>
 				</div> 
@@ -197,21 +197,46 @@
 			</div>
 			</div>
 
-            
 			
 			<div class="clear"></div>
+			<div class="row mt-3"> 		
+			<div class="col-sm-6"> 
+			<div class="panel panel-primary" data-collapsed="0"> 
+				<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body"> 
+					<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
+					<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
+				</div> 
+			</div>
+			</div>
 
+			<div class="col-sm-6">
+				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title"><label></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body" style="display: block;"> 
+                    <p class="p1">Publish Type</p>
+					<div class="form-group"> 
+                            <label class="radio-inline">
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+                        </div></div> 
+			</div>
+			</div>
+			</div>
+
+            
+			
+			<div class="row mt-3"  id="publishlater"> 
+
+			<div class="col-sm-12" id="publishlater">
+			<label class="">Publish Time</label>
+			<input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
+			<div class="clear"></div>
+			</div>
+			</div>
 
 			<div class="row mt-3"> 
 
-				<div class="col-sm-6"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
-							<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-						</div> 
-					</div>
                     <div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0"> 
@@ -223,16 +248,18 @@
 							</select>
 							<div class="clear"></div>
 						</div> 
+						
+					</div>
+					<div class="col-sm-6" id="ppv_price">
+					<label class="">PPV Price:</label>
+					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+					<div class="clear"></div>
+					</div>
 					</div>
 				</div>
+				
 			
-				<div class="col-sm-6 form-group mt-3" id="ppv_price">
-					<label class="">PPV Price:</label>
-					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="">
-					<div class="clear"></div>
-
-					</div>
-					</div>
+			
 
 				<div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
@@ -290,8 +317,29 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 	<script type="text/javascript">
+
+$(document).ready(function(){
+	$('#publishlater').hide();
+	$('#publish_now').click(function(){
+		// alert($('#publish_now').val());
+		$('#publishlater').hide();
+	});
+	$('#publish_later').click(function(){
+		// alert($('#publish_later').val());
+		$('#publishlater').show();
+	});
+
+	if($("#publish_now").val() == 'publish_now'){
+	$('#publishlater').show();
+	}else if($("#publish_later").val() == 'publish_later'){
+		$('#publishlater').hide();		
+	}
+});
+
+
 
 	$(document).ready(function(){
 		if($("#access").val() == 'ppv'){
@@ -313,6 +361,10 @@
 			}
 		});
 });
+
+
+
+
 	$ = jQuery;
 
 	$(document).ready(function(){

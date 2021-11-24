@@ -221,8 +221,8 @@
                     <p class="p1">Publish Type</p>
 					<div class="form-group"> 
                             <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now <br>
-							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}>Publish Now <br>
+							<input type="radio" id="publish_later" name="publish_type" value = "publish_later"{{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }} >Publish Later
                         </div></div> 
 			</div>
 			</div>
@@ -302,6 +302,7 @@
 
 			@if(isset($video->id))
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
+				<input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >
 			@endif
 
 			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
@@ -326,6 +327,7 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 
 	<script type="text/javascript">
+
 $(document).ready(function(){
 	$('#publishlater').hide();
 	$('#publish_now').click(function(){

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
 use Session;
+use App\Setting as Setting;
 
 
 class CPPAdminLiveStreamController extends Controller
@@ -112,7 +113,7 @@ class CPPAdminLiveStreamController extends Controller
          } 
         
        
-        $data['user_id'] = Auth::user()->id;
+        // $data['user_id'] = Auth::user()->id;
         
 //        unset($data['tags']);
         
@@ -154,6 +155,9 @@ class CPPAdminLiveStreamController extends Controller
         if(empty($data['access'])){
             $data['access'] = 0;
         }  
+        if(empty( $data['publish_time'])){
+            $data['publish_time'] = 0;
+        }  
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -181,13 +185,15 @@ class CPPAdminLiveStreamController extends Controller
         $movie->duration =$data['duration'];
         $movie->ppv_price =$ppv_price;
         $movie->access =$data['access'];
+        $movie->publish_type =$data['publish_type'];
+        $movie->publish_time = $data['publish_time'];
         // $movie->footer =$data['footer'];
         $movie->slug =$data['slug'];
         $movie->image =$file->getClientOriginalName();
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
-        $movie->active = 1 ;
-        $movie->user_id =Auth::User()->id;
+        $movie->active = 0 ;
+        $movie->user_id = $user_id;
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -219,7 +225,7 @@ class CPPAdminLiveStreamController extends Controller
             'languages' => Language::all(),
             );
 
-        return View::make('moderator.cpp.livestream.create_edit', $data); 
+        return View::make('moderator.cpp.livestream.edit', $data); 
     }
     
     public function CPPdestroy($id)
@@ -317,7 +323,11 @@ class CPPAdminLiveStreamController extends Controller
          $data['active'] = 1 ;
 
         $video->update($data);
-
+        $video->publish_status = $request['publish_status'];
+        $video->publish_type = $request['publish_type'];
+        $video->publish_time = $request['publish_time'];
+        $video->user_id =  $user_id;
+        $video->save();
         return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
     
