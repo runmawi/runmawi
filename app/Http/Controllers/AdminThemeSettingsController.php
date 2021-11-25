@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
 use DB;
+use App\SystemSetting as SystemSetting;
+use Session;
 
 class AdminThemeSettingsController extends Controller
 {
@@ -297,6 +299,8 @@ class AdminThemeSettingsController extends Controller
          return view('admin.sliders.index',$data);
       } 
     public function LanguageIndex(){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
@@ -314,9 +318,17 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }   
     
     public function LanguageTransIndex(){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -334,6 +346,12 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }      
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
       }
     
       public function SliderStore(Request $request){
@@ -412,6 +430,8 @@ class AdminThemeSettingsController extends Controller
     
     
     public function LanguageDelete($id){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -424,9 +444,17 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }  
     
     public function LanguageTransDelete($id){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -439,10 +467,18 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
     
     
       public function LanguageTransStore(Request $request){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -471,9 +507,17 @@ class AdminThemeSettingsController extends Controller
           return view('blocked');
   
       }
+    }else{
+      $system_settings = SystemSetting::first();
+      $user = User::where('id','=',1)->first();
+      return view('auth.login',compact('system_settings','user'));
+  
+    }
     }  
     
     public function LanguageStore(Request $request){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -496,9 +540,17 @@ class AdminThemeSettingsController extends Controller
           return view('blocked');
   
       }
+    }else{
+      $system_settings = SystemSetting::first();
+      $user = User::where('id','=',1)->first();
+      return view('auth.login',compact('system_settings','user'));
+  
+    }
     }
     
        public function LanguageTransEdit($id){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -511,9 +563,17 @@ class AdminThemeSettingsController extends Controller
             return view('blocked');
     
         }
+      }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }
       } 
     
         public function LanguageEdit($id){
+          $data = Session::all();
+          if (!empty($data['password_hash'])) {
           $package_id = auth()->user()->id;
           $user_package =    DB::table('users')->where('id', $package_id)->first();
           $package = $user_package->package;
@@ -526,10 +586,18 @@ class AdminThemeSettingsController extends Controller
             return view('blocked');
     
         }
+      }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }
         }
     
     
      public function LanguageTransUpdate(Request $request){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -547,9 +615,17 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
    } 
     
     public function LanguageUpdate(Request $request){
+      $data = Session::all();
+      if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
       $user_package =    DB::table('users')->where('id', $package_id)->first();
       $package = $user_package->package;
@@ -567,6 +643,12 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
 
     public function slider_order(Request $request){

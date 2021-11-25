@@ -38,6 +38,8 @@ use App\Artist;
 use App\Audioartist;
 use App\AudioAlbums;
 use DB;
+use App\SystemSetting as SystemSetting;
+use Session;
 
 
 
@@ -50,6 +52,8 @@ class AdminAudioController extends Controller
      */
     public function index(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -77,6 +81,12 @@ class AdminAudioController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
     
 
@@ -87,6 +97,8 @@ class AdminAudioController extends Controller
      */
     public function create()
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -109,6 +121,12 @@ class AdminAudioController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
         // 'post_route' => URL::to('admin/audios/store'),
 
     }
@@ -120,6 +138,8 @@ class AdminAudioController extends Controller
      */
     public function store(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -228,6 +248,12 @@ class AdminAudioController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     /**
@@ -238,6 +264,8 @@ class AdminAudioController extends Controller
      */
      public function edit($id)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -264,6 +292,12 @@ class AdminAudioController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     /**
@@ -274,6 +308,8 @@ class AdminAudioController extends Controller
      */
     public function update(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -390,6 +426,12 @@ class AdminAudioController extends Controller
 
         return view('blocked');
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
 }
 
     /**
@@ -400,6 +442,8 @@ class AdminAudioController extends Controller
      */
     public function destroy($id)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -420,6 +464,12 @@ class AdminAudioController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
 }
 
 

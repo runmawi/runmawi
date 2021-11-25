@@ -102,15 +102,8 @@ class ModeratorsLoginController extends Controller
 
     $userexits = ModeratorsUser::where('email','=',$input['email'])->first();
 
-    // if($userexits->status == 1){
-    //   dd($userexits);
+    if(!empty($userexits)){
 
-    // }elseif($userexits->status == 0){
-    //   dd('$userexits');
-
-    // }else{
-
-    // }
     if($userexits->status == 1){
 
     $user = ModeratorsUser::where('status','=',1)->where('email','=',$input['email'])->where('password','=',$input['password'])->first();
@@ -173,6 +166,10 @@ class ModeratorsLoginController extends Controller
       return redirect('/cpp/login')->with('message', 'Your Request have been Pending');
       }else{
           return redirect('/cpp/login')->with('message', 'Your Request have been rejected');
+      }
+    }
+    else{
+      return redirect('/cpp/login')->with('message', 'Please Register And Login');  
       }
 
 

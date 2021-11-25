@@ -209,9 +209,20 @@ class HomeController extends Controller
             
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
-             
+            $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->count();
+            if ($latest_videos_count > 0) {
+                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+            } else {
+                    $latest_videos = [];
+            }
+            $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+            if ($featured_videos_count > 0) {
+                $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+            } else {
+                    $featured_videos = [];
+            }
              $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+            //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
              $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
              $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
              $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
@@ -223,17 +234,24 @@ class HomeController extends Controller
              $trendings = $trendings->merge($trending_videos);
              $trendings = $trendings->merge($trending_movies);
              $trendings = $trendings->merge($trending_episodes);
-             $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+            //  $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
              $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
             
              $pages = Page::all();
              if(!Auth::guest()){
                  $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
                  $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+                //  $cnt_watching = Video::with('cnt_watch')->where('active', '=', '1')->whereIn('id',$getcnt_watching)->get();
              }else{
                  $cnt_watching = '';
              }
              $currency = CurrencySetting::first();
+             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+             if ($livetreams_count > 0) {
+                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+             } else {
+                     $livetreams = [];
+             }
              
             //  $currency->symbol
             //  dd($currency);
@@ -626,7 +644,13 @@ class HomeController extends Controller
 //            'videos' => Video::where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->simplePaginate(10),
 //        
         // $latest_videos = Video::where('active', '=', '1')->where('created_at','>=',$date)->get();
-        $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
+        $latest_videos_count = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+        if ($latest_videos_count > 0) {
+            $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
+        } else {
+                $latest_videos = [];
+        }
+        // $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
         // dd($latest_videos);
         $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status','=',1)->first();

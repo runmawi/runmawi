@@ -220,9 +220,17 @@ class ThemeAudioController extends Controller{
         } else {
             $page = 1;
         }
+        $audios_count = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
 
+        // dd($audios_count);
+        if ($audios_count > 0) {
+            $audios = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->audios_per_page);    
+            } else {
+              $audios = [];
+            } 
         $data = array(
-            'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->audios_per_page),
+            'audios' => $audios,
+            'audios_count' => $audios_count,
             'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
             'artists' => Artist::orderBy('created_at', 'DESC')->get(),
             'page_title' => 'All Audios',

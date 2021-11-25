@@ -5,7 +5,6 @@ use \App\User as User;
 use \Redirect as Redirect;
 use Request;
 use App\Setting;
-use App\Video;
 use App\Genre;
 use App\Audio;
 use App\Page as Page;
@@ -34,7 +33,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Session;
 use App\Playerui as Playerui;
 use App\MoviesSubtitles as MoviesSubtitles;
-// use App\Video as Video;
+use App\Video as Video;
 use Carbon\Carbon;
 use DateTime;
 use App\CurrencySetting as CurrencySetting;
@@ -68,7 +67,13 @@ class ChannelController extends Controller
     {
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
-        $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
+        $categoryVideos_count =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->count();
+        if ($categoryVideos_count > 0) {
+            $categoryVideos = \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->paginate();
+        } else {
+                $categoryVideos = [];
+        }
+        // $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
         $category_title = \App\VideoCategory::where('id',$category_id)->pluck('name');
         $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status','=',1)->first();

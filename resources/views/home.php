@@ -872,7 +872,7 @@ endif; ?>
                 <?php
                     $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
                     foreach($parentCategories as $category) {
-                    $videos = App\Video::where('video_category_id','=',$category->id)->get();
+                    $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->get();
                 ?>
                         <?php if (count($videos) > 0) { 
                             include('partials/category-videoloop.php');

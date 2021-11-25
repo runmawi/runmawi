@@ -18,9 +18,10 @@
 			<?php if(isset($audios) ||  isset($audios_category)) { include('partials/audio.php'); } ?>
 			
 		</div>
+      <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
 
-	<?php include('partials/pagination.php'); ?>
+	<?php //include('partials/pagination.php'); ?>
 
 </div>
 <div class="container mt-2">
@@ -59,7 +60,7 @@
                                       <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
                                    </a>
                                     <div class="d-flex align-items-center justify-content-between">
-                                      <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
+                                      <span class="text-white"><small><?php if($audios_count > 0){  echo get_audio_artist($audio->id); }else{}  ?></small></span>
                                    </div>
                                 </div>
                             </div>
@@ -69,8 +70,9 @@
 
 				<?php endforeach; } ?>
 			</div>
+         <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
-	<?php include('partials/pagination.php'); ?>
+	<?php// include('partials/pagination.php'); ?>
 
 </div>
 <div class="container mt-2">
@@ -121,8 +123,9 @@
 
 		</div>
 
+      <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
-	<?php include('partials/pagination.php'); ?>
+	<?php //include('partials/pagination.php'); ?>
 
 </div>
 

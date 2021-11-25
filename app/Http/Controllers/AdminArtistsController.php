@@ -13,12 +13,16 @@ use View;
 use Validator;
 use App\Artist as Artist;
 use DB;
+use App\SystemSetting as SystemSetting;
+use Session;
 
 
 class AdminArtistsController extends Controller
 {
     public function index(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -47,10 +51,18 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function create()
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -68,10 +80,18 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
      public function store(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -107,10 +127,18 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function edit($id)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -132,10 +160,18 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function update(Request $request)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -171,10 +207,18 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
  }
 
     public function destroy($id)
     {
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -192,6 +236,12 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
 }
 
     private function deleteArtistImages($artist){

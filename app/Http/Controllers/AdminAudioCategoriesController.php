@@ -8,6 +8,7 @@ use URL;
 use App\Video as Video;
 use App\Audio as Audio;
 use App\VideoCategory as VideoCategory;
+use App\SystemSetting as SystemSetting;
 use App\AudioCategory as AudioCategory;
 use App\AudioAlbums as AudioAlbums;
 use Auth;
@@ -15,10 +16,14 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use DB;
+use Session;
+
 
 class AdminAudioCategoriesController extends Controller
 {
       public function index(){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -41,10 +46,18 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
       }
     
     
      public function store(Request $request){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -96,10 +109,18 @@ class AdminAudioCategoriesController extends Controller
 
             return view('blocked');
     
-        }                                                                                                   
+        } 
+    }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }                                                                                                  
        }
     
     public function edit($id){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -114,11 +135,18 @@ class AdminAudioCategoriesController extends Controller
             return view('blocked');
     
         }
+    }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }
         }
     
     
         public function update(Request $request){
-            
+            $data = Session::all();
+            if (!empty($data['password_hash'])) {
             $package_id = auth()->user()->id;
             $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
@@ -178,11 +206,19 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
             }
     
         
     
         public function destroy($id){
+            $data = Session::all();
+            if (!empty($data['password_hash'])) {
             $package_id = auth()->user()->id;
             $user_package =    DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
@@ -203,12 +239,20 @@ class AdminAudioCategoriesController extends Controller
             return view('blocked');
     
         }
+    }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }
     }
     
     
          /*Albums section */
     
     public function albumIndex(){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -226,9 +270,17 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function storeAlbum(Request $request){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -273,9 +325,17 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function updateAlbum(Request $request){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -326,9 +386,17 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
     }
 
     public function destroyAlbum($id){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -342,10 +410,18 @@ class AdminAudioCategoriesController extends Controller
 
         return view('blocked');
 
-    }
+    } 
+}else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
+    
+      }
 }
 
     public function editAlbum($id){
+        $data = Session::all();
+        if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    DB::table('users')->where('id', $package_id)->first();
         $package = $user_package->package;
@@ -367,6 +443,12 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
  }
 
      public function createAlbumSlug($title, $id = 0)

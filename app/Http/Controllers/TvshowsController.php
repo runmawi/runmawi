@@ -69,11 +69,34 @@ class TvshowsController extends Controller
      $settings = Setting::first();
 
      $genre = Genre::all();
-
+     $trending_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->count();
+     if ($trending_episodes_count > 0) {
      $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-     $latest_episodes = Episode::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    } else {
+           $trending_episodes = [];
+    } 
+    $featured_episodes_count = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->count();
+    if ($featured_episodes_count > 0) {
      $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
-     $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    } else {
+        $featured_episodes = [];
+    } 
+    $latest_series_count = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+    if ($latest_series_count > 0) {
+        $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    } else {
+            $latest_series = [];
+    } 
+    $latest_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->count();
+    if ($latest_episodes_count > 0) {
+        $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    } else {
+            $latest_episodes = [];
+    }
+    //  $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+    //  $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    //  $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
+    //  $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
      
      $pages = Page::all();
      $data = array(
