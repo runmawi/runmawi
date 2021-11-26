@@ -45,6 +45,8 @@ use App\LiveStream as LiveStream;
 use App\AudioAlbums as AudioAlbums;
 use App\UserLogs as UserLogs;
 use App\CurrencySetting as CurrencySetting;
+use App\SubscriptionPlan as SubscriptionPlan;
+
 
 
 
@@ -684,17 +686,44 @@ class HomeController extends Controller
     
     
     public function StripeSubscription(Request $request){
-        $user = Auth::user();
-        $plan_name = $request->get('plan_name');
-        $request->session()->put('become_plan', $plan_name);
-            $data = array(
-                'plan_name'=>$plan_name
-            );
+
+        if($request->payment_method == "Stripe"){
+
+            $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
         
+               $request->session()->put('planname', $request->modal_plan_name);
+               $request->session()->put('plan_id', $plans->plan_id);
+               $request->session()->put('payment_type', $plans->payment_type);
+               $register = $request->session()->get('register');
+               $plan_name = $request->get('register.email');
+
+
+        $user = Auth::user();
+        $plan_name = $plans->plan_id;
+        // dd($plan_name);
+
+        $request->session()->put('become_plan', $plans->plan_id);
+            $data = array(
+                'plan_name'=> $plans->plan_id
+            );
             return view('register.become_subscription', [
                                 'intent' => $user->createSetupIntent()
             ]);
         
+        }elseif($request->payment_method == "PayPal"){
+            $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
+            $request->session()->put('planname', $request->modal_plan_name);
+            $request->session()->put('plan_id', $plans->plan_id);
+            $request->session()->put('payment_type', $plans->payment_type);
+            $request->session()->put('days', $plans->days);
+            $request->session()->put('price', $plans->price);
+            $request->session()->put('user_id', $plans->user_id);
+        
+            $register = $request->session()->get('register');
+            $plan_name = $request->get('register.email');
+
+        }
+ 
     }
     
     public function verifyOtp(Request $request)

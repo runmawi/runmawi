@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use \App\MobileApp as MobileApp;
 use \App\MobileSlider as MobileSlider;
 use App\RecentView as RecentView;
+use App\Setting as Setting;
 use URL;
 use Auth;
 use Hash;
@@ -37,6 +38,7 @@ use App\Region;
 use App\RegionView;
 use App\City;
 use App\State;
+use Illuminate\Support\Str;
 
 
 
@@ -165,6 +167,8 @@ class AdminUsersController extends Controller
           $file->move($path, $input['avatar']);
          
      }
+     $string = Str::random(60); 
+
      $password = Hash::make($request['passwords']);
 
      $user = new User;
@@ -174,10 +178,21 @@ class AdminUsersController extends Controller
      $password = Hash::make($request['passwords']);
      $user->ccode = $request['ccode'];
      $user->role = $request['role'];
+     $user->activation_code = $string;
+
     //  $user->terms = $request['terms'];
      $user->avatar = $file->getClientOriginalName();
      $user->password = $password;
     $user->save();
+    $settings = Setting::first();
+
+    if($input['role'] == "subscriber"){
+        \Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name), function($message)  use ($request,$input) {
+            $message->to($request->email,$request->name)->subject('Verify your email address');
+         });
+    }else{
+
+    }
 
     //  $moderatorsuser->description = $request->description;
     //     if ( $input['role'] =='subadmin' ){
@@ -223,6 +238,7 @@ class AdminUsersController extends Controller
             //   echo "<pre>";
             // print_r($heading);
             // exit();
+            if($input['role'] == "subscriber"){
 
             Mail::send('emails.sub_user', array(
                 /* 'activation_code', $user->activation_code,*/
@@ -235,7 +251,9 @@ class AdminUsersController extends Controller
                 $message->to($request['email'], $request['username'])->subject($heading.$request['username']);
                 });
 
+            }else{
 
+            }
 
 
 
@@ -360,9 +378,13 @@ class AdminUsersController extends Controller
        ->select('plans.plans_name')
        ->where('subscriptions.user_id','=',$user_id  )
        ->get();
-       $role_plan = $user_role[0]->plans_name;
-    //    print_r($role_plan);
+    //    print_r($user_role);
     //    exit();
+       if(!empty($user_role)){
+        $role_plan = "No Plan";
+       }else{
+       $role_plan = $user_role[0]->plans_name;
+       }
         }
     	$user_role = Auth::user()->role;
 

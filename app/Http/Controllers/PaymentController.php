@@ -25,6 +25,8 @@ use App\Video;
 use App\VideoCommission;
 use App\EmailTemplate;
 use App\PaymentSetting;
+use App\SubscriptionPlan;
+use Session;
 
 class PaymentController extends Controller
 {
@@ -434,7 +436,12 @@ public function RentPaypal(Request $request)
         {
             $uid = Auth::user()->id;
             $user = User::where('id',$uid)->first();
-            // dd($user);
+            $plans = SubscriptionPlan::get();
+            $plans_data = $plans->groupBy('plans_name');
+            // dd($plans_data);
+            Session::put('plans_data ', $plans_data );
+
+
             if ($user->stripe_id == NULL)
             {
               $stripeCustomer = $user->createAsStripeCustomer();
@@ -444,6 +451,9 @@ public function RentPaypal(Request $request)
            return view('register.upgrade', [
               'intent' => $user->createSetupIntent()
              /* ,compact('register')*/
+             , compact('plans_data')
+             ,'plans_data' => $plans_data
+
             ]);
         }
          public function TransactionDetails(){  

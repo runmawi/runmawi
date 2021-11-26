@@ -614,7 +614,7 @@ $.ajaxSetup({
         $('#email_error').hide();
 
 $('#email').change(function(){
-    alert(($('#email').val()));
+    // alert(($('#email').val()));
 
 	var email = $('#email').val();
 	$.ajax({

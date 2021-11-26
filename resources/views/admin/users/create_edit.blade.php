@@ -55,7 +55,7 @@
          <div class="row">
              <div class="col-md-6 mt-2">
 			<div id="user-badge">
-				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'default.jpg'; ?>@endif
+				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'profile.png'; ?>@endif
 				<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 				<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
 				<input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />

@@ -369,35 +369,35 @@ public function createStep2(Request $request)
 
     }
 
-    public function PostcardcreateStep2(Request $request)
-    {
-       $validatedData = $request->validate([
-        'modal_plan_name' => 'required',
-        'modal_plan_name' => 'required'
-        ]);
-        // print_r($request['plan_name']);
-        // exit();
+    // public function PostcardcreateStep2(Request $request)
+    // {
+    //    $validatedData = $request->validate([
+    //     'modal_plan_name' => 'required',
+    //     'modal_plan_name' => 'required'
+    //     ]);
+    //     // print_r($request['plan_name']);
+    //     // exit();
     
-           $request->session()->put('planname', $request['plan_name']);
-           $register = $request->session()->get('register');
-                   //$register->fill($validatedData);
-           $plan_name = $request->get('register.email');
-           if ($request->has('ref')) {
-            session(['referrer' => $request->query('ref')]);
-        }
-        $data = array(
-            'plan_name' => $request['plan_name'], 
-    );
+    //        $request->session()->put('planname', $request['plan_name']);
+    //        $register = $request->session()->get('register');
+    //                //$register->fill($validatedData);
+    //        $plan_name = $request->get('register.email');
+    //        if ($request->has('ref')) {
+    //         session(['referrer' => $request->query('ref')]);
+    //     }
+    //     $data = array(
+    //         'plan_name' => $request['plan_name'], 
+    // );
     
-    return \View::make('register.card-step', $data);
-        if ($request->has('ref')) {
-                                   //session(['referrer' => $request->query('ref')]);
-          return redirect('/register3?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
-        }
-        else {
-         return redirect('/register3');
-        }
-    }
+    // return \View::make('register.card-step', $data);
+    //     if ($request->has('ref')) {
+    //                                //session(['referrer' => $request->query('ref')]);
+    //       return redirect('/register3?ref='.$request->query('ref').'&coupon='.$request->query('coupon'));
+    //     }
+    //     else {
+    //      return redirect('/register3');
+    //     }
+    // }
 
 public function PostcreateStep2(Request $request)
 {

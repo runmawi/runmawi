@@ -71,7 +71,8 @@ use App\AudioCategory as AudioCategory;
 use App\Audioartist as Audioartist;
 use App\ContinueWatching as ContinueWatching;
 use App\AudioAlbums as AudioAlbums;
-
+use App\EmailTemplate;	
+use App\SubscriptionPlan;
 
 
 
@@ -4095,23 +4096,40 @@ public function SubscriptionPayment(Request $request){
             $next_date = $days;
             $current_date = date('Y-m-d h:i:s');    
             $date = Carbon::parse($current_date)->addDays($next_date);
-            $subscription = new Subscription;
-            $subscription->user_id  =  $user_id ;
-            $subscription->name  =  $name ;
-            $subscription->days  =  $days ;
-            $subscription->price  =  $price ;
-            $subscription->stripe_id  =  $stripe_id ;
-            $subscription->stripe_status   =  $stripe_status ;
-            $subscription->stripe_plan =  $stripe_plan;
-            $subscription->created_at =  $created_at;
-            $subscription->countryname = $countryname;
-            $subscription->regionname = $regionname;
-            $subscription->cityname = $cityname;
-            $subscription->ends_at = $date;
-            $subscription->save();
-            $user =  User::findOrFail($user_id);
-            $user->role = "subscriber";
-            $user->save();
+            $subscription = new Subscription;	
+            // $subscription->user_id  =  $user_id ;	
+            // $subscription->name  =  $name ;	
+            // $subscription->days  =  $days ;	
+            // $subscription->price  =  $price ;	
+            // $subscription->stripe_id  =  $stripe_id ;	
+            // $subscription->stripe_status   =  $stripe_status ;	
+            // $subscription->stripe_plan =  $stripe_plan;	
+            // $subscription->created_at =  $created_at;	
+            // $subscription->countryname = $countryname;	
+            // $subscription->regionname = $regionname;	
+            // $subscription->cityname = $cityname;	
+            // $subscription->ends_at = $date;	
+            // $subscription->save();	
+            $user =  User::findOrFail($user_id);	
+            $user->role = "subscriber";	
+            $user->save();	
+            $user_email = $user->email;	
+          $plan_details = SubscriptionPlan::where('plan_id','=',$stripe_plan)->first(); 	
+          // echo "<pre>"; print_r($template->template_type);exit();	
+	          $template = EmailTemplate::where('id','=',23)->first(); 	
+            $subject = $template->template_type;	
+            Mail::send('emails.subscriptionpaymentmail', array(	
+              /* 'activation_code', $user->activation_code,*/	
+        'name'=>$name, 	
+         'days' => $days, 	
+         'price' => $price, 	
+         'ends_at' => $date,	
+          'plan_names' => $plan_details->plans_name,	
+         'created_at' => $current_date), function($message) use ($request,$user_id,$name,$subject,$user_email) {	
+                               $message->from(AdminMail(),'Flicknexs');	
+                                $message->to($user_email, $name)->subject($subject);	
+                           });	
+      //  send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user_id);
             $message = "Added  to  Subscription";
             $response = array(
               "status" => "true",

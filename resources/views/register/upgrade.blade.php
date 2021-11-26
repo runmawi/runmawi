@@ -5,6 +5,9 @@
 <head>
      <?php
    $settings = App\Setting::find(1);
+//    $plans_data =     Session::get('plans_data');
+//    dd($plans_data);
+
 ?>
          <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
@@ -138,72 +141,33 @@
                     <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body become-sub">
                         <div class="tab">
-                          <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
-                            <img width="100" height="auto"src="<?php echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
+                          <!-- <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
+                            <img width="100" height="auto"src="<?php// echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
                           </button>
                         <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
-                            <img width="100" height="auto"src="<?php echo URL::to('/assets/img/PayPal-Logo.png');?>">
-                        </button>
+                            <img width="100" height="auto"src="<?php// echo URL::to('/assets/img/PayPal-Logo.png');?>">
+                        </button> -->
                         </div>
 
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <form action="<?php echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
-<!--
-            <label for="chkPassport">
-                    <input type="checkbox" id="chkPassport" />
-                     Click here for Recurring subscription!
-                 </label>
--->
-              <div class="tab-content">
-                      <div id="dvPassport" style="display: none" class="tab-pane fade in active">
-                  <div class="row">
-                        <?php 
-                            $plans = App\Plan::where('type','=','Non Refundable')->get();
-                               foreach($plans as $plan) {
-                                  $plans_name = $plan->plans_name;
-                            ?>
-                       <div class="col-sm-3">
-                        <div class="plan-card">
-                            <div class="header">
-                                <h3 class="plan-head">
-                                    <?php echo $plan->plans_name;?></h3>
-                            </div>
-                            <div class="plan-price">
-                                <p>plan</p>
-                                <h4><?php echo "$".$plan->price;?>
-                                    <small>
-                                    <?php if ($plans_name == 'Monthly') { echo 'for a Month'; } else if ($plans_name == 'Yearly') { echo 'for 1 Year'; } else if ($plans_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plans_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                                    </small>
-                                </h4>
-                            </div>
-                            <div class="plan-details">
-                                <p>Grab this plan for your best Movies to Watch.</p>
-                                <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                           <?php } ?>
-                 </div>
-         </div>
+        <!-- <form action="<?php// echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
-                            $plans = App\Plan::get();
+                            // $plans = App\Plan::get();
 
-                               foreach($plans as $plan) {
-                                  $plan_name = $plan->plans_name;
+                               foreach($plans_data as $plan) {
+                                  $plan_name = $plan[0]->plans_name;
                             ?>
                                     <div class="col-sm-3">
                                         <div class="plan-card">
                                             <div class="header">
                                                 <h3 class="plan-head">
-                                                    <?php echo $plan->plans_name;?></h3>
+                                                    <?php echo $plan[0]->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
                                                 <p>plan</p>
-                                                <h4><?php echo "$".$plan->price;?>
+                                                <h4><?php echo "$".$plan[0]->price;?>
                                                     <small>
                                                     <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                                     </small>
@@ -212,7 +176,9 @@
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
                                                 <div class="mt-4">
-                                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
+                                            </button>
+                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php// echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php// echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -221,33 +187,86 @@
                     </div>
                 </div>
               </div>    
-        
-                
-        @csrf
-        
-             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-    
-         <div class="form-group row">
-             <div class="col-md-11 col-sm-offset-1">
-                <div class="sign-up-buttons" align="center">
+              @csrf
+                            
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-				       <p> <span>Or</span></p>
-				        <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
-                            <?php echo __('Skip');?>
-                        </a>
+                        <div class="form-group row">
+                            <div class="col-md-11 col-sm-offset-1">
+                            <div class="sign-up-buttons" align="center">
+
+                                    <p> <span>Or</span></p>
+                                    <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
+                                        <?php echo __('Skip');?>
+                                    </a>
+                            </div>
+                            </div>
+                        </div>
+              <div class="modal fade" id="add-new">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+                    <h4 class="modal-title">Payment Gate Way</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
 				</div>
-             </div>
-         </div>
+				
+				<div class="modal-body">
+                <form action="<?php echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
+
+					<!-- <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/register2') }}" method="post"> -->
+						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="hidden" name="modal_plan_name" id="modal_plan_name" value="" />
+                        <div class="form-group"> 
+                            <label class="radio-inline">
+                            <input type="radio" id="tres_important" name="payment_method" value="Stripe">Stripe</label>
+
+                            <label class="radio-inline">
+                            <input type="radio" id="important" name="payment_method" value="PayPal">PayPal</label>
+                        </div>
+                               
+				    </form>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function($){
+
+
+        // Add New Category
+        $('#submit-new-cat').click(function(){
+            $('#payment-form').submit();
+        });
+        $(".plans_name_choose").click(function(){
+        // alert($(this).val());
+        $("#modal_plan_name").val($(this).val());
+
+    });
+    });
+  
+</script>
+                
+      
         
-        </form>
+        <!-- </form> -->
         
         </div>
 
