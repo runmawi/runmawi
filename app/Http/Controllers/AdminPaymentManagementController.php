@@ -182,6 +182,7 @@ class AdminPaymentManagementController extends Controller
         <tr>
         <td>'.$i++.'</td>
         <td>'.$row->username.'</td>
+        <td>'.$row->email.'</td>
         <td>'.$row->user_type.'</td>
         <td>'.$row->stripe_id.'</td>
         <td>'.$row->card_type.'</td>

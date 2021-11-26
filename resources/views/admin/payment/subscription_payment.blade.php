@@ -30,6 +30,7 @@
                                  <tr>
                                     <th>ID</th>
                                     <th>Username</th>
+                                    <th>Email</th>
                                     <th>Subscription Title</th>
                                     <th>Payment ID</th>
                                     <th>Payment Mode</th>
@@ -45,6 +46,7 @@
                                  <tr>
                                  <td> <p class="mb-0">{{ $i++ }}</p></td>
                                  <td> <p class="mb-0"></p>{{ $payment->username }}</td>
+                                 <td> <p class="mb-0"></p>{{ $payment->email }}</td>
                                  <td> <p class="mb-0">{{ $payment->user_type }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->stripe_id }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->card_type }}</p></td>

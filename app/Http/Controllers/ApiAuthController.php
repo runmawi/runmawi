@@ -773,6 +773,12 @@ public function verifyandupdatepassword(Request $request)
          $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
          $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
     
+    if(\App\AdsVideo::where('video_id',$videoid)->exists()){
+        $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
+        $videoads = \App\Advertisement::find($ads_id)->ads_path;
+    }else{
+        $videoads = '';
+    }
     $response = array(
       'status' => $status,
       'wishlist' => $wishliststatus,
@@ -787,7 +793,8 @@ public function verifyandupdatepassword(Request $request)
       'dislike' => $dislike,
       'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
       'videodetail' => $videodetail,
-      'videossubtitles' => $moviesubtitles
+      'videossubtitles' => $moviesubtitles,
+      'videoads' => $videoads
     );
     return response()->json($response, 200);
   }

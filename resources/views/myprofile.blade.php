@@ -469,7 +469,7 @@ $uppercase =  ucfirst($request_url);
        
          ?>
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
             <?php if ( Auth::user()->role != 'admin') { ?>
                 <div class="row">
