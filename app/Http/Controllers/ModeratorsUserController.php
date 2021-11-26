@@ -65,12 +65,17 @@ use File;
 use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
+use Session;
+
 
 class ModeratorsUserController extends Controller
 {   
 
   public function index()
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
+
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -94,10 +99,19 @@ class ModeratorsUserController extends Controller
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
+  
   }
 
   public function store(Request $request)
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -228,6 +242,12 @@ if($request->picture == ""){
   return view('blocked');
 
 }
+}else{
+  $system_settings = SystemSetting::first();
+  $user = User::where('id','=',1)->first();
+  return view('auth.login',compact('system_settings','user'));
+
+}
 }
 
 
@@ -277,6 +297,8 @@ public function PendingUsers()
 
 public function RolesPermission(Request $request)
 {
+  $data = Session::all();
+  if (!empty($data['password_hash'])) {
   $package_id = auth()->user()->id;
   $user_package =    DB::table('users')->where('id', $package_id)->first();
   $package = $user_package->package;
@@ -299,6 +321,12 @@ public function RolesPermission(Request $request)
       return view('blocked');
   
   }
+}else{
+  $system_settings = SystemSetting::first();
+  $user = User::where('id','=',1)->first();
+  return view('auth.login',compact('system_settings','user'));
+
+}
 }
 public function RolesPermissionStore(Request $request)
 {
@@ -313,6 +341,8 @@ $permission = implode(",",$user_permission);
 // echo "<pre>";  
 // print_r($permission);
 // exit();
+$data = Session::all();
+if (!empty($data['password_hash'])) {
   $package_id = auth()->user()->id;
   $user_package =    DB::table('users')->where('id', $package_id)->first();
   $package = $user_package->package;
@@ -343,10 +373,17 @@ $permission = implode(",",$user_permission);
       return view('blocked');
   
   }
+}else{
+  $system_settings = SystemSetting::first();
+  $user = User::where('id','=',1)->first();
+  return view('auth.login',compact('system_settings','user'));
+
+}
 }
   public function edit($id)
   {
-
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
 
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
@@ -378,12 +415,19 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
   
   public function RoleEdit($id)
   {
 
-
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -418,11 +462,19 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
 
         return view('blocked');
     
+    } 
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+      return view('auth.login',compact('system_settings','user'));
+  
     }
   }
 
   public function update(Request $request)
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -492,10 +544,18 @@ return back()->with('message', 'Successfully User Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
 
   public function RoleUpdate(Request $request)
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -520,12 +580,20 @@ return back()->with('message', 'Successfully Roles Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
 
   public function delete($id)
   {
     // print_r($id);
     // exit();
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -541,9 +609,17 @@ return back()->with('message', 'Successfully Roles Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
   public function RoleDelete($id)
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
 
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
@@ -560,9 +636,17 @@ return back()->with('message', 'Successfully Roles Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
   public function view()
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -584,10 +668,18 @@ return back()->with('message', 'Successfully Roles Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
 
   public function AllRoleView()
   {
+    $data = Session::all();
+    if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
     $user_package =    DB::table('users')->where('id', $package_id)->first();
     $package = $user_package->package;
@@ -613,6 +705,12 @@ return back()->with('message', 'Successfully Roles Updated!.');
         return view('blocked');
     
     }
+  }else{
+    $system_settings = SystemSetting::first();
+    $user = User::where('id','=',1)->first();
+    return view('auth.login',compact('system_settings','user'));
+
+  }
   }
 
   public function test(Request $request)

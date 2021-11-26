@@ -99,7 +99,12 @@ class ModeratorsLoginController extends Controller
   public function Login(Request $request)
   {
     $input = $request->all();
-
+    $data = Session::all();
+    // Session::put('password ', $input['password'] );
+    // echo "<pre>";
+    // print_r($request->all());exit();
+    // dd($data);
+    // if (!empty($data['password_hash'])) {
     $userexits = ModeratorsUser::where('email','=',$input['email'])->first();
 
     if(!empty($userexits)){
@@ -160,7 +165,11 @@ class ModeratorsLoginController extends Controller
                 'page' => $page,
                 'total_ppvvideos' => $total_ppvvideos
         );
-		return \View::make('moderator.dashboard', $data);
+        Session::put('data', $data );
+
+        return  redirect('cpp/dashboard');
+
+		// return \View::make('moderator.dashboard', $data);
     }
     }elseif($userexits->status == 0){
       return redirect('/cpp/login')->with('message', 'Your Request have been Pending');
@@ -172,9 +181,71 @@ class ModeratorsLoginController extends Controller
       return redirect('/cpp/login')->with('message', 'Please Register And Login');  
       }
 
+    // }else{
 
+    //   return redirect('/cpp/login')->with('message', 'Please Login');
+  
+    // }
   }
+  public function Home()
+  {
+    $data = Session::all();
+    // echo "<pre>";print_r($data['user']->id);exit();
+        // return route('login');
+    // $data = Session::get('data');
+    $id = $data['user']->id;
+    $userrolepermissiom=DB::table('user_accesses')
+    ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
+    ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
+    ->where(['user_id' =>$id])
+    ->get();
+    $settings = Setting::first();
 
+    $ppv_price = $settings->ppv_price;
+  
+    $Revenue =  DB::table('ppv_purchases')
+    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    ->select('videos.*')
+    ->where('videos.user_id', '=', $id )
+    ->get();
+    
+    $Revenue_count =  DB::table('ppv_purchases')
+    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    ->select('videos.*')
+    ->where('videos.user_id', '=', $id )
+    ->count();
+    $total_Revenue = $Revenue_count * $ppv_price.'$';
+
+    $total_video_uploaded =  Video::where('user_id','=',$id)->count();
+       $total_subscription = Subscription::where('stripe_status','=','active')->count();
+      
+       $total_videos = Video::where('active','=',1)->count();
+      
+       $total_ppvvideos = PpvVideo::where('active','=',1)->count();
+       
+      $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
+      $top_rated_videos = Video::where("rating",">",7)->get();
+      $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
+      $recent_view = $recent_views->unique('video_id');
+      $page = 'admin-dashboard';
+      $data = array(
+              'userrolepermissiom' => $userrolepermissiom, 
+              'total_Revenue' => $total_Revenue, 
+              'total_video_uploaded' => $total_video_uploaded, 
+              'settings' => $settings,
+              'total_subscription' => $total_subscription,
+              'total_recent_subscription' => $total_recent_subscription,
+              'total_videos' => $total_videos,
+              'top_rated_videos' => $top_rated_videos,
+              'recent_views' => $recent_view,
+              'page' => $page,
+              'total_ppvvideos' => $total_ppvvideos
+      );
+
+    // dd($data);
+    
+  return \View::make('moderator.dashboard', $data);
+  }
   public function Store(Request $request)
   {
     $input = $request->all();
@@ -364,9 +435,13 @@ if($request->picture == ""){
     $settings = Setting::first();
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
-    return redirect('/cpp/login')->with('message', 'Successfully Logged Out.');
 
     return view('moderator.login',compact('system_settings','user','settings'));
+
+    return redirect('/cpp/login')->with('message', 'Successfully Logged Out');  
+
+    return redirect('/cpp/login')->with('message', 'Successfully Logged Out.');
+
     // return \View::make('auth.login');
     
   
