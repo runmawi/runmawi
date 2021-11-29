@@ -324,7 +324,7 @@ class ApiAuthController extends Controller
   {
 
     $settings = Setting::first();
-
+    $token = $request->token;
     $email_login = array(
       'email' => $request->get('email'),
       'password' => $request->get('password')
@@ -345,11 +345,21 @@ class ApiAuthController extends Controller
         if(Auth::user()->role == 'registered'){
         $user = User::find(Auth::user()->id);
         $user->role = 'registered';
+        $user->token = $token;
         $user->save();
         }else if(Auth::user()->role == 'admin'){
+        // print_r(Auth::user()->role); exit();
+
         $user = User::find(Auth::user()->id);
         $user->role = 'admin';
+        $user->token = $token;
         $user->save();
+        }else if(Auth::user()->role == 'subscriber'){
+          // print_r(Auth::user()->role); exit();
+          $user = User::find(Auth::user()->id);
+          $user->role = 'subscriber';
+          $user->token = $token;
+          $user->save();
         }
       }
 
@@ -477,7 +487,7 @@ class ApiAuthController extends Controller
 
       $user_id = User::where('email', '=', $user_email)->first();
       $user = User::find($user_id->id);
-      $user->password = $request->password;
+      $user->password = Hash::make($request->password);
       $user->save();
           send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);
       $response = array(
@@ -2347,6 +2357,7 @@ public function checkEmailExists(Request $request)
   public function CheckBlockList(Request $request){
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $mycountry = $geoip->getCountry();
+
         $allCountries = Country::all()->pluck('country_name');
         $user_country = Country::where('country_name', '=', $mycountry)->first();
         if ($user_country !== null) {
@@ -4097,19 +4108,19 @@ public function SubscriptionPayment(Request $request){
             $current_date = date('Y-m-d h:i:s');    
             $date = Carbon::parse($current_date)->addDays($next_date);
             $subscription = new Subscription;	
-            // $subscription->user_id  =  $user_id ;	
-            // $subscription->name  =  $name ;	
-            // $subscription->days  =  $days ;	
-            // $subscription->price  =  $price ;	
-            // $subscription->stripe_id  =  $stripe_id ;	
-            // $subscription->stripe_status   =  $stripe_status ;	
-            // $subscription->stripe_plan =  $stripe_plan;	
-            // $subscription->created_at =  $created_at;	
-            // $subscription->countryname = $countryname;	
-            // $subscription->regionname = $regionname;	
-            // $subscription->cityname = $cityname;	
-            // $subscription->ends_at = $date;	
-            // $subscription->save();	
+            $subscription->user_id  =  $user_id ;	
+            $subscription->name  =  $name ;	
+            $subscription->days  =  $days ;	
+            $subscription->price  =  $price ;	
+            $subscription->stripe_id  =  $stripe_id ;	
+            $subscription->stripe_status   =  $stripe_status ;	
+            $subscription->stripe_plan =  $stripe_plan;	
+            $subscription->created_at =  $created_at;	
+            $subscription->countryname = $countryname;	
+            $subscription->regionname = $regionname;	
+            $subscription->cityname = $cityname;	
+            $subscription->ends_at = $date;	
+            $subscription->save();	
             $user =  User::findOrFail($user_id);	
             $user->role = "subscriber";	
             $user->save();	
@@ -4167,6 +4178,27 @@ public function SubscriptionPayment(Request $request){
     );
     return response()->json($response, 200);
 }
+
+
+public function LocationCheck(Request $request){
+        
+  $country_name = $request->country_name;
+
+  $blocked_count = Country::where('country_name', '=', $country_name)->count();
+
+        if ($blocked_count > 0) {
+          $response = array('status' => true,
+                            'message' => 'Blocked'
+          );
+      } else {
+          $response = array('status' => false,
+                            'message' => 'Can Access'
+          );
+      }
+      return response()->json($response, 200);
+
+  }
+
 
 
 
