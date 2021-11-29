@@ -95,7 +95,7 @@ $(document).ready(function(){
  function fetch_customer_data(query = '')
  {
   $.ajax({
-   url:"{{ URL::to('/subscription_search') }}",
+   url:"{{ URL::to('admin/subscription_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',

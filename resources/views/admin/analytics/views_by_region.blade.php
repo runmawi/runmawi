@@ -121,7 +121,7 @@ input[type="number"] {
          </div>
 
 @stop
-<input type="hidden" id="url" name="url" value="{{ URL::to('/Allregionvideos') }}">
+<input type="hidden" id="url" name="url" value="{{ URL::to('admin/Allregionvideos') }}">
 <script>
 
 
@@ -191,7 +191,7 @@ $.ajaxSetup({
    } else {
 
     $.ajax({
-   url:"{{ URL::to('/regionvideos') }}",
+   url:"{{ URL::to('admin/regionvideos') }}",
    method:'get',
    data:{query:country},
    dataType:'json',

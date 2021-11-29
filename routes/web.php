@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
+use Carbon\Carbon as Carbon;
 
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
@@ -438,15 +439,109 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
     /*Ads Management ends*/
 
+    /*Video Uploads */
+
+    Route::post('/m3u8url',  'AdminVideosController@m3u8url');
+    Route::post('/embededcode',  'AdminVideosController@Embededcode');
+    Route::post('/mp4url',  'AdminVideosController@Mp4url');
+    Route::post('/uploadFile',  'AdminVideosController@uploadFile');
+
+
+    /*Audio Uploads */
+    
+    Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');
+    Route::post('/Audiofile',  'AdminAudioController@Audiofile');
+
+    /*Moderators*/
+
+    Route::get('/moderator', 'ModeratorsUserController@index');
+    Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+    Route::get('/moderator/role', 'ModeratorsUserController@RolesPermission');
+    Route::post('/rolepermission/create', 'ModeratorsUserController@RolesPermissionStore');
+    Route::get('/moderator/Allview', 'ModeratorsUserController@AllRoleView');
+    Route::get('/moderator/commission', 'ModeratorsUserController@Commission');
+    Route::post('/add/commission', 'ModeratorsUserController@AddCommission');
+    Route::get('/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
+    Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
+    Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
+
+
+
+
+
+// Email Template
+Route::get('/email_template', 'AdminEmailTemplateController@index');
+Route::get('/template/view/{id}', 'AdminEmailTemplateController@View');
+Route::get('/template/edit/{id}', 'AdminEmailTemplateController@Edit');
+Route::post('/template/update', 'AdminEmailTemplateController@Update');
+Route::get('/template_search', 'AdminEmailTemplateController@Template_search');
+
+
+//payment management
+Route::get('/payment/total_revenue', 'AdminPaymentManagementController@index');
+Route::get('/payment/subscription', 'AdminPaymentManagementController@SubscriptionIndex');
+Route::get('/payment/PayPerView', 'AdminPaymentManagementController@PayPerViewIndex');
+Route::post('payment/', 'AdminPaymentManagementController@Update');
+Route::get('/subscription/view/{id}', 'AdminPaymentManagementController@SubscriptionView');
+Route::get('/ppvpayment/view/{id}', 'AdminPaymentManagementController@PayPerView');
+Route::get('/subscription_search', 'AdminPaymentManagementController@Subscription_search');
+Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
+Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
+
+
+
+
+
+Route::get('/allmoderator', 'ModeratorsUserController@view');
+Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
+Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
+Route::post('/moderatoruser/update', 'ModeratorsUserController@update');
+Route::get('/live_search', 'AdminVideosController@live_search');
+
+
+Route::get('/devices', 'AdminPlansController@DevicesIndex');
+Route::post('/devices/store', 'AdminPlansController@DevicesStore');
+Route::get('/devices/edit/{id}', 'AdminPlansController@DevicesEdit');
+Route::get('/devices/delete/{id}', 'AdminPlansController@DevicesDelete');
+Route::post('/devices/update', 'AdminPlansController@DevicesUpdate');
+
+Route::get('/analytics/revenue', 'AdminUsersController@AnalyticsRevenue');
+Route::get('/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
+Route::get('/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
+Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
+
+
+
+
+Route::get('/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
+Route::post('/currency/store', 'AdminCurrencySettings@StoreCurrencySettings');
+Route::post('/currency/update', 'AdminCurrencySettings@UpdateCurrencySettings');
+Route::get('/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
+Route::get('/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
+Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
+
+
+
+Route::get('/Planstate', 'AdminUsersController@PlanState');
+Route::get('/Plancity', 'AdminUsersController@PlanCity');
+Route::post('/getState', 'AdminUsersController@GetState');
+Route::post('/getCity', 'AdminUsersController@GetCity');
+Route::get('/cppusers_videodata', 'AdminVideosController@CPPVideos');
+Route::get('/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
+Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
+Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
+Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
+Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
+Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
+Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
+Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
+Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
+Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
+Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
 });
 
 
-Route::post('/m3u8url',  'AdminVideosController@m3u8url');
-Route::post('/embededcode',  'AdminVideosController@Embededcode');
-Route::post('/mp4url',  'AdminVideosController@Mp4url');
-Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');
-Route::post('/Audiofile',  'AdminAudioController@Audiofile');
-Route::post('/uploadFile',  'AdminVideosController@uploadFile');
+
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::get('/blocked', 'HomeController@Restrict');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword');
@@ -461,849 +556,38 @@ Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/moderator', 'ModeratorsUserController@index');
-Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
-Route::get('admin/moderator/role', 'ModeratorsUserController@RolesPermission');
-Route::post('admin/rolepermission/create', 'ModeratorsUserController@RolesPermissionStore');
-Route::get('admin/moderator/Allview', 'ModeratorsUserController@AllRoleView');
-Route::get('admin/moderator/commission', 'ModeratorsUserController@Commission');
-Route::post('admin/add/commission', 'ModeratorsUserController@AddCommission');
-
-Route::get('admin/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
-Route::get('admin/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
-Route::post('admin/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
-
-use Carbon\Carbon as Carbon;
-
-
-//categories_audio
-Route::get('categories_audio',function(){
-    $response=DB::table('audio_categories')->where('parent_id', '=', 0)->get();
-    return response()->json($response,200);
-});
-
-
-//audios_list
-Route::get('audios_list',function(){
-    $response=DB::table('audio')->get();
-    return response()->json($response,200);
-});
-
-
-
-//audio_albums
-Route::get('audio_albums',function(){
-    $response=DB::table('audio_albums')->get();
-    return response()->json($response,200);
-});
-//audio_categories
-Route::get('audio_categories',function(){
-    $response=DB::table('audio_categories')->get();
-    return response()->json($response,200);
-});
-
-//artists_index
-Route::get('artists_index',function(){
-    $response=DB::table('artists')->orderBy('created_at', 'DESC')->paginate(9);
-    return response()->json($response,200);
-});
-
-
-//Role
-Route::get('user_roles',function(){
-    $response=DB::table('roles')->get();
-    return response()->json($response,200);
-});
-
-//site_themes
-Route::get('site_themes',function(){
-    $response=DB::table('site_themes')->first();
-    return response()->json($response,200);
-});
-
-//system_settings
-Route::get('system_settings',function(){
-    $response=DB::table('system_settings')->first();
-    return response()->json($response,200);
-});
-//home_settings
-Route::get('home_settings',function(){
-    $response=DB::table('home_settings')->first();
-    return response()->json($response,200);
-});
-//payment_settings
-Route::get('payment_settings',function(){
-    $response=DB::table('payment_settings')->first();
-    return response()->json($response,200);
-});
-
-
-//mobile_settings
-Route::get('mobile_settings',function(){
-    $response=DB::table('mobile_apps')->get();
-    return response()->json($response,200);
-});
-
-//mobileslider
-Route::get('mobileslider',function(){
-    $response=DB::table('mobile_sliders')->get();
-    return response()->json($response,200);
-});
-
-
-//paypalplans
-Route::get('paypalplans',function(){
-    $response=DB::table('paypal_plans')->get();
-    return response()->json($response,200);
-});
-
-//coupons
-Route::get('coupons',function(){
-    $response=DB::table('coupons')->get();
-    return response()->json($response,200);
-});
-
-
-
-//plans
-Route::get('plans',function(){
-    $response=DB::table('plans')->get();
-    return response()->json($response,200);
-});
-
-
-//livestream
-Route::get('livestream_categories',function(){
-    $response=DB::table('live_categories')->where('parent_id', '=', 0)->get();
-    return response()->json($response,200);
-});
-
-
-//livestream
-Route::get('livestream',function(){
-    $response=DB::table('live_streams')->orderBy('created_at', 'DESC')->paginate(9);
-    return response()->json($response,200);
-});
-
-//livestream
-Route::get('live_categories',function(){
-    $response=DB::table('live_categories')->get();
-    return response()->json($response,200);
-});
-
-//series
-Route::get('series',function(){
-    $response=DB::table('series')->orderBy('created_at', 'DESC')->paginate(9);
-    return response()->json($response,200);
-});
-//pages
-Route::get('pages',function(){
-    $response=DB::table('pages')->orderBy('created_at', 'DESC')->paginate(10);
-    return response()->json($response,200);
-});
-
-//categories
-Route::get('categories',function(){
-    $response=DB::table('video_categories')->where('parent_id', '=', 0)->get();
-    return response()->json($response,200);
-});
-//video_categories
-Route::get('video_categories',function(){
-    $response=DB::table('video_categories')->get();
-    return response()->json($response,200);
-});
-
-//Videos
-Route::get('videos',function(){
-    $response=DB::table('videos')->orderBy('created_at', 'DESC')->paginate(9);
-    return response()->json($response,200);
-});
-
-//Videos_index
-Route::get('videos_index',function(){
-    $response=DB::table('videos')->get();
-    return response()->json($response,200);
-});
-
-
-//video_categories
-Route::get('video_categories',function(){
-    $response=DB::table('video_categories')->get();
-    return response()->json($response,200);
-});
-
-
-//video_subtitle
-Route::get('video_subtitle',function(){
-    $response=DB::table('videos_subtitles')->get();
-    return response()->json($response,200);
-});
-
-//languages
-Route::get('languages',function(){
-    $response=DB::table('video_languages')->get();
-    return response()->json($response,200);
-});
-//languages
-Route::get('alllanguages',function(){
-    $response=DB::table('languages')->get();
-    return response()->json($response,200);
-});
-
-//subtitles
-Route::get('subtitles',function(){
-    $response=DB::table('subtitles')->get();
-    return response()->json($response,200);
-});
-
-
-
-//artists
-Route::get('artists',function(){
-    $response=DB::table('artists')->get();
-    return response()->json($response,200);
-});
-
-
-//Menu
-Route::get('menu',function(){
-    $response=DB::table('menus')->get();
-    return response()->json($response,200);
-});
-    // users
-Route::get('users',function(){
-    $response=DB::table('users')->get();
-    return response()->json($response,200);
-});
-
-//Country
-Route::get('country',function(){
-    $response=DB::table('countries')->get();
-    return response()->json($response,200);
-});
-//Palyer UI
-Route::get('playerui_index',function(){
-    $response=DB::table('playerui')->first();
-    return response()->json($response,200);
-});
-//Slider
-Route::get('allCategories',function(){
-    $response=DB::table('sliders')->get();
-    return response()->json($response,200);
-});
-// Moderator 
-
-Route::get('moderatorsrole',function(){
-    $response=DB::table('moderators_roles')->get();
-    return response()->json($response,200);
-});
-
-// Moderator 
-
-Route::get('moderatorspermission',function(){
-    $response=DB::table('moderators_permissions')->get();
-    return response()->json($response,200);
-});
-
-// moderatorsuser 
-
-Route::get('moderatorsuser',function(){
-    $response=DB::table('moderators_users')->get();
-    return response()->json($response,200);
-});
-// ADMIN DASHBOARD
-Route::get('settings',function(){
-    $response=DB::table('settings')->first();
-    return response()->json($response,200);
-});
-
-// total_subscription 
-
-Route::get('total_subscription',function(){
-    $response=DB::table('subscriptions')->where('stripe_status','=','active')->count();
-    return response()->json($response,200);
-});
-
-
-// total_videos 
-
-
-
-Route::get('total_videos',function(){
-    $response=DB::table('videos')->where('active','=',1)->count();
-    return response()->json($response,200);
-});
-
-// ppvvideo 
-
-Route::get('ppvvideo',function(){
-    // $response = PpvVideo::where('active','=',1)->count();
-    $response=DB::table('ppv_videos')->where('active','=',1)->count();
-    return response()->json($response,200);
-});
-
-// total_recent_subscription 
-
-Route::get('total_recent_subscription',function(){
-    $response=DB::table('subscriptions')->orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
-    return response()->json($response,200);
-});
-
-// top_rated_videos 
-
-Route::get('top_rated_videos',function(){
-    $response=DB::table('videos')->where("rating",">",7)->get();
-    return response()->json($response,200);
-});
-
-// recent_views 
-
-Route::get('recent_views',function(){
-    $response=DB::table('recent_views')->get();
-    return response()->json($response,200);
-});
-
-// permission 
-
-
-
-
-
-Route::get('permission',function(){
-    $response=DB::table('moderators_permissions')->get();
-    return response()->json($response,200);
-});
-
-Route::get('age_categorie',function(){
-    $response=DB::table('age_categories')->get();
-    return response()->json($response,200);
-});
-
-
-// Test 
-
-Route::post('test', 'ModeratorsUserController@test');
-
-// video_store 
-
-Route::post('video_store', 'ModeratorsUserController@video_store');
-
-// menu_store 
-
-Route::post('menu_store', 'ModeratorsUserController@menu_store');
-
-// county 
-
-Route::post('county', 'ModeratorsUserController@county');
-
-// slider_store 
-
-Route::post('slider_store', 'ModeratorsUserController@slider_store');
-
-
-
-// all_video_store 
-
-Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
-
-
-
-// playerui_setting 
-
-Route::post('playerui_setting', 'ModeratorsUserController@playerui_setting');
-
-
-// plans 
-
-Route::post('plans', 'ModeratorsUserController@plans');
-
-
-// paypalplans 
-
-Route::post('paypalplans', 'ModeratorsUserController@paypalplans');
-
-
-// coupons 
-
-Route::post('coupons', 'ModeratorsUserController@coupons');
-
-
-// all_video_store 
-
-Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
-
-
-
-// payment_setting 
-
-Route::post('payment_setting', 'ModeratorsUserController@payment_setting');
-
-
-
-// systemsettings 
-
-Route::post('systemsettings', 'ModeratorsUserController@systemsettings');
-
-
-// homesettings 
-
-Route::post('homesettings', 'ModeratorsUserController@homesettings');
-
-// mobileappupdate 
-
-Route::post('mobileappupdate', 'ModeratorsUserController@mobileappupdate');
-
-// slider 
-
-Route::post('slider', 'ModeratorsUserController@slider');
-
-// theme_settings 
-
-Route::post('theme_settings', 'ModeratorsUserController@theme_settings');
-// site_setting 
-
-Route::post('site_setting', 'ModeratorsUserController@site_setting');
-// pages 
-
-Route::post('pages', 'ModeratorsUserController@pages');
-// livestream 
-
-Route::post('livestream', 'ModeratorsUserController@livestream');
-// livestream_categories 
-
-Route::post('livestream_categories', 'ModeratorsUserController@livestream_categories');
-// user_store 
-
-Route::post('user_store', 'ModeratorsUserController@user_store');
-// user_role 
-
-Route::post('user_role', 'ModeratorsUserController@user_role');
-// languagestrans 
-
-Route::post('languagestrans', 'ModeratorsUserController@languagestrans');
-// video_languages 
-
-Route::post('video_languages', 'ModeratorsUserController@video_languages');
-
-// artists 
-
-Route::post('artists', 'ModeratorsUserController@artists');
-// audios_categories 
-
-Route::post('audios_categories', 'ModeratorsUserController@audios_categories');
-// audios_album 
-
-Route::post('audios_album', 'ModeratorsUserController@audios_album');
-
-// audios 
-
-Route::post('audios', 'ModeratorsUserController@audios');
-
-
-
-
-
-Route::get('/moderator', 'ModeratorsUserController@index');
-Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
-
-
-
-// edit_video 
-
-Route::post('edit_video', 'ModeratorsUserController@edit_video');
-
-
-
-// update_video 
-
-Route::post('update_video', 'ModeratorsUserController@update_video');
-
-
-
-// destroy_video 
-
-Route::post('destroy_video', 'ModeratorsUserController@destroy_video');
-
-
-
-// edit_video_category 
-
-Route::post('edit_video_category', 'ModeratorsUserController@edit_video_category');
-
-
-
-// update_video_store 
-
-Route::post('update_video_store', 'ModeratorsUserController@update_video_store');
-
-
-
-// destroy_video_category 
-
-Route::post('destroy_video_category', 'ModeratorsUserController@destroy_video_category');
-
-
-
-// series_store 
-
-Route::post('series_store', 'ModeratorsUserController@series_store');
-
-
-
-// edit_series 
-
-Route::post('edit_series', 'ModeratorsUserController@edit_series');
-
-
-
-// update_series 
-
-Route::post('update_series', 'ModeratorsUserController@update_series');
-
-
-
-// destory_series 
-
-Route::post('destory_series', 'ModeratorsUserController@destory_series');
-
-
-
-// edit_audio 
-
-Route::post('edit_audio', 'ModeratorsUserController@edit_audio');
-
-
-
-// update_audio 
-
-Route::post('update_audio', 'ModeratorsUserController@update_audio');
-
-
-
-// destory_audio 
-
-Route::post('destory_audio', 'ModeratorsUserController@destory_audio');
-
-
-
-// edit_audio_categories 
-
-Route::post('edit_audio_categories', 'ModeratorsUserController@edit_audio_categories');
-
-
-
-// destroy_audio_categories 
-
-Route::post('destroy_audio_categories', 'ModeratorsUserController@destroy_audio_categories');
-
-
-
-// destroy_artist_categories 
-
-Route::post('destroy_artist_categories', 'ModeratorsUserController@destroy_artist_categories');
-
-
-
-// edit_artist_categories 
-
-Route::post('edit_artist_categories', 'ModeratorsUserController@edit_artist_categories');
-
-
-
-// update_artist_categories 
-
-Route::post('update_artist_categories', 'ModeratorsUserController@update_artist_categories');
-
-
-
-// editAlbum 
-
-Route::post('editAlbum', 'ModeratorsUserController@editAlbum');
-
-
-// destroyAlbum 
-
-Route::post('destroyAlbum', 'ModeratorsUserController@destroyAlbum');
-
-// MobileSliderEdit 
-
-Route::post('MobileSliderEdit', 'ModeratorsUserController@MobileSliderEdit');
-
-// MobileSliderUpdate 
-
-Route::post('MobileSliderUpdate', 'ModeratorsUserController@MobileSliderUpdate');
-
-// MobileSliderDelete 
-
-Route::post('MobileSliderDelete', 'ModeratorsUserController@MobileSliderDelete');
-
-// page_edit 
-
-Route::post('page_edit', 'ModeratorsUserController@page_edit');
-
-// page_update 
-
-Route::post('page_update', 'ModeratorsUserController@page_update');
-
-// page_destory 
-
-Route::post('page_destory', 'ModeratorsUserController@page_destory');
-
-// plans_edit 
-
-Route::post('plans_edit', 'ModeratorsUserController@plans_edit');
-
-// plans_update 
-
-Route::post('plans_update', 'ModeratorsUserController@plans_update');
-
-// plans_destory 
-
-Route::post('plans_destory', 'ModeratorsUserController@plans_destory');
-
-// PaypalEdit 
-
-Route::post('PaypalEdit', 'ModeratorsUserController@PaypalEdit');
-
-// PaypalUpdate 
-
-Route::post('PaypalUpdate', 'ModeratorsUserController@PaypalUpdate');
-
-// PaypalDelete 
-
-Route::post('PaypalDelete', 'ModeratorsUserController@PaypalDelete');
-
-// editcoupons
-
-Route::post('editcoupons', 'ModeratorsUserController@editcoupons');
-
-// updatecoupons 
-
-Route::post('updatecoupons', 'ModeratorsUserController@updatecoupons');
-
-// deletecoupons 
-
-Route::post('deletecoupons', 'ModeratorsUserController@deletecoupons');
-
-// deletecountry 
-
-Route::post('deletecountry', 'ModeratorsUserController@deletecountry');
-
-// SliderEdit 
-
-Route::post('SliderEdit', 'ModeratorsUserController@SliderEdit');
-
-// SliderUpdate 
-
-Route::post('SliderUpdate', 'ModeratorsUserController@SliderUpdate');
-
-// SliderDelete 
-
-Route::post('SliderDelete', 'ModeratorsUserController@SliderDelete');
-
-// menu_edit 
-
-Route::post('menu_edit', 'ModeratorsUserController@menu_edit');
-
-// menu_update 
-
-Route::post('menu_update', 'ModeratorsUserController@menu_update');
-
-// menu_destroy 
-
-Route::post('menu_destroy', 'ModeratorsUserController@menu_destroy');
-
-// LanguageEdit 
-
-Route::post('LanguageEdit', 'ModeratorsUserController@LanguageEdit');
-
-// LanguageUpdate 
-
-Route::post('LanguageUpdate', 'ModeratorsUserController@LanguageUpdate');
-
-// LanguageDelete 
-
-Route::post('LanguageDelete', 'ModeratorsUserController@LanguageDelete');
-
-// LanguageTransEdit 
-
-Route::post('LanguageTransEdit', 'ModeratorsUserController@LanguageTransEdit');
-
-// LanguageTransUpdate 
-
-Route::post('LanguageTransUpdate', 'ModeratorsUserController@LanguageTransUpdate');
-
-// LanguageTransDelete 
-
-Route::post('LanguageTransDelete', 'ModeratorsUserController@LanguageTransDelete');
-
-// user_edit 
-
-Route::post('user_edit', 'ModeratorsUserController@user_edit');
-
-// user_update 
-
-Route::post('user_update', 'ModeratorsUserController@user_update');
-
-// user_delete 
-
-Route::post('user_delete', 'ModeratorsUserController@user_delete');
-
-// userroles_edit 
-
-Route::post('userroles_edit', 'ModeratorsUserController@userroles_edit');
-
-// userroles_update 
-
-Route::post('userroles_update', 'ModeratorsUserController@userroles_update');
-
-// userroles_destroy 
-
-Route::post('userroles_destroy', 'ModeratorsUserController@userroles_destroy');
-
-// livestream_edit 
-
-Route::post('livestream_edit', 'ModeratorsUserController@livestream_edit');
-
-// livestream_update 
-
-Route::post('livestream_update', 'ModeratorsUserController@livestream_update');
-
-// livestreamcategory_edit 
-
-Route::post('livestreamcategory_edit', 'ModeratorsUserController@livestreamcategory_edit');
-
-// livestreamcategory_update 
-
-Route::post('livestreamcategory_update', 'ModeratorsUserController@livestreamcategory_update');
-
-// livestreamcategory_destroy 
-
-Route::post('livestreamcategory_destroy', 'ModeratorsUserController@livestreamcategory_destroy');
-Route::post('Fileupload', 'ModeratorsUserController@Fileupload');
-Route::post('updatefile', 'ModeratorsUserController@updatefile');
-Route::post('mp4url_data', 'ModeratorsUserController@mp4url_data');
-Route::post('m3u8url_data', 'ModeratorsUserController@m3u8url_data');
-Route::post('Embed_Data', 'ModeratorsUserController@Embed_Data');
-Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
-Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
-
-
-// Email Template
-Route::get('/admin/email_template', 'AdminEmailTemplateController@index');
-Route::get('/admin/template/view/{id}', 'AdminEmailTemplateController@View');
-Route::get('/admin/template/edit/{id}', 'AdminEmailTemplateController@Edit');
-Route::post('/admin/template/update', 'AdminEmailTemplateController@Update');
-Route::get('/template_search', 'AdminEmailTemplateController@Template_search');
-
-
-//payment management
-Route::get('admin/payment/total_revenue', 'AdminPaymentManagementController@index');
-Route::get('admin/payment/subscription', 'AdminPaymentManagementController@SubscriptionIndex');
-Route::get('admin/payment/PayPerView', 'AdminPaymentManagementController@PayPerViewIndex');
-Route::post('admin/payment/', 'AdminPaymentManagementController@Update');
-Route::get('/admin/subscription/view/{id}', 'AdminPaymentManagementController@SubscriptionView');
-Route::get('/admin/ppvpayment/view/{id}', 'AdminPaymentManagementController@PayPerView');
-Route::get('/subscription_search', 'AdminPaymentManagementController@Subscription_search');
-Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
-Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
-
-
-Route::get('admin/allmoderator', 'ModeratorsUserController@view');
-Route::get('admin/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
-Route::get('admin/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
-Route::post('admin/moderatoruser/update', 'ModeratorsUserController@update');
-Route::get('/live_search', 'AdminVideosController@live_search');
-
-
-Route::get('/admin/devices', 'AdminPlansController@DevicesIndex');
-Route::post('/admin/devices/store', 'AdminPlansController@DevicesStore');
-Route::get('/admin/devices/edit/{id}', 'AdminPlansController@DevicesEdit');
-Route::get('/admin/devices/delete/{id}', 'AdminPlansController@DevicesDelete');
-Route::post('/admin/devices/update', 'AdminPlansController@DevicesUpdate');
-
-Route::get('/admin/analytics/revenue', 'AdminUsersController@AnalyticsRevenue');
-Route::get('/admin/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
-Route::get('/admin/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
-Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
-
-
-Route::get('/admin/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
-Route::post('/admin/currency/store', 'AdminCurrencySettings@StoreCurrencySettings');
-Route::post('/admin/currency/update', 'AdminCurrencySettings@UpdateCurrencySettings');
-Route::get('/admin/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
-Route::get('/admin/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
-Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
-
 Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
-Route::get('/Planstate', 'AdminUsersController@PlanState');
-Route::get('/Plancity', 'AdminUsersController@PlanCity');
-Route::post('/getState', 'AdminUsersController@GetState');
-Route::post('/getCity', 'AdminUsersController@GetCity');
-Route::get('/cppusers_videodata', 'AdminVideosController@CPPVideos');
-Route::get('/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
-Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
-Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
-Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
-Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
-Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
-Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
-Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
+
+
 Route::get('cpp/signup/',  'ModeratorsLoginController@index')->name('CPPRegister');
-
-
 Route::get('/cpp',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 // Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 Route::get('cpp/login',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 // Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
-
 Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
 Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
 Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');
-
-
-Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
-Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
-Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
-
 Route::get('/emailvalidation', 'SignupController@EmailValidation');
 
-
 // Paypal Controllers
-
 Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));
 // route for post request
 // Route::post('paypal', array('as' => 'paypal','uses' => 'PaypalController@postPaymentWithpaypal',));
 // route for check status responce
 Route::get('paypal', array('as' => 'status','uses' => 'PaypalController@getPaymentStatus',));
-
 Route::get('/subscribe/paypal', 'paypalcontroller@paypalredirect')->name('paypal.redirect');
 Route::get('/subscribe/paypal/return', 'paypalcontroller@paypalreturn')->name('paypal.return');
 // Route::get('create_paypal_plan', 'PaypalController@create_plan');
-
-
 Route::get('admin/payment_test', 'AdminPaymentManagementController@PaymentIndex');
 
-// Route::middleware([cpp::class])->group(function(){
-Route::group(['prefix' => 'cpp'], function() {
-
-    
-// CPP USer 
 
 
-
-});
-// Route::group(['prefix' => 'cpp'], function() {
-    Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
-
+/**       CPP Middlware       */
+Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
-
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
-
 Route::get('/dashboard', 'ModeratorsLoginController@IndexDashboard');
 Route::get('/logout', 'ModeratorsLoginController@logout');
-
-
 //  CPP Video Management
 Route::get('/videos', 'CPPAdminVideosController@CPPindex');
 Route::get('/videos/edit/{id}', 'CPPAdminVideosController@CPPedit');
@@ -1319,8 +603,6 @@ Route::post('/m3u8url',  'CPPAdminVideosController@CPPm3u8url');
 Route::post('/embededcode',  'CPPAdminVideosController@CPPEmbededcode');
 Route::post('/mp4url',  'CPPAdminVideosController@CPPMp4url');
 Route::post('/uploadFile',  'CPPAdminVideosController@CPPuploadFile');
-
-
 
 // CPP Video Categories 
 
@@ -1372,9 +654,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/audios/albums/update', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPupdateAlbum'));
     Route::get('/audios/albums/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPdestroyAlbum'));
 
-
-    // CPP Page 
-
+// CPP Page 
 
     Route::get('/pages', 'CPPAdminPageController@CPPindex');
     Route::get('/pages/create', 'CPPAdminPageController@CPPcreate');
@@ -1383,9 +663,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/pages/update', 'CPPAdminPageController@CPPupdate');
     Route::get('/pages/delete/{id}','CPPAdminPageController@CPPdestroy');
 
-    // CPP Livestream 
-
-
+// CPP Livestream 
 
     Route::get('/livestream', 'CPPAdminLiveStreamController@CPPindex');
     Route::get('/livestream/edit/{id}', 'CPPAdminLiveStreamController@CPPedit');
@@ -1394,9 +672,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/livestream/create', 'CPPAdminLiveStreamController@CPPcreate');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'CPPAdminLiveStreamController@CPPstore'));
 
-
-    // CPP Livestream Categories
-
+// CPP Livestream Categories
 
     Route::get('/livestream/categories', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPindex'));
     Route::post('/livestream/categories/store', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPstore'));
@@ -1407,3 +683,448 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+/*  Old CPP Rotues    */
+
+
+
+
+
+
+
+
+//categories_audio
+Route::get('categories_audio',function(){
+    $response=DB::table('audio_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+//audios_list
+Route::get('audios_list',function(){
+    $response=DB::table('audio')->get();
+    return response()->json($response,200);
+});
+//audio_albums
+Route::get('audio_albums',function(){
+    $response=DB::table('audio_albums')->get();
+    return response()->json($response,200);
+});
+//audio_categories
+Route::get('audio_categories',function(){
+    $response=DB::table('audio_categories')->get();
+    return response()->json($response,200);
+});
+//artists_index
+Route::get('artists_index',function(){
+    $response=DB::table('artists')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+//Role
+Route::get('user_roles',function(){
+    $response=DB::table('roles')->get();
+    return response()->json($response,200);
+});
+//site_themes
+Route::get('site_themes',function(){
+    $response=DB::table('site_themes')->first();
+    return response()->json($response,200);
+});
+//system_settings
+Route::get('system_settings',function(){
+    $response=DB::table('system_settings')->first();
+    return response()->json($response,200);
+});
+//home_settings
+Route::get('home_settings',function(){
+    $response=DB::table('home_settings')->first();
+    return response()->json($response,200);
+});
+//payment_settings
+Route::get('payment_settings',function(){
+    $response=DB::table('payment_settings')->first();
+    return response()->json($response,200);
+});
+//mobile_settings
+Route::get('mobile_settings',function(){
+    $response=DB::table('mobile_apps')->get();
+    return response()->json($response,200);
+});
+//mobileslider
+Route::get('mobileslider',function(){
+    $response=DB::table('mobile_sliders')->get();
+    return response()->json($response,200);
+});
+//paypalplans
+Route::get('paypalplans',function(){
+    $response=DB::table('paypal_plans')->get();
+    return response()->json($response,200);
+});
+//coupons
+Route::get('coupons',function(){
+    $response=DB::table('coupons')->get();
+    return response()->json($response,200);
+});
+//plans
+Route::get('plans',function(){
+    $response=DB::table('plans')->get();
+    return response()->json($response,200);
+});
+//livestream
+Route::get('livestream_categories',function(){
+    $response=DB::table('live_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+//livestream
+Route::get('livestream',function(){
+    $response=DB::table('live_streams')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+//livestream
+Route::get('live_categories',function(){
+    $response=DB::table('live_categories')->get();
+    return response()->json($response,200);
+});
+//series
+Route::get('series',function(){
+    $response=DB::table('series')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+//pages
+Route::get('pages',function(){
+    $response=DB::table('pages')->orderBy('created_at', 'DESC')->paginate(10);
+    return response()->json($response,200);
+});
+//categories
+Route::get('categories',function(){
+    $response=DB::table('video_categories')->where('parent_id', '=', 0)->get();
+    return response()->json($response,200);
+});
+//video_categories
+Route::get('video_categories',function(){
+    $response=DB::table('video_categories')->get();
+    return response()->json($response,200);
+});
+//Videos
+Route::get('videos',function(){
+    $response=DB::table('videos')->orderBy('created_at', 'DESC')->paginate(9);
+    return response()->json($response,200);
+});
+//Videos_index
+Route::get('videos_index',function(){
+    $response=DB::table('videos')->get();
+    return response()->json($response,200);
+});
+//video_categories
+Route::get('video_categories',function(){
+    $response=DB::table('video_categories')->get();
+    return response()->json($response,200);
+});
+//video_subtitle
+Route::get('video_subtitle',function(){
+    $response=DB::table('videos_subtitles')->get();
+    return response()->json($response,200);
+});
+//languages
+Route::get('languages',function(){
+    $response=DB::table('video_languages')->get();
+    return response()->json($response,200);
+});
+//languages
+Route::get('alllanguages',function(){
+    $response=DB::table('languages')->get();
+    return response()->json($response,200);
+});
+
+//subtitles
+Route::get('subtitles',function(){
+    $response=DB::table('subtitles')->get();
+    return response()->json($response,200);
+});
+//artists
+Route::get('artists',function(){
+    $response=DB::table('artists')->get();
+    return response()->json($response,200);
+});
+//Menu
+Route::get('menu',function(){
+    $response=DB::table('menus')->get();
+    return response()->json($response,200);
+});
+    // users
+Route::get('users',function(){
+    $response=DB::table('users')->get();
+    return response()->json($response,200);
+});
+
+//Country
+Route::get('country',function(){
+    $response=DB::table('countries')->get();
+    return response()->json($response,200);
+});
+//Palyer UI
+Route::get('playerui_index',function(){
+    $response=DB::table('playerui')->first();
+    return response()->json($response,200);
+});
+//Slider
+Route::get('allCategories',function(){
+    $response=DB::table('sliders')->get();
+    return response()->json($response,200);
+});
+// Moderator 
+
+Route::get('moderatorsrole',function(){
+    $response=DB::table('moderators_roles')->get();
+    return response()->json($response,200);
+});
+// Moderator 
+Route::get('moderatorspermission',function(){
+    $response=DB::table('moderators_permissions')->get();
+    return response()->json($response,200);
+});
+// moderatorsuser 
+Route::get('moderatorsuser',function(){
+    $response=DB::table('moderators_users')->get();
+    return response()->json($response,200);
+});
+// ADMIN DASHBOARD
+Route::get('settings',function(){
+    $response=DB::table('settings')->first();
+    return response()->json($response,200);
+});
+// total_subscription 
+Route::get('total_subscription',function(){
+    $response=DB::table('subscriptions')->where('stripe_status','=','active')->count();
+    return response()->json($response,200);
+});
+// total_videos 
+Route::get('total_videos',function(){
+    $response=DB::table('videos')->where('active','=',1)->count();
+    return response()->json($response,200);
+});
+// ppvvideo 
+Route::get('ppvvideo',function(){
+    // $response = PpvVideo::where('active','=',1)->count();
+    $response=DB::table('ppv_videos')->where('active','=',1)->count();
+    return response()->json($response,200);
+});
+// total_recent_subscription 
+
+Route::get('total_recent_subscription',function(){
+    $response=DB::table('subscriptions')->orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
+    return response()->json($response,200);
+});
+// top_rated_videos 
+Route::get('top_rated_videos',function(){
+    $response=DB::table('videos')->where("rating",">",7)->get();
+    return response()->json($response,200);
+});
+// recent_views 
+Route::get('recent_views',function(){
+    $response=DB::table('recent_views')->get();
+    return response()->json($response,200);
+});
+// permission 
+Route::get('permission',function(){
+    $response=DB::table('moderators_permissions')->get();
+    return response()->json($response,200);
+});
+Route::get('age_categorie',function(){
+    $response=DB::table('age_categories')->get();
+    return response()->json($response,200);
+});
+// Test 
+Route::post('test', 'ModeratorsUserController@test');
+// video_store 
+Route::post('video_store', 'ModeratorsUserController@video_store');
+// menu_store 
+Route::post('menu_store', 'ModeratorsUserController@menu_store');
+// county 
+Route::post('county', 'ModeratorsUserController@county');
+// slider_store 
+Route::post('slider_store', 'ModeratorsUserController@slider_store');
+// all_video_store 
+Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
+// playerui_setting 
+Route::post('playerui_setting', 'ModeratorsUserController@playerui_setting');
+// plans 
+Route::post('plans', 'ModeratorsUserController@plans');
+// paypalplans 
+Route::post('paypalplans', 'ModeratorsUserController@paypalplans');
+// coupons 
+Route::post('coupons', 'ModeratorsUserController@coupons');
+// all_video_store 
+Route::post('all_video_store', 'ModeratorsUserController@all_video_store');
+// payment_setting 
+Route::post('payment_setting', 'ModeratorsUserController@payment_setting');
+// systemsettings 
+Route::post('systemsettings', 'ModeratorsUserController@systemsettings');
+// homesettings 
+Route::post('homesettings', 'ModeratorsUserController@homesettings');
+// mobileappupdate 
+Route::post('mobileappupdate', 'ModeratorsUserController@mobileappupdate');
+// slider 
+Route::post('slider', 'ModeratorsUserController@slider');
+// theme_settings 
+Route::post('theme_settings', 'ModeratorsUserController@theme_settings');
+// site_setting 
+Route::post('site_setting', 'ModeratorsUserController@site_setting');
+// pages 
+Route::post('pages', 'ModeratorsUserController@pages');
+// livestream 
+Route::post('livestream', 'ModeratorsUserController@livestream');
+// livestream_categories 
+Route::post('livestream_categories', 'ModeratorsUserController@livestream_categories');
+// user_store 
+Route::post('user_store', 'ModeratorsUserController@user_store');
+// user_role 
+Route::post('user_role', 'ModeratorsUserController@user_role');
+// languagestrans 
+Route::post('languagestrans', 'ModeratorsUserController@languagestrans');
+// video_languages 
+Route::post('video_languages', 'ModeratorsUserController@video_languages');
+// artists 
+Route::post('artists', 'ModeratorsUserController@artists');
+// audios_categories 
+Route::post('audios_categories', 'ModeratorsUserController@audios_categories');
+// audios_album 
+Route::post('audios_album', 'ModeratorsUserController@audios_album');
+// audios 
+Route::post('audios', 'ModeratorsUserController@audios');
+Route::get('/moderator', 'ModeratorsUserController@index');
+Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
+// edit_video 
+Route::post('edit_video', 'ModeratorsUserController@edit_video');
+// update_video 
+Route::post('update_video', 'ModeratorsUserController@update_video');
+// destroy_video 
+Route::post('destroy_video', 'ModeratorsUserController@destroy_video');
+// edit_video_category 
+Route::post('edit_video_category', 'ModeratorsUserController@edit_video_category');
+// update_video_store 
+Route::post('update_video_store', 'ModeratorsUserController@update_video_store');
+// destroy_video_category 
+Route::post('destroy_video_category', 'ModeratorsUserController@destroy_video_category');
+// series_store 
+Route::post('series_store', 'ModeratorsUserController@series_store');
+// edit_series 
+Route::post('edit_series', 'ModeratorsUserController@edit_series');
+// update_series 
+Route::post('update_series', 'ModeratorsUserController@update_series');
+// destory_series 
+Route::post('destory_series', 'ModeratorsUserController@destory_series');
+// edit_audio 
+Route::post('edit_audio', 'ModeratorsUserController@edit_audio');
+// update_audio 
+Route::post('update_audio', 'ModeratorsUserController@update_audio');
+// destory_audio 
+Route::post('destory_audio', 'ModeratorsUserController@destory_audio');
+// edit_audio_categories 
+Route::post('edit_audio_categories', 'ModeratorsUserController@edit_audio_categories');
+// destroy_audio_categories 
+Route::post('destroy_audio_categories', 'ModeratorsUserController@destroy_audio_categories');
+// destroy_artist_categories 
+Route::post('destroy_artist_categories', 'ModeratorsUserController@destroy_artist_categories');
+// edit_artist_categories 
+Route::post('edit_artist_categories', 'ModeratorsUserController@edit_artist_categories');
+// update_artist_categories 
+Route::post('update_artist_categories', 'ModeratorsUserController@update_artist_categories');
+// editAlbum 
+Route::post('editAlbum', 'ModeratorsUserController@editAlbum');
+// destroyAlbum 
+Route::post('destroyAlbum', 'ModeratorsUserController@destroyAlbum');
+// MobileSliderEdit 
+Route::post('MobileSliderEdit', 'ModeratorsUserController@MobileSliderEdit');
+// MobileSliderUpdate 
+Route::post('MobileSliderUpdate', 'ModeratorsUserController@MobileSliderUpdate');
+// MobileSliderDelete 
+Route::post('MobileSliderDelete', 'ModeratorsUserController@MobileSliderDelete');
+// page_edit 
+Route::post('page_edit', 'ModeratorsUserController@page_edit');
+// page_update 
+Route::post('page_update', 'ModeratorsUserController@page_update');
+// page_destory 
+Route::post('page_destory', 'ModeratorsUserController@page_destory');
+// plans_edit 
+Route::post('plans_edit', 'ModeratorsUserController@plans_edit');
+// plans_update 
+Route::post('plans_update', 'ModeratorsUserController@plans_update');
+// plans_destory 
+Route::post('plans_destory', 'ModeratorsUserController@plans_destory');
+// PaypalEdit 
+Route::post('PaypalEdit', 'ModeratorsUserController@PaypalEdit');
+// PaypalUpdate 
+Route::post('PaypalUpdate', 'ModeratorsUserController@PaypalUpdate');
+// PaypalDelete 
+Route::post('PaypalDelete', 'ModeratorsUserController@PaypalDelete');
+// editcoupons
+Route::post('editcoupons', 'ModeratorsUserController@editcoupons');
+// updatecoupons 
+Route::post('updatecoupons', 'ModeratorsUserController@updatecoupons');
+// deletecoupons 
+Route::post('deletecoupons', 'ModeratorsUserController@deletecoupons');
+// deletecountry 
+Route::post('deletecountry', 'ModeratorsUserController@deletecountry');
+// SliderEdit 
+Route::post('SliderEdit', 'ModeratorsUserController@SliderEdit');
+// SliderUpdate 
+Route::post('SliderUpdate', 'ModeratorsUserController@SliderUpdate');
+// SliderDelete 
+Route::post('SliderDelete', 'ModeratorsUserController@SliderDelete');
+// menu_edit 
+Route::post('menu_edit', 'ModeratorsUserController@menu_edit');
+// menu_update 
+Route::post('menu_update', 'ModeratorsUserController@menu_update');
+// menu_destroy 
+Route::post('menu_destroy', 'ModeratorsUserController@menu_destroy');
+// LanguageEdit 
+Route::post('LanguageEdit', 'ModeratorsUserController@LanguageEdit');
+// LanguageUpdate 
+Route::post('LanguageUpdate', 'ModeratorsUserController@LanguageUpdate');
+// LanguageDelete 
+Route::post('LanguageDelete', 'ModeratorsUserController@LanguageDelete');
+// LanguageTransEdit 
+Route::post('LanguageTransEdit', 'ModeratorsUserController@LanguageTransEdit');
+// LanguageTransUpdate 
+Route::post('LanguageTransUpdate', 'ModeratorsUserController@LanguageTransUpdate');
+// LanguageTransDelete 
+Route::post('LanguageTransDelete', 'ModeratorsUserController@LanguageTransDelete');
+// user_edit 
+Route::post('user_edit', 'ModeratorsUserController@user_edit');
+// user_update 
+Route::post('user_update', 'ModeratorsUserController@user_update');
+// user_delete 
+Route::post('user_delete', 'ModeratorsUserController@user_delete');
+// userroles_edit 
+Route::post('userroles_edit', 'ModeratorsUserController@userroles_edit');
+// userroles_update 
+Route::post('userroles_update', 'ModeratorsUserController@userroles_update');
+// userroles_destroy 
+Route::post('userroles_destroy', 'ModeratorsUserController@userroles_destroy');
+// livestream_edit 
+Route::post('livestream_edit', 'ModeratorsUserController@livestream_edit');
+// livestream_update 
+Route::post('livestream_update', 'ModeratorsUserController@livestream_update');
+// livestreamcategory_edit 
+Route::post('livestreamcategory_edit', 'ModeratorsUserController@livestreamcategory_edit');
+// livestreamcategory_update 
+Route::post('livestreamcategory_update', 'ModeratorsUserController@livestreamcategory_update');
+// livestreamcategory_destroy 
+Route::post('livestreamcategory_destroy', 'ModeratorsUserController@livestreamcategory_destroy');
+Route::post('Fileupload', 'ModeratorsUserController@Fileupload');
+Route::post('updatefile', 'ModeratorsUserController@updatefile');
+Route::post('mp4url_data', 'ModeratorsUserController@mp4url_data');
+Route::post('m3u8url_data', 'ModeratorsUserController@m3u8url_data');
+Route::post('Embed_Data', 'ModeratorsUserController@Embed_Data');
+Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
+Route::post('fileAudio', 'ModeratorsUserController@fileAudio');

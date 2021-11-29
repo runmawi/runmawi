@@ -77,7 +77,7 @@ $(document).ready(function(){
  function fetch_customer_data(query = '')
  {
   $.ajax({
-   url:"{{ URL::to('/template_search') }}",
+   url:"{{ URL::to('admin/template_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',

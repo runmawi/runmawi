@@ -24,8 +24,9 @@
 
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
+// <img src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
 // echo "<pre>";
-// print_r($ppv_video_play); exit();
+// print_r($video->rating); exit();
 
 
 if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
@@ -292,6 +293,12 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                 </div>
             </div>
         </div>
+        <div class="d-flex align-items-center text-white text-detail">
+          <h4>Rating :</h4>  <img width="20" heigth="20"  src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
+             <span class="ml-3"> <h4><?php echo __($video->rating).' '.'/10';?></h4></span>
+          </div>
+          <div class="clear"></div>
+          <br>
         <!-- Year, Running time, Age -->
           <div class="d-flex align-items-center text-white text-detail">
              <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>

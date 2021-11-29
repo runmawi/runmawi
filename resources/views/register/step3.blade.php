@@ -271,7 +271,7 @@ $discount_price = $discount_percentage;
 	$(document).ready(function(){
 
 	$.ajax({
-        url: base_url+'/Paymentfailed',
+        url: base_url+'/admin/Paymentfailed',
         type: "post",
 data: {
                _token: '{{ csrf_token() }}',

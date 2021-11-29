@@ -130,7 +130,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
           </ul></li>
@@ -149,7 +149,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -344,7 +344,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
           </ul></li>
@@ -363,7 +363,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -423,9 +423,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -551,7 +551,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
           </ul></li>
@@ -570,7 +570,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -631,9 +631,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -756,7 +756,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
                     
           </ul></li>
@@ -775,7 +775,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -836,9 +836,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>

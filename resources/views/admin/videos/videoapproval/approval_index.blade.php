@@ -69,9 +69,9 @@
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
+                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
+                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -145,7 +145,7 @@ $('#cpp_user_videos').change(function(){
    var val = $('#cpp_user_videos').val();
    if(val == "cpp_videos"){
 	$.ajax({
-   url:"{{ URL::to('/cppusers_videodata') }}",
+   url:"{{ URL::to('admin/cppusers_videodata') }}",
    method:'get',
    data:{query:val},
    dataType:'json',

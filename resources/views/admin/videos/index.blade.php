@@ -67,7 +67,13 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td>{{ $video->rating }}</td>
+                                    <!-- <td>{{ $video->rating }}</td> -->
+                                    <td>@if(isset($video->rating))  
+                                       <img width="20" src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
+                                       {{ $video->rating }} @else
+                                       <img width="20" src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
+                                        0 @endif</td>
+
                                     <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td>
                                     <!-- <td>{{ $video->year }}</td> -->
                                     <!-- <td>{{ $video->draft }}</td> -->
@@ -135,7 +141,7 @@ $(document).ready(function(){
  function fetch_customer_data(query = '')
  {
   $.ajax({
-   url:"{{ URL::to('/live_search') }}",
+   url:"{{ URL::to('/admin/live_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',
@@ -184,7 +190,7 @@ $('#cpp_user_videos').change(function(){
    var val = $('#cpp_user_videos').val();
    if(val == "cpp_videos"){
 	$.ajax({
-   url:"{{ URL::to('/cppusers_videodata') }}",
+   url:"{{ URL::to('admin/cppusers_videodata') }}",
    method:'get',
    data:{query:val},
    dataType:'json',

@@ -81,7 +81,7 @@
                             <div class='content file'>
                                     <h4 class="card-title">Upload Full Video Here</h4>
                                     <!-- Dropzone -->
-                                    <form action="{{URL::to('uploadFile')}}" method= "post" class='dropzone' ></form> 
+                                    <form action="{{URL::to('admin/uploadFile')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
                             <p style="margin-top: -3%;margin-left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trailers Can Be Uploaded From Video Edit Screen</p>
                                 
@@ -90,9 +90,9 @@
                             <div class="text-center" style="margin-top: 30px;">
                                 <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
                             </div>
-                            <input type="hidden" id="embed_url" value="<?php echo URL::to('/embededcode');?>">
-                            <input type="hidden" id="mp4url" value="<?php echo URL::to('/mp4url');?>">
-                            <input type="hidden" id="m3u8url" value="<?php echo URL::to('/m3u8url');?>">
+                            <input type="hidden" id="embed_url" value="<?php echo URL::to('/admin/embededcode');?>">
+                            <input type="hidden" id="mp4url" value="<?php echo URL::to('/admin/mp4url');?>">
+                            <input type="hidden" id="m3u8url" value="<?php echo URL::to('/admin/m3u8url');?>">
                         </div>
                     <hr />
                 </div>
@@ -510,7 +510,19 @@ data: {
                                 </div> 
                                 <div class="col-sm-6 form-group mt-3">                                       
                                     <label class="p-2">Rating:</label>
-                                    <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+                                    <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+                                    <select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+                                          <option value="1" >1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          <option value="10">10</option>
+                                        </select>
                                 </div>
                             </div>
                             <div class="row">
