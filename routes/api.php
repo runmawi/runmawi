@@ -192,4 +192,5 @@ Route::group([
     Route::get('SubscriptionEndNotification ','ApiAuthController@SubscriptionEndNotification');
     Route::post('SubscriptionPayment','ApiAuthController@SubscriptionPayment');
     Route::get('SubscriberedUsers ','ApiAuthController@SubscriberedUsers');
+     Route::post('LocationCheck ','ApiAuthController@LocationCheck');
 });
