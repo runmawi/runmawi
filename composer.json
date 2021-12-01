@@ -30,7 +30,8 @@
         "paypal/rest-api-sdk-php": "^1.14",
         "symfony/psr-http-message-bridge": "^2.0",
         "unisharp/laravel-filemanager": "^2.3",
-        "victorybiz/geoip-location": "^1.1"
+        "victorybiz/geoip-location": "^1.1",
+         "jenssegers/agent": "^2.6",
     },
    
     "require-dev": {
