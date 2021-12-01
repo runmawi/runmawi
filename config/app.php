@@ -201,7 +201,7 @@ return [
         App\Providers\SettingsServiceProvider::class,
         App\Providers\SocialServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
+        'Jenssegers\Agent\AgentServiceProvider::class',
 
 
         
@@ -264,7 +264,7 @@ return [
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Nexmo' => \Nexmo\Laravel\Facade\Nexmo::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'Agent' => 'Jenssegers\Agent\Facades\Agent::class',
         'Location' => 'Stevebauman\Location\Facades\Location',
 
     ],
