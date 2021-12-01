@@ -39,7 +39,9 @@ use App\RegionView;
 use App\City;
 use App\State;
 use Illuminate\Support\Str;
-
+use App\LoggedDevice;
+use Jenssegers\Agent\Agent;
+use App\ApprovalMailDevice;
 
 
 
@@ -591,7 +593,29 @@ class AdminUsersController extends Controller
     public function logout()
     {
         $data = \Session::all();
+        // dd($data);
+            $agent = new Agent();
 
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();   
+        $device_name = '';
+        if($agent->isDesktop()) {
+            $device_name = 'desktop';
+        }elseif ($agent->isTablet()) {
+            $device_name = 'tablet';
+        }elseif ($agent->isMobile()) {
+            $device_name = 'mobile';
+        }elseif ($agent->isMobile()) {
+            $device_name = 'mobile';
+        }else {
+            $device_name = 'tv';
+        }
+        if(!empty($device_name)){
+            $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+            if(!empty($devices_check)){
+                $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
+                }
+        }
         Auth::logout();
         unset($data['password_hash']);
 
@@ -606,6 +630,110 @@ class AdminUsersController extends Controller
 
             User::destroy($id);
             return Redirect::to('admin/users')->with(array('message' => 'Successfully Deleted User', 'note_type' => 'success') );
+        }
+
+        public function VerifyDevice($id)
+        {
+            // dd($id);
+
+            $device = LoggedDevice::find($id);
+            $username = @$device->user_name->username;
+            $email = @$device->user_name->email;
+            $user_ip = @$device->user_ip;
+            $device_name = @$device->device_name;
+
+            $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+
+            if(empty($mail_check)){
+            // dd($device->user_name->username);
+
+            Mail::send('emails.device_logout', array(
+                /* 'activation_code', $user->activation_code,*/
+                'name'=>$username, 
+                'email' => $email, 
+                'user_ip' => $user_ip, 
+                'device_name' => $device_name, 
+                'id' => $id, 
+                ), function($message) use ($email,$username) {
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($email, $username)->subject('Request to Logout Device');
+                });
+                $maildevice = new ApprovalMailDevice;
+                $maildevice->user_ip = $userIp;
+                $maildevice->device_name = $device_name;
+                $maildevice->status = 0;
+                $maildevice->save();
+            $message = 'Mail Sent to the'.' '.$username;
+            return Redirect::back()->with('alert', $message);
+            }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
+            return Redirect::back();
+            }
+        }
+        public function LogoutDevice($id)
+        {
+            // dd($id);
+            $device = LoggedDevice::find($id);
+            $username = @$device->user_name->username;
+            $email = @$device->user_name->email;
+            $device_name = @$device->device_name;
+            $maildevice = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+            $maildevice->status = 1;
+            $maildevice->save();
+
+            LoggedDevice::destroy($id);
+
+            
+            return Redirect::to('home');
+            // return Redirect::to('/home');
+
+            // return Redirect::back();
+        }
+        public function ApporeDevice($ip,$id,$device_name)
+        {
+            // $adddevice = new LoggedDevice;
+            // $adddevice->user_id = $id;
+            // $adddevice->user_ip = $ip;
+            // $adddevice->device_name = $device_name;
+            // $adddevice->save();
+          
+            $data = array(
+                'user_ip' => $ip,
+                'device_name' => $device_name,
+                'id'=>$id
+              );
+              return View::make('device_accept', $data);
+            // $message = 'Approved User For Login';
+            // return View::make('auth.login')->with('alert', $message);
+        }
+        public function AcceptDevice($user_ip,$device_name,$id)
+        {
+            // dd($device_name);
+            $adddevice = new LoggedDevice;
+            $adddevice->user_id = $id;
+            $adddevice->user_ip = $user_ip;
+            $adddevice->device_name = $device_name;
+            $adddevice->save();
+            $maildevice = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+            $maildevice->status = 1;
+            $maildevice->save();
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            $message = 'Approved User For Login';
+            return Redirect::to('/')->with('alert', $message);
+
+            // return View::make('auth.login')->with('alert', $message);
+        }
+        public function RejectDevice($userIp,$device_name)
+        {
+            $maildevice = ApprovalMailDevice::where('user_ip','=', $userIp)->where('device_name','=', $device_name)->first();
+            $maildevice->status = 2;
+            $maildevice->save();
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            $message = 'Approved User For Login';
+            return Redirect::back('/')->with('alert', $message);
+
+          
         }
         public function export(Request $request) {
 

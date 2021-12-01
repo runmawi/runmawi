@@ -127,7 +127,7 @@
 				if($episodes->id != $episode->id):?>
 				<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 new-art">
 				<article class="block">
-				<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episodes') ?><?= '/' . $episodes->id ?>">
+				<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode') ?><?= '/' . $episodes->title ?>">
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
 				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250">

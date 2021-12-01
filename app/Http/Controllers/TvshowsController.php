@@ -116,15 +116,16 @@ class TvshowsController extends Controller
      return View::make('tv-home', $data);
    }
 
-   public function play_episode($series_name,$episode_name,$id)//
+   public function play_episode($series_name,$episode_name)//
    {
         
    	$settings = Setting::first();
    	if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        
-        $episode = Episode::findOrFail($id);
+        $episode = Episode::where('title','=',$episode_name)->first();    
+        $id = $episode->id;
+        // $episode = Episode::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
         $series = Series::find($episode->series_id);
         //$episoderesolutions = Episode::findOrFail($id)->episoderesolutions;
@@ -200,15 +201,17 @@ class TvshowsController extends Controller
         }
      }
 
-     public function play_series($name,$id)
+     public function play_series($name)
     {
     
     	$settings = Setting::first();
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        
-        $series = Series::findOrFail($id);
+        $series = Series::where('title','=',$name)->first();    
+        // dd($series);
+        $id = $series->id;
+        // $series = Series::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
         $episodefirst = Episode::where('series_id', '=', $id)->orderBy('id', 'ASC')->first();
         //Make sure series is active
@@ -231,5 +234,65 @@ class TvshowsController extends Controller
         } else {
             return Redirect::to('series')->with(array('note' => 'Sorry, this series is no longer active.', 'note_type' => 'error'));
         }
+    }
+
+    public function PlayEpisode($episode_name)//
+    {
+         
+        $settings = Setting::first();
+        if(Auth::guest()):
+             return Redirect::to('/login');
+         endif;
+         $episode = Episode::where('title','=',$episode_name)->first();    
+         $id = $episode->id;
+         // $episode = Episode::findOrFail($id);
+         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+         $series = Series::find($episode->series_id);
+         //$episoderesolutions = Episode::findOrFail($id)->episoderesolutions;
+         $episodenext = Episode::where('id', '>', $id)->where('series_id','=',$episode->series_id)->first();
+         $episodeprev = Episode::where('id', '<', $id)->where('series_id','=',$episode->series_id)->first();
+         //Make sure series is active
+         
+         $wishlisted = false;
+         if(!Auth::guest()):
+                 $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
+         endif;
+         
+         
+         
+         $watchlater = false;
+         
+          if(!Auth::guest()):
+                 $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
+          endif;
+         
+         if((!Auth::guest() && Auth::user()->role == 'admin') || $series->active){
+ 
+ 
+ 
+             $view_increment = $this->handleViewCount($id);
+ 
+             $playerui = Playerui::first();
+             $data = array(
+                 'episode' => $episode,
+                 'season' => $season,
+                 'series' => $series,
+                 'playerui_settings' => $playerui,
+                 'episodenext' => $episodenext,
+                 'episodeprev' => $episodeprev,
+                 'mywishlisted' => $wishlisted,
+                 'watchlatered' => $watchlater,
+                 'url' => 'episodes',
+                    'settings' => $settings,
+                 'menu' => Menu::orderBy('order', 'ASC')->get(),
+                 'view_increment' => $view_increment,
+                 'series_categories' => Genre::all(),
+                 'pages' => Page::where('active', '=', 1)->get(),
+                 );
+             return View::make('episode', $data);
+ 
+         } else {
+             return Redirect::to('series-list')->with(array('note' => 'Sorry, this series is no longer active.', 'note_type' => 'error'));
+         }
     }
 }

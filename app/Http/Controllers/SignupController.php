@@ -564,12 +564,11 @@ public function createStep3(Request $request)
                 $current_date = date('Y-m-d h:i:s');    
        
         $payment_type = $request->payment_type;
-        $ip = getenv('HTTP_CLIENT_IP');    
-        $data = \Location::get($ip);
-        $userIp = $data->ip;
-        $countryName = $data->countryName;
-        $regionName = $data->regionName;
-        $cityName = $data->cityName;
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
 
     // print_r($payment_type);exit();
         if ( $payment_type == "one_time") {

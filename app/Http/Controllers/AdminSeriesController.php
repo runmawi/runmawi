@@ -844,4 +844,22 @@ class AdminSeriesController extends Controller
                 }
             }
         }
+
+
+        public function TitleValidation(Request $request) {
+            $title = $request->get('title');
+              
+              $uid = Auth::user();
+              $Series = Series::where('title','=',$title)->first();
+              if (!empty($Series))
+              {
+                  $value['Series'] = "yes";
+                  return $value;  
+      
+              }else{
+                  $value['Series'] = "no";
+                  return $value;  
+              }
+      
+          }
 }

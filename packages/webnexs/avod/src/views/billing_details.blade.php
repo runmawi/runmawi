@@ -35,12 +35,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
-<style>
 
-    .top-left-logo img{opacity:.9;overflow:hidden}span{font-weight:400!important}.header-logo{padding-left:25px}hr{border-top:1px solid #e2e2e22e!important}body{margin-top:20px}.panel{text-align:center}.panel:hover{box-shadow:0 1px 5px rgba(0,0,0,.4),0 1px 5px rgba(130,130,130,.35)}.panel-body{padding:0;text-align:center}.the-price{background-color:rgba(220,220,220,.17);box-shadow:0 1px 0 #dcdcdc,inset 0 1px 0 #fff;padding:20px;margin:0}.the-price h1{line-height:1em;padding:0;margin:0}.subscript{font-size:25px}.cnrflash{position:absolute;top:-9px;right:4px;z-index:1;overflow:hidden;width:100px;height:100px;border-radius:3px 5px 3px 0}.cnrflash-inner{position:absolute;bottom:0;right:0;width:145px;height:145px;-ms-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);-webkit-transform-origin:100% 100%;-ms-transform-origin:100% 100%;-o-transform-origin:100% 100%;-moz-transform-origin:100% 100%;background-image:linear-gradient(90deg,transparent 50%,rgba(255,255,255,.1) 50%),linear-gradient(0deg,transparent 0,rgba(1,1,1,.2) 50%);background-size:4px,auto,auto,auto;background-color:#aa0101;box-shadow:0 3px 3px 0 rgba(1,1,1,.5),0 1px 0 0 rgba(1,1,1,.5),inset 0 -1px 8px 0 rgba(255,255,255,.3),inset 0 -1px 0 0 rgba(255,255,255,.2)}.cnrflash-inner:after,.cnrflash-inner:before{content:" ";display:block;position:absolute;bottom:-16px;width:0;height:0;border:8px solid maroon}.cnrflash-inner:before{left:1px;border-bottom-color:transparent;border-right-color:transparent}.cnrflash-inner:after{right:0;border-bottom-color:transparent;border-left-color:transparent}.cnrflash-label{position:absolute;bottom:0;left:0;display:block;width:100%;padding-bottom:5px;color:#fff;text-shadow:0 1px 1px rgba(1,1,1,.8);font-size:.95em;font-weight:700;text-align:center}.razorpay-payment-button{background:#0993D2;border-radius:2px;color:#fff!important;padding:0 10px;border:0}
-    .action_block{display: none;}
-    
-</style>
 
 </head>
 <body >
@@ -185,121 +180,69 @@
         </div>
         
         <!--<hr />-->
+    
         <div id="content-page" class="content-page">
          <div class="container-fluid">
             <div class="iq-card">
-
                <div id="admin-container">
-                  <div class=" mt-4 p-2">
-                     <h3>Payments</h3>
-                  </div>
-                  <div class="container">
-                     <div class="border-d mt-3">
-                        <div class=" d-flex col-sm-12  align-items-center">
-                           <input type="radio" name="gateway_payment" value="razorpay">
-                           <h3 class="ml-4">Razorpay Payment Gateway</h3>
-                        </div>
-                        <div class="action_block razorpay">
-                           <div class="col-sm-6 mt-4 pl-5 ">
-                              <form action="{{ route('buyplanrazorpay') }}" method="POST" >
-                                 <input type="hidden" name="plan_id" value="{{ $plan_id }}">
-                                 @csrf
-                                 <script src="https://checkout.razorpay.com/v1/checkout.js"
-                                 data-key="{{ env('RAZORPAY_KEY') }}"
-                                 data-amount="{{ $plan_amount }}"
-                                 data-buttontext="Pay Now"
-                                 data-name="Flicknexs"
-                                 data-description="Advertiser Plan Upgrade"
-                                 data-image="{{URL::to('/')}}/public/uploads/settings/logo (1).png"
-                                 data-prefill.name="{{$user->company_name}}"
-                                 data-prefill.email="{{$user->email_id}}"
-                                 data-theme.color="#0993D2">
-                              </script>
-                           </form>
-                        </div>
-                        <div class="mt-4 p-2 pl-5">
-                          <h3>{{ $plan_name }}</h3>
-                          <p class="mt-2">No of Ads - {{ $no_of_ads }}</p>
-                          <table class="table table-striped">
-                           <thead>
-                              <tr style="background: #F2F5FA;border: 0.2px solid rgba(0, 0, 0, 0.5);">
-                                 <th class="text-left" scope="col-12">Amount</th>
-                                 <th class="text-right" scope="col">$ {{ $plan_value }}</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <th scope="row">Total</th>
-
-                                 <td class="text-right">$ {{ $plan_value }}</td>
-                              </tr>
-                              <th></th>
-                              <th></th>
-
-
-                           </tbody>
-                        </table>
-
+                  <div class="container mt-4">
+                     <div class="">
+                        <h3>Billing details</h3>
                      </div>
-                  </div>
-               </div>
-                  
-                     <div class="border-d mt-3">
-                        <div class=" d-flex col-sm-12  align-items-center">
-                           <input type="radio" name="gateway_payment" value="stripe">
-                           <h3 class="ml-4">Stripe Payment Gateway</h3>
-
-                        </div>
-                        <div class="action_block stripe">
-                         <div class="mt-3 pl-5">
-                          <div class="form-group row">
-                        <input type="hidden" name="plan_id" class="form-controll" id="plan_id" value="{{ $plan_id }}">
-                        <div class="col-md-6"> 
-                           <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
-                        </div>
-                     </div>
-                     <!-- Stripe Elements Placeholder -->
-                     <div id="card-element" ></div><br>
-                     <div class="sign-up-buttons pay-button">
-                         <a type="button" id="card-button" class="btn btn-primary pay"  data-secret="{{ $intent->client_secret }}">Pay Now</a></div>
-                        <input type="hidden" id="stripe_key" value="{{ env('STRIPE_KEY') }}">
-                     </div>
-                        
-                       
-                           <div class="mt-4 p-2 pl-5">
-                              <h3>{{ $plan_name }}</h3>
-                              <p class="mt-2">No of Ads - {{ $no_of_ads }}</p>
-                              <table class="table table-striped">
-                                 <thead>
-                                    <tr style="background: #F2F5FA;border: 0.2px solid rgba(0, 0, 0, 0.5);">
-                                       <th class="text-left" scope="col-12">Amount</th>
-                                       <th class="text-right" scope="col">$ {{ $plan_value }}</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    <tr>
-                                       <th scope="row">Total</th>
-
-                                       <td class="text-right">$ {{ $plan_value }}</td>
-                                    </tr>
-                                    <th></th>
-                                    <th></th>
-
-
-                                 </tbody>
-                              </table>
-                              <div class="text-right">
-                                 <a type="button" class="btn btn-primary pay" > Pay using Stripe Payment Cateway</a>
-
+                     <div class="row justify-content-center mt-3">
+                        <div class="col-sm-3 p-0 dk">
+                           <div class="d-flex align-items-baseline">
+                              <i class="fa fa-file-text-o" aria-hidden="true" style="font-size:18px;color:black;"></i>
+                              <p class="pl-3">Billing details</p></div>
+                              <hr>
+                              <div class="">
+                                 <p> {{$plan->plan_name}} <br> <span class="text-center" style="font-size:15px;">$ {{$plan->plan_amount}}</span></p>
+                              </div>
+                              <div class="text-right mr-4">
+                                 <p>View Details ></p>
                               </div>
                            </div>
-                        </div>
+                           <div class="col-sm-8">
+                              <div class="d-flex align-items-baseline">
+                                 <i class="fa fa-file-text-o" aria-hidden="true" style="font-size:25px;color:black;"></i>
+                                 <p class="pl-3">Billing details</p></div>
+                                 <hr>
+                                 <table class="table table-bordered" style="width:60%;">
+                                    <thead style="background: #F2F5FA;border: 0.2px solid rgba(0, 0, 0, 0.5);">
+                                       <tr>
+                                          <th class="text-left" colspan="2">{{$plan->plan_name}}</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td scope="row">Purchased Date</td>
+                                          <td>{{date('d M Y H:i:s',strtotime($planhistory->created_at))}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td scope="row">No. of Ads</td>
+                                          <td>{{$plan->no_of_ads}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td scope="row">Total Amount</td>
+                                          <td>$ {{$plan->plan_amount}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td scope="row">Paid Amount</td>
+                                          <td>$ {{$plan->plan_amount}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td scope="row">Payment Mode</td>
+                                          <td>{{ucfirst($planhistory->payment_mode)}}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
-         </div>
         
         <!-- Footer -->
         <footer class="iq-footer">
@@ -321,9 +264,6 @@
       
       
     </div>
-    
-<input type="hidden" id="base_url" value="<?php echo URL::to('/').'/advertiser';?>">
-
 
   <!-- Imported styles on this page -->
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
@@ -376,106 +316,6 @@
     toastr.info("<?php echo session('info'); ?>");
 
 <?php } ?>
-
-</script>
-<script src="https://js.stripe.com/v3/"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-<script>
-       var base_url = $('#base_url').val();
-       
-       var stripe_key = $("#stripe_key").val();
-       const stripe = Stripe(stripe_key);
-        const elements = stripe.elements();
-      var style = {
-        base: {
-         color: '#303238',
-         fontSize: '16px',
-         fontFamily: '"Open Sans", sans-serif',
-         fontSmoothing: 'antialiased',
-         '::placeholder': {
-           color: '#ccc',
-         },
-        },
-        CardNumberField : {
-           background: '#f1f1f1', 
-           padding: '10px',
-           borderRadius: '4px', 
-           transform: 'none',
-        },
-        invalid: {
-         color: '#e5424d',
-         ':focus': {
-           color: '#303238',
-         },
-        },
-      };
-   
-      var elementClasses = {
-         class : 'CardNumberField',
-         empty: 'empty',
-         invalid: 'invalid',
-        };
-
-   
-      // Create an instance of the card Element.
-      var cardElement = elements.create('card', {style: style, classes: elementClasses });
-
-
-        cardElement.mount('#card-element');
-        const cardHolderName = document.getElementById('card-holder-name');
-        const cardButton = document.getElementById('card-button');
-       
-        const clientSecret = cardButton.dataset.secret;
-        cardButton.addEventListener('click', async (e) => {
-        const { setupIntent, error } = await stripe.confirmCardSetup(
-            clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: { name: cardHolderName.value }
-                }
-            }
-        );
-        if (error) {
-             swal("Your Payment is failed !");
-            // Display "error.message" to the user...
-        } else {
-                var plan_data = $("#plan_id").val();
-               
-                var py_id = setupIntent.payment_method;
-               
-                   $.post(base_url+'/buyplan', {
-                     py_id:py_id, plan:plan_data, _token: '<?= csrf_token(); ?>' 
-                   }, 
-                function(data){
-                  if(data == 'success'){
-                    swal("You have done  Payment !");
-                    setTimeout(function() {
-                    window.location.replace(base_url.'/billing_details');
-                        
-                  }, 2000);
-                 }else{
-                  swal('Error');
-                  window.location.replace(base_url);
-                 }
-               });
-
-            // The card has been verified successfully...
-        }
-    });
-
-
-
-$('input[type=radio][name=gateway_payment]').change(function() {
-    if (this.value == 'stripe') {
-        $(".action_block.razorpay").css('display','none');
-        $(".action_block.stripe").css('display','block');
-    }
-    else if (this.value == 'razorpay') {
-        $(".action_block.stripe").css('display','none');
-        $(".action_block.razorpay").css('display','block');
-
-    }
-});
 </script>
 </body>
 </html>

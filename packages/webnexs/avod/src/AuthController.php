@@ -23,6 +23,9 @@ use Exception;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use Carbon\Carbon;
+use Mail; 
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -249,22 +252,18 @@ class AuthController extends Controller
         return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
 
-    public function paymentgateway(Request $request){
-        $data = $request->all();
-        $data['plan_id'] = $data['plan_id'];
-        $data['plan_amount'] = (Adsplan::where('id',$data['plan_id'])->first()->plan_amount)*100;
-        $data['paymentgateway'] = $data['paymentgateway'];
+    public function paymentgateway($plan_id){
+        $data['plan_id'] = $plan_id;
+        $data['plan_amount'] = (Adsplan::where('id',$plan_id)->first()->plan_amount)*100;
+        $data['plan_value'] = (Adsplan::where('id',$plan_id)->first()->plan_amount);
+        $data['plan_name'] = (Adsplan::where('id',$plan_id)->first()->plan_name);
+        $data['no_of_ads'] = (Adsplan::where('id',$plan_id)->first()->no_of_ads);
         $data['settings'] = Setting::first();
-        if($data['paymentgateway'] == 'stripe'){
-            $user_id = session('advertiser_id');
-            $user = Advertiser::find($user_id);
-            $data['intent'] = $user->createSetupIntent();
-            return view('avod::stripegateway',$data);
-        }else{
-            $user_id = session('advertiser_id');
-            $data['user'] = Advertiser::find($user_id);
-            return view('avod::razorpaygateway',$data);
-        }
+        $user_id = session('advertiser_id');
+        $user = Advertiser::find($user_id);
+        $data['intent'] = $user->createSetupIntent();
+        $data['user'] = $user;
+        return view('avod::stripegateway',$data);
     }
 
     public function buyplanrazorpay(Request $request) {
@@ -318,8 +317,93 @@ class AuthController extends Controller
             }
         }
           
-        return Redirect::to("advertiser/")->withError('error','Please try again');
+        return Redirect::to("advertiser/billing_details")->withError('error','Please try again');
 
     }
+
+
+    
+    public function billing_details(){
+        $data['planhistory'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
+        $data['plan'] = Adsplan::where('id',$data['planhistory']->plan_id)->first();
+        $data['settings'] = Setting::first();
+
+        return view('avod::billing_details',$data);
+
+    }
+
+    public function showForgetPasswordForm()
+      {
+         return view('avod::forgetPassword');
+      }
+  
+      /**
+       * Write code on Method
+       *
+       * @return response()
+       */
+      public function submitForgetPasswordForm(Request $request)
+      {
+          $request->validate([
+              'email_id' => 'required|email|exists:advertisers',
+          ]);
+  
+          $token = Str::random(64);
+          DB::table('advertiser_password_reset')->insert([
+              'email' => $request->email_id, 
+              'token' => $token, 
+              'created_at' => Carbon::now()
+            ]);
+  
+          \Mail::send('avod::forgetPasswordemail', ['token' => $token], function($message) use($request){
+              $message->to($request->email_id);
+              $message->subject('Reset Password');
+          });
+  
+          return Redirect::to("advertiser/login")->withSuccess('We have e-mailed your password reset link!');
+      }
+      /**
+       * Write code on Method
+       *
+       * @return response()
+       */
+      public function showResetPasswordForm($token) { 
+         return view('avod::forgetPasswordLink', ['token' => $token]);
+      }
+  
+      /**
+       * Write code on Method
+       *
+       * @return response()
+       */
+      public function submitResetPasswordForm(Request $request)
+      {
+          $request->validate([
+              'email_id' => 'required|email|exists:advertisers',
+              'password' => 'required|string|min:6|confirmed',
+              'password_confirmation' => 'required'
+          ]);
+  
+          $updatePassword = DB::table('advertiser_password_reset')
+                              ->where([
+                                'email' => $request->email_id, 
+                                'token' => $request->token
+                              ])
+                              ->first();
+  
+          if(!$updatePassword){
+              return back()->withInput()->with('error', 'Invalid token!');
+          }
+  
+          $user = Advertiser::where('email_id', $request->email_id)
+                      ->update(['password' => Hash::make($request->password)]);
+ 
+          DB::table('advertiser_password_reset')->where(['email'=> $request->email_id])->delete();
+  
+          return redirect('advertiser/login')->with('success', 'Your password has been changed!');
+      }
+
+
+
 }
 ?>

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/vod.css';?>" />
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/advertiserstyle.css';?>" />
 
   <!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
@@ -34,27 +35,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
-<style>
 
-    .top-left-logo img {
-        opacity: 0.9;
-        overflow: hidden;
-    }
-    span{
-        font-weight: normal!important;
-    }
-    .header-logo
-
-    {
-       padding-left: 25px;
-        
-    }
-    hr {
-        border-top: 1px solid #e2e2e22e!important;
-    }
-    body{margin-top:20px}.panel{text-align:center}.panel:hover{box-shadow:0 1px 5px rgba(0,0,0,.4),0 1px 5px rgba(130,130,130,.35)}.panel-body{padding:0;text-align:center}.the-price{background-color:rgba(220,220,220,.17);box-shadow:0 1px 0 #dcdcdc,inset 0 1px 0 #fff;padding:20px;margin:0}.the-price h1{line-height:1em;padding:0;margin:0}.subscript{font-size:25px}.cnrflash{position:absolute;top:-9px;right:4px;z-index:1;overflow:hidden;width:100px;height:100px;border-radius:3px 5px 3px 0}.cnrflash-inner{position:absolute;bottom:0;right:0;width:145px;height:145px;-ms-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);-webkit-transform-origin:100% 100%;-ms-transform-origin:100% 100%;-o-transform-origin:100% 100%;-moz-transform-origin:100% 100%;background-image:linear-gradient(90deg,transparent 50%,rgba(255,255,255,.1) 50%),linear-gradient(0deg,transparent 0,rgba(1,1,1,.2) 50%);background-size:4px,auto,auto,auto;background-color:#aa0101;box-shadow:0 3px 3px 0 rgba(1,1,1,.5),0 1px 0 0 rgba(1,1,1,.5),inset 0 -1px 8px 0 rgba(255,255,255,.3),inset 0 -1px 0 0 rgba(255,255,255,.2)}.cnrflash-inner:after,.cnrflash-inner:before{content:" ";display:block;position:absolute;bottom:-16px;width:0;height:0;border:8px solid maroon}.cnrflash-inner:before{left:1px;border-bottom-color:transparent;border-right-color:transparent}.cnrflash-inner:after{right:0;border-bottom-color:transparent;border-left-color:transparent}.cnrflash-label{position:absolute;bottom:0;left:0;display:block;width:100%;padding-bottom:5px;color:#fff;text-shadow:0 1px 1px rgba(1,1,1,.8);font-size:.95em;font-weight:700;text-align:center}
-    
-</style>
 
 </head>
 <body >
@@ -200,46 +181,36 @@
         
         <!--<hr />-->
     
-        <div id="main-admin-content">
-    
         <div id="content-page" class="content-page">
          <div class="container-fluid">
-         <div class="row">
-            @foreach($plans as $plan)
-        <div class="col-xs-12 col-md-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        {{ $plan->plan_name }}</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="the-price">
-                        <h1>
-                            ${{$plan->plan_amount}}<span class="subscript">/mo</span></h1>
+          <div class="iq-card">
+
+            <div id="admin-container">
+
+               <div class="admin-section-title">
+                  <h4><i class="entypo-credit-card"></i> Plans</h4> 
+               </div>
+               <hr>
+               <div class="clear mt-2"></div>
+               <div class="container">
+                <div class="row justify-content-around text-center">
+                  @foreach($plans as $k=>$plan)
+                  <div class="col-sm-3 bg-cl{{$k}}">
+                     <div class="bg-yt p-3">
+                       <h3 class="mt-2">{{ $plan->plan_name }}</h3>
+                       <p class="font-weight-bold mt-4 do">${{$plan->plan_amount}}/months</p>
+                       <span class="ad mt-4">{{$plan->no_of_ads}} Ads</span>
                     </div>
-                    <table class="table">
-                        <tr>
-                            <td>
-                                {{$plan->no_of_ads}} Ads
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span data-planid="{{ $plan->id }}" class="chooseplan"><button class="btn btn-primary">BUY Now</button></span>
-                            </td>
-                        </tr>
-                        
-                    </table>
-                </div>
+                    <div class="buy mt-3">
+                     <a class="btn-buy chooseplan" type="button" data-planid="{{ $plan->id }}" href="{{URL::to('/').'/advertiser/paymentgateway/'.$plan->id}}">Buy Now</a></div>
+                  </div>
+                  @endforeach 
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-        @endforeach
-    </div>
-    </div>
- </div>
-                
-    
-        </div>
+         </div>
+      </div>
         
         <!-- Footer -->
         <footer class="iq-footer">
@@ -261,42 +232,6 @@
       
       
     </div>
-    
-<div class="modal fade" id="paymentModal">
-          <div class="modal-dialog" role="document">
-           <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="exampleModalLabel">Payment Gateway</h5>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-           </button>
-        </div>
-        <form method="POST" action="{{ url('advertiser/paymentgateway') }}" class="mt-4" autocomplete="off">
-        <div class="modal-body">
-         @csrf
-         <input type="hidden" name="plan_id" id="plan_id" value="">
-           <div class="form-check">
-             <input class="form-check-input" type="radio" name="paymentgateway" id="stripe" checked value="stripe">
-             <label class="form-check-label" for="stripe">
-               Stripe Pay using cards
-           </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="paymentgateway" id="razorpay" value="razorpay">
-          <label class="form-check-label" for="razorpay">
-           Razorpay Pay using cards, Netbanking, UPI
-        </label>
-     </div>
-
-       </div>
-       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" id="proceedpayment">Next</button>
-       </div>
-    </div>
- </div>
-</div>
-
 
   <!-- Imported styles on this page -->
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
@@ -349,13 +284,6 @@
     toastr.info("<?php echo session('info'); ?>");
 
 <?php } ?>
-$(".chooseplan").click(function(){
-   var plan_id = $(this).data('planid');
-   $("#plan_id").val(plan_id);
-   $("#paymentModal").modal('show');
-});
-
-
 </script>
 </body>
 </html>

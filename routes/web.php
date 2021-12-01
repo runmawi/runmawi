@@ -50,8 +50,13 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     /*TV-shows*/
     Route::get('tv-shows', 'TvshowsController@index');
-    Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
-    Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
+    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode');
+    Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
+    // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
+
+    Route::get('play_series/{name}/', 'TvshowsController@play_series');
+    // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
+
 
     /* Audio Pages */
     Route::get('audios', 'ThemeAudioController@audios');
@@ -207,6 +212,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/countries/update', 'AdminManageCountries@Update');
 
     Route::get('/player', 'Adminplayer@Index');
+
+
 
     /* manage videos */
 
@@ -389,6 +396,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/series/edit/{id}', 'AdminSeriesController@edit');
     Route::post('/series/update', 'AdminSeriesController@update');
     Route::get('/series/delete/{id}', 'AdminSeriesController@destroy');
+    Route::get('/titlevalidation', 'AdminSeriesController@TitleValidation');
     
 
 //Admin Series Season Manage
@@ -539,6 +547,15 @@ Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
 Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
 Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
 });
+
+Route::get('device/logout/verify/{id}', 'AdminUsersController@VerifyDevice');
+Route::get('device/delete/{id}', 'AdminUsersController@logoutDevice');
+
+Route::get('device/login/verify/{ip}/{id}/{device_name}', 'AdminUsersController@ApporeDevice');
+Route::get('device/accept/{user_ip}/{device_name}/{id}', 'AdminUsersController@AcceptDevice');
+// Route::get('device/reject/{user_ip}/{device_name}/{id}', 'AdminUsersController@RejectDevice');
+
+Route::get('device/reject/{user_ip}/{device_name}', 'AdminUsersController@RejectDevice');
 
 
 
@@ -1128,3 +1145,7 @@ Route::post('m3u8url_data', 'ModeratorsUserController@m3u8url_data');
 Route::post('Embed_Data', 'ModeratorsUserController@Embed_Data');
 Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
 Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
+
+
+
+       

@@ -42,8 +42,10 @@ class LiveStreamController extends Controller
         {
         
           $data = session()->all();
-       
-           $categoryVideos = LiveStream::where('id',$vid)->first();
+
+          $categoryVideos = LiveStream::where('slug',$vid)->first();
+          $vid =  $categoryVideos->id;
+          //  $categoryVideos = LiveStream::where('id',$vid)->first();
         if(!empty($data['password_hash'])){
            $user_id = Auth::user()->id;
           }

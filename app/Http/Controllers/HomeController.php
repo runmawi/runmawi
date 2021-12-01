@@ -46,7 +46,9 @@ use App\AudioAlbums as AudioAlbums;
 use App\UserLogs as UserLogs;
 use App\CurrencySetting as CurrencySetting;
 use App\SubscriptionPlan as SubscriptionPlan;
-
+use Jenssegers\Agent\Agent;
+use App\LoggedDevice;
+use App\ApprovalMailDevice;
 
 
 
@@ -71,16 +73,45 @@ class HomeController extends Controller
 
         // return View::make('first_landing');
         $data = Session::all();
+        $agent = new Agent();
+
         // $session_password = $data['password_hash'];
-        if (empty($data['password_hash'])) {
-            $system_settings = SystemSetting::first();
-            $user = User::where('id','=',1)->first();
-
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        if ( empty($data['password_hash'])) {
             return view('auth.login',compact('system_settings','user'));
-
             // return View::make('auth.login', $data);
-
           }else{
+        $user_check = LoggedDevice::where('user_id','=', Auth::User()->id)->count();
+        $alldevices = LoggedDevice::where('user_id','=', Auth::User()->id)->get();
+            if($user_check >= 4){
+                return view('device_logged',compact('alldevices','system_settings','user'));
+            }else{
+                $device_name = '';
+                if($agent->isDesktop()) {
+                    $device_name = 'desktop';
+                }elseif ($agent->isTablet()) {
+                    $device_name = 'tablet';
+                }elseif ($agent->isMobile()) {
+                    $device_name = 'mobile';
+                }elseif ($agent->isMobile()) {
+                    $device_name = 'mobile';
+                }else {
+                    $device_name = 'tv';
+                }
+                if(!empty($device_name)){
+                    $devices_check = LoggedDevice::where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+                    if(empty($devices_check)){
+                        // dd($devices_check);
+                        $adddevice = new LoggedDevice;
+                        $adddevice->user_id = Auth::User()->id;
+                        $adddevice->user_ip = $userIp;
+                        $adddevice->device_name = $device_name;
+                        $adddevice->save();
+                    }
+                }
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
             $settings = Setting::first();
            
@@ -142,6 +173,7 @@ class HomeController extends Controller
              return View::make('home', $data);
         
           }
+        }
     }
 
     /**
@@ -151,24 +183,102 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-    
+        
+            $agent = new Agent();
+
+      
+        // dd($user_check);
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
         $data = Session::all();
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
         // $session_password = $data['password_hash'];
-        if (empty($data['password_hash'])) {
+        if ( empty($data['password_hash'])) {
             return View::make('auth.login');
 
           }else{
+            $device_name = '';
+            if($agent->isDesktop()) {
+                  $device_name = 'desktop';
+            }elseif ($agent->isTablet()) {
+                  $device_name = 'tablet';
+            }elseif ($agent->isMobile()) {
+                  $device_name = 'mobile';
+            }elseif ($agent->isMobile()) {
+                $device_name = 'mobile';
+            }else {
+                $device_name = 'tv';
+            }
+        $user_check = LoggedDevice::where('user_id','=', Auth::User()->id)->count(); 
+        $alldevices = LoggedDevice::where('user_id','=', Auth::User()->id)->get();
+        $devices_check = LoggedDevice::where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+        if($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ){
+            $url1=$_SERVER['REQUEST_URI'];
+            header("Refresh: 120; URL=$url1");
+            $username = Auth::User()->username;
+            $email = Auth::User()->email;
+        $mail_check = ApprovalMailDevice::where('user_ip','=', $userIp)->where('device_name','=', $device_name)->first();
+
+        if(empty($mail_check)){
+            
+            // dd($user_check);
+            Mail::send('emails.device_approval', array(
+                /* 'activation_code', $user->activation_code,*/
+                'device_name'=>$device_name, 
+                'ip' => $userIp,
+                'id' => Auth::User()->id, 
+                // 'id' => $id, 
+                ), function($message) use ($email,$username) {
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($email, $username)->subject('Request to Apporve New Device');
+                });
+                $maildevice = new ApprovalMailDevice;
+                $maildevice->user_ip = $userIp;
+                $maildevice->device_name = $device_name;
+                $maildevice->status = 0;
+                $maildevice->save();
+            $message = 'Mail Sent For Approval Login After Approved By'.' '.$username;
+            return View::make('auth.login')->with('alert', $message);
+        }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0 ){
+            return View::make('auth.login');
+
+        }
+        }
+            if($user_check >= 4 && Auth::User()->id != 1 ){
+                return view('device_logged',compact('alldevices','system_settings','user'));
+            }else{
+            $device_name = '';
+            if($agent->isDesktop()) {
+                  $device_name = 'desktop';
+            }elseif ($agent->isTablet()) {
+                  $device_name = 'tablet';
+            }elseif ($agent->isMobile()) {
+                  $device_name = 'mobile';
+            }elseif ($agent->isMobile()) {
+                $device_name = 'mobile';
+            }else {
+                $device_name = 'tv';
+            }
+
+                if(!empty($device_name)){                    
+                    $devices_check = LoggedDevice::where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+                    if(empty($devices_check)){
+                        // dd('empty');
+                        $adddevice = new LoggedDevice;
+                        $adddevice->user_id = Auth::User()->id;
+                        $adddevice->user_ip = $userIp;
+                        $adddevice->device_name = $device_name;
+                        $adddevice->save();
+                    }
+                }
             $logged = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
             if(!empty($logged)){
-                // dd($logged);
+                // dd($geoip);
                 $today_old_log = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
-                $ip = getenv('HTTP_CLIENT_IP');    
-                $data = \Location::get($ip);
-                $userIp = $data->ip;
-                $countryName = $data->countryName;
-                $regionName = $data->regionName;
-                $cityName = $data->cityName;
-                // dd($data);
                 $new_login = new UserLogs;
                 $new_login->user_id = Auth::User()->id;
                 $new_login->user_ip = $userIp;
@@ -177,14 +287,6 @@ class HomeController extends Controller
                 $new_login->cityname = $cityName;
                 $new_login->save();
             }else{
-
-                $ip = getenv('HTTP_CLIENT_IP');    
-                $data = \Location::get($ip);
-                $userIp = $data->ip;
-                $countryName = $data->countryName;
-                $regionName = $data->regionName;
-                $cityName = $data->cityName;
-                // dd($data);
                 $new_login = new UserLogs;
                 $new_login->user_id = Auth::User()->id;
                 $new_login->user_ip = $userIp;
@@ -293,6 +395,7 @@ class HomeController extends Controller
              //echo "<pre>";print_r($data['latest_videos']);exit;
              return View::make('home', $data);
             }
+        }
     }
     public function social()
     {

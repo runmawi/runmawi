@@ -2,19 +2,79 @@
 
 @include('header')
 
-<div class="container" style="background-color: white">; 
+<div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
     <div class="row justify-content-center page-height">	
-        	<div class="col-md-10 col-sm-offset-1">
+        	<div class="col-md-12 ">
                 
-			<div class="login-block nomargin">
+			<div class="login-block ">
 
-            <h1 class="my_profile" style="color: black;">
+            <h2 class="my_profile" style="color: black;">
                 <i class="fa fa-edit"></i> 
                 <?php echo __('Transacton History');?>
-            </h1>
+            </h2>
+                <hr>
+                <div class="bg-strip">
+                    <div class="d-flex justify-content-between">
+                        <div >
+                        <h5 style="color: black;">Make payment</h5></div>
+                        <div>
+                            <a class="show">Show more transaction</a>
+                        </div>
+                        
+                    </div>
+                <div class="row mt-3 p-1" id="">
+                    <div class="col-sm-3 bg-white">
+                        <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
+                    </div>
+                    <div class="col-sm-3 bg-white ">
+                    <img src="{{ URL::to('/assets/img/apple.png') }}" width="" class="w-100 pt-4" >
+                    </div>
+                    <div class="col-sm-3 bg-white">
+                           <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >
+                    </div>
+                    <div class="col-sm-3">
+                         <img src="{{ URL::to('/assets/img/maste.jpg') }}" class="w-100" >
+                    </div>
+                </div>
+            </div>
                 
-            
-                <table class="table">
+                <div class="mt-5">
+                    <table class="table table-bordered text-center">
+                            <thead class="thead-light ">
+                                <tr>
+                                <th scope="col">Status</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Payment type</th>
+                                <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <th scope="">Canceled</th>
+                                <td>$45.00</td>
+                                <td>30 November 2021</td>
+                                <td>Payment by paypal</td>
+                                    <td><a class="btn1-st">Details</a></td>
+                                </tr>
+                                <tr>
+                                <th scope="row">Approved</th>
+                                <td>$35.00</td>
+                                <td>30 November 2021</td>
+                                <td>Payment by Applepay</td>
+                                    <td><a class="btn1-st">Details</a></td>
+                                </tr>
+                                <tr>
+                                <th scope="row">Pending</th>
+                                <td>$25.00</td>
+                                <td>30 November 2021</td>
+                                <td>Payment by Stripe</td>
+                                    <td><a class="btn1-st">Details</a></td>
+                                </tr>
+                            </tbody>
+                            </table>
+                </div>
+               <!-- <table class="table table-bordered text-center">
                       <thead>
                         <tr>
                         <th>Price</th>
@@ -48,7 +108,7 @@
                        
                        
                       </tbody>
-                    </table>
+                    </table>-->
 
 		   <div class="clear"></div>
                 

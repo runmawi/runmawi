@@ -9,7 +9,7 @@
                           <a href="<?php echo URL::to('home') ?>">
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
                                  </a>      
                                  <div class="corner-text-wrapper">
@@ -23,17 +23,17 @@
                                     </div>                 
                                 </div>
                                 <div class="block-description">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                       
                                     
                                    <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                              </a>                       
                        </div>
-                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->id ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>

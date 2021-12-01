@@ -509,11 +509,11 @@ public function RentPaypal(Request $request)
 
 
                     $ip = getenv('HTTP_CLIENT_IP');    
-                    $data = \Location::get($ip);
-                    $userIp = $data->ip;
-                    $countryName = $data->countryName;
-                    $regionName = $data->regionName;
-                    $cityName = $data->cityName;
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $userIp = $geoip->getip();    
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
 
                     
                     // Name Subscription Activated!

@@ -9,7 +9,7 @@
 
 @stop
 
-
+<?php $message = "Title Already Exits";  ?>
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
@@ -48,7 +48,11 @@
 							<p class="p1">Add the series title in the textbox below:</p> 
 							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value=""  />
 						</div> 
+						<span class="invalid-feedback" id="title_error" role="alert">
+						<strong>{{ $message }}</strong>
+					</span>
 					</div>
+					
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> -->
                     
@@ -323,8 +327,32 @@
 	<script type="text/javascript">
 
 		$ = jQuery;
-
 		$(document).ready(function(){
+
+			$('#title_error').hide();
+
+		$('#title').change(function(){
+   		//  alert(($('#title').val()));
+
+			var title = $('#title').val();
+			$.ajax({
+				url:"{{ URL::to('admin/titlevalidation') }}",
+				method:'GET',
+				data: {
+					_token: '{{ csrf_token() }}',
+					title: $('#title').val()
+
+				},  
+		    success: function(value){
+			console.log(value.Series);
+            if(value.Series == "yes"){
+            $('#title_error').show();
+            }else{
+            $('#title_error').hide();
+            }
+        }
+    });
+})
 			// alert("fd");
 		$('.js-example-basic-multiple').select2();
 
@@ -360,6 +388,11 @@
 		   menubar:false,
 		 });
 
+
+
+	
+
+
 	});
 
 	function NumAndTwoDecimals(e , field) {
@@ -392,6 +425,8 @@
             filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
             filebrowserUploadMethod: 'form'
         });
+
+
         </script>
 
 @section('javascript')

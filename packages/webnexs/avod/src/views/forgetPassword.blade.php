@@ -85,48 +85,29 @@ $system_settings = App\SystemSetting::find(1);
                         <div class="sign-in-page-data">
                             <div class="sign-in-from  m-auto" align="center">
                                 <div align="center">
-                                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Advertiser Sign Up</h3>
+                                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Reset Password</h3>
                               </div>
-                                <form method="POST" action="{{ url('advertiser/post-login') }}" class="mt-4" autocomplete="off">
-                                    @csrf
-                                    <input type="hidden" name="previous" value="{{ url()->previous() }}">
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                    <div class="form-group">  
-                                        <input id="email_id" type="email" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus>
-                                    </div>
-                                    <div class="form-group" style="  margin-top: 30px;"> 
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
-                                    </div>
-
-                                    <div class="sign-info">
-                                        <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
-
-                                    </div> 
-
-                                    <hr style="color:#1e1e1e;">
-
-                                </form>
+                              <main class="login-form">
+                                  <div class="cotainer justify-content-center">
+                                    <form action="{{ url('advertiser/forget-password') }}" method="POST">
+                                      @csrf
+                                      <div class="form-group row">
+                                              <input type="text" id="email_address" class="form-control" name="email_id" required autofocus placeholder="Enter Email Id">
+                                              @if ($errors->has('email_id'))
+                                              <span class="text-danger">{{ $errors->first('email_id') }}</span>
+                                              @endif
+                                      </div>
+                                      <div class="form-group row text-center">
+                                          <button type="submit" class="btn btn-primary">
+                                              Send Password Reset Link
+                                          </button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </main>
                             </div>
                         </div>
-                        <div class="">
-                            <div class="d-flex justify-content-center  links">
-                                Don't have an account? <a href="{{ url('advertiser/register') }}" class="text-primary ml-2">Sign Up</a>
-                            </div>
-                            <div class="d-flex justify-content-center  links">
-                                <a href="{{ url('advertiser/forget-password') }}" class="text-primary ml-2">Reset Password </a>
-                            </div>
-
-                        </div>
+                       
                     </div>
                 </div>
             </div>

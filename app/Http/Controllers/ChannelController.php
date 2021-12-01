@@ -143,14 +143,11 @@ class ChannelController extends Controller
         if ( !Auth::guest() ) {
 
 
-          $ip = getenv('HTTP_CLIENT_IP');    
-          $data = \Location::get($ip);
-          $userIp = $data->ip;
-          $countryName = $data->countryName;
-          $regionName = $data->regionName;
-          $cityName = $data->cityName;
-          // dd($data);
-          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+          $userIp = $geoip->getip();    
+          $countryName = $geoip->getCountry();
+          $regionName = $geoip->getregion();
+          $cityName = $geoip->getcity();
             $view = new RecentView;
             $view->video_id = $vid;
             $view->user_id = Auth::user()->id;
@@ -284,12 +281,11 @@ class ChannelController extends Controller
              
         } else {
 
-          $ip = getenv('HTTP_CLIENT_IP');    
-          $data = \Location::get($ip);
-          $userIp = $data->ip;
-          $countryName = $data->countryName;
-          $regionName = $data->regionName;
-          $cityName = $data->cityName;
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+          $userIp = $geoip->getip();    
+          $countryName = $geoip->getCountry();
+          $regionName = $geoip->getregion();
+          $cityName = $geoip->getcity();
           // dd($data);
 
             $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
