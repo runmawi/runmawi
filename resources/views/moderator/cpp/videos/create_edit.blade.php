@@ -392,7 +392,18 @@
 			                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
                                 </div>
                             </div>
-                            
+                            <div class="row">
+                                <div class="col-sm-6 form-group mt-3">
+                                <label class="">Skip Intro Time</label>
+				            	<p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
+                                </div>
+                                <div class="col-sm-6 form-group mt-3">
+                                <label class="">Skip Recap Time</label>
+				            	<p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
+                                </div>
+                            </div>
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                                  <input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >

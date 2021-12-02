@@ -130,7 +130,27 @@
 					@endif
 				</div> 
 			</div>
+			<div class="row align-items-center"> 
+				<div class="col-sm-4"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title"> <label>Skip Intro Time</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body"> 
+							<input class="form-control" name="skip_intro" id="skip_intro" value="@if(!empty($episodes->skip_intro)){{ $episodes->skip_intro }}@endif" >
+						</div> 
+					</div>
+				</div>
 
+				<div class="col-sm-4 mt-3"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title"> <label>Skip Recap Time</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body"> 
+							<input class="form-control" name="skip_recap" id="skip_recap" value="@if(!empty($episodes->skip_recap)){{ $episodes->skip_recap }}@endif" >
+							<div class="clear"></div>
+						</div> 
+					</div>
+				</div>
 
 			<div class="clear"></div>
 
@@ -169,29 +189,29 @@
 						<div class="panel-heading"> <div class="panel-title"> <label>Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<div style="display: flex;
-    justify-content: start;
-    align-items: baseline;">
+								justify-content: start;
+								align-items: baseline;">
 								<label for="featured" style="float:left; display:block; margin-right:10px;">Is this episode Featured:</label>
 								<input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
 							<div style="display: flex;
-    justify-content: start;
-    align-items: baseline;">
+								justify-content: start;
+								align-items: baseline;">
 								<label for="active" style="float:left; display:block; margin-right:10px;">Is this episode Active:</label>
 								<input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
 							<div class="clear"></div>
 							<div style="display: flex;
-    justify-content: start;
-    align-items: baseline;">
+								justify-content: start;
+								align-items: baseline;">
 								<label for="banner" style="float:left; display:block; margin-right:10px;">Is this episode display in Banner:</label>
 								<input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 							<div class="clear"></div>
 							<div style="display: flex;
-    justify-content: start;
-    align-items: baseline;">
+								justify-content: start;
+								align-items: baseline;">
 								<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
 								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 							</div>

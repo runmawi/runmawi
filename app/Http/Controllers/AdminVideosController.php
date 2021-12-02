@@ -986,8 +986,12 @@ if(!empty($artistsdata)){
                         // dd($data['global_ppv']);
                         $video->publish_time =0;
                         }  
+
+
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->skip_recap =  $request['skip_recap'];
+         $video->skip_intro =  $request['skip_intro'];
          $video->publish_status = $request['publish_status'];
          $video->publish_type = $request['publish_type'];
          $video->publish_time = $request['publish_time'];
@@ -1344,6 +1348,8 @@ if(!empty($artistsdata)){
     
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
+             $video->skip_recap =  $data['skip_recap'];
+             $video->skip_intro =  $data['skip_intro'];
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
             $video->active = 1 ;
@@ -1353,6 +1359,7 @@ if(!empty($artistsdata)){
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
              $video->banner =  $data['banner'];
+
             $video->enable =  1;
 
              $video->update($data);

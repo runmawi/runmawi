@@ -581,13 +581,25 @@ data: {
 
                                 <div class="col-sm-6 form-group mt-3">
                                     <!-- <label class="">Type</label> -->
-                                    <input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                    <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked">Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
 							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
                        
                                 </div>
                                 <div class="col-sm-6 form-group mt-3" id="publishlater">
                                 <label class="">Publish Time</label>
 			                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group mt-3">
+                                <label class="">Skip Intro Time</label>
+				            	<p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="skip_intro" name="skip_intro" >
+                                </div>
+                                <div class="col-sm-6 form-group mt-3">
+                                <label class="">Skip Recap Time</label>
+				            	<p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="skip_recap" name="skip_recap" >
                                 </div>
                             </div>
                                 @if(isset($video->id))

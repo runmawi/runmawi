@@ -123,7 +123,26 @@
 
 			<div class="clear"></div>
 
-
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Skip Intro Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+						<input class="form-control" name="skip_intro" id="skip_intro" value="@if(!empty($episodes->skip_intro)){{ $episodes->skip_intro }}@endif" >
+						</div> 
+					</div>			
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Skip Recap Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+						<input class="form-control" name="skip_recap" id="skip_recap" value="@if(!empty($episodes->skip_recap)){{ $episodes->skip_recap }}@endif" >
+						</div> 
+					</div>
+				</div>
+			</div>
 			<div class="row"> 
 
 				<div class="col-sm-4"> 

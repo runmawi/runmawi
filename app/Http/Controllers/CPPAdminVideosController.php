@@ -935,6 +935,8 @@ if(!empty($artistsdata)){
             }   
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->skip_recap =  $data['skip_recap'];
+         $video->skip_intro =  $data['skip_intro'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
          $video->publish_status = $request['publish_status'];
@@ -1290,6 +1292,8 @@ if(!empty($artistsdata)){
             
                      $shortcodes = $request['short_code'];        
                      $languages=$request['sub_language'];
+                     $video->skip_recap =  $data['skip_recap'];
+                     $video->skip_intro =  $data['skip_intro'];
                      $video->description = strip_tags($data['description']);
                      $video->draft = 1;
                     $video->active = 1 ;
