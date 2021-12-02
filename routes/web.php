@@ -544,9 +544,10 @@ Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex
 Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
 Route::get('cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
-Route::get('/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
-Route::get('/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
+
 });
+Route::get('admin/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
+Route::get('admin/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
 
 Route::get('device/logout/verify/{id}', 'AdminUsersController@VerifyDevice');
 Route::get('device/delete/{id}', 'AdminUsersController@logoutDevice');
@@ -598,6 +599,7 @@ Route::get('/subscribe/paypal/return', 'paypalcontroller@paypalreturn')->name('p
 Route::get('admin/payment_test', 'AdminPaymentManagementController@PaymentIndex');
 
 
+Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 
 /**       CPP Middlware       */
 Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
@@ -697,7 +699,6 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/livestream/categories/edit/{id}', 'CPPAdminLiveCategoriesController@CPPedit');
     Route::post('/livestream/categories/update','CPPAdminLiveCategoriesController@CPPupdate');
     Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPdestroy'));
-    Route::post('home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 
 });
 
