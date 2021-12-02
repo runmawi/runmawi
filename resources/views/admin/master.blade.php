@@ -7,7 +7,7 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $user = Session::get('user'); 
-$userrolepermissiom = Session::get('userrolepermissiom '); 
+$userrolepermissiom = Session::get('userrolepermissiom'); 
 
 
 // echo "<pre>";
