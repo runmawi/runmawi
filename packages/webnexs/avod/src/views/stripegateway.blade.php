@@ -450,7 +450,7 @@
                   if(data == 'success'){
                     swal("You have done  Payment !");
                     setTimeout(function() {
-                    window.location.replace(base_url.'/billing_details');
+                    window.location.replace(base_url+'/billing_details');
                         
                   }, 2000);
                  }else{
