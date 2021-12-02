@@ -445,6 +445,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/edit_ads_plan', 'AdminAdvertiserController@edit_ads_plan');    
     Route::post('/save_ads_status', 'AdminAdvertiserController@save_ads_status');  
     Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
+    // Route::post('advertiser/logout', 'AdminAdvertiserController@Logout'); 
+    
     /*Ads Management ends*/
 
     /*Video Uploads */
@@ -598,8 +600,8 @@ Route::get('/subscribe/paypal/return', 'paypalcontroller@paypalreturn')->name('p
 // Route::get('create_paypal_plan', 'PaypalController@create_plan');
 Route::get('admin/payment_test', 'AdminPaymentManagementController@PaymentIndex');
 
-
 Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
+
 
 /**       CPP Middlware       */
 Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
