@@ -68,7 +68,7 @@ class HomeController extends Controller
         $this->videos_per_page = $settings->videos_per_page;
     }
 
-    public function FirstLanging(){
+    public function FirstLangingold(){
             //  echo "<pre>";print_r('$cnt_watching');exit();
 
         // return View::make('first_landing');
@@ -175,7 +175,220 @@ class HomeController extends Controller
           }
         }
     }
+    public function FirstLanging(){
+        $agent = new Agent();
 
+      
+        // dd($user_check);
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        $data = Session::all();
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        // $session_password = $data['password_hash'];
+        if ( empty($data['password_hash'])) {
+            return View::make('auth.login');
+
+          }else{
+            $device_name = '';
+            if($agent->isDesktop()) {
+                  $device_name = 'desktop';
+            }elseif ($agent->isTablet()) {
+                  $device_name = 'tablet';
+            }elseif ($agent->isMobile()) {
+                  $device_name = 'mobile';
+            }elseif ($agent->isMobile()) {
+                $device_name = 'mobile';
+            }else {
+                $device_name = 'tv';
+            }
+        $user_check = LoggedDevice::where('user_id','=', Auth::User()->id)->count(); 
+        $alldevices = LoggedDevice::where('user_id','=', Auth::User()->id)->get();
+        $devices_check = LoggedDevice::where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+        if($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ){
+            $url1=$_SERVER['REQUEST_URI'];
+            header("Refresh: 120; URL=$url1");
+            $username = Auth::User()->username;
+            $email = Auth::User()->email;
+        $mail_check = ApprovalMailDevice::where('user_ip','=', $userIp)->where('device_name','=', $device_name)->first();
+
+        if(empty($mail_check)){
+            
+            // dd($user_check);
+            Mail::send('emails.device_approval', array(
+                /* 'activation_code', $user->activation_code,*/
+                'device_name'=>$device_name, 
+                'ip' => $userIp,
+                'id' => Auth::User()->id, 
+                // 'id' => $id, 
+                ), function($message) use ($email,$username) {
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($email, $username)->subject('Request to Apporve New Device');
+                });
+                $maildevice = new ApprovalMailDevice;
+                $maildevice->user_ip = $userIp;
+                $maildevice->device_name = $device_name;
+                $maildevice->status = 0;
+                $maildevice->save();
+            $message = 'Mail Sent For Approval Login After Approved By'.' '.$username;
+            return View::make('auth.login')->with('alert', $message);
+        }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0 ){
+            return View::make('auth.login');
+
+        }
+        }
+            if($user_check >= 4 && Auth::User()->id != 1 ){
+                return view('device_logged',compact('alldevices','system_settings','user'));
+            }else{
+            $device_name = '';
+            if($agent->isDesktop()) {
+                  $device_name = 'desktop';
+            }elseif ($agent->isTablet()) {
+                  $device_name = 'tablet';
+            }elseif ($agent->isMobile()) {
+                  $device_name = 'mobile';
+            }elseif ($agent->isMobile()) {
+                $device_name = 'mobile';
+            }else {
+                $device_name = 'tv';
+            }
+
+                if(!empty($device_name)){                    
+                    $devices_check = LoggedDevice::where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
+                    if(empty($devices_check)){
+                        // dd('empty');
+                        $adddevice = new LoggedDevice;
+                        $adddevice->user_id = Auth::User()->id;
+                        $adddevice->user_ip = $userIp;
+                        $adddevice->device_name = $device_name;
+                        $adddevice->save();
+                    }
+                }
+            $logged = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+            if(!empty($logged)){
+                // dd($geoip);
+                $today_old_log = UserLogs::where('user_id','=',Auth::User()->id)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                $new_login = new UserLogs;
+                $new_login->user_id = Auth::User()->id;
+                $new_login->user_ip = $userIp;
+                $new_login->countryname = $countryName;
+                $new_login->regionname = $regionName;
+                $new_login->cityname = $cityName;
+                $new_login->save();
+            }else{
+                $new_login = new UserLogs;
+                $new_login->user_id = Auth::User()->id;
+                $new_login->user_ip = $userIp;
+                $new_login->countryname = $countryName;
+                $new_login->regionname = $regionName;
+                $new_login->cityname = $cityName;
+                $new_login->save();
+            }
+
+
+            $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();        
+            $settings = Setting::first();
+            $PPV_settings = Setting::where('ppv_status','=',1)->first();
+            if(!empty($PPV_settings)){
+               $ppv_gobal_price =  $PPV_settings->ppv_price;
+                // echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
+
+            }else{
+                // echo "<pre>";print_r('ppv_status');exit();
+                $ppv_gobal_price = null ;
+
+            }
+            
+            $genre = Genre::all();
+            $genre_video_display = VideoCategory::all();
+            $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->count();
+            if ($latest_videos_count > 0) {
+                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+            } else {
+                    $latest_videos = [];
+            }
+            $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+            if ($featured_videos_count > 0) {
+                $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+            } else {
+                    $featured_videos = [];
+            }
+             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+            //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
+             $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
+             $trendings = $trendings->merge($trending_videos);
+             $trendings = $trendings->merge($trending_movies);
+             $trendings = $trendings->merge($trending_episodes);
+            //  $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
+            
+             $pages = Page::all();
+             if(!Auth::guest()){
+                 $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
+                 $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+                //  $cnt_watching = Video::with('cnt_watch')->where('active', '=', '1')->whereIn('id',$getcnt_watching)->get();
+             }else{
+                 $cnt_watching = '';
+             }
+             $currency = CurrencySetting::first();
+             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+             if ($livetreams_count > 0) {
+                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+             } else {
+                     $livetreams = [];
+             }
+             
+            //  $currency->symbol
+            //  dd($currency);
+             $data = array(
+                'currency' => $currency,
+                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
+                //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                 'banner' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                 'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
+                 'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                 'cnt_watching' => $cnt_watching,
+                 'trendings' => $trending_movies,
+                 'latest_videos' => $latest_videos,
+                 'movies' => $trending_movies,
+                 'latest_movies' => $latest_movies,
+                 'ppv_movies' => $ppv_movies,
+                 'trending_audios' => $trending_audios,
+                 'latest_audios' => $latest_audios,
+                 'featured_videos' => $featured_videos,
+                 'featured_episodes' => $featured_episodes,
+                 'current_page' => 1,
+                 'genre_video_display'=> $genre_video_display,
+                  'genres' => VideoCategory::all(),
+                 'pagination_url' => '/videos',
+                  'settings'=>$settings,
+                  'pages'=>$pages,
+                 'trending_videos' => $trending_videos,
+                 'ppv_gobal_price' => $ppv_gobal_price,
+                 'suggested_videos' => $suggested_videos,
+                'video_categories' => VideoCategory::all(),
+                 'home_settings' => HomeSetting::first(),
+                 'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
+                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
+                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
+
+             );
+             //echo "<pre>";print_r($data['latest_videos']);exit;
+             return View::make('home', $data);
+            }
+        }
+    }
     /**
      * Show the application dashboard.
      *
