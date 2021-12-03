@@ -246,7 +246,7 @@ class AuthController extends Controller
         $data = [];
         $data['settings'] = Setting::first();
         if(!empty(session('advertiser_id')) ){
-            $data['advertisements'] = Advertisement::all();
+            $data['advertisements'] = Advertisement::where('advertiser_id',session('advertiser_id'))->get();
             return view('avod::ads_list',$data);
         }
         return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
