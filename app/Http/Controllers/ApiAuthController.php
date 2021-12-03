@@ -2918,8 +2918,9 @@ public function checkEmailExists(Request $request)
 
   public function PrevVideo(Request $request){
 
+    // $user_id = $request->user_id;
     $currentvideo_id = $request->id;
-    $prev_videoid = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->min('id');
+    $prev_videoid = Video::where('id', '<', $currentvideo_id)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
     if($prev_videoid){
         $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
         $response = array(
@@ -3020,6 +3021,7 @@ public function upnextAudio(Request $request){
     $user_id = $request->user_id;
     $video_id = $request->video_id;
     $next_videoid = Wishlist::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+
     if($next_videoid){
       $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
@@ -3040,9 +3042,10 @@ public function upnextAudio(Request $request){
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $prev_videoid = Wishlist::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+  
+    $prev_videoid = Wishlist::where('video_id', '<', $request->video_id)->where('user_id', '=', $user_id)->max('video_id');
     if($prev_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
         'prev_videoid' => $prev_videoid,
@@ -3083,9 +3086,10 @@ public function upnextAudio(Request $request){
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $prev_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+
+    $prev_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->max('video_id');
     if($prev_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
         'prev_videoid' => $prev_videoid,
@@ -3121,13 +3125,13 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function prevfavoritevideo(Request $request)
+  public function prevfavouritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
-    $prev_videoid = Favorite::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->min('video_id');
+    $prev_videoid = Favorite::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->max('video_id');
     if($prev_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
       $response = array(
         'status' => true,
         'prev_videoid' => $prev_videoid,
@@ -3171,7 +3175,7 @@ public function upnextAudio(Request $request){
     $seasonid = $request->seasonid;
     $episode_id = $request->episode_id;
 
-    $prev_episodeid = Video::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->min('id');
+    $prev_episodeid = Video::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
     if($prev_episodeid){
         $episode= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
         $response = array(
