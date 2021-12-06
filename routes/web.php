@@ -107,8 +107,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 //Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
 });
 
-Route::post('admin/profile/update', 'AdminUsersController@myprofileupdate');
-Route::post('admin/profileupdate', 'AdminUsersController@ProfileImage');
+
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
 Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
@@ -172,7 +171,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/user/delete/{id}', array('before' => 'demo', 'uses' => 'AdminUsersController@destroy'));
     Route::post('/export', 'AdminUsersController@export');
     Route::get('/user/view/{id}',  'AdminUsersController@view');
-    
+    Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
+    Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
 

@@ -243,67 +243,67 @@ $.ajaxSetup({
 });
 
 
-// $.ajaxSetup({
-//            headers: {
-//                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             }
-//     });
-// 	$(document).ready(function(){
-//     $('#allcountry').change(function(){
-//    var country = $('#allcountry').val();
-// //    alert(country);
-//    if(country == 'allcountry'){
-// 	$.ajax({
-//    url:"{{ URL::to('/Allregionvideos') }}",
-//    method:'get',
-//    data:{query:country},
-//    dataType:'json',
-//    success:function(data)
-//    {
-//     $('tbody').html(data.table_data);
-//     $('#total_records').text(data.total_data);
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+	$(document).ready(function(){
+    $('#allcountry').change(function(){
+   var country = $('#allcountry').val();
+//    alert(country);
+   if(country == 'allcountry'){
+	$.ajax({
+   url:"{{ URL::to('admin/Allregionvideos') }}",
+   method:'get',
+   data:{query:country},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
 
-//     Highcharts.chart('container', {
-//   chart: {
-//     plotBackgroundColor: null,
-//     plotBorderWidth: null,
-//     plotShadow: false,
-//     type: 'pie'
-//   },
-//   title: {
-//     text: 'Analytics'
-//   },
-//   tooltip: {
-//   },
-//   accessibility: {
-//     point: {
-//     }
-//   },
-//   plotOptions: {
-//     pie: {
-//       allowPointSelect: true,
-//       cursor: 'pointer',
-//       dataLabels: {
-//         enabled: true,
-//       }
-//     }
-//   },
-//   series: [{
-//     name: 'Videos Viewed By Region',
-//     colorByPoint: true,
-//     data: [{
-//       name: 'By Region',
-//       y: data.total_data,
-//     }]
-//   }]
-// });
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'Analytics'
+  },
+  tooltip: {
+  },
+  accessibility: {
+    point: {
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+      }
+    }
+  },
+  series: [{
+    name: 'Videos Viewed By Region',
+    colorByPoint: true,
+    data: [{
+      name: 'By Region',
+      y: data.total_data,
+    }]
+  }]
+});
 
-//    }
-//     });
-//    }
-// })
+   }
+    });
+   }
+})
 
-// });
+});
 
 
 

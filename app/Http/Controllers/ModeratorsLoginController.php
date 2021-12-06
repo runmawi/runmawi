@@ -70,7 +70,7 @@ use App\Subscription;
 use App\PpvVideo;
 use App\RecentView;
 use Session;
-
+use Redirect;
 
 
 
@@ -79,25 +79,37 @@ class ModeratorsLoginController extends Controller
 
   public function index()
   {
-
+    $user_package =    User::where('id', 1)->first();
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
     $settings = Setting::first();
     $user = User::where('id','=',1)->first();
 
     return view('moderator.register',compact('settings','user'));
-
+  }else{
+    return Redirect::to('/blocked');
+  }
   }
 
   public function Signin()
   {
-
+    $user_package =    User::where('id', 1)->first();
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
     $settings = Setting::first();
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
     return view('moderator.login',compact('system_settings','user','settings'));
+    }else{
+      return Redirect::to('/blocked');
+    }
   }
 
   public function Login(Request $request)
   {
+    $user_package =    User::where('id', 1)->first();
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
     $input = $request->all();
 
     $userexits = ModeratorsUser::where('email','=',$input['email'])->first();
@@ -171,18 +183,24 @@ class ModeratorsLoginController extends Controller
     else{
       return redirect('/cpp/login')->with('message', 'Please Register And Login');  
       }
-
+    }else{
+      return Redirect::to('/blocked');
+    }
 
   }
 
   public function Store(Request $request)
   {
+
     $input = $request->all();
     $request->validate([
       'email_id' => 'required|email|unique:moderators_users,email',
       'password' => 'min:6',
   ]);
 // dd($input);
+$user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
 $string = Str::random(60); 
     $moderatorsuser = new ModeratorsUser;
     $moderatorsuser->username = $request->username;
@@ -267,7 +285,9 @@ if($request->picture == ""){
 
 
     return back()->with('message', 'Successfully Users saved!.');
-
+  }else{
+    return Redirect::to('/blocked');
+  }
   }
 
   public function VerifyRequest(Request $request)
@@ -300,6 +320,9 @@ if($request->picture == ""){
 }
   public function IndexDashboard()
     {
+      $user_package =    User::where('id', 1)->first();
+      $package = $user_package->package;
+      if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         // dd($user);
         $id = $user->id;
@@ -353,13 +376,17 @@ if($request->picture == ""){
         );
         
 		return \View::make('moderator.dashboard', $data);
-
+  }else{
+    return Redirect::to('/blocked');
+  }
 
     }
 
   public function logout(Request $request)
   {
-
+    $user_package =    User::where('id', 1)->first();
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
     request()->session()->regenerate(true);
     request()->session()->flush();
     $settings = Setting::first();
@@ -369,7 +396,13 @@ if($request->picture == ""){
 
     return view('moderator.login',compact('system_settings','user','settings'));
     // return \View::make('auth.login');
-    
-  
+}else{
+  return Redirect::to('/blocked');
+}
+
   }
+
+
+
+  
 }

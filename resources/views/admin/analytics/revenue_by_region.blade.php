@@ -2,12 +2,15 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+  <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
 <style>
     .highcharts-figure, .highcharts-data-table table {
   min-width: 300px; 
@@ -123,7 +126,7 @@ input[type="number"] {
 
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table " id="page" style="width:100%">
                               <thead>
                                  <tr>
                                     <th>ID</th>
@@ -162,13 +165,14 @@ if(country_id == "Allcountry"){
 // alert(country_id)
 
 	$.ajax({
-   url:"{{ URL::to('/PlanAllCountry') }}",
+   url:"{{ URL::to('admin/PlanAllCountry') }}",
    method:'get',
    data:{query:country_id},
    dataType:'json',
    success:function(data)
    {
     $('tbody').html(data.table_data);
+    $('#page').DataTable();
     $('#total_records').text(data.total_data);
     $('#city-dropdown').append('<option value="Allcity">Select All City</option>'); 
 
@@ -215,7 +219,7 @@ else{
 // alert('country_id')
   $("#state-dropdown").html('');
 $.ajax({
-url:"{{url('/getState')}}",
+url:"{{url::to('admin/getState')}}",
 type: "POST",
 data: {
 country_id: country_id,
@@ -240,7 +244,7 @@ $('#state-dropdown').on('change', function() {
 var state_id = this.value;
 $("#city-dropdown").html('');
 $.ajax({
-url:"{{url('/getCity')}}",
+url:"{{url::to('admin/getCity')}}",
 type: "POST",
 data: {
 state_id: state_id,
@@ -270,7 +274,7 @@ $.ajaxSetup({
   //  alert(Allstate);
    if(Allstate == Allstate){
 	$.ajax({
-   url:"{{ URL::to('/Planstate') }}",
+   url:"{{ URL::to('admin/Planstate') }}",
    method:'get',
    data:{query:Allstate},
    dataType:'json',
@@ -278,6 +282,8 @@ $.ajaxSetup({
    {
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
+    $('#page').DataTable();
+
 
     Highcharts.chart('container', {
   chart: {
@@ -334,7 +340,7 @@ $.ajaxSetup({
 //    alert(country);
    if(Allcity == "Allcity"){
 	$.ajax({
-   url:"{{ URL::to('/PlanAllCity') }}",
+   url:"{{ URL::to('admin/PlanAllCity') }}",
    method:'get',
    data:{query:Allcity},
    dataType:'json',
@@ -342,6 +348,8 @@ $.ajaxSetup({
    {
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
+    $('#page').DataTable();
+
 
     Highcharts.chart('container', {
   chart: {
@@ -397,7 +405,7 @@ $.ajaxSetup({
 //    alert(country);
    if(city == city){
 	$.ajax({
-   url:"{{ URL::to('/Plancity') }}",
+   url:"{{ URL::to('admin/Plancity') }}",
    method:'get',
    data:{query:city},
    dataType:'json',
@@ -405,6 +413,8 @@ $.ajaxSetup({
    {
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
+    $('#page').DataTable();
+
 
     Highcharts.chart('container', {
   chart: {

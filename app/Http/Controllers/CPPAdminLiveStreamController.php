@@ -26,6 +26,9 @@ class CPPAdminLiveStreamController extends Controller
     
     public function CPPindex()
         {
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
 
@@ -45,6 +48,9 @@ class CPPAdminLiveStreamController extends Controller
                 );
 
             return View('moderator.cpp.livestream.index', $data);
+        }else{
+            return Redirect::to('/blocked');
+          }
         }
     /**
      * Show the form for creating a new video
@@ -53,6 +59,9 @@ class CPPAdminLiveStreamController extends Controller
      */
        public function CPPcreate()
         {
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
             $data = array(
@@ -64,6 +73,9 @@ class CPPAdminLiveStreamController extends Controller
                 'languages' => Language::all(),
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
+        }else{
+            return Redirect::to('/blocked');
+          }
         }
     
        /**
@@ -73,6 +85,9 @@ class CPPAdminLiveStreamController extends Controller
      */
     public function CPPstore(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         
         $user = Session::get('user'); 
         $user_id = $user->id;
@@ -204,11 +219,17 @@ class CPPAdminLiveStreamController extends Controller
      
         
          return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+        }else{
+            return Redirect::to('/blocked');
+          }
     }
     
     
     public function CPPedit($id)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
        $video = LiveStream::find($id);
@@ -226,17 +247,29 @@ class CPPAdminLiveStreamController extends Controller
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
     
     public function CPPdestroy($id)
     {
-    //  LiveStream::destroy($id);
+    //  LiveStream::
+    $user_package =    User::where('id', 1)->first();
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){destroy($id);
      LiveStream::destroy($id);
 
         return Redirect::back(); 
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
      public function CPPupdate(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $data = $request->all();       
@@ -329,10 +362,16 @@ class CPPAdminLiveStreamController extends Controller
         $video->user_id =  $user_id;
         $video->save();
         return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
     
     public function CPPLiveVideosIndex()
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
 
         // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
         $videos =    LiveStream::where('active', '=',0)
@@ -345,23 +384,36 @@ class CPPAdminLiveStreamController extends Controller
                 );
 
             return View('moderator.cpp.livestream.livevideoapproval.live_video_approval', $data);
+        }else{
+            return Redirect::to('/blocked');
+          }
        }
        public function CPPLiveVideosApproval($id)
        {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
            $video = LiveStream::findOrFail($id);
            $video->active = 1;
            $video->save();
            return Redirect::back()->with('message','Your video will be available shortly after we process it');
-
+        }else{
+            return Redirect::to('/blocked');
+          }
           }
 
           public function CPPLiveVideosReject($id)
           {
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $video = LiveStream::findOrFail($id);
             $video->active = 2;
             $video->save();            
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
- 
+        }else{
+            return Redirect::to('/blocked');
+          }
              }
     
 }

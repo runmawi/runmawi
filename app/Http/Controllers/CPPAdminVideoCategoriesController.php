@@ -19,6 +19,9 @@ class CPPAdminVideoCategoriesController extends Controller
 {
       
       public function CPPindex(){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $id = $user->id;
         // dd($id);
@@ -30,9 +33,15 @@ class CPPAdminVideoCategoriesController extends Controller
           
 
         return view('moderator.cpp.videos.categories.index',$data);
+      }else{
+        return Redirect::to('/blocked');
+      }
       }
     
       public function CPPstore(Request $request){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
           
             $input = $request->all();
           
@@ -88,18 +97,30 @@ class CPPAdminVideoCategoriesController extends Controller
 
             VideoCategory::create($input);
             return back()->with('message', 'New Category added successfully.');
+          }else{
+            return Redirect::to('/blocked');
+          }
     }
     
       public function CPPedit($id){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
          
             $categories = VideoCategory::where('id', '=', $id)->get();
 
             $allCategories = VideoCategory::all();
             return view('moderator.cpp.videos.categories.edit',compact('categories','allCategories'));
+          }else{
+            return Redirect::to('/blocked');
+          }
         }
     
     
      public function CPPupdate(Request $request){
+      $user_package =    User::where('id', 1)->first();
+      $package = $user_package->package;
+      if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
            
         $input = $request->all();
         $path = public_path().'/uploads/videocategory/';
@@ -151,11 +172,17 @@ class CPPAdminVideoCategoriesController extends Controller
             $category->save();
             
             return Redirect::back()->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
+          }else{
+            return Redirect::to('/blocked');
+          }
             
     }
     
     
     public function CPPdestroy($id){
+      $user_package =    User::where('id', 1)->first();
+      $package = $user_package->package;
+      if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         VideoCategory::destroy($id);
         $child_cats = VideoCategory::where('parent_id', '=', $id)->get();
         foreach($child_cats as $cats){
@@ -163,12 +190,17 @@ class CPPAdminVideoCategoriesController extends Controller
             $cats->save();
         }
         return Redirect::back()->with(array('message' => 'Successfully Deleted Category', 'note_type' => 'success') );
+      }else{
+        return Redirect::to('/blocked');
+      }
     }
     
     
     
 public function CPPcategory_order(Request $request){
-
+  $user_package =    User::where('id', 1)->first();
+  $package = $user_package->package;
+  if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
       $input = $request->all();
       $position = $_POST['position'];
       $i=1;
@@ -179,6 +211,9 @@ public function CPPcategory_order(Request $request){
         $i++;
       }
       return 1;
+    }else{
+      return Redirect::to('/blocked');
+    }
 
     }
     

@@ -30,7 +30,7 @@
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                        <?php if($user->package == 'Pro' ){ ?> 
+                        <?php if($user->package == 'Pro' || $user->package == 'Business' ){ ?> 
                           <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
                           <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
                         <?php }else{ }?>
@@ -156,27 +156,7 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<!--<script>
-  // Prevent closing from click inside dropdown
-  $(document).on('click', '.dropdown-menu', function (e) {
-    e.stopPropagation();
-  });
-    
-  // make it as accordion for smaller screens
-  if ($(window).width() < 992) {
-    $('.dropdown-menu a').click(function(e){
-      e.preventDefault();
-      if($(this).next('.submenu').length){
-        $(this).next('.submenu').toggle();
-      }
-      $('.dropdown').on('hide.bs.dropdown', function () {
-        $(this).find('.submenu').hide();
-      }
-                       )
-    }
-                               );
-  }
-</script>-->
+
 <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
@@ -223,35 +203,13 @@ function myFunction() {
   }
 }
 </script>-->
-<script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
-<script type="text/javascript">
-  /*$( document ).ready(function() {
-    $('.play-video').hoverPlay({
-      callbacks: {
-        play: function(el, video) {
-          video.play();
-          el.addClass('hoverPlay');
-        },
-        pause: function(el, video) {
-          video.pause();
-          el.removeClass('hoverPlay');
-        },
-        click: function(el, video, e) {
-          e.preventDefault();
-        }
-      }
-    });
-  });*/
-  var video = $(".play-video");
-  
-        // Check if video is ready to play
-        $(video).on('canplay', function () {
-            $(video).mouseenter(function () {
-                $(this).get(0).play();
-            }).mouseleave(function () {
-                $(this).get(0).pause();
-            })
-        });
-</script>
+
+
+ <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
+   
+          
+ <script>
+        const player = new Plyr('#videoPlayer');
+      </script>
 </body>
 </html>

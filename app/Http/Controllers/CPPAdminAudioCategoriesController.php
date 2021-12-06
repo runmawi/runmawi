@@ -20,6 +20,9 @@ use Session;
 class CPPAdminAudioCategoriesController extends Controller
 {
       public function CPPindex(){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $categories = AudioCategory::where('user_id','=',$user_id)->where('parent_id', '=', 0)->get();
@@ -34,11 +37,17 @@ class CPPAdminAudioCategoriesController extends Controller
           );
          
         return view('moderator.cpp.audios.categories.index',$data);
+    }else{
+        return Redirect::to('/blocked');
+      }
 
       }
     
     
      public function CPPstore(Request $request){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
             $input = $request->all();
@@ -85,21 +94,33 @@ class CPPAdminAudioCategoriesController extends Controller
           
             AudioCategory::create($input);
             return back()->with('message', 'New Category added successfully.');
+        }else{
+            return Redirect::to('/blocked');
+          }
                                                                                                 
        }
     
     public function CPPedit($id){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
             $categories = AudioCategory::where('id', '=', $id)->get();
 
             $allCategories = AudioCategory::all();
             return view('moderator.cpp.audios.categories.edit',compact('categories','allCategories'));
+        }else{
+            return Redirect::to('/blocked');
+          }
 
         }
     
     
         public function CPPupdate(Request $request){
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             
             $user = Session::get('user'); 
             $user_id = $user->id;
@@ -153,12 +174,17 @@ class CPPAdminAudioCategoriesController extends Controller
             $category->save();
 
             return Redirect::back()->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
-
+        }else{
+            return Redirect::to('/blocked');
+          }
             }
     
         
     
         public function CPPdestroy($id){
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
                 
@@ -171,13 +197,18 @@ class CPPAdminAudioCategoriesController extends Controller
                 $cats->save();
             }
             return Redirect::back()->with(array('message' => 'Successfully Deleted Category', 'note_type' => 'success') );
-
+        }else{
+            return Redirect::to('/blocked');
+          }
     }
     
     
          /*Albums section */
     
     public function CPPalbumIndex(){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $allAlbums = AudioAlbums::where('user_id','=',$user_id)->get();
@@ -187,10 +218,15 @@ class CPPAdminAudioCategoriesController extends Controller
             'allAlbums' => $allAlbums,
         );
         return view('moderator.cpp.audios.albums.index',$data);
-
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     public function CPPstoreAlbum(Request $request){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $input = $request->all();
@@ -232,10 +268,15 @@ class CPPAdminAudioCategoriesController extends Controller
 
         AudioAlbums::create($input);
         return back()->with('message', 'New Album added successfully.');
-
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     public function CPPupdateAlbum(Request $request){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
                
@@ -281,20 +322,30 @@ class CPPAdminAudioCategoriesController extends Controller
         if(isset($audio)){
             return Redirect::back()->with(array('message' => 'Successfully Updated Albums', 'note_type' => 'success') );
         }
-
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     public function CPPdestroyAlbum($id){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
 
         AudioAlbums::destroy($id);
        
         return Redirect::back()->with(array('message' => 'Successfully Deleted Albums', 'note_type' => 'success') );
-
+    }else{
+        return Redirect::to('/blocked');
+      }
 }
 
     public function CPPeditAlbum($id){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
 
@@ -308,7 +359,9 @@ class CPPAdminAudioCategoriesController extends Controller
             );
         
         return view('moderator.cpp.audios.albums.edit',$data);
-
+    }else{
+        return Redirect::to('/blocked');
+      }
  }
 
      public function CPPcreateAlbumSlug($title, $id = 0)

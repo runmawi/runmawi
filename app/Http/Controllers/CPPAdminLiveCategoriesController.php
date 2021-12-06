@@ -19,6 +19,9 @@ use Session;
 class CPPAdminLiveCategoriesController extends Controller
 {
       public function CPPindex(){
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $categories = LiveCategory::where('user_id','=',$user_id)->where('parent_id', '=', 0)->get();
@@ -32,11 +35,17 @@ class CPPAdminLiveCategoriesController extends Controller
           );
          
         return view('moderator.cpp.livestream.categories.index',$data);
+      }else{
+        return Redirect::to('/blocked');
+      }
          
   }
     
     
      public function CPPstore(Request $request){
+      $user_package =    User::where('id', 1)->first();
+      $package = $user_package->package;
+      if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
          
         $user = Session::get('user'); 
         $user_id = $user->id;
@@ -84,21 +93,33 @@ class CPPAdminLiveCategoriesController extends Controller
 
             LiveCategory::create($input);
             return back()->with('message', 'New Category added successfully.');
+          }else{
+            return Redirect::to('/blocked');
+          }
 
        }
     
     public function CPPedit($id){
+      $user_package =    User::where('id', 1)->first();
+      $package = $user_package->package;
+      if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
             $categories = LiveCategory::where('id', '=', $id)->get();
 
             $allCategories = LiveCategory::all();
             return view('moderator.cpp.livestream.categories.edit',compact('categories','allCategories'));
+          }else{
+            return Redirect::to('/blocked');
+          }
 
       }
     
     
         public function CPPupdate(Request $request){
+          $user_package =    User::where('id', 1)->first();
+          $package = $user_package->package;
+          if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
             $input = $request->all();
@@ -151,13 +172,18 @@ class CPPAdminLiveCategoriesController extends Controller
             $category->save();
 
             return Redirect::to('cpp/livestream/categories')->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
-            
+          }else{
+            return Redirect::to('/blocked');
+          }
 
       }
     
         
     
         public function CPPdestroy($id){
+          $user_package =    User::where('id', 1)->first();
+          $package = $user_package->package;
+          if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
             LiveCategory::destroy($id);
@@ -169,7 +195,9 @@ class CPPAdminLiveCategoriesController extends Controller
                 $cats->save();
             }
             return Redirect::back()->with(array('message' => 'Successfully Deleted Category', 'note_type' => 'success') );
-
+          }else{
+            return Redirect::to('/blocked');
+          }
       }
     
     

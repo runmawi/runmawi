@@ -435,18 +435,42 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                            <div class="col-sm-6 form-group mt-3">
+                            <div class="col-sm-4 form-group mt-3">
                             <label class="">Skip Intro Time</label>
 				            <p>Please Give In Seconds</p> 
                             <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
                             </div>
-                            <div class="col-sm-6 form-group mt-3">
+                            <div class="col-sm-4 form-group mt-3">
+                            <label class="">Recap Strat Time</label>
+                            <p>Please Give In Seconds</p> 
+                            <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
+                            </div>
+                            <div class="col-sm-4 form-group mt-3">
+                            <label class="">Recap End Time</label>
+                            <p>Please Give In Seconds</p> 
+                            <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
+                            </div>
+                            </div>
+
+                            <div class="row">
+                            <div class="col-sm-4 form-group mt-3">
                             <label class="">Skip Recap Time</label>
-				            <p>Please Give In Seconds</p> 
+                            <p>Please Give In Seconds</p> 
                             <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
                             </div>
+                            <div class="col-sm-4 form-group mt-3">
+                            <label class="">Recap Strat Time</label>
+                            <p>Please Give In Seconds</p> 
+                            <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
                             </div>
+                            <div class="col-sm-4 form-group mt-3">
+                            <label class="">Recap End Time</label>
+                            <p>Please Give In Seconds</p> 
+                            <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
+                            </div>
+                            </div>
+
+
                               @if(isset($video->id))
                                  <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                                 <input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >
@@ -465,18 +489,46 @@
             </div>
          </div>
       </div>
-
+<style>
+    .without::-webkit-datetime-edit-ampm-field {
+   display: none;
+ }
+</style>
 	<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 	
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <script>
+        $('#intro_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#intro_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+</script>
   <script type="text/javascript">
  $ = jQuery;
 
  $('#publishlater').hide();
  
 $(document).ready(function(){
+
+
+
 	$('#publishlater').hide();
 	$('#publish_now').click(function(){
 		// alert($('#publish_now').val());

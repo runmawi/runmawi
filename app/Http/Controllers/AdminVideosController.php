@@ -52,13 +52,12 @@ class AdminVideosController extends Controller
             }
 
       // $search_value = Request::get('s');
-        
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
         else:
             $videos = Video::orderBy('created_at', 'DESC')->paginate(9);
         endif;
-        
+     
         $user = Auth::user();
 
         $data = array(
@@ -83,12 +82,14 @@ class AdminVideosController extends Controller
          $delete = URL::to('admin/videos/delete');
       if($query != '')
       {
-         $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
-         ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
-         ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
-         ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
-         ->where('videos.title', 'like', '%'.$query.'%')
-         ->paginate(9);
+        $data = Video::where('title', 'LIKE', '%'.$query.'%')->orderBy('created_at', 'desc')->paginate(9);
+
+        //  $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
+        //  ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+        //  ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+        //  ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+        //  ->where('videos.title', 'like', '%'.$query.'%')
+        //  ->paginate(9);
 
       }
       else
@@ -102,17 +103,17 @@ class AdminVideosController extends Controller
        foreach($data as $row)
        {
         if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Approved" ;$class="bg-success"; } else{ $active = "Rejected" ;$class="bg-danger";}
-        $username = $row->username ? 'Upload By'.' '.$row->username : "Upload By Admin";
+        $username = @$row->cppuser->username ? 'Upload By'.' '.@$row->cppuser->username : "Upload By Admin";
         $output .= '
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
-        <td>'.$row->categories_name.'</td>
+        <td>'.$row->categories->name.'</td>
         <td>'.$username.'</td>
         <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
         <td>'.$row->type.'</td>
          <td>'.$row->access.'</td>
-        <td>'.$row->languages_name.'</td>
+        <td>'.@$row->languages->name.'</td>
          <td>'.$row->views.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>".'

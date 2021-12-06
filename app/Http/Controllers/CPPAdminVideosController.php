@@ -51,6 +51,9 @@ class CPPAdminVideosController extends Controller
         //     }
 
       // $search_value = Request::get('s');
+      $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
       $user = Session::get('user'); 
         $id = $user->id;
         if(!empty($search_value)):
@@ -69,6 +72,9 @@ class CPPAdminVideosController extends Controller
             );
 
         return View('moderator.cpp.videos.index', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     public function CPPlive_search(Request $request)
@@ -214,7 +220,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
     }
 
     public function CPPuploadFile(Request $request){
-
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $value = array();
         $data = $request->all();
 
@@ -290,7 +298,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         return response()->json($value);
         
         }
-
+    }else{
+        return Redirect::to('/blocked');
+      }
         // return response()->json($value);
         }
         
@@ -302,6 +312,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
      */
     public function CPPcreate()
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         //  if (!Auth::user()->role == 'admin')
         //     {
         //         return redirect('/home');
@@ -325,7 +338,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         return View::make('moderator.cpp.videos.fileupload', $data);
                     // 'post_route' => URL::to('admin/videos/store'),
 
-
+                }else{
+                    return Redirect::to('/blocked');
+                  }
         // return View::make('moderator.cpp.videos.create_edit', $data);
     }
 
@@ -633,12 +648,18 @@ if(!empty($artistsdata)){
     
     public function CPPdestroy($id)
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $video = Video::find($id);
         Video::destroy($id);
 //        VideoResolution::where('video_id', '=', $id)->delete();
 //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where('video_id',$id)->delete();
         return Redirect::back()->with(array('message' => 'Successfully Deleted Video', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
     
     
@@ -648,6 +669,9 @@ if(!empty($artistsdata)){
         // {
         //     return redirect('/home');
         // }
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $settings = Setting::first();
         
        $video = Video::find($id);
@@ -668,6 +692,9 @@ if(!empty($artistsdata)){
             );
 
         return View::make('moderator.cpp.videos.create_edit', $data); 
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
     /**
      * Update the specified resource in storage.
@@ -677,6 +704,9 @@ if(!empty($artistsdata)){
      */
     public function CPPupdate(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
    
         $data = $request->all();
         
@@ -991,6 +1021,9 @@ if(!empty($artistsdata)){
         }
 
         return Redirect::back()->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     private function getCleanFileName($filename){
@@ -1112,20 +1145,11 @@ if(!empty($artistsdata)){
 
         public function CPPfileupdate(Request $request)
         {
-            //  if (!Auth::user()->role == 'admin')
-            // {
-            //     return redirect('/home');
-            // }
-            
+            $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+
             $data = $request->all();
-            //            echo "<pre>";
-            //  print_r($data);
-                
-            //             exit();
-            
-        
-        
-                
                     $validatedData = $request->validate([
                         'title' => 'required|max:255'
                     ]);
@@ -1360,9 +1384,15 @@ if(!empty($artistsdata)){
     
     
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
+        }else{
+            return Redirect::to('/blocked');
+          }
         }
     public function CPPMp4url(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
         $user = Session::get('user'); 
@@ -1389,11 +1419,16 @@ if(!empty($artistsdata)){
 
             return $value;  
        }
-   
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
     public function CPPm3u8url(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
         $user = Session::get('user'); 
@@ -1419,11 +1454,16 @@ if(!empty($artistsdata)){
 
             return $value;  
        }
-   
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
     public function CPPEmbededcode(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+$package = $user_package->package;
+if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
 
@@ -1453,7 +1493,9 @@ if(!empty($artistsdata)){
 
             return $value;  
        }
-   
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
 

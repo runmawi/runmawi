@@ -614,15 +614,39 @@ data: {
                             </div>
                             <div class="row">
 
-                                <div class="col-sm-6 form-group mt-3">
+                                <div class="col-sm-4 form-group mt-3">
                                 <label class="">Skip Intro Time</label>
 				                <p>Please Give In Seconds</p> 
                                 <input type="text" class="form-control" id="skip_intro" name="skip_intro" >
                                 </div>
-                                <div class="col-sm-6 form-group mt-3">
-                                <label class="">Skip Recap Time</label>
-				                <p>Please Give In Seconds</p> 
+                                <div class="col-sm-4 form-group mt-3">
+                                <label class="">Intro Strat Time</label>
+                                <p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="intro_start_time" name="intro_start_time" >
+                                </div>
+                                <div class="col-sm-4 form-group mt-3">
+                                <label class="">Intro End Time</label>
+                                <p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="intro_end_time" name="intro_end_time" >
+                                </div>
+                                </div>
+
+
+                                <div class="row">
+                                <div class="col-sm-4 form-group mt-3">
+                                <label class="">Skip Recap </label>
+                                <p>Please Give In Seconds</p> 
                                 <input type="text" class="form-control" id="skip_recap" name="skip_recap" >
+                                </div>
+                                <div class="col-sm-4 form-group mt-3">
+                                <label class="">Recap Strat Time</label>
+                                <p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="recap_start_time" name="recap_start_time" >
+                                </div>
+                                <div class="col-sm-4 form-group mt-3">
+                                <label class="">Recap End Time</label>
+                                <p>Please Give In Seconds</p> 
+                                <input type="text" class="form-control" id="recap_end_time" name="recap_end_time" >
                                 </div>
                                 </div>
                                 @if(isset($video->id))
@@ -648,7 +672,28 @@ data: {
 
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-      
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <script>
+        $('#intro_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#intro_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+</script>
   <script type="text/javascript">
 $ = jQuery;
 $('#publishlater').hide();

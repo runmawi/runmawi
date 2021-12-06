@@ -115,15 +115,16 @@ class AdminUsersController extends Controller
    
        $current_plan = [];
      
-        $current_plan = \DB::table('users')
-        ->select(['subscriptions.*','plans.plans_name','plans.billing_interval','plans.days'])
+        $current_plan = User::select(['subscriptions.*','plans.plans_name','plans.billing_interval','plans.days'])
         ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
         ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
         ->where('role', '=', 'subscriber' )
         ->where('users.id', '=', $user->id )
         ->get();
                $country_name = CountryCode::where('phonecode','=',$user->ccode)->get();
-   
+        //    echo "<pre>";
+        // print_r($current_plan);
+        // exit();
            $data = array(
    
                'current_plan' => $current_plan,
@@ -375,11 +376,15 @@ class AdminUsersController extends Controller
         if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
         }elseif($user_role == 'subscriber'){
-            $user_role = DB::table('subscriptions')
-       ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-       ->select('plans.plans_name')
-       ->where('subscriptions.user_id','=',$user_id  )
-       ->get();
+    //         $user_role = DB::table('subscriptions')
+    //    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+    //    ->select('plans.plans_name')
+    //    ->where('subscriptions.user_id','=',$user_id  )
+    //    ->get();
+    $user_role = Subscription::where('subscriptions.user_id','=',$user_id)
+    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+    ->select('plans.plans_name')
+    ->get(9);
     //    print_r($user_role);
     //    exit();
        if(!empty($user_role)){
@@ -754,12 +759,17 @@ class AdminUsersController extends Controller
                         $ccode[] =$user_ccode->ccode;
                       
                        } 
-                $current_plan = \DB::table('users')
-                ->select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
+                            $current_plan = User::select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
                 ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
                 ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
                 ->where('role', '=', 'subscriber' )
                 ->get();
+                // $current_plan = \DB::table('users')
+                // ->select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
+                // ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+                // ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
+                // ->where('role', '=', 'subscriber' )
+                // ->get();
             if($start_date =="" &&  $end_date == ""){
 
                 foreach($users as $user) {
@@ -1181,13 +1191,20 @@ class AdminUsersController extends Controller
       if($query != '')
       {
         $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
+        $regions =  Region::where('regions.id','=',$query)->first();
+
         $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->where('region_views.countryname','=',$regions->name)->get();
         // echo "<pre>";
         // print_r($region_views);
         // exit();
         $data = $region_views->groupBy('countryname');
-        $data1 = DB::table('videos')
-        ->select('videos.*','region_views.countryname')
+        // $data1 = DB::table('videos')
+        // ->select('videos.*','region_views.countryname')
+        // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
+        // ->orderBy('created_at', 'desc')
+        // ->where('region_views.countryname','=',$regions->name)
+        // ->paginate(19);
+        $data1 = Video::select('videos.*','region_views.countryname')
         ->join('region_views', 'region_views.video_id', '=', 'videos.id')
         ->orderBy('created_at', 'desc')
         ->where('region_views.countryname','=',$regions->name)
@@ -1264,8 +1281,12 @@ class AdminUsersController extends Controller
         // print_r($grouped);
         // exit();
 
-        $data1 = DB::table('videos')
-        ->select('videos.*','region_views.countryname')
+        // $data1 = DB::table('videos')
+        // ->select('videos.*','region_views.countryname')
+        // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
+        // ->orderBy('created_at', 'desc')
+        // ->paginate(9);
+        $data1 = Video::select('videos.*','region_views.countryname')
         ->join('region_views', 'region_views.video_id', '=', 'videos.id')
         ->orderBy('created_at', 'desc')
         ->paginate(9);
@@ -1323,12 +1344,19 @@ class AdminUsersController extends Controller
         // INNER JOIN users ON subscriptions.user_id = users.id 
         // INNER JOIN plans ON subscriptions.stripe_plan = plans.plan_id
         //  WHERE subscriptions.countryname = "United States";
-        $data = DB::table('subscriptions')
-        ->select('users.username','plans.plans_name')
+        // $data = DB::table('subscriptions')
+        // ->select('users.username','plans.plans_name')
+        // ->join('users', 'users.id', '=', 'subscriptions.user_id')
+        // ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+        // ->where('subscriptions.countryname','=',$query)
+        // ->paginate(9);
+
+        $data = Subscription::select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->where('subscriptions.countryname','=',$query)
         ->paginate(9);
+
         // echo "<pre>"; print_r($data);exit();
 
       }
@@ -1379,8 +1407,7 @@ class AdminUsersController extends Controller
       if($query != '')
       {
 
-        $data = DB::table('subscriptions')
-        ->select('users.username','plans.plans_name')
+        $data =Subscription::select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->paginate(9);
@@ -1434,8 +1461,7 @@ class AdminUsersController extends Controller
       if($query != '')
       {
 
-        $data = DB::table('subscriptions')
-        ->select('users.username','plans.plans_name')
+        $data = Subscription::select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->paginate(9);
@@ -1488,8 +1514,7 @@ class AdminUsersController extends Controller
  
       if($query != '')
       {
-        $data = DB::table('subscriptions')
-        ->select('users.username','plans.plans_name')
+        $data = Subscription::select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
         // ->where('subscriptions.regionname','=',$query)
@@ -1544,8 +1569,7 @@ class AdminUsersController extends Controller
  
       if($query != '')
       {
-        $data = DB::table('subscriptions')
-        ->select('users.username','plans.plans_name')
+        $data = Subscription::select('users.username','plans.plans_name')
         ->join('users', 'users.id', '=', 'subscriptions.user_id')
         ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->where('subscriptions.cityname','=',$query)

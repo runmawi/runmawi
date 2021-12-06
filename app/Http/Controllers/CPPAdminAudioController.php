@@ -51,6 +51,9 @@ class CPPAdminAudioController extends Controller
      */
     public function CPPindex(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $id = $user->id;
       $search_value = $request->get('s');
@@ -69,6 +72,9 @@ class CPPAdminAudioController extends Controller
             );
 
         return View::make('moderator.cpp.audios.index', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
     
@@ -80,6 +86,9 @@ class CPPAdminAudioController extends Controller
      */
     public function CPPcreate()
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $id = $user->id;
         $data = array(
@@ -94,6 +103,9 @@ class CPPAdminAudioController extends Controller
             'audio_artist' => [],
             );
         return View::make('moderator.cpp.audios.create_edit', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
         // 'post_route' => URL::to('admin/audios/store'),
@@ -107,6 +119,9 @@ class CPPAdminAudioController extends Controller
      */
     public function CPPstore(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $validator = Validator::make($data = $request->all(), Audio::$rules);
@@ -207,7 +222,10 @@ class CPPAdminAudioController extends Controller
        
 
         return Redirect::back()->with(array('message' => 'New Audio Successfully Added!', 'note_type' => 'success') );
-    
+    }else{
+        return Redirect::to('/blocked');
+      }
+
     }
 
     /**
@@ -218,6 +236,9 @@ class CPPAdminAudioController extends Controller
      */
      public function CPPedit($id)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $audio = Audio::find($id);
@@ -236,6 +257,9 @@ class CPPAdminAudioController extends Controller
             );
 
         return View::make('moderator.cpp.audios.edit', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
 
     }
 
@@ -247,6 +271,9 @@ class CPPAdminAudioController extends Controller
      */
     public function CPPupdate(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $input = $request->all();
@@ -360,6 +387,9 @@ class CPPAdminAudioController extends Controller
 
 
         return Redirect::back()->with(array('message' => 'Successfully Updated Audio!', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
 
 }
 
@@ -372,7 +402,9 @@ class CPPAdminAudioController extends Controller
     public function CPPdestroy($id)
     {
 
-            
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $audio = Audio::find($id);
 
         // $this->deleteAudioImages($audio);
@@ -382,6 +414,9 @@ class CPPAdminAudioController extends Controller
         Audioartist::where('audio_id',$id)->delete();
 
         return Redirect::back()->with(array('message' => 'Successfully Deleted Audio', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
 
 }
 
@@ -438,6 +473,9 @@ class CPPAdminAudioController extends Controller
     }
     public function CPPAudiofile(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
     $audio = new Audio();
@@ -449,10 +487,16 @@ class CPPAdminAudioController extends Controller
     $value['message'] = 'Uploaded Successfully!';
     $value['audio_id'] = $audio_id;
     return $value;  
+}else{
+    return Redirect::to('/blocked');
+  }
 
     }                    
     public function CPPuploadAudio(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $audio_upload = $request->file('file');
@@ -522,10 +566,17 @@ class CPPAdminAudioController extends Controller
                     return response()->json($value);
                     
                     }
+                }else{
+                    return Redirect::to('/blocked');
+                  }
+            
 
     }
     public function CPPaudioupdate(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $input = $request->all();
@@ -615,5 +666,9 @@ class CPPAdminAudioController extends Controller
             }
         }
         return Redirect::back();
+    }else{
+        return Redirect::to('/blocked');
+      }
+
     }
 }

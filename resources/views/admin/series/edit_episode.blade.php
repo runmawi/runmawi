@@ -124,7 +124,7 @@
 			<div class="clear"></div>
 
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Skip Intro Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<p>Please Give In Seconds</p> 
@@ -133,7 +133,32 @@
 						</div> 
 					</div>			
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-4">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Intro Strat Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+						<input class="form-control" name="intro_start_time" id="intro_start_time" value="@if(!empty($episodes->intro_start_time)){{ $episodes->intro_start_time }}@endif" >
+						</div> 
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Intro End Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+						<input class="form-control" name="intro_end_time" id="intro_end_time" value="@if(!empty($episodes->intro_end_time)){{ $episodes->intro_end_time }}@endif" >
+						</div> 
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+			<div class="row">
+				<div class="col-sm-4">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Skip Recap Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<p>Please Give In Seconds</p> 
@@ -142,7 +167,27 @@
 						</div> 
 					</div>
 				</div>
+				<div class="col-sm-4">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Recap Strat Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+						<input class="form-control" name="recap_start_time" id="recap_start_time" value="@if(!empty($episodes->recap_start_time)){{ $episodes->recap_start_time }}@endif" >
+						</div> 
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title">Recap End Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<p>Please Give In Seconds</p> 
+						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+						<input class="form-control" name="recap_end_time" id="recap_end_time" value="@if(!empty($episodes->recap_end_time)){{ $episodes->recap_end_time }}@endif" >
+						</div> 
+					</div>
+				</div>
 			</div>
+
+
 			<div class="row"> 
 
 				<div class="col-sm-4"> 
@@ -231,7 +276,29 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <script>
+        $('#intro_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#intro_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_start_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+        $('#recap_end_time').datetimepicker(
+        {
+            format: 'hh:mm '
+        });
+</script>
 	<script type="text/javascript">
 
 	$ = jQuery;

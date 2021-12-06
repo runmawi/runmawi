@@ -36,6 +36,9 @@ class CPPAdminPageController extends Controller
      */
     public function CPPindex()
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $pages = Page::where('user_id','=',$user_id)->orderBy('created_at', 'DESC')->paginate(10);
@@ -48,6 +51,9 @@ class CPPAdminPageController extends Controller
             );
 
         return View::make('moderator.cpp.pages.index', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     /**
@@ -57,6 +63,9 @@ class CPPAdminPageController extends Controller
      */
     public function CPPcreate()
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $data = array(
@@ -65,6 +74,9 @@ class CPPAdminPageController extends Controller
             // 'admin_user' => Auth::user()
             );
         return View::make('moderator.cpp.pages.create_edit', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     /**
@@ -74,6 +86,9 @@ class CPPAdminPageController extends Controller
      */
     public function CPPstore(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $validator = Validator::make($data = $request->all(), Page::$rules);
@@ -116,6 +131,9 @@ class CPPAdminPageController extends Controller
         $page = Page::create($data);
 
         return Redirect::to('/cpp/pages')->with(array('note' => 'New Page Successfully Added!', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     /**
@@ -126,6 +144,9 @@ class CPPAdminPageController extends Controller
      */
     public function CPPedit($id)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $page = Page::find($id);
@@ -139,6 +160,9 @@ class CPPAdminPageController extends Controller
             );
 
         return View::make('moderator.cpp.pages.create_edit', $data);
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     /**
@@ -149,6 +173,9 @@ class CPPAdminPageController extends Controller
      */
     public function CPPupdate(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $user_id = $user->id;
         $data = $request->all();
@@ -201,6 +228,9 @@ class CPPAdminPageController extends Controller
         $page->update($data);
 
         return Redirect::back()->with(array('note' => 'Successfully Updated Page!', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
     /**
@@ -211,15 +241,24 @@ class CPPAdminPageController extends Controller
      */
     public function CPPdestroy($id)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $page = Page::find($id);
 
         Page::destroy($id);
 
         return Redirect::back()->with(array('note' => 'Successfully Deleted Page', 'note_type' => 'success') );
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
 
      public function CPPupload(Request $request)
     {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         if($request->hasFile('upload')) {
             //get filename with extension
             $filenamewithextension = $request->file('upload')->getClientOriginalName();
@@ -245,6 +284,9 @@ class CPPAdminPageController extends Controller
             @header('Content-type: text/html; charset=utf-8');
             echo $re;
         }
+    }else{
+        return Redirect::to('/blocked');
+      }
     }
     
     
