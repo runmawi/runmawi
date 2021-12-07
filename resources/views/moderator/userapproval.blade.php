@@ -64,9 +64,9 @@
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Moderator ?')"  href="{{ URL::to('/CPPModeratorsApproval') . '/' . $user->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
+                                          onclick="return confirm('Do you want to approve this Moderator ?')"  href="{{ URL::to('/admin/CPPModeratorsApproval') . '/' . $user->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Moderator  ?')" href="{{ URL::to('/CPPModeratorsReject') . '/' . $user->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
+                                              onclick="return confirm('Do you want to reject this Moderator  ?')" href="{{ URL::to('/admin/CPPModeratorsReject') . '/' . $user->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>
