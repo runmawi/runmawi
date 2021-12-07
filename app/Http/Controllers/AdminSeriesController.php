@@ -530,7 +530,7 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
-        
+        // dd($data);
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
@@ -559,6 +559,12 @@ class AdminSeriesController extends Controller
 
         if(empty($data['featured'])){
             $data['featured'] = 0;
+        }
+        if(empty($data['skip_recap'])){
+            $data['skip_recap'] = "";
+        }
+        if(empty($data['skip_intro'])){
+            $data['skip_intro'] = "";
         }
 
         if(isset($data['duration'])){
@@ -597,8 +603,16 @@ class AdminSeriesController extends Controller
 
             ConvertVideoForStreaming::dispatch($path);
         }
-              $episode = Episode::create($data);
-       
+              $episode = Episode::create($data);              
+              $episode->skip_recap =  $data['skip_recap'];
+              $episode->recap_start_time =  $data['recap_start_time'];
+              $episode->recap_end_time =  $data['recap_end_time'];
+              $episode->skip_intro =  $data['skip_intro'];
+              $episode->intro_start_time =  $data['intro_start_time'];
+              $episode->intro_end_time =  $data['intro_end_time'];
+              $episode->save();
+
+
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
 
@@ -702,7 +716,13 @@ class AdminSeriesController extends Controller
         }
         
         $episode->update($data);
-
+        $episode->skip_recap =  $data['skip_recap'];
+        $episode->recap_start_time =  $data['recap_start_time'];
+        $episode->recap_end_time =  $data['recap_end_time'];
+        $episode->skip_intro =  $data['skip_intro'];
+        $episode->intro_start_time =  $data['intro_start_time'];
+        $episode->intro_end_time =  $data['intro_end_time'];
+        $episode->save();
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
     

@@ -22,11 +22,15 @@
                                 <a href="<?php echo URL::to('home') ?>">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
+                                        <a href="<?php echo URL::to('/play_series').'/'.$category->id;?>">
+        <h6>
 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
     class="img-fluid" alt=""> 
   <!--   <video class="thevideo" loop poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>">
         <source src="<?php echo $category_series->trailer;  ?>" type="video/mp4">
         </video> -->
+    </a>
+
     </div>
     <div class="block-description">
         <a

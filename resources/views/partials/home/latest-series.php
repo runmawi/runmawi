@@ -9,7 +9,9 @@
           <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title ) ?>">
             <div class="block-images position-relative">
               <div class="img-box">
+              <a class="btn btn-primary btn-hover" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title) ?>" >
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
+                </a>
               </div>
               <div class="block-description">
                 <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title) ?>">

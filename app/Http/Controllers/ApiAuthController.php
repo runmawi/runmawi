@@ -3175,7 +3175,7 @@ public function upnextAudio(Request $request){
     $seasonid = $request->seasonid;
     $episode_id = $request->episode_id;
 
-    $prev_episodeid = Video::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
+    $prev_episodeid = Episode::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
     if($prev_episodeid){
         $episode= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
         $response = array(

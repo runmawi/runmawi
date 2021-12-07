@@ -259,7 +259,10 @@ class ChannelController extends Controller
                       $secret_key= null;
                       $publishable_key= null;
                   }    
+             $currency = CurrencySetting::first();
+
                  $data = array(
+                      'currency' => $currency,
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
@@ -312,8 +315,10 @@ class ChannelController extends Controller
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
     $playerui = Playerui::first();
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+    $currency = CurrencySetting::first();
 
             $data = array(
+                 'currency' => $currency,
                  'video' => $categoryVideos,
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,
@@ -331,6 +336,7 @@ class ChannelController extends Controller
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time()); 
+        $currency = CurrencySetting::first();
 
             
         
@@ -370,7 +376,9 @@ class ChannelController extends Controller
                         $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
                         $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
                     endif;
+             $currency = CurrencySetting::first();
                  $data = array(
+                    'currency' => $currency,
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
@@ -393,8 +401,10 @@ class ChannelController extends Controller
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
     $playerui = Playerui::first();
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+    $currency = CurrencySetting::first();
 
             $data = array(
+                 'currency' => $currency,
                  'video' => $categoryVideos,
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,
@@ -489,8 +499,6 @@ class ChannelController extends Controller
         $data = session()->all();
        
         if(!empty($data['password_hash'])){
-
-
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $wishlist = new Wishlist;
@@ -617,8 +625,10 @@ class ChannelController extends Controller
                     }
                     }
             
+                    $currency = CurrencySetting::first();
 
                  $data = array(
+                      'currency' => $currency,
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
@@ -644,8 +654,10 @@ class ChannelController extends Controller
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
     $playerui = Playerui::first();
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+    $currency = CurrencySetting::first();
 
             $data = array(
+              'currency' => $currency,
                  'video' => $categoryVideos,
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,
@@ -662,6 +674,7 @@ class ChannelController extends Controller
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         $current_date = date('Y-m-d h:i:s a', time()); 
+        $currency = CurrencySetting::first();
 
             
         
@@ -691,6 +704,7 @@ class ChannelController extends Controller
            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
            $playerui = Playerui::first();
            $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
+           $currency = CurrencySetting::first();
 
                 $wishlisted = false;
                 if(!Auth::guest()):
@@ -702,6 +716,7 @@ class ChannelController extends Controller
                         $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
                     endif;
                  $data = array(
+                  'currency' => $currency,
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
@@ -724,8 +739,10 @@ class ChannelController extends Controller
             $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
     $playerui = Playerui::first();
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+    $currency = CurrencySetting::first();
 
             $data = array(
+              'currency' => $currency,
                  'video' => $categoryVideos,
                  'recomended' => $recomended,
                  'playerui_settings' => $playerui,

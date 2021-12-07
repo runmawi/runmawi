@@ -992,7 +992,12 @@ if(!empty($artistsdata)){
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->skip_recap =  $request['skip_recap'];
+         $video->recap_start_time =  $request['recap_start_time'];
+         $video->recap_end_time =  $request['recap_end_time'];
          $video->skip_intro =  $request['skip_intro'];
+         $video->intro_start_time =  $request['intro_start_time'];
+         $video->intro_end_time =  $request['intro_end_time'];
+
          $video->publish_status = $request['publish_status'];
          $video->publish_type = $request['publish_type'];
          $video->publish_time = $request['publish_time'];
@@ -1350,7 +1355,12 @@ if(!empty($artistsdata)){
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
              $video->skip_recap =  $data['skip_recap'];
+             $video->recap_start_time =  $data['recap_start_time'];
+             $video->recap_end_time =  $data['recap_end_time'];
              $video->skip_intro =  $data['skip_intro'];
+             $video->intro_start_time =  $data['intro_start_time'];
+             $video->intro_end_time =  $data['intro_end_time'];
+             
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
             $video->active = 1 ;

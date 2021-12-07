@@ -266,19 +266,22 @@
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" name="modal_plan_name" id="modal_plan_name" value="" />
                         <div class="form-group"> 
+                <?php $payment_type = App\PaymentSetting::get(); ?>
+                           
                             <label class="radio-inline">
-                            <input type="radio" id="tres_important" name="payment_method" value="Stripe">Stripe</label>
-
+                                <?php  foreach($payment_type as $payment){
+                                     if($payment->live_mode == 1){ ?>
+                            <input type="radio" id="tres_important" name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                            <?php }elseif($payment->paypal_live_mode == 1){ ?>
                             <label class="radio-inline">
-                            <input type="radio" id="important" name="payment_method" value="PayPal">PayPal</label>
+                            <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                            <?php }else{
+                                echo "Please Trun On Any Payment Gateway Mode in Admin Panel";
+                            } }?>
                         </div>
-
-				    </form>
-				</div>
-				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Next</button>
 				</div>
 			</div>
 		</div>
