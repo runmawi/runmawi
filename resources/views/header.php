@@ -18,6 +18,8 @@ $uppercase =  ucfirst($request_url);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
+           
+
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
@@ -28,6 +30,7 @@ $uppercase =  ucfirst($request_url);
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+       <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -35,7 +38,13 @@ $uppercase =  ucfirst($request_url);
     <style>
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
+        #videoPlayer{
+        width:100%;
+       height: 100%;
+        margin: 20px auto;
+    }
     </style>
+     
    <body>
       <!-- loader Start -->
      <!-- <div id="loading">

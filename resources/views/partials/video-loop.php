@@ -1,4 +1,4 @@
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <style>
@@ -718,14 +718,14 @@ function about(evt , id) {
 
 
    
-<link href=”//vjs.zencdn.net/7.0/video-js.min.css” rel=”stylesheet”>
+<!--<link href=”//vjs.zencdn.net/7.0/video-js.min.css” rel=”stylesheet”>
 <script src=”//vjs.zencdn.net/7.0/video.min.js”></script>
 
    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>-->
    <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
-    <script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
+  <!--  <script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
   	<script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
   	<script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
