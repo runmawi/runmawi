@@ -343,15 +343,16 @@ public function PaypalIndex()
             'plan_id' => 'required|max:255',
             'price' => 'required|max:255',
         ]);
-        
         $input = $request->all();
+        // dd($input);
+
         // $edit_plan = SubscriptionPlan::find($id);
         // $payment_settings = PaymentSetting::all();
         $devices = $input['devices'];
         $plan_devices = implode(",",$devices);
         $id = $request['id'];
         $plans = SubscriptionPlan::find($id);
-    	$plans->name = $request['plans_name'];
+    	$plans->plans_name = $request['plans_name'];
     	$plans->price = $request['price'];
     	$plans->payment_type = $request['payment_type'];
         $plans->video_quality = $input['video_quality'];
