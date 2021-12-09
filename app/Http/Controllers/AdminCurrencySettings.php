@@ -32,7 +32,7 @@ class AdminCurrencySettings extends Controller
     public function IndexCurrencySettings()
     {
         
-         $currency = DB::table('currencies')->get();
+         $currency = Currency::get();
          $allCurrency = CurrencySetting::get();
 
 
@@ -85,8 +85,7 @@ class AdminCurrencySettings extends Controller
     {
         
         $allCurrency = CurrencySetting::where('id','=',$id)->first();
-        // dd($allCurrency->country);
-         $currency = DB::table('currencies')->get();
+         $currency = Currency::get();
         
          $data = array(
                    'currency' => $currency , 

@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use File;
-
+use App\Language;
 
 class LanguageTranslationController extends Controller
 {
@@ -17,7 +17,7 @@ class LanguageTranslationController extends Controller
     */
     public function index()
     {
-   	  $languages = DB::table('languages')->get();
+   	  $languages = Language::get();
 
 
    	  $columns = [];
@@ -65,7 +65,7 @@ class LanguageTranslationController extends Controller
     */
     public function destroy($key)
     {
-        $languages = DB::table('languages')->get();
+        $languages = Language::get();
 
 
         if($languages->count() > 0){
@@ -123,7 +123,7 @@ class LanguageTranslationController extends Controller
      * @return Response
     */
     public function transUpdateKey(Request $request){
-        $languages = DB::table('languages')->get();
+        $languages = Language::get();
 
 
         if($languages->count() > 0){

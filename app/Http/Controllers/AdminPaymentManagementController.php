@@ -7,7 +7,10 @@ use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use App\EmailTemplate;
 use App\Video;
+use App\Plan;
+use App\Subscription;
 use App\VideoCommission;
+use App\PpvPurchase;
 use Laravel\Cashier\Invoice;
 use URL;
 use Auth;
@@ -22,8 +25,7 @@ class AdminPaymentManagementController extends Controller
 {
     public function index()
     {
-        $revenue =  DB::table('plans')
-        ->select(('plans.price'))
+        $revenue =  Plan::select(('plans.price'))
         ->join('subscriptions','subscriptions.stripe_plan', '=', 'plans.plan_id')
         ->get();
 
@@ -38,8 +40,7 @@ class AdminPaymentManagementController extends Controller
         
         }
     }
-    $video_revenue =  DB::table('videos')
-    ->join('ppv_purchases', 'videos.id', '=', 'ppv_purchases.video_id')
+    $video_revenue =  Video::join('ppv_purchases', 'videos.id', '=', 'ppv_purchases.video_id')
     ->select(('videos.ppv_price'))
     ->get(); 
     $ppv_revenue = 0 ;
@@ -68,8 +69,7 @@ class AdminPaymentManagementController extends Controller
     {
 
     //    $user = User::where('role', '!=' , 'admin')->get();
-       $subscription = DB::table('subscriptions')
-       ->select('subscriptions.*','users.*')
+       $subscription = Subscription::select('subscriptions.*','users.*')
        ->join('users', 'subscriptions.user_id', '=', 'users.id')
        ->where('users.role', '!=' , 'admin')
        ->get();
@@ -85,8 +85,7 @@ class AdminPaymentManagementController extends Controller
     public function SubscriptionView($id)
     {
         // dd($id);
-        $subscription = DB::table('subscriptions')
-        ->select('subscriptions.*','users.*')
+        $subscription = Subscription::select('subscriptions.*','users.*')
         ->join('users', 'subscriptions.user_id', '=', 'users.id')
         ->where('subscriptions.user_id', '=' , $id)
         ->get();
@@ -100,8 +99,7 @@ class AdminPaymentManagementController extends Controller
 
     public function PayPerViewIndex()
     {
-        $PayPerView = DB::table('ppv_purchases')
-        ->select('ppv_purchases.*','videos.*','users.*')
+        $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
         ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
         // ->where('users.role', '!=' , 'admin')
@@ -126,8 +124,7 @@ class AdminPaymentManagementController extends Controller
     {
         // dd($id);
  
-        $PayPerView = DB::table('ppv_purchases')
-        ->select('ppv_purchases.*','videos.*','users.*')
+        $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
         ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
         ->where('ppv_purchases.video_id', '=' , $id)
@@ -151,22 +148,14 @@ class AdminPaymentManagementController extends Controller
         //  $edit = URL::to('admin/template/edit');
       if($query != '')
       {
-        $data = DB::table('subscriptions')
-        ->select('subscriptions.*','users.*')
+        $data = Subscription::select('subscriptions.*','users.*')
         ->join('users', 'subscriptions.user_id', '=', 'users.id')
         ->where('users.username', 'like', '%'.$query.'%')
         ->orWhere('users.user_type', 'like', '%'.$query.'%')
         ->orWhere('users.card_type', 'like', '%'.$query.'%')
-        // ->where('users.role', '!=' , 'admin')
         ->orderBy('subscriptions.created_at', 'desc')
         ->paginate(9);
-        // ->get();
-        // echo "<pre>";
-        // print_r($data);exit();
-    //    $data = DB::table('email_templates')
-    //      ->where('template_type', 'like', '%'.$query.'%')
-    //      ->orderBy('created_at', 'desc')
-    //      ->paginate(9);
+
       }
       else
       {
@@ -240,8 +229,7 @@ public function PayPerView_search(Request $request)
         //  $edit = URL::to('admin/template/edit');
       if($query != '')
       {
-        $data =  DB::table('ppv_purchases')
-        ->select('ppv_purchases.*','videos.*','users.*')
+        $data =  PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
         ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
         ->where('users.username', 'like', '%'.$query.'%')
@@ -249,13 +237,7 @@ public function PayPerView_search(Request $request)
         ->orWhere('users.card_type', 'like', '%'.$query.'%')
         ->orderBy('ppv_purchases.created_at', 'desc')
         ->paginate(9);
-        // ->get();
-        // echo "<pre>";
-        // print_r($data);exit();
-    //    $data = DB::table('email_templates')
-    //      ->where('template_type', 'like', '%'.$query.'%')
-    //      ->orderBy('created_at', 'desc')
-    //      ->paginate(9);
+       
       } 
       else
       {

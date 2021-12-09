@@ -38,7 +38,7 @@
                 </div>
             </div>
                 
-                <div class="mt-5">
+                <!-- <div class="mt-5">
                     <table class="table table-bordered text-center">
                             <thead class="thead-light ">
                                 <tr>
@@ -73,43 +73,53 @@
                                 </tr>
                             </tbody>
                             </table>
-                </div>
-               <!-- <table class="table table-bordered text-center">
+                </div> -->
+               <div class="mt-5">
+               <table class="table table-bordered text-center">
                       <thead>
                         <tr>
-                        <th>Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Payment type</th>
+                        <!-- <th>Price</th>
                         <th>days</th>
                         <th>stripe id</th>
                         <th>stripe status</th>
                         <th>stripe plan</th>
                         <th>quantity</th>
                         <th>created_at</th>
-                        <th>updated_at</th>
+                        <th>updated_at</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                       
-                           
-                           
-                           
+
                             @foreach($subscriptions as $key => $subscription )
                            <tr>
                             <td>{{ $subscription->price }}</td>
-                            <td>{{ $subscription->days }}</td>
+                            <?php if($subscription->stripe_status == 'active'){ ?>
+                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
+                            <?php }elseif($subscription->stripe_status == 'inactive'){ ?>
+                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
+                            <?php }else{ ?>
+                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
+                            <?php }?>
+                            <!-- <td>{{ $subscription->days }}</td>
                             <td>{{ $subscription->stripe_id }}</td>
                             <td>{{ $subscription->stripe_status }}</td>
                             <td>{{ $subscription->stripe_plan }}</td>
-                            <td>{{ $subscription->quantity}}</td>
+                            <td>{{ $subscription->quantity}}</td> -->
                             <td>{{ $subscription->created_at}}</td>
-                            <td>{{ $subscription->updated_at }}</td>
+                            <!-- <td>{{ $subscription->updated_at }}</td> -->
                            </tr>
                             @endforeach
                             
                        
                        
                       </tbody>
-                    </table>-->
-
+                    </table>
+                    </div> 
+                    </div> 
 		   <div class="clear"></div>
                 
                 </div>

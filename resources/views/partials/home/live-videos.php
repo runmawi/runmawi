@@ -1,3 +1,4 @@
+<?php   if(count($livetream) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title">Live Videos</h4>                      
                  </div>
@@ -6,6 +7,7 @@
                          <?php  if(isset($livetream)) :
                          foreach($livetream as $video): ?>
                        <li class="slide-item">
+                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                           <a href="<?php echo URL::to('home') ?>">
                              <div class="block-images position-relative">
                                 <div class="img-box">
@@ -47,3 +49,4 @@
                                    endif; ?>
                     </ul>
                  </div>
+                 <?php endif; ?>

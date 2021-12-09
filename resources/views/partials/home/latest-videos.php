@@ -1,3 +1,4 @@
+<?php  if(count($latest_videos) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">Latest Videos</a></h4>                      
                  </div>
@@ -69,6 +70,7 @@
                                    endif; ?>
                     </ul>
                  </div>
+                 <?php endif; ?>
 
             
               <?php /*  if(isset($latest_videos)) :

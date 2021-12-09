@@ -1,4 +1,5 @@
 <!--  Continue watching -->
+<?php  if(count($cnt_watching) > 0) : ?>
 <?php  if(isset($cnt_watching)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
@@ -82,6 +83,7 @@
                ?>
     </ul>
 </div>
+<?php endif; ?>
 <?php endif; ?>
  <?php  /* if(isset($videos)) :
            foreach($videos as $cont_video): ?>

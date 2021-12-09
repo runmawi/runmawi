@@ -27,6 +27,7 @@ use App\EmailTemplate;
 use App\PaymentSetting;
 use App\SubscriptionPlan;
 use Session;
+use App\LivePurchase;
 
 class PaymentController extends Controller
 {
@@ -58,10 +59,14 @@ class PaymentController extends Controller
               'source' => $request->get('tokenId'),
               'description' => 'My First Test Charge (created for API docs)',
             ]);
-      
-             DB::table('ppv_purchases')->insert([
-                    ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
-                ]);
+            $purchase = new PpvPurchase;
+            $purchase->user_id = $user_id;
+            $purchase->video_id = $video_id;
+            $purchase->to_time = $to_time;
+            $purchase->save();
+            //  DB::table('ppv_purchases')->insert([
+            //         ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
+            //     ]);
              return back();
   }   
 public function RentPaypal(Request $request)
@@ -73,9 +78,14 @@ public function RentPaypal(Request $request)
                 $user_id = Auth::user()->id;
                 $video_id = $request->get('video_id');
                 $date = Carbon::parse($current_date)->addDays(1);
-                DB::table('ppv_purchases')->insert([
-                    ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
-                ]);
+              $purchase = new PpvPurchase;
+              $purchase->user_id = $user_id;
+              $purchase->video_id = $video_id;
+              $purchase->to_time = $to_time;
+              $purchase->save();
+                // DB::table('ppv_purchases')->insert([
+                //     ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
+                // ]);
              return back();
   }     
 
@@ -134,10 +144,16 @@ public function RentPaypal(Request $request)
       'currency' => 'USD',
       'amount' => $request->get('amount')
     ]);
-
-    DB::table('live_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id, 'expired_date' => $to_time, 'to_time' => $to_time]
-    ]);
+    $livepurchase = new LivePurchase;
+    $livepurchase->user_id = $user_id;
+    $livepurchase->video_id = $video_id;
+    $livepurchase->to_time = $to_time;
+    $livepurchase->expired_date = $to_time;
+    $livepurchase->save();
+    
+    // DB::table('live_purchases')->insert([
+    //   ['user_id' => $user_id, 'video_id' => $video_id, 'expired_date' => $to_time, 'to_time' => $to_time]
+    // ]);
 
 
     return 1;
@@ -187,10 +203,20 @@ public function RentPaypal(Request $request)
       'currency' => 'USD',
       'amount' => $request->get('amount')
     ]);
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->video_id = $video_id;
+    $purchase->total_amount = $total_amount;
+    $purchase->admin_commssion = $admin_commssion;
+    $purchase->moderator_commssion = $moderator_commssion;
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
 
-    DB::table('ppv_purchases')->insert([
-      ['user_id' => $user_id, 'video_id' => $video_id,  'total_amount' => $ppv_price,'admin_commssion' => $admin_commssion, 'moderator_commssion' => $moderator_commssion, 'to_time' => $to_time, 'status' => 'active']
-    ]);
+    $purchase->save();
+    // DB::table('ppv_purchases')->insert([
+    //   ['user_id' => $user_id, 'video_id' => $video_id,  'total_amount' => $ppv_price,'admin_commssion' => $admin_commssion, 
+    // 'moderator_commssion' => $moderator_commssion, 'to_time' => $to_time, 'status' => 'active']
+    // ]);
 
     $template = EmailTemplate::where('id','=',11)->first();
     $heading =$template->heading; 

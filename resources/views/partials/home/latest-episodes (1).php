@@ -1,3 +1,4 @@
+<?php  if(count($latest_episodes) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">Latest Episodes</h4>                      
 </div>
@@ -10,13 +11,15 @@
         foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">
-          <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ?>/<?= $latest_episode->id ; } ?>">
+          <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; } ?> ">
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
+              <a class="btn btn-primary btn-hover" href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?>">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid" alt="">
+                </a>    
               </div>
               <div class="block-description">
-              <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ?>/<?= $latest_episode->id ; } ?>">
+              <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?>">
                   <h6><?php echo __($latest_episode->title); ?></h6>
                 </a>
                 <div class="movie-time d-flex align-items-center my-2">
@@ -24,9 +27,9 @@
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
                 </div>
                 <div class="hover-buttons">
-                <a class="text-white" href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ?>/<?= $latest_episode->id ; } ?>">
+                <a class="btn btn-primary btn-hover" href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?>">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Watch Series
+                    Play Now
                   </a>
                 </div>
               </div>
@@ -37,3 +40,4 @@
     endif; ?>
   </ul>
 </div>
+<?php endif; ?>

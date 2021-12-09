@@ -208,8 +208,8 @@ class ChannelController extends Controller
                     
                     $ppv_video_play = [];
 
-                    $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
-                    $ppv_setting = \DB::table('settings')->first();
+                    $ppv_video = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')->get();
+                    $ppv_setting = Setting::first();
                     $ppv_setting_hours= $ppv_setting->ppv_hours;
                       // dd($ppv_hours);
             
@@ -240,7 +240,7 @@ class ChannelController extends Controller
                                     'status' => 'inactive'
                                     ]);
                     }
-                    $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+                    $purchased_video = Video::where('id',$value->video_id)->get();
 
                     }
                     }
@@ -570,8 +570,8 @@ class ChannelController extends Controller
 
                     $ppv_video_play = [];
 
-                    $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->where('status','active')->get();
-                    $ppv_setting = \DB::table('settings')->first();
+                    $ppv_video = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')->get();
+                    $ppv_setting = Setting::first();
                     $ppv_setting_hours= $ppv_setting->ppv_hours;
                       // dd($ppv_hours);
             
@@ -604,7 +604,7 @@ class ChannelController extends Controller
                                     'status' => 'inactive'
                                     ]);
                     }
-                    $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+                    $purchased_video = Video::where('id',$value->video_id)->get();
 
                     // if($now == $ppv_hours){
 

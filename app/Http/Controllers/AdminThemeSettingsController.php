@@ -302,7 +302,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
             $package = $user_package->package;
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
@@ -330,7 +330,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
@@ -433,7 +433,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         VideoLanguage::destroy($id);
@@ -456,7 +456,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         Language::destroy($id);
@@ -480,7 +480,7 @@ class AdminThemeSettingsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
@@ -519,7 +519,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
@@ -552,7 +552,7 @@ class AdminThemeSettingsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = Language::where('id', '=', $id)->get();
@@ -575,7 +575,7 @@ class AdminThemeSettingsController extends Controller
           $data = Session::all();
           if (!empty($data['password_hash'])) {
           $package_id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $package_id)->first();
+          $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = VideoLanguage::where('id', '=', $id)->get();
@@ -599,7 +599,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
@@ -627,7 +627,7 @@ class AdminThemeSettingsController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();

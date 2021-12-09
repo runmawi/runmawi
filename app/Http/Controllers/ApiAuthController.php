@@ -3192,6 +3192,134 @@ public function upnextAudio(Request $request){
       return response()->json($response, 200);
   }
 
+
+  public function nextwatchlaterEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+    $next_episodeid = Watchlater::where('episode_id', '>', $episode_id)->where('user_id', '=', $user_id)->min('episode_id');
+    if($next_episodeid){
+      $episodes= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'next_episodeid' => $next_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevwatchlaterEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+
+    $prev_episodeid = Watchlater::where('episode_id', '<', $episode_id)->where('user_id', '=', $user_id)->max('episode_id');
+    if($prev_episodeid){
+      $episodes= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'prev_episodeid' => $prev_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function nextfavouriteEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+    $next_episodeid = Favorite::where('episode_id', '>', $episode_id)->where('user_id', '=', $user_id)->min('episode_id');
+    if($next_episodeid){
+      $episodes= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'next_episodeid' => $next_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevfavouriteEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+    $prev_episodeid = Favorite::where('episode_id', '<', $episode_id)->where('user_id', '=', $user_id)->max('episode_id');
+    if($prev_episodeid){
+      $episodes= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'prev_episodeid' => $prev_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+  public function nextwishlistEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+    $next_episodeid = Wishlist::where('episode_id', '>', $episode_id)->where('user_id', '=', $user_id)->min('episode_id');
+
+    if($next_episodeid){
+      $episodes= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'next_episodeid' => $next_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
+
+  public function prevwishlistEpisode(Request $request)
+  {
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+  
+    $prev_episodeid = Wishlist::where('episode_id', '<', $request->episode_id)->where('user_id', '=', $episode_id)->max('video_id');
+    if($prev_episodeid){
+      $episodes= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+      $response = array(
+        'status' => true,
+        'prev_episodeid' => $prev_episodeid,
+        'episodes' => $episodes
+      );
+    }else{
+      $response = array(
+        'status' => false,
+        'episodes' => 'No Episodes Found'
+      );
+    }
+    return response()->json($response, 200);
+  }
   public function Playerui(Request $request){
     $playerui = Playerui::find(1);
     if($playerui){
@@ -4203,7 +4331,184 @@ public function LocationCheck(Request $request){
 
   }
 
+  public function myWishlistsEpisode(Request $request) {
 
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $episode_id_ids = Wishlist::select('episode_id')->where('user_id','=',$user_id)->get();
+    $episode_id_ids_count = Wishlist::select('episode_id')->where('user_id','=',$user_id)->count();
+
+    if ( $episode_id_ids_count  > 0) {
+
+      foreach ($episode_id_ids as $key => $value1) {
+        $k2[] = $value1->video_id;
+      }
+      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $channel_videos = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+
+  public function mywatchlatersEpisode(Request $request) {
+
+    $user_id = $request->user_id;
+
+    /*channel videos*/
+    $episode_ids = Watchlater::select('episode_id')->where('user_id','=',$user_id)->get();
+    $episode_ids_count = Watchlater::select('episode_id')->where('user_id','=',$user_id)->count();
+
+    if ( $episode_ids_count  > 0) {
+
+      foreach ($episode_ids as $key => $value1) {
+        $k2[] = $value1->video_id;
+      }
+      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+             $status = "false";
+      $channel_videos = [];
+    }
+    
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+  public function myFavoritesEpisode(Request $request) {
+
+    $user_id = $request->user_id;
+    /*channel videos*/
+    $episode_ids = Favorite::select('episode_id')->where('user_id',$user_id)->get();
+    $episode_ids_count = Favorite::select('episode_id')->where('user_id',$user_id)->count();
+
+    if ( $episode_ids_count  > 0) {
+
+      foreach ($episode_ids as $key => $value) {
+        $k2[] = $value->video_id;
+      }
+      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
+      $status = "true";
+    }else{
+            $status = "false";
+      $channel_videos = [];
+    }
+
+  
+    $response = array(
+        'status'=>$status,
+        'channel_videos'=> $channel_videos
+      );
+    return response()->json($response, 200);
+
+  }
+  public function addwatchlaterEpisode(Request $request) {
+
+    $user_id = $request->user_id;
+    $episode_id = $request->episode_id;
+    if($request->episode_id != ''){
+      $count = Watchlater::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->count();
+      if ( $count > 0 ) {
+        Watchlater::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Watch Later List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
+        Watchlater::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Watch Later List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function addwishlistEpisode(Request $request) {
+
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $episode_id = $request->episode_id;
+    if($request->episode_id != ''){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->count();
+      if ( $count > 0 ) {
+        Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Wishlist List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
+        Wishlist::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Wishlist List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+
+  public function addfavoriteEpisode(Request $request) {
+
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $episode_id = $request->episode_id;
+    if($request->episode_id != ''){
+      $count = Favorite::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->count();
+      if ( $count > 0 ) {
+        Favorite::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Favorite List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
+        Favorite::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Favorite List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
 
 
 

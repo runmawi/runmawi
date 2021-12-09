@@ -97,8 +97,7 @@ class AdminEmailTemplateController extends Controller
          $edit = URL::to('admin/template/edit');
       if($query != '')
       {
-       $data = DB::table('email_templates')
-         ->where('template_type', 'like', '%'.$query.'%')
+       $data = EmailTemplate::where('template_type', 'like', '%'.$query.'%')
          ->orderBy('created_at', 'desc')
          ->paginate(9);
          

@@ -780,8 +780,6 @@ $uppercase =  ucfirst($request_url);
                               <tbody>
                               @foreach($videos as $video)
                               @foreach($video as $val)
-                              @foreach($videocategory as $category)
-
                                  <tr>
                                     <td>
                                        <div class="media align-items-center">
@@ -796,18 +794,14 @@ $uppercase =  ucfirst($request_url);
                                        </div>
                                     </td>
                                     <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
-                                    <td> @if($category->id == $val->video_category_id) {{ $category->name }} @else  @endif</td> 
+                                    <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
                                     <td>{{ $val->views }}</td> 
                                   
                                      <td>{{ $val->created_at }}</td> 
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
-                                 @endforeach                                   
-
-                                 @endforeach
-                                 @endforeach
-
-                                  
+                                 @endforeach                                                                     
+                                 @endforeach                                                                     
                               </tbody>
                            </table>
                         </div>

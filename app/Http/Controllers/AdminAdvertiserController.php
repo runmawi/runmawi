@@ -175,11 +175,18 @@ class AdminAdvertiserController extends Controller
   {
     $setting = Setting::first();
     if($setting->ads_on_videos == 1){
-      $ads_data = DB::table('advertiser_plan_history')
-      ->join('advertisers', 'advertiser_plan_history.advertiser_id', '=', 'advertisers.id')
+      
+      // $ads_data = DB::table('advertiser_plan_history')
+      // ->join('advertisers', 'advertiser_plan_history.advertiser_id', '=', 'advertisers.id')
+      // ->join('ads_plans', 'advertiser_plan_history.plan_id', '=', 'ads_plans.id')
+      // ->select('advertiser_plan_history.*', 'advertisers.company_name', 'ads_plans.plan_amount', 'ads_plans.plan_name')
+      // ->get();
+      
+      $ads_data = Advertiserplanhistory::join('advertisers', 'advertiser_plan_history.advertiser_id', '=', 'advertisers.id')
       ->join('ads_plans', 'advertiser_plan_history.plan_id', '=', 'ads_plans.id')
       ->select('advertiser_plan_history.*', 'advertisers.company_name', 'ads_plans.plan_amount', 'ads_plans.plan_name')
       ->get();
+      
       $data = array(
         'ads_history' => $ads_data
       );

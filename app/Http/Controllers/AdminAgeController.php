@@ -57,8 +57,12 @@ class AdminAgeController extends Controller
 
 public function destroy($id){
     
-    $video = DB::table('videos')
-    ->join('age_categories', 'videos.age_restrict', '=', 'age_categories.age')
+    // $video = DB::table('videos')
+    // ->join('age_categories', 'videos.age_restrict', '=', 'age_categories.age')
+    // ->where('age_categories.id', '=', $id)
+    // ->select('videos.*')
+    // ->get();
+    $video = Video::join('age_categories', 'videos.age_restrict', '=', 'age_categories.age')
     ->where('age_categories.id', '=', $id)
     ->select('videos.*')
     ->get();

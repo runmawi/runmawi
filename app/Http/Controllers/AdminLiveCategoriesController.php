@@ -24,7 +24,7 @@ class AdminLiveCategoriesController extends Controller
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         // dd('test');
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->get();
@@ -57,7 +57,7 @@ class AdminLiveCategoriesController extends Controller
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
@@ -119,7 +119,7 @@ class AdminLiveCategoriesController extends Controller
       $data = Session::all();
         if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
-      $user_package =    DB::table('users')->where('id', $package_id)->first();
+      $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = LiveCategory::where('id', '=', $id)->get();
@@ -144,7 +144,7 @@ class AdminLiveCategoriesController extends Controller
           $data = Session::all();
         if (!empty($data['password_hash'])) {
           $package_id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $package_id)->first();
+          $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
@@ -216,7 +216,7 @@ class AdminLiveCategoriesController extends Controller
           $data = Session::all();
         if (!empty($data['password_hash'])) {
           $package_id = auth()->user()->id;
-          $user_package =    DB::table('users')->where('id', $package_id)->first();
+          $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;
           if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             LiveCategory::destroy($id);

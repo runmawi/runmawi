@@ -24,6 +24,9 @@ use App\AudioCategory as AudioCategory;
 use App\LikeDislike as Likedislike;
 use App\Favorite as Favorite;
 use App\Genre;
+use App\Audioartist;
+use App\Seriesartist;
+use App\Videoartist;
 use URL;
 use Auth;
 use View;
@@ -122,11 +125,15 @@ class ThemeAudioController extends Controller{
               $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
               $albumID = $check_audio_details->album_id;
                 
-              if (!empty($check_audio_details) && !empty($name)) {
-                  $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+              if (!empty($check_audio_details) && empty($name)) {
+            //   echo "<pre>";print_r($albumID);exit();
+
+                  $audio_details = Audio::where('slug','=',$slug)->where('status','=',1)->first();
                    
                 } else {
                      $audio_details = Audio::where('album_id','=',$albumID)->where('status','=',1)->first();
+            //   echo "<pre>";print_r($audio_details);exit();
+
                   // print_r($audio_details);
                 }
                 $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
@@ -166,7 +173,7 @@ class ThemeAudioController extends Controller{
       
             if (!empty($audio_details)) {
                 $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
-            $view_increment = $this->handleViewCount($audio); 
+                $view_increment = $this->handleViewCount($audio); 
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
@@ -458,7 +465,7 @@ class ThemeAudioController extends Controller{
         endif;
         $audios = $album_ids = array();
        
-        $latest_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
+        $latest_audios = Audioartist::select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
         foreach ($latest_audios as $key => $latest_audio) {
             $audio_id = $latest_audio->audio_id;
             if(Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->exists()){
@@ -468,20 +475,17 @@ class ThemeAudioController extends Controller{
             } 
         }
         $albums = AudioAlbums::whereIn('id', $album_ids)->get();
-        $artist_audios = DB::table('audio_artists')
-                ->select('audio.*')
+        $artist_audios = Audioartist::select('audio.*')
                 ->join('audio', 'audio.id', '=', 'audio_artists.audio_id')
                 ->where('audio_artists.artist_id', $artist_id)
                 ->orderBy('audio.created_at', 'desc')
                 ->get();
-    $artist_series = DB::table('series_artists')
-    ->select('series.*')
+    $artist_series = Seriesartist::select('series.*')
     ->join('series', 'series.id', '=', 'series_artists.series_id')
     ->where('series_artists.artist_id', $artist_id)
     ->orderBy('series.created_at', 'desc')
     ->get();
-    $artist_videos = DB::table('video_artists')
-    ->select('videos.*')
+    $artist_videos = Videoartist::select('videos.*')
     ->join('videos', 'videos.id', '=', 'video_artists.video_id')
     ->where('video_artists.artist_id', $artist_id)
     ->orderBy('videos.created_at', 'desc')

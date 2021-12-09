@@ -376,11 +376,7 @@ class AdminUsersController extends Controller
         if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
         }elseif($user_role == 'subscriber'){
-    //         $user_role = DB::table('subscriptions')
-    //    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-    //    ->select('plans.plans_name')
-    //    ->where('subscriptions.user_id','=',$user_id  )
-    //    ->get();
+
     $user_role = Subscription::where('subscriptions.user_id','=',$user_id)
     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
     ->select('plans.plans_name')
@@ -1190,8 +1186,8 @@ class AdminUsersController extends Controller
  
       if($query != '')
       {
-        $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
-        $regions =  Region::where('regions.id','=',$query)->first();
+        // $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
+        $regions =  Region::where('id','=',$query)->first();
 
         $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->where('region_views.countryname','=',$regions->name)->get();
         // echo "<pre>";
@@ -1340,10 +1336,7 @@ class AdminUsersController extends Controller
 
       if($query != '')
       {
-        // SELECT users.username,plans.plans_name FROM `subscriptions` 
-        // INNER JOIN users ON subscriptions.user_id = users.id 
-        // INNER JOIN plans ON subscriptions.stripe_plan = plans.plan_id
-        //  WHERE subscriptions.countryname = "United States";
+      
         // $data = DB::table('subscriptions')
         // ->select('users.username','plans.plans_name')
         // ->join('users', 'users.id', '=', 'subscriptions.user_id')

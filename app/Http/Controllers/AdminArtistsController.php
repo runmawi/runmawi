@@ -24,7 +24,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -64,7 +64,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -93,7 +93,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -140,7 +140,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -173,7 +173,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -220,7 +220,7 @@ class AdminArtistsController extends Controller
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
-        $user_package =    DB::table('users')->where('id', $package_id)->first();
+        $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){

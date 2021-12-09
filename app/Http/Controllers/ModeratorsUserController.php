@@ -66,6 +66,7 @@ use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
 use Session;
+use App\PpvPurchase as PpvPurchase;
 
 
 class ModeratorsUserController extends Controller
@@ -77,7 +78,7 @@ class ModeratorsUserController extends Controller
     if (!empty($data['password_hash'])) {
 
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $moderatorsrole = ModeratorsRole::all();
@@ -113,7 +114,7 @@ class ModeratorsUserController extends Controller
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $input = $request->all();
@@ -300,7 +301,7 @@ public function RolesPermission(Request $request)
   $data = Session::all();
   if (!empty($data['password_hash'])) {
   $package_id = auth()->user()->id;
-  $user_package =    DB::table('users')->where('id', $package_id)->first();
+  $user_package =    User::where('id', $package_id)->first();
   $package = $user_package->package;
   if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $moderatorsrole = ModeratorsRole::all();
@@ -344,7 +345,7 @@ $permission = implode(",",$user_permission);
 $data = Session::all();
 if (!empty($data['password_hash'])) {
   $package_id = auth()->user()->id;
-  $user_package =    DB::table('users')->where('id', $package_id)->first();
+  $user_package =    User::where('id', $package_id)->first();
   $package = $user_package->package;
   if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
     $user_roles = new ModeratorsRole;
@@ -386,12 +387,11 @@ if (!empty($data['password_hash'])) {
     if (!empty($data['password_hash'])) {
 
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $moderators = ModeratorsUser::find($id);
 $useraccess = UserAccess::where('user_id', '=', $id)->get();
-// $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
       $moderatorsrole = ModeratorsRole::all();
       $moderatorspermission = ModeratorsPermission::all();
       $moderatorsuser = ModeratorsUser::all();
@@ -429,7 +429,7 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -476,7 +476,7 @@ $useraccess = UserAccess::where('user_id', '=', $id)->get();
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $data = $request->all();
@@ -557,7 +557,7 @@ return back()->with('message', 'Successfully User Updated!.');
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 $data = $request->all();
@@ -595,7 +595,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -622,7 +622,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     if (!empty($data['password_hash'])) {
 
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -648,7 +648,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $moderatorsrole = ModeratorsRole::all();
@@ -681,7 +681,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
     $data = Session::all();
     if (!empty($data['password_hash'])) {
     $package_id = auth()->user()->id;
-    $user_package =    DB::table('users')->where('id', $package_id)->first();
+    $user_package =    User::where('id', $package_id)->first();
     $package = $user_package->package;
     if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -736,18 +736,16 @@ return back()->with('message', 'Successfully Roles Updated!.');
   }
   if(!empty($id)){
      
-    $settings =  DB::table('settings')->first();
+    $settings =  Setting::first();
 
     $ppv_price = $settings->ppv_price;
     
-    $Revenue =  DB::table('ppv_purchases')
-    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    $Revenue =  PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
     ->select('videos.*')
     ->where('videos.user_id', '=', $id )
     ->get();
     
-    $Revenue_count =  DB::table('ppv_purchases')
-    ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    $Revenue_count =  PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
     ->select('videos.*')
     ->where('videos.user_id', '=', $id )
     ->count();
@@ -756,8 +754,7 @@ return back()->with('message', 'Successfully Roles Updated!.');
 
     $total_video_uploaded =  Video::where('user_id','=',$id)->count();
     
-    $userrolepermissiom=DB::table('user_accesses')
-    ->select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
+    $userrolepermissiom=UserAccess::select('user_accesses.permissions_id','moderators_permissions.name','moderators_permissions.url')
     ->join('moderators_permissions','moderators_permissions.id','=','user_accesses.permissions_id')
     ->where(['user_id' =>$id])
     ->get();
@@ -4785,18 +4782,16 @@ if(!empty($artistsdata)){
  
         if(!empty($id)){
  
-          $settings =  DB::table('settings')->first();
+          $settings =  Setting::first();
       
           $ppv_price = $settings->ppv_price;
       
-          $Revenue =  DB::table('ppv_purchases')
-          ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+          $Revenue =  PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
           ->select('videos.*')
           ->where('videos.user_id', '=', $id )
           ->get();
       
-          $Revenue_count =  DB::table('ppv_purchases')
-          ->join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+          $Revenue_count =  PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
           ->select('videos.*')
           ->where('videos.user_id', '=', $id )
           ->count();

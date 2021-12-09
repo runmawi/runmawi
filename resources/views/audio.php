@@ -286,10 +286,8 @@ Your browser does not support the audio element.
     <?php foreach ($other_albums as $other_album) { ?>
         <li>
             <?php if($other_album->album != ''){ ?>
-                <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                <a href="<?php echo URL('/').'/album/'.$other_album->slug; ?>">
                 <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-               
-
                 <div class="play-block">
                     <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
                 </div>
@@ -299,7 +297,7 @@ Your browser does not support the audio element.
             <?php  } ?> </p>
           
         </li>
-    <?php }?>
+    <?php } ?>
 </ul>
 </div>
 

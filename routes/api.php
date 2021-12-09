@@ -122,6 +122,17 @@ Route::group([
     // Season  Next Prev Episode
     Route::post('NextEpisode', 'ApiAuthController@NextEpisode');
     Route::post('PrevEpisode', 'ApiAuthController@PrevEpisode');
+    // Wishlist Next Prev Video
+    Route::post('nextwishlistEpisode', 'ApiAuthController@nextwishlistEpisode');
+    Route::post('prevwishlistEpisode', 'ApiAuthController@prevwishlistEpisode');
+
+    // Watchlater Next Prev Episode
+    Route::post('nextwatchlaterEpisode', 'ApiAuthController@nextwatchlaterEpisode');
+    Route::post('prevwatchlaterEpisode', 'ApiAuthController@prevwatchlaterEpisode');
+
+    // Favourite Next Prev Episode
+    Route::post('nextfavouriteEpisode', 'ApiAuthController@nextfavouriteEpisode');
+    Route::post('prevfavouriteEpisode', 'ApiAuthController@prevfavouriteEpisode');
 
     //  Palyer UI Settings
 
@@ -183,7 +194,7 @@ Route::group([
     Route::get('AllAudios', 'ApiAuthController@AllAudios');
     Route::post('mywatchlatersaudio', 'ApiAuthController@mywatchlatersaudio');
     Route::post('myFavoriteaudio', 'ApiAuthController@myFavoriteaudio');
-        Route::get('Alllanguage','ApiAuthController@Alllanguage');
+    Route::get('Alllanguage','ApiAuthController@Alllanguage');
     Route::post('VideoLanguage','ApiAuthController@VideoLanguage');
     Route::get('FeaturedVideo ','ApiAuthController@FeaturedVideo');
     Route::post('RecentViews ','ApiAuthController@RecentViews');
@@ -192,5 +203,13 @@ Route::group([
     Route::get('SubscriptionEndNotification ','ApiAuthController@SubscriptionEndNotification');
     Route::post('SubscriptionPayment','ApiAuthController@SubscriptionPayment');
     Route::get('SubscriberedUsers ','ApiAuthController@SubscriberedUsers');
-     Route::post('LocationCheck ','ApiAuthController@LocationCheck');
+    Route::post('LocationCheck ','ApiAuthController@LocationCheck');
+
+    
+    Route::post('myWishlistsEpisode', 'ApiAuthController@myWishlistsEpisode');
+    Route::post('mywatchlatersEpisode', 'ApiAuthController@mywatchlatersEpisode');
+    Route::post('myFavoritesEpisode', 'ApiAuthController@myFavoritesEpisode');
+    Route::post('addwatchlaterEpisode', 'ApiAuthController@addwatchlaterEpisode');
+    Route::post('addwishlistEpisode', 'ApiAuthController@addwishlistEpisode');
+    Route::post('addfavoriteEpisode', 'ApiAuthController@addfavoriteEpisode');
 });
