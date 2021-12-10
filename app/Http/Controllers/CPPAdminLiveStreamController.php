@@ -39,11 +39,11 @@ class CPPAdminLiveStreamController extends Controller
                 $videos = LiveStream::where('user_id','=',$user_id)->orderBy('created_at', 'DESC')->paginate(9);
             endif;
         
-            $user = Auth::user();
+            // $user = Auth::user();
 
             $data = array(
                 'videos' => $videos,
-                'user' => $user,
+                // 'user' => $user,
                 // 'admin_user' => Auth::user()
                 );
 
@@ -68,7 +68,7 @@ class CPPAdminLiveStreamController extends Controller
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('cpp/livestream/store'),
                 'button_text' => 'Add New Video',
-                'admin_user' => Auth::user(),
+                // 'admin_user' => Auth::user(),
                 'video_categories' => LiveCategory::all(),
                 'languages' => Language::all(),
                 );

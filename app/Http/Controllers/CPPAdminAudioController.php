@@ -64,11 +64,11 @@ class CPPAdminAudioController extends Controller
             $audios = Audio::orderBy('created_at', 'DESC')->where('user_id','=',$id)->paginate(9);
         endif;
         
-        $user = Auth::user();
+        // $user = Auth::user();
 
         $data = array(
             'audios' => $audios,
-            'user' => $user,
+            // 'user' => $user,
             );
 
         return View::make('moderator.cpp.audios.index', $data);

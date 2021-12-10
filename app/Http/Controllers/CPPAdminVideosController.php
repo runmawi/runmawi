@@ -823,13 +823,13 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 //                $data['path'] = 0;
 //            }  
 
-            if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-                    $data['status'] = 1;    
-                }
+            // if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+            //         $data['status'] = 1;    
+            //     }
 
-            if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-                    $data['status'] = 0;    
-            }
+            // if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
+            //         $data['status'] = 0;    
+            // }
 
 
         $image_path = public_path().'/uploads/images/';
@@ -1146,8 +1146,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
         public function CPPfileupdate(Request $request)
         {
             $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
 
             $data = $request->all();
                     $validatedData = $request->validate([
@@ -1248,13 +1248,13 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             //                $data['path'] = 0;
             //            }  
             
-                        if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-                                $data['status'] = 1;    
-                            }
+                        // if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+                        //         $data['status'] = 1;    
+                        //     }
             
-                        if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-                                $data['status'] = 0;    
-                        }
+                        // if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
+                        //         $data['status'] = 0;    
+                        // }
             
             
                     $path = public_path().'/uploads/videos/';
