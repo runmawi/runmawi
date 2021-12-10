@@ -60,7 +60,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
            
              <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
              controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-<track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                  <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
@@ -117,9 +117,9 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-<!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-<track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+               <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                  <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
                 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -154,7 +154,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-<track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type='application/x-mpegURL' label='auto' > 
 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -468,6 +468,11 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                <?php include('partials/video-loop.php');?>
            </div>
    </div>
+   <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
+   <video id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>">
+
+  </div>
+
 <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
 
    <script type="text/javascript"> 
@@ -476,17 +481,32 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
    <script src="https://checkout.stripe.com/checkout.js"></script>
    <div class="clear"></div>
        <script>
+// $('#myVideo2').show();
+// $(document).ready(function(){
+// $('#playVid').click(function(){
+// $('#myVideo1').hide();
+// $('#myVideo2').show();
+//   $('#playVid').play(); 
+//   $('#mysVideo').pause(); 
+// });
+// });
+
 
          $(document).ready(function () { 
 
            /*Watch trailer*/
-           $(".watch_trailer").click(function() {
-             var videohtml = '<video controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
-             $("#video_container").empty();
-             $(".skip").css('display','inline-block');
-             $("#video_container").html(videohtml);
-           });
-
+          //  $(".watch_trailer").click(function() {
+          //    var videohtml = '<video id="videoPlayer" controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
+          //    $("#video_container").empty();
+          //    $(".skip").css('display','inline-block');
+          //    $("#video_container").html(videohtml);
+          //  });
+          var vid = document.getElementById("videoPlayer"); 
+          $('#watch_trailer').hide();
+          $('.watch_trailer').click(function(){
+            $('#video_container').hide();
+            $('#watch_trailer').show();
+          });
            /*Skip Video*/
            $(document).on("click",".skip",function() {
              $("#video_container").empty();
@@ -607,25 +627,6 @@ location.reload();
      });
 
        </script>
-   <script type="text/javascript">
-$(document).ready(function(){
-$('#videoPlayer').bind('contextmenu',function() { return false; });
-});
-
-$('#videoplay').on('click',function(event) {
-       event.preventDefault();
-// window.player = videojs("videoPlayer", { techOrder: ["html5", "flash"] }, function() {
-   videojs_player = this;
-   videojs_player.src({ src: "<?= $video->trailer; ?>", type: 'video/mp4'})
-   
-   // videojs_player.on("click", function(event){
-   //     event.preventDefault();
-   //     alert('click');
-   // });
-   
-   videojs_player.play();
-});
-</script>
    </div>
 <?php include('footer.blade.php');?>
 
