@@ -963,6 +963,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
         // dd($data['global_ppv']);
             $video->publish_time =0;
             }   
+            $user = Session::get('user'); 
+            $user_id = $user->id;
+            $video->user_id =  $user_id;
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->skip_recap =  $data['skip_recap'];
@@ -1313,9 +1316,16 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     }else {
                         $video->embed_code = '';
                     }
-            
+                    if(!empty($data['banner'])) {
+                        $banner = $data['banner'];
+                   }else {
+                       $banner = 0;
+                   }
+                   $user = Session::get('user'); 
+                   $user_id = $user->id;
                      $shortcodes = $request['short_code'];        
                      $languages=$request['sub_language'];
+                    $video->user_id =  $user_id;
                      $video->skip_recap =  $data['skip_recap'];
                      $video->skip_intro =  $data['skip_intro'];
                      $video->description = strip_tags($data['description']);
@@ -1326,7 +1336,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                      $video->age_restrict =  $data['age_restrict'];
                     $video->ppv_price =$data['ppv_price'];
                      $video->access =  $data['access'];
-                     $video->banner =  $data['banner'];
+                     $video->banner =  $banner;
                     $video->enable =  1;
         
                      $video->update($data);
