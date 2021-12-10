@@ -43,6 +43,7 @@
                         <div class="form-group row">
                             <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
                             <input id="id" type="hidden" class="form-control" name="id" value="{{  $moderators->id }}"  autocomplete="username" autofocus>
+                            <input id="status" type="hidden" class="form-control" name="status" value="{{  $moderators->status }}"  autocomplete="username" autofocus>
 
                                 <input id="name" type="text" class="form-control" name="username" value="{{ $moderators->username }}"  autocomplete="username" autofocus>
                             </div>

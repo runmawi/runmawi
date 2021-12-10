@@ -173,7 +173,9 @@ class ModeratorsLoginController extends Controller
                 'total_ppvvideos' => $total_ppvvideos
         );
 		return \View::make('moderator.dashboard', $data);
-    }
+    }else{
+      return redirect('/cpp/login')->with('message', 'Miss Match Login Credentials');
+      }
     }elseif($userexits->status == 0){
       return redirect('/cpp/login')->with('message', 'Your Request have been Pending');
       }else{
