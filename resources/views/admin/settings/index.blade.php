@@ -335,7 +335,7 @@
 				 
                     
                         <input type="checkbox"  @if($settings->coupon_status == 1)checked="checked" value="1"@else value="0"@endif name="coupon_status">
-            
+           
             
 			</div> 
 		</div>     
@@ -354,6 +354,18 @@
 				<br />
 				<p class="p1">Twitter Username:</p>
 				<input type="text" class="form-control" name="twitter_page_id" id="twitter_page_id" placeholder="Twitter Username" value="@if(!empty($settings->twitter_page_id)){{ $settings->twitter_page_id }}@endif" />
+				<br />
+				<p class="p1"> Instagram :</p>
+				<input type="text" class="form-control" name="instagram_page_id" id="instagram_page_id" placeholder="Instagram " value="@if(!empty($settings->instagram_page_id)){{ $settings->instagram_page_id }}@endif" />
+				<br />
+				<p class="p1"> Linkedin:</p>
+				<input type="text" class="form-control" name="linkedin_page_id" id="linkedin_page_id" placeholder="Linkedin " value="@if(!empty($settings->linkedin_page_id)){{ $settings->linkedin_page_id }}@endif" />
+				<br />
+				<p class="p1">Whatsapp :</p>
+				<input type="text" class="form-control" name="whatsapp_page_id" id="whatsapp_page_id" placeholder="Whatsapp " value="@if(!empty($settings->whatsapp_page_id)){{ $settings->whatsapp_page_id }}@endif" />
+				<br />
+				<p class="p1">Skype :</p>
+				<input type="text" class="form-control" name="skype_page_id" id="skype_page_id" placeholder="Skype " value="@if(!empty($settings->skype_page_id)){{ $settings->skype_page_id }}@endif" />
 				<br />
 				<p class="p1">YouTube Channel ex. youtube.com/channel_name:</p>
 				<input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id" placeholder="YouTube Channel" value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />

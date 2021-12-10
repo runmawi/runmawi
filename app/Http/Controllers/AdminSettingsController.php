@@ -39,6 +39,27 @@ class AdminSettingsController extends Controller
         // echo "<pre>";
         // print_r($input);
         // exit();
+
+        if(!empty($request['instagram_page_id'])){
+        $instagram_page_id = $request['instagram_page_id'];
+        }else{
+        $instagram_page_id = null;
+        }
+        if(!empty($request['linkedin_page_id'])){
+          $linkedin_page_id = $request['linkedin_page_id'];
+          }else{
+          $linkedin_page_id = null;
+          }
+      if(!empty($request['whatsapp_page_id'])){
+        $whatsapp_page_id = $request['whatsapp_page_id'];
+        }else{
+        $whatsapp_page_id = null;
+        }
+      if(!empty($request['skype_page_id'])){
+        $skype_page_id = $request['skype_page_id'];
+        }else{
+        $skype_page_id = null;
+        }
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
 		$settings->ppv_hours = $request['ppv_hours'];
@@ -57,6 +78,10 @@ class AdminSettingsController extends Controller
 		$settings->facebook_page_id = $request['facebook_page_id'];
 		$settings->google_page_id = $request['google_page_id'];
 		$settings->twitter_page_id = $request['twitter_page_id'];
+		$settings->instagram_page_id = $instagram_page_id;
+		$settings->linkedin_page_id = $linkedin_page_id;
+		$settings->whatsapp_page_id = $whatsapp_page_id;
+		$settings->skype_page_id = $skype_page_id;
 		$settings->youtube_page_id = $request['youtube_page_id'];
 		$settings->google_tracking_id = $request['google_tracking_id'];
 		$settings->signature = $request['signature'];

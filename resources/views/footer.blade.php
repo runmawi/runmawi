@@ -6,23 +6,41 @@
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
                      <div class="d-flex mt-2">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
+                       <?php if(!empty($settings->facebook_page_id)){?>
+                        <a href="{{ $settings->facebook_page_id }}" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
                         </a>
-                        <a href="#" class="s-icon">
+                        <?php } ?>
+                        <?php  if(!empty($settings->skype_page_id)){?>
+                        <a href=" {{ $settings->skype_page_id }}" class="s-icon">
                         <i class="ri-skype-fill"></i>
                         </a>
-                        <a href="#" class="s-icon">
+                        <?php } ?>
+                        <?php   if(!empty($settings->instagram_page_id)){?>
+                        <a href="{{ $settings->instagram_page_id }}" class="s-icon">
+                        <i class="fa fa-instagram"></i>
+                        </a>
+                        <?php } ?>
+                        <?php  if(!empty($settings->twitter_page_id)){?>
+                        <a href="{{ $settings->twitter_page_id }}" class="s-icon">
+                        <i class="fa fa-twitter"></i>
+                        </a>
+                        <?php } ?>
+                        <?php if(!empty($settings->linkedin_page_id)){?>
+                        <a href="{{ $settings->linkedin_page_id }}" class="s-icon">
                         <i class="ri-linkedin-fill"></i>
                         </a>
-                        <a href="#" class="s-icon">
+                        <?php } ?>
+                        <?php if(!empty($settings->whatsapp_page_id)){ ?>
+                        <a href="{{ $settings->whatsapp_page_id }}" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
                         </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
+                        <?php } ?>
+                        <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
+                        // <i class="fa fa-google-plus"></i>
+                        // </a> -->
                      </div>
                   </div>
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
@@ -60,36 +78,13 @@
                          <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
                           </ul>
                       </div>
-                      
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>-->
 				</div>
                    <div class="col-lg-3 col-md-4 p-0">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
+                      <ul class="f-link list-unstyled mb-0">    
 						<?php 
-                        
                         $pages = App\Page::all();
-                        
                         foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
 							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
 						<?php endforeach; ?>
 					</ul>
 				</div>
