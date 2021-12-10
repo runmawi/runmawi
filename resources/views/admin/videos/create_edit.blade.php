@@ -423,7 +423,6 @@
                             <h5>Publish Type</h5>
                                 </div>
                             <div class="row">
-
                                 <div class="col-sm-6 form-group mt-3" >
                                     <!-- <label class="">Choose Ad Name</label> -->
                             <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}>Publish Now <br>
@@ -441,12 +440,12 @@
                             <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
                             </div>
                             <div class="col-sm-4 form-group mt-3">
-                            <label class="">Recap Strat Time</label>
+                            <label class="">Intro Start Time</label>
                             <p>Please Give In Seconds</p> 
                             <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
                             </div>
                             <div class="col-sm-4 form-group mt-3">
-                            <label class="">Recap End Time</label>
+                            <label class="">Intro End Time</label>
                             <p>Please Give In Seconds</p> 
                             <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
                             </div>
@@ -459,7 +458,7 @@
                             <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
                             </div>
                             <div class="col-sm-4 form-group mt-3">
-                            <label class="">Recap Strat Time</label>
+                            <label class="">Recap Start Time</label>
                             <p>Please Give In Seconds</p> 
                             <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
                             </div>

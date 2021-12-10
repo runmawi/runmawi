@@ -142,7 +142,7 @@
 				</div>
 				<div class="col-sm-4">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Intro Strat Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title">Intro Start Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<p>Please Give In Seconds</p> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 						<input class="form-control" name="intro_start_time" id="intro_start_time" value="@if(!empty($episodes->intro_start_time)){{ $episodes->intro_start_time }}@endif" >
@@ -172,7 +172,7 @@
 				</div>
 				<div class="col-sm-4">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title">Recap Strat Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title">Recap Start Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<p>Please Give In Seconds</p> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 						<input class="form-control" name="recap_start_time" id="recap_start_time" value="@if(!empty($episodes->recap_start_time)){{ $episodes->recap_start_time }}@endif" >

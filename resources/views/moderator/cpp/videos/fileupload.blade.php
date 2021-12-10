@@ -596,7 +596,7 @@ data: {
                                 <input type="text" class="form-control" id="skip_intro" name="skip_intro" >
                                 </div>
                                 <div class="col-sm-4 form-group mt-3">
-                                <label class="">Intro Strat Time</label>
+                                <label class="">Intro Start Time</label>
                                 <p>Please Give In Seconds</p> 
                                 <input type="text" class="form-control" id="intro_start_time" name="intro_start_time" >
                                 </div>
@@ -615,7 +615,7 @@ data: {
                                 <input type="text" class="form-control" id="skip_recap" name="skip_recap" >
                                 </div>
                                 <div class="col-sm-4 form-group mt-3">
-                                <label class="">Recap Strat Time</label>
+                                <label class="">Recap Start Time</label>
                                 <p>Please Give In Seconds</p> 
                                 <input type="text" class="form-control" id="recap_start_time" name="recap_start_time" >
                                 </div>
