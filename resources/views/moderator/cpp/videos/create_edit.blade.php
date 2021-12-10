@@ -2,6 +2,7 @@
 <?php 
 
 ?>
+
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
@@ -66,7 +67,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="http://malsup.github.com/jquery.form.js"></script>
+        <!-- <script src="http://malsup.github.com/jquery.form.js"></script> -->
    
  <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -350,33 +351,7 @@
                                 <div><label class="ml-1">Disable</label></div>
                                 </div>
                                 </div>
-                                <!-- <div class="col-sm-6 form-group mt-3"> 
-                                    <div class="panel panel-primary" data-collapsed="0"> 
-                                        <div class="panel-heading"> 
-                                            <div class="panel-title"> Status Settings</div> 
-                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-                                        </div> 
-                                        <div class="panel-body"> 
-                                            <div>
-                                                <label for="featured">Is this video Featured:</label>
-                                                <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-                                            </div>
-                                            <div class="clear"></div>
-                                            <div>
-                                                <label for="active">Is this video Active:</label>
-                                                <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
-                                            </div>
-                                            <div class="clear"></div>
-                                            <div>
-                                                <label for="banner">Is this video Banner:</label>
-                                                <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div> 
-                                    </div>
-                                    
-                            </div>
-                        </div> -->
+                         
                         <div>
                             <h5>Publish Type</h5>
                                 </div>
@@ -461,7 +436,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-    <script>
+     <script>
         $('#intro_start_time').datetimepicker(
         {
             format: 'hh:mm '
@@ -480,16 +455,16 @@
         });
 </script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" />
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" /> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        $('#timepicker').timepicker({
-            showMeridian: false,
-            showInputs: true
-        });
-    });
+//     $(function () {
+//         $('#timepicker').timepicker({
+//             showMeridian: false,
+//             showInputs: true
+//         });
+//     });
 </script>
   <script type="text/javascript">
  $ = jQuery;
@@ -562,16 +537,16 @@ $(document).ready(function(){
 
  
 
-		tinymce.init({
-			relative_urls: false,
-		    selector: '#details',
-		    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
-		    plugins: [
-		         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
-		         "save table contextmenu directionality emoticons template paste textcolor code"
-		   ],
-		   menubar:false,
-		 });
+		// tinymce.init({
+		// 	relative_urls: false,
+		//     selector: '#details',
+		//     toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
+		//     plugins: [
+		//          "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
+		//          "save table contextmenu directionality emoticons template paste textcolor code"
+		//    ],
+		//    menubar:false,
+		//  });
 
 	});
 
