@@ -47,9 +47,9 @@
                                                             <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
                                                         </a>
                                                          <div>
-                                       <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
-                       </a></div>
-                                                    </div>
+                                        <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                                           </a></div>
+                                        </div>
 <!--
                                                     <div>
                                                         <button type="buttonbtn btn-primary btn-hover" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_video->id;?>">

@@ -19,12 +19,18 @@ use App\Video as Video;
 
 class AdminAgeController extends Controller
 {
+    public function index(Request $request)
+    {
+        $allCategories = AgeCategory::all();
+        return view('admin.videos.categories.age_index',compact('allCategories'));
+    }
     public function store(Request $request)
     {
         $data = $request->all();
         $age = new AgeCategory();
         $age->age = $request['age']; 
-        $age->slug = $request['slug']; 
+        $age->slug =$request['age'].' '.'Plus'; 
+        $age->active =$request['active']; 
         $age->save();
 
         return Redirect::back();
@@ -44,10 +50,12 @@ class AdminAgeController extends Controller
     $input = $request->all();
        
     $id = $request['id'];
+    // dd($input);
     $category = AgeCategory::find($id);
      
-        $category->age = $request['age'];
-        $category->slug = $request['slug'];
+        $category->age = $input['age'];
+        $category->slug =$input['slug']; 
+        $category->active =$input['active']; 
         $category->save();
         return Redirect::back();
         

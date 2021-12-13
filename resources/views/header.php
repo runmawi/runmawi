@@ -92,7 +92,7 @@ $uppercase =  ucfirst($request_url);
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
- <li class="dropdown menu-item">
+                                          <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>

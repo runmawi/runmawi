@@ -7,7 +7,7 @@ use Carbon\Carbon as Carbon;
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
-
+// href="http://localhost/flicknexs/category/wishlist/Kung fu Panda"
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
@@ -15,6 +15,8 @@ Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
+Route::get('/category/categories/', 'ChannelController@categories');
+Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
@@ -413,6 +415,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
     
 // Age Restrict    
+    Route::get('/age/categories', 'AdminAgeController@index');
     Route::post('/age/store', 'AdminAgeController@store');
     Route::get('/age/edit/{id}', 'AdminAgeController@edit');
     Route::post('/age/update', 'AdminAgeController@update');

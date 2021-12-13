@@ -38,6 +38,16 @@
                         <i class="ri-whatsapp-fill"></i>
                         </a>
                         <?php } ?>
+                        <?php if(!empty($settings->youtube_page_id)){ ?>
+                        <a href="{{ $settings->youtube_page_id }}" class="s-icon">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                        <?php } ?>
+                        <?php if(!empty($settings->google_page_id)){ ?>
+                        <a href="{{ $settings->google_page_id }}" class="s-icon">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                        <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
                         // </a> -->
@@ -82,7 +92,7 @@
                    <div class="col-lg-3 col-md-4 p-0">
                       <ul class="f-link list-unstyled mb-0">    
 						<?php 
-                        $pages = App\Page::all();
+                        $pages = App\Page::where('active',1)->get();
                         foreach($pages as $page): ?>
 							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
 						<?php endforeach; ?>

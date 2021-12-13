@@ -201,6 +201,7 @@ class AdminThemeSettingsController extends Controller
         $in_home = $request['active']; 
         $link = $request['link']; 
         $title = $request['title']; 
+        $trailer_link = $request['trailer_link']; 
         $category = Slider::find($id);
              if (isset($request['slider']) && !empty($request['slider'])){
                     $image = $request['slider']; 
@@ -227,6 +228,7 @@ class AdminThemeSettingsController extends Controller
                     $file->move($path,$category->slider);
               } 
             $category->link  = $link;
+            $category->trailer_link  = $trailer_link;
             $category->title  = $title;
             $category->active = $request['active'];
             $category->save();
@@ -366,7 +368,7 @@ class AdminThemeSettingsController extends Controller
             $link = $request['link'];
             $title = $request['title'];
             $acive = $request['acive']; 
-          
+            $trailer_link = $request['trailer_link']; 
            if($image != '') {   
           //code for remove old file
               if($image != ''  && $image != null){
@@ -379,6 +381,7 @@ class AdminThemeSettingsController extends Controller
               $file = $image;
               $slider->slider  = $file->getClientOriginalName();
               $slider->link  = $link;
+              $slider->trailer_link  = $trailer_link;
               $slider->title  = $title;
               $file->move($path, $slider->slider);
            } 

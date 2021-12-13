@@ -147,6 +147,11 @@ class AdminPageController extends Controller
         
         
         $id = $data['id'];
+        // if(!empty($data['active']) && $data['active'] == "on"){
+        //     $data['active'] == 1 ;
+        // }else{
+        //     $data['active'] == 0 ;
+        // }
         $page = Page::findOrFail($id);
 
         $validator = Validator::make($data, Page::$rules);

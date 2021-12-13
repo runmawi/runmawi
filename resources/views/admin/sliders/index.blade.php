@@ -56,6 +56,11 @@
                         <input type="text" class="form-control" name="link" id="link" />
 
                     </div>
+					<div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
+                        <label>Trailer Link:</label>
+                        <input type="text" class="form-control" name="trailer_link" id="trailer_link" />
+
+                    </div>
 
                     <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
                         <label>Title:</label>

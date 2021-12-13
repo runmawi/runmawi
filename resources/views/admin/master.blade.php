@@ -132,6 +132,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
+
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -346,6 +348,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -553,6 +556,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -758,6 +762,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>

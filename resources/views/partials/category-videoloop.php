@@ -51,7 +51,7 @@
                         ?>
                     <li class="slide-item">
                             <div class="block-images position-relative">
-                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                            <a class="block-description" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> -->
                                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
@@ -74,6 +74,7 @@
                                         </p>
                                     </div>
                                 </div>
+                                            </a>
                                 <div class="block-description">
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                         <h6>

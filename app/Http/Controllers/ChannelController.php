@@ -62,7 +62,12 @@ class ChannelController extends Controller
        return view('channels', compact('parentCategories'));
         
     } 
-    
+    public function categories()
+    {
+      dd('test');
+       return Redirect::to('/home');
+        
+    } 
     public function channelVideos($cid)
     {
         $vpp = VideoPerPage();
@@ -487,10 +492,19 @@ class ChannelController extends Controller
     }
     
 
-
-
-
-
+    public function Watchlist($slug)
+    {
+        $video = Video::where('slug', '=', $slug)->first();
+        $video_id = $video->id;
+         $count = Wishlist::where('user_id', '=', Auth::User()->id)->where('video_id', '=', $video_id)->count();
+        if ( $count > 0 ) {
+          Wishlist::where('user_id', '=', Auth::User()->id)->where('video_id', '=', $video_id)->delete();
+        } else {
+          $data = array('user_id' => Auth::User()->id, 'video_id' => $video_id );
+          Wishlist::insert($data);  
+        }
+        return Redirect::back();
+    }
 
     public function Wishlist_play_videos($slug)
     {

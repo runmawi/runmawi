@@ -10,15 +10,14 @@
                foreach($cnt_watching as $cont_video):                
                ?>
        <li class="slide-item">
-          <a href="<?php echo URL::to('home') ?>">
+          <!-- <a href="<?php // echo URL::to('home') ?>"> -->
              <div class="block-images position-relative">
+       <a class="block-description" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> 
                 <div class="img-box">
-                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">   <h6><?php echo __($cont_video->title); ?></h6></a>
                    <img  data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt="" width="300"> 
                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                     </video>-->
-                    </a> 
                     <div class="corner-text-wrapper">
                     <div class="corner-text">
                         <?php  if(!empty($cont_video->ppv_price)){?>
@@ -32,6 +31,7 @@
 
                 </div>
                 </div>
+                </a>
                 <!-- </div> -->
 
                 <div class="block-description">
@@ -76,7 +76,7 @@
                   </div>
               </div>  
              </div>
-          </a>
+                        </a>
        </li>
 
         <?php  endforeach; 

@@ -35,6 +35,10 @@
                         <input type="text" multiple="true" class="form-control" name="link" id="link" value="<?php if( isset($categories[0]->link)) { echo $categories[0]->link;} ?>" />
 
                     </div>
+					<div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
+                        <label>Trailer Link:</label>
+                        <input type="text" multiple="true" class="form-control" name="trailer_link" id="trailer_link" value="<?php if( isset($categories[0]->trailer_link)) { echo $categories[0]->trailer_link;} ?>" />
+                    </div>
 
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Title:</label>

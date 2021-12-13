@@ -17,10 +17,6 @@
 </style>
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-<!--<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Update Category</h4>
-</div>-->
 <div class="iq-card">
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/age/update') }}" method="post" enctype="multipart/form-data">
@@ -28,10 +24,7 @@
          <div class="form-group ">
 
                         <label>AGE:</label>
-
                         <input type="text" id="age" name="age" value="{{ $categories[0]->age }}" class="form-control" placeholder="Enter Name">
-        
-
                     </div>
 
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
@@ -46,45 +39,15 @@
                         @endif
                     </div>
         
-        
-                <!-- <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
-                        <label>Display In Home page:</label>
-                        <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_home == 1) { echo "checked";} ?>>Yes
-                        <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>>No
-
-                    </div>
-        
-                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                        <label>Image:</label>
-                        @if(!empty($categories[0]->image))
-                        <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->image }}" class="movie-img" width="200"/>
-                        @endif
-                        <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
-                        <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                    <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
+                        <label>Status:</label>
+                        <input type="radio" id="active" name="active" value="1" <?php if( $categories[0]->active == 1) { echo "checked";} ?>>Active
+                        <input type="radio" id="active" name="active" value="0" <?php if( $categories[0]->active == 0) { echo "checked";} ?>> In Active
 
                     </div>
 
+</div>
 
-
-
-                    <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
-
-                        <label>Category:</label>
-                        <select id="parent_id" name="parent_id" class="form-control">
-                        	
-                            <option value="0">Select</option>
-                            @foreach($allCategories as $rows)
-                                <option value="{{ $rows->id }}" @if ($rows->id == $categories[0]->parent_id) selected  @endif >{{ $rows->name }}</option>
-                            @endforeach
-                        </select>
-
-                        @if ($errors->has('parent_id'))
-                            <span class="text-red" role="alert">
-                                <strong>{{ $errors->first('parent_id') }}</strong>
-                            </span>
-                        @endif
-
-                    </div> -->
         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     </form>
@@ -97,6 +60,8 @@
     </div>
 </div>
 </div>
+</div>
+
 	@section('javascript')
 <script>
 	$(document).ready(function(){
