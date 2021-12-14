@@ -463,6 +463,13 @@ $uppercase =  ucfirst($request_url);
                         <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                         <a href="#updatepic" class="edit-icon text-primary">Edit</a>
+                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                            <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
+                            <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                        </form>	
                     </div>
 <div class="row">
 <?php

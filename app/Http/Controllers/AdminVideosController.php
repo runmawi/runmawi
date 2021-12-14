@@ -1351,6 +1351,11 @@ if(!empty($artistsdata)){
             }else {
                 $video->embed_code = '';
             }
+            if(!empty($data['banner'])) {
+                $banner = $data['banner'];
+           }else {
+               $banner = 0;
+           }
     
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
@@ -1369,7 +1374,7 @@ if(!empty($artistsdata)){
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
-             $video->banner =  $data['banner'];
+             $video->banner =  $banner;
 
             $video->enable =  1;
 

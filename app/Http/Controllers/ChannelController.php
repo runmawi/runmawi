@@ -117,6 +117,8 @@ class ChannelController extends Controller
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         // echo "<pre>"; 
+        $artists = [];
+
         $cast = Videoartist::where('video_id','=',$vid)->get();
           foreach($cast as $key => $artist){
             $artists[] = Artist::where('id','=',$artist->artist_id)->get();
@@ -251,7 +253,6 @@ class ChannelController extends Controller
                     }
             
             
-                $artists = [];
                 $payment_settings = PaymentSetting::first();  
                 $mode = $payment_settings->live_mode ;
                   if($mode == 0){

@@ -8,14 +8,15 @@ use App\Video as Video;
 use App\PpvVideo as PpvVideo;
 use Auth;
 use View;
-
+use Session;
 class WishlistController extends Controller
 {
     public function mywishlist(Request $request)
     {
         
 		$video_id = $request['video_id'];
-        
+        Session::flash('success', __('Password change successfully. Please Login again')); 
+
         if($video_id){
             $watchlater = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $video_id)->where('type', '=', 'channel')->first();
             if(isset($watchlater->id)){ 
@@ -27,6 +28,9 @@ class WishlistController extends Controller
                 $watchlater->video_id = $video_id;
                 $watchlater->type = 'channel';
                 $watchlater->save();
+                        Session::flash('success','Product Suucess!'); 
+        // Session::flash('success','Product Suucess!');                                            
+
                return response()->json(['success' => 'Added To Wishlist']);
                 //echo $watchlater;
             }

@@ -526,27 +526,27 @@ class HomeController extends Controller
             
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
-            $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->count();
+            $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->count();
             if ($latest_videos_count > 0) {
-                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
             } else {
                     $latest_videos = [];
             }
-            $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+            $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->count();
             if ($featured_videos_count > 0) {
-                $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
+                $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->get();
             } else {
                     $featured_videos = [];
             }
-             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
             //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
+             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
+             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
+             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->get();
+             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
+             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
+             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('id', 'DESC')->get();		
              $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
              $trendings = $trendings->merge($trending_videos);
              $trendings = $trendings->merge($trending_movies);
@@ -563,9 +563,9 @@ class HomeController extends Controller
                  $cnt_watching = '';
              }
              $currency = CurrencySetting::first();
-             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->count();
              if ($livetreams_count > 0) {
-                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
              } else {
                      $livetreams = [];
              }
@@ -574,11 +574,11 @@ class HomeController extends Controller
             //  dd($currency);
              $data = array(
                 'currency' => $currency,
-                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
+                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate($this->videos_per_page),
                 //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-                 'banner' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                 'banner' => Video::where('banner', '=', '1')->orderBy('id', 'DESC')->simplePaginate(111111),
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
-                 'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                 'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('id', 'DESC')->simplePaginate(111111),
                  'cnt_watching' => $cnt_watching,
                  'trendings' => $trending_movies,
                  'latest_videos' => $latest_videos,
@@ -600,9 +600,9 @@ class HomeController extends Controller
                  'suggested_videos' => $suggested_videos,
                 'video_categories' => VideoCategory::all(),
                  'home_settings' => HomeSetting::first(),
-                 'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
-                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
-                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
+                 'livetream' =>  LiveStream::orderBy('id', 'DESC')->get(),
+                 'audios' => Audio::where('active', '=', '1')->orderBy('id', 'DESC')->get(),
+                 'albums' => AudioAlbums::orderBy('id', 'DESC')->get(),
 
              );
              //echo "<pre>";print_r($data['latest_videos']);exit;

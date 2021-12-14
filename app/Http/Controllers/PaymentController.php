@@ -162,6 +162,9 @@ public function RentPaypal(Request $request)
 
   public function purchaseVideo(Request $request)
   {
+    // dd($request->all());
+    $data = $request->all();
+    $video_id = $data['video_id'];
     $setting = Setting::first();  
     $ppv_hours = $setting->ppv_hours;
     // $to_time =  Carbon::now()->addHour($ppv_hours);
@@ -171,14 +174,15 @@ public function RentPaypal(Request $request)
     // dd($now);
     $time = date('h:i:s', strtotime($now));
     $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
-    // dd($ppv_hours);
     $user_id = Auth::user()->id;
     $username = Auth::user()->username;
     $email = Auth::user()->email;
 
-    $video_id = $request->get('video_id');
+    // $video_id = $request->get('video_id');
+    // print_r($video_id);exit();
     $video = Video::where('id','=',$video_id)->first();  
     // $video = Video::where('id','=',103)->first();  
+    $total_amount = $video->ppv_price;
     $title =  $video->title;
     $commssion = VideoCommission::first();
     $percentage = $commssion->percentage; 
@@ -224,15 +228,15 @@ public function RentPaypal(Request $request)
     // print_r($heading);
     // exit();
 
-    Mail::send('emails.payperview_rent', array(
-        /* 'activation_code', $user->activation_code,*/
-        'name'=> $username, 
-        'email' => $email, 
-        'title' => $title, 
-        ), function($message) use ($request,$username,$heading,$email) {
-        $message->from(AdminMail(),'Flicknexs');
-        $message->to($email, $username)->subject($heading.$username);
-        });
+    // Mail::send('emails.payperview_rent', array(
+    //     /* 'activation_code', $user->activation_code,*/
+    //     'name'=> $username, 
+    //     'email' => $email, 
+    //     'title' => $title, 
+    //     ), function($message) use ($request,$username,$heading,$email) {
+    //     $message->from(AdminMail(),'Flicknexs');
+    //     $message->to($email, $username)->subject($heading.$username);
+    //     });
 
     return 1;
   }
