@@ -747,11 +747,11 @@ function savesubcat(){
            }, 2000);
            });
 
-           var vid = document.getElementById("videoPlayer_html5_api");
+           var vid = document.getElementById("videoPlayer");
            vid.currentTime = $("#current_time").val();
            $(window).on("beforeunload", function() { 
 
-             var vid = document.getElementById("videoPlayer_html5_api");
+             var vid = document.getElementById("videoPlayer");
              var currentTime = vid.currentTime;
              var duration = vid.duration;
              var videoid = $('#video_id').val();
@@ -886,9 +886,9 @@ location.reload();
     // })
     // $('#videoPlayer').play();
 
-    var vid = document.getElementById("videoPlayer");
-    vid.autoplay = true;
-    vid.load();
+    // var vid = document.getElementById("videoPlayer");
+    // vid.autoplay = true;
+    // vid.load();
 
        </script>
        
