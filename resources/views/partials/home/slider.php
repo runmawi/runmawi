@@ -140,7 +140,7 @@ data-delay-in="1.2">
 
     
 <div class="trailor-video">
-    <a href="javascript:;" class="video-open playbtn">
+    <a href="#video-trailer" class="video-open playbtn">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
@@ -162,7 +162,7 @@ data-delay-in="1.2">
 	<!-- Add New Modal -->
 
     <div class="col-md-12">
-        <div id="video" class="mfp-hide">
+        <div id="video-trailer" class="mfp-hide">
              <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>" autoplay class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
         </div>
 <!--
