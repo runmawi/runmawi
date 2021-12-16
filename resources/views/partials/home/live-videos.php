@@ -1,4 +1,4 @@
-<?php   if(count($livetream) > 0) : ?>
+<?php  if(count($livetream) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title">Live Videos</h4>                      
                  </div>
@@ -28,6 +28,7 @@
                                 <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                       
+                  <!-- <span style="color: white;"class="mywishlist <?php// if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?// !Auth::guest() ?>" data-videoid="<?// $watchlater_video->id ?>"><i style="color: white;" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php //endif; ?> >Add to Watchlist</i></span> -->
                                     
                                    <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
@@ -50,3 +51,22 @@
                     </ul>
                  </div>
                  <?php endif; ?>
+                 <script>
+       $('.mywishlist').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+              $(this).html('<i class="ri-heart-fill"></i>');
+             }else{
+               $(this).html('<i class="ri-heart-line"></i>');
+
+             }
+             
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
+</script>

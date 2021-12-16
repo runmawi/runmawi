@@ -3104,7 +3104,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function nextfavoritevideo(Request $request)
+  public function nextfavouritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;

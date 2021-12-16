@@ -41,7 +41,7 @@
 </section>
 <?php } ?>
 
-<?php if($home_settings->live_videos == 1){ ?>
+<?php if($home_settings->live_videos == 1){  ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">

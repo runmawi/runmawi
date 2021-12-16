@@ -47,10 +47,12 @@
                                       Watch Now
                                       
                                        </a>
-                                       <div>
-                                       <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
-                       </a></div>
-                                   </div>
+                                       <div class="hover-buttons">
+                                       <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $watchlater_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
+                       <!-- </a> -->
+                          <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>"><i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" >Add to Watchlist</i></span>
+                              </div>
+
 <!--
                                     <div>
                                         <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
@@ -72,7 +74,18 @@
                  </div>
                  <?php endif; ?>
 
-            
+            <style>
+              .i{
+                text-decoration: none;
+                text-decoration-line: none;
+                text-decoration-style: initial;
+                text-decoration-color: initial;
+                outline-color: initial;
+                outline-style: none;
+                outline-width: medium;
+                outline: medium none;
+              }
+            </style>
               <?php /*  if(isset($latest_videos)) :
                              foreach($latest_videos as $watchlater_video): ?>
               <div class="modal fade bd-example-modal-xl1<?= $watchlater_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -241,3 +254,24 @@
 
 <?php endforeach; 
 endif; */?>
+
+<script>
+  // alert( $(this).data('videoid'));
+       $('.mywishlist').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+              $(this).html('<i class="ri-heart-fill">Remove From Watchlist</i>');
+             }else{
+               $(this).html('<i class="ri-heart-line">Add to Watchlist</i>');
+
+             }
+             
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
+</script>

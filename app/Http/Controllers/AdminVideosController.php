@@ -706,7 +706,7 @@ if(!empty($artistsdata)){
         }
         
         $data = $request->all();
-        
+        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255'
         ]);
@@ -991,6 +991,7 @@ if(!empty($artistsdata)){
 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->language=$request['language'];
          $video->skip_recap =  $request['skip_recap'];
          $video->recap_start_time =  $request['recap_start_time'];
          $video->recap_end_time =  $request['recap_end_time'];
@@ -1040,7 +1041,8 @@ if(!empty($artistsdata)){
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+                    // $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.vtt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 

@@ -19,21 +19,21 @@ class LiveStream extends Model
 	}
 
 	public function categories(){
-		return $this->belongsTo('PpvCategory','video_category_id','id');
+		return $this->belongsTo('App\PpvCategory','video_category_id','id');
 	}
 
 	public function videoresolutions(){
-		return $this->hasMany('VideoResolution','video_id','id');
+		return $this->hasMany('App\VideoResolution','video_id','id');
 	}
 
 	public function videosubtitles(){
-		return $this->hasMany('VideoSubtitle','video_id','id');
+		return $this->hasMany('App\VideoSubtitle','video_id','id');
 	}
     
     
 
 	public function languages(){
-		return $this->belongsTo('Language','language','id');
+		return $this->belongsTo('App\Language','language','id');
 	}
 	
 	public function cppuser(){

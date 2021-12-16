@@ -44,7 +44,7 @@ i#like {
     padding: 10px;
 }
 </style>
-
+<input type="hidden" value="<?= $media_url ?>" id="media_url">
 <!-- Buttons start here. Copy this ul to your document. -->
 <li class="share">
 <span><i class="ri-share-fill"></i></span>
@@ -52,33 +52,22 @@ i#like {
        <div class="d-flex align-items-center"> 
           <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
           <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
        </div>
     </div>
 </li>
 <li>
-    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="ri-thumb-up-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i></span>
+    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) {}?> class="ri-thumb-up-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  data-authenticated="<?= !Auth::guest() ?>"></i></span>
 </li>
 <li>
-    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'style="color: #34c1d8;cursor:pointer;"';}?> class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i></span>
+    <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) {}?> class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i></span>
 </li>
 
 <?php echo $hidden; if (Auth::user()) { ?>
     <input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
 <?php } ?>
 <!-- Buttons end here -->
-<script>
-    $(document).ready(function(){
-//   $("#like").click(function(){
-//       var like = $("#like").attr("like");
-//             alert(like);
-//             return false;
-//         $.ajax({url: "demo_test.txt", success: function(result){
-//         $("#div1").html(result);
-//         }});
-//   });
-});
-</script>
+
 
 <script>
 	$('#like').click(function(){
@@ -89,13 +78,7 @@ i#like {
             if($(this).hasClass('active')){
                 var like = 1;
                 //$(this).css('color','#34c1d8');
-                $(this).replaceClass('ri-thumb-up-line ri-thumb-up-fill');
-            }else{
-                var like = 0;
-                //$(this).css('color','#4895d1');
-                $(this).replaceClass('ri-thumb-up-fill ri-thumb-up-line');
-            }
-            $.ajax({
+                $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
                 type: "POST",
                 data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
@@ -104,24 +87,59 @@ i#like {
                     
                 }
             });
+            // $(this).html('<i class="ri-thumb-up-fill"></i>');
+
+            // $(this).replaceClass('ri-thumb-up-line ri-thumb-up-fill');
+
+            }else{
+                var like = 0;
+                //$(this).css('color','#4895d1');
+                $.ajax({
+                url: "<?php echo URL::to('/').'/like-video';?>",
+                type: "POST",
+                data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function() {
+                    
+                }
+            });
+            // $(this).html('<i class="ri-thumb-up-line"></i>');
+
+                // $(this).replaceClass('ri-thumb-up-fill ri-thumb-up-line');
+            }
+           
         } else {
           window.location = '<?= URL::to('login') ?>';
       }
   });
 
-    $('#dislike').click(function(){
-        $(this).toggleClass('active');
-        if($(this).hasClass('active')){
-            var dislike = 1;
-            $(this).replaceClass('ri-thumb-down-line ri-thumb-down-fill');
-        }else{
-            var dislike = 0;
-            $(this).replaceClass('ri-thumb-down-fill ri-thumb-down-line')
-        }
+
+
+	$('#dislike').click(function(){
         var  videoid = $("#videoid").val();
         var user_id = $("#user_id").val();
+        if($(this).data('authenticated')){
+            $(this).toggleClass('active');
+            if($(this).hasClass('active')){
+                var dislike = 1;
+                //$(this).css('color','#34c1d8');
+                
+                    $.ajax({
+                        url: "<?php echo URL::to('/').'/dislike-video';?>",
+                        type: "POST",
+                        data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+                        dataType: "html",
+                        success: function() {
+                    }
+                });
+                // $(this).html('<i class="ri-thumb-down-line"></i>');
+  
+            // $(this).replaceClass('ri-thumb-up-line ri-thumb-up-fill');
 
-        $.ajax({
+            }else{
+                var dislike = 0;
+                //$(this).css('color','#4895d1');
+                $.ajax({
             url: "<?php echo URL::to('/').'/dislike-video';?>",
             type: "POST",
             data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
@@ -129,7 +147,25 @@ i#like {
             success: function() {
           }
       });
+    //   $(this).html('<i class="ri-thumb-down-fill"></i>');
 
-    });
-
+                // $(this).replaceClass('ri-thumb-up-fill ri-thumb-up-line');
+            }
+            // alert('test');
+        
+          
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+      }
+  });
+</script>
+<script>
+function Copy() {
+    var media_path = $('#media_url').val();
+  var url =  navigator.clipboard.writeText(window.location.href);
+  var path =  navigator.clipboard.writeText(media_path);
+// console.log(url);
+// console.log(media_path);
+// console.log(path);
+}
 </script>

@@ -53,7 +53,7 @@
 						
 						<?php foreach($season as $key => $seasons):  
 							foreach($seasons->episodes as $key => $episodes): ?>
-								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->title.'/'.$episodes->id;?>">
+								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->title;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >

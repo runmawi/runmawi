@@ -17,7 +17,9 @@ use View;
 use Hash;
 use DB;
 use Session;
+use App\Language;
 use App\PaymentSetting;
+use App\CurrencySetting as CurrencySetting;
 
 
 use Illuminate\Support\Facades\Cache;
@@ -86,8 +88,11 @@ class LiveStreamController extends Controller
                 }else{
                     $secret_key= null;
                     $publishable_key= null;
-                }            
+                }        
+             $currency = CurrencySetting::first();
+
            $data = array(
+                 'currency' => $currency,
                  'video' => $categoryVideos,
                  'password_hash' => $password_hash,
                  'publishable_key' => $publishable_key,

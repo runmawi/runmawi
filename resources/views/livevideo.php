@@ -75,9 +75,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
                             <div class="ppv-block">
-                                <h2 class="mb-3">Pay now to watch the video</h2>
+                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
-                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $ppv_price; ?>)">Pay <?php echo '$' . $ppv_price; ?></button>
+                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                             </div>
                         </div>
                     </div>
@@ -106,10 +106,16 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                     </div>        
                 </div>
                 <!-- Year, Running time, Age -->
-                  <div class="d-flex align-items-center text-white text-detail">
-                     <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict);?></span>
-                     <span class="ml-3"><?php echo __($video->duration);?></span>
-                     <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                <div class="d-flex align-items-center text-white text-detail">
+                <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2"><?php if(!empty($video->publish_time)){ echo $video->publish_time; } else { echo $video->created_at ; }?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                     <!-- <span class="badge badge-secondary p-3"><?php //echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <span class="ml-3"><?php// echo __($video->duration);?></span>
+                     <span class="trending-year"><?php //if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span> -->
                   </div>
                 
                 <?php if(!Auth::guest()) { ?>
@@ -163,6 +169,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                                  <?php include('partials/social-share.php'); ?>                     
                           </ul>
                     </div>
+
+
+                  
                     <div class="col-sm-6 col-md-6 col-xs-12">
     <!--
                           <div class="d-flex align-items-center series mb-4">
@@ -198,6 +207,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                         </div>
                     </div>
                 </div>
+
+
+                
 <!-- <div style="text-align:right;padding:5px 0";>
 <span class="view-count" style="margin-right:10px";><i class="fa fa-eye"></i> <?php if (isset($view_increment) && $view_increment == true): ?><?=$video->views + 1 ?><?php
 else: ?><?=$video->views ?><?php

@@ -118,7 +118,15 @@
 					@endif
 				</div> 
 			</div>
-
+			<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<label><h6>Age Restrict :</h6></label>
+				<select class="form-control" id="age_restrict" name="age_restrict">
+						<option selected disabled="">Choose Age</option>
+						@foreach($age_categories as $age)
+							<option value="{{ $age->id }}" @if(!empty($episodes->age_restrict) && $episodes->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+						@endforeach
+					</select>
+			</div>
 			<div class="clear"></div>
 
 			<div class="clear"></div>

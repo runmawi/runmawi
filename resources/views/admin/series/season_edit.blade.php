@@ -37,7 +37,7 @@
 	</div>
 	<div class="clear"></div>
 
-	
+	<?php //dd($age_categories); ?>
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
@@ -102,13 +102,13 @@
 						<option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
 						<option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
 					</select>
-					
+
+				
+
 
 					<div class="new-episodes-file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
 						<label for="mp4_url">Mp4 File URL:</label>
 						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
-					
-						
 					</div>
 
 					<div class="new-episodes-embed" @if(!empty($episodes->type) && $episodes->type == 'embed')style="display:block"@else style = "display:none" @endif>
@@ -130,6 +130,16 @@
 					@endif
 				</div> 
 			</div>
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<label><h6>Age Restrict :</h6></label>
+				<select class="form-control" id="age_restrict" name="age_restrict">
+						<option selected disabled="">Choose Age</option>
+						@foreach($age_categories as $age)
+							<option value="{{ $age->id }}" @if(!empty($episodes->age_restrict) && $episodes->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+						@endforeach
+					</select>
+			</div>
+
 			<div class="row align-items-center"> 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 

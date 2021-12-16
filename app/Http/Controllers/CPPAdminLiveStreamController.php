@@ -180,14 +180,15 @@ class CPPAdminLiveStreamController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-        $settings = Setting::first();
-        if(!empty($data['ppv_price'])){
-            $ppv_price = $data['ppv_price'] ;
-        }elseif($settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
-        }else{
-            $ppv_price = null;
-        }
+        if(empty($data['ppv_price'])){
+            $settings = Setting::where('ppv_status','=',1)->first();
+            if(!empty($settings)){
+                $ppv_price = $settings->ppv_price;
+            }
+            }  else {
+                $ppv_price = $data['ppv_price'];
+            }  
+
         $movie = new LiveStream;
 
         $movie->title =$data['title'];

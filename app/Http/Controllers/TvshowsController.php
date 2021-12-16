@@ -69,9 +69,9 @@ class TvshowsController extends Controller
      $settings = Setting::first();
 
      $genre = Genre::all();
-     $trending_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->count();
+     $trending_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->count();
      if ($trending_episodes_count > 0) {
-     $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+     $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
     } else {
            $trending_episodes = [];
     } 
@@ -87,9 +87,9 @@ class TvshowsController extends Controller
     } else {
             $latest_series = [];
     } 
-    $latest_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->count();
+    $latest_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->count();
     if ($latest_episodes_count > 0) {
-        $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+        $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
     } else {
             $latest_episodes = [];
     }
@@ -100,8 +100,8 @@ class TvshowsController extends Controller
      
      $pages = Page::all();
      $data = array(
-      'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(12),
-      'banner' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+      'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
+      'banner' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
       'trendings' => $trending_episodes,
       'latest_episodes' => $latest_episodes,
       'featured_episodes' => $featured_episodes,
@@ -123,7 +123,7 @@ class TvshowsController extends Controller
    	if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        $episode = Episode::where('title','=',$episode_name)->first();    
+        $episode = Episode::where('title','=',$episode_name)->orderBy('id', 'DESC')->first();    
         $id = $episode->id;
         // $episode = Episode::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();

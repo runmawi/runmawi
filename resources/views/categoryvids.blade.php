@@ -47,7 +47,9 @@
                                                             <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
                                                         </a>
                                                          <div>
-                                        <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                  <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>"><i style="color: white;" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> >Add to Watchlist</i></span>
+
+                                        <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                                            </a></div>
                                         </div>
 <!--
@@ -253,3 +255,22 @@
 <!-- MainContent End-->
 
      @extends('footer')  
+     <script>
+       $('.mywishlist').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+              $(this).html('<i class="ri-heart-fill"></i>');
+             }else{
+               $(this).html('<i class="ri-heart-line"></i>');
+
+             }
+             
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
+</script>

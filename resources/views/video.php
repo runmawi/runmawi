@@ -1,23 +1,6 @@
  
 <?php include('header.php');  ?>
 
-                        <?php if (Session::has('message'))
-                        { ?>
-                       <div id="successMessage" class="alert alert-info"><?php Session::get('message') ?></div>
-                        <?php }
-                        if(count($errors) > 0){
-                        foreach( $errors->all() as $message ) { ?>
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span><?php echo $message ; ?></span>
-                        </div>
-                       <?php } }
-                      ?>
-
-
-<div class="div">
-  <p>data</p>
-</div>
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
@@ -27,7 +10,7 @@
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
-    .vjs-error .vjs-error-display .vjs-modal-dialog-content {
+    .vjs-error.vjs-error-display.vjs-modal-dialog-content {
    font-size: 2.4em;
    text-align: center;
    padding-top: 20%; 
@@ -74,9 +57,8 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
            <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
            
-             <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
+             <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
              controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                  <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
@@ -133,20 +115,12 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <video id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
-                
-                   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
-                   <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
-                   <?php } if($value->sub_language == "German"){?>
-                   <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
-                   <?php } if($value->sub_language == "Spanish"){ ?>
-                   <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
-                   <?php } if($value->sub_language == "Hindi"){ ?>
-                   <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
-                   <?php }
-                   } } else {  } ?>  
+                   <track label="German" kind="subtitles" srclang="de" src="http://localhost/flicknexs/public/uploads/subtitles/20-de.vtt" >
+                   <track label="Hindi" kind="subtitles" srclang="hi" src="http://localhost/flicknexs/public/uploads/subtitles/20-hi.vtt" >
+
                </video>
  
                <div class="playertextbox hide">
@@ -167,9 +141,8 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+               <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type='application/x-mpegURL' label='auto' > 
 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -225,8 +198,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
        <div id="video" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
-       <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-           <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+       <video  autoplay id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -268,9 +240,8 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
  <?php if(Auth::guest()) {  ?>
    <div id="video" class="fitvid" style="margin: 0 auto;">
        
-       <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+       <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
-<track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
 <!--
    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
 
@@ -306,7 +277,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
        </div>
        <!-- Year, Running time, Age -->
          <div class="d-flex align-items-center text-white text-detail">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict);?></span>
+            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <!-- .' '.'+' -->
             <span class="ml-3"><?php echo __($video->categories->name);?></span>
             <span class="ml-3"><?php echo __($video->duration);?></span>
@@ -350,7 +321,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
 
                          <!-- && ($video->global_ppv == 1 ) -->
                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                           <?php echo __('Purchase for').' '.$video->ppv_price;?> </button>
+                           <?php echo __('Purchase for').' '.$currency->symbol.' '.$video->ppv_price;?> </button>
                        <?php } ?>
                    </li>
                    <li>
@@ -421,18 +392,25 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                </div>
            </div>
            <?php   } ?>
+           <?php if(!empty($video->description) ) { ?>
 
            <h4>Description</h4>
               <div class="text-white">
                   <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
               </div>
+    <?php  }?>
+
        <br>
+<?php if(!empty($video->details) ) { ?>
+
                   <h4>Links & details</h4>
               <div class="text-white">
                   <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
               </div>
-       <br>
+    <?php  }?>
 
+       <br>
+<?php if(count($artists) > 0 ) { ?>
  <h4>Cast & crew</h4>
          <?php
            foreach($artists as $key => $artist){
@@ -444,7 +422,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
            <!-- <p class="trending-dec w-100 mb-0 text-white" >Produced by  :<?php //echo $value->artist_name ; ?></p>&nbsp;&nbsp;
            <p class="trending-dec w-100 mb-0 text-white" >Music by  :<?php //echo $value->artist_name ; ?></p>&nbsp;&nbsp;
            <p class="trending-dec w-100 mb-0 text-white" >Description by  :<?php// echo $value->artist_name ; ?></p>&nbsp;&nbsp; -->
-    <?php } }  ?>
+    <?php } }  }?>
     <br>
            
   <!-- Button trigger modal -->
@@ -466,7 +444,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                  
                  <div class="col-sm-4">
                  <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
-                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
+                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                 <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>
                 <span class="badge badge-secondary p-2"><?php echo __($video->languages->name);?></span>
                 <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
@@ -528,7 +506,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
            </div>
    </div>
    <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
-   <video id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>">
+   <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>">
 
   </div>
 
@@ -724,7 +702,7 @@ location.reload();
 
      $('.watchlater').click(function(){
        if($(this).data('authenticated')){
-         $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' },
+         $.post('<?= URL::to('addwatchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' },
           function(data){});
          $(this).toggleClass('active');
          $(this).html("");
@@ -748,14 +726,16 @@ location.reload();
     //         $('#successMessage').fadeOut('fast');
     //     }, 3000);
     // })
+    // $('#videoPlayer').play();
 
-    
+    var vid = document.getElementById("videoPlayer");
+    vid.autoplay = true;
+    vid.load();
 
        </script>
        
    </div>
    <style>
-     .active {text-align: left; color: #fff; background-color:#ffbb00; text-decoration: none;}
 
    </style>
 <?php include('footer.blade.php');?>

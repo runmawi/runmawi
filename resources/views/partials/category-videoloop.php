@@ -51,7 +51,7 @@
                         ?>
                     <li class="slide-item">
                             <div class="block-images position-relative">
-                            <a class="block-description" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> -->
                                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
@@ -74,7 +74,6 @@
                                         </p>
                                     </div>
                                 </div>
-                                            </a>
                                 <div class="block-description">
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                         <h6>
@@ -96,9 +95,11 @@
 
                                         </a>
                                         <div>
-                                       <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
-                       </a></div>
-                                    </div>
+                  <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>"><i style="color: white;" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> >Add to Watchlist</i></span>
+
+                                       <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
+                       <!-- </a> -->
+                    </div>
 
                         <!--
                            <div>
@@ -314,3 +315,22 @@
 
     </div>
 </div>
+<script>
+       $('.mywishlist').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+              $(this).html('<i class="ri-heart-fill"></i>');
+             }else{
+               $(this).html('<i class="ri-heart-line"></i>');
+
+             }
+             
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
+</script>
