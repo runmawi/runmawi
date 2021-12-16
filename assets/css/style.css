@@ -1775,7 +1775,7 @@ padding: 15px;
 
 /* Player Css */
 
-#video .plyr.plyr--full-ui {
+#video .plyr.plyr--full-ui, #videoPlayer .plyr.plyr--full-ui {
     height: calc(100vh - 80px - 75px);
     max-width: none;
     width: 100%;
