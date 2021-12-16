@@ -257,44 +257,69 @@
 			<div class="panel-heading"> <div class="panel-title"><label>Registration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 			<div class="panel-body"> 
 				<div class="row">
-					<div class="col-md-4 align-center">
-                        <div class="row" >
-						<p class="col-md-8 p1">Enable Free Registration:</p>
+				<div class="col-sm-4">
+<div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+<div><label class="mt-1">Enable Free Registration </label></div>
+<div>ON</div>
+<div class="mt-1">
+<label class="switch">
+<input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->free_registration) && $settings->free_registration))checked="checked" value="1"@else value="0"@endif name="free_registration" id="free_registration" />
+<span class="slider round"></span>
+</label>
+</div>
+<div>OFF</div>
+</div>
+</div>
 
-						<div class="form-group col-md-4">
-				        	<div class="make-switch" data-on="success" data-off="warning">
-				                <input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->free_registration) && $settings->free_registration))checked="checked" value="1"@else value="0"@endif name="free_registration" id="free_registration" />
-				            </div>
-						</div>
-                        </div>
-					</div>
+
+<div class="col-sm-4">
+<div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+<div><label class="mt-1"> Require users to verify account by email: </label></div>
+<div>ON</div>
+<div class="mt-1">
+<label class="switch">
+<input type="checkbox" @if(!isset($settings->activation_email) || (isset($settings->activation_email) && $settings->activation_email))checked="checked" value="1"@else value="0"@endif name="activation_email" id="activation_email" />
+<span class="slider round"></span>
+</label>
+</div>
+<div>OFF</div>
+</div>
+</div>
 
 
-					<div class="col-md-4 align-center" id="activation_email_block" style="<?php if(isset($settings->free_registration) && $settings->free_registration): ?>display:block;<?php else: ?>display:none<?php endif; ?>">
-						<p class="p1">Require users to verify account by email:</p>
 
-						<div class="form-group">
-				        	<div class="make-switch" data-on="success" data-off="warning">
-				                <input type="checkbox" @if(!isset($settings->activation_email) || (isset($settings->activation_email) && $settings->activation_email))checked="checked" value="1"@else value="0"@endif name="activation_email" id="activation_email" />
-				            </div>
-						</div>
-					</div>
+<div class="col-sm-4">
+<div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+<div><label class="mt-1"> Enable registered users ability to upgrade to subscriber:</label></div>
+<div>ON</div>
+<div class="mt-1">
+<label class="switch">
+<input type="checkbox" @if(!isset($settings->premium_upgrade) || (isset($settings->premium_upgrade) && $settings->premium_upgrade))checked="checked" value="1"@else value="0"@endif name="premium_upgrade" id="premium_upgrade" />
+<span class="slider round"></span>
+</label>
+</div>
+<div>OFF</div>
+</div>
+</div>
 
-					<div class="col-md-4 align-center" id="premium_upgrade_block" style="<?php if(isset($settings->free_registration) && $settings->free_registration): ?>display:block;<?php else: ?>display:none<?php endif; ?>">
-						<p class="p1">Enable registered users ability to upgrade to subscriber:</p>
 
-						<div class="form-group">
-				        	<div class="make-switch" data-on="success" data-off="warning">
-				                <input type="checkbox" @if(!isset($settings->premium_upgrade) || (isset($settings->premium_upgrade) && $settings->premium_upgrade))checked="checked" value="1"@else value="0"@endif name="premium_upgrade" id="premium_upgrade" />
-				            </div>
-						</div>
-					</div>
-
-				</div>
+<div class="col-sm-4">
+<div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+<div><label class="mt-1">Can Access Free Contrent: </label></div>
+<div>ON</div>
+<div class="mt-1">
+<label class="switch">
+    <input type="checkbox" @if(!isset($settings->access_free) || (isset($settings->access_free) && $settings->access_free))checked="checked" value="1"@else value="0"@endif name="access_free" id="access_free" />
+    <span class="slider round"></span>
+</label>
+</div>
+<div>OFF</div>
+</div>
+</div>
 				
 			</div>
 		</div>
-		<div class="col-sm-6">
+		<!-- <div class="col-sm-6">
 			<div class="row" >
 			<p class="col-md-8 p1">Can Access Free Contrent:</p>
 			<div class="form-group col-md-4">
@@ -303,7 +328,7 @@
 				</div>
 			</div>
 			</div>
-		</div>
+		</div> -->
         <div class="row mt-3">
             <div class="col-md-6">
 
