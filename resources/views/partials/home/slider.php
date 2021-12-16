@@ -140,7 +140,7 @@ data-delay-in="1.2">
 
 <div class="trailor-video">
 
-<a href="javascript:;" id="videopopup" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
+<a href="javascript:;" id="videopopup" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i>  Watch Trailer</a></div>
 
 </div>
 </div>
