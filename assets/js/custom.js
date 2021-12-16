@@ -482,7 +482,7 @@ Index Of Script
 			removalDelay: 160,
 			preloader: false,
 			fixedContentPos: false,
-			iframe: {
+			video: {
 				markup: '<div class="mfp-iframe-scaler">' +
 					'<div class="mfp-close"></div>' +
 					'<video id="videoPlayer" class="mfp-iframe" frameborder="0" allowfullscreen></video>' +
