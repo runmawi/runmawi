@@ -196,6 +196,7 @@
 				</div>
 			</div>
         </div>
+	
         <div class="row mt-3">
            <div class="col-sm-6" id="Pay_Per_view_Hours">
                <div class="panel panel-primary"  data-collapsed="0">
@@ -291,6 +292,16 @@
 
 				</div>
 				
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="row" >
+			<p class="col-md-8 p1">Can Access Free Contrent:</p>
+			<div class="form-group col-md-4">
+				<div class="make-switch" data-on="success" data-off="warning">
+				<input type="checkbox" @if(!isset($settings->access_free) || (isset($settings->access_free) && $settings->access_free))checked="checked" value="1"@else value="0"@endif name="access_free" id="access_free" />
+				</div>
+			</div>
 			</div>
 		</div>
         <div class="row mt-3">
