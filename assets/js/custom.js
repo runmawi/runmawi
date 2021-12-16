@@ -477,7 +477,7 @@ Index Of Script
 			Video popup
 		-----------------------------------------------------------------------*/
 		jQuery('.video-open').magnificPopup({
-			type: 'iframe',
+			type: 'video',
 			mainClass: 'mfp-fade',
 			removalDelay: 160,
 			preloader: false,
@@ -485,10 +485,10 @@ Index Of Script
 			iframe: {
 				markup: '<div class="mfp-iframe-scaler">' +
 					'<div class="mfp-close"></div>' +
-					'<iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>' +
+					'<video id="videoPlayer" class="mfp-iframe" frameborder="0" allowfullscreen></video>' +
 					'</div>',
 
-				srcAction: 'iframe_src',
+				srcAction: 'video_src',
 			}
 		});
 
