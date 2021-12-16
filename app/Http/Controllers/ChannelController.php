@@ -107,12 +107,12 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
-
         $data['password_hash'] = "";
         $data = session()->all();
        
         if(!empty($data['password_hash'])){
 
+          // dd('test');
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
@@ -338,6 +338,7 @@ class ChannelController extends Controller
  
        return view('video', $data);
     }else{
+      // dd('testone');
     
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
@@ -420,8 +421,14 @@ class ChannelController extends Controller
             );
 
             }
- 
-       return view('video_before_login', $data);
+            $settings = Setting::first();
+
+            if($settings->access_free == 1){
+                // dd('$agent');
+                  return view('video', $data);
+            }else{
+                  return view('video_before_login', $data);
+            }
     }
         }
     
