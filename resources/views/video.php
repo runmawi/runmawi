@@ -488,11 +488,12 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                    <li>
                    <div class=" pull-right btn btn-default ">     
                        <?php if($video->trailer != ''){ ?>
-                        <div id="videoplay" style="color:white;border: 1px solid #ddd;" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                        <div id="videoplay" style="color:white;border: 1px solid #ddd;" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer
+                        </div>
+                        <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                        <?php } ?>
                    </div>
-                   </div>
+                   
 
                    </li>
                </ul>
@@ -547,16 +548,15 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
            <?php   } ?>
            <?php if(!empty($video->description) ) { ?>
 
-           <h4>Description</h4>
+              <h4>Description</h4>
               <div class="text-white">
                   <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
               </div>
     <?php  }?>
 
-       <br>
 <?php if(!empty($video->details) ) { ?>
 
-                  <h4>Links & details</h4>
+              <h4>Links & details</h4>
               <div class="text-white">
                   <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
               </div>
@@ -575,11 +575,7 @@ $artists = [];
            foreach($artist as $key => $value){
          ?>
            <img src="<?= URL::to('/') . '/public/uploads/artists/'.$value->image ?>" alt=""width="50" height="60">
-           <p class="trending-dec w-100 mb-0 text-white mt-2" >Directed by : <?php echo $value->artist_name ; ?> </p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Description by  :  <?php echo $value->description ; ?></p>&nbsp;&nbsp;
-           <!-- <p class="trending-dec w-100 mb-0 text-white" >Produced by  :<?php //echo $value->artist_name ; ?></p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Music by  :<?php //echo $value->artist_name ; ?></p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Description by  :<?php// echo $value->artist_name ; ?></p>&nbsp;&nbsp; -->
+           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $value->artist_name ; ?> </p>&nbsp;&nbsp;
     <?php } }  }?>
     <br>
            
@@ -664,8 +660,7 @@ $artists = [];
            </div>
    </div>
    <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
-   <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>">
-
+       <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>"></video>
   </div>
 
   <?php  if(Auth::guest()){ ?>
