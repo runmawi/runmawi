@@ -187,12 +187,15 @@ endif; ?>
         keyboard: false
         });
         });
+        $('#Close').click(function() {
+        var videoPlayer = document.getElementById('videoPlayer');
+        player.pause();
+        $('.container-fluid.position-relative.h-100').css('display','block');
+
+        });
         });
 
-    $('#Close').click(function() {
-$('.container-fluid.position-relative.h-100').css('display','block');
-
-});
+   
 // if (!$(this.target).is('#popUpForm')) {
 //     $(".modalDialog").hide();
 // $('.container-fluid.position-relative.h-100').css('display','block');
