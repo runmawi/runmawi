@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
 
+
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 // href="http://localhost/flicknexs/category/wishlist/Kung fu Panda"
+Route::get('/free-access', 'HomeController@FreeAccess')->name('FreeAccess');
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
@@ -96,7 +98,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('searchResult', 'HomeController@searchResult');
     Route::get('search','HomeController@search');
     Route::get('showPayperview', 'WatchLaterController@showPayperview');
-    Route::post('watchlater', 'WatchLaterController@watchlater');
+    Route::post('addwatchlater', 'WatchLaterController@watchlater');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
     Route::get('/page/{slug}', 'PagesController@index');
@@ -161,7 +163,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 //        Route::get('/', function () {
 //            return view('admin.dashboard');
 //        });
-
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
