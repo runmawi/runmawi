@@ -415,7 +415,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
            
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-   <div class="container-fluid video-details" style="width:90%!important;">
+   <div class="container video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
            <div class="row">
                <div class="col-sm-9 col-md-9 col-xs-12">

@@ -1771,6 +1771,12 @@ padding: 15px;
     border-left: none;  
     border-bottom-right-radius: 15px;
 }
-.{
-    border: 1px solid white;
+
+
+/* Player Css */
+
+#video .plyr.plyr--full-ui {
+    height: calc(100vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
 }

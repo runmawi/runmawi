@@ -138,33 +138,43 @@ data-delay-in="1.2">
 </div>
 </div>
 
+    
 <div class="trailor-video">
-
-<a href="javascript:;" id="videopopup" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i>  Watch Trailer</a></div>
-
+    <a href="javascript:;" id="videopopup" onclick="jQuery('#add-new').modal('show');"
+        class="video-open playbtn">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+        viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
+        stroke-linejoin="round" stroke-miterlimit="10"
+        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+        stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+    </svg>
+    <span class="w-trailor">Watch Trailer</span>
+</a>
 </div>
+
+
 </div>
 </div>
 </div>
 </div>
 	<!-- Add New Modal -->
     <div class="col-md-12">
-	<div class="modal fade" id="addnew">
-		<div class="modal-dialog">
-			<div class="modal-content" style="width: 131% !important;">
-            <div class="modal-header">  
-            <button type="button" style="margin-left: 94%;" id="Close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div> 
-            <div id="popUpForm" class="modal-body">
-                <video id="videoPlayer" autoplay class="" controls src="<?= $videos->trailer;  ?>"  type="application/x-mpegURL" > 
-             </div>    
-             <div class="modal-footer">
-            <button type="button" class="btn btn-default" id="Close" data-dismiss="modal">Close</button> 
+        <div class="modal fade" id="addnew">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">  
+                        <button type="button" id="Close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div> 
+                    <div id="popUpForm" class="modal-body">
+                        <video id="videoPlayer" autoplay class="" controls src="<?= $videos->trailer;  ?>"  type="application/x-mpegURL" > </video>
+                    </div>    
+                </div>
             </div>
-            </div>
-			</div>
-		<!-- </div> -->
-        <!-- </div> -->
+        </div>
+    </div>
 <?php  ?>
 
 <?php endforeach; 
