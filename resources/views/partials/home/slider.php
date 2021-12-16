@@ -161,7 +161,12 @@ data-delay-in="1.2">
 </div>
 </div>
 	<!-- Add New Modal -->
+
     <div class="col-md-12">
+        <div id="video" class="mfp-hide">
+             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>" autoplay class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+        </div>
+<!--
         <div class="modal fade" id="addnew">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -174,6 +179,7 @@ data-delay-in="1.2">
                 </div>
             </div>
         </div>
+-->
     </div>
 <?php  ?>
 
@@ -186,6 +192,7 @@ endif; ?>
 } */
 </style>
 
+<!--
 <script>
 
         $(document).ready(function(){
@@ -213,6 +220,7 @@ endif; ?>
 //   }
 
 </script>
+-->
 <!-- Banners -->
 <?php if(isset($banner)) :
     foreach($banner as $key => $slider_video): 

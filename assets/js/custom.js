@@ -476,21 +476,25 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Video popup
 		-----------------------------------------------------------------------*/
-		jQuery('.video-open').magnificPopup({
-			type: 'video',
+		/*jQuery('.video-open').magnificPopup({
+			type: 'iframe',
 			mainClass: 'mfp-fade',
 			removalDelay: 160,
 			preloader: false,
 			fixedContentPos: false,
-			video: {
+			iframe: {
 				markup: '<div class="mfp-iframe-scaler">' +
 					'<div class="mfp-close"></div>' +
-					'<video id="videoPlayer" class="mfp-iframe" frameborder="0" allowfullscreen></video>' +
+					'<iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>' +
 					'</div>',
 
-				srcAction: 'video_src',
+				srcAction: 'iframe_src',
 			}
-		});
+		});*/
+        
+        jQuery('.video-open').magnificPopup({
+            type: 'inline', preloader: false, midClick: true, removalDelay: 160,fixedContentPos: false
+        });
 
 		/*---------------------------------------------------------------------
 			Flatpicker
