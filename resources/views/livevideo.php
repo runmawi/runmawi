@@ -80,7 +80,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                             <div class="ppv-block">
                                 <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
-                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                             </div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
              ?>
                 <div class="d-flex align-items-center text-white text-detail">
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->duration);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->

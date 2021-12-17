@@ -76,7 +76,7 @@
 					<tr>
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
-						<td> <?php echo @$video->cppuser->username; ?></td>
+						<td> <?php if(!empty(@$video->cppuser->username)){ echo @$video->cppuser->username; }else{ @$video->usernames->username; }?></td>
 						<?php if($video->access == "ppv" ){ ?>
 						<td> <?php echo "Paid"; ?></td>
 					<?php }else{ ?>

@@ -7,11 +7,11 @@
                          <?php  if(isset($livetream)) :
                          foreach($livetream as $video): ?>
                        <li class="slide-item">
-                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                           <a href="<?php echo URL::to('home') ?>">
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
                                  </a>      
                                  <div class="corner-text-wrapper">
@@ -25,18 +25,18 @@
                                     </div>                 
                                 </div>
                                 <div class="block-description">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                       
                   <!-- <span style="color: white;"class="mywishlist <?php// if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?// !Auth::guest() ?>" data-videoid="<?// $watchlater_video->id ?>"><i style="color: white;" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php //endif; ?> >Add to Watchlist</i></span> -->
                                     
                                    <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
-                                <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                              </a>                       
                        </div>
-                       <a href="<?= URL::to('/') ?><?= '/live/play/' . $video->slug ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>

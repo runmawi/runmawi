@@ -40,7 +40,7 @@ class LiveStreamController extends Controller
        return view('liveVideos',$data);
     }
     
-    public function Play($vid)
+    public function Play($category,$vid)
         {
         
           $data = session()->all();

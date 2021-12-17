@@ -39,4 +39,8 @@ class LiveStream extends Model
 	public function cppuser(){
 		return $this->belongsTo('App\ModeratorsUser','user_id','id');
 	}
+		
+	public function usernames(){
+		return $this->belongsTo('App\User','user_id','id');
+	}
 }

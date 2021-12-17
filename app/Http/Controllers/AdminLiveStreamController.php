@@ -18,6 +18,9 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
+use Illuminate\Support\Str;
+use App\Users as Users;
+
 
 
 class AdminLiveStreamController extends Controller
@@ -76,15 +79,16 @@ class AdminLiveStreamController extends Controller
         
         $data = $request->all();
         
-        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
-            'slug' => 'required|max:255',
+            // 'slug' => 'required|max:255',
             'description' => 'required',
             'details' => 'required|max:255',
             'year' => 'required'
         ]);
        
+        // dd($data);
+
         $image = (isset($data['image'])) ? $data['image'] : '';
         $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
         
@@ -181,6 +185,14 @@ class AdminLiveStreamController extends Controller
               } else {
                    $rating  = null;
               }
+
+              if ($request->slug != '') {
+                $data['slug'] = $this->createSlug($request->slug);
+                }
+    
+                if($request->slug == ''){
+                        $data['slug'] = $this->createSlug($data['title']);    
+                }
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
@@ -215,8 +227,37 @@ class AdminLiveStreamController extends Controller
          return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
     }
     
-    
-    public function edit($id)
+    public function createSlug($title, $id = 0)
+    {
+        
+        $slug = Str::slug($title);
+
+        $allSlugs = $this->getRelatedSlugs($slug, $id);
+
+        // If we haven't used it before then we are all good.
+        if (! $allSlugs->contains('slug', $slug)){
+            return $slug;
+        }
+
+        // Just append numbers like a savage until we find not used.
+        for ($i = 1; $i <= 10; $i++) {
+            $newSlug = $slug.'-'.$i;
+            if (! $allSlugs->contains('slug', $newSlug)) {
+                return $newSlug;
+            }
+        }
+
+        throw new \Exception('Can not create a unique slug');
+    }
+
+        protected function getRelatedSlugs($slug, $id = 0)
+        {
+            return LiveStream::select('slug')->where('slug', 'like', $slug.'%')
+                ->where('id', '<>', $id)
+                ->get();
+        }  
+
+            public function edit($id)
     {
        $video = LiveStream::find($id);
         
@@ -266,10 +307,13 @@ class AdminLiveStreamController extends Controller
         if(empty($data['ppv_status'])){
             $data['ppv_status'] = 0;
         }
-        if(empty($data['slug'])){
-            $data['slug'] = 0;
+        if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+            }
+
+        if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
         }
-        
         if(empty($data['rating'])){
             $data['rating'] = 0;
         }

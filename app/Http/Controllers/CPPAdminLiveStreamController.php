@@ -19,7 +19,8 @@ use Image;
 use View;
 use Session;
 use App\Setting as Setting;
-
+use Illuminate\Support\Str;
+use App\Users as Users;
 
 class CPPAdminLiveStreamController extends Controller
 {
@@ -188,6 +189,13 @@ class CPPAdminLiveStreamController extends Controller
             }  else {
                 $ppv_price = $data['ppv_price'];
             }  
+            if ($request->slug != '') {
+                $data['slug'] = $this->createSlug($request->slug);
+                }
+    
+                if($request->slug == ''){
+                        $data['slug'] = $this->createSlug($data['title']);    
+                }
 
         $movie = new LiveStream;
 
@@ -225,7 +233,36 @@ class CPPAdminLiveStreamController extends Controller
           }
     }
     
-    
+    public function createSlug($title, $id = 0)
+    {
+        
+        $slug = Str::slug($title);
+
+        $allSlugs = $this->getRelatedSlugs($slug, $id);
+
+        // If we haven't used it before then we are all good.
+        if (! $allSlugs->contains('slug', $slug)){
+            return $slug;
+        }
+
+        // Just append numbers like a savage until we find not used.
+        for ($i = 1; $i <= 10; $i++) {
+            $newSlug = $slug.'-'.$i;
+            if (! $allSlugs->contains('slug', $newSlug)) {
+                return $newSlug;
+            }
+        }
+
+        throw new \Exception('Can not create a unique slug');
+    }
+
+        protected function getRelatedSlugs($slug, $id = 0)
+        {
+            return LiveStream::select('slug')->where('slug', 'like', $slug.'%')
+                ->where('id', '<>', $id)
+                ->get();
+        }  
+
     public function CPPedit($id)
     {
         $user_package =    User::where('id', 1)->first();
@@ -294,8 +331,12 @@ class CPPAdminLiveStreamController extends Controller
         if(empty($data['ppv_status'])){
             $data['ppv_status'] = 0;
         }
-        if(empty($data['slug'])){
-            $data['slug'] = 0;
+        if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+            }
+
+        if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
         }
         
         if(empty($data['rating'])){
