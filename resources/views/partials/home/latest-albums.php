@@ -1,6 +1,6 @@
 <?php  if(count($albums) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">Albums</a></h4>                      
+    <h4 class="main-title"><a href="<?php echo URL::to('/audios') ?>">Albums</a></h4>                      
 </div>
 <div class="favorites-contens">
 <ul class="favorites-slider list-inline  row p-0 mb-0">

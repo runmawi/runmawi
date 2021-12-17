@@ -38,7 +38,7 @@
             <div>
 		<h4>Live video</h4> </div>
             <div>
-		<a href="{{ URL::to('/') . '/live/play/' . $video->id }}" target="_blank" class="btn btn-primary">
+		<a href="{{ URL::to('/') . '/live.'/' .$video->slug.'/' . $video->id}}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
             </div>
@@ -166,7 +166,19 @@
 				<div class="panel-title"><label>Video Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                     <p class="p1">IMDb Ratings 10 out of 10</p>
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+					<select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+					<option value="1" >1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
 				</div> 
 			</div>
 			</div>
@@ -324,9 +336,13 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
 
 	<script type="text/javascript">
 $(document).ready(function(){
+	$('.js-example-basic-multiple').select2();
+
 	$('#publishlater').hide();
 	$('#publish_now').click(function(){
 		// alert($('#publish_now').val());
@@ -338,9 +354,9 @@ $(document).ready(function(){
 	});
 
 	if($("#publish_now").val() == 'publish_now'){
-	$('#publishlater').show();
+	$('#publishlater').hide();
 	}else if($("#publish_later").val() == 'publish_later'){
-		$('#publishlater').hide();		
+		$('#publishlater').show();		
 	}
 });
 	$(document).ready(function(){

@@ -53,6 +53,7 @@ class AdminAudioController extends Controller
     public function index(Request $request)
     {
         $data = Session::all();
+        
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();

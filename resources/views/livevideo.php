@@ -39,9 +39,56 @@
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
 <?php
+
+if(!Auth::guest()){
+    
  if(!empty($password_hash)){
 if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
 <div id="video_bg"> 
+        <div class="container">
+            <div id="video sda" class="fitvid" style="margin: 0 auto;">
+                <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+
+                    <source src="<?=$video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                    <!--
+                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
+                    -->
+                </video>
+
+                <div class="playertextbox hide">
+                    <p> <?php if (isset($videonext)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
+                        <?php } elseif (isset($videoprev)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
+                        <?php } ?>
+
+                        <?php if (isset($videos_category_next)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
+                        <?php } elseif (isset($videos_category_prev)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
+                        <?php } ?>
+                    </p>
+                </div>
+            </div>
+
+            <?php  } else {  ?>       
+                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                    <div id="video_bg_dim" <?php if ($video->access == 'guest' || ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+                    <div class="row justify-content-center pay-live">
+                        <div class="col-md-4 col-sm-offset-4">
+                            <div class="ppv-block">
+                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                                <div class="clear"></div>
+                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } }
+            }else{  
+                if (Auth::guest() && empty($video->ppv_price)) { ?>
+                <div id="video_bg"> 
         <div class="container">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
@@ -82,7 +129,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                         </div>
                     </div>
                 </div>
-            <?php } }?>
+           <?php }
+            }
+            ?>
             
             <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
@@ -106,13 +155,21 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                     </div>        
                 </div>
                 <!-- Year, Running time, Age -->
+               <?php 
+               if(!empty($video->publish_time)){
+                $originalDate = $video->publish_time;
+                $publishdate = date('d F Y', strtotime($originalDate));
+               }else{
+                $originalDate = $video->created_at;
+                $publishdate = date('d F Y', strtotime($originalDate));
+               }
+             ?>
                 <div class="d-flex align-items-center text-white text-detail">
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php if(!empty($video->publish_time)){ echo $video->publish_time; } else { echo $video->created_at ; }?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->duration);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                      <!-- <span class="badge badge-secondary p-3"><?php //echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      <span class="ml-3"><?php// echo __($video->duration);?></span>
                      <span class="trending-year"><?php //if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span> -->
@@ -292,7 +349,7 @@ $(document).ready(function(){
 $('#video_container').fitVids();
 $('.favorite').click(function(){
 if($(this).data('authenticated')){
-$.post('<?=URL::to('favorite') ?>', { video_id : $(this).data('videoid'), _token: '<?=csrf_token(); ?>' }, function(data){});
+$.post('<?=URL::to('favorite') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 $(this).toggleClass('active');
 } else {
 window.location = '<?=URL::to('login') ?>';
@@ -302,7 +359,7 @@ window.location = '<?=URL::to('login') ?>';
 $('.watchlater').click(function(){
 
 if($(this).data('authenticated')){
-$.post('<?=URL::to('ppvWatchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?=csrf_token(); ?>' }, function(data){});
+$.post('<?=URL::to('ppvWatchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 $(this).toggleClass('active');
 $(this).html("");
 if($(this).hasClass('active')){
@@ -318,7 +375,7 @@ window.location = '<?=URL::to('login') ?>';
 //My Wishlist
 $('.mywishlist').click(function(){
 if($(this).data('authenticated')){
-$.post('<?=URL::to('ppvWishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?=csrf_token(); ?>' }, function(data){});
+$.post('<?=URL::to('ppvWishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
 $(this).toggleClass('active');
 $(this).html("");
 if($(this).hasClass('active')){
@@ -347,7 +404,7 @@ $('a.block-thumbnail').click(function(){
 var myPlayer = videojs('video_player');
 var duration = myPlayer.currentTime();
 
-$.post('<?=URL::to('watchhistory'); ?>', { video_id : '<?=$video->id ?>', _token: '<?=csrf_token(); ?>', duration : duration }, function(data){});
+$.post('<?=URL::to('watchhistory'); ?>', { video_id : '<?=$video->id ?>', _token: '<?= csrf_token(); ?>', duration : duration }, function(data){});
 }); 
 });
 </script>
@@ -420,26 +477,44 @@ token: function (token) {
 console.log('Token Created!!');
 console.log(token);
 $('#token_response').html(JSON.stringify(token));
-
 $.ajax({
-url: livepayment,
-method: 'post',
-data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-success: (response) => {
-swal("You have done  Payment !");
-setTimeout(function() {
-location.reload();
-}, 2000);
+ url: '<?php echo URL::to("purchase-live") ;?>',
+ method: 'post',
+ data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
+ success: (response) => {
+   alert("You have done  Payment !");
+   setTimeout(function() {
+     location.reload();
+   }, 2000);
 
-},
-error: (error) => {
-swal('error');
+ },
+ error: (error) => {
+   swal('error');
 //swal("Oops! Something went wrong");
 /* setTimeout(function() {
 location.reload();
 }, 2000);*/
 }
 })
+// $.ajax({
+// url: livepayment,
+// method: 'post',
+// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
+// success: (response) => {
+// swal("You have done  Payment !");
+// setTimeout(function() {
+// location.reload();
+// }, 2000);
+
+// },
+// error: (error) => {
+// swal('error');
+// //swal("Oops! Something went wrong");
+// /* setTimeout(function() {
+// location.reload();
+// }, 2000);*/
+// }
+// })
 }
 });
 

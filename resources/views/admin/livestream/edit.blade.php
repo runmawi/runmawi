@@ -38,7 +38,7 @@
             <div>
 		<h4>Live video</h4> </div>
             <div>
-		<a href="{{ URL::to('/') . '/live/play/' . $video->id }}" target="_blank" class="btn btn-primary">
+		<a href="{{ URL::to('/') . '/live.'/' .$video->slug.'/' . $video->id}}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
             </div>
@@ -166,7 +166,23 @@
 				<div class="panel-title"><label>Video Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                     <p class="p1">IMDb Ratings 10 out of 10</p>
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+					<label class="p-2">Rating:</label>
+                                    <!-- selected="true" -->
+                                    <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+                                    <select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+                                          <option value="1" @if(!empty($video->rating) && $video->rating == '1'){{ 'selected' }}@endif >1</option>
+                                          <option value="2"@if(!empty($video->rating) && $video->rating == '2'){{ 'selected' }}@endif>2</option>
+                                          <option value="3"@if(!empty($video->rating) && $video->rating == '3'){{ 'selected' }}@endif>3</option>
+                                          <option value="4"@if(!empty($video->rating) && $video->rating == '4'){{ 'selected' }}@endif>4</option>
+                                          <option value="5"@if(!empty($video->rating) && $video->rating == '5'){{ 'selected' }}@endif>5</option>
+                                          <option value="6"@if(!empty($video->rating) && $video->rating == '6'){{ 'selected' }}@endif>6</option>
+                                          <option value="7"@if(!empty($video->rating) && $video->rating == '7'){{ 'selected' }}@endif>7</option>
+                                          <option value="8"@if(!empty($video->rating) && $video->rating == '8'){{ 'selected' }}@endif>8</option>
+                                          <option value="9"@if(!empty($video->rating) && $video->rating == '9'){{ 'selected' }}@endif>9</option>
+                                          <option value="10"@if(!empty($video->rating) && $video->rating == '10'){{ 'selected' }}@endif>10</option>
+                                        </select>
+                                </div>
 				</div> 
 			</div>
 			</div>
@@ -317,10 +333,13 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
 	<script type="text/javascript">
 
 $(document).ready(function(){
+	$('.js-example-basic-multiple').select2();
+
 	$('#publishlater').hide();
 	$('#publish_now').click(function(){
 		// alert($('#publish_now').val());
@@ -332,9 +351,9 @@ $(document).ready(function(){
 	});
 
 	if($("#publish_now").val() == 'publish_now'){
-	$('#publishlater').show();
+	$('#publishlater').hide();
 	}else if($("#publish_later").val() == 'publish_later'){
-		$('#publishlater').hide();		
+		$('#publishlater').show();		
 	}
 });
 

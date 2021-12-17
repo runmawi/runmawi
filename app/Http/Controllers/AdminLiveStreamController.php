@@ -176,10 +176,16 @@ class AdminLiveStreamController extends Controller
             }  else {
                 $ppv_price = $data['ppv_price'];
             }  
+            if ( !empty($data['rating'])) {
+                $rating  = $data['rating'];
+              } else {
+                   $rating  = null;
+              }
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
         $movie->details =$data['details'];
+        $movie->rating =$rating;
         $movie->video_category_id =$data['video_category_id'];
         $movie->description =$data['description'];
         $movie->featured =$data['featured'];
@@ -325,7 +331,12 @@ class AdminLiveStreamController extends Controller
 
 
         $video->update($data);
-        
+        if ( !empty($request['rating'])) {
+            $rating  = $request['rating'];
+          } else {
+               $rating  = null;
+          }
+        $video->rating = $rating;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];

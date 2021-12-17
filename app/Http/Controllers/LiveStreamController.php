@@ -31,7 +31,7 @@ class LiveStreamController extends Controller
 {
     public function Index()
     {
-        $live = LiveStream::all();
+        $live = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
         
         $vpp = VideoPerPage();
         $data = array(

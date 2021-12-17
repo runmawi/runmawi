@@ -67,9 +67,9 @@ class ThemeAudioController extends Controller{
      */
     public function index($slug,$name = '')
       {
-        if(Auth::guest()):
-            return Redirect::to('/login');
-        endif;
+        // if(Auth::guest()):
+        //     return Redirect::to('/login');
+        // endif;
         //$audio = Audio::findOrFail($albumID);
         
         if (!empty($name)) {
@@ -115,10 +115,14 @@ class ThemeAudioController extends Controller{
            
             $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
             $audio = $audio->id;
-
+            if(!Auth::guest()){
+               $user_id = Auth::user()->id ;
+            }else{
+                $user_id = 0;
+            }
             $view = new RecentView;
             $view->audio_id = $audio;
-            $view->user_id = Auth::user()->id;
+            $view->user_id = $user_id;
             $view->visited_at = date('Y-m-d');
             $view->save();
              if (!empty($audio)) {
@@ -172,8 +176,14 @@ class ThemeAudioController extends Controller{
         }
       
             if (!empty($audio_details)) {
-                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
-                $view_increment = $this->handleViewCount($audio); 
+                if(!Auth::guest()){
+                    $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+                    $view_increment = $this->handleViewCount($audio); 
+                }else{
+                    $ppv_status = [];
+                    $view_increment = $this->handleViewCount($audio); 
+                     }
+               
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
@@ -217,9 +227,9 @@ class ThemeAudioController extends Controller{
     public function audios(Request $request)
     {   
 
-        if(Auth::guest()):
-            return Redirect::to('/login');
-        endif;
+        // if(Auth::guest()):
+        //     return Redirect::to('/login');
+        // endif;
         
         $page =$request->get('page');
         if( !empty($page) ){
@@ -379,9 +389,9 @@ class ThemeAudioController extends Controller{
     
     public function album($album_slug) {
        
-        if(Auth::guest()):
-            return Redirect::to('/login');
-        endif;
+        // if(Auth::guest()):
+        //     return Redirect::to('/login');
+        // endif;
             $album_id = AudioAlbums::where('slug', $album_slug)->first()->id;
             $album = AudioAlbums::where('id', $album_id)->first();
             $album_audios = Audio::where('album_id', $album_id)->get();

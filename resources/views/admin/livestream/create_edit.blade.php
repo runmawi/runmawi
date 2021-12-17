@@ -3,16 +3,27 @@
     .p1{
         font-size: 12px!important;
     }
+	.select2-selection__rendered{
+        background-color: #f7f7f7!important;
+        border: none!important;
+    }
+    .select2-container--default .select2-selection--multiple{
+        border: none!important;
+    }
+    #video{
+        background-color: #f7f7f7!important;
+    }
 </style>
+
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
-<style>
-    ''
-</style>
-@stop
- 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+@stop
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -38,7 +49,7 @@
             <div>
 		<h4>Live video</h4> </div>
             <div>
-		<a href="{{ URL::to('/') . '/live/play/' . $video->id }}" target="_blank" class="btn btn-primary">
+		<a href="{{ URL::to('/') .'/live.'/' .$video->slug.'/' . $video->id }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
             </div>
@@ -166,7 +177,19 @@
 				<div class="panel-title"><label>Video Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                     <p class="p1">IMDb Ratings 10 out of 10</p>
-					<input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+					<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+					<select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+					<option value="1" >1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
 				</div> 
 			</div>
 			</div>
@@ -210,6 +233,8 @@
 			</div>
 			</div>
 
+
+			<div class="clear"></div>
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -217,14 +242,14 @@
                     <p class="p1">Publish Type</p>
 					<div class="form-group"> 
                             <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
 							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
                         </div></div> 
 			</div>
+			<!-- </div> -->
 			</div>
 			</div>
 
-            
 			
 			<div class="row mt-3"  id="publishlater"> 
 
@@ -318,11 +343,18 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
 	<script type="text/javascript">
 
 $(document).ready(function(){
 	$('#publishlater').hide();
+	if($("#publish_now").val() == 'publish_now'){
+	$('#publishlater').hide();
+	}else if($("#publish_later").val() == 'publish_later'){
+		$('#publishlater').show();		
+	}
+
 	$('#publish_now').click(function(){
 		// alert($('#publish_now').val());
 		$('#publishlater').hide();
@@ -333,9 +365,9 @@ $(document).ready(function(){
 	});
 
 	if($("#publish_now").val() == 'publish_now'){
-	$('#publishlater').show();
+	$('#publishlater').hide();
 	}else if($("#publish_later").val() == 'publish_later'){
-		$('#publishlater').hide();		
+		$('#publishlater').show();		
 	}
 });
 
@@ -368,6 +400,7 @@ $(document).ready(function(){
 	$ = jQuery;
 
 	$(document).ready(function(){
+		$('.js-example-basic-multiple').select2();
 
 		$('#duration').mask('00:00:00');
 		$('#tags').tagsInput();

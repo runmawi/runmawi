@@ -179,7 +179,6 @@ class HomeController extends Controller
         $settings = Setting::first();
 
         if($settings->access_free == 1){
-            // dd('$agent');
             $settings = Setting::first();
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
@@ -209,6 +208,7 @@ class HomeController extends Controller
              }else{
                  $cnt_watching = [];
             //  echo "<pre>";print_r($cnt_watching);exit();
+            // dd('$agent');
                  
              }
              $currency = CurrencySetting::first();
@@ -237,8 +237,9 @@ class HomeController extends Controller
                  'suggested_videos' => $suggested_videos,
                 'video_categories' => VideoCategory::all(),
                  'home_settings' => HomeSetting::first(),
-                 'livetream' =>  LiveStream::orderBy('id', 'DESC')->get(),
-    
+                 'livetream' =>  LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get(),
+                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
+                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
     
              );
              return View::make('home', $data);

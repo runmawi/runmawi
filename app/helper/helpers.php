@@ -18,17 +18,23 @@ function check_file_exist($url){
 
 function audiofavorite($audio_id)
 {
-    $favorite = App\Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
+    if(!Auth::guest()){
     if(isset($favorite->id)){ 
         $status = "active";
     } else {
         $status = "";
+    }    
+    return $status;
+    }else{
+        $status = "";
     }
+
     return $status;
 }
 
 function albumfavorite($album_id)
 {
+    if(!Auth::guest()){
     $favorite = App\Favorite::where('user_id', '=', Auth::user()->id)->where('album_id', '=', $album_id)->first();
     if(isset($favorite->id)){ 
         $status = "active";
@@ -36,6 +42,11 @@ function albumfavorite($album_id)
         $status = "";
     }
     return $status;
+}else{
+    $status = "";
+    return $status;
+}
+
 }
    
 function productImagePath($image_name)
