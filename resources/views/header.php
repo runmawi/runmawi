@@ -356,7 +356,7 @@ $data = Session::all();
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">Purchased Media</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -419,7 +419,7 @@ $data = Session::all();
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">Purchased Media</h6>
                                                 </div>
                                              </div>
                                           </a>

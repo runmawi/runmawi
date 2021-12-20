@@ -59,8 +59,8 @@
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
-                          <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
-                          <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
+                          <li><a href="<?php echo URL::to('/cpp/login'); ?>">Content Partner Portal</a></li>
+                          <li><a href="<?php echo URL::to('/advertiser/register'); ?>">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>

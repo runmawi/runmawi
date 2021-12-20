@@ -1335,11 +1335,17 @@ class HomeController extends Controller
           $new_vide_dislike->liked = 0;
           $new_vide_dislike->disliked = 1; 
           $new_vide_dislike->save(); 
+          $response = array(
+            'status'   => "disliked"
+        );
         }else{
           $new_vide_dislike->user_id = $request->user_id;
           $new_vide_dislike->video_id = $video_id;
           $new_vide_dislike->disliked = 0;
           $new_vide_dislike->save(); 
+          $response = array(
+            'status'   => "liked"
+        );
         }
       }else{
         $new_vide_dislike = new Likedislike;
@@ -1348,8 +1354,11 @@ class HomeController extends Controller
         $new_vide_dislike->liked = 0;
         $new_vide_dislike->disliked = 1;
         $new_vide_dislike->save(); 
+        $response = array(
+            'status'   => "disliked"
+        );
       } 
-             
+            return response()->json($response, 200); 
     }
 
 

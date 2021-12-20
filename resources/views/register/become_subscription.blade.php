@@ -18,6 +18,34 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
         background-color: #f1f1f1!important;
     }
 </style>
+<style>
+.overlay{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: rgba(255,255,255,0.8) url("loader.gif") center no-repeat;
+}
+/* Turn off scrollbar when body element has the loading class */
+body.loading{
+    overflow: hidden;   
+}
+/* Make spinner image visible when body element has the loading class */
+body.loading .overlay{
+    display: block;
+}
+</style>
+
+<script>
+  $( function() {
+    $( "#tabs" ).tabs();
+    $("tabs li:first").addClass("active");
+  });
+    
+  </script>
 <div class="container mb-4">
 <div class="row stripe justify-content-center" >
     
@@ -72,6 +100,7 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
 					</button>
 				</div>
 			</div>
+<div class="overlay"></div>
                
 			<div class="payment-option mt-3">
 				<div class="invoice" ><h1 style=" color: #000!important;">Invoice</h1></div>
@@ -102,7 +131,24 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
 </div>
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
     <script src="https://js.stripe.com/v3/"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+// Initiate an Ajax request on button click
+$(document).on("click", "card-button", function(){
+    $.get("customers.php", function(data){
+        $("body").html(data);
+    });       
+});
+$(document).on({
+    ajaxStart: function(){
+        $("body").addClass("loading"); 
+    },
+    ajaxStop: function(){ 
+        $("body").removeClass("loading"); 
+    }    
+});
+</script>
 <script>
     
    
