@@ -1,6 +1,7 @@
 <?php
 
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
@@ -118,7 +119,6 @@ Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
-Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
 Route::post('mywishlist', 'WishlistController@mywishlist');
@@ -160,6 +160,11 @@ Route::get('wishlist_video/{id}', 'WishlistController@wishlist_video');
 Route::get('file-upload', 'FileUploadController@index');
 Route::post('file-upload/upload', 'FileUploadController@fileStore')->name('upload');
 
+Route::group(['prefix' => 'admin','middleware' => ['auth','restrictIp']], function() {
+
+    Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
+    Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
+});
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']], function() {
 //,'restrictIp'
 //        Route::get('/', function () {
@@ -176,8 +181,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/user/delete/{id}', array('before' => 'demo', 'uses' => 'AdminUsersController@destroy'));
     Route::post('/export', 'AdminUsersController@export');
     Route::get('/user/view/{id}',  'AdminUsersController@view');
-    Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
-    Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
+
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
 

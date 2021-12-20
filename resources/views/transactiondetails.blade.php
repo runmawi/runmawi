@@ -74,6 +74,7 @@
                             </tbody>
                             </table>
                 </div> -->
+                
                <div class="mt-5">
                <table class="table table-bordered text-center">
                       <thead>
@@ -92,11 +93,12 @@
                         <th>updated_at</th> -->
                         </tr>
                       </thead>
+                  <?php  if(!empty($subscriptions)){ ?>
+
                       <tbody>
 
                             @foreach($subscriptions as $key => $subscription )
                            <tr>
-                            <td>{{ $subscription->price }}</td>
                             <?php if($subscription->stripe_status == 'active'){ ?>
                             <td class = "bg-success"> <?php echo "Approved"; ?></td>
                             <?php }elseif($subscription->stripe_status == 'inactive'){ ?>
@@ -104,18 +106,55 @@
                             <?php }else{ ?>
                                 <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
                             <?php }?>
+                            <td>{{ $subscription->price }}</td>
+
                             <!-- <td>{{ $subscription->days }}</td>
                             <td>{{ $subscription->stripe_id }}</td>
                             <td>{{ $subscription->stripe_status }}</td>
                             <td>{{ $subscription->stripe_plan }}</td>
                             <td>{{ $subscription->quantity}}</td> -->
                             <td>{{ $subscription->created_at}}</td>
+                            <td>Card</td>
+
                             <!-- <td>{{ $subscription->updated_at }}</td> -->
                            </tr>
                             @endforeach
                             
-                       
-                       
+                            <?php }if(!empty($ppvcharse)){ //dd('test');?>
+                                
+                            @foreach($ppvcharse as $key => $ppv )
+                           <tr>
+                            <?php if($ppv->status == 'active'){ ?>
+                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
+                            <?php }elseif($ppv->status == 'inactive'){ ?>
+                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
+                            <?php }else{ ?>
+                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
+                            <?php }?>
+                            <td>{{ $ppv->total_amount }}</td>
+                            <td>{{ $ppv->created_at}}</td>
+                            <td>Card</td>
+                           </tr>
+                            @endforeach
+                           <?php  }if(!empty($livepurchase)){ ?>
+                                
+                            @foreach($livepurchase as $key => $live )
+                           <tr>
+                            <?php if($live->status == 1){ ?>
+                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
+                            <?php }elseif($live->status == 2){ ?>
+                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
+                            <?php }else{ ?>
+                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
+                            <?php }?>
+                            <td>{{ $live->amount }}</td>
+           
+                            <td>{{ $live->created_at}}</td>
+                            <td>Card</td>
+                           </tr>
+                            @endforeach
+                        <?php    } ?>
+                        
                       </tbody>
                     </table>
                     </div> 

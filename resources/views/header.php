@@ -10,10 +10,39 @@ $uppercase =  ucfirst($request_url);
 // exit();UA-42534483-14
       ?>
       <!-- Required meta tags -->
+
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
-    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
-    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    <?php if(!empty($data['password_hash'])){ $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
+
+    <meta charset="UTF-8">
+    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+    else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
+
+
+
+
+
+    <meta name="description" content= "<?php 
+     if(!empty($videos_data)){ echo $videos_data->description  ;
+    }
+    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+    elseif(!empty($series)){ echo $series->description ;}else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+
+
+
+
+   <meta property="og:title" content="How to Become an SEO Expert (8 Steps)" />
+   <meta property="og:description" content="Get from SEO newbie to SEO pro in 8 simple steps." />
+   <meta property="og:image" content="https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">

@@ -149,6 +149,8 @@ public function RentPaypal(Request $request)
     $livepurchase->video_id = $video_id;
     $livepurchase->to_time = $to_time;
     $livepurchase->expired_date = $to_time;
+    $livepurchase->amount = $request->get('amount');
+    $livepurchase->status = 1;
     $livepurchase->save();
     
     // DB::table('live_purchases')->insert([
@@ -441,7 +443,7 @@ public function RentPaypal(Request $request)
            $user_id = Auth::user()->id;
            
            $user_details = subscription::where("user_id","=",$user_id)->orderby("created_at","desc")->first();
-           dd($user_details);
+          //  dd($user_details);
             $stripe_id =  $user_details->stripe_id;
             $stripe_status =  $user_details->stripe_status;
             $stripe_Plan =  $user_details->stripe_plan;
@@ -488,8 +490,15 @@ public function RentPaypal(Request $request)
         }
          public function TransactionDetails(){  
           $user_id = Auth::user()->id;
+          // dd($user_id);
           $subscriptions = Subscription::where('user_id',$user_id)->get(); 
-            return view('transactiondetails',['subscriptions'=>$subscriptions]);
+          // $subscriptions = Subscription::where('user_id',$user_id)->get(); 
+          $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
+          $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
+          if(!empty($subscriptions)){ $subscriptionspurchase = $subscriptions; }else{ $subscriptionspurchase =[]; }
+          if(!empty($ppvcharse)){ $ppvcharses = $ppvcharse; }else{ $ppvcharses =[]; }
+          if(!empty($livepurchase)){ $livepurchases = $livepurchase; }else{ $livepurchases =[]; }
+            return view('transactiondetails',['subscriptions'=>$subscriptions,'ppvcharse'=>$ppvcharses,'livepurchase'=>$livepurchases]);
     }
 
      

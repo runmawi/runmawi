@@ -42,6 +42,8 @@ use Illuminate\Support\Str;
 use App\LoggedDevice;
 use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
+use App\PpvPurchase as PpvPurchase;
+use App\LivePurchase;
 
 
 
@@ -381,7 +383,7 @@ class AdminUsersController extends Controller
     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
     ->select('plans.plans_name')
     ->get(9);
-    //    print_r($user_role);
+    //    print_r(Auth::user()->id);
     //    exit();
        if(!empty($user_role)){
         $role_plan = "No Plan";
@@ -392,7 +394,7 @@ class AdminUsersController extends Controller
     	$user_role = Auth::user()->role;
 
     	$user_details = User::find($user_id);
-        $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
+        $recent_videos = RecentView::where('user_id',Auth::user()->id)->orderBy('id', 'desc')->take(10)->get();
         $recent_view = $recent_videos->unique('video_id');
 
         foreach($recent_view as $key => $value){
@@ -403,14 +405,28 @@ class AdminUsersController extends Controller
 
         $videocategory = VideoCategory::all();
 
+        if(!empty($videos)){ $video = array_unique($videos); }else{ $video =[]; }
 
-        $video = array_unique($videos);
+        $user_id = Auth::user()->id;
+        $subscriptions = Subscription::where('user_id',$user_id)->get(); 
+        $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
+        $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
+        if(!empty($subscriptions)){ $subscriptionspurchase = $subscriptions; }else{ $subscriptionspurchase =[]; }
+        if(!empty($ppvcharse)){ $ppvcharses = $ppvcharse; }else{ $ppvcharses =[]; }
+        if(!empty($livepurchase)){ $livepurchases = $livepurchase; }else{ $livepurchases =[]; }
+
+
+
+        // dd($subscriptions);
     	$data = array(
     		'videos' => $video,
     		'videocategory' => $videocategory,
     		'user' => $user_details,
     		'role_plan' => $role_plan,
     		'user_role' => $user_role,
+    		'subscriptions' => $subscriptionspurchase,
+    		'livepurchase' => $livepurchases,
+    		'ppvcharse' => $ppvcharses,
     		'post_route' => URL::to('/profile/update')
     		);
     	return View::make('myprofile', $data);

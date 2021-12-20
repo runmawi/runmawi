@@ -468,7 +468,7 @@ $uppercase =  ucfirst($request_url);
                             <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                             <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
                             <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile Image') }}</button>                   
                         </form>	
                     </div>
 <div class="row">
@@ -540,7 +540,9 @@ $uppercase =  ucfirst($request_url);
 
         <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
+               <?php if(!empty($subscriptions) || !empty($livepurchase) || !empty($ppvcharse) ){  ?>
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
+               <?php } else { echo "No Transaction Done" ; } ?>
             </div>
         </div>
 </div>
@@ -550,7 +552,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="col-md-12" >
                         <div class="d-flex align-items-baseline justify-content-between">
                         <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
+                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Update Personal Details</a>
                             </div></div>
                         </div>
                         <div class="a-border"></div>
@@ -770,6 +772,8 @@ $uppercase =  ucfirst($request_url);
                         </div>
                         
                      </div>
+                                 @if(!empty($videos))
+
                       <div class="iq-card-body">
                         <div class="table-responsive " >
                            <table class="data-tables table movie_table recent_table" style="width:100%">
@@ -808,13 +812,23 @@ $uppercase =  ucfirst($request_url);
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
                                  @endforeach                                                                     
-                                 @endforeach                                                                     
+                                 @endforeach
+                                 @else
+                       <h2>       <p class="novideos"> No videos Viewed Recently </p></h2>   
+                                 @endif                                                                      
                               </tbody>
                            </table>
                         </div>
                      </div>
                   </div>
                </div></div>
+               <style>
+                      .novideos{ margin-top: 14px;
+                        margin-left: 35%;
+                        color: white;
+                        margin-bottom: 1rem;
+                           }
+               </style>
        
               <div class="container data-mdb-smooth-scroll">
              <div class="row justify-content-center">	
