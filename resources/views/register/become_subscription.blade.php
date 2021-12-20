@@ -13,28 +13,41 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
     margin-top: 70px !important;
 
 }
-  */  </style>
-<div class="container">
-<div class="row stripe" id="signup-form">
+  */  
+    .form-control{
+        background-color: #f1f1f1!important;
+    }
+</style>
+<div class="container mb-4">
+<div class="row stripe justify-content-center" >
     
-     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1" >
+     <div class="col-md-6" id="signup-form">
     <div class="overlay payment-loader">
         
          
             <div class="panel-heading">
-              <div class="row nomargin text-center">
+              <div class="row nomargin text-center pl-4">
                   
-                    <h1 class="panel-title"><?php echo __('Pay Now');?></h1>
+                    <h2 class="panel-title" style=" color: #000!important;"><?php echo __('Pay Now');?></h2>
               </div>
             </div>
-                <div class="panel-body">
-                    <div class="form-group row">
-                        <input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ session()->get('become_plan') }}">
-                        <div class="col-md-6"> 
-                            <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
-                        </div>
+                <div class="panel-body mt-3">
+                  
+                    <div class="d-flex">                    <div class="col-sm-6 mt-2">
+                    <input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ session()->get('become_plan') }}">
+            <input id="card-holder-name"type="text" class="form-control"  placeholder="Name on card" value="">
+                
+            </div>
+            <!-- <div class="col-sm-10 d-flex mt-2"> -->
+                <!-- <input type="text" class="ccFormatMonitor form-control" placeholder="Card Number"> -->
+
+                <!-- <input type="text" id="inputExpDate" class="form-control col-sm-2 mt-2" placeholder="MM / YY" maxlength='7'>
+
+                <input type="password" class="cvv form-control col-sm-2 mt-2 mr-2" placeholder="CVV"> -->
+
+            <!-- </div> -->
                     </div>
-                <?php 
+                    <?php 
                     $coupons = App\Coupon::all();
                     $user_id = Auth::user()->id;
                     $get_referred_count = App\User::where("referrer_id","=",$user_id)->where("role","=","subscriber")->count();
@@ -49,24 +62,25 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
                               </div>
                         </div>
                 <?php } }  ?>
-                    
-                    
 				<!-- Stripe Elements Placeholder -->
 				<div id="card-element"></div>
-				<div class="sign-up-buttons pay-button">
+
+				
+				<div class="sign-up-buttons pay-button mt-4 pl-3">
 					<button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
 						Pay Now
 					</button>
 				</div>
 			</div>
                
-			<div class="payment-option">
-				<div class="invoice"><h1>Invoice</h1></div>
+			<div class="payment-option mt-3">
+				<div class="invoice" ><h1 style=" color: #000!important;">Invoice</h1></div>
+                <div class="d-flex">
 					 <svg style="height:20px;" class="svg-inline--fa fa-file fa-w-12" aria-hidden="true" data-prefix="far" data-icon="file" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48z"></path></svg><!-- <i class="far fa-file"></i> -->
-					 <h4 class="billing-head detail_name" id="detail_name"><?=$plan_details->plans_name;?></h4>
+					 <h4 class="billing-head detail_name text-black" id="detail_name"><?=$plan_details->plans_name;?></h4></div>
 				 <p class="grey-border"></p>
 				 <div class="">
-					 <p class="pay-prtext">Grab this plan for your best Movies to Watch.</p>
+					 <p class="pay-prtext text-black">Grab this plan for your best Movies to Watch.</p>
 				 </div>
 				 <div class="table-responsive">
 					 <table class="table white-bg m-0 mt-3">
@@ -166,7 +180,7 @@ $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
                     $('#loader').css('display','block');
                     swal("You have done  Payment !");
                     setTimeout(function() {
-                        window.location.replace(base_url+'/login');
+                        window.location.replace(base_url+'/home');
                   }, 2000);
                });
         }

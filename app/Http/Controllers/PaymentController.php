@@ -681,6 +681,7 @@ public function RentPaypal(Request $request)
               $response = array(
                 'status' => 'success'
               );             
+              return response()->json($response);
            
        }
     

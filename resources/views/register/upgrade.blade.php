@@ -212,12 +212,10 @@
                         </div>
               <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
-			<div class="modal-content">
-				
+			<div class="modal-content">				
 				<div class="modal-header">
-                    <h4 class="modal-title">Payment Gate Way</h4>
+                    <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription Gate Way</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					
 				</div>
 				
 				<div class="modal-body">
@@ -231,12 +229,15 @@
                             <label class="radio-inline">
                                 <?php  foreach($payment_type as $payment){
                                      if($payment->live_mode == 1){ ?>
-                            <input type="radio" id="tres_important" name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                            <input type="radio" id="tres_important" name="payment_method" value="{{ $payment->payment_type }}"> Pay Using Card Stripe</label>
                             <?php }elseif($payment->paypal_live_mode == 1){ ?>
+                                <br>
                             <label class="radio-inline">
-                            <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                            <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">Pay Using Card PayPal</label>
                             <?php }else{
-                                echo "Please Trun On Any Payment Gateway Mode in Admin Panel";
+                                // echo "Please Trun On Any Payment Gateway Mode in Admin Panel";
+                                 echo "Payment Gateway Not Enabled to Purchase Subsciption";
+
                             } }?>
                         </div>
                                
@@ -245,7 +246,7 @@
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Next</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
 				</div>
 			</div>
 		</div>

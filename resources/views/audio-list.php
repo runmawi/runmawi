@@ -20,9 +20,6 @@
 		</div>
       <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
-
-	<?php //include('partials/pagination.php'); ?>
-
 </div>
 <div class="container mt-2">
        <div class="block-space">
@@ -71,9 +68,6 @@
 				<?php endforeach; } ?>
 			</div>
          <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
-
-	<?php// include('partials/pagination.php'); ?>
-
 </div>
 <div class="container mt-2">
 
@@ -124,9 +118,6 @@
 		</div>
 
       <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
-
-	<?php //include('partials/pagination.php'); ?>
-
 </div>
 
 

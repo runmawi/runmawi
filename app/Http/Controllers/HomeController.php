@@ -899,7 +899,9 @@ class HomeController extends Controller
                 'ppv_videos' => $ppv_videos,
                 'video_category' => $video_category,
                 'ppv_category' => $ppv_category,
-                'search_value' => $search_value
+                'search_value' => $search_value,
+                'currency' => CurrencySetting::first(),
+
                 );
 
             return View('search', $data);
@@ -1090,7 +1092,6 @@ class HomeController extends Controller
 
         $user = Auth::user();
         $plan_name = $plans->plan_id;
-        // dd($plan_name);
 
         $request->session()->put('become_plan', $plans->plan_id);
             $data = array(
@@ -1101,6 +1102,7 @@ class HomeController extends Controller
             ]);
         
         }elseif($request->payment_method == "PayPal"){
+            
             $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
             $request->session()->put('planname', $request->modal_plan_name);
             $request->session()->put('plan_id', $plans->plan_id);
