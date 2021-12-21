@@ -111,7 +111,7 @@
                 </div>
                 <div class="favorites-contens">
                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                                 <?php if(count($channelwatchlater) > 0) { 
+                                 <?php if(count($channelwatchlater) > 0) : 
        foreach($channelwatchlater as $video): ?>
                       <li class="slide-item">
                          <a href="movie-details.html">
