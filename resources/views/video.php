@@ -906,7 +906,7 @@ location.reload();
               //  alert();
 
              }else{
-               $(this).html('<i class="ri-add-circle-line"></i>');
+              //  $(this).html('<i class="ri-add-circle-line"></i>');
                $(this).html('<i class="ri-heart-line"></i>');
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');

@@ -21,7 +21,8 @@ class WishlistController extends Controller
             $watchlater = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $video_id)->where('type', '=', 'channel')->first();
             if(isset($watchlater->id)){ 
                 $watchlater->delete();
-                return response()->json(['success' => 'Removed From Wishlist']);
+                $response = "Removed From Wishlist";
+                return  $response;
             } else {
                 $watchlater = new Wishlist;
                 $watchlater->user_id = Auth::user()->id;
@@ -30,8 +31,9 @@ class WishlistController extends Controller
                 $watchlater->save();
                         Session::flash('success','Product Suucess!'); 
         // Session::flash('success','Product Suucess!');                                            
+        $response = "Added To Wishlist";
 
-               return response()->json(['success' => 'Added To Wishlist']);
+               return  $response;
                 //echo $watchlater;
             }
 
