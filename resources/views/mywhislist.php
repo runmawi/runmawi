@@ -24,8 +24,8 @@
              <?php if(count($channelwatchlater) > 0):
                    foreach($channelwatchlater as $video): ?>
             <div class="col-1-5 col-md-6 iq-mb-30">
-                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                <div class=" position-relative">
+                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                <li class="slide-item position-relative">
                 <!-- block-images -->
                    
                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
@@ -49,11 +49,7 @@
                     </div>
 -->
                     <div class="block-description">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                            <h6>
-                                <?php echo __($video->title); ?>
-                            </h6>
-                        </a>
+                        <h6><?php echo __($video->title); ?></h6>
                         <div class="movie-time d-flex align-items-center my-2">
                             <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                             <span class="text-white"><i class="fa fa-clock-o"></i>
@@ -77,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </li>
 <!--
                  <div class="epi-box">
                     <div class="epi-img position-relative">
