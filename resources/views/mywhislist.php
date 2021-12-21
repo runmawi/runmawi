@@ -34,13 +34,13 @@
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
                             <p class="p-tag1">
-                                <?php if(!empty($video->ppv_price)) {
+                                <?php /*if(!empty($video->ppv_price)) {
                                     echo $video->ppv_price.' '.$currency->symbol ; 
                                     } elseif(!empty($video->global_ppv) && $video->ppv_price == null) {
                                     echo $video->global_ppv .' '.$currency->symbol;
                                     } elseif(empty($video->global_ppv) && $video->ppv_price == null) {
                                     echo "Free"; 
-                                }
+                                }*/
                                 ?>
                             </p>
                         </div>
