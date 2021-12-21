@@ -27,9 +27,7 @@
                                 <div class="block-description">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
-                             </a>                       
-                  <!-- <span style="color: white;"class="mywishlist <?php// if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?// !Auth::guest() ?>" data-videoid="<?// $watchlater_video->id ?>"><i style="color: white;" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php //endif; ?> >Add to Watchlist</i></span> -->
-                                    
+                             </a>                                                           
                                    <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
