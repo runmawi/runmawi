@@ -1,8 +1,5 @@
 <?php include('header.php');?>
 
-  
-
-
  <!-- loader Start -->
  <!--<div id="loading">
     <div id="loading-center">
@@ -23,7 +20,7 @@
          <div class="row">
              <?php if(count($channelwatchlater) > 0):
                    foreach($channelwatchlater as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30">
+            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
@@ -63,13 +60,13 @@
                                 Watch Now
                                 </a>
                                 <div>
-                                    <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
+                                    <a style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
                                         <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
-                                    </span>
                                     <div style="color:white;" id="<?= $video->id ?>">
                                         <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
                                         else { echo "Add To Wishlist" ; } ?>
                                     </div> 
+                                    </a>
                                 </div>
                             </div>
                         </div>

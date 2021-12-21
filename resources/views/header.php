@@ -2,7 +2,7 @@
 <html lang="en-US">
    <head>
       
-      <?php
+<?php
 $data = Session::all();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
@@ -19,8 +19,8 @@ if(!empty($data['password_hash']) && empty($uppercase)){
 $data = Session::all();
 
       ?>
-      <!-- Required meta tags -->
-      <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+  <!-- Required meta tags -->
+  <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
 
     
     <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
@@ -82,6 +82,7 @@ $data = Session::all();
            
 
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <link rel="favicon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
