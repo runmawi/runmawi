@@ -6,6 +6,8 @@
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                          <?php  if(isset($featured_videos)) :
+                      if(!empty($data['password_hash'])) { 
+                          $id = Auth::user()->id ; } else { $id = 0 ; } 
                          foreach($featured_videos as $watchlater_video): 
                           ?>
                        <li class="slide-item">
