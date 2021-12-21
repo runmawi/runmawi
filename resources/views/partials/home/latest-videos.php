@@ -12,7 +12,7 @@
                        <li class="slide-item">
                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                              <!-- block-images -->
-                             <div class=" position-relative">
+                             <div class="block-images position-relative">
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt=""> -->

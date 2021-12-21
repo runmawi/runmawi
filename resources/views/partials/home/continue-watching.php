@@ -11,7 +11,7 @@
                           ?>
                        <li class="slide-item">
                           <a href="<?php echo URL::to('home') ?>">
-                             <div class=" position-relative">
+                             <div class="block-images position-relative">
                              <!-- block-images -->
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
