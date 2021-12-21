@@ -60,6 +60,9 @@ class WishlistController extends Controller
         }
     
           public function show_mywishlists(){
+            if(Auth::guest()){
+                return redirect('/login');
+            }
                 $channelwatchlater = Wishlist::where('user_id', '=', Auth::user()->id)->where('type', '=', 'channel')->get();
                 $ppvwatchlater = Wishlist::where('user_id', '=', Auth::user()->id)->where('type', '=', 'ppv')->get();
 

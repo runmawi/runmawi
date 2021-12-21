@@ -54,6 +54,9 @@ class WatchLaterController extends Controller
     } 
     
      public function show_watchlaters(){
+        if(Auth::guest()){
+            return redirect('/login');
+        }
             $channelwatchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('type', '=', 'channel')->get();
             $ppvwatchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('type', '=', 'ppv')->get();
       
@@ -81,6 +84,9 @@ class WatchLaterController extends Controller
         }      
     
         public function showPayperview(){
+            if(Auth::guest()){
+                return redirect('/login');
+            }
           $showppv = PpvPurchase::where('user_id', '=', Auth::user()->id)->get();
           $ppv_array = array();
           foreach($showppv as $key => $ccfave){

@@ -12,12 +12,16 @@ $data = Session::all();
 
       ?>
       <!-- Required meta tags -->
+      <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
 
     <meta charset="UTF-8">
-    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+    
     <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
 
     <meta charset="UTF-8">
 
@@ -27,6 +31,7 @@ $data = Session::all();
        }
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
     elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
     else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
 
 
@@ -35,15 +40,19 @@ $data = Session::all();
      if(!empty($videos_data)){ echo $videos_data->description  ;
     }
     elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-    elseif(!empty($series)){ echo $series->description ;}else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+    elseif(!empty($series)){ echo $series->description ;}
+    elseif(!empty($livestream)){ echo $livestream->description  ;}
+    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
 
 
 
    <meta property="og:image" content="<?php 
-     if(!empty($videos_data)){ echo URL::to('/uploads/images').'/'.$videos_data->image  ;
+     if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
     }
-    elseif(!empty($episdoe)){ echo URL::to('/uploads/images').'/'.$episdoe->image  ;}
-    elseif(!empty($series)){ echo URL::to('/uploads/images').'/'.$series->image ;}else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
+    elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+    elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+    elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+    else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
