@@ -27,7 +27,7 @@
                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
-                   
+                   <div class="block-images position-relative">
                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
@@ -48,28 +48,29 @@
                         </div>
                     </div>
 -->
-                    <div class="block-description">
-                        <h6><?php echo __($video->title); ?></h6>
-                        <div class="movie-time d-flex align-items-center my-2">
-                            <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                            <span class="text-white"><i class="fa fa-clock-o"></i>
-                                <?= gmdate('H:i:s', $video->duration); ?>
-                            </span>
-                        </div>
-                        <div class="hover-buttons">
-                            <a type="button" class="text-white"
-                            href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                            Watch Now
-                            </a>
-                            <div>
-                                <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
-                                    <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                        <div class="block-description">
+                            <h6><?php echo __($video->title); ?></h6>
+                            <div class="movie-time d-flex align-items-center my-2">
+                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                                <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $video->duration); ?>
                                 </span>
-                                <div style="color:white;" id="<?= $video->id ?>">
-                                    <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
-                                    else { echo "Add To Wishlist" ; } ?>
-                                </div> 
+                            </div>
+                            <div class="hover-buttons">
+                                <a type="button" class="text-white"
+                                href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                Watch Now
+                                </a>
+                                <div>
+                                    <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
+                                        <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                    </span>
+                                    <div style="color:white;" id="<?= $video->id ?>">
+                                        <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
+                                        else { echo "Add To Wishlist" ; } ?>
+                                    </div> 
+                                </div>
                             </div>
                         </div>
                     </div>
