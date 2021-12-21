@@ -41,7 +41,7 @@
                                     
                                     
                                     
-                                    <div class="hover-buttons">
+                                    <div class="hover-buttons text-white">
                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                         Watch Now
                                         <div>
