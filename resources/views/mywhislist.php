@@ -30,6 +30,7 @@
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
                    
+<!--
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
                             <p class="p-tag1">
@@ -44,6 +45,7 @@
                             </p>
                         </div>
                     </div>
+-->
                     <div class="block-description">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                             <h6>
