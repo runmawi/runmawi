@@ -12,6 +12,96 @@
 
  <!-- MainContent -->
  <div class="main-content">
+     <div class="col-sm-12 overflow-hidden">
+        <div class="iq-main-header d-flex align-items-center justify-content-between">
+            <h4 class="Continue Watching">Media in My WishLists</h4>
+        </div>
+     </div>
+     <section class="movie-detail ">
+         <div class="row">
+             <?php if(count($channelwatchlater) > 0) { 
+                   foreach($channelwatchlater as $video): ?>
+            <div class="col-1-5 col-md-6 iq-mb-30">
+                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                <div class=" position-relative">
+                <!-- block-images -->
+                   
+                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
+                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
+                        </video>
+                   
+                    <div class="corner-text-wrapper">
+                        <div class="corner-text">
+                            <p class="p-tag1">
+                                <?php if(!empty($category_video->ppv_price)) {
+                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
+                                    } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                    echo $category_video->global_ppv .' '.$currency->symbol;
+                                    } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                    echo "Free"; 
+                                }
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="block-description">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                            <h6>
+                                <?php echo __($video->title); ?>
+                            </h6>
+                        </a>
+                        <div class="movie-time d-flex align-items-center my-2">
+                            <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                            <span class="text-white"><i class="fa fa-clock-o"></i>
+                                <?= gmdate('H:i:s', $video->duration); ?>
+                            </span>
+                        </div>
+                        <div class="hover-buttons">
+                            <a type="button" class="text-white"
+                            href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                            Watch Now
+                            </a>
+                            <div>
+                                <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
+                                    <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                </span>
+                                <div style="color:white;" id="<?= $category_video->id ?>">
+                                    <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
+                                    else { echo "Add To Wishlist" ; } ?>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--
+                 <div class="epi-box">
+                    <div class="epi-img position-relative">
+                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
+                       <div class="episode-play-info">
+                          <div class="episode-play">
+                             <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/'. $video->slug ?>">
+                                <i class="ri-play-fill"></i>
+                             </a>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="epi-desc p-3">
+                       <div class="d-flex align-items-center justify-content-between">
+                          <span class="text-white"><?php echo __($video->title); ?></span>
+                       </div>
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/'. $video->slug ?>">
+                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
+                       </a>
+                    </div>
+                 </div>
+-->
+                </a>
+            </div>
+    <?php endforeach; 
+        endif; ?>
+         </div>
+      </section>
     <section id="iq-favorites">
        <div class="container-fluid">
           <div class="row">
