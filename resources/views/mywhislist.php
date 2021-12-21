@@ -66,7 +66,7 @@
                                 <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
                                     <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                                 </span>
-                                <div style="color:white;" id="<?= $category_video->id ?>">
+                                <div style="color:white;" id="<?= $video->id ?>">
                                     <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
                                     else { echo "Add To Wishlist" ; } ?>
                                 </div> 
