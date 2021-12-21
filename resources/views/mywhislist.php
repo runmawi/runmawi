@@ -33,11 +33,11 @@
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
                             <p class="p-tag1">
-                                <?php if(!empty($category_video->ppv_price)) {
-                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
-                                    } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                    echo $category_video->global_ppv .' '.$currency->symbol;
-                                    } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                <?php if(!empty($video->ppv_price)) {
+                                    echo $video->ppv_price.' '.$currency->symbol ; 
+                                    } elseif(!empty($video->global_ppv) && $video->ppv_price == null) {
+                                    echo $video->global_ppv .' '.$currency->symbol;
+                                    } elseif(empty($video->global_ppv) && $video->ppv_price == null) {
                                     echo "Free"; 
                                 }
                                 ?>
