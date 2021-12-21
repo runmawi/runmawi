@@ -372,7 +372,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
@@ -435,7 +435,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">

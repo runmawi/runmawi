@@ -11,7 +11,8 @@
 ?>
         <li class="slide-item">
           <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?> ">
-            <div class="block-images position-relative">
+                             <!-- block-images -->
+            <div class=" position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
               </div>

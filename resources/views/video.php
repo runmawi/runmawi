@@ -28,7 +28,8 @@
 if(!Auth::guest()) {
 
 if(!Auth::guest()) {
-  // dd(Auth::user()->role);
+  // dd($video->access);
+  // dd('test');
 if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
 //  dd(Auth::user()->role); 
@@ -197,7 +198,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 
  <?php }
 /* For Registered User */       
-   else { ?>       
+   else {  ?>       
        <div id="video" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
@@ -217,7 +218,26 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 
        </div>
  <?php } } 
-}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered'|| $video->access == 'subscriber' && Auth::user()->role =="subscriber" || $video->access == 'ppv' && Auth::user()->role =="subscriber" || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
+ else { ?>
+ <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+  <div id="subscribers_only">
+  <div class="clear"></div>
+  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+  <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'){ ?>
+    <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+    </form>
+  <?php }else{ ?>
+    <form method="get" action="<?= URL::to('signup') ?>">
+      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+    </form>
+  <?php } ?>
+  </div>
+</div>
+</div>
+ <?php }
+}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 
  <div id="subscribers_only">
@@ -847,7 +867,7 @@ location.reload();
               $(this).html('<i class="ri-heart-fill"></i>');
               $(".add_data_test").empty();
               $(".add_data_test").append("<div>Remove from Wishlist</div> ");
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add to Watchlist</div>');
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);
@@ -856,7 +876,7 @@ location.reload();
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to  Wishlist</div> ");
-              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Remove from Watchlist</div>');
+              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
                setTimeout(function() {
                 $('.remove_watch').slideUp('fast');
                }, 3000);
@@ -879,7 +899,7 @@ location.reload();
                $(this).html('<i class="ri-add-circle-fill"></i>');
                $(".add_data_test").empty();
               $(".add_data_test").append("<div>Remove from Watchlater</div> ");
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add to Watchlater</div>');
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to watchlater </div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);
@@ -891,7 +911,7 @@ location.reload();
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to Watchlater</div> ");
-              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Remove from Watchlater</div>');
+              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from watchlater</div>');
                setTimeout(function() {
                 $('.remove_watch').slideUp('fast');
                }, 3000);

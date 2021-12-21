@@ -50,7 +50,8 @@
                         
                         ?>
                     <li class="slide-item">
-                            <div class="block-images position-relative">
+                            <div class=" position-relative">
+                            <!-- block-images -->
                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> -->

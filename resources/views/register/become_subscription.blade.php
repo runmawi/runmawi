@@ -120,6 +120,8 @@ $(document).on({
     }    
 });
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
 <script>
     
    
@@ -197,7 +199,7 @@ $(document).on({
                     $('#loader').css('display','block');
                     swal("You have done  Payment !");
                     setTimeout(function() {
-                        window.location.replace(base_url+'/home');
+                        window.location.replace(base_url+'/login');
                   }, 2000);
                });
         }

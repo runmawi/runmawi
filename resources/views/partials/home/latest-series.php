@@ -11,7 +11,8 @@
       foreach($latest_series as $latest_serie): ?>
         <li class="slide-item">
           <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title ) ?>">
-            <div class="block-images position-relative">
+                             <!-- block-images -->
+            <div class="position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
               </div>

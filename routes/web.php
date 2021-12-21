@@ -100,7 +100,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('stripe', 'PaymentController@stripePost')->name('stripe.post');
     Route::post('searchResult', 'HomeController@searchResult');
     Route::get('search','HomeController@search');
-    Route::get('showPayperview', 'WatchLaterController@showPayperview');
+    Route::get('purchased-media', 'WatchLaterController@showPayperview');
     Route::post('addwatchlater', 'WatchLaterController@watchlater');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
