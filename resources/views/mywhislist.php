@@ -12,6 +12,8 @@
 
  <!-- MainContent -->
  <div class="main-content">
+     <div class="container-fluid">
+          <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
             <h4 class="Continue Watching">Media in My WishLists</h4>
@@ -104,6 +106,8 @@
         endif; ?>
          </div>
       </section>
+         </div>
+     </div>
     <section id="iq-favorites">
        <div class="container-fluid">
           <div class="row">

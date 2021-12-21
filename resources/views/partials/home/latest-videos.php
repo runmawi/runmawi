@@ -1,4 +1,6 @@
 <?php  if(count($latest_videos) > 0) : ?>
+  <?php  if(!empty($data['password_hash'])) { 
+                          $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">Latest Videos</a></h4>                      
                  </div>
@@ -54,7 +56,8 @@
                           <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
                             <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                           </span>
-                          <div style="color:white;" id="<?= $watchlater_video->id ?>"><?php if(@$watchlater_video->mywishlisted->user_id == Auth::user()->id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+              
+                          <div style="color:white;" id="<?= $watchlater_video->id ?>"><?php if(@$watchlater_video->mywishlisted->user_id == $id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
                               </div>
 
 <!--
