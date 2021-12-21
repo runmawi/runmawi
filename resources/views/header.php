@@ -14,16 +14,29 @@ $data = Session::all();
       <!-- Required meta tags -->
       <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
 
-    <meta charset="UTF-8">
-    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
-    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     
     <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
 
+
     <meta charset="UTF-8">
+    <title><?php
+   //  dd($data['password_hash']);
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+    else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
+    <meta name="description" content= "<?php 
+     if(!empty($videos_data)){ echo $videos_data->description  ;
+    }
+    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+    elseif(!empty($series)){ echo $series->description ;}
+    elseif(!empty($livestream)){ echo $livestream->description  ;}
+    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
 
     <meta property="og:title" content="<?php
    //  dd($data['password_hash']);
