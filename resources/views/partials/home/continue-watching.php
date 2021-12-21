@@ -53,7 +53,7 @@
                                                 <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $cont_video->id ?>">
                                                     <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                                                 </span>
-                                                <?php if(@$cont_video->mywishlisted->user_id == $id && @$cont_video->mywishlisted->video_id == $cont_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?>
+                                                <?php if(@$cont_video->mywishlisted->user_id == $id && @$cont_video->mywishlisted->video_id == $cont_video->id  ) { echo "<i class='ri-heart-fill'> </i>Remove From Wishlist"; } else { echo "<i class='ri-heart-line'> </i>Add To Wishlist" ; } ?>
                                             </div> 
                                         </div>
                                     </div>
