@@ -211,7 +211,7 @@ $data = Session::all();
                                               <div>
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                               </div>
                                             </form>
                                           </div>
@@ -234,7 +234,7 @@ $data = Session::all();
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
+                                             placeholder="Type here to Search Videos">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
@@ -365,7 +365,7 @@ $data = Session::all();
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Purchased Media</h6>
+                                                   <h6 class="mb-0 ">Purchased Medias</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -428,7 +428,7 @@ $data = Session::all();
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Purchased Media</h6>
+                                                   <h6 class="mb-0 ">Purchased Medias</h6>
                                                 </div>
                                              </div>
                                           </a>

@@ -850,7 +850,7 @@ location.reload();
                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add to Watchlist</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
-               }, 300);
+               }, 3000);
              }else{
               $(this).html('<i class="ri-heart-line"></i>');
               $(".add_data_test").empty();
@@ -859,7 +859,7 @@ location.reload();
               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Remove from Watchlist</div>');
                setTimeout(function() {
                 $('.remove_watch').slideUp('fast');
-               }, 300);
+               }, 3000);
 
              }
              
@@ -882,7 +882,7 @@ location.reload();
                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add to Watchlater</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
-               }, 300);
+               }, 3000);
               //  alert();
 
              }else{
@@ -894,7 +894,7 @@ location.reload();
               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Remove from Watchlater</div>');
                setTimeout(function() {
                 $('.remove_watch').slideUp('fast');
-               }, 300);
+               }, 3000);
              }
              
        } else {

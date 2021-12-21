@@ -268,17 +268,24 @@
                         <div class="form-group"> 
                 <?php $payment_type = App\PaymentSetting::get(); ?>
                            
-                            <label class="radio-inline">
+                <label class="radio-inline">
                                 <?php  foreach($payment_type as $payment){
                                      if($payment->live_mode == 1){ ?>
-                            <input type="radio" id="tres_important" name="payment_method" value="{{ $payment->payment_type }}">Pay Using Card Stripe</label>
+                            <input type="radio" id="tres_important" class="payment_method" name="payment_method" value="{{ $payment->payment_type }}" checked> Pay Using Card</label>
                             <?php }elseif($payment->paypal_live_mode == 1){ ?>
+                                <br>
                             <label class="radio-inline">
-                            <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">Pay Using Card PayPal</label>
+                            <input type="radio" id="important" class="payment_method" name="payment_method" value="{{ $payment->payment_type }}">Pay Using PayPal</label> <br>
                             <?php }else{
                                 // echo "Please Trun On Any Payment Gateway Mode in Admin Panel";
-                                echo "Payment Gateway Not Enabled to Purchase Subsciption";
-                            } }?>
+                                 echo "Payment Gateway Not Enabled to Purchase Subsciption";
+
+                            } }
+                           
+                             if( $payment->live_mode == 0 || $payment->paypal_live_mode == 0){
+                            echo "Enabled payment for testing purpose.";
+                         }
+                        ?>
                         </div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

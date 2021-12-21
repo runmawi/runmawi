@@ -14,6 +14,7 @@ Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::get('/free-access', 'HomeController@FreeAccess')->name('FreeAccess');
 
 
+
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
@@ -108,7 +109,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/paypal/transaction-details', 'HomeController@ViewTrasaction');
     Route::get('/stripe/transaction-details', 'HomeController@ViewStripeTrasaction');
     Route::get('/paypal/cancel-subscription', 'HomeController@CancelPaypal');
-    Route::post('/stripe-subscription', 'HomeController@StripeSubscription');
+    Route::post('/subscribe-now', 'HomeController@StripeSubscription');
     Route::post('/paypal_subscription', 'HomeController@PaypalSubscription');  
 //Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
 });
