@@ -291,6 +291,11 @@
 													<option value="guest" @if(!empty($audio->access) && $audio->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 													<option value="registered" @if(!empty($audio->access) && $audio->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 													<option value="subscriber" @if(!empty($audio->access) && $audio->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+													<?php if($settings->ppv_status == 1){ ?>
+													<option value="ppv" @if(!empty($audio->access) && $audio->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+													<?php } else{ ?>
+													<option value="ppv" @if(!empty($audio->access) && $audio->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+													<?php } ?>
 												</select>
 												<div class="clear"></div>
 											</div> 
@@ -318,6 +323,27 @@
 											</div> 
 										</div>
 									</div>
+
+									<div class="row mt-3 align-items-center"> 
+									<div class="col-sm-6" id="ppv_price"> 
+                                    <label class="">PPV Price:</label>
+                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+									</div>
+									<div class="col-sm-6" > 
+                                <?php if($settings->ppv_status == 1){ ?>
+                                    <label for="global_ppv">Is this video Is Global PPV:</label>
+                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
+                                    <?php } else{ ?>
+                                        <div class="global_ppv_status">
+                                        <label for="global_ppv">Is this video Is PPV:</label>
+                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
+                                        </div>
+                                        <?php } ?>
+                               	 </div>
+                               	 </div>
+                               	 </div>
+
+								
                                     @if(!isset($audio->user_id))
 								<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 								@endif
@@ -350,7 +376,33 @@
 	<script type="text/javascript">
 
 		$ = jQuery;
+		$(document).ready(function(){
+    $('#ppv_price').hide();
+    $('#global_ppv_status').hide();
+	// alert($(this).val());
+	if($("#access").val() == 'ppv'){
+				// alert($(this).val());
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
 
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		$("#access").change(function(){
+			if($(this).val() == 'ppv'){
+				// alert($(this).val());
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		});
+});
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
 			
@@ -379,6 +431,10 @@
 			});
 
 		});
+
+
+
+
 $('#duration').mask('00:00:00');
 	</script>
 	@section('javascript')

@@ -42,6 +42,7 @@ use Stevebauman\Location\Facades\Location;
 use Carbon;
 use Session;
 use App\RecentView as RecentView;
+use App\CurrencySetting as CurrencySetting;
 use App\Playerui as Playerui;
 
 class TvshowsController extends Controller
@@ -97,6 +98,7 @@ class TvshowsController extends Controller
     //  $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
     //  $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
     //  $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+    $currency = CurrencySetting::first();
      
      $pages = Page::all();
      $data = array(
@@ -111,6 +113,8 @@ class TvshowsController extends Controller
       'pagination_url' => '/series',
       'settings'=>$settings,
       'pages'=>$pages,
+      'currency' => $currency,
+
     );
     //echo "<pre>";print_r($data);exit;
      return View::make('tv-home', $data);
@@ -151,9 +155,11 @@ class TvshowsController extends Controller
 
 
             $view_increment = $this->handleViewCount($id);
+            $currency = CurrencySetting::first();
 
             $playerui = Playerui::first();
             $data = array(
+             'currency' => $currency,
                 'episode' => $episode,
                 'season' => $season,
                 'series' => $series,

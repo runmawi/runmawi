@@ -7,6 +7,7 @@ use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
 
 
+
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
@@ -418,6 +419,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
     Route::post('/episode/update', 'AdminSeriesController@update_episode');
+    Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/players', 'AdminSettingsController@playerui_index');
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');

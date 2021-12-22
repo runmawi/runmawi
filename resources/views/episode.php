@@ -4,10 +4,13 @@
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
 	<div id="series_bg">
-		<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 		<div class="">
 			
-			<?php if($series->access == 'guest' || ( ($series->access == 'subscriber' || $series->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $series->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+			<?php 
+			if(!Auth::guest()){
+			if($episode->access == "ppv" && !empty($episode->ppv_price) || !empty($episode->ppv_price) && Auth::user()->role == 'registered'
+			|| !empty($episode->ppv_price) && Auth::user()->role == 'subscriber' || !empty($episode->ppv_price) && Auth::guest()){
+			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
 				
 					<?php if($episode->type == 'embed'): ?>
@@ -68,11 +71,26 @@
 					<?php endif; ?>
 				</div>
 			
-			<?php endif; ?>
+			<?php endif; 
+			}else{ ?>
+ <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+					<div id="ppv">
+				<h2>Purchase to Watch the Episodes <?php if($episode->access == 'subscriber'): ?>Subscribers<?php elseif($episode->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+				<div class="clear"></div>
+				<?php if(!Auth::guest() ): ?>
+					<form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+						<button id="button">Purchase to Watch <?php $currency->symbol.' '.$episode->ppv_price ?></button>
+					</form>
+				<?php else: ?>
+
+				<?php endif; ?>
+			</div>
+		<?php } }
+			?>
 		</div>
 	</div>
 
-<input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $series->genre_id ?>" value="<?= $series->genre_id ?>">
+<input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
 	<div class="container series-details">

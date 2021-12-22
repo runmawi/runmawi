@@ -115,6 +115,7 @@ class AdminAudioController extends Controller
             'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => [],
+            'settings' => Setting::first(),
             );
         return View::make('admin.audios.create_edit', $data);
     }else if($package == "Basic"){
@@ -284,6 +285,7 @@ class AdminAudioController extends Controller
             'audio_categories' => AudioCategory::all(),
             'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
+            'settings' => Setting::first(),
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
             );
 
@@ -307,6 +309,8 @@ class AdminAudioController extends Controller
      * @param  int  $id
      * @return Response
      */
+
+
     public function update(Request $request)
     {
         $data = Session::all();
@@ -318,6 +322,12 @@ class AdminAudioController extends Controller
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $input = $request->all();
         $id = $request->id;
+        $settings =Setting::first();
+        if(!empty($input['ppv_price'])){
+            $ppv_price = $input['ppv_price'];
+        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }
         $audio = Audio::findOrFail($id);
 
         $validator = Validator::make($data = $input, Audio::$rules);
@@ -367,7 +377,15 @@ class AdminAudioController extends Controller
             $data['featured'] = 0;
         }
 
+        if(empty($data['ppv_status'])){
+            $data['ppv_status'] = 0;
+        }else{
+        $data['ppv_status'] = 1;
+        }
         $audio->update($data);
+        $audio->ppv_price =  $ppv_price;
+        $audio->ppv_status =  $data['ppv_status'];
+        $audio->save();
 
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -615,8 +633,17 @@ class AdminAudioController extends Controller
       
         $id = $request->audio_id;
         // echo"<pre>";
-        // print_r($id );
+        // print_r($input);
         // exit();
+        // dd($settings);
+
+        $settings =Setting::first();
+        if(!empty($input['ppv_price'])){
+            $ppv_price = $input['ppv_price'];
+        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }
+
         $audio = Audio::findOrFail($id);
 
         $validator = Validator::make($data = $input, Audio::$rules);
@@ -665,9 +692,18 @@ class AdminAudioController extends Controller
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
-        $data['draft'] = 1;
-
+        if(empty($data['ppv_status'])){
+            $data['ppv_status'] = 0;
+        }else{
+        $data['ppv_status'] = 1;
+        }
         $audio->update($data);
+        $audio->ppv_price =  $ppv_price;
+        $audio->ppv_status =  $data['ppv_status'];
+        $audio->save();
+
+
+
 
         $audio = Audio::findOrFail($id);
         $users = User::all();
