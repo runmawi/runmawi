@@ -11,6 +11,7 @@ use App\Setting as Setting;
 use App\PpvPurchase as PpvPurchase;
 use App\Subscription as Subscription;
 use App\CouponPurchase as CouponPurchase;
+use App\Episode as Episode;
 use App\Plan as Plan;
 use App\PaypalPlan as PaypalPlan;
 use Hash;
@@ -157,6 +158,78 @@ public function RentPaypal(Request $request)
     //   ['user_id' => $user_id, 'video_id' => $video_id, 'expired_date' => $to_time, 'to_time' => $to_time]
     // ]);
 
+
+    return 1;
+  }
+  public function purchaseEpisode(Request $request)
+  {
+    // dd($request->all());
+    $data = $request->all();
+    $episode_id = $data['episode_id'];
+    $setting = Setting::first();  
+    $ppv_hours = $setting->ppv_hours;
+    // $to_time =  Carbon::now()->addHour($ppv_hours);
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    // dd($now);
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+    $user_id = Auth::user()->id;
+    $username = Auth::user()->username;
+    $email = Auth::user()->email;
+
+    // $episode_id = $request->get('episode_id');
+    // print_r($episode_id);exit();
+    $episode = Episode::where('id','=',$episode_id)->first();  
+    $total_amount = $episode->ppv_price;
+    $title =  $episode->title;
+    $commssion = VideoCommission::first();
+    $percentage = $commssion->percentage; 
+    $ppv_price = $episode->ppv_price;
+    $admin_commssion = ($percentage/100) * $ppv_price ;
+    $moderator_commssion = $ppv_price - $percentage;
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+    $stripe = Stripe::make($secret_key, '2020-03-02');
+    $charge = $stripe->charges()->create([
+      'source' => $request->get('tokenId'),
+      'currency' => 'USD',
+      'amount' => $request->get('amount')
+    ]);
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->episode_id = $episode_id;
+    $purchase->total_amount = $total_amount;
+    $purchase->admin_commssion = $admin_commssion;
+    $purchase->moderator_commssion = $moderator_commssion;
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
+
+    $purchase->save();
+
+    $template = EmailTemplate::where('id','=',11)->first();
+    $heading =$template->heading; 
+
+    // Mail::send('emails.payperview_rent', array(
+    //     /* 'activation_code', $user->activation_code,*/
+    //     'name'=> $username, 
+    //     'email' => $email, 
+    //     'title' => $title, 
+    //     ), function($message) use ($request,$username,$heading,$email) {
+    //     $message->from(AdminMail(),'Flicknexs');
+    //     $message->to($email, $username)->subject($heading.$username);
+    //     });
 
     return 1;
   }

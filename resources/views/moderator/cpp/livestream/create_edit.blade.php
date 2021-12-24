@@ -38,7 +38,7 @@
             <div>
 		<h4>Live video</h4> </div>
             <div>
-		<a href="{{ URL::to('/') . '/live.'/' .$video->slug.'/' . $video->id}}" target="_blank" class="btn btn-primary">
+			<a href="{{ URL::to('/live/').$video->slug.'/'. $video->id }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
             </div>

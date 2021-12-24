@@ -5,6 +5,7 @@ use \App\User as User;
 use \Redirect as Redirect;
 //use Request;
 use App\Setting as Setting;
+use App\PaymentSetting as PaymentSetting;
 use App\Slider as Slider;
 use App\PpvVideo as PpvVideo;
 use App\PpvCategory as PpvCategory;
@@ -141,7 +142,15 @@ class TvshowsController extends Controller
         if(!Auth::guest()):
                 $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
         endif;
-        
+        // use App\PpvPurchase as PpvPurchase;
+
+        if(!empty($episode->ppv_price)){
+            // dd('test');
+            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->count();
+
+        }else{
+            $ppv_exits = 0 ;
+        }
         
         
         $watchlater = false;
@@ -158,8 +167,22 @@ class TvshowsController extends Controller
             $currency = CurrencySetting::first();
 
             $playerui = Playerui::first();
+            $payment_settings = PaymentSetting::first();  
+            $mode = $payment_settings->live_mode ;
+              if($mode == 0){
+                  $secret_key = $payment_settings->test_secret_key ;
+                  $publishable_key = $payment_settings->test_publishable_key ;
+              }elseif($mode == 1){
+                  $secret_key = $payment_settings->live_secret_key ;
+                  $publishable_key = $payment_settings->live_publishable_key ;
+              }else{
+                  $secret_key= null;
+                  $publishable_key= null;
+              }    
             $data = array(
              'currency' => $currency,
+             'ppv_exits' => $ppv_exits,
+             'publishable_key' => $publishable_key,
                 'episode' => $episode,
                 'season' => $season,
                 'series' => $series,
