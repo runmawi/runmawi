@@ -9,7 +9,7 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-if(!empty($data['password_hash']) && empty($uppercase)){
+if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
 // dd($uppercase);
    $uppercase = "Home" ;
 }else{

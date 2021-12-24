@@ -8,6 +8,7 @@ use Carbon\Carbon as Carbon;
 
 
 
+
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
@@ -146,7 +147,6 @@ Route::get('/live/{category}/{id}', 'LiveStreamController@Play');
 // Route::get('/live/play/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
-Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
 Route::get('/logout', 'AdminUsersController@logout');
 Route::post('/stripe-payment', 'PaymentController@store')->name('stripe.store');
@@ -512,7 +512,13 @@ Route::get('/subscription_search', 'AdminPaymentManagementController@Subscriptio
 Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
 Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
 
+// Revenue Settings  
 
+Route::get('/revenue_settings/index', 'AdminRevenueSettings@Index');
+Route::post('/revenue_settings/store', 'AdminRevenueSettings@Store');
+Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
+Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
+Route::post('/revenue_settings/update', 'AdminRevenueSettings@Update');
 
 
 
