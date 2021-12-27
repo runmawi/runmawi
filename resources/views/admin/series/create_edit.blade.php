@@ -46,7 +46,7 @@
 						<div class="panel-title font-weight-bold"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p class="p1">Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value=""  />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
 						</div> 
 						<span class="invalid-feedback" id="title_error" role="alert">
 						<strong>{{ $message }}</strong>
@@ -187,7 +187,7 @@
 					<p class="p1">Select a Series Language Below:</p>
 					<select class="form-control" id="language" name="language" >
 						@foreach($languages as $language)
-							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
+							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						@endforeach
 					</select>
 				</div> 
@@ -258,7 +258,22 @@
 						</div> 
 					</div>
 				</div>
-                
+				<div class="col-sm-4"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label>Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-body"> 
+							<div class="d-flex align-items-baseline">
+							<?php if($settings->ppv_status == 1){ ?>
+						<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+						<?php } else{ ?>
+							<div class="global_ppv_status">
+						<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+							<?php } ?>
+									</div>
+							<div class="clear"></div>
+						</div> 
+					</div>
+				</div>
 
                 </div>
                 </div>

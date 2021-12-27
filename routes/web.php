@@ -2,6 +2,7 @@
 
 
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
@@ -147,6 +148,7 @@ Route::get('/live/{category}/{id}', 'LiveStreamController@Play');
 // Route::get('/live/play/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
+Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
 Route::get('/logout', 'AdminUsersController@logout');
 Route::post('/stripe-payment', 'PaymentController@store')->name('stripe.store');

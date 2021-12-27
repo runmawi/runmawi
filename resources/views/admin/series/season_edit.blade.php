@@ -262,11 +262,11 @@
 						<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 						<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 						<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-						<?php if($settings->ppv_status == 1){ ?>
+						<!-- <?php //if($settings->ppv_status == 1){ ?>
 						<option value="ppv" >PPV Users (Pay per movie)</option>   
-						<?php } else{ ?>
+						<?php //} else{ ?>
 						<option value="ppv" >PPV Users (Pay per movie)</option>   
-						<?php } ?>
+						<?php //} ?> -->
 					</select>
 					<div class="clear"></div>
 				</div> 
@@ -313,28 +313,29 @@
 
 			<div class="col-sm-4" id="ppv_price"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
-					<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<!-- <div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" >
 		
-				</div>
+				</div> -->
 			</div>
 
 			<div class="col-sm-4 mt-3"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
-					<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<?php if($settings->ppv_status == 1){ ?>
+					<!-- <div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<?php// if($settings->ppv_status == 1){ ?>
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
-					<?php } else{ ?>
+					<?php //} else{ ?>
 						<div class="global_ppv_status">
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
 						</div>
-						<?php } ?>
+						<?php// } ?> -->
 						<div class="clear"></div>
 					</div> 
 				</div>
 
 		@if(isset($series->id))
 		<input type="hidden" id="series_id" name="series_id" value="{{ $series->id }}" />
+		<input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
 	@endif
 
 	@if(isset($season_id))

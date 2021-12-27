@@ -92,6 +92,7 @@ class AdminSeriesController extends Controller
             'series_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
+            'settings' => Setting::first(),
             'series_artist' => [],
             );
         return View::make('admin.series.create_edit', $data);
@@ -211,6 +212,9 @@ class AdminSeriesController extends Controller
 
         $update_url->mp4_url = $data['mp4_url'];
 
+        $update_url->ppv_status = $data['ppv_status'];
+
+
         $update_url->save();  
 
 
@@ -253,6 +257,7 @@ class AdminSeriesController extends Controller
             'series_categories' => Genre::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
+            'settings' => Setting::first(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
             );
 
@@ -536,6 +541,15 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
+        $series_id = $data['series_id'];
+        
+        $series = Series::findOrFail($series_id);
+        // dd($series->ppv_status);
+        if($series->ppv_status == 1){
+            $ppv_price = 1;
+        }else{
+            $ppv_price = null;
+        }
         $settings =Setting::first();
 
         if(!empty($data['ppv_price'])){
@@ -656,7 +670,7 @@ class AdminSeriesController extends Controller
               $episodes->intro_start_time =  $data['intro_start_time'];
               $episodes->intro_end_time =  $data['intro_end_time'];
               $episodes->ppv_price =  $ppv_price;
-              $episodes->ppv_status =  $data['ppv_status'];
+            //   $episodes->ppv_status =  $data['ppv_status'];
               $episodes->save();
 
 
@@ -695,23 +709,33 @@ class AdminSeriesController extends Controller
     {
         $input = $request->all();
         $id = $input['id'];
+        $series_id = $input['series_id'];
+
+        $series = Series::findOrFail($series_id);
+        // dd($series->ppv_status);
+        if($series->ppv_status == 1){
+            $ppv_price = 1;
+        }else{
+            $ppv_price = null;
+        }
+
         $episode = Episode::findOrFail($id);
         $settings =Setting::first();
-        if(!empty($input['ppv_price'])){
-            $ppv_price = $input['ppv_price'];
-        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
-        }
+        // if(!empty($input['ppv_price'])){
+        //     $ppv_price = $input['ppv_price'];
+        // }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+        //     $ppv_price = $settings->ppv_price;
+        // }
         $data = $request->all();
           
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
-        if(empty($data['ppv_status'])){
-            $data['ppv_status'] = 0;
-        }else{
-        $data['ppv_status'] = 1;
-        }
+        // if(empty($data['ppv_status'])){
+        //     $data['ppv_status'] = 0;
+        // }else{
+        // $data['ppv_status'] = 1;
+        // }
         
         if(isset($data['duration'])){
                 //$str_time = $data
@@ -783,7 +807,7 @@ class AdminSeriesController extends Controller
         $episode->intro_start_time =  $data['intro_start_time'];
         $episode->intro_end_time =  $data['intro_end_time'];
         $episode->ppv_price =  $ppv_price;
-        $episode->ppv_status =  $data['ppv_status'];
+        // $episode->ppv_status =  $data['ppv_status'];
         $episode->save();
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
@@ -1001,16 +1025,25 @@ class AdminSeriesController extends Controller
         
         $data = $request->all();
         // dd($data);
-        $settings =Setting::first();
-
-        if(!empty($data['ppv_price'])){
-            $ppv_price = $data['ppv_price'];
-        }elseif(!empty($data['ppv_status']) || $settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
+        $series_id = $data['series_id'];
+        
+        $series = Series::findOrFail($series_id);
+        // dd($series->ppv_status);
+        if($series->ppv_status == 1){
+            $ppv_price = 1;
         }else{
             $ppv_price = null;
-
         }
+        $settings =Setting::first();
+
+        // if(!empty($data['ppv_price'])){
+        //     $ppv_price = $data['ppv_price'];
+        // }elseif(!empty($data['ppv_status']) || $settings->ppv_status == 1){
+        //     $ppv_price = $settings->ppv_price;
+        // }else{
+        //     $ppv_price = null;
+
+        // }
 
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
@@ -1097,7 +1130,7 @@ class AdminSeriesController extends Controller
               $episode->intro_start_time =  $data['intro_start_time'];
               $episode->intro_end_time =  $data['intro_end_time'];
               $episode->ppv_price =  $ppv_price;
-              $episode->ppv_status =  $data['ppv_status'];
+            //   $episode->ppv_status =  $data['ppv_status'];
               $episode->save();
 
 
