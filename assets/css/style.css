@@ -1802,3 +1802,12 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 /* wishlist/watchlater */
 .wishlist-block {padding: 0 !important;}
 .wishlist-block li {list-style: none;}
+
+
+/* Player Css */
+
+#video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui {
+    height: calc(100vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+}
