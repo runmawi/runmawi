@@ -154,7 +154,7 @@
                 <div id="dvPassport" style="display: none" class="tab-pane fade in active">
                   <div class="row">
             <?php 
-                $plans = App\Plan::where('payment_type','=','recurring')->get();
+                $plans = App\SubscriptionPlan::where('payment_type','=','recurring')->where('type','=','Stripe')->get();
                    foreach($plans as $plan) {
                       $plans_name = $plan->plans_name;
                 ?>
@@ -187,7 +187,7 @@
            <div id="AddPassport" >
                     <div class="row">
                         <?php 
-                            $plans = App\Plan::where('payment_type','=','one_time')->get();
+                            $plans = App\SubscriptionPlan::where('payment_type','=','one_time')->where('type','=','Stripe')->get();
                                foreach($plans as $plan) {
                                   $plan_name = $plan->plans_name;
                             ?>
@@ -256,7 +256,7 @@
   <div id="dvPassports" style="display: none" class="tab-pane fade in active">
       <div class="row">
             <?php 
-           $plans = App\PaypalPlan::where('payment_type','=','recurring')->get();
+           $plans = App\SubscriptionPlan::where('payment_type','=','recurring')->where('type','=','PayPal')->get();
            foreach($plans as $plan) {
                $plan_name = $plan->name;
         ?>
@@ -307,7 +307,7 @@
                <div id="AddPassports" >
                     <div class="row">
                     <?php 
-                       $plans = App\PaypalPlan::where('payment_type','=','one_time')->get();
+                       $plans = App\SubscriptionPlan::where('payment_type','=','one_time')->where('type','=','PayPal')->get();
                        foreach($plans as $plan) {
                            $plan_name = $plan->name;
                     ?>

@@ -8,7 +8,8 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 @stop
-
+<?php //dd($series);
+$settings  = App\Setting::first();?>
 <?php $message = "Title Already Exits";  ?>
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>

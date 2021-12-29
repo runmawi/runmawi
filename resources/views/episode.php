@@ -8,8 +8,7 @@
 			
 			<?php 
 			if(!Auth::guest()){
-			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  empty($episode->ppv_price)  && Auth::user()->role == 'registered'
-			|| empty($episode->ppv_price) && Auth::user()->role == 'subscriber' || empty($episode->ppv_price) && Auth::guest()){
+			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){
 			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
 				
@@ -17,7 +16,7 @@
 						<div id="series_container" class="fitvid">
 							<?= $episode->embed_code ?>
 						</div>
-					<?php  elseif($episode->type == 'file'): ?>
+					<?php  elseif($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
 						<video id="Player"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
@@ -113,13 +112,13 @@
 			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 			
 			</div>
-			<div>
-			<?php if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
+			<!-- <div>
+			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-			<?php echo __('Purchase for').' '.$currency->symbol.' '.$settings->ppv_price;?> </button>
-			<?php } ?>
+			<?php// echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
+			<?php //} ?>
             <br>
-			</div>
+			</div> -->
         </div>
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
@@ -236,27 +235,27 @@
                 <span class="badge badge-secondary p-2"><?php //echo __($video->languages->name);?></span> -->
                 <span class="badge badge-secondary p-2"><?php //echo __($video->duration);?></span>
                 <span class="trending-year"><?php if ($episode->year == 0) { echo ""; } else { echo $episode->year;} ?></span>
-               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$settings->ppv_price);?></button>
+               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$episodes->ppv_price);?></button>
                  <label for="method"><h3>Payment Method</h3></label>
-
                 <label class="radio-inline">
                     <?php  foreach($payment_type as $payment){
                           if($payment->live_mode == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}"> Stripe</label>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
                 <?php }elseif($payment->paypal_live_mode == 1){ ?>
                 <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}"> PayPal</label>
-                <?php }elseif($payment->live_mode == 0 && $payment->live_mode == 0){ ?><
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}"> Stripe</label><br>
-				<input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label><br>
-					
-                          <?php echo "Test Mode Key Are Enabled" ;  } }?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <?php }elseif($payment->live_mode == 0){ ?><
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+                          <?php 
+						 }elseif( $payment->paypal_live_mode == 0){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+						<?php  } }?>
 
                  </div>
              </div>                    
          </div>
          <div class="modal-footer">
-         <a onclick="pay(<?php echo $settings->ppv_price ;?>)">
+         <a onclick="pay(<?php echo $episode->ppv_price ;?>)">
 					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
                    </a>
            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>

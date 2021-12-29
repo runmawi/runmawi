@@ -29,6 +29,8 @@ use App\PaymentSetting;
 use App\SubscriptionPlan;
 use Session;
 use App\LivePurchase;
+use App\Series;
+use App\SeriesSeason;
 
 class PaymentController extends Controller
 {
@@ -161,6 +163,80 @@ public function RentPaypal(Request $request)
 
     return 1;
   }
+
+  public function purchaseSeries(Request $request)
+  {
+    // dd($request->all());
+    $data = $request->all();
+    $series_id = $data['series_id'];
+    $setting = Setting::first();  
+    $ppv_hours = $setting->ppv_hours;
+    // $to_time =  Carbon::now()->addHour($ppv_hours);
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    // dd($now);
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+    $user_id = Auth::user()->id;
+    $username = Auth::user()->username;
+    $email = Auth::user()->email;
+
+    // $series_id = $request->get('series_id');
+    // print_r($series_id);exit();
+    $series = Series::where('id','=',$series_id)->first();  
+    $total_amount = $setting->ppv_price;
+    $title =  $series->title;
+    $commssion = VideoCommission::first();
+    $percentage = $commssion->percentage; 
+    $ppv_price = $setting->ppv_price;
+    $admin_commssion = ($percentage/100) * $ppv_price ;
+    $moderator_commssion = $ppv_price - $percentage;
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+    $stripe = Stripe::make($secret_key, '2020-03-02');
+    $charge = $stripe->charges()->create([
+      'source' => $request->get('tokenId'),
+      'currency' => 'USD',
+      'amount' => $request->get('amount')
+    ]);
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->series_id = $series_id;
+    $purchase->total_amount = $total_amount;
+    $purchase->admin_commssion = $admin_commssion;
+    $purchase->moderator_commssion = $moderator_commssion;
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
+
+    $purchase->save();
+
+    $template = EmailTemplate::where('id','=',11)->first();
+    $heading =$template->heading; 
+
+    // Mail::send('emails.payperview_rent', array(
+    //     /* 'activation_code', $user->activation_code,*/
+    //     'name'=> $username, 
+    //     'email' => $email, 
+    //     'title' => $title, 
+    //     ), function($message) use ($request,$username,$heading,$email) {
+    //     $message->from(AdminMail(),'Flicknexs');
+    //     $message->to($email, $username)->subject($heading.$username);
+    //     });
+
+    return 1;
+  }
+
   public function purchaseEpisode(Request $request)
   {
     // dd($request->all());
@@ -377,7 +453,7 @@ public function RentPaypal(Request $request)
             $user->subscription($stripe_plan)->resume();
             $planvalue = $user->subscriptions;
             $plan = $planvalue[0]->stripe_plan;
-            $plandetail = Plan::where('plan_id',$plan)->first();
+            $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
           
             \Mail::send('emails.renewsubscriptionemail', array(
                 'name' => $user->username,
@@ -397,7 +473,7 @@ public function RentPaypal(Request $request)
      public function UpgradeStripe(Request $request){
          
          $plan_id = $request->get('plan_name');
-         $plan_details = Plan::where("plan_id","=",$plan_id)->first();
+         $plan_details = SubscriptionPlan::where("plan_id","=",$plan_id)->first();
          $response = array(
              "plans_details" => $plan_details
          );
@@ -407,7 +483,7 @@ public function RentPaypal(Request $request)
     public function UpgradePaypalPage(Request $request){
          $paypal_details = $request->all();
          $plan_id = $request->get('name');
-         $plan_details = PaypalPlan::where("plan_id","=",$plan_id)->first();
+         $plan_details = SubscriptionPlan::where("plan_id","=",$plan_id)->first();
          $response = array(
              "plans_details" => $plan_details
          );
@@ -436,7 +512,7 @@ public function RentPaypal(Request $request)
                   }
 
                 $plan = $request->get('plan_name');
-                $plandetail = Plan::where('plan_id',$upgrade_plan)->first();
+                $plandetail = SubscriptionPlan::where('plan_id',$upgrade_plan)->first();
                     \Mail::send('emails.changeplansubscriptionmail', array(
                         'name' => $user->username,
                         'plan' => ucfirst($plandetail->plans_name),
@@ -611,7 +687,7 @@ public function RentPaypal(Request $request)
                     $paymentMethods = $user->paymentMethods();
                     $apply_coupon = NewSubscriptionCouponCode();
                     $stripe_plan = SubscriptionPlan();
-                    $plandetail = Plan::where('plan_id',$plan)->first();
+                    $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
                     $plan_name = ucfirst($plandetail->plans_name);
                     $template = EmailTemplate::where('id','=', 24)->first(); 
                     $heading = $template->heading; 

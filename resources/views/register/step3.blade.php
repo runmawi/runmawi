@@ -8,7 +8,7 @@ $plan_id = session()->get('plan_id');
 $payment_type = session()->get('payment_type');
 
 // print_r($plan_id);exit();
-$plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
+$plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
 $plan_price = $plan_details->price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;

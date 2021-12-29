@@ -12,7 +12,10 @@
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3">
-		<?php if($series->access == 'guest' || ( ($series->access == 'subscriber' || $series->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $series->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+		<?php if( $ppv_exits > 0 || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
+		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
+	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
+		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ): ?>
 		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
@@ -79,11 +82,139 @@
 								Detail
 							</div>
 						</div>
-					</div>
+						
+
+		<?php else: ?>
+			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+					<div id="ppv">
+				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+				<div class="clear"></div>
+				</div>
+
+				<div class="col-md-2 text-center text-white">
+                <div class="col-md-4">
+			<?php if ( $series->ppv_status == 1 && Auth::User()->role =="admin") { ?>
+			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
+			<?php echo __('Purchase for').' '.$currency->symbol.' '.$settings->ppv_price;?> </button>
+			<?php } ?>
+            <br>
+			</div>
+
+        </div>
+				</div>
 				</div>
 			</div>
 		</section>
-<?php endif;?>
+		
+				<?php endif;?>
+				<?php $payment_type = App\PaymentSetting::get(); ?>
+
+
+
+				          <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+         </div>
+         <div class="modal-body">
+             <div class="row">
+                 <div class="col-sm-2" style="width:52%;">
+                   <span id="paypal-button"></span> 
+                 </div>
+                <?php $payment_type = App\PaymentSetting::get(); ?>
+                 
+                 <div class="col-sm-4">
+                 <label for="method"><h3>Payment Method</h3></label>
+                <label class="radio-inline">
+				<?php foreach($payment_type as $payment){
+				if($payment->live_mode == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                <?php }elseif($payment->paypal_live_mode == 1){ ?>
+                <label class="radio-inline">
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <?php }elseif($payment->live_mode == 0){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+				<?php 
+				}elseif( $payment->paypal_live_mode == 0){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+				<?php  } }?>
+
+                 </div>
+             </div>                    
+         </div>
+         <div class="modal-footer">
+         <a onclick="pay(<?php echo $settings->ppv_price ;?>)">
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+                   </a>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+   <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
+   <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
+
+   <script src="https://checkout.stripe.com/checkout.js"></script>
+	
+	<script type="text/javascript"> 
+
+	// videojs('Player').videoJsResolutionSwitcher(); 
+	$(document).ready(function () {  
+		 $.ajaxSetup({
+		   headers: {
+			 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		   }
+		 });
+	   });
+
+function pay(amount) {
+var publishable_key = $('#publishable_key').val();
+
+var series_id = $('#series_id').val();
+// alert(series_id);
+// alert(publishable_key);
+
+var handler = StripeCheckout.configure({
+
+key: publishable_key,
+locale: 'auto',
+token: function (token) {
+// You can access the token ID with `token.id`.
+// Get the token ID to your server-side code for use.
+console.log('Token Created!!');
+console.log(token);
+$('#token_response').html(JSON.stringify(token));
+
+$.ajax({
+url: '<?php echo URL::to("purchase-series") ;?>',
+method: 'post',
+data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , series_id: series_id },
+success: (response) => {
+alert("You have done  Payment !");
+setTimeout(function() {
+ location.reload();
+}, 2000);
+
+},
+error: (error) => {
+swal('error');
+
+}
+})
+}
+});
+
+
+handler.open({
+name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+description: 'Rent a Episode',
+amount: amount * 100
+});
+}
+</script>
+
 <script type="text/javascript">
 	var first = $('select').val();
 	$(".episodes_div").hide();

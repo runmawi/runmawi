@@ -6,7 +6,7 @@
 <?php 
 
 $plan_id = session()->get('become_plan');
-$plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
+$plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
 
 
 ?>

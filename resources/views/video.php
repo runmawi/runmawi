@@ -628,17 +628,18 @@ $artists = [];
                  <label for="method"><h3>Payment Method</h3></label>
 
                 <label class="radio-inline">
-                    <?php  foreach($payment_type as $payment){
+                <?php  foreach($payment_type as $payment){
                           if($payment->live_mode == 1){ ?>
-                <input type="radio" id="tres_important" name="payment_method" checked value="{{ $payment->payment_type }}">Stripe</label>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
                 <?php }elseif($payment->paypal_live_mode == 1){ ?>
                 <label class="radio-inline">
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
-                <?php }elseif($payment->live_mode == 0 && $payment->live_mode == 0){ ?><
+                <?php }elseif($payment->live_mode == 0){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
-				<input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label><br>
-					
-                          <?php echo "Test Mode Key Are Enabled" ; } }?>
+                          <?php 
+						 }elseif( $payment->paypal_live_mode == 0){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+						<?php  } }?>
 
                  </div>
              </div>                    

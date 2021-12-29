@@ -19,6 +19,7 @@ use Image;
 use Illuminate\Support\Facades\Notification;
 //use Laravel\Cashier\Exceptions\IncompletePayment;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\SubscriptionPlan;
 
 class StripeController extends Controller
 {
@@ -357,7 +358,7 @@ return view('register.step3', [
         $apply_coupon = NewSubscriptionCouponCode();
         $stripe_plan = SubscriptionPlan();
 
-        $plandetail = Plan::where('plan_id',$plan)->first();
+        $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
         if ( NewSubscriptionCoupon() == 1 ) {
                     // $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
 

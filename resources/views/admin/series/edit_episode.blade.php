@@ -10,8 +10,8 @@
 <div id="admin-container" style="margin-left: 340px;
     padding-top: 100px;">
 <!-- This is where -->
-	 <div class="iq-card">
-	<div class="admin-section-title d-flex justify-content-between">
+	
+	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
 		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-primary">
@@ -32,7 +32,7 @@
 				<div class="col-md-6">
 		@endif
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title">Title</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
 							<p>Add the episodes title in the textbox below:</p> 
 							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif" style=""  />
@@ -44,7 +44,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title"><label>Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 							<p>Select Date/Time Below</p> 
 							<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($episodes->created_at)){{ $episodes->created_at }}@endif"  />
@@ -72,14 +72,14 @@
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Episode Ratings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<label>IMDb Ratings 10 out of 10</label>
+					IMDb Ratings 10 out of 10
 					<input class="form-control" name="rating" id="rating" value="@if(!empty($episodes->rating)){{ $episodes->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"  >
 				</div> 
 			</div>
 			</div>
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<!-- <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Episode Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Episode Format</label>
@@ -95,7 +95,7 @@
 						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
 						<hr />
 						
-					</div>
+					</div> -->
 
 					<div class="new-episodes-embed" @if(!empty($episodes->type) && $episodes->type == 'embed')style="display:block"@else style = "display:none" @endif>
 						<label for="embed_code">Embed Code:</label>
@@ -217,11 +217,11 @@
 								<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-								<!-- <?php// if($settings->ppv_status == 1){ ?>
+								<?php if($settings->ppv_status == 1){ ?>
 								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-								<?php //} else{ ?>
+								<?php } else{ ?>
 								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-								<?php// } ?> -->
+								<?php } ?>
 
 							</select>
 							<div class="clear"></div>
@@ -261,27 +261,29 @@
 
 				<div class="col-sm-4" id="ppv_price"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<!-- <div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($episodes->ppv_price)){{ $episodes->ppv_price }}@endif">
 
-					</div> -->
+					</div>
 				</div>
 
-				<div class="col-sm-8 mt-3"> 
-					<!-- <div class="panel panel-primary" data-collapsed="0"> 
+				<div class="col-sm-4 mt-3"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<?php// if($settings->ppv_status == 1){ ?>
-						<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-						<?php// } else{ ?>
-							<div class="global_ppv_status">
-						<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-							</div>
-							<?php// } ?>
+						<?php //if($settings->ppv_status == 1){ ?>
+						<!-- <label for="global_ppv">Is this video Is Global PPV:</label> -->
+						<!-- <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif /> -->
+						<?php //} else{ ?>
+							<!-- <div class="global_ppv_status"> -->
+							<!-- <label for="global_ppv">Is this video Is PPV:</label> -->
+						<!-- <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif /> -->
+							<!-- </div> -->
+							<?php //} ?>
 							<div class="clear"></div>
-						</div>  -->
+						</div> 
 					</div>
-                <div class="p-3 d-flex justify-content-end">
-                @if(isset($episodes->id))
+                <div class="p-3">
+                @if(isset($series->id))
 				<input type="hidden" id="series_id" name="series_id" value="{{ $episodes->series_id }}" />
 			@endif
 

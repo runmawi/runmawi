@@ -104,7 +104,7 @@ class SignupController extends Controller
 
                 $paymentMethod = $request->get('py_id');
                 $plan = $request->get('plan');
-                $plandetail = Plan::where('plans_name',$plan)->first();
+                $plandetail = SubscriptionPlan::where('plans_name',$plan)->first();
                 $stripe_plan = SubscriptionPlan();
                 $paymentMethods = $user->paymentMethods();
 
@@ -508,7 +508,7 @@ public function createStep3(Request $request)
     {
         $user_email = $request->session()->get('register.email');
         $user = User::where("email","=",$user_email)->first();
-        $plans = Plan::where("plan_id","=",$request->plan_data)->first();
+        $plans = SubscriptionPlan::where("plan_id","=",$request->plan_data)->first();
         $user_id = $user->id;
         $name = $user->username; 
         $price = $plans->price;
@@ -579,7 +579,7 @@ public function createStep3(Request $request)
                         $paymentMethods = $user->paymentMethods();
                         $apply_coupon = NewSubscriptionCouponCode();
                         $stripe_plan = SubscriptionPlan();
-                        $plandetail = Plan::where('plan_id',$plan)->first();
+                        $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
                         if ( NewSubscriptionCoupon() == 1 ) {                      
                             try {
                                  $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
@@ -934,7 +934,7 @@ public function createStep3(Request $request)
         {
         
             $plan_id = $request->get('name');
-                $plan_details = PaypalPlan::where('plan_id','=',$plan_id)->first();
+                $plan_details = SubscriptionPlan::where('plan_id','=',$plan_id)->first();
                 $data = array(
                         'plan_name' => $plan_details->name,
                         'plan_price' => $plan_details->price,

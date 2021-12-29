@@ -72,7 +72,7 @@
 	<input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
 	</div>	
 
-	<?php //dd($age_categories); ?>
+	<?php //dd($season_id); ?>
 
 	<div id="episode_video_data">
 
@@ -130,7 +130,7 @@
 	</div>
 	</div>
 
-	<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+	<!-- <div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 		<div class="panel-title"><label>Episode Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 		<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 			<label for="type" >Episode Format</label>
@@ -138,12 +138,12 @@
 				<option value="embed">Embed Code</option>
 				<option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
 				<option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
-			</select>
+			</select> -->
 
 		
 
 
-			<div class="new-episodes-file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
+			<!-- <div class="new-episodes-file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
 				<label for="mp4_url">Mp4 File URL:</label>
 				<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
 			</div>
@@ -166,7 +166,7 @@
 			<iframe src="{{ $episodes->mp4_url }}"></iframe>
 			@endif
 		</div> 
-	</div>
+	</div> -->
 		<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 			<label><h6>Age Restrict :</h6></label>
 		<select class="form-control" id="age_restrict" name="age_restrict">
@@ -262,11 +262,11 @@
 						<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 						<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 						<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-						<!-- <?php //if($settings->ppv_status == 1){ ?>
+						<?php if($settings->ppv_status == 1){ ?>
 						<option value="ppv" >PPV Users (Pay per movie)</option>   
-						<?php //} else{ ?>
+						<?php } else{ ?>
 						<option value="ppv" >PPV Users (Pay per movie)</option>   
-						<?php //} ?> -->
+						<?php } ?>
 					</select>
 					<div class="clear"></div>
 				</div> 
@@ -313,34 +313,33 @@
 
 			<div class="col-sm-4" id="ppv_price"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
-					<!-- <div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" >
 		
-				</div> -->
+				</div>
 			</div>
 
-			<div class="col-sm-4 mt-3"> 
+			<!-- <div class="col-sm-4 mt-3"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
-					<!-- <div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<?php// if($settings->ppv_status == 1){ ?>
+					<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<?php //if($settings->ppv_status == 1){ ?>
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
-					<?php //} else{ ?>
+					<?php// } else{ ?>
 						<div class="global_ppv_status">
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
 						</div>
-						<?php// } ?> -->
+						<?php //} ?>
 						<div class="clear"></div>
 					</div> 
-				</div>
+				</div> -->
 
 		@if(isset($series->id))
 		<input type="hidden" id="series_id" name="series_id" value="{{ $series->id }}" />
-		<input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
 	@endif
 
-	@if(isset($season_id))
+	<!-- @if(isset($episodes->id))
 		<input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
-	@endif
+	@endif -->
 
 
 	@if(isset($episodes->id))
@@ -349,6 +348,7 @@
 	<input type="hidden" id="episode_id" name="episode_id" value="">
 
 	<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+	<input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
 		
 	</div><!-- row -->
 
