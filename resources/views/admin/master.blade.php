@@ -295,6 +295,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
 
                      </ul>
                   </li>
@@ -506,6 +507,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
@@ -714,6 +717,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
@@ -922,6 +927,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->

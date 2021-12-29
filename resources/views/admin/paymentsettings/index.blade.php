@@ -43,6 +43,7 @@
 	<div class="clear"></div>
 
 	
+    <p><h3>Stripe Payment</h3></p>
 
 	<form method="POST" action="{{ URL::to('admin/payment_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 	<div class="row">
@@ -50,6 +51,23 @@
 		<!-- <div class="row mt-4"> -->
 			
 			<div class="col-md-6">
+            <label for="">Payment Mode</label>
+            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+            <div>Enable</div>
+            <div class="mt-1">
+            <label class="switch">
+            <input type="checkbox" @if(!isset($payment_settings->stripe_status) || (isset($payment_settings->stripe_status) && $payment_settings->stripe_status))checked="checked" value="1"@else value="0"@endif name="stripe_status" id="stripe_status" />
+            <span class="slider round"></span>
+            </label></div>
+            <div>Disable</div>
+            </div>
+            <div class="make-switch" data-on="success" data-off="warning">                
+            </div>
+            </div>
+
+
+
+            <div class="col-md-6">
             <label for="">Stripe Mode</label>
             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
             <div>ON</div>
@@ -91,13 +109,27 @@
             <label>Live Publishable Key:</label> 
 			<input type="text" class="form-control" name="live_publishable_key" id="live_publishable_key" placeholder="Live Publishable Key" value="@if(!empty($payment_settings->live_publishable_key) && Auth::user()->role != 'demo'){{ $payment_settings->live_publishable_key }}@endif" />
 			</div>
+			</div>
             <br>
             <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <p><h3>PayPal Payment</h3></p>
+            <div class="row">
+            <div class="col-md-6 mt-3">
+            <label for="">Payment Mode</label>
 
+            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+            <div>Enable</div>
+            <div class="mt-1">
+            <label class="switch">
+            <input type="checkbox" @if(!isset($paypal_payment_settings->paypal_status) || (isset($paypal_payment_settings->paypal_status) && $paypal_payment_settings->paypal_status))checked="checked" value="1"@else value="0"@endif name="paypal_status" id="paypal_status" />
+            <span class="slider round"></span>
+            </label></div>
+            <div>Disable</div>
+            </div>
+            <div class="make-switch" data-on="success" data-off="warning">
+            </div>
+            
+            </div>
             <div class="col-md-6 mt-3">
             <label for="">PayPal Mode</label>
 
@@ -154,7 +186,7 @@
             <div class="col-md-6 mt-3">
 
             </div>
-		<!-- </div> -->
+		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 		<div class="panel-body mt-3" style="display: flex;
     justify-content: flex-end;">

@@ -526,6 +526,16 @@ Route::post('/revenue_settings/update', 'AdminRevenueSettings@Update');
 
 
 
+// APP Settings  
+
+
+Route::get('/app_settings/index', 'AdminAppSettings@Index');
+Route::post('/app_settings/store', 'AdminAppSettings@Store');
+Route::get('/app_settings/edit/{id}', 'AdminAppSettings@Edit');
+Route::get('/app_settings/delete/{id}', 'AdminAppSettings@Delete');
+Route::post('/app_settings/update', 'AdminAppSettings@Update');
+
+
 Route::get('/allmoderator', 'ModeratorsUserController@view');
 Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
 Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
