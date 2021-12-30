@@ -1,5 +1,6 @@
 <!-- Header Start -->
-<?php include('header.php');?>
+<?php 
+include('header.php');?>
 <!-- Header End -->
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
@@ -29,19 +30,92 @@
            </div>
         </div>
     </section>
-    <?php if($home_settings->latest_videos == 1){ ?>
-    <section id="iq-favorites">
-        <div class="fluid">
-           <div class="row">
-              <div class="col-sm-12 overflow-hidden">
-                 <?php include('partials/home/latest-videos.php'); ?>
-              </div>
-           </div>
-        </div>
-</section>
-<?php } ?>
 
-<?php if($home_settings->live_videos == 1){  ?>
+
+    <?php if(count($top_most_watched) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/Top_videos.blade.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+    <?php if(count($most_watch_user) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/most_watched_user.blade.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+   <?php 
+      if(count($Most_watched_country) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/most_watched_country.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+   
+   <?php 
+      if(($preference_genres) != null){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/preference_genres.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+   
+   <?php 
+
+      if(($preference_Language) != null){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/preference_Language.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+    <?php if($home_settings->latest_videos == 1){ ?>
+      <section id="iq-favorites">
+         <div class="fluid">
+            <div class="row">
+               <div class="col-sm-12 overflow-hidden">
+                  <?php include('partials/home/latest-videos.php'); ?>
+               </div>
+            </div>
+         </div>
+      </section>
+   <?php } ?>
+
+
+<?php if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -866,13 +940,73 @@ endif; ?>
                </div>
             </div>
          </section>*/ ?>
+
         <section id="iq-tvthrillers" class="s-margin">
             <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
             <div class="fluid">
-                <?php
-                    $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+               <?php
+                     $getfeching = App\Geofencing::first();
+                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                     $userIp = $geoip->getip();    
+                     $countryName = $geoip->getCountry();
+
+                     $Multiuser=Session('subuser_id');
+                     $Multiprofile= App\Multiprofile::where('id',$Multiuser)->first();
+
+                     $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+
+      // blocked videos
+                      $block_videos=App\Blockvideo::where('country_id',$countryName)->get();
+                      if(!$block_videos->isEmpty()){
+                         foreach($block_videos as $block_video){
+                            $blockvideos[]=$block_video->video_id;
+                         }
+                      }   
+                      else{
+                        $blockvideos[]='';
+                      } 
+
                     foreach($parentCategories as $category) {
-                    $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->get();
+                       if( $Multiprofile != null ){
+                           if($Multiprofile->user_type == "Kids"){
+                         
+                        $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->where('age_restrict','<',18);
+                           if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                              $videos = $videos  ->whereNotIn('id',$blockvideos); }
+                              if($Family_Mode == 1){
+                                 $videos = $videos->where('age_restrict', '<', 18);
+                             }
+                             if($Kids_Mode == 0){
+                                 $videos = $videos->where('age_restrict', '<', 10);
+                             }
+                              $videos = $videos ->get();
+                           }else{
+                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->where('age_restrict','<',18);
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        }
+                        if($Family_Mode == 1){
+                           $videos = $videos->where('age_restrict', '<', 18);
+                       }
+                       if($Kids_Mode == 0){
+                           $videos = $videos->where('age_restrict', '<', 10);
+                       }
+                      $videos = $videos ->get();
+                       } } else {
+
+                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
+                     
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                           }
+                           if($Family_Mode == 1){
+                              $videos = $videos->where('age_restrict', '<', 18);
+                          }
+                          if($Kids_Mode == 0){
+                              $videos = $videos->where('age_restrict', '<', 10);
+                          }
+                     $videos = $videos ->get();
+                     }
                 ?>
                         <?php if (count($videos) > 0) { 
                             include('partials/category-videoloop.php');

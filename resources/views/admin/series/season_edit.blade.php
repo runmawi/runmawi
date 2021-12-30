@@ -130,7 +130,7 @@
 					@endif
 				</div> 
 			</div>
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+				{{-- <div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<label><h6>Age Restrict :</h6></label>
 				<select class="form-control" id="age_restrict" name="age_restrict">
 						<option selected disabled="">Choose Age</option>
@@ -138,7 +138,7 @@
 							<option value="{{ $age->id }}" @if(!empty($episodes->age_restrict) && $episodes->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
 						@endforeach
 					</select>
-			</div>
+			</div> --}}
 
 			<div class="row align-items-center"> 
 				<div class="col-sm-4"> 
@@ -269,6 +269,19 @@
 								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 							</div>
 						</div> 
+					</div>
+				</div>
+			</div>
+
+				<div class="row">
+					<div class="col-sm-8"> 
+						<div class="panel panel-primary" data-collapsed="0"> 
+							<div class="panel-heading"> <div class="panel-title"> <label>Free content Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+							<div class="panel-body"> 
+								<p class="p1">Enter the episode duration ( Free Content ) in the following format (Hours : Minutes : Seconds)</p> 
+								<input class="form-control" name="free_content_duration" id="free_content_duration" value="@if(!empty($episodes->free_content_duration)){{ gmdate('H:i:s', $episodes->free_content_duration) }}@endif" >
+							</div> 
+						</div>
 					</div>
 				</div>
                 @if(isset($series->id))

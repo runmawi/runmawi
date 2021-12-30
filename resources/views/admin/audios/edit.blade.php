@@ -141,6 +141,26 @@
 								</div> 
 							</div>
 
+							
+							<div class="col-sm-6">
+								<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+									<div class="panel-title"><label>Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+									<div class="panel-body" style="display: block;"> 
+										<p class="p1">Block the Audio for Selected Country:</p> 
+										<select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+											@foreach($countries as $country)
+                                            @if(in_array($country->country_name, $audio_artist))
+                                                <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
+                                            @else
+                                                <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
+                                            @endif 
+                                            @endforeach
+										</select>
+									</div> 
+								</div>
+							</div>
+
+
 							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 

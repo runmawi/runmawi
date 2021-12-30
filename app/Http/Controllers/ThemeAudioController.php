@@ -46,6 +46,8 @@ use GeoIPLocation;
 use Stevebauman\Location\Facades\Location;
 use Carbon\Carbon as Carbon;
 use Session;
+use App\BlockAudio;
+use App\Geofencing;
 
 class ThemeAudioController extends Controller{
 
@@ -67,10 +69,15 @@ class ThemeAudioController extends Controller{
      */
     public function index($slug,$name = '')
       {
-        // if(Auth::guest()):
-        //     return Redirect::to('/login');
-        // endif;
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
         //$audio = Audio::findOrFail($albumID);
+        $getfeching= Geofencing::first();
+        $getfeching= Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
         
         if (!empty($name)) {
           
@@ -94,8 +101,22 @@ class ThemeAudioController extends Controller{
 
                 $audioprev = Audio::where('id', '<', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
 
-                $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1)->get();
-            
+
+                  // blocked Audio
+                  $block_Audio=BlockAudio::where('country',$countryName)->get();
+                  if(!$block_Audio->isEmpty()){
+                     foreach($block_Audio as $blocked_Audios){
+                        $blocked_Audio[]=$blocked_Audios->audio_id;
+                     }
+                  }    
+                  $blocked_Audio[]='';
+                
+                  $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                         $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                  }
+                   $related_audio = $related_audio ->get();
+
             
                 $favorited = false;
                 if(!Auth::guest()):
@@ -115,14 +136,10 @@ class ThemeAudioController extends Controller{
            
             $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
             $audio = $audio->id;
-            if(!Auth::guest()){
-               $user_id = Auth::user()->id ;
-            }else{
-                $user_id = 0;
-            }
+
             $view = new RecentView;
             $view->audio_id = $audio;
-            $view->user_id = $user_id;
+            $view->user_id = Auth::user()->id;
             $view->visited_at = date('Y-m-d');
             $view->save();
              if (!empty($audio)) {
@@ -136,9 +153,7 @@ class ThemeAudioController extends Controller{
                    
                 } else {
                      $audio_details = Audio::where('album_id','=',$albumID)->where('status','=',1)->first();
-            //   echo "<pre>";print_r($audio_details);exit();
-
-                  // print_r($audio_details);
+        
                 }
                 $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
         
@@ -148,7 +163,21 @@ class ThemeAudioController extends Controller{
 
                 $audioprev = Audio::where('id', '<', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
 
-                $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1)->get();
+                   // blocked Audio
+                   $block_Audio=BlockAudio::where('country',$countryName)->get();
+                   if(!$block_Audio->isEmpty()){
+                      foreach($block_Audio as $blocked_Audios){
+                         $blocked_Audio[]=$blocked_Audios->audio_id;
+                      }
+                   }    
+                   $blocked_Audio[]='';
+                 
+                   $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                          $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                   }
+                    $related_audio = $related_audio ->get();
+ 
                  
                 $favorited = false;
                 if(!Auth::guest()):
@@ -176,14 +205,8 @@ class ThemeAudioController extends Controller{
         }
       
             if (!empty($audio_details)) {
-                if(!Auth::guest()){
-                    $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
-                    $view_increment = $this->handleViewCount($audio); 
-                }else{
-                    $ppv_status = [];
-                    $view_increment = $this->handleViewCount($audio); 
-                     }
-               
+                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+                $view_increment = $this->handleViewCount($audio); 
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
@@ -214,7 +237,10 @@ class ThemeAudioController extends Controller{
                 );
                 
             }
-        
+        //     echo '<pre>';
+        // print_r($data);
+        // exit();
+           
             return View::make('audio', $data);
 
         
@@ -227,10 +253,15 @@ class ThemeAudioController extends Controller{
     public function audios(Request $request)
     {   
 
-        // if(Auth::guest()):
-        //     return Redirect::to('/login');
-        // endif;
-        
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        $getfeching= Geofencing::first();
+        $getfeching= Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+
         $page =$request->get('page');
         if( !empty($page) ){
             $page = $request->get('page');
@@ -241,10 +272,23 @@ class ThemeAudioController extends Controller{
 
         // dd($audios_count);
         if ($audios_count > 0) {
-            $audios = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->audios_per_page);    
+               // blocked Audio
+               $block_Audio=BlockAudio::where('country',$countryName)->get();
+               if(!$block_Audio->isEmpty()){
+                  foreach($block_Audio as $blocked_Audios){
+                     $blocked_Audio[]=$blocked_Audios->audio_id;
+                  }
+               }    
+               $blocked_Audio[]='';
+               $audios  =  Audio::where('active', '=', '1')->orderBy('created_at', 'DESC');
+                 if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                      $audios = $audios  ->whereNotIn('id',$blocked_Audio);
+               }
+                $audios = $audios ->simplePaginate($this->audios_per_page);   
             } else {
               $audios = [];
             } 
+            
         $data = array(
             'audios' => $audios,
             'audios_count' => $audios_count,
@@ -258,6 +302,7 @@ class ThemeAudioController extends Controller{
             'audio_categories' => AudioCategory::all(),
             'pages' => Page::where('active', '=', 1)->get(),
             );
+
         return View::make('audio-list', $data);
     }
 
@@ -388,13 +433,33 @@ class ThemeAudioController extends Controller{
     }
     
     public function album($album_slug) {
+        
        
-        // if(Auth::guest()):
-        //     return Redirect::to('/login');
-        // endif;
+        if(Auth::guest()):
+            return Redirect::to('/login');
+        endif;
+        $getfeching= Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        
             $album_id = AudioAlbums::where('slug', $album_slug)->first()->id;
             $album = AudioAlbums::where('id', $album_id)->first();
-            $album_audios = Audio::where('album_id', $album_id)->get();
+         
+               // blocked Audio
+               $block_Audio=BlockAudio::where('country',$countryName)->get();
+               if(!$block_Audio->isEmpty()){
+                  foreach($block_Audio as $blocked_Audios){
+                     $blocked_Audio[]=$blocked_Audios->audio_id;
+                  }
+               }    
+               $blocked_Audio[]='';
+               $album_audios  =  Audio::where('album_id', $album_id);
+                 if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                      $album_audios = $album_audios  ->whereNotIn('id',$blocked_Audio);
+               }
+                $album_audios = $album_audios ->get();
+
             $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
             foreach ($album_audios as $key => $album_audio) {
                 $json[] = array('title' => $album_audio->title,'mp3'=>$album_audio->mp3_url);
@@ -476,6 +541,7 @@ class ThemeAudioController extends Controller{
         $audios = $album_ids = array();
        
         $latest_audios = Audioartist::select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
+
         foreach ($latest_audios as $key => $latest_audio) {
             $audio_id = $latest_audio->audio_id;
             if(Audio::where('id',$audio_id)->where('active','=',1)->orderBy('created_at', 'desc')->exists()){

@@ -1,17 +1,13 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
 
-
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
-// href="http://localhost/flicknexs/category/wishlist/Kung fu Panda"
-Route::get('/free-access', 'HomeController@FreeAccess')->name('FreeAccess');
+
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
@@ -19,8 +15,6 @@ Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
-Route::get('/category/categories/', 'ChannelController@categories');
-Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
@@ -51,6 +45,14 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     Route::post('image/upload', 'ImageController@upload');
     Route::get('/', 'HomeController@FirstLanging');
+
+    Route::get('choose-profile', 'HomeController@Multipleprofile');
+    Route::get('subuser/{id}', 'HomeController@subuser')->name('subuser');
+    Route::get('kidsMode', 'HomeController@kidsMode')->name('kidsMode');
+    Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');
+    Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
+    Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
+    
 
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -100,7 +102,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('searchResult', 'HomeController@searchResult');
     Route::get('search','HomeController@search');
     Route::get('showPayperview', 'WatchLaterController@showPayperview');
-    Route::post('addwatchlater', 'WatchLaterController@watchlater');
+    Route::post('watchlater', 'WatchLaterController@watchlater');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
     Route::get('/page/{slug}', 'PagesController@index');
@@ -119,6 +121,7 @@ Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
+Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
 Route::post('mywishlist', 'WishlistController@mywishlist');
@@ -140,8 +143,7 @@ Route::get('/upgrading', 'PaymentController@upgrading');
 Route::get('/channels', 'ChannelController@index');
 Route::get('/ppvVideos', 'ChannelController@ppvVideos');
 Route::get('/live', 'LiveStreamController@Index');
-Route::get('/live/{category}/{id}', 'LiveStreamController@Play');
-// Route::get('/live/play/{id}', 'LiveStreamController@Play');
+Route::get('/live/play/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -160,16 +162,12 @@ Route::get('wishlist_video/{id}', 'WishlistController@wishlist_video');
 Route::get('file-upload', 'FileUploadController@index');
 Route::post('file-upload/upload', 'FileUploadController@fileStore')->name('upload');
 
-Route::group(['prefix' => 'admin','middleware' => ['auth','restrictIp']], function() {
-
-    Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
-    Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
-});
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']], function() {
 //,'restrictIp'
 //        Route::get('/', function () {
 //            return view('admin.dashboard');
 //        });
+
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
@@ -181,6 +179,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/user/delete/{id}', array('before' => 'demo', 'uses' => 'AdminUsersController@destroy'));
     Route::post('/export', 'AdminUsersController@export');
     Route::get('/user/view/{id}',  'AdminUsersController@view');
+    Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
+    Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
+    Route::post('/profilePreference', 'AdminUsersController@profilePreference');
 
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
@@ -422,7 +423,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
     
 // Age Restrict    
-    Route::get('/age/categories', 'AdminAgeController@index');
     Route::post('/age/store', 'AdminAgeController@store');
     Route::get('/age/edit/{id}', 'AdminAgeController@edit');
     Route::post('/age/update', 'AdminAgeController@update');
@@ -540,8 +540,11 @@ Route::get('/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
 Route::get('/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
 Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
 
-
-
+// Geofencing
+Route::get('/Geofencing', 'GeofencingController@index');
+Route::get('/Geofencing/create', 'GeofencingController@create');
+Route::post('/Geofencing/store', 'GeofencingController@store');
+       
 Route::get('/Planstate', 'AdminUsersController@PlanState');
 Route::get('/Plancity', 'AdminUsersController@PlanCity');
 Route::post('/getState', 'AdminUsersController@GetState');
@@ -1159,6 +1162,8 @@ Route::post('Embed_Data', 'ModeratorsUserController@Embed_Data');
 Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
 Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
-
-
+// Multi Profile
+Route::resources([
+    'Choose-profile' => MultiprofileController::class,
+]);
        

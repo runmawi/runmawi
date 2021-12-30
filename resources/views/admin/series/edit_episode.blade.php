@@ -118,7 +118,7 @@
 					@endif
 				</div> 
 			</div>
-			<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+			{{-- <div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<label><h6>Age Restrict :</h6></label>
 				<select class="form-control" id="age_restrict" name="age_restrict">
 						<option selected disabled="">Choose Age</option>
@@ -126,7 +126,7 @@
 							<option value="{{ $age->id }}" @if(!empty($episodes->age_restrict) && $episodes->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
 						@endforeach
 					</select>
-			</div>
+			</div> --}}
 			<div class="clear"></div>
 
 			<div class="clear"></div>
@@ -196,14 +196,23 @@
 			</div>
 
 
-			<div class="row"> 
-
+			<div class="row">
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p>Enter the episode duration in the following format (Hours : Minutes : Seconds)</p> 
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif"  >
+						</div> 
+					</div>
+				</div>
+
+				<div class="col-sm-4"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title">Free content Duration</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-body"> 
+							<p>Enter the episode duration in the following format (Hours : Minutes : Seconds)</p> 
+							<input class="form-control" name="free_content_duration" id="free_content_duration" value="@if(!empty($episodes->free_content_duration)){{ gmdate('H:i:s', $episodes->free_content_duration) }}@endif"  >
 						</div> 
 					</div>
 				</div>
@@ -222,7 +231,11 @@
 						</div> 
 					</div>
 				</div>
+			</div>
 
+			
+
+			<div class="row"> 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> Status Settings</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 

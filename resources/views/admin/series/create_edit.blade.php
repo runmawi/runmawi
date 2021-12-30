@@ -187,7 +187,7 @@
 					<p class="p1">Select a Series Language Below:</p>
 					<select class="form-control" id="language" name="language" >
 						@foreach($languages as $language)
-							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
+							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						@endforeach
 					</select>
 				</div> 

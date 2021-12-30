@@ -16,12 +16,15 @@ use App\PaypalPlan as PaypalPlan;
 use App\ContinueWatching as ContinueWatching;
 use App\Genre;
 use App\Audio;
+use App\Geofencing;
 use App\Page as Page;
 use App\HomeSetting as HomeSetting;
 use App\Movie;
+use App\Blockvideo;
 use App\Episode;
 use App\LikeDislike as Likedislike;
 use App\VideoCategory;
+use App\Multiprofile;
 use URL;
 use Auth;
 use View;
@@ -37,7 +40,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Authenticatable;
-use GeoIPLocation;
 use Stevebauman\Location\Facades\Location;
 use Carbon;
 use Session;
@@ -49,6 +51,8 @@ use App\SubscriptionPlan as SubscriptionPlan;
 use Jenssegers\Agent\Agent;
 use App\LoggedDevice;
 use App\ApprovalMailDevice;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
+use App\RecentView;
 
 
 
@@ -126,13 +130,13 @@ class HomeController extends Controller
              $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
              $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
              $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('id', 'DESC')->get();		
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
              $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
              $trendings = $trendings->merge($trending_videos);
              $trendings = $trendings->merge($trending_movies);
              $trendings = $trendings->merge($trending_episodes);
              $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->get();
+             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
             
              $pages = Page::all();
              if(!Auth::guest()){
@@ -145,7 +149,7 @@ class HomeController extends Controller
              $data = array(
              'currency' => $currency,
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
-                 'video_banners' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(130000),
+                 'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
                  'cnt_watching' => $cnt_watching,
                  'trendings' => $trending_movies,
@@ -176,84 +180,17 @@ class HomeController extends Controller
         }
     }
     public function FirstLanging(){
-        $settings = Setting::first();
-
-        if($settings->access_free == 1){
-            $settings = Setting::first();
-            $genre = Genre::all();
-            $genre_video_display = VideoCategory::all();
-             
-             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('id', 'DESC')->get();		
-             $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
-             $trendings = $trendings->merge($trending_videos);
-             $trendings = $trendings->merge($trending_movies);
-             $trendings = $trendings->merge($trending_episodes);
-             $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->get();
-            
-             $pages = Page::all();
-             if(!Auth::guest()){
-                 $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
-                 $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
-            //  echo "<pre>";print_r($cnt_watching);exit();
-    
-             }else{
-                 $cnt_watching = [];
-            //  echo "<pre>";print_r($cnt_watching);exit();
-            // dd('$agent');
-                 
-             }
-             $currency = CurrencySetting::first();
-             $data = array(
-             'currency' => $currency,
-                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
-                 'video_banners' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(130000),
-                 'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
-                 'cnt_watching' => $cnt_watching,
-                 'trendings' => $trending_movies,
-                 'latest_videos' => $latest_videos,
-                 'movies' => $trending_movies,
-                 'latest_movies' => $latest_movies,
-                 'ppv_movies' => $ppv_movies,
-                 'trending_audios' => $trending_audios,
-                 'latest_audios' => $latest_audios,
-                 'featured_videos' => $featured_videos,
-                 'featured_episodes' => $featured_episodes,
-                 'current_page' => 1,
-                 'genre_video_display'=> $genre_video_display,
-                  'genres' => VideoCategory::all(),
-                 'pagination_url' => '/videos',
-                  'settings'=>$settings,
-                  'pages'=>$pages,
-                 'trending_videos' => $trending_videos,
-                 'suggested_videos' => $suggested_videos,
-                'video_categories' => VideoCategory::all(),
-                 'home_settings' => HomeSetting::first(),
-                 'livetream' =>  LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get(),
-                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
-                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
-    
-             );
-             return View::make('home', $data);
-
-             }else{
         $agent = new Agent();
-        // dd($agent);
+
+      
+        // dd($user_check);
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
-        $system_settings = SystemSetting::first();
         $data = Session::all();
+        $system_settings = SystemSetting::first();
         $user = User::where('id','=',1)->first();
         // $session_password = $data['password_hash'];
         if ( empty($data['password_hash'])) {
@@ -392,13 +329,13 @@ class HomeController extends Controller
              $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
              $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
              $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('id', 'DESC')->get();		
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
              $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
              $trendings = $trendings->merge($trending_videos);
              $trendings = $trendings->merge($trending_movies);
              $trendings = $trendings->merge($trending_episodes);
             //  $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->get();
+             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
             
              $pages = Page::all();
              if(!Auth::guest()){
@@ -409,9 +346,9 @@ class HomeController extends Controller
                  $cnt_watching = '';
              }
              $currency = CurrencySetting::first();
-             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->count();
+             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
              if ($livetreams_count > 0) {
-                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
+                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
              } else {
                      $livetreams = [];
              }
@@ -422,7 +359,7 @@ class HomeController extends Controller
                 'currency' => $currency,
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                 //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-                 'video_banners' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                 'banner' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
                  'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                  'cnt_watching' => $cnt_watching,
@@ -446,7 +383,7 @@ class HomeController extends Controller
                  'suggested_videos' => $suggested_videos,
                 'video_categories' => VideoCategory::all(),
                  'home_settings' => HomeSetting::first(),
-                 'livetream' =>  LiveStream::orderBy('id', 'DESC')->get(),
+                 'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
                  'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
                  'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
 
@@ -456,7 +393,6 @@ class HomeController extends Controller
             }
         }
     }
-    }
     /**
      * Show the application dashboard.
      *
@@ -464,15 +400,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        
             $agent = new Agent();
-        $settings = Setting::first();
+            $multiuser=Session::get('subuser_id');
+            $getfeching = Geofencing::first();
+            $Recomended = HomeSetting::first();
 
-        if($settings->access_free == 1){
 
-            return Redirect::to('/');
-        }else{
-      
         // dd($user_check);
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
@@ -599,27 +532,267 @@ class HomeController extends Controller
             
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
-            $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->count();
-            if ($latest_videos_count > 0) {
-                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
-            } else {
-                    $latest_videos = [];
+
+// blocked videos
+                $block_videos=Blockvideo::where('country_id',$countryName)->get();
+                if(!$block_videos->isEmpty()){
+                    foreach($block_videos as $block_video){
+                        $blockvideos[]=$block_video->video_id;
+                    }
+                } else{
+                    $blockvideos[]='';
+                }   
+                
+// Mode - Family & Kids
+
+        if($multiuser != null){
+            $Mode = Multiprofile::where('id',$multiuser)->first();
+        } else {
+            $Mode=User::where('id',Auth::User()->id)->first();
+        }
+
+        $Family_Mode =$Mode['FamilyMode'];
+          $Kids_Mode =$Mode['Kidsmode'];
+
+            if($multiuser != null){
+                $Multiuser = Multiprofile::where('id',$multiuser)->first();
+// Latest Videos
+                if($Multiuser->user_type == 'Normal'){
+                    $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->count();
+                if ($latest_videos_count > 0) {
+                    $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC');
+                    if($Family_Mode == 1){
+                        $latest_videos = $latest_videos->where('age_restrict', '<', 18);
+                    }
+                    if($Kids_Mode == 1){
+                        $latest_videos = $latest_videos->where('age_restrict', '<', 10);
+                    }
+                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                          $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+                       }
+                        $latest_videos = $latest_videos ->get();
+
+                } else {
+                        $latest_videos = [];
+                }
+
+                }
+                else{
+                    $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->where('age_restrict', '<', 18)->take(10)->orderBy('created_at', 'DESC')->count();
+                    if ($latest_videos_count > 0) {
+                        $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC');
+                        if($Family_Mode == 1){
+                            $latest_videos = $latest_videos->where('age_restrict', '<', 18);
+                        }
+                        if($Kids_Mode == 1 ){
+                            $latest_videos = $latest_videos->where('age_restrict', '<', 10);
+                        }
+                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                           $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+                        }
+                         $latest_videos = $latest_videos ->get();
+                    } else {
+                            $latest_videos = [];
+                    }
+                }
             }
-            $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->count();
-            if ($featured_videos_count > 0) {
-                $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->get();
-            } else {
-                    $featured_videos = [];
+            else{
+                    $latest_videos_count =  Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->count();
+                if ($latest_videos_count > 0) {
+                      $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC');
+                      if($Family_Mode == 1){
+                        $latest_videos = $latest_videos->where('age_restrict', '<', 18);
+                        }
+                        if($Kids_Mode == 1 ){
+                            $latest_videos = $latest_videos->where('age_restrict', '<', 10);
+                        }
+                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                          $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+                       }
+                        $latest_videos = $latest_videos ->get();
+            
+                } else {
+                        $latest_videos = [];
+                }
             }
-             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
+
+
+    // featured_videos_count
+            if($multiuser != null){
+                if($Multiuser->user_type == 'Normal'){
+                  
+                    $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+                    if ($featured_videos_count > 0) {
+                    $featured_videos = Video::where('active', '=', '1')->whereNotIn('id',$blockvideos)->where('featured', '=', '1')->orderBy('created_at', 'DESC');
+                        if($Family_Mode == 1){
+                            $featured_videos = $featured_videos->where('age_restrict', '<', 18);
+                        }
+                        if($Kids_Mode == 1){
+                            $featured_videos = $featured_videos->where('age_restrict', '<', 10);
+                        }
+                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                            $featured_videos = $featured_videos->whereNotIn('id',$blockvideos);
+                        }
+                        $featured_videos = $featured_videos->get();
+                    } else {
+                            $featured_videos = [];
+                    }
+                }
+                else{
+                    $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('age_restrict', '<', 18)->orderBy('created_at', 'DESC')->count();
+                    if ($featured_videos_count > 0) {          
+                        $featured_videos = Video::where('active', '=', '1')->whereNotIn('id',$blockvideos)->where('featured', '=', '1')->where('age_restrict', '<', 18)->orderBy('created_at', 'DESC');
+                        if($Family_Mode == 1){
+                            $featured_videos = $featured_videos->where('age_restrict', '<', 18);
+                        }
+                        if($Kids_Mode == 1){
+                            $featured_videos = $featured_videos->where('age_restrict', '<', 10);
+                        }
+                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                            $featured_videos = $featured_videos->whereNotIn('id',$blockvideos);
+                        }
+                        $featured_videos = $featured_videos->get();
+                        
+                    } else {
+                            $featured_videos = [];
+                    }
+                }
+            }
+            else{
+                $featured_videos_count =  Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->count();
+                if ($featured_videos_count > 0) {                     
+                    $featured_videos = Video::where('active', '=', '1')->whereNotIn('id',$blockvideos)->where('featured', '=', '1')->orderBy('created_at', 'DESC');
+                    if($Family_Mode == 1){
+                        $featured_videos = $featured_videos->where('age_restrict', '<', 18);
+                    }
+                    if($Kids_Mode == 1){
+                        $featured_videos = $featured_videos->where('age_restrict', '<', 10);
+                    }
+                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $featured_videos = $featured_videos->whereNotIn('id',$blockvideos);
+                    }
+                    $featured_videos = $featured_videos->get();
+                } else {
+                        $featured_videos = [];
+                }
+            }
+            
+// Most watched videos By user
+
+
+        if( $Recomended->Recommendation == 1 ){
+
+            $most_watch_user = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+                    ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                    ->groupBy('video_id');
+            if($multiuser != null){
+                $most_watch_user = $most_watch_user->where('recent_views.sub_user',$multiuser);
+            }else{
+                $most_watch_user = $most_watch_user->where('recent_views.user_id',Auth::user()->id);
+            }
+            if($Family_Mode == 1){
+                $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
+            }
+            if($Kids_Mode == 1){
+                $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
+            }
+            $most_watch_user = $most_watch_user->orderByRaw('count DESC' )->limit(20)->get();
+        }
+        else{
+            $most_watch_user =[];
+        }
+
+
+// Most watched videos In Flicknexs
+
+        if( $getfeching->geofencing == 'ON'){
+
+            $Blocking_videos=Blockvideo::where('country_id',$countryName)->get();
+            if(!$Blocking_videos->isEmpty()){
+                foreach($Blocking_videos as $Blocking_video){
+                    $blocking_videos[]=$Blocking_video->video_id;
+                }
+            }  else{  $blocking_videos=[];  } }
+        else {  $blocking_videos=[];  }
+
+        if( $Recomended->Recommendation == 1 ){
+            $top_most_watched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->whereNotIn('videos.id',$blocking_videos);
+                if($Family_Mode == 1){
+                    $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
+                }
+                if($Kids_Mode == 1){
+                    $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
+                }
+                $top_most_watched = $top_most_watched->orderByRaw('count DESC' )->limit(20)->get();
+        }else{
+            $top_most_watched=[];
+        }
+
+// Most Watched Videos in country
+        if( $Recomended->Recommendation == 1 ){
+
+            $Most_watched_country =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' );
+            if($Family_Mode == 1){
+                $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
+            }
+            if($Kids_Mode == 1){
+                $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
+            }
+            $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id',$blocking_videos)
+            ->limit(20)->get();
+        }else{
+            $Most_watched_country=[];
+        }
+
+// User Preferences
+        if( $Recomended->Recommendation == 1 ){
+                $preference_genres = User::where('id',Auth::user()->id)->pluck('preference_genres')->first();
+                $preference_language = User::where('id',Auth::user()->id)->pluck('preference_language')->first();
+
+                if($preference_genres !=null ){
+                    $video_genres = json_decode($preference_genres);
+                    $preference_gen = Video::whereIn('video_category_id',$video_genres)->whereNotIn('videos.id',$blocking_videos);
+                    if($Family_Mode == 1){
+                        $preference_gen = $preference_gen->where('age_restrict', '<', 18);
+                    }
+                    if($Kids_Mode == 1){
+                        $preference_gen = $preference_gen->where('age_restrict', '<', 10);
+                    }
+                    $preference_gen = $preference_gen ->get();
+                }
+                else{
+                    $preference_gen ='';
+                }
+                if($preference_language !=null ){
+                    $video_language =json_decode($preference_language);
+                    $preference_Lan = Video::whereIn('language',$video_language)->whereNotIn('videos.id',$blocking_videos);
+                    if($Family_Mode == 1){
+                        $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
+                    }
+                    if($Kids_Mode == 1){
+                        $preference_Lan = $preference_Lan->where('age_restrict', '<', 10);
+                    }
+                    $preference_Lan = $preference_Lan->get();
+                 }
+                 else{
+                    $preference_Lan ='';
+                 }
+        }else{
+            $preference_gen ='';
+            $preference_Lan ='';
+        }
+
+             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
             //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
-             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
-             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->get();
-             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
-             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('id', 'DESC')->get();
-             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
-             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('id', 'DESC')->get();		
+             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $ppv_movies = PpvVideo::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+             $latest_movies = Movie::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
+             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')->orderBy('created_at', 'DESC')->get();		
              $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
              $trendings = $trendings->merge($trending_videos);
              $trendings = $trendings->merge($trending_movies);
@@ -628,17 +801,34 @@ class HomeController extends Controller
              $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
             
              $pages = Page::all();
-             if(!Auth::guest()){
-                 $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
-                 $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
-                //  $cnt_watching = Video::with('cnt_watch')->where('active', '=', '1')->whereIn('id',$getcnt_watching)->get();
-             }else{
+             if($multiuser != null ){
+                $getcnt_watching = ContinueWatching::where('multiuser',$multiuser)->pluck('videoid')->toArray();
+                $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+             }
+             elseif(!Auth::guest()){
+
+                $continue_watching=ContinueWatching::where('user_id',Auth::user()->id)->first();
+                
+               if( $continue_watching != null  && $continue_watching->multiuser == null  ){
+                $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->pluck('videoid')->toArray();
+                $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+               }
+               else{
+                $getcnt_watching = ContinueWatching::where('user_id',Auth::user()->id)->where('multiuser','data')->pluck('videoid')->toArray();
+                $cnt_watching = Video::with('cnt_watch')->whereIn('id',$getcnt_watching)->get();
+               //  $cnt_watching = Video::with('cnt_watch')->where('active', '=', '1')->whereIn('id',$getcnt_watching)->get();
+               }
+               
+             }
+             else{
                  $cnt_watching = '';
              }
+            
+
              $currency = CurrencySetting::first();
-             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->count();
+             $livetreams_count =  LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
              if ($livetreams_count > 0) {
-                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
+                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
              } else {
                      $livetreams = [];
              }
@@ -647,11 +837,11 @@ class HomeController extends Controller
             //  dd($currency);
              $data = array(
                 'currency' => $currency,
-                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate($this->videos_per_page),
+                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                 //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-                 'video_banners' => Video::where('banner', '=', '1')->orderBy('id', 'DESC')->simplePaginate(111111),
+                 'banner' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
-                 'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('id', 'DESC')->simplePaginate(111111),
+                 'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                  'cnt_watching' => $cnt_watching,
                  'trendings' => $trending_movies,
                  'latest_videos' => $latest_videos,
@@ -673,14 +863,21 @@ class HomeController extends Controller
                  'suggested_videos' => $suggested_videos,
                 'video_categories' => VideoCategory::all(),
                  'home_settings' => HomeSetting::first(),
-                 'livetream' =>  LiveStream::orderBy('id', 'DESC')->get(),
-                 'audios' => Audio::where('active', '=', '1')->orderBy('id', 'DESC')->get(),
-                 'albums' => AudioAlbums::orderBy('id', 'DESC')->get(),
+                 'livetream' =>  LiveStream::orderBy('created_at', 'DESC')->get(),
+                 'audios' => Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get(),
+                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get(),
+                 'most_watch_user' => $most_watch_user,
+                 'top_most_watched'  => $top_most_watched,
+                 'Most_watched_country' => $Most_watched_country,
+                 'countryName' => $countryName,
+                 'preference_genres' => $preference_gen,
+                 'preference_Language' => $preference_Lan,
+                 'Family_Mode' => $Family_Mode,
+                 'Kids_Mode' => $Kids_Mode,
 
              );
-             //echo "<pre>";print_r($data['latest_videos']);exit;
-                 return View::make('home', $data);
-                }
+            
+             return View::make('home', $data);
             }
         }
     }
@@ -899,9 +1096,7 @@ class HomeController extends Controller
                 'ppv_videos' => $ppv_videos,
                 'video_category' => $video_category,
                 'ppv_category' => $ppv_category,
-                'search_value' => $search_value,
-                'currency' => CurrencySetting::first(),
-
+                'search_value' => $search_value
                 );
 
             return View('search', $data);
@@ -1092,6 +1287,7 @@ class HomeController extends Controller
 
         $user = Auth::user();
         $plan_name = $plans->plan_id;
+        // dd($plan_name);
 
         $request->session()->put('become_plan', $plans->plan_id);
             $data = array(
@@ -1102,7 +1298,6 @@ class HomeController extends Controller
             ]);
         
         }elseif($request->payment_method == "PayPal"){
-            
             $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
             $request->session()->put('planname', $request->modal_plan_name);
             $request->session()->put('plan_id', $plans->plan_id);
@@ -1266,32 +1461,64 @@ class HomeController extends Controller
     }
 
     public function StoreWatching(Request $request){
-               $data = $request->all();
-               if (Auth::user()){
+
+            $data = $request->all();
+            $multiuser = Session::get('subuser_id');
+            // sub_user
+            if($multiuser != ''){
                 $user_id = Auth::user()->id;
                 $video_id = $request->video_id;
                 $duration = $request->duration;
                 $currentTime = $request->currentTime;
                 $watch_percentage = ($currentTime * 100 / $duration);
-                $cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->count();
-                $get_cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
+                $cnt = ContinueWatching::where("videoid",$video_id)->where("multiuser",$multiuser)->count();
+                $get_cnt = ContinueWatching::where("videoid",$video_id)->where("multiuser",$multiuser)->first();
                 if($cnt > 0 && $get_cnt->watch_percentage >= "99"){
-                     ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->delete();
+                     ContinueWatching::where("videoid",$video_id)->where("multiuser",$multiuser)->delete();
                 }
                 if ($cnt == 0){
                     $video = new ContinueWatching;
                     $video->videoid = $request->video_id;
                     $video->user_id = $user_id;
+                    $video->multiuser = $multiuser;
                     $video->currentTime = $request->currentTime;
                     $video->watch_percentage = $watch_percentage;
                     $video->save();
                 }else{
-                    $cnt_watch = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
+                    $cnt_watch = ContinueWatching::where("videoid",$video_id)->where("multiuser",$multiuser)->first();
                     $cnt_watch->currentTime = $request->currentTime;
                     $cnt_watch->watch_percentage = $watch_percentage;
                     $cnt_watch->save(); 
                 }
+
             }
+            // user 
+            elseif (Auth::user()){
+             $user_id = Auth::user()->id;
+             $video_id = $request->video_id;
+             $duration = $request->duration;
+             $currentTime = $request->currentTime;
+             $watch_percentage = ($currentTime * 100 / $duration);
+             $cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->count();
+             $get_cnt = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
+             if($cnt > 0 && $get_cnt->watch_percentage >= "99"){
+                  ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->delete();
+             }
+             if ($cnt == 0){
+                 $video = new ContinueWatching;
+                 $video->videoid = $request->video_id;
+                 $video->user_id = $user_id;
+                 $video->currentTime = $request->currentTime;
+                 $video->watch_percentage = $watch_percentage;
+                 $video->save();
+             }else{
+                 $cnt_watch = ContinueWatching::where("videoid",$video_id)->where("user_id",$user_id)->first();
+                 $cnt_watch->currentTime = $request->currentTime;
+                 $cnt_watch->watch_percentage = $watch_percentage;
+                 $cnt_watch->save(); 
+             }
+         }
+
     }
 
     public function LikeVideo(Request $request){
@@ -1335,17 +1562,11 @@ class HomeController extends Controller
           $new_vide_dislike->liked = 0;
           $new_vide_dislike->disliked = 1; 
           $new_vide_dislike->save(); 
-          $response = array(
-            'status'   => "disliked"
-        );
         }else{
           $new_vide_dislike->user_id = $request->user_id;
           $new_vide_dislike->video_id = $video_id;
           $new_vide_dislike->disliked = 0;
           $new_vide_dislike->save(); 
-          $response = array(
-            'status'   => "liked"
-        );
         }
       }else{
         $new_vide_dislike = new Likedislike;
@@ -1354,13 +1575,109 @@ class HomeController extends Controller
         $new_vide_dislike->liked = 0;
         $new_vide_dislike->disliked = 1;
         $new_vide_dislike->save(); 
-        $response = array(
-            'status'   => "disliked"
-        );
       } 
-            return response()->json($response, 200); 
+             
     }
 
+    public function Multipleprofile(){
 
+        $parent_id = Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+        $subcriber_user = User::where('id',$parent_id)->first();
+ 
+        $users= Multiprofile::where('parent_id', $parent_id)->get();
+        return view ('Multipleprofile',compact('users',$users, 'subcriber_user',$subcriber_user));
+
+    }
+
+    public function subuser($id){
+
+        $session= Session::put('subuser_id',$id);
+        return redirect::to('/home');
+
+    }
+    public function kidsMode(Request $request)
+    {
+        $Subuser=Session::get('subuser_id');
+
+            if($Subuser != null){
+                $User = Multiprofile::find( $Subuser );  
+                $User->Kidsmode	  = $request->kids_mode ;  
+                $User->FamilyMode = 0 ;  
+                $User->save(); 
+            }
+            else{
+                $user_id = Auth::User()->id;
+                $User = User::find( $user_id );  
+                $User->Kidsmode	  = $request->kids_mode;  
+                $User->FamilyMode = 0 ;  
+                $User->save();  
+            }
+            return $request->kids_mode;
+      
+    }
+
+    public function FamilyMode(Request $request)
+    {
+        $Subuser=Session::get('subuser_id');
+
+        if($Subuser != null){
+            $User = Multiprofile::find( $Subuser );  
+            $User->FamilyMode	 = $request->family_mode ;  
+            $User->Kidsmode = 0 ;  
+            $User->save(); 
+        }
+        else{
+            $user_id = Auth::User()->id;
+            $User = User::find( $user_id );  
+            $User->FamilyMode	 = $request->family_mode ;  
+            $User->Kidsmode = 0 ;  
+            $User->save();
+
+        }
+        return $User;
+
+    }
+
+    public function FamilyModeOff(Request $request)
+    {
+        $Subuser=Session::get('subuser_id');
+
+        if($Subuser != null){
+            $User = Multiprofile::find( $Subuser );  
+            $User->FamilyMode	 = $request->family_mode ;  
+            $User->Kidsmode = 0 ;  
+            $User->save(); 
+        }
+        else{
+            $user_id = Auth::User()->id;
+            $User = User::find( $user_id );  
+            $User->FamilyMode	 = $request->family_mode ;  
+            $User->Kidsmode = 0 ;  
+            $User->save();
+
+        }
+        return $User;
+
+    }
+    public function KidsModeOff(Request $request)
+    {
+        $Subuser=Session::get('subuser_id');
+
+        if($Subuser != null){
+            $User = Multiprofile::find( $Subuser );  
+            $User->Kidsmode	  = $request->kids_mode ;  
+            $User->FamilyMode = 0 ;  
+            $User->save(); 
+        }
+        else{
+            $user_id = Auth::User()->id;
+            $User = User::find( $user_id );  
+            $User->Kidsmode	  = $request->kids_mode;  
+            $User->FamilyMode = 0 ;  
+            $User->save();  
+        }
+        return $request->kids_mode;
+
+    }
     
 }

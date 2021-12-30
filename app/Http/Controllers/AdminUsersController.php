@@ -42,8 +42,7 @@ use Illuminate\Support\Str;
 use App\LoggedDevice;
 use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
-use App\PpvPurchase as PpvPurchase;
-use App\LivePurchase;
+use App\language;
 
 
 
@@ -383,7 +382,7 @@ class AdminUsersController extends Controller
     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
     ->select('plans.plans_name')
     ->get(9);
-    //    print_r(Auth::user()->id);
+    //    print_r($user_role);
     //    exit();
        if(!empty($user_role)){
         $role_plan = "No Plan";
@@ -394,7 +393,7 @@ class AdminUsersController extends Controller
     	$user_role = Auth::user()->role;
 
     	$user_details = User::find($user_id);
-        $recent_videos = RecentView::where('user_id',Auth::user()->id)->orderBy('id', 'desc')->take(10)->get();
+        $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
         $recent_view = $recent_videos->unique('video_id');
 
         foreach($recent_view as $key => $value){
@@ -404,30 +403,17 @@ class AdminUsersController extends Controller
         // $recent_view = $videos->unique('slug');
 
         $videocategory = VideoCategory::all();
+        $language =Language::all();
 
-        if(!empty($videos)){ $video = array_unique($videos); }else{ $video =[]; }
-
-        $user_id = Auth::user()->id;
-        $subscriptions = Subscription::where('user_id',$user_id)->get(); 
-        $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
-        $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
-        if(!empty($subscriptions)){ $subscriptionspurchase = $subscriptions; }else{ $subscriptionspurchase =[]; }
-        if(!empty($ppvcharse)){ $ppvcharses = $ppvcharse; }else{ $ppvcharses =[]; }
-        if(!empty($livepurchase)){ $livepurchases = $livepurchase; }else{ $livepurchases =[]; }
-
-
-
-        // dd($subscriptions);
+        $video = array_unique($videos);
     	$data = array(
     		'videos' => $video,
     		'videocategory' => $videocategory,
     		'user' => $user_details,
     		'role_plan' => $role_plan,
     		'user_role' => $user_role,
-    		'subscriptions' => $subscriptionspurchase,
-    		'livepurchase' => $livepurchases,
-    		'ppvcharse' => $ppvcharses,
-    		'post_route' => URL::to('/profile/update')
+    		'post_route' => URL::to('/profile/update'),
+            'language' => $language,
     		);
     	return View::make('myprofile', $data);
           }
@@ -435,9 +421,6 @@ class AdminUsersController extends Controller
     public function ProfileImage(Request $request){
       
     $input = $request->all();
-    //   echo "<pre>";
-    //   print_r($input);
-    // exit();
 
    $id = $request['user_id'];
 
@@ -517,6 +500,8 @@ class AdminUsersController extends Controller
     
     public function profileUpdate(User $user,Request $request)
     {
+
+
 //         $data = $request->validate([
 //            'name' => 'required',
 //             'email' => 'required|email|unique:users',
@@ -1620,6 +1605,26 @@ class AdminUsersController extends Controller
 
       echo json_encode($data);
      }
+    }
+    
+    public function profilePreference(Request $request)
+    {
+       $data = $request->all();
+       $id = $data['user_id'];
+       $preference = User::find($id);  
+       
+       if(!empty($data['preference_language'])){
+            $preference_language =json_encode($data['preference_language']);
+            $preference->preference_language =   $preference_language;  
+       }
+       if(!empty($data['preference_genres'])){
+            $preference_genres = json_encode($data['preference_genres']);
+            $preference->preference_genres = $preference_genres; 
+       }
+       $preference->save();  
+
+       return Redirect::to('/myprofile')->with(array('message' => 'Successfully Created Preference', 'note_type' => 'success') );
+
     }
 
 }

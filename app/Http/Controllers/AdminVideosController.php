@@ -8,6 +8,7 @@ use URL;
 use File;
 use App\Test as Test;
 use App\Video as Video;
+use App\CountryCode;
 use App\MoviesSubtitles as MoviesSubtitles;
 use App\VideoCategory as VideoCategory;
 use App\VideoResolution as VideoResolution;
@@ -41,6 +42,7 @@ use GifCreator\GifCreator;
 use App\AgeCategory as AgeCategory;
 use App\Setting as Setting;
 use DB;
+use App\BlockVideo;
 
 class AdminVideosController extends Controller
 {
@@ -219,7 +221,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $data = $request->all();
 
         $validator = Validator::make($request->all(), [
-           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
            
         ]);
         $mp4_url = (isset($data['file'])) ? $data['file'] : '';
@@ -321,8 +323,11 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'artists' => Artist::all(),
             'age_categories' => AgeCategory::all(),
             'settings' => $settings,
+            'countries' => CountryCode::all(),
             'video_artist' => [],
             );
+
+
         return View::make('admin.videos.fileupload', $data);
                     // 'post_route' => URL::to('admin/videos/store'),
 
@@ -337,10 +342,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
      */
     public function store(Request $request)
     {
-        
-        
+      
         $data = $request->all();
-   
+    
          $validatedData = $request->validate([
                 'title' => 'required',
             ]);
@@ -687,6 +691,7 @@ if(!empty($artistsdata)){
             'artists' => Artist::all(),
             'settings' => $settings,
             'age_categories' => AgeCategory::all(),
+            'countries' => CountryCode::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             );
 
@@ -700,15 +705,17 @@ if(!empty($artistsdata)){
      */
     public function update(Request $request)
     {
+     
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
         }
         
         $data = $request->all();
-        // dd($data);
+        
         $validatedData = $request->validate([
-            'title' => 'required|max:255'
+            'title' => 'required|max:255',
+            'video_country' => 'required'        
         ]);
        
             $id = $data['id'];
@@ -854,7 +861,7 @@ if(!empty($artistsdata)){
                     $data['status'] = 0;    
             }
 
-
+           
         $image_path = public_path().'/uploads/images/';
           
          if($image != '') {   
@@ -979,25 +986,31 @@ if(!empty($artistsdata)){
                             $video->slug =$data['slug'];
                             }else{
                             }  
-                            if(empty($data['publish_type'])){
-                            // dd($data['global_ppv']);
+                        if(empty($data['publish_type'])){
                             $video->publish_type =0;
                             }  
                     if(empty($data['publish_time'])){
-                        // dd($data['global_ppv']);
                         $video->publish_time =0;
                         }  
 
-
+                        if(!empty($data['Recommendation'])){
+                            $video->Recommendation =  $data['Recommendation'];
+                            } 
+        
+                            if(empty($data['age_restrict'])){
+                                $video->age_restrict=$data['age_restrict'];
+                                } 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
-         $video->language=$request['language'];
          $video->skip_recap =  $request['skip_recap'];
          $video->recap_start_time =  $request['recap_start_time'];
          $video->recap_end_time =  $request['recap_end_time'];
          $video->skip_intro =  $request['skip_intro'];
          $video->intro_start_time =  $request['intro_start_time'];
          $video->intro_end_time =  $request['intro_end_time'];
+         $video->country =  $request['video_country'];
+
+
 
          $video->publish_status = $request['publish_status'];
          $video->publish_type = $request['publish_type'];
@@ -1032,6 +1045,23 @@ if(!empty($artistsdata)){
             }
         }
 
+        
+        if(!empty($data['country'])){
+            $country = $data['country'];
+            unset($data['country']);
+            /*save block country*/
+            if(!empty($country)){
+                BlockVideo::where('video_id', $video->id)->delete();
+                foreach ($country as $key => $value) {
+                    $country = new BlockVideo;
+                    $country->video_id = $video->id;
+                    $country->country_id = $value;
+                    $country->save();
+                }
+
+            }
+        }
+      
          if(!empty( $files != ''  && $files != null)){
         /*if($request->hasFile('subtitle_upload'))
         {
@@ -1041,8 +1071,7 @@ if(!empty($artistsdata)){
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    // $filename = $video->id. '-'.$shortcodes[$key].'.srt';
-                    $filename = $video->id. '-'.$shortcodes[$key].'.vtt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
@@ -1176,34 +1205,28 @@ if(!empty($artistsdata)){
 
         public function fileupdate(Request $request)
         {
+        
              if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
             }
-            
             $data = $request->all();
-    //            echo "<pre>";
-    //  print_r($data);
-        
-    //             exit();
-    
-
-
-        
+ 
             $validatedData = $request->validate([
-                'title' => 'required|max:255'
+                'title' => 'required|max:255',
+                'video_country' =>'required',
             ]);
+
+            // dd($request->all());
             
-           
                 $id = $data['video_id'];
-                // echo "<pre>";
-            
+
                 $video = Video::findOrFail($id);
               
                 if(empty($data['ppv_price'])){
                     $settings = Setting::where('ppv_status','=',1)->first();
                     if(!empty($settings)){
-                    // dd($settings);
+                   
                         $data['ppv_price'] = $settings->ppv_price;
                         $video->global_ppv = 1 ;
                     }
@@ -1295,6 +1318,10 @@ if(!empty($artistsdata)){
                 if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
                         $data['status'] = 0;    
                 }
+
+                if(!empty($data['Recommendation'])) {
+                    $video->Recommendation = $data['Recommendation'];
+               }
     
     
             $path = public_path().'/uploads/videos/';
@@ -1353,12 +1380,9 @@ if(!empty($artistsdata)){
             }else {
                 $video->embed_code = '';
             }
-            if(!empty($data['banner'])) {
-                $banner = $data['banner'];
-           }else {
-               $banner = 0;
+            if(!empty($data['age_restrict'])) {
+                $video->age_restrict =  $data['age_restrict'];
            }
-    
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
              $video->skip_recap =  $data['skip_recap'];
@@ -1366,7 +1390,8 @@ if(!empty($artistsdata)){
              $video->recap_end_time =  $data['recap_end_time'];
              $video->skip_intro =  $data['skip_intro'];
              $video->intro_start_time =  $data['intro_start_time'];
-             $video->intro_end_time =  $data['intro_end_time'];
+             $video->intro_end_time =  $data['intro_end_time'];   
+
              
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
@@ -1376,7 +1401,8 @@ if(!empty($artistsdata)){
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
-             $video->banner =  $banner;
+             $video->banner =  $data['banner'];
+             $video->country =  $data['video_country'];
 
             $video->enable =  1;
 
@@ -1411,6 +1437,24 @@ if(!empty($artistsdata)){
     
                 }
             }
+
+            
+            if(!empty($data['country'])){
+                $country = $data['country'];
+                unset($data['country']);
+                /*save country*/
+                if(!empty($country)){
+                    BlockVideo::where('video_id', $video->id)->delete();
+                    foreach ($country as $key => $value) {
+                        $country = new BlockVideo;
+                        $country->video_id = $video->id;
+                        $country->country_id = $value;
+                        $country->save();
+                    }
+    
+                }
+            }
+          
     
              if(!empty( $files != ''  && $files != null)){
             /*if($request->hasFile('subtitle_upload'))

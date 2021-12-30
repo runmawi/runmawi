@@ -10,46 +10,19 @@ $uppercase =  ucfirst($request_url);
 // exit();UA-42534483-14
 $data = Session::all();
 
+
       ?>
       <!-- Required meta tags -->
-
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
-    <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-
-    <meta charset="UTF-8">
-
-    <meta property="og:title" content="<?php
-   //  dd($data['password_hash']);
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
-       }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-    else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
-
-
-
-   <meta property="og:description" content="<?php 
-     if(!empty($videos_data)){ echo $videos_data->description  ;
-    }
-    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-    elseif(!empty($series)){ echo $series->description ;}else{ echo $settings->website_description   ;} //echo $settings; ?>" />
-
-
-
-   <meta property="og:image" content="<?php 
-     if(!empty($videos_data)){ echo URL::to('/uploads/images').'/'.$videos_data->image  ;
-    }
-    elseif(!empty($episdoe)){ echo URL::to('/uploads/images').'/'.$episdoe->image  ;}
-    elseif(!empty($series)){ echo URL::to('/uploads/images').'/'.$series->image ;}else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
-
+    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
+    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
            
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
@@ -74,6 +47,24 @@ $data = Session::all();
        height: 100%;
         margin: 20px auto;
     }
+    
+    i.fas.fa-child{
+    font-size: 35px; }
+    span.kids {
+    color: #ffd81a;
+}  span.family{
+    color: #ffd81a;
+}
+
+      i.fa.fa-eercast{
+    font-size: 35px;
+      }
+      a.navbar-brand.iconss {
+         font-size: 19px;
+         font-style: italic;
+         font-family: ui-rounded;
+      }
+
     </style>
      
    <body>
@@ -100,7 +91,30 @@ $data = Session::all();
                            </div>
                         </a>
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-                         
+                      
+                        <?php
+                              $Subuser=Session::get('subuser_id');
+                              if($Subuser != null){
+                                    $Mode = App\Multiprofile::where('id',$Subuser)->first();
+                              } else{  $Mode = App\User::where('id',Auth::user()->id)->first();   }
+                        ?>
+
+                      <!-- family_mode -->
+
+                      <?php  if($Mode['FamilyMode'] == 1){ ?>
+                           <a class="navbar-brand family_mode iconss" data-custom-value="0"  class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family">  Family ON </span></a>
+                        <?php }else{ ?>
+                           <a class="navbar-brand family_mode_off iconss"  data-custom-value="1" class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family"> Family OFF </span> </a>
+                     
+                      <!-- Kids_mode -->
+                      
+                           <?php } if($Mode['Kidsmode'] == 1){ ?>
+
+                         <a class="navbar-brand kids_mode iconss"    data-custom-value="0" class="c-logo"><i class="fas fa-child"></i> <span class="kids"> KiDs ON </span> </a>
+                         <?php } else{ ?>
+                           <a class="navbar-brand iconss" id="kids_mode_off"   data-custom-value="1"  class="c-logo" ><i class="fas fa-child"></i> <span class="kids"> KiDs OFF</span> </a>
+                     <?php  }?>
+
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
@@ -123,12 +137,18 @@ $data = Session::all();
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
-                                          <li class="dropdown menu-item">
+ <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $cat as $category) { ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                  <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
@@ -313,7 +333,23 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome <?php echo Auth::user()->username.' '.'!'  ; ?> <i class="ri-arrow-down-s-line"></i></p>
+                                        <p class="mt-3" style="font-size: 16px;">Welcome
+                                        
+                                        <?php 
+                                        $subuser=Session::get('subuser_id');
+                                        if($subuser != ''){
+                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
+                                          echo  $subuser->user_name  ;
+                                        }
+                                        else{
+                                          echo Auth::user()->username.' '.'!'  ;
+                                        }
+                                        
+                                        ?> 
+                                       
+                                        <i class="ri-arrow-down-s-line"></i>
+                                       
+                                       </p>
                                     </a>
                                    <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
@@ -340,23 +376,13 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">My Wishlist</h6>
-                                                </div>
-                                             </div>
-                                          </a>
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Purchased Media</h6>
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -403,23 +429,13 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">My Wishlist</h6>
-                                                </div>
-                                             </div>
-                                          </a>
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Purchased Media</h6>
+                                                   <h6 class="mb-0 ">Rented Movies</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -443,6 +459,26 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                              <!-- Multiuser Profile -->
+                                          <?php
+                                          if(Auth::user()->role == "subscriber"){
+
+                                          ?>
+                                          <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Multi Profile</h6>
+                                                </div>
+                                             </div>
+                                          </a> -->
+
+                                          <?php
+                                          }
+                                          ?>
+
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -491,6 +527,70 @@ toggle.addEventListener('input', (e) => {
 });
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
+  <script>
+$( document ).ready(function() {
+   $('.kids_mode').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsMode');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyMode');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode_off').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyModeOff');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('#kids_mode_off').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsModeOff');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+});
+   </script>
+
       </header>
       <!-- Header End -->
      

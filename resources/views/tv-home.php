@@ -15,7 +15,19 @@
 
 <!-- MainContent -->
 <div class="main-content">
-    
+
+<!-- free Contents videos -->
+<section id="iq-favorites">
+    <div class="fluid">
+      <div class="row">
+        <div class="col-sm-12 overflow-hidden">
+          <?php include('partials/home/free_content.blade.php'); ?>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
 <section id="iq-favorites">
     <div class="fluid">
       <div class="row">

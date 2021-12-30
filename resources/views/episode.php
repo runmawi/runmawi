@@ -1,5 +1,28 @@
-<?php include('videolayout/episode_header.php');?>
-<?php include('header.php'); ?>
+<?php 
+include('header.php');
+
+$series=App\series::first();
+
+ ?>
+
+<!-- free content - hide & show -->
+<div class="row free_content">
+	<div class="col-md-12">
+		<p class="Subscribe">Subscribe to watch</p>
+	</div>
+	<div class="col-md-12">
+		<form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+				<button style="margin-left: 34%;margin-top: 0%;" class="btn btn-primary"id="button">Become a subscriber to watch this video</button>
+		</form>
+	</div>
+	<div class="col-md-12">
+	<p class="Subscribe">Play Again</p>
+		<div class="play_icon">
+			<a href="#" onclick="window.location.reload(true);"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
+		</div>
+	</div>
+</div>
+
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
@@ -16,7 +39,10 @@
 						</div>
 					<?php  elseif($episode->type == 'file'): ?>
 						<div id="series_container">
-						<video id="Player"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+
+						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>"
+             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+
 
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
@@ -28,11 +54,12 @@
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
 						</div>
-					<?php  else: ?>
+					<?php  else: ?>                                  
 						<div id="series_container">
-						<video id="Player"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/'  ?>"
+             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.'4zTGiokIZmAq56BF.mp4'; ?>"  type="application/x-mpegURL" >
                            
-							<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+							<source src="<?php echo URL::to('/storage/app/public/').'/'.'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
 									<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
 <!--
@@ -190,31 +217,57 @@
 		</div>
             </div>
 			
-
-           
-
-       
 		<div class="clear"></div>
 
-		
-    
-	
-	
-	    <script type="text/javascript"> 
-        videojs('Player').videoJsResolutionSwitcher(); 
-    </script>
-  
-	<script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'Flicknexs';
+		<!-- Free content - Video Not display  -->
+	<?php
+		$free_content_duration = $episode->free_content_duration;
+		$user_access = $episode->access;
+		$Auth = Auth::guest();
+	?>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    
+    <script  type='text/javascript'>
+		$(".free_content").hide();
+		var duration = <?php echo json_encode($free_content_duration); ?>;
+		var access = <?php echo json_encode($user_access); ?>;
+		var Auth = <?php echo json_encode($Auth); ?>;
+		var pause = $('#videoPlayer')[0];
+
+		pause.addEventListener('timeupdate',function(){
+		if(Auth != false){
+			if( access  ==  'guest' && duration !== null){
+				if(this.currentTime >=  duration ) {
+						this.pause();    
+						$("video#videoPlayer").hide();
+						$(".free_content").show();
+				}
+			}
+		}
+			
+		},false);
+	</script>
+
+
+<style>
+	.free_content{	
+    margin: 100px;
+    border: 1px solid red;
+    padding: 5% !important;
+	border-radius: 5px;
+	}
+		p.Subscribe {
+    font-size: 48px !important; 
+    font-family: emoji;
+    color: white;
+	margin-top: 3%;
+    text-align: center;
+	}
+	.play_icon {
+		text-align: center;
+		color: #c5bcbc;
+		font-size: 51px !important;
+	}
+	</style>
+	
 <?php include('footer.blade.php'); ?>
 

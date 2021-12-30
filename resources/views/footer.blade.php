@@ -38,16 +38,6 @@
                         <i class="ri-whatsapp-fill"></i>
                         </a>
                         <?php } ?>
-                        <?php if(!empty($settings->youtube_page_id)){ ?>
-                        <a href="{{ $settings->youtube_page_id }}" class="s-icon">
-                        <i class="fa fa-youtube"></i>
-                        </a>
-                        <?php } ?>
-                        <?php if(!empty($settings->google_page_id)){ ?>
-                        <a href="{{ $settings->google_page_id }}" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                        <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
                         // </a> -->
@@ -59,8 +49,8 @@
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
-                          <li><a href="<?php echo URL::to('/cpp/login'); ?>">Content Partner Portal</a></li>
-                          <li><a href="<?php echo URL::to('/advertiser/register'); ?>">Advertiser Portal</a></li>
+                          <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
+                          <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>
@@ -92,7 +82,7 @@
                    <div class="col-lg-3 col-md-4 p-0">
                       <ul class="f-link list-unstyled mb-0">    
 						<?php 
-                        $pages = App\Page::where('active',1)->get();
+                        $pages = App\Page::all();
                         foreach($pages as $page): ?>
 							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
 						<?php endforeach; ?>
@@ -212,9 +202,36 @@ function myFunction() {
 
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
    
-          
+ <script src="plyr-plugin-capture.js"></script>
+ <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
+
  <script>
-        const player = new Plyr('#videoPlayer');
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+
       </script>
 </body>
 </html>
