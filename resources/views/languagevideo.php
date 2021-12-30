@@ -240,6 +240,7 @@ height: 30px !important;
     
       <!-- Header End -->
 
+<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
             
          <section id="iq-favorites">
             <div class="container-fluid">
@@ -273,16 +274,23 @@ height: 30px !important;
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
-                                       <div class="hover-buttons">
+                                       <div class="hover-buttons ">
                                              <a type="button" class="text-white" data-toggle="modal" data-target=".bd-example-modal-xl<?= $watchlater_video->id;?>">
                                           <span class=" ">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Watch Now
                                           </span>
                                               </a>
-                                           <div>
-                                           <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
-                       </a></div>
+                                           <div >
+                                           <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                       </a> -->
+                       <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
+                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                          </span>
+              
+                          <div style="color:white;" id="<?= $watchlater_video->id ?>"><?php if(@$watchlater_video->mywishlisted->user_id == $id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+                              </div>
+                      </div>
                                        </div>
                                         <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
@@ -622,6 +630,44 @@ function about(evt , id) {
       $(".block-class_"+movie_id).css('display','block');
     }); */
 </script>-->
+<script>
+$('.mywishlist').click(function(){
+     var video_id = $(this).data('videoid');
+        if($(this).data('authenticated')){
+            $(this).toggleClass('active');
+            if($(this).hasClass('active')){
+                    $.ajax({
+                        url: "<?php echo URL::to('/mywishlist');?>",
+                        type: "POST",
+                        data: { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>'},
+                        dataType: "html",
+                        success: function(data) {
+                          if(data == "Added To Wishlist"){
+                            $(this).html('<i class="ri-heart-fill"></i>');                            
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Remove From Wishlist');
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                          setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                          }, 3000);
+                          }else{
+                            $(this).html('<i class="ri-heart-line"></i>');
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Add To Wishlist');
+                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                          setTimeout(function() {
+                          $('.remove_watch').slideUp('fast');
+                          }, 3000);
+                          }               
+                    }
+                });
+            }                
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+      }
+  });
+
+</script>
  <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
