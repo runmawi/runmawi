@@ -126,6 +126,8 @@ class TvshowsController extends Controller
     //  $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
     $currency = CurrencySetting::first();
      
+    $free_Contents=Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+
      $pages = Page::all();
      $data = array(
       'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
@@ -142,6 +144,7 @@ class TvshowsController extends Controller
       'free_series' => $free_series,
       'free_episodes' => $free_episodes,
       'currency' => $currency,
+      'free_Contents' => $free_Contents,  
 
     );
     //echo "<pre>";print_r($data);exit;

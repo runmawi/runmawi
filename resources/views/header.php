@@ -20,11 +20,6 @@ $data = Session::all();
 
 
       ?>
-      <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
-    <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
-    <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
   <!-- Required meta tags -->
   <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
 
@@ -441,9 +436,6 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-<<<<<<< HEAD
-                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
-=======
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -455,17 +447,12 @@ $data = Session::all();
                                              </div>
                                           </a>
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-<<<<<<< HEAD
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
-=======
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                                 </div>
                                              </div>
                                           </a>
@@ -512,9 +499,6 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-<<<<<<< HEAD
-                                            <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
-=======
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -526,17 +510,12 @@ $data = Session::all();
                                              </div>
                                           </a>
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-<<<<<<< HEAD
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
-=======
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                                 </div>
                                              </div>
                                           </a>

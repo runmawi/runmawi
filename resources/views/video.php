@@ -611,6 +611,8 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                 <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
                <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
                  <label for="method"><h3>Payment Method</h3></label>
+                 
+                 <?php $payment_type = App\PaymentSetting::get(); ?>
 
                 <label class="radio-inline">
                 <?php  foreach($payment_type as $payment){
