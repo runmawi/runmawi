@@ -19,7 +19,7 @@ class LiveStream extends Model
 	}
 
 	public function categories(){
-		return $this->belongsTo('App\PpvCategory','video_category_id','id');
+		return $this->belongsTo('App\LiveCategory','video_category_id','id');
 	}
 
 	public function videoresolutions(){
@@ -29,7 +29,10 @@ class LiveStream extends Model
 	public function videosubtitles(){
 		return $this->hasMany('App\VideoSubtitle','video_id','id');
 	}
-    
+
+	public function mywishlisted(){
+		return $this->belongsTo('App\Wishlist','id','video_id');
+	}
     
 
 	public function languages(){

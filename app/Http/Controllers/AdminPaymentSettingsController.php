@@ -41,6 +41,7 @@ class AdminPaymentSettingsController extends Controller
       
 
 		$payment_settings->live_mode = $request['live_mode'];
+		$payment_settings->stripe_status = $request['stripe_status'];
 		$payment_settings->test_secret_key = $request['test_secret_key'];
 		$payment_settings->test_publishable_key = $request['test_publishable_key'];
 		$payment_settings->live_secret_key = $request['live_secret_key'];
@@ -53,6 +54,10 @@ class AdminPaymentSettingsController extends Controller
 		if(empty($payment_settings->live_mode) || $payment_settings->live_mode == ''){
             
 			$payment_settings->live_mode = 0;
+		}
+		if(empty($payment_settings->stripe_status) || $payment_settings->stripe_status == ''){
+            
+			$payment_settings->stripe_status = 0;
 		}
         
         if(empty($payment_settings->test_secret_key)){
@@ -87,6 +92,8 @@ class AdminPaymentSettingsController extends Controller
         $payment_settings = PaymentSetting::where('id','=',2)->first();
 
 		$payment_settings->paypal_live_mode = $request['paypal_live_mode'];
+		$payment_settings->paypal_status = $request['paypal_status'];
+
 		$payment_settings->test_paypal_username = $request['test_paypal_username'];
 		$payment_settings->test_paypal_password = $request['test_paypal_password'];
 		$payment_settings->test_paypal_signature = $request['test_paypal_signature'];
@@ -101,6 +108,10 @@ class AdminPaymentSettingsController extends Controller
 		if(empty($payment_settings->paypal_live_mode) || $payment_settings->paypal_live_mode == ''){
             
 			$payment_settings->paypal_live_mode = 0;
+		}
+		if(empty($payment_settings->paypal_status) || $payment_settings->paypal_status == ''){
+            
+			$payment_settings->paypal_status = 0;
 		}
         
         if(empty($payment_settings->test_paypal_username)){

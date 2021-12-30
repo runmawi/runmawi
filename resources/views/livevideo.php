@@ -169,10 +169,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->duration);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                     <!-- <span class="badge badge-secondary p-3"><?php //echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <span class="ml-3"><?php// echo __($video->duration);?></span>
-                     <span class="trending-year"><?php //if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span> -->
+             
                   </div>
                 
                 <?php if(!Auth::guest()) { ?>

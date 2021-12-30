@@ -1,12 +1,20 @@
 <!doctype html>
 <html lang="en-US">
    <head>
-      <?php
+      
+<?php
+$data = Session::all();
+
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
+if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
 // dd($uppercase);
+   $uppercase = "Home" ;
+}else{
+
+}
 // exit();UA-42534483-14
 $data = Session::all();
 
@@ -17,6 +25,62 @@ $data = Session::all();
     <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
     <title><?php echo $uppercase.' | ' . $settings->website_name ; ?></title>
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
+  <!-- Required meta tags -->
+  <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+
+    
+    <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
+
+
+    <meta charset="UTF-8">
+    <title><?php
+   //  dd($data['password_hash']);
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+    else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
+    <meta name="description" content= "<?php 
+     if(!empty($videos_data)){ echo $videos_data->description  ;
+    }
+    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+    elseif(!empty($series)){ echo $series->description ;}
+    elseif(!empty($livestream)){ echo $livestream->description  ;}
+    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+
+    <meta property="og:title" content="<?php
+   //  dd($data['password_hash']);
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+    else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
+
+
+
+   <meta property="og:description" content="<?php 
+     if(!empty($videos_data)){ echo $videos_data->description  ;
+    }
+    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+    elseif(!empty($series)){ echo $series->description ;}
+    elseif(!empty($livestream)){ echo $livestream->description  ;}
+    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+
+
+
+   <meta property="og:image" content="<?php 
+     if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+    }
+    elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+    elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+    elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+    else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -25,6 +89,7 @@ $data = Session::all();
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <link rel="favicon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
@@ -222,7 +287,7 @@ $data = Session::all();
                                               <div>
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                               </div>
                                             </form>
                                           </div>
@@ -245,7 +310,7 @@ $data = Session::all();
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
+                                             placeholder="Type here to Search Videos">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
@@ -376,13 +441,31 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+<<<<<<< HEAD
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+=======
+                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">My Wishlist</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+>>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
+<<<<<<< HEAD
                                                    <h6 class="mb-0 ">Rented Movies</h6>
+=======
+                                                   <h6 class="mb-0 ">Purchased Medias</h6>
+>>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                                 </div>
                                              </div>
                                           </a>
@@ -429,13 +512,31 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+<<<<<<< HEAD
                                             <a href="<?php echo URL::to('showPayperview') ?>" class="iq-sub-card setting-dropdown">
+=======
+                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">My Wishlist</h6>
+                                                </div>
+                                             </div>
+                                          </a>
+                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+>>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
+<<<<<<< HEAD
                                                    <h6 class="mb-0 ">Rented Movies</h6>
+=======
+                                                   <h6 class="mb-0 ">Purchased Medias</h6>
+>>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
                                                 </div>
                                              </div>
                                           </a>

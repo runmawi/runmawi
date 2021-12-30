@@ -79,7 +79,7 @@
 			</div>
 			</div>
 
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+			<!-- <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title">Episode Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Episode Format</label>
@@ -95,7 +95,7 @@
 						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
 						<hr />
 						
-					</div>
+					</div> -->
 
 					<div class="new-episodes-embed" @if(!empty($episodes->type) && $episodes->type == 'embed')style="display:block"@else style = "display:none" @endif>
 						<label for="embed_code">Embed Code:</label>
@@ -226,6 +226,12 @@
 								<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 								<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+								<?php if($settings->ppv_status == 1){ ?>
+								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+								<?php } else{ ?>
+								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+								<?php } ?>
+
 							</select>
 							<div class="clear"></div>
 						</div> 
@@ -262,12 +268,39 @@
 						</div> 
 					</div>
 				</div>
+				</div>
+
+				<div class="row align-items-center"> 
+
+				<div class="col-sm-4" id="ppv_price"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($episodes->ppv_price)){{ $episodes->ppv_price }}@endif">
+
+					</div>
+				</div>
+
+				<div class="col-sm-4 mt-3"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<?php //if($settings->ppv_status == 1){ ?>
+						<!-- <label for="global_ppv">Is this video Is Global PPV:</label> -->
+						<!-- <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif /> -->
+						<?php //} else{ ?>
+							<!-- <div class="global_ppv_status"> -->
+							<!-- <label for="global_ppv">Is this video Is PPV:</label> -->
+						<!-- <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif /> -->
+							<!-- </div> -->
+							<?php //} ?>
+							<div class="clear"></div>
+						</div> 
+					</div>
                 <div class="p-3">
                 @if(isset($series->id))
 				<input type="hidden" id="series_id" name="series_id" value="{{ $episodes->series_id }}" />
 			@endif
 
-			@if(isset($season_id))
+			@if(isset($episodes->id))
 				<input type="hidden" id="season_id" name="season_id" value="{{ $episodes->season_id }}" />
 			@endif
 
@@ -303,6 +336,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
     <script>
+
+
+
+$(document).ready(function(){
+    $('#ppv_price').hide();
+    $('#global_ppv_status').hide();
+	// alert($(this).val());
+	if($("#access").val() == 'ppv'){
+				// alert($(this).val());
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		$("#access").change(function(){
+			if($(this).val() == 'ppv'){
+				// alert($(this).val());
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		});
+});
         $('#intro_start_time').datetimepicker(
         {
             format: 'hh:mm '

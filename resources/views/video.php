@@ -27,9 +27,12 @@
 // print_r($ppv_video_play); exit();
 
 
-if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+if(!Auth::guest()) {
+  // dd($video->access);
+  // dd('test');
+if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
-  if(!Auth::guest()) {
+//  dd(Auth::user()->role); 
       
   if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
 <?php //dd(Auth::user()->role); ?>
@@ -117,7 +120,7 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
@@ -207,12 +210,11 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
 
  <?php }
 /* For Registered User */       
-   else { ?>       
+   else {  ?>       
        <div id="video" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
-       <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-           <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+       <video   id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -228,7 +230,28 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
 
        </div>
  <?php } } 
-}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered'){ ?>
+ else { ?>
+ <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+  <div id="subscribers_only">
+  <div class="clear"></div>
+  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+  <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'){ ?>
+    <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+    </form>
+  <?php }else{ ?>
+    <form method="get" action="<?= URL::to('signup') ?>">
+      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+    </form>
+  <?php } ?>
+  </div>
+</div>
+</div>
+ <?php }
+}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
+<div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+
  <div id="subscribers_only">
  <h2 style ="margin-left:14%">Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
  <div class="clear"></div>
@@ -266,6 +289,160 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
        <?php } } } else { } ?>  
        </video>  
    </div>
+   </div>
+   </div>
+  <?php }elseif(Auth::guest() && empty($video->ppv_price)){ ?>
+    <div id="video_bg">
+<div class=" page-height">
+  <?php 
+        if( Auth::guest() ): ?>
+      <?php if($video->type == 'embed'): ?>
+        <div id="video_container" class="fitvid">
+          <?php
+           if(!empty($video->embed_code)){
+            echo $video->embed_code;
+          }else{
+            echo $video->trailer;
+          } ?>
+        </div>
+      <?php  elseif($video->type == 'file'): ?>
+
+        <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+        
+          <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
+          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+          <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+            <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
+
+
+
+                <?php
+                if($playerui_settings['subtitle'] == 1 ){
+
+                  foreach($subtitles as $key => $value){
+
+
+                    if($value['sub_language'] == "English"){
+                      ?>
+                      <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                      <?php } 
+                      if($value['sub_language'] == "German"){
+                        ?>
+                        <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                        <?php }
+                        if($value['sub_language'] == "Spanish"){
+                          ?>
+                          <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                          <?php }
+                          if($value['sub_language'] == "Hindi"){
+                            ?>
+                            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                            <?php }
+                          }
+                        }else{
+
+                        } 
+                        ?>  
+                      </video>
+
+
+        <div class="playertextbox hide">
+            <!--<h2>Up Next</h2>-->
+            <p><?php if(isset($videonext)){ ?>
+            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+            <?php }elseif(isset($videoprev)){ ?>
+            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+            <?php } ?>
+
+            <?php if(isset($videos_category_next)){ ?>
+            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+            <?php }elseif(isset($videos_category_prev)){ ?>
+            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+            <?php } ?></p>
+        </div>
+        </div>
+        <?php  elseif($video->type == 'mp4_url'):   ?>
+        
+          
+              <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <!-- Current time: <div id="current_time"></div> -->
+            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
+                <track label="German" kind="subtitles" srclang="de" src="http://localhost/flicknexs/public/uploads/subtitles/20-de.vtt" >
+                <track label="Hindi" kind="subtitles" srclang="hi" src="http://localhost/flicknexs/public/uploads/subtitles/20-hi.vtt" >
+
+            </video>
+
+            <div class="playertextbox hide">
+                <!--<h2>Up Next</h2>-->
+                <p><?php if(isset($videonext)){ ?>
+                <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                <?php }elseif(isset($videoprev)){ ?>
+                <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                <?php } ?>
+
+                <?php if(isset($videos_category_next)){ ?>
+                <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                <?php }elseif(isset($videos_category_prev)){ ?>
+                <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                <?php } ?></p>
+            </div>
+        </div>
+<?php  else: ?>
+            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <!-- Current time: <div id="current_time"></div> -->
+            <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+<!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type='application/x-mpegURL' label='auto' > 
+
+                <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "German"){?>
+                <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "Spanish"){ ?>
+                <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "Hindi"){ ?>
+                <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                <?php }
+                } } else {  } ?>  
+            </video>
+
+            <div class="playertextbox hide">
+                <!--<h2>Up Next</h2>-->
+                <p><?php if(isset($videonext)){ ?>
+                <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                <?php }elseif(isset($videoprev)){ ?>
+                <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                <?php } ?>
+
+                <?php if(isset($videos_category_next)){ ?>
+                <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                <?php }elseif(isset($videos_category_prev)){ ?>
+                <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                <?php } ?></p>
+            </div>
+        </div>
+<?php endif; ?>
+  <?php else: ?>
+
+    <div id="subscribers_only">
+      <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php elseif($video->access == 'ppv' ): ?>PPV<?php endif; ?></h2>
+      <div class="clear"></div>
+      <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+        <form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+          <button id="button">Become a subscriber to watch this video</button>
+        </form>
+      <?php else: ?>
+        <form method="get" action="<?= URL::to('signup') ?>">
+        </form>
+      <?php endif; ?>
+    </div>
+  
+  <?php endif; ?>            
+</div>
  <?php }  ?>
            
 
@@ -426,9 +603,34 @@ if(!empty($ppv_video_play) ||  $video->global_ppv == null && $video->access == '
                  </div>
                  
                  <div class="col-sm-4">
-                   <a onclick="pay(<?php echo $ppv_rent_price ;?>)">
-                       <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
-                   </a>
+                 <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
+                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+                <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>
+                <span class="badge badge-secondary p-2"><?php echo __($video->languages->name);?></span>
+                <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
+                <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
+                 <label for="method"><h3>Payment Method</h3></label>
+
+                <label class="radio-inline">
+                <?php  foreach($payment_type as $payment){
+                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
+                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                <label class="radio-inline">
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+                          <?php 
+						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+						<?php  } }else{
+                            echo "Please Turn on Payment Mode to Purchase";
+                            break;
+                         }
+                         }?>
+
                  </div>
              </div>                    
          </div>
@@ -617,9 +819,57 @@ location.reload();
          $(this).toggleClass('active');
          $(this).html("");
              if($(this).hasClass('active')){
-               $(this).html('<i class="ri-heart-fill"></i>');
+              $(this).html('<i class="ri-heart-fill"></i>');
+              $(".add_data_test").empty();
+              $(".add_data_test").append("<div>Remove from Wishlist</div> ");
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
              }else{
+              $(this).html('<i class="ri-heart-line"></i>');
+              $(".add_data_test").empty();
+              //  $(this).html('<i class="ri-heart-line"></i>');
+               $(".add_data_test").append("<div>Added to  Wishlist</div> ");
+              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+               setTimeout(function() {
+                $('.remove_watch').slideUp('fast');
+               }, 3000);
+
+             }
+             
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
+
+     $('.watchlater').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('addwatchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' },
+          function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+               $(this).html('<i class="ri-add-circle-fill"></i>');
+               $(".add_data_test").empty();
+              $(".add_data_test").append("<div>Remove from Watchlater</div> ");
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to watchlater </div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+              //  alert();
+
+             }else{
+              //  $(this).html('<i class="ri-add-circle-line"></i>');
                $(this).html('<i class="ri-heart-line"></i>');
+              $(".add_data_test").empty();
+              //  $(this).html('<i class="ri-heart-line"></i>');
+               $(".add_data_test").append("<div>Added to Watchlater</div> ");
+              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from watchlater</div>');
+               setTimeout(function() {
+                $('.remove_watch').slideUp('fast');
+               }, 3000);
              }
              
        } else {

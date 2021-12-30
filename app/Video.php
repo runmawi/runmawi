@@ -28,6 +28,9 @@ class Video extends Model
 	public function cppuser(){
 		return $this->belongsTo('App\ModeratorsUser','user_id','id');
 	}
+	public function mywishlisted(){
+		return $this->belongsTo('App\Wishlist','id','video_id');
+	}
 
 	public function videoresolutions(){
 		return $this->hasMany('App\VideoResolution','video_id','id');
@@ -53,6 +56,6 @@ class Video extends Model
 	public function comments(){
 		return $this->hasMany('App\Comment')->orderBy('id','desc');
 	}
-    
+
     
 }

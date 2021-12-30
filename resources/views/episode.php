@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 include('header.php');
 
@@ -23,21 +24,27 @@ $series=App\series::first();
 	</div>
 </div>
 
+=======
+<?php //include('videolayout/episode_header.php');?>
+<?php include('header.php'); ?>
+>>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
 	<div id="series_bg">
-		<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 		<div class="">
 			
-			<?php if($series->access == 'guest' || ( ($series->access == 'subscriber' || $series->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $series->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+			<?php 
+			if(!Auth::guest()){
+			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){
+			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
 				
 					<?php if($episode->type == 'embed'): ?>
 						<div id="series_container" class="fitvid">
 							<?= $episode->embed_code ?>
 						</div>
-					<?php  elseif($episode->type == 'file'): ?>
+					<?php  elseif($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
 
 						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>"
@@ -81,7 +88,7 @@ $series=App\series::first();
 
 			<?php else: ?>
 
-				<div id="subscribers_only">
+                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<h2>Sorry, this series is only available to <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 					<div class="clear"></div>
 					<?php if(!Auth::guest() && $series->access == 'subscriber'): ?>
@@ -95,11 +102,26 @@ $series=App\series::first();
 					<?php endif; ?>
 				</div>
 			
-			<?php endif; ?>
+			<?php endif; 
+			}else{ ?>
+                <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+					<div id="ppv">
+				<h2>Purchase to Watch the Episodes <?php if($episode->access == 'subscriber'): ?>Subscribers<?php elseif($episode->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+				<div class="clear"></div>
+				<?php if(!Auth::guest() ): ?>
+					<!-- <form method="get" action="<?// URL::to('/')?>/user/<?// Auth::user()->username ?>/upgrade_subscription">
+						<button id="button">Purchase to Watch <?php //$currency->symbol.' '.$episode->ppv_price ?></button>
+					</form> -->
+				<?php else: ?>
+
+				<?php endif; ?>
+			</div>
+		<?php } }
+			?>
 		</div>
 	</div>
 
-<input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $series->genre_id ?>" value="<?= $series->genre_id ?>">
+<input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
 	<div class="container series-details">
@@ -116,14 +138,19 @@ $series=App\series::first();
 
 		</h3>-->
                 <div class="col-md-2 text-center text-white">
-<span class="view-count" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span></div>
+<span class="view-count  btn btn-primary" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span></div>
                 <div class="col-md-4">
-           <div class="watchlater btn btn-default text-white <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-default text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
+           <div class="watchlater btn btn-primary text-white  <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
+			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
 			
-            <br>
 			</div>
-			
+			<!-- <div>
+			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
+			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
+			<?php// echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
+			<?php //} ?>
+            <br>
+			</div> -->
         </div>
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
@@ -225,6 +252,128 @@ $series=App\series::first();
 		$user_access = $episode->access;
 		$Auth = Auth::guest();
 	?>
+
+            <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+           <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" alt=""width="50" height="60">
+         </div>
+         <div class="modal-body">
+             <div class="row">
+                 <div class="col-sm-2" style="width:52%;">
+                   <span id="paypal-button"></span> 
+                 </div>
+                <?php $payment_type = App\PaymentSetting::get(); ?>
+                 
+                 <div class="col-sm-4">
+                 <span class="badge badge-secondary p-2"><?php echo __($episodes->title);?></span>
+                 <span class="badge badge-secondary p-2"><?php echo __($episodes->age_restrict).' '.'+';?></span>
+                <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->categories->name);?></span>
+                <span class="badge badge-secondary p-2"><?php //echo __($video->languages->name);?></span> -->
+                <span class="badge badge-secondary p-2"><?php //echo __($video->duration);?></span>
+                <span class="trending-year"><?php if ($episode->year == 0) { echo ""; } else { echo $episode->year;} ?></span>
+               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$episodes->ppv_price);?></button>
+                 <label for="method"><h3>Payment Method</h3></label>
+                <label class="radio-inline">
+                    <?php  foreach($payment_type as $payment){
+                          if($payment->live_mode == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                <?php }elseif($payment->paypal_live_mode == 1){ ?>
+                <label class="radio-inline">
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <?php }elseif($payment->live_mode == 0){ ?><
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+                          <?php 
+						 }elseif( $payment->paypal_live_mode == 0){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+						<?php  } }?>
+
+                 </div>
+             </div>                    
+         </div>
+         <div class="modal-footer">
+         <a onclick="pay(<?php echo $episode->ppv_price ;?>)">
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+                   </a>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+       
+		<div class="clear"></div>
+
+		<input type="hidden" id="episode_id" value="<?php echo $episode->id ; ?>">
+    
+		<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
+	
+		<script src="https://checkout.stripe.com/checkout.js"></script>
+	
+	    <script type="text/javascript"> 
+
+        // videojs('Player').videoJsResolutionSwitcher(); 
+		$(document).ready(function () {  
+             $.ajaxSetup({
+               headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+             });
+           });
+
+           function pay(amount) {
+             var publishable_key = $('#publishable_key').val();
+
+             var episode_id = $('#episode_id').val();
+            // alert(video_id);
+             var handler = StripeCheckout.configure({
+
+               key: publishable_key,
+               locale: 'auto',
+               token: function (token) {
+// You can access the token ID with `token.id`.
+// Get the token ID to your server-side code for use.
+console.log('Token Created!!');
+console.log(token);
+$('#token_response').html(JSON.stringify(token));
+
+$.ajax({
+ url: '<?php echo URL::to("purchase-episode") ;?>',
+ method: 'post',
+ data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , episode_id: episode_id },
+ success: (response) => {
+   alert("You have done  Payment !");
+   setTimeout(function() {
+     location.reload();
+   }, 2000);
+
+ },
+ error: (error) => {
+   swal('error');
+//swal("Oops! Something went wrong");
+/* setTimeout(function() {
+location.reload();
+}, 2000);*/
+}
+})
+}
+});
+
+
+             handler.open({
+               name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+               description: 'Rent a Episode',
+               amount: amount * 100
+             });
+           }
+    </script>
+  
+	<script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'Flicknexs';
 
     <script  type='text/javascript'>
 		$(".free_content").hide();

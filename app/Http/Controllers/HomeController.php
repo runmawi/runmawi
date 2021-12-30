@@ -1355,7 +1355,7 @@ class HomeController extends Controller
     
         public function PaypalSubscription(Request $request){
                 $plan_id = $request->get('plan_id');
-                $plan_details = PaypalPlan::where('plan_id','=',$plan_id)->first();
+                $plan_details = SubscriptionPlan::where('plan_id','=',$plan_id)->first();
          
                 $data = array(
                         'plan_name' => $plan_details->name,

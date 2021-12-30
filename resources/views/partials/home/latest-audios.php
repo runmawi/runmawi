@@ -7,6 +7,7 @@
                          foreach($audios as $audio): ?>
                        <li class="slide-item">
                           <a href="<?php echo URL::to('home') ?>">
+                             <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">

@@ -90,6 +90,9 @@ if (!empty($data['password_hash'])) {
     hr {
         border-top: 1px solid #e2e2e22e!important;
     }
+    .mnu{
+        height: 24px!important;
+    }
     
 </style>
 
@@ -122,7 +125,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
-                   <div style="">
+                   <div  class="mnu" style="">
                  
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
                    </div>
@@ -130,10 +133,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
-                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
-
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -144,18 +145,18 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
-          <div style=""> 
+          <div class="mnu" style=""> 
                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                    <div style="">
+                    <div class="mnu" style="">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -176,7 +177,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
           
 
 
-                    <div >
+                    <div class="mnu">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -187,7 +188,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                    <div >
+                    <div class="mnu">
                 
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
                        </div>
@@ -202,7 +203,10 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Sliders</span></a></li>
-                    <div >
+
+                   <li><a href="{{ URL::to('admin/restrict') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li>
+
+                    <div class="mnu">
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
                        </div>
@@ -290,12 +294,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
+                            <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
 
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
-                  <div>
+                  <div class="mnu">
                     <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
                 </div>
                 <li>
@@ -338,7 +344,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
-                   <div style="">
+                   <div class="mnu" style="">
                  
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
                    </div>
@@ -346,9 +352,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
-                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -359,18 +364,18 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
-          <div style=""> 
+          <div class="mnu" style=""> 
                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                    <div style="">
+                    <div class="mnu" style="">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -389,7 +394,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           
-                    <div >
+                    <div class="mnu">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -400,7 +405,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                    <div >
+                    <div class="mnu">
                 
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
                        </div>
@@ -415,7 +420,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Sliders</span></a></li>
-                    <div >
+                   <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li>
+
+                    <div class="mnu">
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
                        </div>
@@ -426,9 +433,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -499,11 +506,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
+                            <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
-                  <div>
+                  <div class="mnu">
                     <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
                 </div>
                 <li>
@@ -546,7 +556,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
-                   <div style="">
+                   <div class="mnu" style="">
                  
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
                    </div>
@@ -554,9 +564,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
-                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -567,18 +576,18 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             </ul>
           </li>
           <li>
-          <div style=""> 
+          <div class="mnu" style=""> 
                  <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                    <div style="">
+                    <div class="mnu" style="">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -598,7 +607,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
           </li>
           
                  
-                    <div >
+                    <div class="mnu">
                   
                         <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -624,7 +633,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Sliders</span></a></li>
-                    <div >
+                   <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li>
+
+                    <div class="mnu">
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
                        </div>
@@ -635,9 +646,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -705,11 +716,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
+                            <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
-                  <div>
+                  <div class="mnu">
                     <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
                 </div>
                 <li>
@@ -760,9 +774,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
-                         <li><a href="{{ URL::to('admin/age/categories') }}"><i class="las la-eye"></i>Manage Age Categories</a></li>
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -780,7 +793,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
@@ -815,7 +828,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                    <div >
+                    <div class="mnu">
                 
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
                        </div>
@@ -830,6 +843,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                     <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                    
                    <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span>Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li>
+
                     <div >
                    
                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
@@ -841,9 +856,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/admin/moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -911,6 +926,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
+                            <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
+                            <li><a href="{{ URL::to('admin/app_settings/index') }}"><i class="las la-eye"></i>APP Settings</a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->

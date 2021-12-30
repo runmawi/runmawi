@@ -7,16 +7,28 @@
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($latest_episodes)) :
     					 foreach($latest_episodes as $key => $latest_episode) {
-        foreach($latest_series as $latest_serie) { 
+        // foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">
-          <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?> ">
+          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
+                             <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
+                <div class="corner-text-wrapper">
+                  <div class="corner-text">
+                    <?php  if(!empty($latest_episode->ppv_price)){?>
+                    <p class="p-tag1"><?php echo $currency->symbol.' '.$latest_episode->ppv_price; ?></p>
+                    <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == null)){ ?>
+                      <p class="p-tag1"><?php echo $latest_episode->ppv_status.' '.$currency->symbol; ?></p>
+                      <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
+                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <?php } ?>
+                  </div>
+              </div>
               </div>
               <div class="block-description">
-              <a href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?> ">
+              <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
                   <h6><?php echo __($latest_episode->title); ?></h6>
                 </a>
                 <div class="movie-time d-flex align-items-center my-2">
@@ -24,7 +36,7 @@
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
                 </div>
                 <div class="hover-buttons">
-                <a class="text-white" href="<?php if($latest_episode->series_id == $latest_serie->id){ echo URL::to('/episode'.'/'.$latest_serie->title.'/'.$latest_episode->title) ; }?> ">
+                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>
@@ -33,7 +45,8 @@
             </div>
           </a>
         </li>
-      <?php  } }
+      <?php  } 
+      // }
     endif; ?>
   </ul>
 </div>

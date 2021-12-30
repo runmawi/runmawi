@@ -9,33 +9,43 @@
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
                      <div class="d-flex mt-2">
                        <?php if(!empty($settings->facebook_page_id)){?>
-                        <a href="{{ $settings->facebook_page_id }}" target="_blank"  class="s-icon">
+                        <a href="<?php echo $settings->facebook_page_id; ?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
                         </a>
                         <?php } ?>
                         <?php  if(!empty($settings->skype_page_id)){?>
-                        <a href=" {{ $settings->skype_page_id }}" class="s-icon">
+                        <a href=" <?php echo $settings->skype_page_id; ?>" class="s-icon">
                         <i class="ri-skype-fill"></i>
                         </a>
                         <?php } ?>
                         <?php   if(!empty($settings->instagram_page_id)){?>
-                        <a href="{{ $settings->instagram_page_id }}" class="s-icon">
+                        <a href="<?php echo $settings->instagram_page_id; ?>" class="s-icon">
                         <i class="fa fa-instagram"></i>
                         </a>
                         <?php } ?>
                         <?php  if(!empty($settings->twitter_page_id)){?>
-                        <a href="{{ $settings->twitter_page_id }}" class="s-icon">
+                        <a href="<?php echo $settings->twitter_page_id; ?>" class="s-icon">
                         <i class="fa fa-twitter"></i>
                         </a>
                         <?php } ?>
                         <?php if(!empty($settings->linkedin_page_id)){?>
-                        <a href="{{ $settings->linkedin_page_id }}" class="s-icon">
+                        <a href="<?php echo $settings->linkedin_page_id; ?>" class="s-icon">
                         <i class="ri-linkedin-fill"></i>
                         </a>
                         <?php } ?>
                         <?php if(!empty($settings->whatsapp_page_id)){ ?>
-                        <a href="{{ $settings->whatsapp_page_id }}" class="s-icon">
+                        <a href="<?php echo $settings->whatsapp_page_id; ?>" class="s-icon">
                         <i class="ri-whatsapp-fill"></i>
+                        </a>
+                        <?php } ?>
+                        <?php if(!empty($settings->youtube_page_id)){ ?>
+                        <a href="<?php echo $settings->youtube_page_id; ?>" class="s-icon">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                        <?php } ?>
+                        <?php if(!empty($settings->google_page_id)){ ?>
+                        <a href="<?php echo $settings->google_page_id; ?>" class="s-icon">
+                        <i class="fa fa-google-plus"></i>
                         </a>
                         <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">

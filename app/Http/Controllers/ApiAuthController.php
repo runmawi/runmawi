@@ -219,7 +219,7 @@ class ApiAuthController extends Controller
                     } else  {
                             $price = $input['amount'];
                             $plan = $input['plan'];              
-                            $plan_details = Plan::where("plan_id","=",$plan)->first();
+                            $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
                             $next_date = $plan_details->days;
                             $current_date = date('Y-m-d h:i:s');
                             $date = Carbon::parse($current_date)->addDays($next_date);
@@ -1529,7 +1529,7 @@ public function verifyandupdatepassword(Request $request)
               $user->subscription($stripe_plan)->swapAndInvoice($upgrade_plan);
             }
               $plan = $request->get('plan_name');
-              $plandetail = Plan::where('plan_id',$upgrade_plan)->first();
+              $plandetail = SubscriptionPlan::where('plan_id',$upgrade_plan)->first();
               \Mail::send('emails.changeplansubscriptionmail', array(
                             'name' => $user->username,
                             'plan' => ucfirst($plandetail->plans_name),
@@ -1584,7 +1584,7 @@ public function verifyandupdatepassword(Request $request)
            if ($user->subscription($stripe_plan)->resume()) {
             $planvalue = $user->subscriptions;
             $plan = $planvalue[0]->stripe_plan;
-            $plandetail = Plan::where('plan_id',$plan)->first();
+            $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
           
             \Mail::send('emails.renewsubscriptionemail', array(
                 'name' => $user->username,
@@ -1650,7 +1650,7 @@ public function verifyandupdatepassword(Request $request)
         'message' => "Payment Failed"
       );
     }
-    }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal') {
+    }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal'|| $payment_type == 'Applepay'|| $payment_type == 'recurring') {
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) { 
         DB::table('ppv_purchases')->insert(
@@ -1804,7 +1804,7 @@ public function verifyandupdatepassword(Request $request)
 
 
     public function StripeOnlyTimePlan() {
-        $plans = Plan::where("payment_type","=","one_time")->get();
+        $plans = SubscriptionPlan::where("payment_type","=","one_time")->get();
       $response = array(
         'status'=>'true',
         'plans' => $plans
@@ -1813,7 +1813,8 @@ public function verifyandupdatepassword(Request $request)
     }  
     
     public function StripeRecurringPlan() {
-        $plans = Plan::where("payment_type","=","recurring")->get();
+        $plans = SubscriptionPlan::where("payment_type","=","recurring")->get();
+        // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
       $response = array(
         'status'=>'true',
         'plans' => $plans
@@ -1822,7 +1823,7 @@ public function verifyandupdatepassword(Request $request)
     } 
     
     public function PaypalOnlyTimePlan() {
-        $plans = PaypalPlan::where("payment_type","=","one_time")->get()->map(function ($item) {
+        $plans = SubscriptionPlan::where("payment_type","=","one_time")->where('type','=','PayPal')->get()->map(function ($item) {
         $item['billing_interval'] = $item->name;
         $item['plans_name'] = $item->name;
         return $item;
@@ -1835,8 +1836,9 @@ public function verifyandupdatepassword(Request $request)
     }  
     
     public function PaypalRecurringPlan() {
-        
-        $plans = PaypalPlan::where("payment_type","=","recurring")->get()->map(function ($item) {
+
+      $plans = SubscriptionPlan::where("payment_type","=","recurring")->get()->map(function ($item) {
+        // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','PayPal')->get()->map(function ($item) {
         $item['billing_interval'] = $item->name;
             $item['plans_name'] = $item->name;
         return $item;

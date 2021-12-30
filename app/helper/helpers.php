@@ -202,7 +202,7 @@ function CurrentSubPlan($id) {
 }
 function StripePlanName($stripe_Plan) {
     
-    $stripe_plan  = App\Plan::where('plan_id','=',$stripe_Plan)->first();
+    $stripe_plan  = App\SubscriptionPlan::where('plan_id','=',$stripe_Plan)->first();
     return $stripe_plan->plans_name;   
 }
 function SubStartDate($id) {
@@ -219,8 +219,8 @@ function SubEndDate($id) {
 function CurrentSubPlanName($id) {
     
     $active_user_stripe_plan  = App\Subscription::where('user_id','=',$id)->pluck('stripe_plan');
-    $current_plans_name  = App\Plan::where('plan_id','=',$active_user_stripe_plan)->first();
-    $current_plans_count = App\Plan::where('plan_id','=',$active_user_stripe_plan)->count();
+    $current_plans_name  = App\SubscriptionPlan::where('plan_id','=',$active_user_stripe_plan)->first();
+    $current_plans_count = App\SubscriptionPlan::where('plan_id','=',$active_user_stripe_plan)->count();
     
     if ( $current_plans_count > 0){
         $result =  $current_plans_name->plans_name;  
@@ -233,8 +233,8 @@ function CurrentSubPlanName($id) {
 
 function CurrentPaypalPlan($plan_id) {
     
-    $current_plans_name  = App\PaypalPlan::where('plan_id','=',$plan_id)->pluck('name');
-    $current_plans_count = App\PaypalPlan::where('plan_id','=',$current_plans_name)->count();
+    $current_plans_name  = App\SubscriptionPlan::where('plan_id','=',$plan_id)->pluck('name');
+    $current_plans_count = App\SubscriptionPlan::where('plan_id','=',$current_plans_name)->count();
     
     if ( $current_plans_count > 0){
         $result =  $current_plans_name[0];  

@@ -4,40 +4,11 @@
 <?php 
 
 $plan_id = session()->get('become_plan');
-$plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
+$plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
 
 // dd($plan_details);
 ?>
-<style>
-/*.stripe{
-    margin-top: 70px !important;
 
-}
-  */  
-    .form-control{
-        background-color: #f1f1f1!important;
-    }
-</style>
-<style>
-.overlay{
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    background: rgba(255,255,255,0.8) url("loader.gif") center no-repeat;
-}
-/* Turn off scrollbar when body element has the loading class */
-body.loading{
-    overflow: hidden;   
-}
-/* Make spinner image visible when body element has the loading class */
-body.loading .overlay{
-    display: block;
-}
-</style>
 
 <script>
   $( function() {
@@ -149,6 +120,8 @@ $(document).on({
     }    
 });
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
 <script>
     
    
@@ -226,7 +199,7 @@ $(document).on({
                     $('#loader').css('display','block');
                     swal("You have done  Payment !");
                     setTimeout(function() {
-                        window.location.replace(base_url+'/home');
+                        window.location.replace(base_url+'/login');
                   }, 2000);
                });
         }

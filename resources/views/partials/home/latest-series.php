@@ -1,6 +1,5 @@
 <style>
-    .block-description {position: absolute; left:20px; top: 50px!important; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column; opacity: 0;font-size: 12px; }
-
+ .block-description {position: absolute; left:20px; top: 50px!important; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column; opacity: 0;font-size: 12px; }
 </style>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">Latest Series</h4>                      
@@ -11,6 +10,7 @@
       foreach($latest_series as $latest_serie): ?>
         <li class="slide-item">
           <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title ) ?>">
+                             <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">

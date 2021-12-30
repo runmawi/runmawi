@@ -144,7 +144,7 @@ endif; ?>
                     </div>
                     <div class="col-md-12">
             <div id="video-trailer" class="mfp-hide">
-             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>" autoplay class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
                     </div>
             </div>
             </div>

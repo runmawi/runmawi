@@ -1,4 +1,6 @@
 <?php  if(count($cnt_watching) > 0) : ?>
+  <?php  if(!empty($data['password_hash'])) { 
+ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
                  </div>
@@ -8,15 +10,16 @@
                          foreach($cnt_watching as $cont_video): 
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('home') ?>">
+                          <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
                              <div class="block-images position-relative">
+                             <!-- block-images -->
                                 <div class="img-box">
-                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                                
                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt=""> -->
                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                                       </video>
-                                     </a>
+                                     
                                      <div class="corner-text-wrapper">
                                         <div class="corner-text">
                                           <?php  if(!empty($cont_video->ppv_price)){?>
@@ -30,9 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="block-description">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
                                    <h6><?php echo __($cont_video->title); ?></h6>
-                                    </a>
                                    <div class="movie-time d-flex align-items-center my-2">
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $cont_video->age_restrict ?></div>
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
@@ -40,31 +41,24 @@
                                     
                                     
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+                                    <div class="hover-buttons text-white">
+                                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now
+                                        </a>
+                                        <div>
+                                    <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
+                                    <!-- </a> -->
                                     
-                                      <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                      Watch Now
-                                      
-                                       </a>
-                                       <div>
-                                       <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                       <!-- </a> -->
-                  <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $cont_video->id ?>"><i style="color: white;" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> >Add to Watchlist</i></span>
-                      </div>
-
-<!--
-                                    <div>
-                                        <button class="show-details-button" data-id="<?= $cont_video->id;?>">
-                                            <span class="text-center thumbarrow-sec">
-                                                <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                            </span>
-                                                </button>
+                                            <div style="color:white;" id="<?= $cont_video->id ?>">
+                                                <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $cont_video->id ?>">
+                                                    <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                                </span>
+                                                <?php if(@$cont_video->mywishlisted->user_id == $id && @$cont_video->mywishlisted->video_id == $cont_video->id  ) { echo "<i class='ri-heart-fill'> </i>Remove From Wishlist"; } else { echo "<i class='ri-heart-line'> </i>Add To Wishlist" ; } ?>
+                                            </div> 
+                                        </div>
                                     </div>
--->
-                                    </div>
-                              
-                             </div>
+                                </div>
+                              </div>
                           </a>
                        </li>
                        <?php                     
@@ -74,192 +68,42 @@
                  </div>
                  <?php endif; ?>
 
-            
-              <?php /*  if(isset($latest_videos)) :
-                             foreach($latest_videos as $cont_video): ?>
-              <div class="modal fade bd-example-modal-xl1<?= $cont_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-xl" role="document">
-        
-       
-    <div class="modal-content" style="background-color: transparent !important;">
-       
-         
-        <div class="modal-body playvid">
-                             <?php if($cont_video->type == 'embed'): ?>
-                                        <div id="video_container" class="fitvid">
-                                            <?= $cont_video->embed_code ?>
-                                        </div>
-                                    <?php  elseif($cont_video->type == 'file'): ?>
-                                        <div id="video_container" class="fitvid">
-                                        <video id="videojs-seek-buttons-player"   onplay="playstart()" class="video-js vjs-default-skin" controls  poster="<?= URL::to('/public/') . '/uploads/images/' . $cont_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
-
-                                            <source src="<?= $cont_video->trailer; ?>" type='video/mp4' label='auto' >
-                                            <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$cont_video->webm_url; ?>" type='video/webm' label='auto' >
-                                            <source src="<?php echo URL::to('/storage/app/public/').'/'.$cont_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
-
-                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-                                        </video>
-                                        <div class="playertextbox hide">
-                                        <h2>Up Next</h2>
-                                        <p><?php if(isset($videonext)){ ?>
-                                        <?= $cont_video::where('id','=',$videonext->id)->pluck('title'); ?>
-                                        <?php }elseif(isset($videoprev)){ ?>
-                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-                                        <?php } ?>
-
-                                        <?php if(isset($videos_category_next)){ ?>
-                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-                                        <?php }elseif(isset($videos_category_prev)){ ?>
-                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-                                        <?php } ?></p>
-                                        </div>
-                                        </div>
-                                    <?php  else: ?>
-                                       
-
-                                        <div class="playertextbox hide">
-                                        <h2>Up Next</h2>
-                                        <p><?php if(isset($videonext)){ ?>
-                                        <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-                                        <?php }elseif(isset($videoprev)){ ?>
-                                        <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-                                        <?php } ?>
-
-                                        <?php if(isset($videos_category_next)){ ?>
-                                        <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-                                        <?php }elseif(isset($videos_category_prev)){ ?>
-                                        <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-                                        <?php } ?></p>
-                                        </div>
-                                        </div>
-                             <?php endif; ?>
-                        </div>
-   
-        <div class="modal-footer" align="center" >
-                <button type="button"   class="close btn btn-primary" data-dismiss="modal" aria-hidden="true" 
- onclick="document.getElementById('videojs-seek-buttons-player').pause();" id="<?= $cont_video->id;?>"  ><span aria-hidden="true">X</span></button>
-                  
-                    </div>
-         
-  </div>
-</div>
-             <?php endforeach; 
-                                       endif; ?>
-                          <?php if(isset($latest_videos)) :
-                                foreach($latest_videos as $cont_video): ?>
-                                <div class="thumb-cont" id="<?= $cont_video->id;?>"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>') no-repeat;background-size: cover;"> 
-                                    <div class="img-black-back">
-                                    </div>
-                                    <div align="right">
-                                    <button type="button" class="closewin btn btn-danger" id="lv_vid<?= $cont_video->id;?>"><span aria-hidden="true">X</span></button>
-                                        </div>
-                                <div class="tab-sec">
-                                    <div class="tab-content">
-                                    <div id="overview<?= $cont_video->id;?>" class="container tab-pane active"><br>
-                                           <h1 class="movie-title-thumb"><?php echo __($cont_video->title); ?></h1>
-                                                   <p class="movie-rating">
-                                                    <span class="thumb-star-rate"><i class="fa fa-star fa-w-18"></i><?= $cont_video->rating;?></span>
-                                                    <span class="viewers"><i class="fa fa-eye"></i>(<?= $cont_video->views;?>)</span>
-                                                    <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $cont_video->duration); ?></span>
-                                                    </p>
-                                                  <p>Welcome</p>
-                                            
-                                                       <!-- <div class="btn btn-danger btn-right-space br-0">
-                                                    <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
-                                                </div>-->
-                                        <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"><i class="fa fa-play mr-2"
-                                 aria-hidden="true"></i>Play Now</a>
-                                    </div>
-        <div id="trailer<?= $cont_video->id;?>" class="container tab-pane "><br>
-
-         <div class="block expand">
-    
-    <a class="block-thumbnail-trail" href="<? URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-
-    
-        <?php if (!empty($cont_video->trailer)) { ?>
-                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  muted="muted">
-                                    <source src="<?= $cont_video->trailer; ?>" type="video/mp4">
-                 </video>
-                            <?php } else { ?>
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="thumb-img">
-      
-                       <?php } ?>  
-                  <div class="play-button-trail" >
-        
-<!--      <a  href="<? URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">  
-                <div class="play-block">
-                    <i class="fa fa-play flexlink" aria-hidden="true"></i> 
-        </div></a>-->
-                <div class="detail-block">
-<!--          <a class="title-dec" href="<? URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
-                <p class="movie-title"><?php echo __($cont_video->title); ?></p>
-          </a>-->
-          
-                <!--<p class="movie-rating">
-                    <span class="star-rate"><i class="fa fa-star"></i><?= $cont_video->rating;?></span>
-                    <span class="viewers"><i class="fa fa-eye"></i>(<?= $cont_video->views;?>)</span>
-                    <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $cont_video->duration); ?></span>
-          </p>-->
-
-        </div>
-    </div>
-    </a>
-    <div class="block-contents">
-      <!--<p class="movie-title padding"><?php echo __($cont_video->title); ?></p>-->
-        </div>
-  </div> 
-              
-    </div>
-    <div id="like<?= $cont_video->id;?>" class="container tab-pane "><br>
-     
-           <h2>More Like This</h2>
-    </div>
-     <div id="details<?= $cont_video->id;?>" class="container tab-pane "><br>
-        <h2>Description</h2>
-
-    </div>
-  </div>
-    <div align="center">
-            <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $cont_video->id;?>">OVERVIEW</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $cont_video->id;?>">TRAILER AND MORE</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#like<?= $cont_video->id;?>">MORE LIKE THIS</a>
-                    </li>
-                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#details<?= $cont_video->id;?>">DETAILS </a>           
-                    </li>
-              </ul>
-        </div>
-
-
-  
-  </div></div>
-
-<?php endforeach; 
-endif; */?>
 
 <script>
-       $('.mywishlist').click(function(){
-       if($(this).data('authenticated')){
-         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-         $(this).toggleClass('active');
-         $(this).html("");
-             if($(this).hasClass('active')){
-              $(this).html('<i class="ri-heart-fill"></i>');
-             }else{
-               $(this).html('<i class="ri-heart-line"></i>');
-
-             }
-             
-       } else {
-         window.location = '<?= URL::to('login') ?>';
-       }
-     });
+$('.mywishlist').click(function(){
+     var video_id = $(this).data('videoid');
+        if($(this).data('authenticated')){
+            $(this).toggleClass('active');
+            if($(this).hasClass('active')){
+                    $.ajax({
+                        url: "<?php echo URL::to('/mywishlist');?>",
+                        type: "POST",
+                        data: { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>'},
+                        dataType: "html",
+                        success: function(data) {
+                          if(data == "Added To Wishlist"){
+                            
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Remove From Wishlist');
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                          setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                          }, 3000);
+                          }else{
+                            
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Add To Wishlist');
+                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                          setTimeout(function() {
+                          $('.remove_watch').slideUp('fast');
+                          }, 3000);
+                          }               
+                    }
+                });
+            }                
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+      }
+  });
 
 </script>

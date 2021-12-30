@@ -7,6 +7,7 @@ use App\Series as Series;
 use \App\User as User;
 use \App\Genre as Genre;
 use App\Episode as Episode;
+use App\Setting as Setting;
 use \App\SeriesSeason as SeriesSeason;
 // use \App\Tag as Tag;
 use \Redirect as Redirect;
@@ -18,6 +19,7 @@ use App\VideoResolution as VideoResolution;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
 use App\Subtitle as Subtitle;
+use App\AgeCategory as AgeCategory;
 use App\Tag as Tag;
 use Auth;
 use Hash;
@@ -83,7 +85,10 @@ class AdminSeriesController extends Controller
      */
     public function create()
     {
+        $settings  = Setting::first();
+        // dd($settings);
         $data = array(
+            'settings ' => $settings,
             'headline' => '<i class="fa fa-plus-circle"></i> New Series',
             'post_route' => URL::to('admin/series/store'),
             'button_text' => 'Add New Series',
@@ -92,6 +97,7 @@ class AdminSeriesController extends Controller
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
+            
             );
         return View::make('admin.series.create_edit', $data);
     }
@@ -208,7 +214,14 @@ class AdminSeriesController extends Controller
         
         $update_url = Series::find($resolution_data['series_id']);
 
+        if(!empty($data['ppv_status'])){
+            $ppv_status = $data['ppv_status'];
+        }else{
+            $ppv_status = 0;
+        }
         $update_url->mp4_url = $data['mp4_url'];
+        $update_url->mp4_url = $ppv_status;
+
 
         $update_url->save();  
 
@@ -519,6 +532,10 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/episode/create'),
             'button_text' => 'Create Episode',
             'admin_user' => Auth::user(),
+            'age_categories' => AgeCategory::all(),
+            'settings' => Setting::first(),
+
+
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -529,7 +546,21 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
+        $settings =Setting::first();
+
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'];
+        }elseif(!empty($data['ppv_status']) || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }else{
+            $ppv_price = null;
+
+        }
         // dd($data);
+
+        $id = $data['episode_id'];
+        $episodes = Episode::findOrFail($id);
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
@@ -565,6 +596,11 @@ class AdminSeriesController extends Controller
         if(empty($data['skip_intro'])){
             $data['skip_intro'] = "";
         }
+        if(empty($data['ppv_status'])){
+            $data['ppv_status'] = 0;
+        }else{
+        $data['ppv_status'] = 1;
+        }
 
         if(isset($data['duration'])){
                 //$str_time = $data
@@ -585,41 +621,65 @@ class AdminSeriesController extends Controller
         }
 
         
-        $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
+        // $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
-        if($episode_upload != '' && $request->hasFile('episode_upload')) {
+        // if($episode_upload != '' && $request->hasFile('episode_upload')) {
 
-            $ffprobe = \FFMpeg\FFProbe::create();
-            $disk = 'public';
-            $data['duration'] = $ffprobe->streams($request->episode_upload)
-            ->videos()
-            ->first()                  
-            ->get('duration'); 
+        //     $ffprobe = \FFMpeg\FFProbe::create();
+        //     $disk = 'public';
+        //     $data['duration'] = $ffprobe->streams($request->episode_upload)
+        //     ->videos()
+        //     ->first()                  
+        //     ->get('duration'); 
 
-            $rand = Str::random(16);
-            $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
-            $request->episode_upload->storeAs('public', $path);
-            $data['path'] = $rand;
+        //     $rand = Str::random(16);
+        //     $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
+        //     $request->episode_upload->storeAs('public', $path);
+        //     $data['path'] = $rand;
 
-            $thumb_path = 'public';
-            $this->build_video_thumbnail($request->episode_upload,$path, $rand);
+        //     $thumb_path = 'public';
+        //     $this->build_video_thumbnail($request->episode_upload,$path, $rand);
 
-            $data['mp4_url'] = URL::to('/').'/storage/app/public/'.$path;
-            $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-            $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-            $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-            $converted_name = ConvertVideoForStreaming::handle($path);
+        //     $data['mp4_url'] = URL::to('/').'/storage/app/public/'.$path;
+        //     $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        //     $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        //     $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        //     $converted_name = ConvertVideoForStreaming::handle($path);
 
-            ConvertVideoForStreaming::dispatch($path);
-        }
-              $episode = Episode::create($data);              
-              $episode->skip_recap =  $data['skip_recap'];
-              $episode->recap_start_time =  $data['recap_start_time'];
-              $episode->recap_end_time =  $data['recap_end_time'];
-              $episode->skip_intro =  $data['skip_intro'];
-              $episode->intro_start_time =  $data['intro_start_time'];
-              $episode->intro_end_time =  $data['intro_end_time'];
-              $episode->save();
+        //     ConvertVideoForStreaming::dispatch($path);
+        // }
+            //   $episode = Episode::create($data);
+            // dd($data['title']);
+            if(!empty($data['title'])){
+                // dd($data['global_ppv']);
+                $episodes->title = $data['title'];
+                }else{
+                }  
+                if(empty($data['active'])){
+                    $active = 0;
+                }else{
+                    $active =$data['active'];
+                }
+            // $episode->title =  $data['title'];
+            $episodes->rating =  $data['rating'];
+            $episodes->type =  'file';
+            $episodes->age_restrict =  $data['age_restrict'];
+            $episodes->duration =  $data['duration'];
+            $episodes->access =  $data['access'];
+            $episodes->active =  $active;
+            $episodes->series_id =  $data['series_id'];
+            $episodes->season_id =  $data['season_id'];
+            $episodes->image =  $data['image'];
+              $episodes->skip_recap =  $data['skip_recap'];
+              $episodes->recap_start_time =  $data['recap_start_time'];
+              $episodes->recap_end_time =  $data['recap_end_time'];
+              $episodes->skip_intro =  $data['skip_intro'];
+              $episodes->intro_start_time =  $data['intro_start_time'];
+              $episodes->intro_end_time =  $data['intro_end_time'];
+              $episodes->ppv_price =  $ppv_price;
+              $episodes->ppv_status =  $data['ppv_status'];
+              $episodes->status =  1;
+              $episodes->save();
 
 
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
@@ -644,6 +704,10 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/episode/update'),
             'button_text' => 'Update Episode',
             'admin_user' => Auth::user(),
+            'age_categories' => AgeCategory::all(),
+            'settings' => Setting::first(),
+
+
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -654,13 +718,22 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $episode = Episode::findOrFail($id);
-
+        $settings =Setting::first();
+        if(!empty($input['ppv_price'])){
+            $ppv_price = $input['ppv_price'];
+        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }
         $data = $request->all();
           
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
-        
+        if(empty($data['ppv_status'])){
+            $data['ppv_status'] = 0;
+        }else{
+        $data['ppv_status'] = 1;
+        }
         
         if(isset($data['duration'])){
                 //$str_time = $data
@@ -737,15 +810,71 @@ class AdminSeriesController extends Controller
         $episode->update($data);
         $episode->skip_recap =  $data['skip_recap'];
         $episode->recap_start_time =  $data['recap_start_time'];
+        $episode->season_id =  $data['season_id'];
         $episode->recap_end_time =  $data['recap_end_time'];
         $episode->skip_intro =  $data['skip_intro'];
         $episode->intro_start_time =  $data['intro_start_time'];
         $episode->intro_end_time =  $data['intro_end_time'];
+        $episode->ppv_price =  $ppv_price;
+        $episode->ppv_status =  $data['ppv_status'];
+        $episode->status =  1;
         $episode->save();
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
     
     }
+
+    public function EpisodeUpload(Request $request){
+
+        $value = array();
+        $data = $request->all();
+
+        $validator = Validator::make($request->all(), [
+           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+           
+        ]);
+        $file = (isset($data['file'])) ? $data['file'] : '';
+        $rand = Str::random(16);
+        $path = public_path().'/uploads/episodes/';
+        $path = $rand . '.' . $request->file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $path = $rand . '.' . $request->file->getClientOriginalExtension();
+        $path = URL::to('/').'/storage/app/public/'.$path;
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];
+
+        // https://webnexs.org/flicknexs/content/uploads/episodes/6.mp4
+        if($file != '') {               
+         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+         $episode = new Episode();
+         $episode->title = $file_folder_name;
+         $episode->mp4_url = $path;
+         $episode->type = 'upload';
+         $episode->status = 0;
+         $episode->save(); 
+        
+         $episode_id = $episode->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+
+
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        return $value;
+        }
+        else {
+         $value['success'] = 2;
+         $value['message'] = 'File not uploaded.'; 
+        return response()->json($value);
+        }
+        }
+
+
+
+
 
     public function createSlug($title, $id = 0)
     {
@@ -901,4 +1030,112 @@ class AdminSeriesController extends Controller
               }
       
           }
+          public function create_episodeold(Request $request)
+    {
+        
+        $data = $request->all();
+        // dd($data);
+        $settings =Setting::first();
+
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'];
+        }elseif(!empty($data['ppv_status']) || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }else{
+            $ppv_price = null;
+
+        }
+
+        $path = public_path().'/uploads/episodes/';
+        $image_path = public_path().'/uploads/images/';
+        
+        $image = (isset($data['image'])) ? $data['image'] : '';
+        if(!empty($image)){
+               if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $file = $image;
+              $data['image']  = $file->getClientOriginalName();
+              $file->move($image_path, $data['image']);
+        } else {
+            $data['image'] = 'placeholder.jpg';
+        }
+        
+        if(empty($data['active'])){
+            $data['active'] = 0;
+        }
+        if(empty($data['views'])){
+            $data['views'] = 0;
+        }
+
+        if(empty($data['featured'])){
+            $data['featured'] = 0;
+        }
+        if(empty($data['skip_recap'])){
+            $data['skip_recap'] = "";
+        }
+        if(empty($data['skip_intro'])){
+            $data['skip_intro'] = "";
+        }
+        if(empty($data['ppv_status'])){
+            $data['ppv_status'] = 0;
+        }else{
+        $data['ppv_status'] = 1;
+        }
+
+        if(isset($data['duration'])){
+                //$str_time = $data
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $data['duration'] = $time_seconds;
+        }
+       
+        
+        $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
+
+        if($episode_upload != '' && $request->hasFile('episode_upload')) {
+
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $disk = 'public';
+            $data['duration'] = $ffprobe->streams($request->episode_upload)
+            ->videos()
+            ->first()                  
+            ->get('duration'); 
+
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
+            $request->episode_upload->storeAs('public', $path);
+            $data['path'] = $rand;
+
+            $thumb_path = 'public';
+            $this->build_video_thumbnail($request->episode_upload,$path, $rand);
+
+            $data['mp4_url'] = URL::to('/').'/storage/app/public/'.$path;
+            $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+            $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+            $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+            $converted_name = ConvertVideoForStreaming::handle($path);
+
+            ConvertVideoForStreaming::dispatch($path);
+        }
+              $episode = Episode::create($data);              
+              $episode->skip_recap =  $data['skip_recap'];
+              $episode->recap_start_time =  $data['recap_start_time'];
+              $episode->recap_end_time =  $data['recap_end_time'];
+              $episode->skip_intro =  $data['skip_intro'];
+              $episode->intro_start_time =  $data['intro_start_time'];
+              $episode->intro_end_time =  $data['intro_end_time'];
+              $episode->ppv_price =  $ppv_price;
+              $episode->ppv_status =  $data['ppv_status'];
+              $episode->save();
+
+
+        return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
+    }
+
 }

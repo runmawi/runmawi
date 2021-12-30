@@ -29,7 +29,7 @@
                 <div class="col-md-6">
                 <select name="plan_name" id="plan_name"  class="form-control" >
                         <?php 
-                            $plans = App\Plan::all();
+                            $plans = App\SubscriptionPlan::all();
                             $user_id = Auth::user()->id;
                             foreach($plans as $plan) {
                             $current_plan = CurrentSubPlan($user_id);

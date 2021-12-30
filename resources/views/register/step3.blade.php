@@ -8,7 +8,7 @@ $plan_id = session()->get('plan_id');
 $payment_type = session()->get('payment_type');
 
 // print_r($plan_id);exit();
-$plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
+$plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
 $plan_price = $plan_details->price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;
@@ -110,7 +110,8 @@ $discount_price = $discount_percentage;
      <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://checkout.stripe.com/checkout.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
 
 <script>
     
@@ -291,7 +292,7 @@ data: {
           
 					//    swal("Your Payment is failed !");
 					   if(swal("Your Payment is failed !")){
-							alert('test')
+							// alert('test')
 					   }
         } else {
         	

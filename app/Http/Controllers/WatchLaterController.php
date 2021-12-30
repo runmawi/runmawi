@@ -7,6 +7,8 @@ use App\Watchlater;
 use App\Video as Video;
 use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
+use App\LivePurchase as LivePurchase;
+use App\CurrencySetting as CurrencySetting;
 use Auth;
 use View;
 class WatchLaterController extends Controller
@@ -54,6 +56,9 @@ class WatchLaterController extends Controller
     } 
     
      public function show_watchlaters(){
+        if(Auth::guest()){
+            return redirect('/login');
+        }
             $channelwatchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('type', '=', 'channel')->get();
             $ppvwatchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('type', '=', 'ppv')->get();
       
@@ -81,14 +86,31 @@ class WatchLaterController extends Controller
         }      
     
         public function showPayperview(){
+            if(Auth::guest()){
+                return redirect('/login');
+            }
           $showppv = PpvPurchase::where('user_id', '=', Auth::user()->id)->get();
+          $ppvlive = LivePurchase::where('user_id', '=', Auth::user()->id)->get();
+        //   dd($ppvlive); 
+
           $ppv_array = array();
+          $ppvlive_array = array();
           foreach($showppv as $key => $ccfave){
             array_push($ppv_array, $ccfave->video_id);
           }
+          foreach($ppvlive as $key => $ccfave){
+            array_push($ppvlive_array, $ccfave->video_id);
+            // echo"";
+            // print_r();
+          }
+        //   exit();
           $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
+          $ppvlivevideos = Video::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
           $data = array(
             'ppv' => $ppvvideos,
+            'ppvlive' => $ppvlivevideos,
+            'currency' => CurrencySetting::first(),
+            
           );
           return view('myppv', $data);
         } 

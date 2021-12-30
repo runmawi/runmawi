@@ -359,7 +359,9 @@ class AdminUsersController extends Controller
     } 
     
     public function myprofile(){
-
+        if(Auth::guest()){
+            return redirect('/login');
+        }
         $data = Session::all();
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {

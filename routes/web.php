@@ -1,12 +1,20 @@
 <?php
 
+
+
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
 
+
+
+
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
+
 
 
 
@@ -103,6 +111,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('search','HomeController@search');
     Route::get('showPayperview', 'WatchLaterController@showPayperview');
     Route::post('watchlater', 'WatchLaterController@watchlater');
+    Route::get('purchased-media', 'WatchLaterController@showPayperview');
+    Route::post('addwatchlater', 'WatchLaterController@watchlater');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
     Route::get('/page/{slug}', 'PagesController@index');
@@ -110,7 +120,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/paypal/transaction-details', 'HomeController@ViewTrasaction');
     Route::get('/stripe/transaction-details', 'HomeController@ViewStripeTrasaction');
     Route::get('/paypal/cancel-subscription', 'HomeController@CancelPaypal');
-    Route::post('/stripe-subscription', 'HomeController@StripeSubscription');
+    Route::post('/subscribe-now', 'HomeController@StripeSubscription');
     Route::post('/paypal_subscription', 'HomeController@PaypalSubscription');  
 //Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
 });
@@ -146,6 +156,8 @@ Route::get('/live', 'LiveStreamController@Index');
 Route::get('/live/play/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
+Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
+Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
 Route::get('/logout', 'AdminUsersController@logout');
 Route::post('/stripe-payment', 'PaymentController@store')->name('stripe.store');
@@ -418,6 +430,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
     Route::post('/episode/update', 'AdminSeriesController@update_episode');
+    Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/players', 'AdminSettingsController@playerui_index');
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
@@ -508,8 +521,24 @@ Route::get('/subscription_search', 'AdminPaymentManagementController@Subscriptio
 Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
 Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
 
+// Revenue Settings  
+
+Route::get('/revenue_settings/index', 'AdminRevenueSettings@Index');
+Route::post('/revenue_settings/store', 'AdminRevenueSettings@Store');
+Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
+Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
+Route::post('/revenue_settings/update', 'AdminRevenueSettings@Update');
 
 
+
+// APP Settings  
+
+
+Route::get('/app_settings/index', 'AdminAppSettings@Index');
+Route::post('/app_settings/store', 'AdminAppSettings@Store');
+Route::get('/app_settings/edit/{id}', 'AdminAppSettings@Edit');
+Route::get('/app_settings/delete/{id}', 'AdminAppSettings@Delete');
+Route::post('/app_settings/update', 'AdminAppSettings@Update');
 
 
 Route::get('/allmoderator', 'ModeratorsUserController@view');

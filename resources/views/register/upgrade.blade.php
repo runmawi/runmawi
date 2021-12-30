@@ -239,26 +239,31 @@ body.loading .overlay{
 				</div>
 				
 				<div class="modal-body">
-                <form action="<?php echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
+                <form action="<?php echo URL::to('/').'/subscribe-now';?>" method="POST" id="payment-form" enctype="multipart/form-data">
                 <?php $payment_type = App\PaymentSetting::get(); ?>
 					<!-- <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/register2') }}" method="post"> -->
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                        <input type="hidden" name="modal_plan_name" id="modal_plan_name" value="" />
+                        <input type="hidden" name="modal_plan_name" id="modal_plan_name" value="" /><br>
                         <div class="form-group"> 
                            
                             <label class="radio-inline">
-                                <?php  foreach($payment_type as $payment){
-                                     if($payment->live_mode == 1){ ?>
-                            <input type="radio" id="tres_important" name="payment_method" value="{{ $payment->payment_type }}"> Pay Using Card Stripe</label>
-                            <?php }elseif($payment->paypal_live_mode == 1){ ?>
-                                <br>
-                            <label class="radio-inline">
-                            <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">Pay Using Card PayPal</label>
-                            <?php }else{
-                                // echo "Please Trun On Any Payment Gateway Mode in Admin Panel";
-                                 echo "Payment Gateway Not Enabled to Purchase Subsciption";
-
-                            } }?>
+                            <?php  foreach($payment_type as $payment){
+                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
+                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                <label class="radio-inline">
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+                          <?php 
+						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+						<?php  } }else{
+                            echo "Please Turn on Payment Mode to Purchase";
+                            break;
+                         }
+                         }?>
                         </div>
                                
 				    </form>
@@ -307,7 +312,7 @@ body.loading .overlay{
        <div id="dvPassports" style="display: block;" class="tab-pane fade in active">
            <div class="row">
             <?php 
-           $plans = App\PaypalPlan::where('type','=','Non Refundable')->get();
+           $plans = App\SubscriptionPlan::where('type','=','Non Refundable')->get();
            foreach($plans as $plan) {
                $plan_name = $plan->name;
         ?>

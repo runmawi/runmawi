@@ -9,6 +9,7 @@
    <li class="slide-item">
       <a href="<?php echo URL::to('home') ?>">
          <div class="block-images position-relative">
+                             <!-- block-images -->
             <div class="img-box">
             <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
             </div>
