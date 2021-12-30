@@ -963,11 +963,19 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
         // dd($data['global_ppv']);
             $video->publish_time =0;
             }   
+
+        if(!empty($data['m3u8_url'])){
+            // dd($data['global_ppv']);
+                $m3u8_url =$data['m3u8_url'];
+            }else{
+                $m3u8_url = null;
+            }    
             $user = Session::get('user'); 
             $user_id = $user->id;
             $video->user_id =  $user_id;
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->mp4_url =  $data['mp4_url'];
          $video->skip_recap =  $data['skip_recap'];
          $video->skip_intro =  $data['skip_intro'];
          $video->age_restrict=$data['age_restrict'];

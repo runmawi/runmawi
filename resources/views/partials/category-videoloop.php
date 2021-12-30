@@ -98,8 +98,8 @@
 
                                         </a>
                                         <div>
-                                        <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
-                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                        <span style="color: white;"class="mywishlist <?php if(@$category_video->mywishlisted->video_id == $category_video->id): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
+                            <i style="" <?php if(@$category_video->mywishlisted->video_id == $category_video->id): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                           </span>
                           <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
                               </div>
