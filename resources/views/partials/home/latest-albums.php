@@ -13,7 +13,7 @@
             <div class="img-box">
             <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
             </div>
-            <div class="block-description">
+            <div class="block-description" style="top:40px !important;">
             <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                         

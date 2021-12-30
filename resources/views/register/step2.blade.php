@@ -270,22 +270,17 @@
                            
                 <label class="radio-inline">
                 <?php  foreach($payment_type as $payment){
-                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                          if($payment->live_mode == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
-                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                <?php }elseif($payment->paypal_live_mode == 1){ ?>
                 <label class="radio-inline">
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
-                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                <?php }elseif($payment->live_mode == 0){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
                           <?php 
-						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+						 }elseif( $payment->paypal_live_mode == 0){ ?>
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
-						<?php  } }else{
-                            echo "Please Turn on Payment Mode to Purchase";
-                            break;
-                         }
-                         }?>
+						<?php  } }?>
                         </div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

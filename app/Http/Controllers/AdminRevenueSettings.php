@@ -75,11 +75,16 @@ class AdminRevenueSettings extends Controller
       public function Index()
       {
           
-        $revenue_settings = RevenueSetting::get();
-        $data = array(
-                    'revenue_settings' => $revenue_settings  ,
-        );
-        return view('admin.revenuesettings.index',$data);
+        // $revenue_settings = RevenueSetting::get();
+        // $data = array(
+        //             'revenue_settings' => $revenue_settings  ,
+        // );
+        // return view('admin.revenuesettings.index',$data);
+        $revenue_settings = RevenueSetting::where('id','=',1)->first();          
+           $data = array(
+                     'revenue_settings' => $revenue_settings ,   
+           );
+          return view('admin.revenuesettings.edit',$data);
       }
   
   

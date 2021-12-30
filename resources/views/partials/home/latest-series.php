@@ -24,7 +24,7 @@
                   <div class="badge badge-secondary p-1 mr-2">13+</div>
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>
                 </div>
-                <div class="hover-buttons">
+                <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
