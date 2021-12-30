@@ -35,7 +35,7 @@
                   <div class="badge badge-secondary p-1 mr-2">13+</div>
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
                 </div>
-                <div class="hover-buttons">
+                <div class="hover-buttons d-flex">
                 <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series

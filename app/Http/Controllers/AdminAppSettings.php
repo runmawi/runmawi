@@ -76,11 +76,17 @@ class AdminAppSettings extends Controller
       public function Index()
       {
           
-        $app_settings = AppSetting::get();
-        $data = array(
-        'app_settings' => $app_settings  ,
-        );
-        return view('admin.app_setting.index',$data);
+        // $app_settings = AppSetting::get();
+        // $data = array(
+        // 'app_settings' => $app_settings  ,
+        // );
+        // return view('admin.app_setting.index',$data);
+        $app_settings = AppSetting::where('id','=',1)->first();          
+           $data = array(
+                     'app_settings' => $app_settings ,   
+           );
+          return view('admin.app_setting.edit',$data);
+
       }
   
   

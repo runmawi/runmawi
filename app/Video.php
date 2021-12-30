@@ -31,7 +31,9 @@ class Video extends Model
 	public function mywishlisted(){
 		return $this->belongsTo('App\Wishlist','id','video_id');
 	}
-
+	public function mywatchlatered(){
+		return $this->belongsTo('App\Wishlist','id','video_id');
+	}
 	public function videoresolutions(){
 		return $this->hasMany('App\VideoResolution','video_id','id');
 	}

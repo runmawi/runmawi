@@ -21,14 +21,18 @@ class WatchLaterController extends Controller
             $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $video_id)->where('type', '=', 'channel')->first();
             if(isset($watchlater->id)){ 
                 $watchlater->delete();
-                 return response()->json(['success' => 'Removed From Watchlater List']);
+                //  return response()->json(['success' => 'Removed From Watchlater List']);
+                $response = "Removed From Wishlist";
+                return $response;
             } else {
                 $watchlater = new Watchlater;
                 $watchlater->user_id = Auth::user()->id;
                 $watchlater->video_id = $video_id;
                 $watchlater->type = 'channel';
                 $watchlater->save();
-                 return response()->json(['success' => 'Added to Watchlater List']);
+                //  return response()->json(['success' => 'Added to Watchlater List']);
+                $response = "Added To Wishlist";
+                return $response;
                 //echo $watchlater;
             }
         } 

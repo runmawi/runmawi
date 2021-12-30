@@ -12,7 +12,7 @@
                                 <div class="img-box">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
                                 </div>
-                                <div class="block-description">
+                                <div class="block-description" style="top:40px !important;">
                                 <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                     
