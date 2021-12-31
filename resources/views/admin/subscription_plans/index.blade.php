@@ -59,9 +59,11 @@
                         
                             <div class="form-group">
 							@foreach($payment_settings as $payment_setting)
+							@if($payment_setting->stripe_status == 1 || $payment_setting->paypal_status == 1 || $payment_setting->status == 1 )
 								<label>{{ $payment_setting->payment_type }} Plan ID:</label>
 		                        <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
-                               @endForeach
+                            @endif
+						    @endForeach
 		                        <!-- <label> Plan ID:</label>
 		                        <input type="text" id="plan_id" name="plan_id" value="" class="form-control" placeholder="Plan ID"> -->
                             <!-- </div>  -->

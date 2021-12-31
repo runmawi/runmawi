@@ -115,7 +115,7 @@
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-			<?php// echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
+			<?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
 			<?php //} ?>
             <br>
 			</div> -->
