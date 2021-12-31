@@ -8,6 +8,7 @@ use \Redirect as Redirect;
 use URL;
 use Auth;
 use App\Setting as Setting;
+use App\Script as Script;
 use App\Playerui as Playerui;
 use Hash;
 use Illuminate\Support\Facades\Cache;
@@ -489,5 +490,28 @@ if($watermark != '') {
     return view('videolayout.episode_header',compact('playerui_settings') );
 
   }  
+    public function script_settings(Request $request){
+
+      $input = $request->all();
+        //   echo "<pre>";
+        // print_r($input);
+        // exit();
+        if(!empty($input)){
+        foreach($input as $key => $value){
+          $script = new Script;
+          $script->header_script = $value['header_script'];
+          $script->footer_script = $value['footer_script'];
+          $script->user_id = Auth::User()->id;
+          $script->save();
+          }
+        }else{
+          return Redirect::to('admin/settings')->with(array('message' => 'Please Give Script CDN!', 'note_type' => 'success') );
+
+        }
+        return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
+    
+
+    }
+    
 
 }
