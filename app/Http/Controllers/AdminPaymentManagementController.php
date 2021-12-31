@@ -11,6 +11,7 @@ use App\Plan;
 use App\Subscription;
 use App\VideoCommission;
 use App\PpvPurchase;
+use App\SubscriptionPlan;
 use Laravel\Cashier\Invoice;
 use URL;
 use Auth;
@@ -25,8 +26,8 @@ class AdminPaymentManagementController extends Controller
 {
     public function index()
     {
-        $revenue =  Plan::select(('plans.price'))
-        ->join('subscriptions','subscriptions.stripe_plan', '=', 'plans.plan_id')
+        $revenue =  SubscriptionPlan::select(('subscription_plans.price'))
+        ->join('subscriptions','subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
         ->get();
 
 

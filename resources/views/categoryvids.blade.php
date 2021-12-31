@@ -2,6 +2,7 @@
 @include('header')   
 <!-- Header End -->
 <!-- MainContent -->
+<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
       <div class="main-content">
          <section id="iq-favorites">
@@ -46,11 +47,18 @@
                                                         <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                             <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
                                                         </a>
-                                                         <div>
-                  <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>"><i style="color: white;" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> >Add to Watchlist</i></span>
-
+                                                       
+                  <!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?// !Auth::guest() ?>" data-videoid="<?// $category_video->id ?>"><i style="color: white;" <?php// if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php// endif; ?> >Add to Watchlist</i></span> -->
+                    <div class="hover-buttons d-flex">
+                          <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
+                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                          </span>
+              
+                          <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+                              </div>
                                         <!-- <a   href="<?php// echo URL::to('category') ?><?// '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                                           </a></div>
+                                           <!-- </a> -->
+    
                                         </div>
 <!--
                                                     <div>
@@ -256,21 +264,59 @@
 
      @extends('footer')  
      <script>
-       $('.mywishlist').click(function(){
-       if($(this).data('authenticated')){
-         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-         $(this).toggleClass('active');
-         $(this).html("");
-             if($(this).hasClass('active')){
-              $(this).html('<i class="ri-heart-fill"></i>');
-             }else{
-               $(this).html('<i class="ri-heart-line"></i>');
+    //    $('.mywishlist').click(function(){
+    //    if($(this).data('authenticated')){
+    //      $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+    //      $(this).toggleClass('active');
+    //      $(this).html("");
+    //          if($(this).hasClass('active')){
+    //           $(this).html('<i class="ri-heart-fill"></i>');
+    //          }else{
+    //            $(this).html('<i class="ri-heart-line"></i>');
 
-             }
+    //          }
              
-       } else {
-         window.location = '<?= URL::to('login') ?>';
-       }
-     });
+    //    } else {
+    //      window.location = '<?= URL::to('login') ?>';
+    //    }
+    //  });
+
+</script>
+<script>
+$('.mywishlist').click(function(){
+     var video_id = $(this).data('videoid');
+        if($(this).data('authenticated')){
+            $(this).toggleClass('active');
+            if($(this).hasClass('active')){
+                    $.ajax({
+                        url: "<?php echo URL::to('/mywishlist');?>",
+                        type: "POST",
+                        data: { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>'},
+                        dataType: "html",
+                        success: function(data) {
+                          if(data == "Added To Wishlist"){
+                            $(this).html('<i class="ri-heart-fill"></i>');                            
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Remove From Wishlist');
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                          setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                          }, 3000);
+                          }else{
+                            $(this).html('<i class="ri-heart-line"></i>');
+                            $('#'+video_id).text('') ;
+                            $('#'+video_id).text('Add To Wishlist');
+                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                          setTimeout(function() {
+                          $('.remove_watch').slideUp('fast');
+                          }, 3000);
+                          }               
+                    }
+                });
+            }                
+        } else {
+          window.location = '<?= URL::to('login') ?>';
+      }
+  });
 
 </script>

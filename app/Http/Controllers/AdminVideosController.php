@@ -801,6 +801,11 @@ if(!empty($artistsdata)){
             }  else {
                 $data['language'] = $data['language'];
             } 
+            if(!empty($video->mp4_url)){
+                $data['mp4_url'] = $video->mp4_url;
+            }  else {
+                $data['mp4_url'] = null;
+            } 
             
             if(empty($data['age_restrict'])){
                 $data['age_restrict'] = 0;
@@ -1002,6 +1007,8 @@ if(!empty($artistsdata)){
                                 } 
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
+         $video->mp4_url =  $data['mp4_url'];
+         $video->language=$request['language'];
          $video->skip_recap =  $request['skip_recap'];
          $video->recap_start_time =  $request['recap_start_time'];
          $video->recap_end_time =  $request['recap_end_time'];

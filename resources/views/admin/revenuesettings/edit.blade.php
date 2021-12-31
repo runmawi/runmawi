@@ -50,7 +50,7 @@
 			
 			<div class="col-md-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Admin Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title"><label>Live Admin Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
 						<input type="text" class="form-control" name="admin_commission" id="admin_commission" value="@if(!empty($revenue_settings->admin_commission)){{ $revenue_settings->admin_commission }}@endif"  />
 					</div> 
@@ -59,7 +59,7 @@
 
 			<div class="col-md-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>User Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title"><label>Live User Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
 						<input type="text" class="form-control" name="user_commission" id="user_commission" value="@if(!empty($revenue_settings->user_commission)){{ $revenue_settings->user_commission }}@endif"  />
 					</div> 
@@ -67,7 +67,7 @@
 			</div>
 			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Admin Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title"><label>VOD Admin Commission in %</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
 						<input type="text" class="form-control" name="vod_admin_commission" id="vod_admin_commission" value="@if(!empty($revenue_settings->vod_admin_commission)){{ $revenue_settings->vod_admin_commission }}@endif" />
 					</div> 
@@ -75,7 +75,7 @@
 			</div>
 			<div class="col-md-6 mt-3">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>User Commission in % </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title"><label>VOD User Commission in % </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
                     <input type="text" class="form-control" name="vod_user_commission" id="vod_user_commission" value="@if(!empty($revenue_settings->vod_user_commission)){{ $revenue_settings->vod_user_commission }}@endif" />
 					</div> 

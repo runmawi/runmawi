@@ -292,9 +292,22 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label class="p-2">Rating:</label>
-                                    <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
-                                </div>
+                                <label class="p-2">Rating:</label>
+                                    <!-- selected="true" -->
+                                    <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+                                    <select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
+                                          <option value="1" >1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          <option value="10">10</option>
+                                        </select>
+                                    </div>
                                 <div class="col-sm-6 form-group">
                                     <label class="p-2">User Access:</label>
                                     <select id="access" name="access"  class="form-control" >
@@ -466,9 +479,20 @@
 //         });
 //     });
 </script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
   <script type="text/javascript">
  $ = jQuery;
 
+ $(document).ready(function($){
+    
+    $('#duration').mask("00:00:00");
+
+});
 
  $('#publishlater').hide();
  
@@ -491,6 +515,8 @@ $(document).ready(function(){
 });
 	$(document).ready(function(){
     $('.js-example-basic-multiple').select2();
+    $('.js-example-basic-single').select2();
+
     
 		$("#type").change(function(){
 			if($(this).val() == 'file'){

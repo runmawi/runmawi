@@ -233,4 +233,6 @@ Route::group([
     Route::get('Preference_Language', 'ApiAuthController@Preference_Language');
     Route::get('category_Mostwatchedvideos', 'ApiAuthController@category_Mostwatchedvideos');
     
+    Route::get('ComingSoon ','ApiAuthController@ComingSoon');
+
 });

@@ -1,21 +1,13 @@
 <?php
 
 
-
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
 use Carbon\Carbon as Carbon;
 
-
-
-
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
-
-
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');

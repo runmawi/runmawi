@@ -1,5 +1,7 @@
-<?php $settings = App\Setting::first(); ?>
-<?php $user = App\User::where('id','=',1)->first(); ?>
+<?php $settings = App\Setting::first();
+ $user = App\User::where('id','=',1)->first(); 
+ $app_setting = App\AppSetting::where('id','=',1)->first();
+?>
 
 <footer class="mb-0">
          <div class="container-fluid">
@@ -48,11 +50,26 @@
                         <i class="fa fa-google-plus"></i>
                         </a>
                         <?php } ?>
+                        
+                        <?php if(!empty($app_setting->android_url) || !empty($app_setting->ios_url)){ ?>
+                          <!-- <label for="">Mobile App</label> -->
+                        <?php } ?>
+                        <?php if(!empty($app_setting->android_url)){ ?>
+                        <a href="<?php echo$app_setting->android_url; ?>" class="s-icon">
+                        <i class="fa fa-android"></i>
+                        </a>
+                        <?php } ?>
+                        <?php if(!empty($app_setting->ios_url)){ ?>
+                        <a href="<?php echo$app_setting->android_url; ?>" class="s-icon">
+                        <i class="fa fa-apple"></i>
+                        </a>
+                        <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
                         // </a> -->
                      </div>
                   </div>
+                  
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>

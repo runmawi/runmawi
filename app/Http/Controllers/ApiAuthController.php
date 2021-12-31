@@ -786,12 +786,14 @@ public function verifyandupdatepassword(Request $request)
 
       $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
       $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+      $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
       $like = ($like_data == 1) ? "true" : "false";
       $dislike = ($dislike_data == 1) ? "true" : "false";
+      $favorite = ($favoritestatus > 0) ? "true" : "false";
     } else{
       $wishliststatus = 'false';
       $watchlaterstatus = 'false';
-      $favoritestatus = 'false';
+      $favorite = 'false';
       $ppv_exist = 0;
       $curr_time = '00';
       $userrole = '';
@@ -833,12 +835,13 @@ public function verifyandupdatepassword(Request $request)
       'ppv_video_status' => $ppv_video_status,
       'main_genre' => $videos_cat[0]->name,
       'watchlater' => $watchlaterstatus,
-      'favorite' => $favoritestatus,
+      'favorite' => $favorite                                 ,
       'ppv_exist' => $ppv_exist,
       'userrole' => $userrole,
       'like' => $like,
       'dislike' => $dislike,
-      'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
+      // 'shareurl' => URL::to('channelVideos/play_videos').'/'.$videoid,
+      'shareurl' => URL::to('category/videos').'/'.$videodetail[0]->slug,
       'videodetail' => $videodetail,
       'videossubtitles' => $moviesubtitles,
       'videoads' => $videoads
@@ -1462,11 +1465,16 @@ public function verifyandupdatepassword(Request $request)
   }
     
     public function payment_settings() {
-    $payment_settings = PaymentSetting::get();
-    $response = array(
-      'status'=>'true',
-      'payment_settings'=> $payment_settings
-    );
+      $payment_settings = PaymentSetting::get();
+      $stripe_payment_settings = PaymentSetting::where('payment_type','=','Stripe')->get();
+      $paypal_payment_settings = PaymentSetting::where('payment_type','=','PayPal')->get();
+  
+      $response = array(
+        'status'=>'true',
+        'payment_settings'=> $payment_settings,
+        'stripe_payment_settings'=> $stripe_payment_settings,
+        'paypal_payment_settings'=> $paypal_payment_settings,
+      );
 
     return response()->json($response, 200);
     }
@@ -4744,8 +4752,7 @@ public function LocationCheck(Request $request){
       else{
         $blockvideos=[]; 
       }
-
-
+      
       if( $Recomended->Recommendation == 1 ){
 
         $Most_watched_country =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
@@ -4754,11 +4761,31 @@ public function LocationCheck(Request $request){
       }else{
         $Most_watched_country =[];
       }
+  
+      return response()->json([
+        'message' => 'Country Most watched videos Retrieve successfully',
+        'Mostwatched' => $Most_watched_country], 200);
+  }
 
-        return response()->json([
-          'message' => 'Country Most watched videos Retrieve successfully',
-          'Mostwatched' => $Most_watched_country], 200);
-    }
+  public function ComingSoon() {
+
+        $videos = Video::orderBy('created_at', 'DESC')->whereDate('publish_time', '>', \Carbon\Carbon::now()->today())->get();
+        if(!empty($videos)){
+          $status = 'true';
+          $comingsoon = $videos;
+
+        }else{
+          $status = 'false';
+          $comingsoon = [];
+        }
+        $response = array(
+          'status'=> $status,
+          'comingsoon'=> $comingsoon,
+        );
+
+    return response()->json($response, 200);
+
+  }
 
     public function Preference_genres()
     {

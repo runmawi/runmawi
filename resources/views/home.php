@@ -976,23 +976,25 @@ endif; ?>
                               if($Family_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 18);
                              }
-                             if($Kids_Mode == 0){
+                             if($Kids_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 10);
                              }
                               $videos = $videos ->get();
                            }else{
-                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->where('age_restrict','<',18);
+                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('id',$blockvideos);
                         }
                         if($Family_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 18);
                        }
-                       if($Kids_Mode == 0){
+                       if($Kids_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 10);
                        }
                       $videos = $videos ->get();
                        } } else {
+
+                      
 
                      $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
                      
@@ -1002,7 +1004,7 @@ endif; ?>
                            if($Family_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 18);
                           }
-                          if($Kids_Mode == 0){
+                          if($Kids_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 10);
                           }
                      $videos = $videos ->get();
