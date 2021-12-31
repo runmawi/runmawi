@@ -9,7 +9,6 @@ Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 
-
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
@@ -189,6 +188,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
+    Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');
+
 
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');

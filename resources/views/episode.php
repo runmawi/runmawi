@@ -34,7 +34,7 @@ $series=App\series::first();
 			
 			<?php 
 			if(!Auth::guest()){
-			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){
+			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
 				
@@ -44,10 +44,7 @@ $series=App\series::first();
 						</div>
 					<?php  elseif($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
-
-						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>"
-             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.mp4'; ?>"  type="application/x-mpegURL" >
-
+						<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
@@ -61,8 +58,7 @@ $series=App\series::first();
 						</div>
 					<?php  else: ?>                                  
 						<div id="series_container">
-						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/'  ?>"
-             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.'4zTGiokIZmAq56BF.mp4'; ?>"  type="application/x-mpegURL" >
+						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                            
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
@@ -151,7 +147,7 @@ $series=App\series::first();
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-			<?php// echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
+			<?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
 			<?php //} ?>
             <br>
 			</div> -->
@@ -319,7 +315,7 @@ $series=App\series::first();
 	
 	    <script type="text/javascript"> 
 
-        // videojs('Player').videoJsResolutionSwitcher(); 
+        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
 		$(document).ready(function () {  
              $.ajaxSetup({
                headers: {

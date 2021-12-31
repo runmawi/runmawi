@@ -80,6 +80,9 @@ use App\Geofencing;
 use App\Blockvideo;
 use App\BlockAudio;
 use App\HomeSetting;
+use App\Videoartist;
+
+
 
 
 class ApiAuthController extends Controller
@@ -920,7 +923,7 @@ public function verifyandupdatepassword(Request $request)
         $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
         return $item;
       });
-      $banners = Video::where('active','=',1)->where('status','=',1)->get()->map(function ($item) {
+      $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -2038,7 +2041,6 @@ public function verifyandupdatepassword(Request $request)
 
       return response()->json($response, 200);
     }
-
     public function isPaymentEnable()
   {
     $settings = Setting::first();
@@ -4787,10 +4789,37 @@ public function LocationCheck(Request $request){
 
   }
 
-    public function Preference_genres()
-    {
-      $Recomended = HomeSetting::first();
 
+  public function video_cast(Request $request)
+  {
+    $video_id = $request->video_id;
+
+    $video_cast_count = DB::table("video_artists")
+    ->join("artists","video_artists.artist_id", "=", "artists.id")
+    ->select("artists.*")
+    ->where("video_artists.video_id", "=", $video_id)
+    ->count();
+
+    if ($video_cast_count > 0) {
+      $video_cast = DB::table("video_artists")
+      ->join("artists","video_artists.artist_id", "=", "artists.id")
+      ->select("artists.*")
+      ->where("video_artists.video_id", "=", $video_id)
+      ->get();
+    } else {
+      $video_cast = [];
+    }    
+    $response = array(
+      'status' => 'true',
+      'video_cast' => $video_cast
+    );
+    return response()->json($response, 200);
+  }
+
+  
+  public function Preference_genres()
+  {
+      $Recomended = HomeSetting::first();
       $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
       $countryName =  $geoip->getCountry();
       $getfeching = Geofencing::first();

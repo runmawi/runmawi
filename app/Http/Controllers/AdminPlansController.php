@@ -29,6 +29,7 @@ use App\PaymentSetting as PaymentSetting;
 use App\SubscriptionPlan as SubscriptionPlan;
 
 
+
 class AdminPlansController extends Controller
 {
     
@@ -67,7 +68,9 @@ public function PaypalIndex()
         
         $slug = Str::slug('Laravel 5 Framework', '-');
         
-        $plans = SubscriptionPlan::all();
+        $plans_data = SubscriptionPlan::all();
+        $plans = $plans_data->groupBy('plans_name');
+        // dd($plans);
         $payment_settings = PaymentSetting::all();
         $devices = Devices::all();
          $data = array(
@@ -110,7 +113,9 @@ public function PaypalIndex()
     
     public function subscriptionedit($id) {
     	 
-        $edit_plan = SubscriptionPlan::find($id);
+        // $edit_plan = SubscriptionPlan::find($id);
+        $edit_plan =  Plan::where('plans_name','Monthly')->first();
+        // dd($edit_plan);
         $payment_settings = PaymentSetting::all();
         $permission = $edit_plan['devices'];
         $user_devices = explode(",",$permission);

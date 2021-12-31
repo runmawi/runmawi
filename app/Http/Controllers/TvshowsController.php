@@ -289,7 +289,6 @@ class TvshowsController extends Controller
 
         if(($series->ppv_status == 1)){
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('series_id', '=', $id)->count();
-        // dd($ppv_exits);
 
         }else{
             $ppv_exits = 0 ;
@@ -315,9 +314,10 @@ class TvshowsController extends Controller
           $secret_key= null;
           $publishable_key= null;
       }    
-     
+      $series = Series::where('title','=',$name)->first();    
+    //   dd($series);
             $data = array(
-                'series' => $series,
+                'series_data' => $series,
                 'currency' => $currency,
                 'ppv_exits' => $ppv_exits,
                 'season' => $season,

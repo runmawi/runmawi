@@ -160,7 +160,7 @@
                      Click here for Recurring subscription!
         </label>
 -->
-    <!-- <form action="<?php// echo URL::to('/').'/cardstep'; ?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
+    <!-- <form action="<?php // echo URL::to('/').'/cardstep'; ?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
      <div class="tab-content">
                 <div id="dvPassport" style="display: none" class="tab-pane fade in active">
                   <div class="row">
@@ -228,7 +228,7 @@
 
                                                 <!-- Launch demo modal
                                                 </button>
-                                                    <button type="submit" class="btn btn-primary" data-price="<?php //echo $plan[0]->price;?>" data-name="<?php// echo //$plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php// echo //$plan[0]->plans_name;?>" >Pay Now</button> -->
+                                                    <button type="submit" class="btn btn-primary" data-price="<?php //echo $plan[0]->price;?>" data-name="<?php // echo //$plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo //$plan[0]->plans_name;?>" >Pay Now</button> -->
                                                 </div>
                                             </div>
                                         </div>

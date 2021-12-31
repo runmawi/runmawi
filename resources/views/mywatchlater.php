@@ -76,7 +76,12 @@
                 </a>
             </div>
     <?php endforeach; 
-        endif; ?>
+        else: ?>
+            <p><h2>No Media in My Watchlater</h2></p>
+                 <div class="col-md-12 text-center mt-4">
+             <img class="w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>">
+         </div>
+        <?php endif; ?>
          </div>
       </section>
          </div>

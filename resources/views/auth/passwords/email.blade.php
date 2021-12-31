@@ -2,28 +2,27 @@
 $settings = App\Setting::find(1);
 ?>
 <html>
-    <head>
+<head>
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
         <title>Reset Password | <?php echo $settings->website_name ; ?></title>
         <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/bootstrap.min.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/noty.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL .'/assets/css/font-awesome.min.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/hellovideo-fonts.css'; ?>" />
+        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/bootstrap.min.css'); ?>" />
+        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/noty.css'); ?>" />
+        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/font-awesome.min.css'); ?>" />
+        <link rel="stylesheet" href="<?= URL::to( '/assets/admin/css/email/hellovideo-fonts.css'); ?>" />
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
 
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/style.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/rrssb.css'; ?>" />
-        <link rel="stylesheet" href="<?= THEME_URL . '/assets/css/animate.min.css'; ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/style.css'); ?>" />
+        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/rrssb.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/admin/css/animate.min.css'); ?>" />
+
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>if (!window.jQuery) { document.write('<script src="<?= THEME_URL . '/assets/js/jquery.min.js'; ?>"><\/script>'); }</script>
+        <script>if (!window.jQuery) { document.write('<script src="<?= URL::to('/assets/js/jquery.min.js'); ?>"><\/script>'); }</script>
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    </head>
-
-<style>
+        <style>
 .container.page-height {
         padding-top: 80px !important;
 }
@@ -41,6 +40,10 @@ $settings = App\Setting::find(1);
         color: #fff; 
     }
 </style>
+    </head>
+<body>
+    
+
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
 <div class="container  page-height">
     <div class="row justify-content-center">

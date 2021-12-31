@@ -234,5 +234,7 @@ Route::group([
     Route::get('category_Mostwatchedvideos', 'ApiAuthController@category_Mostwatchedvideos');
     
     Route::get('ComingSoon ','ApiAuthController@ComingSoon');
+    Route::post('video_cast', 'ApiAuthController@video_cast');
+
 
 });
