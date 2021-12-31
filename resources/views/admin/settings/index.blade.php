@@ -79,6 +79,8 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
 
                 </div>
             </div>
@@ -601,16 +603,45 @@
             </div>
         </div>
 
-
-
-
     </div>
-
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-    <input type="submit" value="Update Settings" class="btn btn-primary pull-right" />
-
+    <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
             </form>
 </div>
+
+<div class="container-fluid" id="script" style="margin-top: -52%;margin-left: 22%;">
+<h5>APP Script:</h5>
+    <div class="row">
+	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
+            <div class="col-md-6">
+                <h5>Header Script CDN:</h5>
+                <textarea  rows="5" class="form-control" name="header_script" id="summaryheader"
+                    placeholder="Header Script"></textarea>
+            </div>
+                <h5>Footer Script CDN:</h5>
+                <textarea  rows="5" class="form-control" name="footer_script" id="summaryfooter"
+                    placeholder="Footer Script"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                <input type="submit" id="scriptsetting" value="Update Settings" class="btn btn-primary pull-right" />
+            </form>
+            </div>
+
+    </div>
+</div>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    
+    <script>
+    CKEDITOR.replace( 'summaryheader', {
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
+    CKEDITOR.replace( 'summaryfooter', {
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
+    </script>
     
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -631,7 +662,12 @@
 		$('#social').hide();
 		$('#subscription').hide();
 		$('#login').hide();
+        $('#script').hide();
+		$('#app').hide();
 		$('#advertisement').hide();
+
+    
+
 
 	$('#site_setting').click(function(){
 		$('#site').show();
@@ -644,6 +680,8 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
 	});
 	$('#ppv_setting').click(function(){
 		// alert();
@@ -657,6 +695,8 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -668,6 +708,8 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
 	});
 	$('#registration_setting').click(function(){
 		$('#site').hide();
@@ -679,6 +721,8 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
 	});
 	$('#email_setting').click(function(){
 		$('#site').hide();
@@ -690,6 +734,8 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
 	});
 	$('#social_setting').click(function(){
 		$('#site').hide();
@@ -701,6 +747,10 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
+
 	});
 	$('#subscription_setting').click(function(){
 		$('#site').hide();
@@ -712,6 +762,10 @@
 		$('#subscription').show();
 		$('#login').hide();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
+
 	});
 	$('#login_setting').click(function(){
 		$('#site').hide();
@@ -724,6 +778,10 @@
 		$('#subscription').hide();
 		$('#login').show();
 		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
+
 	});
 	$('#advertisement_setting').click(function(){
 		$('#videos_settings').hide();
@@ -735,6 +793,51 @@
 		$('#subscription').hide();
 		$('#login').hide();
 		$('#advertisement').show();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
+
+	});
+
+
+    $('#script_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+		$('#app').hide();
+		$('#script').show();
+		$('#scriptsetting').show();
+
+		$('#settingupdate').hide();
+
+
+	});
+
+	$('#app_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+		$('#script').hide();
+		$('#app').show();
+		$('#settingupdate').hide();
+		$('#scriptsetting').hide();
+
+
+
 	});
 
 	});

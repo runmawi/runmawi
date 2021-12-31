@@ -9,7 +9,6 @@
         <?php $user = App\User::where('email','=',$email)->get();  ?>
 
         <a style="margin-left: 39%;" class="navbar-brand" href="<?php echo URL::to('/') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" > </a>
-        <!-- <h2><?php //echo $template[0]->template_type;?></h2> -->
 
         <div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $user[0]->username;?>,&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -20,7 +19,7 @@
 <p>&nbsp;&nbsp;&nbsp;Thanks,&nbsp;&nbsp;&nbsp;&nbsp;</p>
 <p>&nbsp;&nbsp;&nbsp;     Team <?php echo $settings->website_name;?>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
-           <!-- <a href="<?php// echo URL::to('/').'/password/reset/'.$token ;?>">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ;?> -->
+           <!-- <a href=" <?php // echo URL::to('/').'/password/reset/'.$token ; ?> ">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ; ?> -->
            <br>
         </div>
     </body>
