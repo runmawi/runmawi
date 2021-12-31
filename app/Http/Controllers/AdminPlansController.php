@@ -29,6 +29,7 @@ use App\PaymentSetting as PaymentSetting;
 use App\SubscriptionPlan as SubscriptionPlan;
 
 
+
 class AdminPlansController extends Controller
 {
     

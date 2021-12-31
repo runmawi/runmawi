@@ -75,7 +75,13 @@
                 </a>
             </div>
     <?php endforeach; 
-        endif; ?>
+            else:
+            ?>
+            <p><h2>No Media in My WishLists</h2></p>
+                <div class="col-md-12 text-center mt-4">
+            <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+        </div>
+        <?php endif; ?>
          </div>
       </section>
          </div>

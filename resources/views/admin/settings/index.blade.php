@@ -58,7 +58,17 @@
 
 <div id="admin-container">
 <!-- This is where -->
-	
+@if (Session::has('message'))
+<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
+@if(count($errors) > 0)
+@foreach( $errors->all() as $message )
+<div class="alert alert-danger display-hide" id="successMessage" >
+<button id="successMessage" class="close" data-close="alert"></button>
+<span>{{ $message }}</span>
+</div>
+@endforeach
+@endif
 	<div class="admin-section-title">
 		<h4><i class="entypo-globe"></i> Site Settings</h4> 
         <hr>
@@ -629,6 +639,44 @@
             </div>
 
     </div>
+<!-- </div> -->
+
+<div class="container-fluid" id="app" style="margin-top: -52%;margin-left: 22%;">
+<h5>APP Setting:</h5>
+    <div class="row">
+	<form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		
+		<div class="row mt-4">
+			
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+					<div class="panel-title"><label>Android URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-body" style="display: block;"> 
+						<input type="text" class="form-control" name="android_url" id="android_url" value="@if(!empty($app_settings->android_url)){{ $app_settings->android_url }}@endif"  />
+					</div> 
+				</div>
+			</div>
+
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+					<div class="panel-title"><label>IOS URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-body" style="display: block;"> 
+						<input type="text" class="form-control" name="ios_url" id="ios_url" value="@if(!empty($app_settings->ios_url)){{ $app_settings->ios_url }}@endif"  />
+					</div> 
+				</div>
+				</div>
+
+		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+		<div class="col-md-12" style="display: flex;
+            ">
+        <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary " />
+       </div>
+
+	</form>
+    
+            </div>
+
+    </div>
 </div>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     
@@ -649,6 +697,16 @@
         <script src="js/scripts.js"></script>
 		
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
 	<script>
 
@@ -834,6 +892,7 @@
 		$('#script').hide();
 		$('#app').show();
 		$('#settingupdate').hide();
+		$('#appupdate').show();
 		$('#scriptsetting').hide();
 
 

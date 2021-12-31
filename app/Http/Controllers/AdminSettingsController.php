@@ -10,6 +10,7 @@ use Auth;
 use App\Setting as Setting;
 use App\Script as Script;
 use App\Playerui as Playerui;
+use App\AppSetting as AppSetting;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
@@ -24,8 +25,11 @@ class AdminSettingsController extends Controller
         //   echo "<pre>";
         // print_r($setting);
         // exit();
+        $app_settings = AppSetting::first();          
+
         $data = array(
             'admin_user' => Auth::user(),
+            'app_settings' => $app_settings ,   
 			'settings' => $setting,
 			);
 		return \View::make('admin.settings.index', $data);
@@ -275,7 +279,7 @@ class AdminSettingsController extends Controller
         
         $settings->save();
       
-        return Redirect::to('admin/settings')->with(array('note' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
+        return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
 
 	}
    

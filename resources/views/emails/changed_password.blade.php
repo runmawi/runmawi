@@ -10,7 +10,7 @@
        <p>      Sincerely,</p>
        <p>      Team <?php echo $settings->website_name;?>       </p>
 
-           <!-- <a href="<?php// echo URL::to('/').'/password/reset/'.$token ;?>">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ;?> -->
+           <!-- <a href="<?php // echo URL::to('/').'/password/reset/'.$token ;?>">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ;?> -->
            <br>
            <p>  <?php echo MailSignature();?>       </p>
 

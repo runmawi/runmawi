@@ -324,7 +324,7 @@
 					<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<?php //if($settings->ppv_status == 1){ ?>
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
-					<?php// } else{ ?>
+					<?php // } else{ ?>
 						<div class="global_ppv_status">
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
 						</div>
