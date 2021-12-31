@@ -73,6 +73,8 @@ use App\ContinueWatching as ContinueWatching;
 use App\AudioAlbums as AudioAlbums;
 use App\EmailTemplate;	
 use App\SubscriptionPlan;
+use App\Videoartist;
+
 
 
 
@@ -2002,7 +2004,6 @@ public function verifyandupdatepassword(Request $request)
 
       return response()->json($response, 200);
     }
-
     public function isPaymentEnable()
   {
     $settings = Setting::first();
@@ -4538,6 +4539,32 @@ public function LocationCheck(Request $request){
 
     return response()->json($response, 200);
 
+  }
+
+  public function video_cast(Request $request)
+  {
+    $video_id = $request->video_id;
+
+    $video_cast_count = DB::table("video_artists")
+    ->join("artists","video_artists.artist_id", "=", "artists.id")
+    ->select("artists.*")
+    ->where("video_artists.video_id", "=", $video_id)
+    ->count();
+
+    if ($video_cast_count > 0) {
+      $video_cast = DB::table("video_artists")
+      ->join("artists","video_artists.artist_id", "=", "artists.id")
+      ->select("artists.*")
+      ->where("video_artists.video_id", "=", $video_id)
+      ->get();
+    } else {
+      $video_cast = [];
+    }    
+    $response = array(
+      'status' => 'true',
+      'video_cast' => $video_cast
+    );
+    return response()->json($response, 200);
   }
 
 

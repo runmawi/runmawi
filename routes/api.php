@@ -213,5 +213,7 @@ Route::group([
     Route::post('addwishlistEpisode', 'ApiAuthController@addwishlistEpisode');
     Route::post('addfavoriteEpisode', 'ApiAuthController@addfavoriteEpisode');
     Route::get('ComingSoon ','ApiAuthController@ComingSoon');
+    Route::post('video_cast', 'ApiAuthController@video_cast');
+
 
 });

@@ -184,6 +184,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
+    Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');
+
 
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');
