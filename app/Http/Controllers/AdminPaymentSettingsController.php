@@ -42,7 +42,7 @@ class AdminPaymentSettingsController extends Controller
 
 		$payment_settings->live_mode = $request['live_mode'];
 		$payment_settings->stripe_status = $request['stripe_status'];
-		$payment_settings->status = $request['stripe_status'];
+		$payment_settings->status = $request['paypal_status'];
 		$payment_settings->test_secret_key = $request['test_secret_key'];
 		$payment_settings->test_publishable_key = $request['test_publishable_key'];
 		$payment_settings->live_secret_key = $request['live_secret_key'];
