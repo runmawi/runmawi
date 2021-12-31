@@ -7,7 +7,12 @@
     }
 </style>
 
-<?php //dd($season) ?>
+<?php 
+
+$series = App\Series::where('title','=','Movie Songs')->first();    
+
+
+?>
 <div class="container" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 

@@ -43,9 +43,9 @@
                                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>" >
                                              <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                       </a>
-                                    <div>
+                                    <!-- <div>
                                        <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_genre->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>
-                                </div>
+                                </div> -->
                                 </div>
                             </div>
                         </div>

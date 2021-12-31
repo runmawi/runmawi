@@ -1,5 +1,5 @@
- 
-<?php include('header.php');?>
+
+<?php include('header.php'); ?>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
@@ -18,6 +18,26 @@
 .vjs-seek-to-live-control {
            display: none !important;
        }
+.intro_skips {
+    position: absolute;
+    margin-top: -14%;
+    margin-bottom: 0;
+    margin-left: 80%;
+    margin-right: 0;
+}
+input.skips{
+  background-color: #21252952;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 4px 2px;
+}
+#intro_skip{
+	display: none;
+}
+#Auto_skip{
+	display: none;
+}
   </style>
 <?php
 
@@ -207,6 +227,12 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
      <?php endif; ?>            
    </div>
  
+
+   <div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+
+  </div>
 
  <?php }
 /* For Registered User */       
@@ -880,6 +906,60 @@ location.reload();
      });
 
        </script>
+
+<!-- INTRO SKIP  -->
+
+<?php
+    $Auto_skip = App\Homesetting::first();
+    $Intro_skip = App\Video::where('id',$video->id)->first();
+    $start_time = $Intro_skip->intro_start_time;
+    $end_time = $Intro_skip->intro_end_time;
+
+    $StartParse = date_parse($start_time);
+    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $EndParse = date_parse($end_time);
+    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+?>
+
+<script>
+
+  var video = document.getElementById("videoPlayer");
+  var button = document.getElementById("intro_skip");
+  var Start = <?php echo json_encode($startSec); ?>;
+  var End = <?php echo json_encode($EndSec); ?>;
+  var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+
+button.addEventListener("click", function(e) {
+	video.currentTime = End;
+  video.play();
+})
+if(AutoSkip != 1){
+      this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                document.getElementById("intro_skip").style.display = "block"; // Manual skip
+        } 
+    });
+}
+else{
+  this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        var before_Start = Start - 5;
+        var trigger = Start - 1;
+        if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+            document.getElementById("Auto_skip").style.display = "block";
+               if(trigger  <= e.target.currentTime){
+                 document.getElementById("intro_skip").click();    // Auto skip
+               }
+        }
+    });
+}
+</script>
+
    </div>
 <?php include('footer.blade.php');?>
 

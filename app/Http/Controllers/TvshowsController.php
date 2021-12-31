@@ -184,11 +184,10 @@ class TvshowsController extends Controller
         
         if(($series->ppv_status == 1)){
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('series_id', '=', $series->id)->count();
-        // dd($ppv_exits);
 
         }else{
             $ppv_exits = 0 ;
-        dd($ppv_exits);
+        // dd($ppv_exits);
 
         }
        
@@ -284,7 +283,7 @@ class TvshowsController extends Controller
   
         
         $series = Series::where('title','=',$name)->first();    
-        
+
         $id = $series->id;
 
 
@@ -316,6 +315,7 @@ class TvshowsController extends Controller
           $secret_key= null;
           $publishable_key= null;
       }    
+     
             $data = array(
                 'series' => $series,
                 'currency' => $currency,
@@ -330,6 +330,7 @@ class TvshowsController extends Controller
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
+
             return View::make('series', $data);
 
         } else {

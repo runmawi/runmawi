@@ -663,7 +663,7 @@ class AdminSeriesController extends Controller
             // $episode->title =  $data['title'];
             $episodes->rating =  $data['rating'];
             $episodes->type =  'file';
-            $episodes->age_restrict =  $data['age_restrict'];
+            // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
             $episodes->access =  $data['access'];
             $episodes->active =  $active;

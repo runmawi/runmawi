@@ -139,6 +139,22 @@
                                     <div>NO</div>
                                 </div>
                             </div>
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Auto Intro Skip  </label></div>
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                        <input type="checkbox"  @if ($settings->AutoIntro_skip  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="AutoIntro_skip" id="AutoIntro_skip">
+                                        <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div>NO</div>
+                                </div>
+                            </div>
+
+
                         <!-- </div> -->
         </div>
                         

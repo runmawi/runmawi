@@ -103,19 +103,9 @@ if(isset($videos)) :
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                         </a>
-                                    <div>
-                                       <a  href="<?php echo URL::to('category') ?><?= '/wishlist/' . $top_category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>
-                                    </div>
+                                  
                                     </div>
 
-                                            <!--
-                                            <div>
-                                                <button class="show-details-button" data-id="<?= $top_category_video->id;?>">
-                                                    <span class="text-center thumbarrow-sec">
-                                                        <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                                    </span>
-                                                        </button></div>
-                                            -->
                                 </div> 
                         </div>
                     </li>
@@ -198,9 +188,12 @@ if(isset($videos)) :
 
                                         </a>
                                         <div>
-                                       <a   href="<?php echo URL::to('category') ?><?= '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
-                       </a></div>
-                                    </div>
+                                        <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
+                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                          </span>
+                          
+                          <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+                              </div>
 
                         <!--
                            <div>

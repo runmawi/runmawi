@@ -275,72 +275,6 @@
 				<textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($episodes->embed_code)){{ $episodes->embed_code }}@endif</textarea>
 			</div>
 
-<<<<<<< HEAD
-				<div class="col-sm-4 mt-3"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<p class="p1">Who is allowed to view this episode?</p>
-							<select id="access" class="form-control" name="access">
-								<option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-								<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
-								<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-							</select>
-							<div class="clear"></div>
-						</div> 
-					</div>
-				</div>
-
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> <label>Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<div style="display: flex;
-								justify-content: start;
-								align-items: baseline;">
-								<label for="featured" style="float:left; display:block; margin-right:10px;">Is this episode Featured:</label>
-								<input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-							</div>
-							<div class="clear"></div>
-							<div style="display: flex;
-								justify-content: start;
-								align-items: baseline;">
-								<label for="active" style="float:left; display:block; margin-right:10px;">Is this episode Active:</label>
-								<input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
-							</div>
-							<div class="clear"></div>
-							<div style="display: flex;
-								justify-content: start;
-								align-items: baseline;">
-								<label for="banner" style="float:left; display:block; margin-right:10px;">Is this episode display in Banner:</label>
-								<input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-							</div>
-							<div class="clear"></div>
-							<div style="display: flex;
-								justify-content: start;
-								align-items: baseline;">
-								<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
-								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
-							</div>
-						</div> 
-					</div>
-				</div>
-			</div>
-
-				<div class="row">
-					<div class="col-sm-8"> 
-						<div class="panel panel-primary" data-collapsed="0"> 
-							<div class="panel-heading"> <div class="panel-title"> <label>Free content Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-							<div class="panel-body"> 
-								<p class="p1">Enter the episode duration ( Free Content ) in the following format (Hours : Minutes : Seconds)</p> 
-								<input class="form-control" name="free_content_duration" id="free_content_duration" value="@if(!empty($episodes->free_content_duration)){{ gmdate('H:i:s', $episodes->free_content_duration) }}@endif" >
-							</div> 
-						</div>
-					</div>
-				</div>
-                @if(isset($series->id))
-				<input type="hidden" id="series_id" name="series_id" value="{{ $series->id }}" />
-=======
 			<div class="new-episodes-upload" @if(!empty($episodes->type) && $episodes->type == 'upload')style="display:block"@else style = "display:none" @endif>
 				<label for="embed_code">Upload Episode</label>
 				<input type="file" name="episode_upload" id="episode_upload">
@@ -349,7 +283,6 @@
 			<video width="200" height="200" controls>
 			<source src="{{ $episodes->mp4_url }}" type="video/mp4">
 			</video>
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
 			@endif
 			@if(!empty($episodes->type) && $episodes->type == 'embed')
 			<iframe src="{{ $episodes->mp4_url }}"></iframe>

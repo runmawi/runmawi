@@ -1,4 +1,6 @@
-<<<<<<< HEAD
+
+
+
 <?php 
 include('header.php');
 
@@ -24,10 +26,6 @@ $series=App\series::first();
 	</div>
 </div>
 
-=======
-<?php //include('videolayout/episode_header.php');?>
-<?php include('header.php'); ?>
->>>>>>> 60a6640249d1afd608a80d2af7bcb05e1dc84426
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
@@ -48,7 +46,7 @@ $series=App\series::first();
 						<div id="series_container">
 
 						<video id="videoPlayer"  class="" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>"
-             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
+             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.mp4'; ?>"  type="application/x-mpegURL" >
 
 
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
@@ -84,7 +82,13 @@ $series=App\series::first();
 						</video>
 						</div>
 					<?php endif; ?>
-				
+					
+					
+<div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
+
 
 			<?php else: ?>
 
@@ -372,10 +376,7 @@ location.reload();
     </script>
   
 	<script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'Flicknexs';
 
-    <script  type='text/javascript'>
 		$(".free_content").hide();
 		var duration = <?php echo json_encode($free_content_duration); ?>;
 		var access = <?php echo json_encode($user_access); ?>;
@@ -396,7 +397,6 @@ location.reload();
 		},false);
 	</script>
 
-
 <style>
 	.free_content{	
     margin: 100px;
@@ -416,7 +416,82 @@ location.reload();
 		color: #c5bcbc;
 		font-size: 51px !important;
 	}
+	.intro_skips {
+    position: absolute;
+    margin-top: -14%;
+    margin-bottom: 0;
+    margin-left: 80%;
+    margin-right: 0;
+}
+input.skips{
+  background-color: #21252952;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 4px 2px;
+}
+#intro_skip{
+	display: none;
+}
+#Auto_skip{
+	display: none;
+}
 	</style>
+
+<!-- INTRO SKIP  -->
+
+<?php
+    $Auto_skip = App\Homesetting::first();
+    $Intro_skip = App\Episode::where('id',$episode->id)->first();
+    $start_time = $Intro_skip->intro_start_time;
+    $end_time = $Intro_skip->intro_end_time;
+
+    $StartParse = date_parse($start_time);
+    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $EndParse = date_parse($end_time);
+    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+
+?>
+
+<script>
+
+  var video = document.getElementById("videoPlayer");
+  var button = document.getElementById("intro_skip");
+  var Start = <?php echo json_encode($startSec); ?>;
+  var End = <?php echo json_encode($EndSec); ?>;
+  var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+
+button.addEventListener("click", function(e) {
+	video.currentTime = End;
+  video.play();
+})
+if(AutoSkip != 1){
+
+      this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                document.getElementById("intro_skip").style.display = "block"; // Manual skip
+        } 
+    });
+}
+else{
+  this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        var before_Start = Start - 5;
+        var trigger = Start - 1;
+        if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+            document.getElementById("Auto_skip").style.display = "block";
+               if(trigger  <= e.target.currentTime){
+                 document.getElementById("intro_skip").click();    // Auto skip
+               }
+        }
+    });
+}
+</script>
 	
 <?php include('footer.blade.php'); ?>
 
