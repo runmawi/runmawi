@@ -8,7 +8,7 @@
 			
 			<?php 
 			if(!Auth::guest()){
-			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){
+			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
 				
@@ -18,7 +18,7 @@
 						</div>
 					<?php  elseif($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
-						<video id="Player"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
@@ -32,7 +32,7 @@
 						</div>
 					<?php  else: ?>
 						<div id="series_container">
-						<video id="Player"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                            
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
@@ -275,7 +275,7 @@
 	
 	    <script type="text/javascript"> 
 
-        // videojs('Player').videoJsResolutionSwitcher(); 
+        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
 		$(document).ready(function () {  
              $.ajaxSetup({
                headers: {

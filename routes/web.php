@@ -12,7 +12,6 @@ Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::get('/free-access', 'HomeController@FreeAccess')->name('FreeAccess');
 
 
-
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');

@@ -3,7 +3,7 @@
 <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
-<?php if (count($ppv) > 0): ?>
+<?php if (count($ppv) > 0 &&  count($ppvlive) > 0): ?>
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -11,7 +11,8 @@
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php if (isset($ppv)):
+                         <?php 
+                         if (isset($ppv)):
         foreach ($ppv as $watchlater_video):
 ?>
                        <li class="slide-item">
@@ -63,13 +64,13 @@
                                       
                                        </a>
                                        <div >
-                                    <a style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
-                                        <i style="" <?php if(isset($watchlater_video->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                    <!-- <a style="color: white;"class="mywishlist <?php// if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
+                                        <i style="" <?php //if(isset($watchlater_video->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
                                     <div style="color:white;" id="<?= $watchlater_video->id ?>">
-                                        <?php if(@$watchlater_video->mywishlisted->user_id == Auth::user()->id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } 
-                                        else { echo "Add To Wishlist" ; } ?>
+                                        <?php// if(@$watchlater_video->mywishlisted->user_id == Auth::user()->id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } 
+                                       // else { echo "Add To Wishlist" ; } ?>
                                     </div> 
-
+                                    </a> -->
                                     </div>
                               
                              </div>
@@ -81,7 +82,7 @@
                     </ul>
                  </div>
                  <?php
-endif; ?>
+ ?>
                  </div>
            </div>
         </div>
@@ -89,7 +90,7 @@ endif; ?>
 
 
 
-        <?php if (count($ppvlive) > 0): ?>
+      
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -161,7 +162,11 @@ endif; ?>
                        </li>
                        <?php
         endforeach;
-    endif; ?>
+    endif; 
+   
+
+    
+   ?>
                     </ul>
                  </div>
                  <?php
