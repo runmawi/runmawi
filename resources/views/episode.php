@@ -381,19 +381,18 @@ location.reload();
 		var duration = <?php echo json_encode($free_content_duration); ?>;
 		var access = <?php echo json_encode($user_access); ?>;
 		var Auth = <?php echo json_encode($Auth); ?>;
-		var pause = $('#videoPlayer')[0];
+		var pause = document.getElementById("videoPlayer");
 
 		pause.addEventListener('timeupdate',function(){
 		if(Auth != false){
 			if( access  ==  'guest' && duration !== null){
-				if(this.currentTime >=  duration ) {
-						this.pause();    
+				if(pause.currentTime >=  duration ) {
+					pause.pause();    
 						$("video#videoPlayer").hide();
 						$(".free_content").show();
 				}
 			}
 		}
-			
 		},false);
 	</script>
 
@@ -450,7 +449,6 @@ input.skips{
     $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
-
 ?>
 
 <script>

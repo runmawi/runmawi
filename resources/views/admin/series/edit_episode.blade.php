@@ -79,8 +79,8 @@
 			</div>
 			</div>
 
-			<!-- <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title">Episode Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+			 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+				{{-- <div class="panel-title">Episode Source</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<label for="type" style="float:left; margin-right:10px; padding-top:1px;">Episode Format</label>
 					<select id="type" name="type">
@@ -95,7 +95,7 @@
 						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
 						<hr />
 						
-					</div> -->
+					</div> --}}
 
 					<div class="new-episodes-embed" @if(!empty($episodes->type) && $episodes->type == 'embed')style="display:block"@else style = "display:none" @endif>
 						<label for="embed_code">Embed Code:</label>
