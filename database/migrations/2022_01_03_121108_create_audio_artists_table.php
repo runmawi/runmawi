@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerColumns extends Migration
+class CreateAudioArtistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateCustomerColumns extends Migration
      */
     public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('audio_artists', function (Blueprint $table) {
             $table->id();
+            $table->integer('audio_id')->nullable();
+            $table->integer('artist_id')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -27,7 +29,6 @@ class CreateCustomerColumns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer');
-
+        Schema::dropIfExists('audio_artists');
     }
 }

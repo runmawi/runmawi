@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerColumns extends Migration
+class CreateSeriesSubtitlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateCustomerColumns extends Migration
      */
     public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('series_subtitles', function (Blueprint $table) {
             $table->id();
+            $table->integer('series_id')->nullable();
+            $table->string('sub_language')->nullable();
+            $table->string('shortcode')->nullable();
+            $table->text('url')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -27,7 +30,6 @@ class CreateCustomerColumns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer');
-
+        Schema::dropIfExists('series_subtitles');
     }
 }

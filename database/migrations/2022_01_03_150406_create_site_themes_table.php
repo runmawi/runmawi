@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerColumns extends Migration
+class CreateSiteThemesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateCustomerColumns extends Migration
      */
     public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('site_themes', function (Blueprint $table) {
             $table->id();
+            $table->string('dark_bg_color')->nullable();
+            $table->string('light_bg_color')->nullable();
+            $table->string('dark_mode_logo')->nullable();
+            $table->string('light_mode_logo')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -27,7 +30,6 @@ class CreateCustomerColumns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer');
-
+        Schema::dropIfExists('site_themes');
     }
 }

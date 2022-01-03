@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerColumns extends Migration
+class CreateSeriesResolutionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateCustomerColumns extends Migration
      */
     public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('series_resolutions', function (Blueprint $table) {
             $table->id();
+            $table->integer('series_id')->nullable();
+            $table->integer('quality')->nullable();
+            $table->text('url')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -27,7 +29,6 @@ class CreateCustomerColumns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer');
-
+        Schema::dropIfExists('series_resolutions');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerColumns extends Migration
+class CreateAdsPlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateCustomerColumns extends Migration
      */
     public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('ads_plans', function (Blueprint $table) {
             $table->id();
+            $table->string('plan_name')->nullable();
+            $table->string('plan_amount')->nullable();
+            $table->integer('no_of_ads')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -27,7 +29,6 @@ class CreateCustomerColumns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer');
-
+        Schema::dropIfExists('ads_plans');
     }
 }
