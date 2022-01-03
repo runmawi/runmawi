@@ -53,13 +53,14 @@
 			<div class="col-md-6">
             <label for="">Payment Mode</label>
             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-            <div style="color:green;">Enable</div>
+            <div style="color:red;">Disable</div>
             <div class="mt-1">
             <label class="switch">
-            <input type="checkbox" @if(!isset($payment_settings->stripe_status) || (isset($payment_settings->stripe_status) && $payment_settings->stripe_status))checked="checked" value="1"@else value="0"@endif name="stripe_status" id="stripe_status" />
+            <input type="checkbox"  @if ($payment_settings->stripe_status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="stripe_status" id="stripe_status">
             <span class="slider round"></span>
-            </label></div>
-            <div style="color:red;">Disable</div>
+            </label>
+            </div>
+            <div style="color:green;">Enable</div>
             </div>
             <div class="make-switch" data-on="success" data-off="warning">                
             </div>
@@ -70,13 +71,14 @@
             <div class="col-md-6">
             <label for="">Stripe Mode</label>
             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-            <div style="color:green;">ON</div>
+            <div style="color:red;">OFF</div>
             <div class="mt-1">
             <label class="switch">
-            <input type="checkbox" @if(!isset($payment_settings->live_mode) || (isset($payment_settings->live_mode) && $payment_settings->live_mode))checked="checked" value="1"@else value="0"@endif name="live_mode" id="live_mode" />
+            <input type="checkbox"  @if ($payment_settings->live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_mode" id="live_mode">
             <span class="slider round"></span>
-            </label></div>
-            <div style="color:red;">OFF</div>
+            </label>
+            </div>
+            <div style="color:green;">ON</div>
             </div>
             <div class="make-switch" data-on="success" data-off="warning">                
             </div>
@@ -116,15 +118,15 @@
             <div class="row">
             <div class="col-md-6 mt-3">
             <label for="">Payment Mode</label>
-
             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-            <div style="color:green;">Enable</div>
+            <div style="color:red;">Disable</div>
             <div class="mt-1">
             <label class="switch">
-            <input type="checkbox" @if(!isset($paypal_payment_settings->paypal_status) || (isset($paypal_payment_settings->paypal_status) && $paypal_payment_settings->paypal_status))checked="checked" value="1"@else value="0"@endif name="paypal_status" id="paypal_status" />
+            <input type="checkbox"  @if($paypal_payment_settings->paypal_status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="paypal_status" id="paypal_status">
             <span class="slider round"></span>
-            </label></div>
-            <div style="color:red;">Disable</div>
+            </label>
+            </div>
+            <div style="color:green;">Enable</div>
             </div>
             <div class="make-switch" data-on="success" data-off="warning">
             </div>
@@ -134,13 +136,14 @@
             <label for="">PayPal Mode</label>
 
             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-            <div style="color:green;">ON</div>
+            <div style="color:red;">OFF</div>
             <div class="mt-1">
             <label class="switch">
-            <input type="checkbox" @if(!isset($paypal_payment_settings->paypal_live_mode) || (isset($paypal_payment_settings->paypal_live_mode) && $paypal_payment_settings->paypal_live_mode))checked="checked" value="1"@else value="0"@endif name="paypal_live_mode" id="paypal_live_mode" />
+            <input type="checkbox"  @if($paypal_payment_settings->paypal_live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="paypal_live_mode" id="live_mode">
             <span class="slider round"></span>
-            </label></div>
-            <div style="color:red;">OFF</div>
+            </label>
+            </div>
+            <div style="color:green;">ON</div>
             </div>
             <div class="make-switch" data-on="success" data-off="warning">
             </div>
