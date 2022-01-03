@@ -361,8 +361,8 @@ public function PaypalIndex()
 
         // $edit_plan = SubscriptionPlan::find($id);
         // $payment_settings = PaymentSetting::all();
-        $devices = $input['devices'];
-        $plan_devices = implode(",",$devices);
+        // $devices = $input['devices'];
+        // $plan_devices = implode(",",$devices);
         $id = $request['id'];
         $plans = SubscriptionPlan::find($id);
     	$plans->plans_name = $request['plans_name'];
@@ -370,7 +370,7 @@ public function PaypalIndex()
     	$plans->payment_type = $request['payment_type'];
         $plans->video_quality = $input['video_quality'];
         $plans->resolution = $input['resolution'];
-        $plans->devices = $plan_devices;
+        // $plans->devices = $plan_devices;
         $plans->plan_id  = $request['plan_id'];
         $plans->save();
         
