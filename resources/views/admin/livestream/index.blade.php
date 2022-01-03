@@ -92,8 +92,8 @@
 					<?php }?>  
 
 						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
-						<td class="d-flex align-items-center list-user-action">
-                            <a href="{{ URL::to('/live').'/'.@$video->categories->name.'/' . $video->slug }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a>
+						<td class="d-flex align-items-center list-user-action">								
+                            <a href="{{ URL::to('live') .'/'.@$video->categories->name.'/' .$video->slug }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a>
 							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
 							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
                                                 class="ri-delete-bin-line"></i></a>
