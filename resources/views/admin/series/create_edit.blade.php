@@ -84,7 +84,7 @@ $settings  = App\Setting::first();?>
 				</div> 
 			</div>
 
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+			<!-- <div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label>Series Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" > 
 					<label for="type" >Series Format</label>
@@ -115,7 +115,7 @@ $settings  = App\Setting::first();?>
 					<iframe src="{{ URL::to('/').'/storage/app/public/'.$series->mp4_url }}"></iframe>
 					@endif
 				</div> 
-			</div>
+			</div> -->
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				

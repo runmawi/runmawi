@@ -42,7 +42,10 @@
                                  <td>{{ $ads_plan->created_at }}</td>
                                  <td><a class="iq-bg-success editcategory" data-toggle="tooltip" data-placement="top" title=""
                                     data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_plan->id }}"><i class="ri-pencil-line"></i></a>
-                                     <i class="ri-delete-bin-line delete" data-id="{{ $ads_plan->id }}" ></i></td>
+                                    <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/admin/ads_plan_delete').'/'. $ads_plan->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                                    <i class="ri-delete-bin-line"></i></a>
+                                    <!-- <i class="ri-delete-bin-line delete" id="delete"data-id="{{ $ads_plan->id }}" ></i> -->
+                                 </td>
                               </tr>
                               @endforeach
                            </tbody>
@@ -81,6 +84,8 @@
 </div>
    @section('javascript')
    <script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
    <script>
 
       $(document).ready(function () {
@@ -143,7 +148,7 @@
    </script>
 <script>
 
-      $('body').on('click', '.delete', function (event) {
+      $('body').on('click', '#delete', function (event) {
             delete_link = 'ads_plan_delete/'+$(this).data('id');
             swal({   title: "Are you sure?",   text: "Do you want to permanantly delete this category?",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){    window.location = delete_link });
              return false;

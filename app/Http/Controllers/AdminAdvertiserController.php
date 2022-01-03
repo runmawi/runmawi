@@ -167,8 +167,9 @@ class AdminAdvertiserController extends Controller
   public function ads_plan_delete($id)
   {
     Adsplan::find($id)->delete();
+    return Redirect::back();
 
-    return response()->json([ 'success' => true ]);
+    // return response()->json([ 'success' => true ]);
   }
 
   public function ads_revenue()
