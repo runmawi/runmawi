@@ -107,7 +107,10 @@ class AdminRevenueSettings extends Controller
         $input = $request->all();
         $id = $input['id'];
         $revenue_settings = RevenueSetting::find($id);        
-  
+        if(empty($revenue_settings)){
+          // dd($revenue_settings);
+          $revenue_settings = new RevenueSetting;        
+        }
         $revenue_settings->admin_commission = $input['admin_commission'];
         $revenue_settings->user_commission = $input['user_commission'];
         $revenue_settings->vod_admin_commission = $input['vod_admin_commission'];

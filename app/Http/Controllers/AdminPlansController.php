@@ -114,16 +114,18 @@ public function PaypalIndex()
     public function subscriptionedit($id) {
     	 
         // $edit_plan = SubscriptionPlan::find($id);
-        $edit_plan =  Plan::where('plans_name','Monthly')->first();
-        // dd($edit_plan);
+        $edit_plan =  SubscriptionPlan::where('plans_name','Monthly')->get();
         $payment_settings = PaymentSetting::all();
-        $permission = $edit_plan['devices'];
-        $user_devices = explode(",",$permission);
-        $devices = Devices::all();
+        // $permission = $edit_plan['devices'];
+        // $user_devices = explode(",",$permission);
+        // dd($edit_plan);
+
+        // $devices = Devices::all();
+
         $data = array(
            'edit_plan' => $edit_plan,
-           'user_devices' => $user_devices,
-           'devices' => $devices,
+        //    'user_devices' => $user_devices,
+        //    'devices' => $devices,
            'payment_settings' => $payment_settings,
            );
        return view('admin.subscription_plans.edit',$data);
@@ -214,12 +216,18 @@ public function PaypalIndex()
            $input = $request->all();
            $validatedData = $request->validate([
                 'plans_name' => 'required|max:255',
+                'type' => 'required',
+
             ]);  
             // echo "<pre>";     
-            // print_r($input);exit();
+            // print_r($request->all());exit();
             $devices = $request->devices;
+            if(!empty($devices)){
             $plan_devices = implode(",",$devices);
+            }else{
+                $plan_devices = null;
 
+            }
 
             foreach($request->plan_id as $key => $value){
 
