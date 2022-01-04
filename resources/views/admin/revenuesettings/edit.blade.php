@@ -37,7 +37,7 @@
 <div id="admin-container">
 	
 	<div class="admin-section-title">
-		<h4><i class="entypo-globe"></i> Upddate Revenue Settings</h4> 
+		<h4><i class="entypo-globe"></i> Update Revenue Settings</h4> 
         <hr>
 	</div>
 	<div class="clear"></div>
@@ -84,12 +84,13 @@
 			
 		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<input type="hidden" name="id" value="<?= $revenue_settings->id ?>" />
+		<input type="hidden" name="id" value="<?= isset($revenue_settings->id) ?>" />
 		<div class="panel-body mt-3" style="display: flex;
             justify-content: flex-end;">
         <input type="submit" value="UpdateRevenue Settings" class="btn btn-primary " />
                     </div>
 	</form>
+
                   </div>
              </div>
     </div>

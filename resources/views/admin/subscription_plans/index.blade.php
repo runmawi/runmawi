@@ -83,17 +83,17 @@
 		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" checked='checked'>
 		                        Recurring : <input type="radio"  name="payment_type"  value="recurring">
 		                    </div> 
-                            <!-- <div class="form-group">
+                            <div class="form-group">
 							@foreach($payment_settings as $payment_setting)
 							<div class="col-md-4 d-flex" style="width: 33%; float:left;" >
-						<label> </label> -->
-						<!-- <label class="switch">
+						<label> </label>
+						<label class="switch">
 									<input type="checkbox"  name="type[]"  value="{{ $payment_setting->payment_type }}">
 							<span class="slider round"></span>
-						</label> -->
-						<!-- </div>
+						</label>
+						</div>
                                @endForeach
-                               </div> -->
+                               </div>
 
                             <div class="form-group">
 		                         <label> Price (USD):</label>

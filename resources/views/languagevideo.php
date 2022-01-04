@@ -311,9 +311,13 @@ height: 30px !important;
                            </li>
                            
                             <?php endforeach; 
-		                                  }else{
-                                        echo "No Video ";
-                                      } ?>
+		                                  }else{?>
+                                  <p class="no_video"><?php echo __('No Series Found');?></p>
+            <p><h2>No Media in My Watchlater</h2></p>
+                 <div class="col-md-12 text-center mt-4">
+             <img class="w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>">
+         </div>
+                                      <?php } ?>
                         </ul>
                      </div>
                   </div>
