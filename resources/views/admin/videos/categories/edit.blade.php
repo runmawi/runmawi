@@ -57,7 +57,11 @@
                         <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>>No
 
                     </div>
-        
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label>Display In Footer page:</label>
+                        <input type="radio" id="footer" name="footer" value="1" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>>Yes
+                        <input type="radio" id="footer" name="footer" value="0" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>>No
+                    </div>
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label>Image:</label>
                         @if(!empty($categories[0]->image))
