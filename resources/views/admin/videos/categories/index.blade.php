@@ -81,7 +81,7 @@
                     </div>  
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                         <label>Display In Home page:</label>
-                        <input type="radio" id="in_home" name="in_home" value="1">Yes
+                        <input type="radio" checked id="in_home"  id="in_home" name="in_home" value="1">Yes
                         <input type="radio" id="in_home" name="in_home" value="0">No
                     </div>
 					<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
@@ -272,5 +272,31 @@
     })
 </script>
 	@stop
+
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+$('form[id="new-cat-form"]').validate({
+	rules: {
+	  name : 'required',
+	  image : 'required',
+      parent_id: {
+                required: true
+            }
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+      parent_id: {
+                required: 'This field is required',
+            }
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
 
 @stop

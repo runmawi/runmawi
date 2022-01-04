@@ -991,6 +991,7 @@ $('form[id="video_form"]').validate({
 	  title : 'required',
 	  image : 'required',
       trailer : 'required',
+      video_country : 'required',
       video_category_id: {
                 required: true
             }
@@ -999,6 +1000,7 @@ $('form[id="video_form"]').validate({
 	  title: 'This field is required',
 	  image: 'This field is required',
       trailer : 'This field is required',
+      video_country : 'This field is required',
       video_category_id: {
                 required: 'This field is required',
             }
