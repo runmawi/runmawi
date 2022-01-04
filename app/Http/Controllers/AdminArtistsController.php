@@ -15,6 +15,7 @@ use App\Artist as Artist;
 use DB;
 use App\SystemSetting as SystemSetting;
 use Session;
+use App\User;
 
 
 class AdminArtistsController extends Controller

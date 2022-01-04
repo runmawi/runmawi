@@ -13,7 +13,7 @@ class CreateSystemSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('system_settings', function (Blueprint $table) {
+        Schema::create('system_setting_test', function (Blueprint $table) {
             $table->id();
             $table->string('facebook')->nullable();
             $table->string('facebook_client_id')->nullable();
@@ -34,6 +34,6 @@ class CreateSystemSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('system_settings');
+        Schema::dropIfExists('system_setting_test');
     }
 }

@@ -18,6 +18,7 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
 // exit();UA-42534483-14
 $data = Session::all();
 
+
       ?>
   <!-- Required meta tags -->
   <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
@@ -80,6 +81,7 @@ $data = Session::all();
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
            
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link rel="favicon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
@@ -105,6 +107,26 @@ $data = Session::all();
        height: 100%;
         margin: 20px auto;
     }
+    
+    i.fas.fa-child{
+    font-size: 35px;
+    color: white;
+    }
+    span.kids {
+    color: #f7dc59;
+   }  
+      span.family{
+         color: #f7dc59;
+      }
+      i.fa.fa-eercast{
+    font-size: 35px;
+    color: white;
+      }
+      a.navbar-brand.iconss {
+         font-size: 19px;
+         font-style: italic;
+         font-family: ui-rounded;
+      }
     </style>
      
    <body>
@@ -131,7 +153,8 @@ $data = Session::all();
                            </div>
                         </a>
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-                         
+
+
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
@@ -154,12 +177,18 @@ $data = Session::all();
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
-                                          <li class="dropdown menu-item">
+ <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $cat as $category) { ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                  <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
@@ -344,7 +373,23 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome <?php echo Auth::user()->username.' '.'!'  ; ?> <i class="ri-arrow-down-s-line"></i></p>
+                                        <p class="mt-3" style="font-size: 16px;">Welcome
+                                        
+                                        <?php 
+                                        $subuser=Session::get('subuser_id');
+                                        if($subuser != ''){
+                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
+                                          echo  $subuser->user_name  ;
+                                        }
+                                        else{
+                                          echo Auth::user()->username.' '.'!'  ;
+                                        }
+                                        
+                                        ?> 
+                                       
+                                        <i class="ri-arrow-down-s-line"></i>
+                                       
+                                       </p>
                                     </a>
                                    <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
@@ -474,6 +519,26 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                              <!-- Multiuser Profile -->
+                                          <?php
+                                          if(Auth::user()->role == "subscriber"){
+
+                                          ?>
+                                          <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Multi Profile</h6>
+                                                </div>
+                                             </div>
+                                          </a> -->
+
+                                          <?php
+                                          }
+                                          ?>
+
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -522,6 +587,9 @@ toggle.addEventListener('input', (e) => {
 });
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
+  
+
       </header>
       <!-- Header End -->
      

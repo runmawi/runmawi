@@ -64,6 +64,18 @@ class HomeSettingsController extends Controller
         if(empty($request['albums'])){
             $settings->albums = 0;
         } 
+        if($request->Recommendation !=null){
+            $settings->Recommendation = 1;
+        }else{
+            $settings->Recommendation = 0;
+        }
+
+        if($request->AutoIntro_skip !=null){
+            $settings->AutoIntro_skip = 1;
+        }else{
+            $settings->AutoIntro_skip = 0;
+        }
+
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

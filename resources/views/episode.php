@@ -1,5 +1,31 @@
-<?php //include('videolayout/episode_header.php');?>
-<?php include('header.php'); ?>
+
+
+
+<?php 
+include('header.php');
+
+$series=App\series::first();
+
+ ?>
+
+<!-- free content - hide & show -->
+<div class="row free_content">
+	<div class="col-md-12">
+		<p class="Subscribe">Subscribe to watch</p>
+	</div>
+	<div class="col-md-12">
+		<form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+				<button style="margin-left: 34%;margin-top: 0%;" class="btn btn-primary"id="button">Become a subscriber to watch this video</button>
+		</form>
+	</div>
+	<div class="col-md-12">
+	<p class="Subscribe">Play Again</p>
+		<div class="play_icon">
+			<a href="#" onclick="window.location.reload(true);"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
+		</div>
+	</div>
+</div>
+
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
@@ -30,11 +56,11 @@
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
 						</div>
-					<?php  else: ?>
+					<?php  else: ?>                                  
 						<div id="series_container">
 						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                            
-							<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+							<source src="<?php echo URL::to('/storage/app/public/').'/'.'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
 									<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
 <!--
@@ -52,7 +78,13 @@
 						</video>
 						</div>
 					<?php endif; ?>
-				
+					
+					
+<div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
+
 
 			<?php else: ?>
 
@@ -212,6 +244,14 @@
 		</div>
             </div>
 			
+		<div class="clear"></div>
+
+		<!-- Free content - Video Not display  -->
+	<?php
+		$free_content_duration = $episode->free_content_duration;
+		$user_access = $episode->access;
+		$Auth = Auth::guest();
+	?>
 
             <!-- Modal -->
    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -332,16 +372,120 @@ location.reload();
     </script>
   
 	<script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'Flicknexs';
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    
+		$(".free_content").hide();
+		var duration = <?php echo json_encode($free_content_duration); ?>;
+		var access = <?php echo json_encode($user_access); ?>;
+		var Auth = <?php echo json_encode($Auth); ?>;
+		var pause = document.getElementById("videoPlayer");
+
+		pause.addEventListener('timeupdate',function(){
+		if(Auth != false){
+			if( access  ==  'guest' && duration !== null){
+				if(pause.currentTime >=  duration ) {
+					pause.pause();    
+						$("video#videoPlayer").hide();
+						$(".free_content").show();
+				}
+			}
+		}
+		},false);
+	</script>
+
+<style>
+	.free_content{	
+    margin: 100px;
+    border: 1px solid red;
+    padding: 5% !important;
+	border-radius: 5px;
+	}
+		p.Subscribe {
+    font-size: 48px !important; 
+    font-family: emoji;
+    color: white;
+	margin-top: 3%;
+    text-align: center;
+	}
+	.play_icon {
+		text-align: center;
+		color: #c5bcbc;
+		font-size: 51px !important;
+	}
+	.intro_skips {
+    position: absolute;
+    margin-top: -14%;
+    margin-bottom: 0;
+    margin-left: 80%;
+    margin-right: 0;
+}
+input.skips{
+  background-color: #21252952;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 4px 2px;
+}
+#intro_skip{
+	display: none;
+}
+#Auto_skip{
+	display: none;
+}
+	</style>
+
+<!-- INTRO SKIP  -->
+
+<?php
+    $Auto_skip = App\Homesetting::first();
+    $Intro_skip = App\Episode::where('id',$episode->id)->first();
+    $start_time = $Intro_skip->intro_start_time;
+    $end_time = $Intro_skip->intro_end_time;
+
+    $StartParse = date_parse($start_time);
+    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $EndParse = date_parse($end_time);
+    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+?>
+
+<script>
+
+  var video = document.getElementById("videoPlayer");
+  var button = document.getElementById("intro_skip");
+  var Start = <?php echo json_encode($startSec); ?>;
+  var End = <?php echo json_encode($EndSec); ?>;
+  var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+
+button.addEventListener("click", function(e) {
+	video.currentTime = End;
+  video.play();
+})
+if(AutoSkip != 1){
+
+      this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                document.getElementById("intro_skip").style.display = "block"; // Manual skip
+        } 
+    });
+}
+else{
+  this.video.addEventListener('timeupdate', (e) => {
+        document.getElementById("intro_skip").style.display = "none";
+        document.getElementById("Auto_skip").style.display = "none";
+
+        var before_Start = Start - 5;
+        var trigger = Start - 1;
+        if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+            document.getElementById("Auto_skip").style.display = "block";
+               if(trigger  <= e.target.currentTime){
+                 document.getElementById("intro_skip").click();    // Auto skip
+               }
+        }
+    });
+}
+</script>
+	
 <?php include('footer.blade.php'); ?>
 

@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([
     'prefix' => 'auth'
 ], function () {
+
+
     Route::post('login', 'ApiAuthController@login');
      Route::post('search','ApiAuthController@search');
     Route::post('signup', 'ApiAuthController@signup');
@@ -212,6 +214,25 @@ Route::group([
     Route::post('addwatchlaterEpisode', 'ApiAuthController@addwatchlaterEpisode');
     Route::post('addwishlistEpisode', 'ApiAuthController@addwishlistEpisode');
     Route::post('addfavoriteEpisode', 'ApiAuthController@addfavoriteEpisode');
+
+//  Multi-profile
+    Route::get('Multiprofile', 'ApiAuthController@Multiprofile');
+    Route::Post('Multiprofile_create', 'ApiAuthController@Multiprofile_create');
+    Route::Post('Multiprofile_update/{id}', 'ApiAuthController@Multiprofile_update');
+    Route::get('subusers/{id}', 'ApiAuthController@subusers');
+
+// freecontent Episodes
+    Route::get('freecontent_episodes', 'ApiAuthController@freecontent_episodes');
+
+
+// Recommendation Videos
+    Route::get('MostwatchedVideos', 'ApiAuthController@MostwatchedVideos');
+    Route::get('MostwatchedVideosUser', 'ApiAuthController@MostwatchedVideosUser');
+    Route::get('Country_MostwatchedVideos', 'ApiAuthController@Country_MostwatchedVideos');
+    Route::get('Preference_genres', 'ApiAuthController@Preference_genres');
+    Route::get('Preference_Language', 'ApiAuthController@Preference_Language');
+    Route::get('category_Mostwatchedvideos', 'ApiAuthController@category_Mostwatchedvideos');
+    
     Route::get('ComingSoon ','ApiAuthController@ComingSoon');
     Route::post('video_cast', 'ApiAuthController@video_cast');
 

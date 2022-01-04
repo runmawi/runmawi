@@ -125,15 +125,46 @@
                                     <div>OFF</div>
                                 </div>
                             </div>
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Recommendation  </label></div>
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                        <input type="checkbox"  @if ($settings->Recommendation  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="Recommendation" id="Recommendation">
+                                        <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div>NO</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Auto Intro Skip  </label></div>
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                        <input type="checkbox"  @if ($settings->AutoIntro_skip  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="AutoIntro_skip" id="AutoIntro_skip">
+                                        <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div>NO</div>
+                                </div>
+                            </div>
+
+
                         <!-- </div> -->
-                        
-
-
-    <div class="mt-2 p-2"  style="display: flex;
-    justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
-                </div>
         </div>
+                        
+<div class="row">
+    <div class="mt-2 p-2"  style="display: flex; justify-content: flex-end;">
+        <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
+    </div>
+</div>
+
+                
 </form>
     </div>
 </div>
