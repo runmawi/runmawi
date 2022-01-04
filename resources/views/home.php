@@ -1,6 +1,27 @@
 <!-- Header Start -->
-<?php include('header.php');?>
+<?php 
+include('header.php');?>
 <!-- Header End -->
+
+<!-- family & Kids Mode Restriction   -->
+
+   <!-- family_mode -->
+
+   <?php  if($Mode['FamilyMode'] == 1){ ?>
+         <a class="navbar-brand family_mode iconss" data-custom-value="0"  class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family">  Family ON </span></a>
+   <?php }else{ ?>
+         <a class="navbar-brand family_mode_off iconss"  data-custom-value="1" class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family"> Family OFF </span> </a>
+                     
+   <!-- Kids_mode -->
+                      
+       <?php } if($Mode['Kidsmode'] == 1){ ?>
+         <a class="navbar-brand kids_mode iconss"    data-custom-value="0" class="c-logo"><i class="fas fa-child"></i> <span class="kids"> KiDs ON </span> </a>
+      <?php } else{ ?>
+            <a class="navbar-brand iconss" id="kids_mode_off"   data-custom-value="1"  class="c-logo" ><i class="fas fa-child"></i> <span class="kids"> KiDs OFF</span> </a>
+      <?php  }?>
+
+<!-- End family & Kids Mode Restriction   -->
+
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
@@ -18,6 +39,8 @@
 // dd($LiveStream);
 ?>
 
+
+
 <!-- MainContent -->
 <div class="main-content">
     <section id="iq-continue">
@@ -29,19 +52,92 @@
            </div>
         </div>
     </section>
-    <?php if($home_settings->latest_videos == 1){ ?>
-    <section id="iq-favorites">
-        <div class="fluid">
-           <div class="row">
-              <div class="col-sm-12 overflow-hidden">
-                 <?php include('partials/home/latest-videos.php'); ?>
-              </div>
-           </div>
-        </div>
-</section>
-<?php } ?>
 
-<?php if($home_settings->live_videos == 1){  ?>
+
+    <?php if(count($top_most_watched) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/Top_videos.blade.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+    <?php if(count($most_watch_user) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/most_watched_user.blade.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+   <?php 
+      if(count($Most_watched_country) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/most_watched_country.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+   
+   <?php 
+      if(($preference_genres) != null){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/preference_genres.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+   
+   <?php 
+
+      if(($preference_Language) != null){ ?>
+       <section id="iq-favorites">
+            <div class="fluid">
+               <div class="row">
+                  <div class="col-sm-12 overflow-hidden">
+                     <?php include('partials/home/preference_Language.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
+
+
+    <?php if($home_settings->latest_videos == 1){ ?>
+      <section id="iq-favorites">
+         <div class="fluid">
+            <div class="row">
+               <div class="col-sm-12 overflow-hidden">
+                  <?php include('partials/home/latest-videos.php'); ?>
+               </div>
+            </div>
+         </div>
+      </section>
+   <?php } ?>
+
+
+<?php if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -866,13 +962,75 @@ endif; ?>
                </div>
             </div>
          </section>*/ ?>
+
         <section id="iq-tvthrillers" class="s-margin">
             <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
             <div class="fluid">
-                <?php
-                    $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+               <?php
+                     $getfeching = App\Geofencing::first();
+                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                     $userIp = $geoip->getip();    
+                     $countryName = $geoip->getCountry();
+
+                     $Multiuser=Session('subuser_id');
+                     $Multiprofile= App\Multiprofile::where('id',$Multiuser)->first();
+
+                     $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+
+      // blocked videos
+                      $block_videos=App\Blockvideo::where('country_id',$countryName)->get();
+                      if(!$block_videos->isEmpty()){
+                         foreach($block_videos as $block_video){
+                            $blockvideos[]=$block_video->video_id;
+                         }
+                      }   
+                      else{
+                        $blockvideos[]='';
+                      } 
+
                     foreach($parentCategories as $category) {
-                    $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->get();
+                       if( $Multiprofile != null ){
+                           if($Multiprofile->user_type == "Kids"){
+                         
+                        $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->where('age_restrict','<',18);
+                           if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                              $videos = $videos  ->whereNotIn('id',$blockvideos); }
+                              if($Family_Mode == 1){
+                                 $videos = $videos->where('age_restrict', '<', 18);
+                             }
+                             if($Kids_Mode == 1){
+                                 $videos = $videos->where('age_restrict', '<', 10);
+                             }
+                              $videos = $videos ->get();
+                           }else{
+                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        }
+                        if($Family_Mode == 1){
+                           $videos = $videos->where('age_restrict', '<', 18);
+                       }
+                       if($Kids_Mode == 1){
+                           $videos = $videos->where('age_restrict', '<', 10);
+                       }
+                      $videos = $videos ->get();
+                       } } else {
+
+                      
+
+                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
+                     
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                           }
+                           if($Family_Mode == 1){
+                              $videos = $videos->where('age_restrict', '<', 18);
+                          }
+                          if($Kids_Mode == 1){
+                              $videos = $videos->where('age_restrict', '<', 10);
+                          }
+                     $videos = $videos ->get();
+                     }
                 ?>
                         <?php if (count($videos) > 0) { 
                             include('partials/category-videoloop.php');
@@ -915,7 +1073,70 @@ endif; ?>
   window.addEventListener("resize", lazyload);
   window.addEventListener("orientationChange", lazyload);
 });
-</script>
+
+//  family & Kids Mode Restriction   
+
+$( document ).ready(function() {
+   $('.kids_mode').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsMode');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyMode');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode_off').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyModeOff');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('#kids_mode_off').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsModeOff');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+});
+ </script>
 
   <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->

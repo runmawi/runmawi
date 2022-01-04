@@ -946,6 +946,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <!-- Ads Menu ends -->
                   <?php } ?>
                  
+                  {{-- Geo Fencing --}}
+                     <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Geo Fencing</p></li>
+                      <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Manage Geo Fencing</span></a></li>
                </ul>
             </nav>
          </div>

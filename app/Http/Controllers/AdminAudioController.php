@@ -40,6 +40,8 @@ use App\AudioAlbums;
 use DB;
 use App\SystemSetting as SystemSetting;
 use Session;
+use App\CountryCode;
+use App\BlockAudio;
 
 
 
@@ -53,7 +55,6 @@ class AdminAudioController extends Controller
     public function index(Request $request)
     {
         $data = Session::all();
-        
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
@@ -103,6 +104,7 @@ class AdminAudioController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
+        $countries=CountryCode::all();
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $data = array(
@@ -115,8 +117,10 @@ class AdminAudioController extends Controller
             'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => [],
+            'countries' => $countries,
             'settings' => Setting::first(),
             );
+         
         return View::make('admin.audios.create_edit', $data);
     }else if($package == "Basic"){
 
@@ -267,6 +271,8 @@ class AdminAudioController extends Controller
      public function edit($id)
     {
         $data = Session::all();
+        $countries=CountryCode::all();
+
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
@@ -287,6 +293,7 @@ class AdminAudioController extends Controller
             'artists' => Artist::all(),
             'settings' => Setting::first(),
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
+            'countries' => $countries,
             );
 
         return View::make('admin.audios.edit', $data);
@@ -398,6 +405,22 @@ class AdminAudioController extends Controller
                     $artist->audio_id = $id;
                     $artist->artist_id = $value;
                     $artist->save();
+                }
+
+            }
+        }
+
+        if(!empty($input['country'])){
+            $country = $input['country'];
+            unset($input['country']);
+            /*save country*/
+            if(!empty($country)){
+                BlockAudio::where('audio_id',$id)->delete();
+                foreach ($country as $key => $value) {
+                    $country = new BlockAudio;
+                    $country->audio_id = $id;
+                    $country->country = $value;
+                    $country->save();
                 }
 
             }
@@ -629,6 +652,7 @@ class AdminAudioController extends Controller
     }
     public function audioupdate(Request $request)
     {
+
         $input = $request->all();
       
         $id = $request->audio_id;
@@ -727,6 +751,22 @@ class AdminAudioController extends Controller
                     $artist->audio_id = $id;
                     $artist->artist_id = $value;
                     $artist->save();
+                }
+
+            }
+        }
+
+        if(!empty($input['country'])){
+            $country = $input['country'];
+            unset($input['country']);
+            /*save country*/
+            if(!empty($country)){
+                BlockAudio::where('audio_id',$id)->delete();
+                foreach ($country as $key => $value) {
+                    $country = new BlockAudio;
+                    $country->audio_id = $id;
+                    $country->country = $value;
+                    $country->save();
                 }
 
             }

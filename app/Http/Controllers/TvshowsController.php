@@ -95,12 +95,39 @@ class TvshowsController extends Controller
     } else {
             $latest_episodes = [];
     }
+
+
+// Free content videos
+    $free_series_count = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+    if ($free_series_count > 0) {
+        $free_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+    } else {
+            $free_series = [];
+    } 
+    $free_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC');
+            if(Auth::guest()){
+                $free_episodes_count = $free_episodes_count->where('access','guest');
+            }
+    $free_episodes_count = $free_episodes_count->count();
+    if ($free_episodes_count > 0) {
+        $free_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC');
+            if(Auth::guest()){
+                $free_episodes = $free_episodes->where('access','guest');
+            }
+        
+        $free_episodes = $free_episodes->get();
+    } else {
+            $free_episodes = [];
+    }
+
     //  $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
     //  $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
     //  $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
     //  $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
     $currency = CurrencySetting::first();
      
+    $free_Contents=Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+
      $pages = Page::all();
      $data = array(
       'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
@@ -114,7 +141,10 @@ class TvshowsController extends Controller
       'pagination_url' => '/series',
       'settings'=>$settings,
       'pages'=>$pages,
+      'free_series' => $free_series,
+      'free_episodes' => $free_episodes,
       'currency' => $currency,
+      'free_Contents' => $free_Contents,  
 
     );
     //echo "<pre>";print_r($data);exit;
@@ -154,7 +184,6 @@ class TvshowsController extends Controller
         
         if(($series->ppv_status == 1)){
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('series_id', '=', $series->id)->count();
-        // dd($ppv_exits);
 
         }else{
             $ppv_exits = 0 ;
@@ -254,7 +283,7 @@ class TvshowsController extends Controller
   
         
         $series = Series::where('title','=',$name)->first();    
-        
+
         $id = $series->id;
 
 
@@ -301,6 +330,7 @@ class TvshowsController extends Controller
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
+
             return View::make('series', $data);
 
         } else {

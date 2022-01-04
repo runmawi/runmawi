@@ -30,6 +30,8 @@ $uppercase =  ucfirst($request_url);
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
    </head>
     <style>
         #main-header{ color: #fff; }
@@ -43,6 +45,9 @@ $uppercase =  ucfirst($request_url);
     color: var(--iq-secondary);
     border-radius: 4px;
 }
+   .sign-user_card input{
+      background-color: rgb(255 255 255) !important;
+   }
     </style>
    <body>
       <!-- loader Start -->
@@ -463,13 +468,6 @@ $uppercase =  ucfirst($request_url);
                         <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                         <a href="#updatepic" class="edit-icon text-primary">Edit</a>
-                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                            <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                            <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile Image') }}</button>                   
-                        </form>	
                     </div>
 <div class="row">
 <?php
@@ -540,9 +538,7 @@ $uppercase =  ucfirst($request_url);
 
         <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
-               <?php if(!empty($subscriptions) || !empty($livepurchase) || !empty($ppvcharse) ){  ?>
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
-               <?php } else { echo "No Transaction Done" ; } ?>
             </div>
         </div>
 </div>
@@ -552,7 +548,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="col-md-12" >
                         <div class="d-flex align-items-baseline justify-content-between">
                         <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Update Personal Details</a>
+                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
                             </div></div>
                         </div>
                         <div class="a-border"></div>
@@ -720,6 +716,38 @@ $uppercase =  ucfirst($request_url);
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6 mb-3" id="updatepic">
+               <div class="sign-user_card mb-3">
+                   <h4 class="card-title mb-0">Preference for videos</h4>
+                   <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                   @csrf
+                   <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+
+                   <div class="col-sm-9 form-group">
+                     <label><h5>Preference Language</h5></label>
+                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
+                         @foreach($language as $preference_language)
+                             <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                         @endforeach
+                     </select>
+                  </div>
+
+                  <div class="col-sm-9 form-group">
+                     <label><h5>Preference Genres</h5></label>
+                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
+                         @foreach($videocategory as $preference_genres)
+                             <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                         @endforeach
+                     </select>
+                  </div>
+
+                   <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                   </form>		
+               </div>
+           </div>
+       </div>
+
         </div>
         
     </section>
@@ -772,8 +800,6 @@ $uppercase =  ucfirst($request_url);
                         </div>
                         
                      </div>
-                                 @if(!empty($videos))
-
                       <div class="iq-card-body">
                         <div class="table-responsive " >
                            <table class="data-tables table movie_table recent_table" style="width:100%">
@@ -812,23 +838,13 @@ $uppercase =  ucfirst($request_url);
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
                                  @endforeach                                                                     
-                                 @endforeach
-                                 @else
-                       <h2>       <p class="novideos"> No videos Viewed Recently </p></h2>   
-                                 @endif                                                                      
+                                 @endforeach                                                                     
                               </tbody>
                            </table>
                         </div>
                      </div>
                   </div>
                </div></div>
-               <style>
-                      .novideos{ margin-top: 14px;
-                        margin-left: 35%;
-                        color: white;
-                        margin-bottom: 1rem;
-                           }
-               </style>
        
               <div class="container data-mdb-smooth-scroll">
              <div class="row justify-content-center">	
@@ -1031,6 +1047,8 @@ $uppercase =  ucfirst($request_url);
       <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
       <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+	   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
       <!-- Magnific Popup-->
       <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
@@ -1199,6 +1217,9 @@ function myFunction() {
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
+    
     <script>
 function openForm() {
   document.getElementById("myForm").style.display = "block";
@@ -1211,6 +1232,19 @@ function openForm() {
      document.getElementById("recentviews").style.display = "none";
 }
 </script>
+
+<script>
+
+$(document).ready(function(){
+   $('.js-example-basic-multiple').select2({
+    width: '100%',
+    placeholder: "Select an option",
+  });
+    
+   });
+
+ </script>
+
 <script>
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
@@ -1376,3 +1410,7 @@ jQuery(document).ready(function($){
    });
 });
 </script>
+
+
+
+

@@ -73,6 +73,13 @@ use App\ContinueWatching as ContinueWatching;
 use App\AudioAlbums as AudioAlbums;
 use App\EmailTemplate;	
 use App\SubscriptionPlan;
+use App\Multiprofile;
+use Session;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
+use App\Geofencing;
+use App\Blockvideo;
+use App\BlockAudio;
+use App\HomeSetting;
 use App\Videoartist;
 
 
@@ -339,6 +346,7 @@ class ApiAuthController extends Controller
       'mobile' => $request->get('mobile'),
       'otp' => $request->get('otp')
     );
+  
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
       if($settings->free_registration && !Auth::user()->stripe_active){
@@ -414,7 +422,7 @@ class ApiAuthController extends Controller
       $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
       return response()->json($response, 200);
     }
-  }
+  }  
   }
 
   public function resetpassword(Request $request)
@@ -508,7 +516,20 @@ class ApiAuthController extends Controller
 
   public function categoryvideos(Request $request)
   {
-        
+
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName =  $geoip->getCountry();
+    $getfeching = Geofencing::first();
+
+    $block_videos=Blockvideo::where('country_id',$countryName)->get();
+
+        if(!$block_videos->isEmpty()){
+          foreach($block_videos as $block_video){
+              $blockvideos[]=$block_video->video_id;
+          }
+      }                        
+      $blockvideos[]='';
+
     //$channelid = $request->channelid;
        
     $videocategories = VideoCategory::select('id','image')->get()->toArray();
@@ -516,11 +537,17 @@ class ApiAuthController extends Controller
     foreach ($videocategories as $key => $videocategory) {
       $videocategoryid = $videocategory['id'];
       $genre_image = $videocategory['image'];
-      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
-        return $item;
-      });
+
+      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc');
+          if($getfeching !=null && $getfeching->geofencing == 'ON'){
+              $videos = $videos->whereNotIn('id',$blockvideos);
+            }
+      $videos = $videos->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
+          return $item;
+        });
+
       $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
 
       if(count($videos) > 0){
@@ -626,25 +653,35 @@ public function verifyandupdatepassword(Request $request)
 
   public function latestvideos()
   {
-    $latestvideos = Video::where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName =  $geoip->getCountry();
+    $getfeching = Geofencing::first();
+
+    $block_videos=Blockvideo::where('country_id',$countryName)->get();
+
+        if(!$block_videos->isEmpty()){
+          foreach($block_videos as $block_video){
+              $blockvideos[]=$block_video->video_id;
+          }
+      }                        
+      $blockvideos[]='';
+
+    $latestvideos = Video::where('active','=',1)->where('status','=', 1)->orderBy('created_at', 'desc');
+          if($getfeching !=null && $getfeching->geofencing == 'ON'){
+            $latestvideos = $latestvideos->whereNotIn('id',$blockvideos);
+            }
+    $latestvideos =$latestvideos->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-    if(count($latestvideos) > 0){
+
       $response = array(
         'status'=>'true',
         'latestvideos' => $latestvideos
       ); 
       return response()->json($response, 200);
-    }else{
-      $response = array(
-        'status'=>'true',
-        'latestvideos' => []
-      ); 
-      return response()->json($response, 200);
-    }
-
+    
   }
 
 
@@ -3115,7 +3152,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function nextfavouritevideo(Request $request)
+  public function nextfavoritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
@@ -3413,7 +3450,7 @@ public function upnextAudio(Request $request){
   
   }
 
-  public function remove_continue_watchingvideo(Request$request)
+  public function remove_continue_watchingvideo(Request $request)
   {
       $user_id = $request->user_id;
       if($request->video_id){
@@ -3936,7 +3973,24 @@ public function upnextAudio(Request $request){
 
     public function trendingaudio(Request $request)
     {
-        $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
+
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
+  
+      $block_audios=BlockAudio::where('country',$countryName)->get();
+          if(!$block_audios->isEmpty()){
+            foreach($block_audios as $block_audio){
+                $blockaudios[]=$block_audio->video_id;
+            }
+        }                        
+        $blockaudios[]='';
+        
+        $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC');
+        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+          $trending_audios =   $trending_audios->whereNotIn('id',$blockaudios);
+        }
+        $trending_audios =$trending_audios->get();
         $response = array(
             'status'=>'true',
             'trending_audios'=>$trending_audios
@@ -3957,14 +4011,31 @@ public function upnextAudio(Request $request){
     public function albumaudios(Request $request)
     {
         $album_id = $request->album_id;
-        $audioalbum = Audio::where('audio_category_id',$album_id)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $countryName =  $geoip->getCountry();
+        $getfeching = Geofencing::first();
+
+        $block_audios=BlockAudio::where('country',$countryName)->get();
+            if(!$block_audios->isEmpty()){
+              foreach($block_audios as $block_audio){
+                  $blockaudios[]=$block_audio->video_id;
+              }
+          }                        
+          $blockaudios[]='';
+    
+        $audioalbum = Audio::where('audio_category_id',$album_id)->where('active','=',1)->orderBy('created_at', 'desc');
+        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+          $audioalbum =   $audioalbum->whereNotIn('id',$blockaudios);
+        }
+        $audioalbum = $audioalbum->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
             return $item;
         });
         $response = array(
             'status'=>'true',
-            'albumname'=>AudioCategory::where('id',$album_id)->first()->name,
+            // 'albumname'=>AudioCategory::where('id',$album_id)->first()->name,
             'audioalbum'=>$audioalbum
         );
         return response()->json($response, 200);
@@ -4521,6 +4592,183 @@ public function LocationCheck(Request $request){
 
   }
 
+  public function Multiprofile(){
+
+    $parent_id =  Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+    
+    $subcriber_user = User::where('id',$parent_id)->first();
+
+    $users= Multiprofile::where('parent_id', $parent_id)->get();
+
+    $response = array(
+      'user'=>$subcriber_user,
+      'sub_users'=> $users
+    );
+  return response()->json($response, 200);
+
+}
+
+  public function Multiprofile_create(Request $request){
+
+          if($request->user_type != ''){
+              $user_type = 'Kids';
+          }else{
+              $user_type = 'Normal';
+          }         
+          if($request->image != ''){
+            $files = $request->image;
+            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+          }
+          $parent_id =  Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+
+          $Multiprofile = Multiprofile::create([
+              'parent_id'       => $parent_id,
+              'user_name'       => $request->input('name'),
+              'user_type'       => $user_type,
+              'Profile_Image'   => $filename,
+          ]);
+
+          return response()->json([
+            'message' => 'Multiprofile data Saved successfully'
+        ], 200);
+  
+
+    }
+
+    public function Multiprofile_update(Request $request,$id){
+
+        $Multiprofile = Multiprofile::find($id);  
+        if($request->user_type != ''){
+            $user_type = 'Kids';
+        }
+        else{
+            $user_type = 'Normal';
+        }
+
+        if($request->image != ''){  
+            $files = $request->image;
+            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+            $Multiprofile->Profile_Image = $filename;
+        }
+        $Multiprofile->user_name =  $request->get('name');  
+        $Multiprofile->user_type = $user_type;  
+        $Multiprofile->save();  
+
+         return response()->json([
+          'message' => 'Multiprofile Data Updated successfully'
+      ], 200);
+
+      }
+
+    public function freecontent_episodes(){
+
+      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      $user_details = user::where('id',$user_id)->pluck('role')->first();
+
+      $freecontent = Episode::where('status',1)->where('active',1);
+      if($user_details == null){
+        $freecontent = $freecontent->where('access','guest');
+      }
+      $freecontent = $freecontent->orderBy('id', 'DESC')->get();
+
+      $response = array(
+        'freecontent'=>$freecontent,
+      );
+      return response()->json($response, 200);
+  
+    }
+
+    public function MostwatchedVideos(){
+
+      $Recomended = HomeSetting::first();
+
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
+
+      if( $getfeching->geofencing == 'ON'){
+
+          $block_videos=Blockvideo::where('country_id',$countryName)->get();
+            if(!$block_videos->isEmpty()){
+                foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                }
+            }  else{  $blockvideos=[];  } }
+            else {  $blockvideos=[];  }
+
+      if( $Recomended->Recommendation == 1 ){
+
+        $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->whereNotIn('videos.id',$blockvideos)->groupBy('video_id')
+              ->orderByRaw('count DESC' )->limit(20)->get();
+      } else{   $Mostwatchedvideos =[];
+       }
+        return response()->json([
+          'message' => 'Most watched videos  Retrieve successfully',
+          'Mostwatchedvideos' => $Mostwatchedvideos ], 200);
+    }
+
+    public function MostwatchedVideosUser(){
+
+      $Sub_user ='';
+      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      $Recomended = HomeSetting::first();
+      
+
+      if( $Recomended->Recommendation == 1 ){
+        $Mostwatched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+              ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+              ->groupBy('video_id');
+
+              if($Sub_user != null){
+                  $Mostwatched = $Mostwatched->where('recent_views.sub_user',$Sub_user);
+              }else{
+                  $Mostwatched = $Mostwatched->where('recent_views.user_id',$user_id);
+              }
+              $Mostwatched = $Mostwatched->orderByRaw('count DESC' )->limit(20)->get();
+      }else{
+        $Mostwatched=[];
+      }
+            return response()->json([
+              'message' => 'Most watched videos by User data Retrieve successfully',
+              'Mostwatched' => $Mostwatched], 200);
+    }
+
+    public function Country_MostwatchedVideos(){
+
+      $Recomended = HomeSetting::first();
+
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
+
+      if( $getfeching->geofencing == 'ON'){
+          $block_videos=Blockvideo::where('country_id', $countryName)->get();
+            if(!$block_videos->isEmpty()){
+                foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                }
+            }  else{  $blockvideos=[];  }}
+      else{
+        $blockvideos=[]; 
+      }
+      
+      if( $Recomended->Recommendation == 1 ){
+
+        $Most_watched_country =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+              ->where('country', $countryName)->limit(20)->get();
+      }else{
+        $Most_watched_country =[];
+      }
+  
+      return response()->json([
+        'message' => 'Country Most watched videos Retrieve successfully',
+        'Mostwatched' => $Most_watched_country], 200);
+  }
+
   public function ComingSoon() {
 
         $videos = Video::orderBy('created_at', 'DESC')->whereDate('publish_time', '>', \Carbon\Carbon::now()->today())->get();
@@ -4540,6 +4788,7 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
 
   }
+
 
   public function video_cast(Request $request)
   {
@@ -4570,5 +4819,112 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
+  
+  public function Preference_genres()
+  {
+      $Recomended = HomeSetting::first();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
 
+      $block_videos=Blockvideo::where('country_id', $countryName)->get();
+        if(!$block_videos->isEmpty()){
+            foreach($block_videos as $block_video){
+                $blockvideos[]=$block_video->video_id;
+            }
+        }  else{  $blockvideos=[];  }
+
+      if( $Recomended->Recommendation == 1 ){
+
+          $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+          $preference_genres = User::where('id',$user_id)->pluck('preference_genres')->first();
+
+          if($preference_genres !=null ){
+              $video_genres = json_decode($preference_genres);
+              $preference_gen = Video::whereIn('video_category_id',$video_genres)->whereNotIn('videos.id',$blockvideos)->get();
+          }
+          else{
+              $preference_gen =[];
+          }
+        }else{
+          $preference_gen =[];
+        }
+
+          return response()->json([
+            'message' => 'preference Genres videos Retrieve successfully',
+            'Preference_genres' => $preference_gen], 200);
+    }
+
+    public function Preference_Language(){
+
+      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+
+      $Recomended = HomeSetting::first();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
+
+      $block_videos=Blockvideo::where('country_id', $countryName)->get();
+        if(!$block_videos->isEmpty()){
+            foreach($block_videos as $block_video){
+                $blockvideos[]=$block_video->video_id;
+            }
+        }  else{  $blockvideos=[];  }
+
+
+      if( $Recomended->Recommendation == 1 ){
+
+      $preference_language = User::where('id',$user_id)->pluck('preference_language')->first();
+            if($preference_language !=null ){
+              $video_language =json_decode($preference_language);
+              $preference_Lan = Video::whereIn('language',$video_language)->whereNotIn('videos.id',$blockvideos)->get();
+            }else{
+                  $preference_Lan =[];
+              }
+        }else{
+          $preference_Lan =[];
+        }
+          return response()->json([
+            'message' => 'preference language videos Retrieve successfully',
+            'Preference_language' => $preference_Lan], 200);
+
+    }
+
+    public function category_Mostwatchedvideos(){
+
+      $Recomended = HomeSetting::first();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName =  $geoip->getCountry();
+      $getfeching = Geofencing::first();
+
+    if( $getfeching->geofencing == 'ON'){
+          $block_videos=Blockvideo::where('country_id', $countryName)->get();
+            if(!$block_videos->isEmpty()){
+                foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                } } else{  $blockvideos=[];  } }
+      else{  $blockvideos=[];  }
+
+      if( $Recomended->Recommendation == 1 ){
+
+          $parentCategories = VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+
+          foreach($parentCategories as $category) {
+
+          $videos = Video::Join('video_categories','video_categories.id','=','videos.video_category_id')->where('video_category_id','=',$category->id)->where('active', '=', '1')->get();
+
+          foreach($videos as $key => $category_video){
+
+            $top_category_videos[$category_video->name ] = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+                ->where('video_category_id',$category_video->video_category_id)->whereNotIn('videos.id',$blockvideos)->limit(20)->get(); 
+          }  
+        }
+      } else{ 
+      $top_category_videos =[];
+    }
+
+      return response()->json([
+        'Top_category_videos' => $top_category_videos], 200);
+  }
 }
