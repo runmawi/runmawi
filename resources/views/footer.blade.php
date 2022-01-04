@@ -73,7 +73,7 @@
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/login'); ?>">Content Partner Portal</a></li>
@@ -88,21 +88,20 @@
                         <li><a href="#">Help</a></li>
                      </ul>
                   </div>-->
-                  
+                  <?php $video_category = App\VideoCategory::where('footer',1)->get(); ?>
                   <div class="col-lg-3 col-md-4">
                       <div class="row">
+
                      <ul class="f-link list-unstyled mb-0 catag">
-                        <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
-                         
+                     @foreach($video_category as $key => $category)
+                        <li><a href="{{ URL::to('category') }}/{{$category->slug }}">{{ $category->name }}</a></li>
+                        @endforeach
                           </ul>
                           <ul class="f-link list-unstyled mb-0">
                         
-                         <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
                           </ul>
                       </div>
 				</div>

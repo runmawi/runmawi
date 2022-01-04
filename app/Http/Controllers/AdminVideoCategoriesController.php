@@ -47,6 +47,8 @@ class AdminVideoCategoriesController extends Controller
             $slug = $request['slug']; 
           
             $in_home = $request['in_home']; 
+            
+            $footer = $request['footer']; 
           
           if ( $slug != '') {
               $input['slug']  = $request['slug'];
@@ -58,6 +60,11 @@ class AdminVideoCategoriesController extends Controller
           } else {
                $input['in_home']  = $request['in_home'];
           }
+          if ( $footer != '') {
+            $input['footer']  = $request['footer'];
+        } else {
+             $input['footer']  = $request['footer'];
+        }
           
            if($image != '') {   
           //code for remove old file
@@ -98,6 +105,7 @@ class AdminVideoCategoriesController extends Controller
            
         $id = $request['id'];
         $in_home = $request['in_home']; 
+        $footer = $request['footer']; 
         $category = VideoCategory::find($id);
          
              if (isset($request['image']) && !empty($request['image'])){
@@ -113,7 +121,11 @@ class AdminVideoCategoriesController extends Controller
                    $input['in_home']  = $request['in_home'];
               }
 
-          
+              if ( $footer != '') {
+                $input['footer']  = $request['footer'];
+            } else {
+                 $input['footer']  = $request['footer'];
+            }
             if( isset($image) && $image!= '') {   
             //code for remove old file
             if ($image != ''  && $image != null) {
@@ -133,6 +145,7 @@ class AdminVideoCategoriesController extends Controller
             $category->slug = $request['slug'];
             $category->parent_id = $request['parent_id'];
             $category->in_home = $request['in_home'];
+            $category->footer = $request['footer'];
 
             if ( $category->slug != '') {
               $category->slug  = $request['slug'];

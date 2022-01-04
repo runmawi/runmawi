@@ -4545,18 +4545,21 @@ public function LocationCheck(Request $request){
   {
     $video_id = $request->video_id;
 
-    $video_cast_count = DB::table("video_artists")
-    ->join("artists","video_artists.artist_id", "=", "artists.id")
+    $video_cast_count = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
     ->select("artists.*")
     ->where("video_artists.video_id", "=", $video_id)
     ->count();
 
     if ($video_cast_count > 0) {
-      $video_cast = DB::table("video_artists")
-      ->join("artists","video_artists.artist_id", "=", "artists.id")
-      ->select("artists.*")
-      ->where("video_artists.video_id", "=", $video_id)
-      ->get();
+      // $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+      // ->select("artists.*")
+      // ->where("video_artists.video_id", "=", $video_id)
+      // ->get();
+      $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+      ->where('video_artists.video_id', "=", $video_id)->get()->map(function ($item) {
+        $item['image'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+        return $item;
+    });
     } else {
       $video_cast = [];
     }    
