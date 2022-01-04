@@ -24,7 +24,7 @@ class HomeSettingsController extends Controller
     }
     public function save_settings(Request $request){
         
-        
+        // dd($request['series']);
         $settings = HomeSetting::first();
         if(!empty($request['featured_videos'])){
             $settings->featured_videos = 1;
@@ -63,6 +63,12 @@ class HomeSettingsController extends Controller
         } 
         if(empty($request['albums'])){
             $settings->albums = 0;
+        } 
+        if($request['series'] == null){
+            $settings->series = 0;
+        }else{
+            $settings->series = 1;
+
         } 
         $settings->save();
         return redirect::to('/admin/home-settings');

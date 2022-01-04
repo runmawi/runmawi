@@ -14,6 +14,7 @@ use Validator;
 use App\Artist as Artist;
 use DB;
 use App\SystemSetting as SystemSetting;
+use App\User as User;
 use Session;
 
 

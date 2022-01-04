@@ -125,6 +125,19 @@
                                     <div>OFF</div>
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Series </label></div>
+                                <div>ON</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                        <input type="checkbox"  @if ($settings->series == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="series" id="series">
+                                        <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div>OFF</div>
+                                </div>
+                            </div>
                         <!-- </div> -->
                         
 

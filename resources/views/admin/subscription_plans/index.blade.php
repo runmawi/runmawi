@@ -85,13 +85,7 @@
 		                    </div> 
                             <div class="form-group">
 							@foreach($payment_settings as $payment_setting)
-							<div class="col-md-4 d-flex" style="width: 33%; float:left;" >
-						<label> </label>
-						<label class="switch">
-									<input type="checkbox"  name="type[]"  value="{{ $payment_setting->payment_type }}">
-							<span class="slider round"></span>
-						</label>
-						</div>
+									<input type="hidden" name="type[]"  value="{{ $payment_setting->payment_type }}">
                                @endForeach
                                </div>
 

@@ -385,7 +385,6 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
             <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                 <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type="application/x-mpegURL" label='auto' > 
-
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                 <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
                 <?php } if($value['sub_language'] == "German"){?>
@@ -696,7 +695,12 @@ $artists = [];
   <?php  if(Auth::guest()){ ?>
 <?php }else{ ?>
   <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
-<?php } ?><script type="text/javascript">
+<?php } ?>
+<?php if(!empty($video->m3u8_url)){ ?>
+  <input type="hiddent" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
+<?php }?>
+
+<script type="text/javascript">
 
     jQuery(document).ready(function($){
 
