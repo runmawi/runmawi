@@ -1129,6 +1129,13 @@ class HomeController extends Controller
             $preference_Lan ='';
         }
 
+ // family & Kids Mode Restriction  
+
+        $Subuser=Session::get('subuser_id');
+        if($Subuser != null){
+              $Mode = Multiprofile::where('id',$Subuser)->first();
+        } else{  $Mode =User::where('id',Auth::user()->id)->first();   }
+
              $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
             //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
              $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
@@ -1227,6 +1234,7 @@ class HomeController extends Controller
                  'preference_Language' => $preference_Lan,
                  'Family_Mode' => $Family_Mode,
                  'Kids_Mode' => $Kids_Mode,
+                 'Mode' => $Mode,
 
              );
             

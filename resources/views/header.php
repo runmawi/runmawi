@@ -109,22 +109,24 @@ $data = Session::all();
     }
     
     i.fas.fa-child{
-    font-size: 35px; }
+    font-size: 35px;
+    color: white;
+    }
     span.kids {
-    color: #ffd81a;
-}  span.family{
-    color: #ffd81a;
-}
-
+    color: #f7dc59;
+   }  
+      span.family{
+         color: #f7dc59;
+      }
       i.fa.fa-eercast{
     font-size: 35px;
+    color: white;
       }
       a.navbar-brand.iconss {
          font-size: 19px;
          font-style: italic;
          font-family: ui-rounded;
       }
-
     </style>
      
    <body>
@@ -151,29 +153,7 @@ $data = Session::all();
                            </div>
                         </a>
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-                      
-                        <?php
-                              $Subuser=Session::get('subuser_id');
-                              if($Subuser != null){
-                                    $Mode = App\Multiprofile::where('id',$Subuser)->first();
-                              } else{  $Mode = App\User::where('id',Auth::user()->id)->first();   }
-                        ?>
 
-                      <!-- family_mode -->
-
-                      <?php  if($Mode['FamilyMode'] == 1){ ?>
-                           <a class="navbar-brand family_mode iconss" data-custom-value="0"  class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family">  Family ON </span></a>
-                        <?php }else{ ?>
-                           <a class="navbar-brand family_mode_off iconss"  data-custom-value="1" class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family"> Family OFF </span> </a>
-                     
-                      <!-- Kids_mode -->
-                      
-                           <?php } if($Mode['Kidsmode'] == 1){ ?>
-
-                         <a class="navbar-brand kids_mode iconss"    data-custom-value="0" class="c-logo"><i class="fas fa-child"></i> <span class="kids"> KiDs ON </span> </a>
-                         <?php } else{ ?>
-                           <a class="navbar-brand iconss" id="kids_mode_off"   data-custom-value="1"  class="c-logo" ><i class="fas fa-child"></i> <span class="kids"> KiDs OFF</span> </a>
-                     <?php  }?>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
@@ -608,68 +588,7 @@ toggle.addEventListener('input', (e) => {
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
-  <script>
-$( document ).ready(function() {
-   $('.kids_mode').click(function () {
-      var kids_mode = $(this).data("custom-value");
-               $.ajax({
-               url: "<?php echo URL::to('/kidsMode');?>",
-               type: "get",
-               data:{
-                  kids_mode:kids_mode, 
-               },
-               success: function (response) {
-                  location.reload();               
-               },
-            });   
-   });
-
-   $('.family_mode').click(function () {
-         var family_mode = $(this).data("custom-value");
-
-               $.ajax({
-               url: "<?php echo URL::to('/FamilyMode');?>",
-               type: "get",
-               data:{
-                  family_mode:family_mode, 
-               },
-               success: function (response) {
-                  location.reload();               
-               },
-            });   
-   });
-
-   $('.family_mode_off').click(function () {
-         var family_mode = $(this).data("custom-value");
-
-               $.ajax({
-               url: "<?php echo URL::to('/FamilyModeOff');?>",
-               type: "get",
-               data:{
-                  family_mode:family_mode, 
-               },
-               success: function (response) {
-                  location.reload();               
-               },
-            });   
-   });
-
-   $('#kids_mode_off').click(function () {
-      var kids_mode = $(this).data("custom-value");
-               $.ajax({
-               url: "<?php echo URL::to('/kidsModeOff');?>",
-               type: "get",
-               data:{
-                  kids_mode:kids_mode, 
-               },
-               success: function (response) {
-                  location.reload();               
-               },
-            });   
-   });
-
-});
-   </script>
+  
 
       </header>
       <!-- Header End -->

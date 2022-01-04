@@ -2,6 +2,26 @@
 <?php 
 include('header.php');?>
 <!-- Header End -->
+
+<!-- family & Kids Mode Restriction   -->
+
+   <!-- family_mode -->
+
+   <?php  if($Mode['FamilyMode'] == 1){ ?>
+         <a class="navbar-brand family_mode iconss" data-custom-value="0"  class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family">  Family ON </span></a>
+   <?php }else{ ?>
+         <a class="navbar-brand family_mode_off iconss"  data-custom-value="1" class="c-logo" ><i class="fa fa-eercast" aria-hidden="true"></i> <span class="family"> Family OFF </span> </a>
+                     
+   <!-- Kids_mode -->
+                      
+       <?php } if($Mode['Kidsmode'] == 1){ ?>
+         <a class="navbar-brand kids_mode iconss"    data-custom-value="0" class="c-logo"><i class="fas fa-child"></i> <span class="kids"> KiDs ON </span> </a>
+      <?php } else{ ?>
+            <a class="navbar-brand iconss" id="kids_mode_off"   data-custom-value="1"  class="c-logo" ><i class="fas fa-child"></i> <span class="kids"> KiDs OFF</span> </a>
+      <?php  }?>
+
+<!-- End family & Kids Mode Restriction   -->
+
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
@@ -18,6 +38,8 @@ include('header.php');?>
 <?php
 // dd($LiveStream);
 ?>
+
+
 
 <!-- MainContent -->
 <div class="main-content">
@@ -1051,7 +1073,70 @@ endif; ?>
   window.addEventListener("resize", lazyload);
   window.addEventListener("orientationChange", lazyload);
 });
-</script>
+
+//  family & Kids Mode Restriction   
+
+$( document ).ready(function() {
+   $('.kids_mode').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsMode');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyMode');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('.family_mode_off').click(function () {
+         var family_mode = $(this).data("custom-value");
+
+               $.ajax({
+               url: "<?php echo URL::to('/FamilyModeOff');?>",
+               type: "get",
+               data:{
+                  family_mode:family_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+   $('#kids_mode_off').click(function () {
+      var kids_mode = $(this).data("custom-value");
+               $.ajax({
+               url: "<?php echo URL::to('/kidsModeOff');?>",
+               type: "get",
+               data:{
+                  kids_mode:kids_mode, 
+               },
+               success: function (response) {
+                  location.reload();               
+               },
+            });   
+   });
+
+});
+ </script>
 
   <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->
