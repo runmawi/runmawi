@@ -76,7 +76,7 @@
 
 	<div id="episode_video_data">
 
-	<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+	<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Episode_form">
 
 @if(!empty($episodes->created_at))
 	<div class="row mt-4">
@@ -657,8 +657,29 @@ CKEDITOR.replace( 'summary-ckeditor', {
 });
 </script>
 
+{{-- validate --}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+$('form[id="Episode_form"]').validate({
+	rules: {
+	  title: 'required',
+	  image: 'required',
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+</script>
+ {{-- end validate --}}
+
 <script type="text/javascript">
+
 var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 // alert('test');
 $('#buttonNext').hide();
@@ -692,4 +713,8 @@ $('#submit').show();
 
 	@stop
 
+	
+
 @stop
+
+

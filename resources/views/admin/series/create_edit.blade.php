@@ -35,9 +35,7 @@ $settings  = App\Setting::first();?>
 	</div>
 <h4><i class="entypo-plus"></i> Add New Series</h4> 
         <hr>
-	
-
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="series_form">
 
 		@if(!empty($series->created_at))
 			<div class="row mt-3">
@@ -447,6 +445,24 @@ $settings  = App\Setting::first();?>
 
 @section('javascript')
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+
+$('form[id="series_form"]').validate({
+	rules: {
+	  title: 'required',
+	  image: 'required',
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
 	@stop
 
 @stop
