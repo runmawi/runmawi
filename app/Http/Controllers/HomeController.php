@@ -19,7 +19,7 @@ use App\Geofencing;
 use App\Page as Page;
 use App\HomeSetting as HomeSetting;
 use App\Movie;
-use App\Blockvideo;
+use App\BlockVideo;
 use App\Episode;
 use App\LikeDislike as Likedislike;
 use App\VideoCategory;
@@ -879,7 +879,7 @@ class HomeController extends Controller
             $genre_video_display = VideoCategory::all();
 
 // blocked videos
-                $block_videos=Blockvideo::where('country_id',$countryName)->get();
+                $block_videos=BlockVideo::where('country_id',$countryName)->get();
                 if(!$block_videos->isEmpty()){
                     foreach($block_videos as $block_video){
                         $blockvideos[]=$block_video->video_id;
@@ -1052,7 +1052,7 @@ class HomeController extends Controller
 
         if( $getfeching->geofencing == 'ON'){
 
-            $Blocking_videos=Blockvideo::where('country_id',$countryName)->get();
+            $Blocking_videos=BlockVideo::where('country_id',$countryName)->get();
             if(!$Blocking_videos->isEmpty()){
                 foreach($Blocking_videos as $Blocking_video){
                     $blocking_videos[]=$Blocking_video->video_id;
