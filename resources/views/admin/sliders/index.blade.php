@@ -70,7 +70,7 @@
 
                     <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
                         <label>Status:</label>
-                        <input type="radio" id="active" name="active" value="1">Active
+                        <input type="radio" id="active" checked name="active" value="1">Active
                         <input type="radio" id="active" name="active" value="0">Deactive
                      </div>
                         
