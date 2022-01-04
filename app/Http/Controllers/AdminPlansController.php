@@ -114,7 +114,7 @@ public function PaypalIndex()
     public function subscriptionedit($id) {
     	 
         // $edit_plan = SubscriptionPlan::find($id);
-        $edit_plan =  SubscriptionPlan::where('plans_name','Monthly')->get();
+        $edit_plan =  SubscriptionPlan::where('plans_name',$id)->get();
         $payment_settings = PaymentSetting::all();
         // $permission = $edit_plan['devices'];
         // $user_devices = explode(",",$permission);
@@ -248,6 +248,7 @@ public function PaypalIndex()
                 $new_plan->video_quality = $request->video_quality;
                 $new_plan->resolution = $request->resolution;
                 $new_plan->devices = $plan_devices;
+                $new_plan->subscription_plan_name = $request->plans_name.$types;
                 $new_plan->user_id = Auth::User()->id;            
                 $new_plan->save();
                     }
@@ -353,6 +354,34 @@ public function PaypalIndex()
     }
 
 
+    public function subscriptionupdate(Request $request) {
+        $validatedData = $request->validate([
+            'plans_name' => 'required|max:255',
+            'plan_id' => 'required|max:255',
+            'price' => 'required|max:255',
+        ]);
+        $input = $request->all();
+
+        if(!empty($input['subscription_plan_name'])){
+        $subscription_plan_name = $input['subscription_plan_name'];
+        }else{ $subscription_plan_name = [] ; }
+        $planid = $input['plan_id'];
+        foreach($subscription_plan_name as $value){
+        $plans = SubscriptionPlan::where('subscription_plan_name',$value)->first();
+    	$plans->plans_name = $request['plans_name'];
+    	$plans->price = $request['price'];
+    	$plans->payment_type = $request['payment_type'];
+        $plans->video_quality = $input['video_quality'];
+        $plans->resolution = $input['resolution'];
+        foreach($input['plan_id'] as $key => $values){
+            if($key == $value){
+            $plans->plan_id  = $values;
+            }
+        }
+        $plans->save();
+        }
+        return Redirect::to('admin/subscription-plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
+    }
     // public function subscriptionupdate(Request $request) {
     //     $validatedData = $request->validate([
     //         'plans_name' => 'required|max:255',
@@ -360,17 +389,14 @@ public function PaypalIndex()
     //         'price' => 'required|max:255',
     //     ]);
     //     $input = $request->all();
-    //     // dd();
+    //     // dd($input);
 
     //     // $edit_plan = SubscriptionPlan::find($id);
     //     // $payment_settings = PaymentSetting::all();
     //     // $devices = $input['devices'];
     //     // $plan_devices = implode(",",$devices);
-    //     if(!empty($input['plan_id'])){
-    //     $plans_id = $input['plan_id'];
-    //     }else{ $plans_id = [] ; }
-    //     foreach($plans_id as $planid){
-    //     $plans = SubscriptionPlan::where('plan_id',$planid)->first();
+    //     $id = $request['id'];
+    //     $plans = SubscriptionPlan::find($id);
     // 	$plans->plans_name = $request['plans_name'];
     // 	$plans->price = $request['price'];
     // 	$plans->payment_type = $request['payment_type'];
@@ -379,35 +405,9 @@ public function PaypalIndex()
     //     // $plans->devices = $plan_devices;
     //     $plans->plan_id  = $request['plan_id'];
     //     $plans->save();
-    //     }
+        
     //     return Redirect::to('admin/subscription-plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
     // }
-    public function subscriptionupdate(Request $request) {
-        $validatedData = $request->validate([
-            'plans_name' => 'required|max:255',
-            'plan_id' => 'required|max:255',
-            'price' => 'required|max:255',
-        ]);
-        $input = $request->all();
-        // dd($input);
-
-        // $edit_plan = SubscriptionPlan::find($id);
-        // $payment_settings = PaymentSetting::all();
-        // $devices = $input['devices'];
-        // $plan_devices = implode(",",$devices);
-        $id = $request['id'];
-        $plans = SubscriptionPlan::find($id);
-    	$plans->plans_name = $request['plans_name'];
-    	$plans->price = $request['price'];
-    	$plans->payment_type = $request['payment_type'];
-        $plans->video_quality = $input['video_quality'];
-        $plans->resolution = $input['resolution'];
-        // $plans->devices = $plan_devices;
-        $plans->plan_id  = $request['plan_id'];
-        $plans->save();
-        
-        return Redirect::to('admin/subscription-plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
-    }
 
     public function DevicesIndex()
     {

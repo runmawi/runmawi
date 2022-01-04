@@ -10,7 +10,7 @@
          <div class="container-fluid">
              <div class="iq-card">
 <div class="admin-section-title">
-    <h4 class="p-3">Subscription Plan Edit</h4>
+    <h4 class="p-3">Subscription Plan Update</h4>
        <!--  <div class="row">
             <div class="col-md-12">
                 <h3><i class="entypo-archive"></i>  Room Topic </h3><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>
@@ -47,7 +47,7 @@
 	                        @foreach($edit_plan as $plan)
                             <div class="form-group">
 		                        <label>{{ $plan->type }} Plan ID:</label>
-		                        <input type="text" id="plans_id" name="plan_id" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
+		                        <input type="text" id="plans_id" name="plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
                             </div> 
                         	@endforeach
                         <div class="form-group">
@@ -82,6 +82,10 @@
                      
 
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
+                @foreach($edit_plan as $plan)
+                <input type="hidden" id="subscription_plan_name" name="subscription_plan_name[]" value="{{ $plan->subscription_plan_name }}" class="form-control" placeholder="Plan ID">
+                @endforeach
+
 
               <div class="modal-footer">
                 <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/paypalplans') }}">Close</a>
