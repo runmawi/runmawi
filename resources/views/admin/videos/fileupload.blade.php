@@ -310,7 +310,7 @@ data: {
                         </div>
                         <div class="iq-card-body">
                             <h5>Video Info Details</h5>
-                            <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                            <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="video_form">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="row">
@@ -328,6 +328,7 @@ data: {
                                             <div class="col-sm-6 form-group" >
                                                 <label class="p-2">Select Video Category :</label>
                                                 <select class="form-control" id="video_category_id" name="video_category_id">
+                                                    <option value="">Choose category</option>
                                                     @foreach($video_categories as $category)
                                                     <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
                                                     @endforeach
@@ -980,3 +981,32 @@ $('#Next').click(function(){
         }, 3000);
     })
 </script>
+
+@section('javascript')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+$('form[id="video_form"]').validate({
+	rules: {
+	  title : 'required',
+	  image : 'required',
+      trailer : 'required',
+      video_category_id: {
+                required: true
+            }
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+      trailer : 'This field is required',
+      video_category_id: {
+                required: 'This field is required',
+            }
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
+	@stop

@@ -94,6 +94,10 @@ if (!empty($data['password_hash'])) {
         height: 24px!important;
     }
     
+/* validate */
+    .error {
+    color: red !important;
+}
 </style>
 
 </head>
