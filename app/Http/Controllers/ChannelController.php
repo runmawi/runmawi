@@ -62,20 +62,35 @@ class ChannelController extends Controller
        return view('channels', compact('parentCategories'));
         
     } 
-    public function categories()
-    {
-      dd('test');
-       return Redirect::to('/home');
-        
-    } 
+    
     public function channelVideos($cid)
     {
+
+      $getfeching = \App\Geofencing::first();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $userIp = $geoip->getip();    
+      $countryName = $geoip->getCountry();
+
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
         $categoryVideos_count =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->count();
         if ($categoryVideos_count > 0) {
-            $categoryVideos = \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->paginate();
-        } else {
+    // blocked videos
+              $block_videos= \App\Blockvideo::where('country_id',$countryName)->get();
+              if(!$block_videos->isEmpty()){
+                foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                }
+              }    
+              $blockvideos[]='';
+              $categoryVideos =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id);
+              if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                 $categoryVideos = $categoryVideos  ->whereNotIn('id',$blockvideos);
+                 }
+               $categoryVideos = $categoryVideos ->paginate();
+              
+              
+          } else {
                 $categoryVideos = [];
         }
         // $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
@@ -83,16 +98,15 @@ class ChannelController extends Controller
         $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status','=',1)->first();
         if(!empty($PPV_settings)){
+
             $ppv_gobal_price =  $PPV_settings->ppv_price;
-            //  echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
 
          }else{
-            //  echo "<pre>";print_r('ppv_status');exit();
-             $ppv_gobal_price = null ;
 
+             $ppv_gobal_price = null ;
          }
          $currency = CurrencySetting::first();
-        //  dd($currency);
+        
         $data = array(
                 'currency'=> $currency,
                 'category_title'=>$category_title[0],
@@ -100,6 +114,7 @@ class ChannelController extends Controller
                 'ppv_gobal_price' => $ppv_gobal_price,
 
             );
+
         
        return view('categoryvids',['data'=>$data]);
         
@@ -107,18 +122,16 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
+
         $data['password_hash'] = "";
         $data = session()->all();
        
         if(!empty($data['password_hash'])){
 
-          // dd('test');
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         // echo "<pre>"; 
-        $artists = [];
-
         $cast = Videoartist::where('video_id','=',$vid)->get();
           foreach($cast as $key => $artist){
             $artists[] = Artist::where('id','=',$artist->artist_id)->get();
@@ -149,19 +162,23 @@ class ChannelController extends Controller
          $view_increment = $this->handleViewCount_movies($vid);
         if ( !Auth::guest() ) {
 
+          $sub_user = Session::get('subuser_id');
 
           $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
           $userIp = $geoip->getip();    
           $countryName = $geoip->getCountry();
           $regionName = $geoip->getregion();
           $cityName = $geoip->getcity();
+
             $view = new RecentView;
-            $view->video_id = $vid;
-            $view->user_id = Auth::user()->id;
+            $view->video_id  = $vid;
+            $view->user_id  = Auth::user()->id;
+            $view->videos_category_id = $get_video_id->video_category_id;
+            if($sub_user != null){
+              $view->sub_user  = $sub_user;
+            }
             $view->visited_at = date('Y-m-d');
             $view->save();
-
-
 
             $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
             if(!empty($regionview)){
@@ -253,6 +270,7 @@ class ChannelController extends Controller
                     }
             
             
+                $artists = [];
                 $payment_settings = PaymentSetting::first();  
                 $mode = $payment_settings->live_mode ;
                   if($mode == 0){
@@ -338,7 +356,6 @@ class ChannelController extends Controller
  
        return view('video', $data);
     }else{
-      // dd('testone');
     
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
@@ -421,14 +438,8 @@ class ChannelController extends Controller
             );
 
             }
-            $settings = Setting::first();
-
-            if($settings->access_free == 1){
-                // dd('$agent');
-                  return view('video', $data);
-            }else{
-                  return view('video_before_login', $data);
-            }
+ 
+       return view('video_before_login', $data);
     }
         }
     
@@ -499,7 +510,6 @@ class ChannelController extends Controller
         Session::put('viewed_movie.'.$vid, time());
     }
     
-
     public function Watchlist($slug)
     {
         $video = Video::where('slug', '=', $slug)->first();

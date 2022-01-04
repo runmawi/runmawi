@@ -370,20 +370,31 @@ data: {
                                             <div class="col-sm-6 form-group">
                                                 <label><h5>Age Restrict :</h5></label>
                                                 <select class="form-control" id="age_restrict" name="age_restrict">
-                                                    <option selected disabled="">Choose Age</option>
+                                                    <option selected  value="0">Choose Age</option>
                                                     @foreach($age_categories as $age)
-                                                        <option value="{{ $age->id }}" @if(!empty($video->age_restrict) && $video->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
+                                                        <option value="{{ $age->age }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
-                                            <div class="col-sm-12 form-group">
+                                            <div class="col-sm-6 form-group">
                                                 <label>Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                                 <input type="file" name="image" id="image" >
                                                 @if(!empty($video->image))
                                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                                 @endif
                                             </div>
+
+                                            {{-- Block country --}}
+                                            <div class="col-sm-6 form-group">
+                                                <label><h5>Block Country</h5></label>
+                                                <p class="p1">Choose the countries for block the videos</p> 
+                                                <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                                    @foreach($countries as $country)
+                                                        <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                             <div class="col-lg-12 form-group">
                                                 <h5 class="mb-3">Video description:</h5>
                                                 <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
@@ -604,9 +615,9 @@ data: {
                                 <div class="col-sm-6 form-group mt-3">
                                     <!-- <label class="">Type</label> -->
                                     <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
-                       
+							        <input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
                                 </div>
+
                                 <div class="col-sm-6 form-group mt-3" id="publishlater">
                                 <label class="">Publish Time</label>
 			                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" >
@@ -649,6 +660,28 @@ data: {
                                 <input type="text" class="form-control" id="recap_end_time" name="recap_end_time" >
                                 </div>
                                 </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="">Recommendation </label>
+                                        <input type="text" class="form-control" id="Recommendation " name="Recommendation" >
+                                    </div>
+
+                                {{-- country --}}
+                                    <div class="col-sm-4 form-group">
+                                        <label><h5>Country</h5></label>
+                                        <select  name="video_country" class="form-control" id="country">
+                                        <option value="">Select Country </option>
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+
+
                                 @if(isset($video->id))
                                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                                 @endif
@@ -659,6 +692,8 @@ data: {
                                     <button type="reset" class="btn btn-danger">cancel</button>
                                 </div>
                                 <input type="hidden" id="video_id" name="video_id" value="">
+
+                              
                             </form>
                         </div>
                     </div>

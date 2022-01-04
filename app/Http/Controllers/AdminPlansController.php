@@ -180,9 +180,9 @@ public function PaypalIndex()
                 $c_count = Plan::where('plan_id', '=', $new_plan->plan_id)->count();
                     if ( $c_count == 0) {
                          $new_plan->save();
-                         return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
+                         return Redirect::back()->with(array('message' => 'You have been successfully Added New Country', 'note_type' => 'success'));
                     } else {
-                        return Redirect::back()->with(array('note' => 'The  Country you were entered is already Exist', 'note_type' => 'failure'));
+                        return Redirect::back()->with(array('message' => 'The  Country you were entered is already Exist', 'note_type' => 'failure'));
                     }
     }
         public function PaypalStore(Request $request) {
@@ -219,6 +219,8 @@ public function PaypalIndex()
                 'type' => 'required',
 
             ]);  
+            // dd($request->type);
+
             // echo "<pre>";     
             // print_r($request->all());exit();
             $devices = $request->devices;
@@ -350,6 +352,36 @@ public function PaypalIndex()
         return Redirect::to('admin/paypalplans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
     }
 
+
+    // public function subscriptionupdate(Request $request) {
+    //     $validatedData = $request->validate([
+    //         'plans_name' => 'required|max:255',
+    //         'plan_id' => 'required|max:255',
+    //         'price' => 'required|max:255',
+    //     ]);
+    //     $input = $request->all();
+    //     // dd();
+
+    //     // $edit_plan = SubscriptionPlan::find($id);
+    //     // $payment_settings = PaymentSetting::all();
+    //     // $devices = $input['devices'];
+    //     // $plan_devices = implode(",",$devices);
+    //     if(!empty($input['plan_id'])){
+    //     $plans_id = $input['plan_id'];
+    //     }else{ $plans_id = [] ; }
+    //     foreach($plans_id as $planid){
+    //     $plans = SubscriptionPlan::where('plan_id',$planid)->first();
+    // 	$plans->plans_name = $request['plans_name'];
+    // 	$plans->price = $request['price'];
+    // 	$plans->payment_type = $request['payment_type'];
+    //     $plans->video_quality = $input['video_quality'];
+    //     $plans->resolution = $input['resolution'];
+    //     // $plans->devices = $plan_devices;
+    //     $plans->plan_id  = $request['plan_id'];
+    //     $plans->save();
+    //     }
+    //     return Redirect::to('admin/subscription-plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
+    // }
     public function subscriptionupdate(Request $request) {
         $validatedData = $request->validate([
             'plans_name' => 'required|max:255',

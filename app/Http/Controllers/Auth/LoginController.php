@@ -40,7 +40,7 @@ class LoginController extends Controller
                 return '/register2';
                 break;
                 default:
-                return '/home'; 
+                return '/choose-profile'; 
                 break;
 
             }

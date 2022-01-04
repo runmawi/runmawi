@@ -76,8 +76,8 @@
                         <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
-                          <li><a href="<?php echo URL::to('/cpp/login'); ?>">Content Partner Portal</a></li>
-                          <li><a href="<?php echo URL::to('/advertiser/register'); ?>">Advertiser Portal</a></li>
+                          <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
+                          <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>
@@ -93,9 +93,9 @@
                       <div class="row">
 
                      <ul class="f-link list-unstyled mb-0 catag">
-                     @foreach($video_category as $key => $category)
-                        <li><a href="{{ URL::to('category') }}/{{$category->slug }}">{{ $category->name }}</a></li>
-                        @endforeach
+                     <?php foreach($video_category as $key => $category) { ?>
+                        <li><a href="<?php echo  URL::to('category').'/'.$category->slug ;?>"><?php echo $category->name ;?></a></li>
+                        <?php } ?>
                           </ul>
                           <ul class="f-link list-unstyled mb-0">
                         
@@ -108,7 +108,7 @@
                    <div class="col-lg-3 col-md-4 p-0">
                       <ul class="f-link list-unstyled mb-0">    
 						<?php 
-                        $pages = App\Page::where('active',1)->get();
+                        $pages = App\Page::all();
                         foreach($pages as $page): ?>
 							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
 						<?php endforeach; ?>
@@ -227,10 +227,72 @@ function myFunction() {
 
 
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
-   
+ <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
           
  <script>
+  // alert($('#hls_m3u8').val());
+
+   document.addEventListener('DOMContentLoaded', () => {
+	// const source = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+  const source = $('#hls_m3u8').val();
+  // alert(source);
+	const video = document.querySelector('video');
+	
+	// For more options see: https://github.com/sampotts/plyr/#options
+	// captions.update is required for captions to work with hls.js
+	const player = new Plyr(video, {captions: {active: true, update: true, language: 'en'}});
+	
+	if (!Hls.isSupported()) {
+		video.src = source;
+	} else {
+		// For more Hls.js options, see https://github.com/dailymotion/hls.js
+		const hls = new Hls();
+		hls.loadSource(source);
+		hls.attachMedia(video);
+		window.hls = hls;
+		
+		// Handle changing captions
+		player.on('languagechange', () => {
+			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
+			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+		});
+	}
+	
+	// Expose player so it can be used from the console
+	window.player = player;
+});
         const player = new Plyr('#videoPlayer');
+   
+ <script src="plyr-plugin-capture.js"></script>
+ <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
+
+ <script>
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+
       </script>
 </body>
 </html>

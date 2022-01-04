@@ -40,6 +40,7 @@ use App\Artist;
 use App\Seriesartist;
 use GifCreator\GifCreator;
 use FFMpeg\Coordinate\TimeCode;
+use File;
 
 class AdminSeriesController extends Controller
 {
@@ -249,10 +250,7 @@ class AdminSeriesController extends Controller
             $results = Episode::all();
             //$episode = Episode::all();
             $seasons = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
-            // $books = SeriesSeason::with('episodes')->get();
-//
-//                    print_r(count($seasons));
-//                    exit;
+            // $books = SeriesSeason::with('episodes')->get();   
                     
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
@@ -266,6 +264,7 @@ class AdminSeriesController extends Controller
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
             );
+
 
         return View::make('admin.series.create_edit', $data);
     }
@@ -610,7 +609,17 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-       
+
+         // free_content
+
+         if(isset($data['free_content_duration'])){
+            //$str_time = $data
+            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['free_content_duration']);
+            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+            $data['free_content_duration'] = $time_seconds;
+        }
+
         
         // $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
@@ -654,7 +663,7 @@ class AdminSeriesController extends Controller
             // $episode->title =  $data['title'];
             $episodes->rating =  $data['rating'];
             $episodes->type =  'file';
-            $episodes->age_restrict =  $data['age_restrict'];
+            // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
             $episodes->access =  $data['access'];
             $episodes->active =  $active;
@@ -732,6 +741,16 @@ class AdminSeriesController extends Controller
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
+        }
+
+        // free_content
+
+        if(isset($data['free_content_duration'])){
+            //$str_time = $data
+            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['free_content_duration']);
+            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+            $data['free_content_duration'] = $time_seconds;
         }
 
         

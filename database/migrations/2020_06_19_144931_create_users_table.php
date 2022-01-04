@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
                 $table->foreign('referrer_id')->references('id')->on('users');
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
-                $table->timestamp('trial_ends_at')->nullable();
                 $table->timestamp('subscription_ends_at')->nullable();
                 $table->string('password');
                 $table->string('avatar');
@@ -30,14 +29,20 @@ class CreateUsersTable extends Migration
                 $table->string('stripe_subscription');
                 $table->string('stripe_plan');
                 $table->string('plan_name');
-                $table->string('card_last_four');
-                $table->string('card_brand');
                 $table->string('last_four');
                 $table->string('provider');
                 $table->string('provider_id');
                 $table->string('referral_token')->unique();
                 $table->bigInteger('otp');
                 $table->bigInteger('stripe_active');
+                $table->string('stripe_id')->nullable()->index();
+                $table->string('card_brand')->nullable();
+                $table->string('card_last_four', 4)->nullable();
+                $table->timestamp('trial_ends_at')->nullable();
+                $table->string('FamilyMode')->nullable();
+                $table->string('Kidsmode')->nullable();
+                $table->string('preference_genres')->nullable();
+                $table->string('preference_language')->nullable();
                 $table->rememberToken();
                 $table->timestamps();
         });
@@ -49,6 +54,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('users');
     }
 }
