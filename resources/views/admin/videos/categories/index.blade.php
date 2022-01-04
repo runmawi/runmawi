@@ -84,7 +84,11 @@
                         <input type="radio" id="in_home" name="in_home" value="1">Yes
                         <input type="radio" id="in_home" name="in_home" value="0">No
                     </div>
-
+					<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label>Display In Footer page:</label>
+                        <input type="radio" checked id="footer" name="footer" value="1">Yes
+                        <input type="radio" id="footer" name="footer" value="0">No
+                    </div>
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label>Image:</label>
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
