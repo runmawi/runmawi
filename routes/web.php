@@ -257,6 +257,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/ppv/store', array('before' => 'demo', 'uses' => 'AdminPpvController@store'));
 
 
+    
 // Admin PPV Functionality
     Route::get('/livestream', 'AdminLiveStreamController@index');
     Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit');
@@ -727,6 +728,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/livestream/update','CPPAdminLiveStreamController@CPPupdate');
     Route::get('/livestream/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveStreamController@CPPdestroy'));
     Route::get('/livestream/create', 'CPPAdminLiveStreamController@CPPcreate');
+
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'CPPAdminLiveStreamController@CPPstore'));
 
 // CPP Livestream Categories

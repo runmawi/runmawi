@@ -77,7 +77,7 @@ use App\Multiprofile;
 use Session;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Geofencing;
-use App\Blockvideo;
+use App\BlockVideo;
 use App\BlockAudio;
 use App\HomeSetting;
 use App\Videoartist;
@@ -521,7 +521,7 @@ class ApiAuthController extends Controller
     $countryName =  $geoip->getCountry();
     $getfeching = Geofencing::first();
 
-    $block_videos=Blockvideo::where('country_id',$countryName)->get();
+    $block_videos=BlockVideo::where('country_id',$countryName)->get();
 
         if(!$block_videos->isEmpty()){
           foreach($block_videos as $block_video){
@@ -657,7 +657,7 @@ public function verifyandupdatepassword(Request $request)
     $countryName =  $geoip->getCountry();
     $getfeching = Geofencing::first();
 
-    $block_videos=Blockvideo::where('country_id',$countryName)->get();
+    $block_videos=BlockVideo::where('country_id',$countryName)->get();
 
         if(!$block_videos->isEmpty()){
           foreach($block_videos as $block_video){
@@ -4690,7 +4690,7 @@ public function LocationCheck(Request $request){
 
       if( $getfeching->geofencing == 'ON'){
 
-          $block_videos=Blockvideo::where('country_id',$countryName)->get();
+          $block_videos=BlockVideo::where('country_id',$countryName)->get();
             if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
                     $blockvideos[]=$block_video->video_id;
@@ -4745,7 +4745,7 @@ public function LocationCheck(Request $request){
       $getfeching = Geofencing::first();
 
       if( $getfeching->geofencing == 'ON'){
-          $block_videos=Blockvideo::where('country_id', $countryName)->get();
+          $block_videos=BlockVideo::where('country_id', $countryName)->get();
             if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
                     $blockvideos[]=$block_video->video_id;
@@ -4794,21 +4794,18 @@ public function LocationCheck(Request $request){
   {
     $video_id = $request->video_id;
 
-    $video_cast_count = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+    $video_cast_count = DB::table("video_artists")
+    ->join("artists","video_artists.artist_id", "=", "artists.id")
     ->select("artists.*")
     ->where("video_artists.video_id", "=", $video_id)
     ->count();
 
     if ($video_cast_count > 0) {
-      // $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-      // ->select("artists.*")
-      // ->where("video_artists.video_id", "=", $video_id)
-      // ->get();
-      $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-      ->where('video_artists.video_id', "=", $video_id)->get()->map(function ($item) {
-        $item['image'] = URL::to('/').'/public/uploads/artists/'.$item->image;
-        return $item;
-    });
+      $video_cast = DB::table("video_artists")
+      ->join("artists","video_artists.artist_id", "=", "artists.id")
+      ->select("artists.*")
+      ->where("video_artists.video_id", "=", $video_id)
+      ->get();
     } else {
       $video_cast = [];
     }    
@@ -4827,7 +4824,7 @@ public function LocationCheck(Request $request){
       $countryName =  $geoip->getCountry();
       $getfeching = Geofencing::first();
 
-      $block_videos=Blockvideo::where('country_id', $countryName)->get();
+      $block_videos=BlockVideo::where('country_id', $countryName)->get();
         if(!$block_videos->isEmpty()){
             foreach($block_videos as $block_video){
                 $blockvideos[]=$block_video->video_id;
@@ -4864,7 +4861,7 @@ public function LocationCheck(Request $request){
       $countryName =  $geoip->getCountry();
       $getfeching = Geofencing::first();
 
-      $block_videos=Blockvideo::where('country_id', $countryName)->get();
+      $block_videos=BlockVideo::where('country_id', $countryName)->get();
         if(!$block_videos->isEmpty()){
             foreach($block_videos as $block_video){
                 $blockvideos[]=$block_video->video_id;
@@ -4898,7 +4895,7 @@ public function LocationCheck(Request $request){
       $getfeching = Geofencing::first();
 
     if( $getfeching->geofencing == 'ON'){
-          $block_videos=Blockvideo::where('country_id', $countryName)->get();
+          $block_videos=BlockVideo::where('country_id', $countryName)->get();
             if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
                     $blockvideos[]=$block_video->video_id;

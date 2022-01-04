@@ -74,7 +74,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="live_video">
 
 		@if(!empty($video->created_at))
 			<div class="row">
@@ -345,6 +345,33 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
+
+	{{-- validate --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<script>
+$('form[id="live_video"]').validate({
+	rules: {
+	  title: 'required',
+	  image: 'required',
+	  mp4_url: 'required',
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	  mp4_url: 'This field is required',
+
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+</script>
+ {{-- end validate --}}
+
 
 	<script type="text/javascript">
 

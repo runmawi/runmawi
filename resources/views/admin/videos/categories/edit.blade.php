@@ -105,14 +105,43 @@
     </div>
 </div>
 </div>
-	@section('javascript')
+
+@section('javascript')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
+    
+$('form[id="update-cat-form"]').validate({
+	rules: {
+        name : 'required',
+	  image : 'required',
+      parent_id: {
+                required: true
+            }
+	},
+	messages: {
+        name: 'This field is required',
+	  image: 'This field is required',
+      parent_id: {
+                required: 'This field is required',
+            }
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+
+
 	$(document).ready(function(){
 		$('#submit-update-cat').click(function(){
 			$('#update-cat-form').submit();
 		});
 	});
 </script>
-             @stop
+
+@stop
+
 
 @stop
