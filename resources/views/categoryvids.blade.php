@@ -84,10 +84,10 @@
                                     </li>
                             @endforeach
  <?php } else { ?>
-                                        <p class="no_video"> <?php echo __('No Video Found');?></p>
-                                        <p><h2>No Media in My Watchlater</h2></p>
-                                    <div class="col-md-12 text-center mt-4">
-                                <img class="w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>">
+                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> -->
+                                        <!-- <p><h2>No Media in My Watchlater</h2></p> -->
+                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
+                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
                             </div>
       <?php } ?>
                     
