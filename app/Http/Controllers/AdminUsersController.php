@@ -42,7 +42,7 @@ use Illuminate\Support\Str;
 use App\LoggedDevice;
 use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
-use App\language;
+use App\Language;
 
 
 
@@ -405,7 +405,7 @@ class AdminUsersController extends Controller
         // $recent_view = $videos->unique('slug');
 
         $videocategory = VideoCategory::all();
-        $language =Language::all();
+        $language = Language::all();
 
         $video = array_unique($videos);
     	$data = array(
