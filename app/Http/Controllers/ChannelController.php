@@ -37,6 +37,7 @@ use App\Video as Video;
 use Carbon\Carbon;
 use DateTime;
 use App\CurrencySetting as CurrencySetting;
+use App\HomeSetting as HomeSetting;
 
 
 
