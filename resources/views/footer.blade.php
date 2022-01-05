@@ -72,8 +72,8 @@
                   
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
+                        <!-- <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' ){ ?> 
                           <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
