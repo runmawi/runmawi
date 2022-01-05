@@ -436,7 +436,7 @@ input.skips{
 <!-- INTRO SKIP  -->
 
 <?php
-    $Auto_skip = App\Homesetting::first();
+    $Auto_skip = App\HomeSetting::first();
     $Intro_skip = App\Episode::where('id',$episode->id)->first();
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
