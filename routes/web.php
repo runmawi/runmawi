@@ -144,7 +144,7 @@ Route::get('/upgrading', 'PaymentController@upgrading');
 Route::get('/channels', 'ChannelController@index');
 Route::get('/ppvVideos', 'ChannelController@ppvVideos');
 Route::get('/live', 'LiveStreamController@Index');
-Route::get('/live/play/{id}', 'LiveStreamController@Play');
+Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
@@ -572,17 +572,19 @@ Route::get('/Planstate', 'AdminUsersController@PlanState');
 Route::get('/Plancity', 'AdminUsersController@PlanCity');
 Route::post('/getState', 'AdminUsersController@GetState');
 Route::post('/getCity', 'AdminUsersController@GetCity');
-Route::get('/cppusers_videodata', 'AdminVideosController@CPPVideos');
-Route::get('/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
-Route::get('/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
-Route::get('/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
+
 Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
 Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
-Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
-Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
-Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
+
 
 });
+Route::get('admin/cppusers_videodata', 'AdminVideosController@CPPVideos');
+Route::get('admin/CPPVideosIndex',  'AdminVideosController@CPPVideosIndex');
+Route::get('admin/CPPVideosApproval/{id}',  'AdminVideosController@CPPVideosApproval');
+Route::get('admin/CPPVideosReject/{id}',  'AdminVideosController@CPPVideosReject');
+Route::get('admin/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex');
+Route::get('admin/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
+Route::get('admin/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
 Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
 
 Route::get('admin/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
