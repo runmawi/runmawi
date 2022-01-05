@@ -1885,8 +1885,12 @@ class HomeController extends Controller
     public function LanguageVideo($lanid, $lan)
     {
         $language_videos = Video::where('language', '=', $lanid)->get();
+        $currency = CurrencySetting::first();
+
         $data = array(
-            'lang_videos' => $language_videos
+            'lang_videos' => $language_videos,
+            'currency' => $currency,
+
         );
 
         return View('languagevideo', $data);
