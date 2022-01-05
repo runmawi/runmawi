@@ -38,6 +38,8 @@ use Carbon\Carbon;
 use DateTime;
 use App\CurrencySetting as CurrencySetting;
 use App\HomeSetting as HomeSetting;
+use App\BlockVideo as BlockVideo;
+
 
 
 
@@ -77,7 +79,7 @@ class ChannelController extends Controller
         $categoryVideos_count =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->count();
         if ($categoryVideos_count > 0) {
     // blocked videos
-              $block_videos= \App\Blockvideo::where('country_id',$countryName)->get();
+              $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
               if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
                     $blockvideos[]=$block_video->video_id;

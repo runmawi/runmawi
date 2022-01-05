@@ -978,7 +978,7 @@ endif; ?>
                      $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
 
       // blocked videos
-                      $block_videos=App\Blockvideo::where('country_id',$countryName)->get();
+                      $block_videos = App\BlockVideo::where('country_id',$countryName)->get();
                       if(!$block_videos->isEmpty()){
                          foreach($block_videos as $block_video){
                             $blockvideos[]=$block_video->video_id;
