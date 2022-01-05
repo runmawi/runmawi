@@ -260,9 +260,11 @@ function myFunction() {
 	
 	// Expose player so it can be used from the console
 	window.player = player;
+
 });
-        const player = new Plyr('#videoPlayer');
-   
+const player = new Plyr('#videoPlayer');
+
+</script>
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
 

@@ -746,14 +746,14 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
             $('#watch_trailer').show();
           });
            /*Skip Video*/
-           $(document).on("click",".skip",function() {
-             $("#video_container").empty();
-             $(".skip").css('display','none');
-             $(".page-height").load(location.href + " #video_container");
-             setTimeout(function(){ 
-             videojs('videoPlayer');
-           }, 2000);
-           });
+          //  $(document).on("click",".skip",function() {
+          //    $("#video_container").empty();
+          //    $(".skip").css('display','none');
+          //    $(".page-height").load(location.href + " #video_container");
+          //    setTimeout(function(){ 
+          //    videojs('videoPlayer');
+          //  }, 2000);
+          //  });
 
            var vid = document.getElementById("videoPlayer");
            vid.currentTime = $("#current_time").val();
