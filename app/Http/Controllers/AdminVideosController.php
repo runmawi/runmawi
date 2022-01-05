@@ -1230,25 +1230,32 @@ if(!empty($artistsdata)){
 
                 $video = Video::findOrFail($id);
               
-                if(empty($data['ppv_price'])){
-                    $settings = Setting::where('ppv_status','=',1)->first();
-                    if(!empty($settings)){
+                // if(!empty($data['global_ppv'])){
+                //     $settings = Setting::where('ppv_status','=',1)->first();
+                //     if(!empty($settings)){
                    
-                        $data['ppv_price'] = $settings->ppv_price;
-                        $video->global_ppv = 1 ;
-                    }
-                    }  else {
-                    }  
+                //         $data['ppv_price'] = $settings->ppv_price;
+                //         $video->global_ppv = 1 ;
+                //     }
+                //     }  else {
+                //     $video->global_ppv = null ;
+                //     }  
 
-                if(!empty($data['ppv_price'])){
+                if(!empty($data['ppv_price']) && $data['ppv_price'] > 0){
                     $video->global_ppv = 1 ;
                     }  else {
+                    $video->global_ppv = null ;
+
                     }  
 
+                    $settings = Setting::where('ppv_status','=',1)->first();
 
                 if(!empty($data['global_ppv'])){
+                        $data['ppv_price'] = $settings->ppv_price;
                     $video->global_ppv = $data['global_ppv'] ;
                     }  else {
+                    $video->global_ppv = null ;
+
                     }  
                 if($request->slug == ''){
                     $data['slug'] = $this->createSlug($data['title']);    
