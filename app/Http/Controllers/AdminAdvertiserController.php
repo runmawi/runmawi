@@ -127,8 +127,10 @@ class AdminAdvertiserController extends Controller
   public function ads_category_delete($id)
   {
     Adscategory::find($id)->delete();
+    
+    return Redirect::back();
 
-    return response()->json([ 'success' => true ]);
+    // return response()->json([ 'success' => true ]);
   }
 
 

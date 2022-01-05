@@ -262,7 +262,7 @@ function myFunction() {
 	window.player = player;
 
 });
-const player = new Plyr('#videoPlayer');
+// const player = new Plyr('#videoPlayer');
 
 </script>
  <script src="plyr-plugin-capture.js"></script>

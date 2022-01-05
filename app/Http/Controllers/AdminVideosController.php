@@ -806,6 +806,11 @@ if(!empty($artistsdata)){
             }  else {
                 $data['mp4_url'] = null;
             } 
+            if(!empty($video->embed_code)){
+                $data['embed_code'] = $video->embed_code;
+            }  else {
+                $data['embed_code'] = null;
+            } 
             
             if(empty($data['age_restrict'])){
                 $data['age_restrict'] = 0;
@@ -1230,6 +1235,12 @@ if(!empty($artistsdata)){
 
                 $video = Video::findOrFail($id);
               
+
+                if(!empty($video->embed_code)) {
+                    $embed_code = $video->embed_code;
+               }else {
+                   $embed_code = '';
+               }
                 // if(!empty($data['global_ppv'])){
                 //     $settings = Setting::where('ppv_status','=',1)->first();
                 //     if(!empty($settings)){
@@ -1410,6 +1421,7 @@ if(!empty($artistsdata)){
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
             $video->active = 1 ;
+            $video->embed_code =  $embed_code ;
             $video->publish_type = $data['publish_type'];
             $video->publish_time = $data['publish_time'];
              $video->age_restrict =  $data['age_restrict'];

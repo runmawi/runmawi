@@ -70,11 +70,16 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
          <?php if($video->type == 'embed'): ?>
            <div id="video_container" class="fitvid">
              <?php
-              if(!empty($video->embed_code)){
-               echo $video->embed_code;
-             }else{
-               echo $video->trailer;
-             } ?>
+              if(!empty($video->embed_code)){ ?>
+              <div class="plyr__video-embed" id="player">
+            <iframe
+              src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+            ></iframe>
+          </div>
+             <?php } ?>
            </div>
          <?php  elseif($video->type == 'file'): ?>
 
