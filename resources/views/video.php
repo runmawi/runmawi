@@ -708,9 +708,6 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
   <input type="hiddent" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
 <?php }?>
 
-<script type="text/javascript">
-
-    jQuery(document).ready(function($){
 
   </div>
 
@@ -921,7 +918,7 @@ location.reload();
 <!-- INTRO SKIP  -->
 
 <?php
-    $Auto_skip = App\Homesetting::first();
+    $Auto_skip = App\HomeSetting::first();
     $Intro_skip = App\Video::where('id',$video->id)->first();
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
