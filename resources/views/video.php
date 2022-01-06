@@ -302,7 +302,6 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
        
        <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
-<track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
 <!--
    <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
 
@@ -710,7 +709,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
   <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
-  <input type="hiddent" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
+  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
 <?php }?>
 
 

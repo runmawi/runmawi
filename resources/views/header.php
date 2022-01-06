@@ -560,7 +560,34 @@ $data = Session::all();
             </div>
          </div>
           
-          
+         <?php 
+    $playerui_settings = App\Playerui::first();
+    if($playerui_settings->watermark == 1){ ?>
+    <style>
+          /* .plyr__video-wrapper::before  {
+                width: <?php echo $playerui_settings->watermar_width; ?>;
+                float: right;
+                position: absolute;
+                top:<?php echo $playerui_settings->watermark_top; ?>;
+                right: <?php echo $playerui_settings->watermark_right; ?>;
+                left:<?php echo $playerui_settings->watermark_left; ?>;
+                bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
+                transform: translate(-50%, 0%);
+            } */
+            .plyr__video-wrapper::before {
+            position: absolute;
+            top: <?php echo $playerui_settings->watermark_top; ?>;
+            left: <?php echo $playerui_settings->watermark_left; ?>;
+            z-index: 10;
+            content: '';
+            height: 300px;
+            width: <?php echo $playerui_settings->watermar_width; ?>;
+            background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
+            background-size: 100px auto, auto;
+            }
+    </style>
+       
+<?php } else{ } ?>
            <script>
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
