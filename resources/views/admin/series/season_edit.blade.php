@@ -88,6 +88,11 @@
 					<p class="p1">Add the episodes title in the textbox below:</p> 
 					<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif"  />
 				</div> 
+			<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<p class="p1">Add the episodes Slug in the textbox below:</p> 
+					<input type="text" class="form-control" name="slug" id="slug" placeholder="Episode Slug" value="@if(!empty($episodes->slug)){{ $episodes->slug }}@endif"  />
+				</div> 
 			</div>
 
 @if(!empty($episodes->created_at))
@@ -423,8 +428,8 @@
 					<div style="display: flex;
 						justify-content: start;
 						align-items: baseline;">
-						<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
-						<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
+						<!-- <label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
+						<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
 					</div>
 				</div> 
 			</div>

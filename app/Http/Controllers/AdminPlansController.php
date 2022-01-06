@@ -70,8 +70,9 @@ public function PaypalIndex()
         
         $plans_data = SubscriptionPlan::all();
         $plans = $plans_data->groupBy('plans_name');
-        // dd($plans);
-        $payment_settings = PaymentSetting::all();
+        $payment_settings = PaymentSetting::get();
+        // dd($payment_settings);
+
         $devices = Devices::all();
          $data = array(
         	'plans' => $plans,

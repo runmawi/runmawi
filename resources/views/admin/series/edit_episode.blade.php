@@ -37,12 +37,22 @@
 							<p>Add the episodes title in the textbox below:</p> 
 							<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif" style=""  />
 						</div> 
+						
 					</div>
 
 		@if(!empty($episodes->created_at))
 			
-				</div>
+				<!-- </div> -->
 				<div class="col-sm-6">
+				<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<!-- <p class="p1">Add the episodes Slug in the textbox below:</p>  -->
+					<input type="text" class="form-control" name="slug" id="slug" placeholder="Episode Slug" value="@if(!empty($episodes->slug)){{ $episodes->slug }}@endif"  />
+				</div> 
+			</div>
+			
+			<div class="col-sm-6">
+
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title">Created Date</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
@@ -262,8 +272,8 @@
 							</div>
 							<div class="clear"></div>
 							<div>
-								<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
-								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
+								<!-- <label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
+								<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
 							</div>
 						</div> 
 					</div>
@@ -282,7 +292,7 @@
 
 				<div class="col-sm-4 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<!-- <div class="panel-heading"> <div class="panel-title"> <label>Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div>  -->
 						<?php //if($settings->ppv_status == 1){ ?>
 						<!-- <label for="global_ppv">Is this video Is Global PPV:</label> -->
 						<!-- <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif /> -->
