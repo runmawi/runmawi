@@ -61,6 +61,9 @@
 [data-tip]:hover:after {
 	display:block;
 }
+.error{
+        color: red;
+    }
    </style>
 
 @section('content')
@@ -92,7 +95,7 @@
                         @endif
                      <div class="iq-card-body">
                          <h5>Video Info Details</h5>
-                        <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                        <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_video_edit">
                         <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
@@ -111,6 +114,7 @@
                                      <div class="col-sm-6 form-group" >
                                        <label class="p-2">Select Video Category :</label>
                                        <select class="form-control" id="video_category_id" name="video_category_id">
+                                           <option value="">Choose Category </option>
 						                        @foreach($video_categories as $category)
                                           <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						                        @endforeach
@@ -627,6 +631,21 @@ $(document).ready(function(){
     })
 </script>
 @section('javascript')
-	@stop
+
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="cpp_video_edit"]').validate({
+			rules: {
+                title : 'required',
+                video_category_id : 'required'
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
+
+@stop
 
 @stop

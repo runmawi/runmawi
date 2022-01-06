@@ -13,6 +13,11 @@
 <script src="category/videos/js/rolespermission.js"></script>
 
 
+<style>
+    .error{
+        color:red;
+    }
+</style>
 <div id="content-page" class="content-page">
          <div class="container-fluid">
               <div class="iq-card">
@@ -26,7 +31,7 @@
 	<div class="clear"></div>
 
 
-                    <form method="POST" action="{{ URL::to('/cpp/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                    <form method="POST" action="{{ URL::to('/cpp/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_audio">
                         @csrf
                         <div class="col-md-6" style="width: 50%; float: left;">
 
@@ -104,3 +109,22 @@
 	});
 
                     </script>
+
+@section('javascript')
+
+{{-- validate --}}
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+    $('form[id="cpp_audio"]').validate({
+       
+       rules: {
+           name : 'required',
+           slug : 'required',
+           },
+       submitHandler: function(form) {
+           form.submit(); }
+       });
+</script>
+
+@stop

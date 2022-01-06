@@ -1824,7 +1824,8 @@ public function verifyandupdatepassword(Request $request)
     }  
     
     public function StripeRecurringPlan() {
-        $plans = SubscriptionPlan::where("payment_type","=","recurring")->get();
+
+        $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name')->get();
         // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
       $response = array(
         'status'=>'true',
@@ -4806,7 +4807,7 @@ public function LocationCheck(Request $request){
       ->where("video_artists.video_id", "=", $video_id)
       ->get()
       ->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
         return $item;
       });
 

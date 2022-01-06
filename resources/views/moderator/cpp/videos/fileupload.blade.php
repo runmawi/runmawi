@@ -22,6 +22,9 @@
     }
     #video_upload .file form{border: 2px dashed;}
     #video_upload .file form i {display: block; font-size: 50px;}
+    .error{
+        color: red;
+    }
 </style>
 <div id="content-page content_videopage" class="content-page">
     <div class="container-fluid" id="content_videopage">
@@ -310,7 +313,7 @@ data: {
                         </div>
                         <div class="iq-card-body">
                             <h5>Video Info Details</h5>
-                            <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                            <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_video_create">
                             <div class="row">
                                     <div class="col-lg-12">
                                         <div class="row">
@@ -328,6 +331,8 @@ data: {
                                             <div class="col-sm-6 form-group" >
                                                 <label class="p-2">Select Video Category :</label>
                                                 <select class="form-control" id="video_category_id" name="video_category_id">
+                                                    <option value="">Choose Category</option>
+                                                    
                                                     @foreach($video_categories as $category)
                                                     <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
                                                     @endforeach
@@ -499,6 +504,7 @@ data: {
                                 <div class="col-sm-6 form-group mt-3">
                                     <label class="p-2">User Access</label>
                                     <select id="access" name="access"  class="form-control" >
+                                        <option value="guest" >Guess( everyone )</option>
                                         <option value="subscriber" >Subscriber ( Must subscribe to watch )</option>
                                         <option value="registered" >Registered Users( Must register to watch )</option>   
                                         <?php if($settings->ppv_status == 1){ ?>
@@ -849,8 +855,6 @@ CKEDITOR.replace( 'summary-ckeditor', {
   }).change();
   </script>
 
-
-
         </div>
 
 </div>
@@ -865,11 +869,6 @@ CKEDITOR.replace( 'summary-ckeditor', {
         filebrowserUploadMethod: 'form'
     });
     </script>
-
-
-
- 
-
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
@@ -925,3 +924,25 @@ $('#Next').click(function(){
         }, 3000);
     })
 </script>
+
+
+@section('javascript')
+
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="cpp_video_create"]').validate({
+           
+			rules: {
+                image : 'required',
+                title : 'required',
+                trailer : 'required',
+                video_category_id : 'required'
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
+
+@stop

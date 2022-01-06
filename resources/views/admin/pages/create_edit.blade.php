@@ -43,7 +43,7 @@
     <hr>
 	<div class="clear"></div>
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		<form method="POST"  id="page_form" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
 			<div class="row mt-4">
 				
@@ -111,7 +111,7 @@
 								<label for="active" style="float:left; display:block; margin-right:10px;">Is this page Active:</label>
 								<!-- <input type="checkbox" @if(!isset($page->active) || (isset($page->active) && $page->active))checked="checked" value="1" @else value="0"@endif name="active" id="active" /> -->
 								<!-- <input name="active" id="active" type="checkbox"  @if (isset($page->active) == 1) {{ "checked='checked'" }} @else {{ "" }} @endif > -->
-								<input type="checkbox" value="1" name="active" @if(isset($page->active)) checked @endif>
+								<input type="checkbox"  value="1" name="active" checked @if(isset($page->active)) checked @endif>
 
 
 							</div>
@@ -180,8 +180,6 @@
 
 	});
 
-
-
 	</script>
 
 <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
@@ -192,6 +190,20 @@ CKEDITOR.replace( 'summary-ckeditor', {
     filebrowserUploadMethod: 'form'
 });
 </script>
+
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="page_form"]').validate({
+			rules: {
+				title : 'required',
+				url : 'required',
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
 
 	@stop
 
