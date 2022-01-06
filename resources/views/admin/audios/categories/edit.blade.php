@@ -21,7 +21,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i>Update Moderator Users</h3> 
+		<h3><i class="entypo-globe"></i>Update Audio Category</h3> 
 	</div>
 	<div class="clear"></div>
 
@@ -47,9 +47,9 @@
                         <div class="form-group row">
                         <label>Image:</label>
                         @if(!empty($categories[0]->image))
-                        <img src="{{ Config::get('site.uploads_dir') . 'audiocategory/' . $categories[0]->image }}" class="movie-img" width="200"/>
+                        <img src="{{ URL::to('/audiocategory').'/'.$categories[0]->image }}" class="movie-img" width="200"/>
                         @endif
-                        <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
+                        <p>Select the Category image (1280x720 px or 16:9 ratio):</p> 
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
 
                             </div>
@@ -81,7 +81,7 @@
                         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                     <button type="submit" id ="submit" class="btn btn-primary">
-                                                        {{ __('Register') }}
+                                                        {{ __('Update') }}
                                                     </button>             
                                                            </div>
                     </div>
