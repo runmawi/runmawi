@@ -110,8 +110,8 @@
 							<div>
 								<label for="active" style="float:left; display:block; margin-right:10px;">Is this page Active:</label>
 								<!-- <input type="checkbox" @if(!isset($page->active) || (isset($page->active) && $page->active))checked="checked" value="1" @else value="0"@endif name="active" id="active" /> -->
-								<!-- <input name="active" id="active" type="checkbox"  @if ($page->active == 1) {{ "checked='checked'" }} @else {{ "" }} @endif > -->
-								<input type="checkbox" value="1" name="active" @if($page->active) checked @endif>
+								<!-- <input name="active" id="active" type="checkbox"  @if (isset($page->active) == 1) {{ "checked='checked'" }} @else {{ "" }} @endif > -->
+								<input type="checkbox" value="1" name="active" @if(isset($page->active)) checked @endif>
 
 
 							</div>
