@@ -70,7 +70,7 @@
                                 <div class='content file'>
                                     <h4 class="card-title">Upload Audio</h4>
                                     <!-- Dropzone -->
-                                    <form action="{{URL::to('admin/uploadAudio')}}" method= "post" class='dropzone' ></form> 
+                                    <form action="{{URL::to('admin/uploadAudio')}}" method= "post" class='dropzone' id="audio_source" ></form> 
                                 </div> 
                                 <div>
 <!--                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>-->
@@ -199,7 +199,7 @@ data: {
 					</div>
 					<div class="iq-card-body">
 						<h5>Audio Info Details</h5>
-						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="audio_form">
 
 							<div class="row mt-3">
 								<div class="col-md-6">
@@ -618,6 +618,28 @@ $('#duration').mask('00:00:00');
 </script>
 
 @section('javascript')
-        @stop
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+$('form[id="audio_form"]').validate({
+	rules: {
+	  title : 'required',
+	  image : 'required',
+	},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
+
+
+
+
+	@stop
 
 @stop
