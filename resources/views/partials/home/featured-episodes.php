@@ -1,12 +1,12 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Recently Added Episodes</h4>                      
+  <h4 class="main-title"> Featured Episodes</h4>                      
 </div>
 <?php
 ?>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
-    <?php  if(isset($latest_episodes)) :
-    					 foreach($latest_episodes as $key => $latest_episode) {
+    <?php  if(isset($featured_episodes)) :
+    					 foreach($featured_episodes as $key => $latest_episode) {
         // foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">

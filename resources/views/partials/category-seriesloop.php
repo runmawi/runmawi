@@ -40,7 +40,7 @@
         </h6>
     </a>
     <div class="movie-time d-flex align-items-center my-2">
-        <div class="badge badge-secondary p-1 mr-2">13+</div>
+        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_series->age_restrict.' '.'+' ?></div>
         <span class="text-white"><i class="fa fa-clock-o"></i>
 
         </span>
