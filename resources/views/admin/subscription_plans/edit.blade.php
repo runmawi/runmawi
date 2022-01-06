@@ -37,7 +37,7 @@
 
 
 <div class="modal-body">
-    	<form  accept-charset="UTF-8" action="{{ URL::to('admin/subscription-plans/update') }}" method="post">
+    	<form  accept-charset="UTF-8" action="{{ URL::to('admin/subscription-plans/update') }}" method="post" id="subscription_edit">
            <div class="row">
                <div class="col-md-6">
                         <div class="form-group">
@@ -100,4 +100,27 @@
 
     @stop
 
+@section('javascript')
 
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="subscription_edit"]').validate({
+            ignore: [],
+			rules: {
+                plans_name : 'required',
+                price : 'required',
+                video_quality : 'required',
+                resolution : 'required',
+                'plan_id[]': {
+                required: true
+                }
+					
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
+
+@stop

@@ -511,6 +511,7 @@ data: {
                                 <div class="col-sm-6 form-group mt-3">
                                     <label class="p-2">User Access</label>
                                     <select id="access" name="access"  class="form-control" >
+                                        <option value="guest" >Guess( everyone )</option>
                                         <option value="subscriber" >Subscriber ( Must subscribe to watch )</option>
                                         <option value="registered" >Registered Users( Must register to watch )</option>   
                                         <?php if($settings->ppv_status == 1){ ?>

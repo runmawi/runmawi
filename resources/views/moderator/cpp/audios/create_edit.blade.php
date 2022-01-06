@@ -21,6 +21,9 @@
     }
     #video_upload .file form{border: 2px dashed;}
     #video_upload .file form i {display: block; font-size: 50px;}
+	.error{
+        color: red;
+    }
 </style>
 <div id="content-page" class="content-page">
     <div class="container-fluid">
@@ -199,7 +202,7 @@ data: {
 					</div>
 					<div class="iq-card-body">
 						<h5>Audio Info Details</h5>
-						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_audio_create">
 
 							<div class="row mt-3">
 								<div class="col-md-6">
@@ -493,6 +496,19 @@ data: {
 $('#duration').mask('00:00:00');
 	</script>
 
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+	$('form[id="cpp_audio_create"]').validate({
+		   rules: {
+			   image : 'required',
+			   title : 'required',
+			   },
+		   submitHandler: function(form) {
+			   form.submit(); }
+		   });
+	</script>
 
 
 

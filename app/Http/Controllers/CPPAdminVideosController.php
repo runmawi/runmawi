@@ -351,7 +351,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
      */
     public function CPPstore(Request $request)
     {
-        
+
         
         $data = $request->all();
    
@@ -970,12 +970,15 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             }else{
                 $m3u8_url = null;
             }    
+            if(!empty($data['mp4_url'])){
+                $video->mp4_url =  $data['mp4_url'];
+
+            }
             $user = Session::get('user'); 
             $user_id = $user->id;
             $video->user_id =  $user_id;
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
-         $video->mp4_url =  $data['mp4_url'];
          $video->skip_recap =  $data['skip_recap'];
          $video->skip_intro =  $data['skip_intro'];
          $video->age_restrict=$data['age_restrict'];
@@ -1156,6 +1159,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 
         public function CPPfileupdate(Request $request)
         {
+
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
@@ -1165,10 +1169,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                         'title' => 'required|max:255'
                     ]);
                     
-                   
-                        $id = $data['video_id'];
-                        // echo "<pre>";
-                    
+            $id = $data['video_id'];
+            
                         $video = Video::findOrFail($id);
                       
                         // if(empty($data['ppv_price'])){
@@ -1322,8 +1324,6 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                             $data['duration'] = $time_seconds;
                     }
             
-        
-                  
                    
                       if(!empty($data['embed_code'])) {
                          $video->embed_code = $data['embed_code'];
@@ -1335,6 +1335,11 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                    }else {
                        $banner = 0;
                    }
+
+                   if(!empty($data['age_restrict'])) {
+                    $video->age_restrict =  $data['age_restrict'];
+                   }
+
                    $user = Session::get('user'); 
                    $user_id = $user->id;
                      $shortcodes = $request['short_code'];        
@@ -1347,7 +1352,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->active = 1 ;
                     $video->publish_type = $data['publish_type'];
                     $video->publish_time = $data['publish_time'];
-                     $video->age_restrict =  $data['age_restrict'];
+
+                    
                     $video->ppv_price =$data['ppv_price'];
                      $video->access =  $data['access'];
                      $video->banner =  $banner;

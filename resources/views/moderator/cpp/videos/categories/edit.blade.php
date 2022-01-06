@@ -102,6 +102,19 @@
 </div>
 </div>
 	@section('javascript')
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="update-cat-form"]').validate({
+			rules: {
+                name : 'required',
+                slug : 'required',
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
+
 <script>
 	$(document).ready(function(){
 		$('#submit-update-cat').click(function(){

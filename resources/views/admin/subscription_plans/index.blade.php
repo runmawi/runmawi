@@ -80,7 +80,7 @@
                         
                             <div class="form-group">
 		                        <label>Payment Type:</label><br>
-		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" checked='checked'>
+		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" checked='checked'> <br>
 		                        Recurring : <input type="radio"  name="payment_type"  value="recurring">
 		                    </div> 
                             <div class="form-group">
@@ -167,6 +167,7 @@
 
     </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 	<script type="text/javascript">
 
@@ -178,6 +179,21 @@
 				$('#new-cat-form').submit();
 			});
 		});
+
+			//  validate 
+			$('form[id="new-cat-form"]').validate({
+				rules: {
+					plans_name : 'required',
+					billing_interval : 'required',
+					billing_type : 'required',
+					price : 'required',
+					days : 'required',
+					video_quality : 'required',
+					resolution : 'required',
+					},
+				submitHandler: function(form) {
+					form.submit(); }
+				});
 	</script>
 
 	@stop

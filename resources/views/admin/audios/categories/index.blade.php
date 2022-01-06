@@ -158,6 +158,30 @@
 
 	@section('javascript')
 
+
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+				$('form[id="new-cat-form"]').validate({
+					rules: {
+					name : 'required',
+					image : 'required',
+					slug : 'required',
+					},
+					messages: {
+					title: 'This field is required',
+					image: 'This field is required',
+					},
+					submitHandler: function(form) {
+					form.submit();
+					}
+				});
+
+	</script>
+
+	{{--End validate --}}
+
 		<script src="{{ URL::to('/assets/admin/js/jquery.nestable.js') }} "></script>
 
 		<script type="text/javascript">

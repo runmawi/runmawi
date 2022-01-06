@@ -241,9 +241,24 @@
 			}
 		}
 
-		</script>
 
+	</script>
 
+{{-- validate --}}
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+			$('form[id="new-menu-form"]').validate({
+				rules: {
+					name : 'required',
+					url : 'required',
+				},
+				submitHandler: function(form) {
+				form.submit();
+				}
+			});
+
+</script>
 
 	@stop
 

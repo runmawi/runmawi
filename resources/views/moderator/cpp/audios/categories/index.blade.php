@@ -4,6 +4,12 @@
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
 
+<style>
+	.error{
+		color:red;
+	}
+</style>
+
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -160,6 +166,23 @@
 
 		<script src="{{ URL::to('/assets/admin/js/jquery.nestable.js') }} "></script>
 
+		{{-- validate --}}
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script>
+			$('form[id="new-cat-form"]').validate({
+			
+				rules: {
+					name : 'required',
+					slug : 'required',
+					image : 'required',
+					},
+				submitHandler: function(form) {
+					form.submit(); }
+				});
+		</script>
+		{{--End validate --}}
+
+
 		<script type="text/javascript">
 
 		jQuery(document).ready(function($){
@@ -214,5 +237,6 @@
     })
 </script>
 	@stop
+
 
 @stop

@@ -7,12 +7,17 @@
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 <style>
-    ''
+   ''
 </style>
 @stop
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<style>
+    .error{
+		color:red;
+	}
+</style>
 @section('content')
 <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -62,7 +67,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="cpp_live_video">
 
 		@if(!empty($video->created_at))
 			<div class="row">
@@ -338,6 +343,27 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
+	{{-- validate --}}
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="cpp_live_video"]').validate({
+           
+			rules: {
+                image : 'required',
+                title : 'required',
+                mp4_url : 'required',
+				description : 'required',
+				slug : 'required',
+				year : 'required',
+				details : 'required',
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
+	{{-- End validate --}}
+
 
 	<script type="text/javascript">
 $(document).ready(function(){
@@ -448,7 +474,6 @@ $(document).ready(function(){
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
-
 
 </script>
 	@stop

@@ -92,6 +92,7 @@
 </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 	<script type="text/javascript">
 
@@ -103,11 +104,15 @@
 				$('#new-cat-form').submit();
 			});
 		});
+		
+			// validate
+			$('form[id="new-cat-form"]').validate({
+			rules: {
+                devices_name : 'required',
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+
 	</script>
-
-
-	@stop
-
-
-
-
+@stop
