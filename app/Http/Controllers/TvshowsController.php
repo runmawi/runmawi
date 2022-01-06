@@ -95,7 +95,12 @@ class TvshowsController extends Controller
     } else {
             $latest_episodes = [];
     }
-
+    // $featured_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->count();
+    // if ($featured_episodes_count > 0) {
+    //     $featured_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
+    // } else {
+    //         $featured_episodes = [];
+    // }
 
 // Free content videos
     $free_series_count = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();

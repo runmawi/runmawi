@@ -92,7 +92,7 @@ if(isset($videos)) :
                                         <h6> <?php echo __($top_category_video->title); ?> </h6>
                                     </a>
                                     <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $top_category_video->age_restrict ?></div>
+                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $top_category_video->age_restrict.' '.'+' ?></div>
                                         <span class="text-white"><i class="fa fa-clock-o"></i>
                                             <?= gmdate('H:i:s', $top_category_video->duration); ?>
                                         </span>
