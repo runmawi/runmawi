@@ -660,9 +660,25 @@ class AdminSeriesController extends Controller
                 }else{
                     $active =$data['active'];
                 }
+
+                if(empty($data['banner'])){
+                    $banner = 0;
+                }else{
+                    $banner = 1;
+                }
+            if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+            }
+            if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
+            }
             // $episode->title =  $data['title'];
             $episodes->rating =  $data['rating'];
+            $episodes->slug =  $data['slug'];
+
             $episodes->type =  'file';
+            $episodes->banner =  $banner;
+
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
             $episodes->access =  $data['access'];
@@ -718,6 +734,16 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $episode = Episode::findOrFail($id);
+
+
+        if(empty($input['image']) && !empty($episode->image)){
+            $image = $episode->image ;
+        }else{
+            // $image = $input['image'] ;
+            $image = (isset($input['image'])) ? $input['image'] : '';
+
+        }
+       
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
@@ -754,7 +780,6 @@ class AdminSeriesController extends Controller
         }
 
         
-        $image = (isset($data['image'])) ? $data['image'] : '';
         
              if($request->hasFile('image')){
                if($image != ''  && $image != null){
@@ -768,17 +793,25 @@ class AdminSeriesController extends Controller
               $data['image']  = $file->getClientOriginalName();
               $file->move($image_path, $data['image']);
             } else {
-                $data['image'] = 'placeholder.jpg';
+                $data['image'] = $episode->image ;
             }
 
         if(empty($data['active'])){
             $data['active'] = 0;
         }
-
+        if(empty($data['slug'])){
+            $data['slug'] = $episode->slug;
+        }else{
+            $data['slug'] = $data['slug'];
+        }
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
-        
+        if(empty($data['banner'])){
+            $banner = 0;
+        }else{
+            $banner = 1;
+        }
           $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
         if($episode_upload != '' && $request->hasFile('episode_upload')) {
@@ -809,6 +842,8 @@ class AdminSeriesController extends Controller
         
         $episode->update($data);
         $episode->skip_recap =  $data['skip_recap'];
+        $episode->banner =  $banner;
+
         $episode->recap_start_time =  $data['recap_start_time'];
         $episode->season_id =  $data['season_id'];
         $episode->recap_end_time =  $data['recap_end_time'];

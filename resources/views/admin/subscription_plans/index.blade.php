@@ -43,7 +43,7 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title">New Plan</h4>
+                    <h4 class="modal-title">Add Plan</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					
 				</div>
@@ -110,12 +110,14 @@
 							</div>
 						
                                @foreach($devices as $val)
-							   <div class="col-md-4 d-flex" style="width: 33%; float:left;" >
+							   <div class="col-md-5" style="width: 33%; float:left;" >
+							   <!-- <div class="d-flex"> -->
 						<label> {{ $val->devices_name }}</label>
 						<label class="switch">
 									<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
 							<span class="slider round"></span>
 						</label>
+						<!-- </div> -->
                                </div>
                                @endForeach
 				    </form>
