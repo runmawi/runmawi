@@ -4793,24 +4793,29 @@ public function LocationCheck(Request $request){
   public function video_cast(Request $request)
   {
     $video_id = $request->video_id;
-
-    $video_cast_count = DB::table("video_artists")
-    ->join("artists","video_artists.artist_id", "=", "artists.id")
+    $video_cast_count = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
     ->select("artists.*")
     ->where("video_artists.video_id", "=", $video_id)
     ->count();
 
     if ($video_cast_count > 0) {
-      $video_cast = DB::table("video_artists")
-      ->join("artists","video_artists.artist_id", "=", "artists.id")
+      $status = "true";
+
+      $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
       ->select("artists.*")
       ->where("video_artists.video_id", "=", $video_id)
-      ->get();
+      ->get()
+      ->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
     } else {
       $video_cast = [];
+      $status = "false";
     }    
     $response = array(
-      'status' => 'true',
+      'status' => $status,
       'video_cast' => $video_cast
     );
     return response()->json($response, 200);
