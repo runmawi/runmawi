@@ -12,6 +12,9 @@
     .p1{
         font-size: 12px;
     }
+	.error{
+		color:red;
+	}
 </style>
 @section('content')
 <div id="content-page" class="content-page">
@@ -171,6 +174,22 @@
 	@section('javascript')
 
 		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
+
+{{-- validate --}}
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script>
+			$('form[id="new-cat-form"]').validate({
+				rules: {
+					name : 'required',
+					image : 'required',
+					slug : 'required',
+					},
+				submitHandler: function(form) {
+					form.submit(); }
+				});
+		</script>
+{{--End validate --}}
+	
 
 		<script type="text/javascript">
 

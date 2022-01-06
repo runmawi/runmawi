@@ -36,7 +36,7 @@
                         @endforeach
                         @endif	
 
-                    <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                    <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
                         <div class="col-md-6" style="width: 50%; float: left;">
 
@@ -179,3 +179,28 @@
         }, 3000);
     })
 </script>
+
+
+
+@section('javascript')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+$('form[id="Moderator_edit"]').validate({
+	rules: {
+        username : 'required',
+        mobile_number : 'required',
+        user_role : 'required',
+        email_id : 'required'
+	},
+	messages: {
+        username: 'This field is required',
+        mobile_number: 'This field is required',
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
+	@stop

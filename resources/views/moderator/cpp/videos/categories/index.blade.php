@@ -9,6 +9,9 @@
     .iq-card{
         padding: 15px;
     }
+	.error{
+        color: red;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -81,7 +84,7 @@
                     </div>  
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                         <label>Display In Home page:</label>
-                        <input type="radio" id="in_home" name="in_home" value="1">Yes
+                        <input type="radio" id="in_home" name="in_home" value="1" checked>Yes
                         <input type="radio" id="in_home" name="in_home" value="0">No
                     </div>
 
@@ -183,6 +186,21 @@
     </div>
 	@section('javascript')
 
+
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script>
+		$('form[id="new-cat-form"]').validate({
+           
+			rules: {
+                name : 'required',
+                image : 'required',
+                slug : 'required',
+                video_category_id : 'required'
+				},
+			submitHandler: function(form) {
+				form.submit(); }
+			});
+	</script>
 
 		<script type="text/javascript">
 

@@ -61,6 +61,12 @@
 		</div>
 	</div>
 
+	<style>
+	.error{
+        color: red;
+    }
+		</style>
+
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
 	<!-- Add New Modal -->
@@ -189,6 +195,22 @@ $('.dd').on('change', function(e) {
         }, 3000);
     })
 </script>
+
+
+{{-- validate --}}
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+$('form[id="new-cat-form"]').validate({
+	   rules: {
+		albumname : 'required',
+		album : 'required',
+		   },
+	   submitHandler: function(form) {
+		   form.submit(); }
+	   });
+</script>
+
 @stop
 
 @stop

@@ -37,7 +37,7 @@
         @endif   
 
 <div class="modal-body">
-    	<form  accept-charset="UTF-8" action="{{ URL::to('admin/devices/update') }}" method="post">
+    	<form  accept-charset="UTF-8" action="{{ URL::to('admin/devices/update') }}" method="post" id="devices_edit">
              <div class="form-group">
                             <label>  Coupon Name:</label>
                             <input type="text" id="devices_name" name="devices_name" value="{{ $devices->devices_name }}" class="form-control" placeholder="Enter ">
@@ -55,4 +55,22 @@
              </div>
     </div>
 </div>
+
+    @stop
+
+
+    @section('javascript')
+
+             {{-- validate --}}
+
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script>
+            $('form[id="devices_edit"]').validate({
+                rules: {
+                    devices_name : 'required',
+                    },
+                submitHandler: function(form) {
+                    form.submit(); }
+                });
+        </script>
     @stop

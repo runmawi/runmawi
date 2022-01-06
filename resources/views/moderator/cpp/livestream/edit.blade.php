@@ -3,6 +3,9 @@
     .p1{
         font-size: 12px!important;
     }
+	.error{
+		color:red;
+	}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -62,7 +65,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="cpp_live_edit">
 
 		@if(!empty($video->created_at))
 			<div class="row">
@@ -341,6 +344,26 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
+		{{-- validate --}}
+
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script>
+			$('form[id="cpp_live_edit"]').validate({
+			   
+				rules: {
+					title : 'required',
+					mp4_url : 'required',
+					description : 'required',
+					slug : 'required',
+					year : 'required',
+					details : 'required',
+					},
+				submitHandler: function(form) {
+					form.submit(); }
+				});
+		</script>
+		{{-- End validate --}}
 
 	<script type="text/javascript">
 
