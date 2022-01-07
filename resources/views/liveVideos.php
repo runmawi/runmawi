@@ -68,7 +68,7 @@
                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
                        <div class="episode-play-info">
                           <div class="episode-play">
-                             <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/'. $video->slug ?>">
+                             <a href="<?= URL::to('/') ?><?= '/live'.'/'. $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>
                           </div>
@@ -78,12 +78,13 @@
                        <div class="d-flex align-items-center justify-content-between">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                        </div>
-                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/'. $video->slug ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/'. $video->slug ?>">
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                     </div>
                  </div>
             </div>
+            <!-- @$video->categories->name -->
               <?php endforeach; 
         endif; ?>
          </div>
