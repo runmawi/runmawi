@@ -81,6 +81,8 @@ use App\BlockVideo;
 use App\BlockAudio;
 use App\HomeSetting;
 use App\Videoartist;
+use App\Seriesartist;
+
 
 
 
@@ -805,21 +807,21 @@ public function verifyandupdatepassword(Request $request)
       $dislike = "false";
     }
         
-                 if ($ppv_exist > 0) {
+    if ($ppv_exist > 0) {
 
-                        $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
+          $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
 
-                        if ( $ppv_time_expire > $current_date ) {
+          if ( $ppv_time_expire > $current_date ) {
 
-                            $ppv_video_status = "can_view";
+              $ppv_video_status = "can_view";
 
-                        } else {
-                             $ppv_video_status = "expired";
-                        }
+          } else {
+                $ppv_video_status = "expired";
+          }
 
-                  } else {
-                       $ppv_video_status = "pay_now";
-                  }
+    } else {
+          $ppv_video_status = "pay_now";
+    }
 
          $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
          $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
@@ -2625,13 +2627,23 @@ public function checkEmailExists(Request $request)
         $watchlaterstatus = 'false';
         $userrole = '';
       }
+      $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+      $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+      $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
+      $like = ($like_data == 1) ? "true" : "false";
+      $dislike = ($dislike_data == 1) ? "true" : "false";
+      $favorite = ($favoritestatus > 0) ? "true" : "false";
+
       $response = array(
         'status'=>'true',
         'message'=>'success',
         'episode' => $episode,
         'wishlist' => $wishliststatus,
         'watchlater' => $watchlaterstatus,
-        'userrole' => $userrole
+        'userrole' => $userrole,
+        'favorite' => $favorite,                               
+        'like' => $like,
+        'dislike' => $dislike,
       );
       return response()->json($response, 200);
     } 
@@ -2645,9 +2657,14 @@ public function checkEmailExists(Request $request)
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
+       if(!empty($episode)){
+        $status = true;
+       }else{
+        $status = true;
+       }
       
       $response = array(
-        'status'=>'true',
+        'status'=>$status,
         'message'=>'success',
         'related_episode' => $episode
       );
@@ -4821,7 +4838,36 @@ public function LocationCheck(Request $request){
     );
     return response()->json($response, 200);
   }
+  public function series_cast(Request $request)
+  {
+    $seriesid = $request->seriesid;
+    $series_cast_count = Seriesartist::join("artists","series_artists.artist_id", "=", "artists.id")
+    ->select("artists.*")
+    ->where("series_artists.series_id", "=", $seriesid)
+    ->count();
 
+    if ($series_cast_count > 0) {
+      $status = "true";
+
+      $series_cast = Seriesartist::join("artists","series_artists.artist_id", "=", "artists.id")
+      ->select("artists.*")
+      ->where("series_artists.series_id", "=", $seriesid)
+      ->get()
+      ->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+        return $item;
+      });
+
+    } else {
+      $series_cast = [];
+      $status = "false";
+    }    
+    $response = array(
+      'status' => $status,
+      'series_cast' => $series_cast
+    );
+    return response()->json($response, 200);
+  }
   
   public function Preference_genres()
   {

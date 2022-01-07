@@ -110,14 +110,17 @@
 							</div>
 						
                                @foreach($devices as $val)
-							   <div class="col-md-5" style="width: 33%; float:left;" >
-							   <!-- <div class="d-flex"> -->
+							   <div class="col-md-5 " style="width:35%; float:left;" >
+							   <div class="d-flex align-items-center justify-content-around">
+								   <div>
 						<label> {{ $val->devices_name }}</label>
+						</div>
+						<div>
 						<label class="switch">
 									<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
 							<span class="slider round"></span>
-						</label>
-						<!-- </div> -->
+						</label></div>
+						</div>
                                </div>
                                @endForeach
 				    </form>

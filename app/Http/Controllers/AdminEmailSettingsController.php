@@ -35,6 +35,7 @@ use Illuminate\Support\Str;
 use App\Artist;
 use App\Videoartist;
 use App\EmailSetting;
+use App\EmailTemplate;
 
 use GifCreator\GifCreator;
 
@@ -44,9 +45,11 @@ class AdminEmailSettingsController extends Controller
     public function index()
     {
         $email_settings = EmailSetting::find(1);
-        
+        $email_template = EmailTemplate::get();
+
         $data = array(
             'email_settings' => $email_settings,
+            'email_template' => $email_template,
             );
 
         return View('admin.settings.emailsetting', $data);
