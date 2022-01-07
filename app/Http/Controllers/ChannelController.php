@@ -193,7 +193,7 @@ class ChannelController extends Controller
             $view = new RecentView;
             $view->video_id  = $vid;
             $view->user_id  = Auth::user()->id;
-            $view->videos_category_id = $get_video_id->video_category_id;
+            // $view->videos_category_id = $get_video_id->video_category_id;
             if($sub_user != null){
               $view->sub_user  = $sub_user;
             }
@@ -233,10 +233,14 @@ class ChannelController extends Controller
            $user_id = Auth::user()->id;
 
            $categoryVideos = \App\Video::where('id',$vid)->first();
-           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-          $videocategory = $videocategory[0];
-           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+          //  $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+          //  $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          // $videocategory = $videocategory[0];
+          //  $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+          // $categoryVideos = [];
+          $videocategory = [];
+          $recomended = [];
+
            $playerui = Playerui::first();
            $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
 

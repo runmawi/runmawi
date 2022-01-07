@@ -672,8 +672,8 @@ $artists = [];
                  <div class="col-sm-4">
                  <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
                  <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->languages->name);?></span>
+                <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
+                <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
                 <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
                 <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
                <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
