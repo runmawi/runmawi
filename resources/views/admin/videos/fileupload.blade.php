@@ -385,16 +385,7 @@ data: {
                                                 @endif
                                             </div>
 
-                                            {{-- Block country --}}
-                                            <div class="col-sm-6 form-group">
-                                                <label><h5>Block Country</h5></label>
-                                                <p class="p1">Choose the countries for block the videos</p> 
-                                                <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                                                    @foreach($countries as $country)
-                                                        <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                         
 
                                             <div class="col-lg-12 form-group">
                                                 <h5 class="mb-3">Video description:</h5>
@@ -665,14 +656,27 @@ data: {
 
 
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    {{-- <div class="col-md-4">
                                         <label class="">Recommendation </label>
                                         <input type="text" class="form-control" id="Recommendation " name="Recommendation" >
+                                    </div> --}}
+
+
+                                {{-- Block country --}}
+                                    <div class="col-sm-4 form-group">
+                                        <label><h5>Block Country</h5></label>
+                                        <p class="p1">Choose the countries for block the videos</p> 
+                                        <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                 {{-- country --}}
                                     <div class="col-sm-4 form-group">
                                         <label><h5>Country</h5></label>
+                                        <p class="p1">Choose the countries videos</p> 
                                         <select  name="video_country" class="form-control" id="country">
                                         <option value="">Select Country </option>
                                             @foreach($countries as $country)

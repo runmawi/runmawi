@@ -236,7 +236,6 @@ Route::group([
     Route::get('ComingSoon ','ApiAuthController@ComingSoon');
     Route::post('video_cast', 'ApiAuthController@video_cast');
     Route::post('series_cast', 'ApiAuthController@series_cast');
-
-
+    Route::get('Welcome_Screen', 'ApiAuthController@Welcome_Screen');
 
 });

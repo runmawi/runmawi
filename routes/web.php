@@ -1188,7 +1188,15 @@ Route::post('Audioupload', 'ModeratorsUserController@Audioupload');
 Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
 // Multi Profile
+
+Route::PATCH('/Profile-details/{id}', 'MultiprofileController@profile_details')->name('profile_details');
+Route::get('/profile_delete/{id}', 'MultiprofileController@profile_delete')->name('profile_delete');
+Route::get('/profileDetails_edit/{id}', 'MultiprofileController@profileDetails_edit')->name('profileDetails_edit');
+
 Route::resources([
     'Choose-profile' => MultiprofileController::class,
 ]);
+
+Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
+
        
