@@ -219,7 +219,7 @@ data: {
 										<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Add the Audio slug:</p> 
-											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" />
+											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" readonly />
 										</div> 
 									</div>
 								</div>
@@ -525,11 +525,10 @@ $('#duration').mask('00:00:00');
 
 
 
- 
-
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
+
+
   var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
   $('#Next').hide();
@@ -542,7 +541,9 @@ $('#duration').mask('00:00:00');
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
         maxFilesize: 500,
-        acceptedFiles: "image/*,audio/*",
+        // acceptedFiles: "image/*,audio/*",
+        acceptedFiles: ".mp3",
+
     });
     myDropzone.on("sending", function(file, xhr, formData) {
        formData.append("_token", CSRF_TOKEN);
@@ -576,9 +577,21 @@ $('#duration').mask('00:00:00');
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+
+
+	$(document).ready(function(){
+		$('#cpp_audio_create').on('mouseup keypress blur change keydown', function(e) {
+		var title = $('#title').val();
+		var slug_name=title.replace(/ /g,"_");
+		$('#slug').val(slug_name);
+    })
+});
+
 </script>
 
 @section('javascript')
+
+
         @stop
 
 @stop

@@ -64,10 +64,15 @@ class MultiprofileController extends Controller
             $user_type = 'Normal';
         }
         $parent_id = Auth::User()->id;
-        $files = $request->image;
-        $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
-        Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
-
+        if($request->image != null){
+            $files = $request->image;
+            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+        }
+        else{
+            $filename='chooseimage.jpg';
+        }
+       
         $Multiprofile = Multiprofile::create([
             'parent_id'       => $parent_id,
             'user_name'       => $request->input('name'),
@@ -141,6 +146,42 @@ class MultiprofileController extends Controller
     public function destroy(Multiprofile $multiprofile)
     {
         //
+    }
+
+    public function profileDetails_edit(Request $request,$id)
+    {
+        $multiprofile = Multiprofile::where('id', '=', $id)->firstOrFail();
+        return view('multiprofile.profileEdit')
+        ->with('multiprofile', $multiprofile);
+    }
+
+    public function profile_details(Request $request,$id){
+
+        $Multiprofile = Multiprofile::find($id);  
+        if($request->user_type != ''){
+            $user_type = 'Kids';
+        }
+        else{
+            $user_type = 'Normal';
+        }
+
+        if($request->image != ''){  
+            $files = $request->image;
+            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+            $Multiprofile->Profile_Image = $filename;
+        }
+        $Multiprofile->user_name =  $request->get('name');  
+        $Multiprofile->user_type = $user_type;  
+        $Multiprofile->save();  
+
+        return redirect('myprofile');
+    }
+
+    public function profile_delete($id){
+
+        $profile_delete=Multiprofile::find($id)->delete();
+        return redirect('myprofile');
     }
 
 }

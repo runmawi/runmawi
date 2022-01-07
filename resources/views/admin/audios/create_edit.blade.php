@@ -216,7 +216,7 @@ data: {
 										<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Add the Audio slug:</p> 
-											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" />
+											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" readonly/>
 										</div> 
 									</div>
 								</div>
@@ -581,7 +581,8 @@ $('#duration').mask('00:00:00');
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
         maxFilesize: 500,
-        acceptedFiles: "image/*,audio/*",
+        // acceptedFiles: "image/*,audio/*",
+        acceptedFiles: ".mp3",
     });
     myDropzone.on("sending", function(file, xhr, formData) {
        formData.append("_token", CSRF_TOKEN);
@@ -634,6 +635,14 @@ $('form[id="audio_form"]').validate({
 	  form.submit();
 	}
   });
+
+  $(document).ready(function(){
+		$('#audio_form').on('mouseup keypress blur change keydown', function(e) {
+		var title = $('#title').val();
+		var slug_name=title.replace(/ /g,"_");
+		$('#slug').val(slug_name);
+    })
+});
 
 </script>
 
