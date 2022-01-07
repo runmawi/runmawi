@@ -6,12 +6,13 @@
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                          <?php  if(isset($livetream)) :
                          foreach($livetream as $video): ?>
+                         <!-- .@$video->categories->name. -->
                        <li class="slide-item">
-                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
                                  </a>      
                                  <div class="corner-text-wrapper">
@@ -25,16 +26,16 @@
                                     </div>                 
                                 </div>
                                 <div class="block-description" style="top:40px !important;">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                                                           
                                    <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                              </a>                       
                        </div>
-                       <a href="<?= URL::to('/') ?><?= '/live'.'/'.@$video->categories->name.'/' . $video->slug ?>">
+                       <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>
