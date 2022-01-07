@@ -1,6 +1,8 @@
 <?php $settings = App\Setting::first();
  $user = App\User::where('id','=',1)->first(); 
  $app_setting = App\AppSetting::where('id','=',1)->first();
+ $session = session()->all();
+
 ?>
 
 <footer class="mb-0">
@@ -75,9 +77,9 @@
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                        <?php if($user->package == 'Pro' ){ ?> 
-                          <li><a href="{{ URL::to('/cpp/signup') }}">Content Partner Portal</a></li>
-                          <li><a href="{{ URL::to('/advertiser/register') }}">Advertiser Portal</a></li>
+                        <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>

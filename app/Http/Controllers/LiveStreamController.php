@@ -40,9 +40,9 @@ class LiveStreamController extends Controller
        return view('liveVideos',$data);
     }
     
-    public function Play($category,$vid)
+    public function Play($vid)
         {
-        
+          // $category=null,
           $data = session()->all();
 
           $categoryVideos = LiveStream::where('slug',$vid)->first();

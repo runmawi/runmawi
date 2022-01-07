@@ -486,9 +486,9 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                    </ul>
                </div>
                <div class="col-md-12">
-            <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;">
+            <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
-             <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
                </div>
                <div class="trailor-video">
                         <a href="#video_containers"
@@ -504,7 +504,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                         </svg>
                         <span class="w-trailor">Watch Trailer</span>
                     </a>
-                    </div>
+                    </div> -->
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class=" d-flex mt-4 pull-right">     
                        <?php if($video->trailer != ''){ ?>
