@@ -159,11 +159,20 @@ $settings  = App\Setting::first();?>
 				<div class="panel-title font-weight-bold"><label>Genre</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p class="p1">Select a Series Category Below:</p>
-					<select class="form-control" id="genre_id" name="genre_id">
+					<!-- <select class="form-control" id="genre_id" name="genre_id">
 						@foreach($series_categories as $category)
 							<option value="{{ $category->id }}" @if(!empty($series->genre_id) && $series->genre_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						@endforeach
-					</select>
+					</select> -->
+					<select name="genre_id[]" id="genre_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+					@foreach($series_categories as $category)
+					@if(in_array($category->id, $category_id))
+					<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+					@else
+					<option value="{{ $category->id }}">{{ $category->name }}</option>
+					@endif 
+					@endforeach
+				</select>
 				</div> 
 			</div>
 			</div>
@@ -184,9 +193,13 @@ $settings  = App\Setting::first();?>
 				<div class="panel-title font-weight-bold"><label>Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<p class="p1">Select a Series Language Below:</p>
-					<select class="form-control" id="language" name="language" >
+					<select class="form-control js-example-basic-multiple" id="language" name="language[]"  style="width: 100%;" multiple="multiple" >
 						@foreach($languages as $language)
-							<option value="{{ $language->id }}" @if(!empty($series->language) && $series->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
+						@if(in_array($language->id, $languages_id))
+							<option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
+							@else
+							<option value="{{ $language->id }}" >{{ $language->name }}</option>					
+						@endif 
 						@endforeach
 					</select>
 				</div> 
