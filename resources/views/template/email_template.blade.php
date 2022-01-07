@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -19,13 +20,13 @@
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
+                    <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
                     </div>
                         </div>
                      </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table id="template" class="table table-striped table-bordered table movie_table " style="width:100%">
                               <thead>
                                  <tr>
                                     <th>ID</th>
@@ -71,6 +72,8 @@
       
          <script>
 $(document).ready(function(){
+
+   $('#template').DataTable();
 
  fetch_customer_data();
 

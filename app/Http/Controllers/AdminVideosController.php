@@ -980,39 +980,47 @@ if(!empty($artistsdata)){
                 $mp4_url = null;
             }   
 
-                if(!empty($data['m3u8_url'])){
-                    // dd($data['global_ppv']);
-                        $m3u8_url =$data['m3u8_url'];
-                    }else{
-                        $m3u8_url = null;
-                    }    
-                    if(!empty($data['title'])){
-                        // dd($data['global_ppv']);
-                        $video->title =$data['title'];
-                        }else{
-                        }  
-                        if(!empty($data['slug'])){
-                            // dd($data['global_ppv']);
-                            $video->slug =$data['slug'];
-                            }else{
-                            }  
-                        if(empty($data['publish_type'])){
-                            $video->publish_type =0;
-                            }  
-                    if(empty($data['publish_time'])){
-                        $video->publish_time =0;
-                        }  
+    if(!empty($data['m3u8_url'])){
+        // dd($data['global_ppv']);
+            $m3u8_url =$data['m3u8_url'];
+        }else{
+            $m3u8_url = null;
+        }    
+        if(!empty($data['title'])){
+            // dd($data['global_ppv']);
+            $video->title =$data['title'];
+            }else{
+            }  
+            if(!empty($data['slug'])){
+                // dd($data['global_ppv']);
+                $video->slug =$data['slug'];
+                }else{
+                }  
+            if(empty($data['publish_type'])){
+                $video->publish_type =0;
+                }  
+        if(empty($data['publish_time'])){
+            $video->publish_time =0;
+            }  
 
-                        if(!empty($data['Recommendation'])){
-                            $video->Recommendation =  $data['Recommendation'];
-                            } 
-        
-                            if(empty($data['age_restrict'])){
-                                $video->age_restrict=$data['age_restrict'];
-                                } 
+            if(!empty($data['Recommendation'])){
+                $video->Recommendation =  $data['Recommendation'];
+                } 
+
+                if(empty($data['age_restrict'])){
+                    $video->age_restrict=$data['age_restrict'];
+                    } 
+        // dd($data);
+        if(!empty($data['details'])){
+            $video->details = $data['details'];
+        }
+              if(!empty($data['details'])){
+            $video->details = $data['details'];
+        }
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->mp4_url =  $data['mp4_url'];
+         $video->duration = $data['duration'];
          $video->language=$request['language'];
          $video->skip_recap =  $request['skip_recap'];
          $video->recap_start_time =  $request['recap_start_time'];

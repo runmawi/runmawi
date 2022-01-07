@@ -293,7 +293,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
-                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
@@ -513,7 +513,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
-                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
@@ -729,7 +729,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
-                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
@@ -947,7 +947,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
-                            <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>

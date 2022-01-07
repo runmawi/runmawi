@@ -135,11 +135,25 @@ class ChannelController extends Controller
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
         $vid = $get_video_id->id;
         // echo "<pre>"; 
-        $cast = Videoartist::where('video_id','=',$vid)->get();
-          foreach($cast as $key => $artist){
-            $artists[] = Artist::where('id','=',$artist->artist_id)->get();
+        $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+        ->select("artists.*")
+        ->where("video_artists.video_id", "=", $vid)
+        ->count();
+        if($artistscount > 0){
+        $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+        ->select("artists.*")
+        ->where("video_artists.video_id", "=", $vid)
+        ->get();
+        // dd($artists);
 
-          }
+      }else{
+        $artists = [];
+      }
+        // $cast = Videoartist::where('video_id','=',$vid)->get();
+        //   foreach($cast as $key => $artist){
+        //     $artists[] = Artist::where('id','=',$artist->artist_id)->get();
+
+        //   }
           // print_r();
           // exit();
   
@@ -273,7 +287,7 @@ class ChannelController extends Controller
                     }
             
             
-                $artists = [];
+                // $artists = [];
                 $payment_settings = PaymentSetting::first();  
                 $mode = $payment_settings->live_mode ;
                   if($mode == 0){

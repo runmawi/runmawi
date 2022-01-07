@@ -209,7 +209,7 @@ endif; ?>
 </script>
 -->
 <!-- Banners -->
-<?php if(isset($banner)) :
+<?php if(isset($banner)) : 
     foreach($banner as $key => $slider_video): 
             ?>
 

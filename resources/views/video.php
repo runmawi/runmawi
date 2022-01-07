@@ -485,10 +485,30 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                     <li class="text-white"><?//= $videocategory ;?></li>
                    </ul>
                </div>
+               <div class="col-md-12">
+            <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;">
+            <!-- <div id="video-trailer" class="mfp-hide"> -->
+             <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
+               </div>
+               <div class="trailor-video">
+                        <a href="#video_containers"
+                            class="video-open playbtn">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-miterlimit="10"
+                            points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                        </svg>
+                        <span class="w-trailor">Watch Trailer</span>
+                    </a>
+                    </div>
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class=" d-flex mt-4 pull-right">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                           <!-- <div id="videoplay" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div> -->
                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                        <?php } ?>
                    </div>
@@ -498,7 +518,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
        <!-- Year, Running time, Age -->
          <div class="d-flex align-items-center text-white text-detail">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
-            <span class="ml-3"><?php echo __($video->duration);?></span>
+            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
          </div>
            
@@ -598,22 +618,41 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                </div>
            </div>
            <?php   } ?>
+           <?php if(!empty($video->description) ) { ?>
 
-           <h4>Cast & crew</h4>
+<h4>Description</h4>
+<div class="text-white">
+    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+</div>
+<?php  }?>
+<br>
+
+<?php if(!empty($video->details) ) { ?>
+
+<h4>Links & details</h4>
+<div class="text-white">
+    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
+</div>
+<?php  }?>
+<br>
+           <?php if(Auth::guest()){
+$artists = [];
+}else{
+
+}
+ if(count($artists) > 0 ) { ?>
+ <h4>Cast & crew</h4>
          <?php
            foreach($artists as $key => $artist){
-           foreach($artist as $key => $value){
+          //  foreach($artist as $key => $value){
          ?>
-           <p class="trending-dec w-100 mb-0 text-white mt-2" >Directed by : <?php echo $value->artist_name ; ?> </p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Description by  :  <?php echo $value->description ; ?></p>&nbsp;&nbsp;
-           <!-- <p class="trending-dec w-100 mb-0 text-white" >Produced by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Music by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp;
-           <p class="trending-dec w-100 mb-0 text-white" >Description by  :<?php echo $value->artist_name ; ?></p>&nbsp;&nbsp; -->
+           <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
+           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>&nbsp;&nbsp;
     <?php } }  ?>
            
-       <div class="text-white">
+       <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-       </div>
+       </div> -->
   <!-- Button trigger modal -->
 
    <!-- Modal -->
