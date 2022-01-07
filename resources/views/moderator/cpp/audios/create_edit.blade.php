@@ -219,7 +219,7 @@ data: {
 										<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Add the Audio slug:</p> 
-											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" />
+											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" readonly />
 										</div> 
 									</div>
 								</div>
@@ -333,11 +333,20 @@ data: {
 											<div class="panel-title"><label>Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Category Below:</p>
-												<select id="audio_category_id" name="audio_category_id" class="form-control">
+												<!-- <select id="audio_category_id" name="audio_category_id" class="form-control">
 													@foreach($audio_categories as $category)
 													<option value="{{ $category->id }}" @if(!empty($audio->audio_category_id) && $audio->audio_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 													@endforeach
-												</select>
+												</select> -->
+											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple" >
+						                        @foreach($audio_categories as $category)
+                                                @if(in_array($category->id, $category_id))
+												<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+												@else
+												<option value="{{ $category->id }}">{{ $category->name }}</option>
+												@endif      
+												@endforeach
+											</select>
 											</div> 
 										</div>
 									</div>
@@ -358,11 +367,20 @@ data: {
 											<div class="panel-title"><label>Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Language Below:</p>
-												<select class="form-control" id="language" name="language">
+												<!-- <select class="form-control" id="language" name="language">
 													@foreach($languages as $language)
 													<option value="{{ $language->id }}" @if(!empty($audio->language) && $audio->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
 													@endforeach
-												</select>
+												</select> -->
+											<select class="form-control js-example-basic-multiple" id="language" name="language[]"  style="width: 100%;" multiple="multiple" >
+												@foreach($languages as $language)
+												@if(in_array($language->id, $languages_id))
+												<option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
+												@else
+												<option value="{{ $language->id }}" >{{ $language->name }}</option>					
+												@endif 
+												@endforeach
+											</select>
 											</div> 
 										</div>
 									</div>
@@ -525,11 +543,10 @@ $('#duration').mask('00:00:00');
 
 
 
- 
-
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
+
+
   var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
   $('#Next').hide();
@@ -542,7 +559,9 @@ $('#duration').mask('00:00:00');
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
         maxFilesize: 500,
-        acceptedFiles: "image/*,audio/*",
+        // acceptedFiles: "image/*,audio/*",
+        acceptedFiles: ".mp3",
+
     });
     myDropzone.on("sending", function(file, xhr, formData) {
        formData.append("_token", CSRF_TOKEN);
@@ -576,9 +595,21 @@ $('#duration').mask('00:00:00');
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+
+
+	$(document).ready(function(){
+		$('#cpp_audio_create').on('mouseup keypress blur change keydown', function(e) {
+		var title = $('#title').val();
+		var slug_name=title.replace(/ /g,"_");
+		$('#slug').val(slug_name);
+    })
+});
+
 </script>
 
 @section('javascript')
+
+
         @stop
 
 @stop

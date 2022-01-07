@@ -330,11 +330,17 @@ data: {
 
                                             <div class="col-sm-6 form-group" >
                                                 <label class="p-2">Select Video Category :</label>
-                                                <select class="form-control" id="video_category_id" name="video_category_id">
+                                                <!-- <select class="form-control" id="video_category_id" name="video_category_id">
                                                     <option value="">Choose Category</option>
                                                     
                                                     @foreach($video_categories as $category)
                                                     <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select> -->
+                                                <select class="form-control js-example-basic-multiple" id="video_category_id" name="video_category_id[]" style="width: 100%;" multiple="multiple">
+                                                    <!-- <option value="">Choose category</option> -->
+                                                    @foreach($video_categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -365,10 +371,16 @@ data: {
 
                                             <div class="col-sm-6 form-group">
                                                 <label class="p-2">Choose Language:</label>
-                                                <select class="form-control" id="language" name="language">
+                                                <!-- <select class="form-control" id="language" name="language">
                                                     <option selected disabled="">Choose Language</option>
                                                     @foreach($languages as $language)
                                                         <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
+                                                    @endforeach
+                                                </select> -->
+                                                <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                                                    <!-- <option selected disabled="">Choose Language</option> -->
+                                                    @foreach($languages as $language)
+                                                        <option value="{{ $language->id }}" >{{ $language->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>   
@@ -689,15 +701,19 @@ data: {
 </script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
+
+
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
 <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
-
-<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
   <script type="text/javascript">
  $ = jQuery;
 

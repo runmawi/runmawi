@@ -21,6 +21,8 @@ use Session;
 use App\Setting as Setting;
 use Illuminate\Support\Str;
 use App\Users as Users;
+use App\LiveLanguage as LiveLanguage;
+use App\CategoryLive as CategoryLive;
 
 class CPPAdminLiveStreamController extends Controller
 {
@@ -72,6 +74,8 @@ class CPPAdminLiveStreamController extends Controller
                 // 'admin_user' => Auth::user(),
                 'video_categories' => LiveCategory::all(),
                 'languages' => Language::all(),
+                'category_id' => [],
+                'languages_id' => [],
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
         }else{
@@ -282,6 +286,8 @@ class CPPAdminLiveStreamController extends Controller
             // 'admin_user' => Auth::user(),
             'video_categories' => LiveCategory::all(),
             'languages' => Language::all(),
+            'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
@@ -403,6 +409,38 @@ class CPPAdminLiveStreamController extends Controller
         $video->publish_time = $request['publish_time'];
         $video->user_id =  $user_id;
         $video->save();
+
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryLive::where('live_id', $video->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryLive;
+                    $category->live_id = $video->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                LiveLanguage::where('live_id', $video->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new LiveLanguage;
+                    $serieslanguage->live_id = $video->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        }
+
         return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }else{
         return Redirect::to('/blocked');

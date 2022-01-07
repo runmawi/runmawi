@@ -40,6 +40,9 @@ use App\AgeCategory as AgeCategory;
 use App\Setting as Setting;
 use DB;
 use Session;
+use App\LanguageVideo;
+use App\CategoryVideo;
+
 
 class CPPAdminVideosController extends Controller
 {
@@ -689,6 +692,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             'settings' => $settings,
             'age_categories' => AgeCategory::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
+            'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
             );
 
         return View::make('moderator.cpp.videos.create_edit', $data); 
@@ -1009,6 +1014,36 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $artist->video_id = $video->id;
                     $artist->artist_id = $value;
                     $artist->save();
+                }
+
+            }
+        }
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryVideo::where('video_id', $video->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryVideo;
+                    $category->video_id = $video->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                LanguageVideo::where('video_id', $video->id)->delete();
+                foreach ($languagevideo as $key => $value) {
+                    $languagevideo = new LanguageVideo;
+                    $languagevideo->video_id = $video->id;
+                    $languagevideo->language_id = $value;
+                    $languagevideo->save();
                 }
 
             }
@@ -1390,7 +1425,36 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             
                         }
                     }
+                    if(!empty($data['video_category_id'])){
+                        $category_id = $data['video_category_id'];
+                        unset($data['video_category_id']);
+                        /*save artist*/
+                        if(!empty($category_id)){
+                            CategoryVideo::where('video_id', $video->id)->delete();
+                            foreach ($category_id as $key => $value) {
+                                $category = new CategoryVideo;
+                                $category->video_id = $video->id;
+                                $category->category_id = $value;
+                                $category->save();
+                            }
             
+                        }
+                    }
+                    if(!empty($data['language'])){
+                        $language_id = $data['language'];
+                        unset($data['language']);
+                        /*save artist*/
+                        if(!empty($language_id)){
+                            LanguageVideo::where('video_id', $video->id)->delete();
+                            foreach ($language_id as $key => $value) {
+                                $languagevideo = new LanguageVideo;
+                                $languagevideo->video_id = $video->id;
+                                $languagevideo->language_id = $value;
+                                $languagevideo->save();
+                            }
+            
+                        }
+                    }
                      if(!empty( $files != ''  && $files != null)){
                     /*if($request->hasFile('subtitle_upload'))
                     {
