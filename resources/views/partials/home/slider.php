@@ -66,15 +66,15 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
-<a href="<?php echo URL::to('/') ?><?= '/live/play/' . $slider_video->id ?>"
+<a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="black bl" href="<?php echo URL::to('/') ?><?= '/live/play/' . $slider_video->id ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="black bl" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>
 <div class="trailor-video">
-    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $slider_video->slug ?>"
+    <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
         class="video-open playbtn">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
@@ -121,9 +121,9 @@ endif; ?>
                         </div>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
-                            <a href="<?php echo URL::to('/') ?><?= '/live/play/' . $videos->id ?>"
+                            <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-                                <a class="black bl" href="<?php echo URL::to('/') ?><?= '/live/play/' . $videos->id ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                <a class="black bl" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                             </div>    
                 </div>
                 </div>

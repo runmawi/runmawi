@@ -131,9 +131,10 @@ class ChannelController extends Controller
        
         if(!empty($data['password_hash'])){
 
-
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
+
         $vid = $get_video_id->id;
+
         // echo "<pre>"; 
         $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
         ->select("artists.*")
@@ -149,6 +150,7 @@ class ChannelController extends Controller
       }else{
         $artists = [];
       }
+
         // $cast = Videoartist::where('video_id','=',$vid)->get();
         //   foreach($cast as $key => $artist){
         //     $artists[] = Artist::where('id','=',$artist->artist_id)->get();
@@ -177,6 +179,7 @@ class ChannelController extends Controller
 
         $current_date = date('Y-m-d h:i:s a', time()); 
          $view_increment = $this->handleViewCount_movies($vid);
+
         if ( !Auth::guest() ) {
 
           $sub_user = Session::get('subuser_id');
@@ -225,6 +228,7 @@ class ChannelController extends Controller
           }else {
             $watchtime = 0;
           }
+
            $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
            $user_id = Auth::user()->id;
 
