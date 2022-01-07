@@ -43,6 +43,7 @@ use App\LoggedDevice;
 use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
 use App\Language;
+use App\Multiprofile;
 
 
 
@@ -407,6 +408,18 @@ class AdminUsersController extends Controller
         $videocategory = VideoCategory::all();
         $language = Language::all();
 
+// Multiuser profile details
+        $Multiuser = Session::get('subuser_id');
+      
+        if($Multiuser != null){
+              $users = Multiprofile::where('id',$Multiuser)->pluck('id')->first();
+              $profile_details = Multiprofile::where('id', $users)->get();
+        } else{  
+            $users =User::where('id',Auth::user()->id)->pluck('id')->first();   
+            $profile_details = Multiprofile::where('parent_id', $users)->get();
+        }
+
+
         $video = array_unique($videos);
     	$data = array(
     		'videos' => $video,
@@ -416,6 +429,8 @@ class AdminUsersController extends Controller
     		'user_role' => $user_role,
     		'post_route' => URL::to('/profile/update'),
             'language' => $language,
+            'profile_details' => $profile_details,
+            'Multiuser' => $Multiuser,
     		);
     	return View::make('myprofile', $data);
           }

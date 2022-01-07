@@ -82,6 +82,7 @@ use App\BlockAudio;
 use App\HomeSetting;
 use App\Videoartist;
 use App\Seriesartist;
+use App\WelcomeScreen;
 
 
 
@@ -4990,5 +4991,16 @@ public function LocationCheck(Request $request){
 
       return response()->json([
         'Top_category_videos' => $top_category_videos], 200);
+  }
+
+  public function Welcome_Screen()
+  {
+     $Screen =WelcomeScreen::all()->map(function ($item) {
+      $item['welcome_images_link'] = URL::to('/').'/public/uploads/settings/'.$item->welcome_images;
+      return $item;
+    });
+
+     return response()->json([
+      'WelcomeScreen' => $Screen], 200);
   }
 }

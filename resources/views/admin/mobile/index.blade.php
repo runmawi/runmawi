@@ -75,6 +75,30 @@
 
 
 
+{{-- Welcome screen --}}
+
+<div class="admin-section-title">
+	<h5><i class="entypo-credit-card"></i>Welcome Setting</h5> 
+</div>
+
+	<form method="post" action="{{ URL::to('welcome-screen') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+		@csrf     
+		<div class="row">
+			<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title"><label>Welcome Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body " style="display: block;" > 
+					<p>Upload Welcome Screen:(960dp x 720dp)</p> 
+					<input type="file" multiple="true" class="form-control" name="welcome_image[]" id="welcome_image" />
+				</div> 
+			</div>
+
+            <div class="col-md-6" align="right">
+                <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
+            </div>
+		</div>
+	</form>
+
+{{--End Welcome screen --}}
 
 
 	<div class="clear"></div>
@@ -137,6 +161,9 @@
 
 </div>
 </div>
+
+
+
 
 	@section('javascript')
 
