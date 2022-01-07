@@ -74,7 +74,7 @@
                                        <img width="20" src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
                                         0 @endif</td>
 
-                                    <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td>
+                                    <td>@if(isset($video->category['categoryname']->name)) {{ @$video->category['categoryname']->name }} @endif</td>
                                     <!-- <td>{{ $video->year }}</td> -->
                                     <!-- <td>{{ $video->draft }}</td> -->
                                     <!-- <td>
