@@ -38,6 +38,10 @@ class Video extends Model
 		return $this->hasMany('App\VideoResolution','video_id','id');
 	}
 
+	public function category(){
+		return $this->hasMany('App\CategoryVideo','video_id','id');
+	}
+
 	public function videosubtitles(){
 		return $this->hasMany('App\VideoSubtitle','video_id','id');
 	}
