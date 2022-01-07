@@ -2613,26 +2613,36 @@ public function checkEmailExists(Request $request)
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
         $wishliststatus =  ($cnt == 1) ? "true" : "false";
-        $userrole = User::find($user_id)->pluck('role');
+        // $userrole = User::find($user_id)->pluck('role');
       }else{
         $wishliststatus = 'false';
-        $userrole = '';
+        // $userrole = '';
       } 
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
         $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
-        $userrole = User::find($user_id)->pluck('role');
+        // $userrole = User::find($user_id)->pluck('role');
       }else{
         $watchlaterstatus = 'false';
-        $userrole = '';
+        // $userrole = '';
       }
+      if($request->user_id != ''){
       $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
       $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
       $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
       $like = ($like_data == 1) ? "true" : "false";
       $dislike = ($dislike_data == 1) ? "true" : "false";
       $favorite = ($favoritestatus > 0) ? "true" : "false";
+      // $userrole = User::find($user_id)->pluck('role');
+
+    }else{
+      $like = 'false';
+      $dislike = 'false';
+      $favorite = 'false';
+      // $userrole = '';
+    }
+        $userrole = User::where('id','=',$user_id)->pluck('role');
 
       $response = array(
         'status'=>'true',
@@ -2652,15 +2662,17 @@ public function checkEmailExists(Request $request)
     public function relatedepisodes(Request $request){
       
       $episodeid = $request->episodeid;
+      $episode_count = Episode::where('id','=',$episodeid)->count();
+      if($episode_count > 0){
       $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
       $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
-       if(!empty($episode)){
         $status = true;
        }else{
-        $status = true;
+         $episode = [];
+        $status = false;
        }
       
       $response = array(

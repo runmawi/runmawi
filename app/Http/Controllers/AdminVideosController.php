@@ -43,6 +43,9 @@ use App\AgeCategory as AgeCategory;
 use App\Setting as Setting;
 use DB;
 use App\BlockVideo;
+use App\LanguageVideo;
+use App\CategoryVideo;
+
 
 class AdminVideosController extends Controller
 {
@@ -57,9 +60,18 @@ class AdminVideosController extends Controller
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
         else:
-            $videos = Video::orderBy('created_at', 'DESC')->paginate(9);
+            // $videos = Video::orderBy('created_at', 'DESC')->paginate(9);
+        $videos = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
+
         endif;
-     
+        // $video = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
+        // echo "<pre>";
+        // foreach($video as $key => $value){
+        //     print_r(@$value->category['categoryname']->name);
+
+        // }
+        // exit();
+    // $video = Video::with('category.categoryname')->where('id',156)->get();
         $user = Auth::user();
 
         $data = array(
@@ -677,6 +689,8 @@ if(!empty($artistsdata)){
         $settings = Setting::first();
         
        $video = Video::find($id);
+
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
@@ -693,6 +707,10 @@ if(!empty($artistsdata)){
             'age_categories' => AgeCategory::all(),
             'countries' => CountryCode::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
+            'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
+
+
             );
 
         return View::make('admin.videos.create_edit', $data); 
@@ -717,7 +735,7 @@ if(!empty($artistsdata)){
             'title' => 'required|max:255',
             'video_country' => 'required'        
         ]);
-       
+
             $id = $data['id'];
             /*Advertisement Video update starts*/
             if($data['ads_id'] != 0){
@@ -1064,7 +1082,36 @@ if(!empty($artistsdata)){
 
             }
         }
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryVideo::where('video_id', $video->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryVideo;
+                    $category->video_id = $video->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
 
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                LanguageVideo::where('video_id', $video->id)->delete();
+                foreach ($languagevideo as $key => $value) {
+                    $languagevideo = new LanguageVideo;
+                    $languagevideo->video_id = $video->id;
+                    $languagevideo->language_id = $value;
+                    $languagevideo->save();
+                }
+
+            }
+        }
         
         if(!empty($data['country'])){
             $country = $data['country'];
@@ -1231,7 +1278,10 @@ if(!empty($artistsdata)){
                 return redirect('/home');
             }
             $data = $request->all();
- 
+           
+
+            // dd($data['video_category_id']);
+
             $validatedData = $request->validate([
                 'title' => 'required|max:255',
                 'video_country' =>'required',
@@ -1416,8 +1466,18 @@ if(!empty($artistsdata)){
             if(!empty($data['age_restrict'])) {
                 $video->age_restrict =  $data['age_restrict'];
            }
+
+
+           if(!empty($data['video_category_id'])){
+            $video_category_id = implode(',',$request->video_category_id);
+
+            $category_id = $video_category_id;
+            }
+
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
+
+             $video->video_category_id =  $category_id;
              $video->skip_recap =  $data['skip_recap'];
              $video->recap_start_time =  $data['recap_start_time'];
              $video->recap_end_time =  $data['recap_end_time'];
@@ -1441,6 +1501,7 @@ if(!empty($artistsdata)){
             $video->enable =  1;
 
              $video->update($data);
+            //  dd($video);
 
              $video = Video::findOrFail($id);
              $users = User::all();
@@ -1455,6 +1516,36 @@ if(!empty($artistsdata)){
         //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
         //     }
          
+            }
+            if(!empty($data['video_category_id'])){
+                $category_id = $data['video_category_id'];
+                unset($data['video_category_id']);
+                /*save artist*/
+                if(!empty($category_id)){
+                    CategoryVideo::where('video_id', $video->id)->delete();
+                    foreach ($category_id as $key => $value) {
+                        $category = new CategoryVideo;
+                        $category->video_id = $video->id;
+                        $category->category_id = $value;
+                        $category->save();
+                    }
+    
+                }
+            }
+            if(!empty($data['language'])){
+                $language_id = $data['language'];
+                unset($data['language']);
+                /*save artist*/
+                if(!empty($language_id)){
+                    LanguageVideo::where('video_id', $video->id)->delete();
+                    foreach ($language_id as $key => $value) {
+                        $languagevideo = new LanguageVideo;
+                        $languagevideo->video_id = $video->id;
+                        $languagevideo->language_id = $value;
+                        $languagevideo->save();
+                    }
+    
+                }
             }
              if(!empty($data['artists'])){
                 $artistsdata = $data['artists'];
