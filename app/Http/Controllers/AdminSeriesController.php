@@ -41,6 +41,8 @@ use App\Seriesartist;
 use GifCreator\GifCreator;
 use FFMpeg\Coordinate\TimeCode;
 use File;
+use App\SeriesCategory as SeriesCategory;
+use App\SeriesLanguage as SeriesLanguage;
 
 class AdminSeriesController extends Controller
 {
@@ -97,6 +99,8 @@ class AdminSeriesController extends Controller
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
+            'category_id' => [],
+            'languages_id' => [],
             
             );
         return View::make('admin.series.create_edit', $data);
@@ -128,6 +132,14 @@ class AdminSeriesController extends Controller
             unset($data['artists']);
         }
 
+        if(!empty($data['genre_id'])){
+            $genre_iddata = $data['genre_id'];
+            unset($data['genre_id']);
+        }
+        if(!empty($data['language'])){
+            $languagedata = $data['language'];
+            unset($data['language']);
+        }
                  $path = public_path().'/uploads/videos/';
                  $image_path = public_path().'/uploads/images/';
         
@@ -185,6 +197,8 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+        // dd($data['genre_id']);
+
         $series = Series::create($data);
         
         if(!empty($artistsdata)){
@@ -196,6 +210,32 @@ class AdminSeriesController extends Controller
             }
             
         }
+
+            /*save artist*/
+            if(!empty($genre_iddata)){
+                SeriesCategory::where('series_id', $series->id)->delete();
+                foreach ($genre_iddata as $key => $value) {
+                    $category = new SeriesCategory;
+                    $category->series_id = $series->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        
+
+            /*save artist*/
+            if(!empty($languagedata)){
+                SeriesLanguage::where('series_id', $series->id)->delete();
+                foreach ($languagedata as $key => $value) {
+                    $serieslanguage = new SeriesLanguage;
+                    $serieslanguage->series_id = $series->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        
        // $this->addUpdateSeriesTags($series, $tags);
 
         $resolution_data['series_id'] = $series->id;
@@ -251,7 +291,7 @@ class AdminSeriesController extends Controller
             //$episode = Episode::all();
             $seasons = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
-                    
+                    // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -263,6 +303,8 @@ class AdminSeriesController extends Controller
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
+            'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             );
 
 
@@ -361,6 +403,37 @@ class AdminSeriesController extends Controller
 
             }
         }
+        if(!empty($data['genre_id'])){
+            $category_id = $data['genre_id'];
+            unset($data['genre_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                SeriesCategory::where('series_id', $series->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new SeriesCategory;
+                    $category->series_id = $series->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                SeriesLanguage::where('series_id', $series->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new SeriesLanguage;
+                    $serieslanguage->series_id = $series->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        }
+        
         if(empty($data['series_upload'])){
             unset($data['series_upload']);
         } 

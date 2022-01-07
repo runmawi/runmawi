@@ -42,6 +42,9 @@ use App\SystemSetting as SystemSetting;
 use Session;
 use App\CountryCode;
 use App\BlockAudio;
+use App\CategoryAudio;
+use App\AudioLanguage;
+
 
 
 
@@ -119,6 +122,8 @@ class AdminAudioController extends Controller
             'audio_artist' => [],
             'countries' => $countries,
             'settings' => Setting::first(),
+            'category_id' => [],
+            'languages_id' => [],
             );
          
         return View::make('admin.audios.create_edit', $data);
@@ -170,6 +175,14 @@ class AdminAudioController extends Controller
             $artistsdata = $data['artists'];
             unset($data['artists']);
         }
+        if(!empty($data['audio_category_id'])){
+            $category_id = $data['audio_category_id'];
+            unset($data['audio_category_id']);
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+        }
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
         $image = (isset($data['image'])) ? $data['image'] : '';
@@ -218,6 +231,8 @@ class AdminAudioController extends Controller
             }
             
         }
+       
+    
         
         $audio_upload = $request->file('audio_upload');
  $ext = $audio_upload->extension();
@@ -280,7 +295,7 @@ class AdminAudioController extends Controller
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $audio = Audio::find($id);
-
+        // dd(AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray());
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Audio',
             'audio' => $audio,
@@ -294,6 +309,8 @@ class AdminAudioController extends Controller
             'settings' => Setting::first(),
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
             'countries' => $countries,
+            'category_id' => CategoryAudio::where('audio_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
             );
 
         return View::make('admin.audios.edit', $data);
@@ -426,6 +443,36 @@ class AdminAudioController extends Controller
             }
         }
 
+ if(!empty($data['audio_category_id'])){
+            $category_id = $data['audio_category_id'];
+            unset($data['audio_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryAudio::where('audio_id', $audio->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryAudio;
+                    $category->audio_id = $audio->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                AudioLanguage::where('audio_id', $audio->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new AudioLanguage;
+                    $serieslanguage->audio_id = $audio->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        }
         if(empty($data['audio_upload'])){
             unset($data['audio_upload']);
         } else {
@@ -664,7 +711,7 @@ class AdminAudioController extends Controller
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
-        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+        }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
         }
 
@@ -751,6 +798,36 @@ class AdminAudioController extends Controller
                     $artist->audio_id = $id;
                     $artist->artist_id = $value;
                     $artist->save();
+                }
+
+            }
+        }
+        if(!empty($data['audio_category_id'])){
+            $category_id = $data['audio_category_id'];
+            unset($data['audio_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryAudio::where('audio_id', $audio->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryAudio;
+                    $category->audio_id = $audio->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                AudioLanguage::where('audio_id', $audio->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new AudioLanguage;
+                    $serieslanguage->audio_id = $audio->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
                 }
 
             }

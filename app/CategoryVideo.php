@@ -8,7 +8,7 @@ class CategoryVideo extends Model
 {
     protected $guarded = array();
 
-    protected $table = 'categoryvideo';
+    protected $table = 'categoryvideos';
 
     public static $rules = array();
 

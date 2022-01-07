@@ -39,7 +39,8 @@ use App\Audioartist;
 use App\AudioAlbums;
 use DB;
 use Session;
-
+use App\CategoryAudio;
+use App\AudioLanguage;
 
 
 class CPPAdminAudioController extends Controller
@@ -101,6 +102,8 @@ class CPPAdminAudioController extends Controller
             'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => [],
+            'category_id' => [],
+            'languages_id' => [],
             );
         return View::make('moderator.cpp.audios.create_edit', $data);
     }else{
@@ -254,6 +257,8 @@ class CPPAdminAudioController extends Controller
             'audio_albums' => AudioAlbums::all(),
             'artists' => Artist::all(),
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
+            'category_id' => CategoryAudio::where('audio_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
             );
 
         return View::make('moderator.cpp.audios.edit', $data);
@@ -348,6 +353,37 @@ class CPPAdminAudioController extends Controller
 
             }
         }
+        if(!empty($data['audio_category_id'])){
+            $category_id = $data['audio_category_id'];
+            unset($data['audio_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryAudio::where('audio_id', $audio->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryAudio;
+                    $category->audio_id = $audio->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                AudioLanguage::where('audio_id', $audio->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new AudioLanguage;
+                    $serieslanguage->audio_id = $audio->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        }
+
 
         if(empty($data['audio_upload'])){
             unset($data['audio_upload']);
@@ -661,6 +697,37 @@ class CPPAdminAudioController extends Controller
                     $artist->audio_id = $id;
                     $artist->artist_id = $value;
                     $artist->save();
+                }
+
+            }
+        }
+
+        if(!empty($data['audio_category_id'])){
+            $category_id = $data['audio_category_id'];
+            unset($data['audio_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryAudio::where('audio_id', $audio->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryAudio;
+                    $category->audio_id = $audio->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                AudioLanguage::where('audio_id', $audio->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new AudioLanguage;
+                    $serieslanguage->audio_id = $audio->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
                 }
 
             }

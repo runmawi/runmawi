@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LanguageVideo extends Model
+class CategoryLive extends Model
 {
     protected $guarded = array();
 
-    protected $table = 'languagevideos';
+    protected $table = 'livecategories';
 
     public static $rules = array();
 

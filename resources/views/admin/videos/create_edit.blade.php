@@ -109,7 +109,7 @@
                                     
                                      <div class="col-sm-6 form-group" >
                                        <label class="p-2">Select Video Category :</label>
-                                       <select class="form-control js-example-basic-multiple"  name="video_category_id[]"  id="video_category_id"  multiple="multiple" name="video_category_id">
+                                       <select class="form-control js-example-basic-multiple"  name="video_category_id[]"  id="video_category_id"  multiple="multiple" >
 						                        @foreach($video_categories as $category)
                                                 @if(in_array($category->id, $category_id))
                                           <option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
@@ -117,9 +117,7 @@
                                           @else
                                           <option value="{{ $category->id }}">{{ $category->name }}</option>
                                           @endif      
-
                                           @endforeach
-
                                        </select>
                                                                           </div>
                                            <div class="col-sm-6 form-group" >                               
@@ -571,6 +569,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 
 

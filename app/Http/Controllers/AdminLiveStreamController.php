@@ -20,6 +20,8 @@ use Image;
 use View;
 use Illuminate\Support\Str;
 use App\Users as Users;
+use App\LiveLanguage as LiveLanguage;
+use App\CategoryLive as CategoryLive;
 
 
 
@@ -63,6 +65,9 @@ class AdminLiveStreamController extends Controller
                 'admin_user' => Auth::user(),
                 'video_categories' => LiveCategory::all(),
                 'languages' => Language::all(),
+                'category_id' => [],
+                'languages_id' => [],
+
                 );
             return View::make('admin.livestream.create_edit', $data);
         }
@@ -88,6 +93,14 @@ class AdminLiveStreamController extends Controller
         ]);
        
         // dd($data);
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+        }
+        if(!empty($data['language'])){
+            $languagedata = $data['language'];
+            unset($data['language']);
+        }
 
         $image = (isset($data['image'])) ? $data['image'] : '';
         $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
@@ -198,10 +211,10 @@ class AdminLiveStreamController extends Controller
         $movie->title =$data['title'];
         $movie->details =$data['details'];
         $movie->rating =$rating;
-        $movie->video_category_id =$data['video_category_id'];
+        // $movie->video_category_id =$data['video_category_id'];
         $movie->description =$data['description'];
         $movie->featured =$data['featured'];
-        $movie->language =$data['language'];
+        // $movie->language =$data['language'];
         $movie->banner =$data['banner'];
         $movie->duration =$data['duration'];
         $movie->ppv_price =$ppv_price;
@@ -222,7 +235,31 @@ class AdminLiveStreamController extends Controller
         $shortcodes = $request['short_code'];
         $languages = $request['language'];
 
-     
+
+            /*save CategoryLive*/
+            if(!empty($category_id)){
+                CategoryLive::where('live_id', $movie->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryLive;
+                    $category->live_id = $movie->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        
+
+            /*save LiveLanguage*/
+            if(!empty($language_id)){
+                LiveLanguage::where('live_id', $movie->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new LiveLanguage;
+                    $serieslanguage->live_id = $movie->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
         
          return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
     }
@@ -271,6 +308,8 @@ class AdminLiveStreamController extends Controller
             'admin_user' => Auth::user(),
             'video_categories' => LiveCategory::all(),
             'languages' => Language::all(),
+            'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+            'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -385,6 +424,37 @@ class AdminLiveStreamController extends Controller
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
         $video->save();
+
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+            /*save artist*/
+            if(!empty($category_id)){
+                CategoryLive::where('live_id', $video->id)->delete();
+                foreach ($category_id as $key => $value) {
+                    $category = new CategoryLive;
+                    $category->live_id = $video->id;
+                    $category->category_id = $value;
+                    $category->save();
+                }
+
+            }
+        }
+        if(!empty($data['language'])){
+            $language_id = $data['language'];
+            unset($data['language']);
+            /*save artist*/
+            if(!empty($language_id)){
+                LiveLanguage::where('live_id', $video->id)->delete();
+                foreach ($language_id as $key => $value) {
+                    $serieslanguage = new LiveLanguage;
+                    $serieslanguage->live_id = $video->id;
+                    $serieslanguage->language_id = $value;
+                    $serieslanguage->save();
+                }
+
+            }
+        }
         // dd($request['publish_time']);
         return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }

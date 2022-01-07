@@ -113,12 +113,22 @@
                                     
                                      <div class="col-sm-6 form-group" >
                                        <label class="p-2">Select Video Category :</label>
-                                       <select class="form-control" id="video_category_id" name="video_category_id">
+                                       <!-- <select class="form-control" id="video_category_id" name="video_category_id">
                                            <option value="">Choose Category </option>
 						                        @foreach($video_categories as $category)
                                           <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 						                        @endforeach
 
+                                       </select> -->
+                                       <select class="form-control js-example-basic-multiple"  name="video_category_id[]"  id="video_category_id"  multiple="multiple" >
+						                        @foreach($video_categories as $category)
+                                                @if(in_array($category->id, $category_id))
+                                          <option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+                                          <!-- <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option> -->
+                                          @else
+                                          <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                          @endif      
+                                          @endforeach
                                        </select>
                                                                           </div>
                                            <div class="col-sm-6 form-group" >                               
@@ -142,12 +152,21 @@
                                     
                                       <div class="col-sm-6 form-group">
                                   <label class="p-2">Choose Language:</label>
-                                 <select class="form-control" id="language" name="language">
+                                 <!-- <select class="form-control" id="language" name="language">
                                     <option selected disabled="">Choose Language</option>
                                     @foreach($languages as $language)
 							                  <option value="{{ $language->id }}" @if(!empty($video->language) && $video->language == $language->id)selected="selected"@endif>{{ $language->name }}</option>
 						                  @endforeach
-                              </select>
+                              </select> -->
+                              <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                                @foreach($languages as $language)
+                                    @if(in_array($language->id, $languages_id))
+                                    <option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
+                                    @else
+                                    <option value="{{ $language->id }}" >{{ $language->name }}</option>
+                                    @endif 
+                                @endforeach
+                            </select>
                               </div>   
                               <div class="col-sm-6 form-group mt-3">
                                          <label><h5>Age Restrict :</h5></label>
