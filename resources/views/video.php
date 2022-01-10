@@ -45,6 +45,7 @@ input.skips{
 // exit();
 // echo "<pre>";
 // print_r($ppv_video_play); exit();
+// dd($recomended);
 
 
 if(!Auth::guest()) {
@@ -515,11 +516,17 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                </div>
            </div>
        </div>
-       <!-- Year, Running time, Age -->
+       <!-- Year, Running time, Age --> category_name
          <div class="d-flex align-items-center text-white text-detail">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+            <span class="trending-year"><?php
+            foreach($category_name as $value){
+              echo $value->categories_name. ',';  
+            }
+             ?></span>
+
          </div>
            
        <?php if(!Auth::guest()) { ?>

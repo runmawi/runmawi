@@ -52,7 +52,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                              @foreach($videos as $video)
+                              @foreach($videos as $key => $video)
                                  <tr>
                                     <td>
                                        <div class="media align-items-center">
@@ -74,8 +74,10 @@
                                        <img width="20" src="https://img.icons8.com/emoji/48/000000/star-emoji.png"/>
                                         0 @endif</td>
 
-                                    <td>@if(isset($video->category['categoryname']->name)) {{ @$video->category['categoryname']->name }} @endif</td>
-                                    <!-- <td>{{ $video->year }}</td> -->
+                                    <!-- <td>@if(isset($video->category['categoryname']->name)) {{ @$video->category['categoryname']->name }} @endif</td> -->
+                                    <!-- <td>@if(!empty(@$value->category[$key]->categoryname->name)) {{ @$value->category[$key]->categoryname->name }} @endif</td> -->
+
+                                    <td>{{ @$value->category[$key]->categoryname->name }}</td>
                                     <!-- <td>{{ $video->draft }}</td> -->
                                     <!-- <td>
                                    

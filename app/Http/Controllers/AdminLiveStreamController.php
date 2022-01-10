@@ -123,7 +123,9 @@ class AdminLiveStreamController extends Controller
               $file = $image;
               $data['image']  = $file->getClientOriginalName();
               $file->move($image_path, $data['image']);
-
+              $image = $file->getClientOriginalName();
+         }else{
+            $image = "Defualt.jpg";
          } 
         
        
@@ -189,10 +191,14 @@ class AdminLiveStreamController extends Controller
             $settings = Setting::where('ppv_status','=',1)->first();
             if(!empty($settings)){
                 $ppv_price = $settings->ppv_price;
+            }else{
+                $ppv_price = null;
             }
-            }  else {
+            } elseif(!empty($data['ppv_price'])) {
                 $ppv_price = $data['ppv_price'];
-            }  
+            }  else{
+                $ppv_price = null;                
+            }
             if ( !empty($data['rating'])) {
                 $rating  = $data['rating'];
               } else {
@@ -217,13 +223,13 @@ class AdminLiveStreamController extends Controller
         // $movie->language =$data['language'];
         $movie->banner =$data['banner'];
         $movie->duration =$data['duration'];
-        $movie->ppv_price =$ppv_price;
+        $movie->ppv_price = $ppv_price;
         $movie->access =$data['access'];
         // $movie->footer =$data['footer'];
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time =$data['publish_time'];
-        $movie->image =$file->getClientOriginalName();
+        $movie->image = $image;
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
         $movie->active = 1 ;

@@ -822,6 +822,8 @@ class AdminSeriesController extends Controller
             $ppv_price = $input['ppv_price'];
         }elseif($input['ppv_status'] || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
+        }else{
+            $ppv_price = null;
         }
         $data = $request->all();
           
