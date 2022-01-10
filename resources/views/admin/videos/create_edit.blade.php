@@ -570,6 +570,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 
 
 
@@ -578,6 +585,10 @@
 
  $(document).ready(function($){
     
+
+    $('.js-example-basic-multiple').select2();
+    $('.js-example-basic-single').select2();
+
     $('#duration').mask("00:00:00");
 
 });
@@ -608,8 +619,7 @@ $(document).ready(function(){
 
 
 	$(document).ready(function(){
-    $('.js-example-basic-multiple').select2();
-    $('.js-example-basic-single').select2();
+
     
 		$("#type").change(function(){
 			if($(this).val() == 'file'){

@@ -486,9 +486,9 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                    </ul>
                </div>
                <div class="col-md-12">
-            <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;">
+            <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
-             <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
                </div>
                <div class="trailor-video">
                         <a href="#video_containers"
@@ -504,7 +504,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                         </svg>
                         <span class="w-trailor">Watch Trailer</span>
                     </a>
-                    </div>
+                    </div> -->
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class=" d-flex mt-4 pull-right">     
                        <?php if($video->trailer != ''){ ?>
@@ -672,8 +672,8 @@ $artists = [];
                  <div class="col-sm-4">
                  <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
                  <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->categories->name);?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->languages->name);?></span>
+                <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
+                <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
                 <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
                 <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
                <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>

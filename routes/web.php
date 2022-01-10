@@ -144,7 +144,9 @@ Route::get('/upgrading', 'PaymentController@upgrading');
 Route::get('/channels', 'ChannelController@index');
 Route::get('/ppvVideos', 'ChannelController@ppvVideos');
 Route::get('/live', 'LiveStreamController@Index');
-Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
+// Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
+Route::get('/live/{id}', 'LiveStreamController@Play');
+
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');

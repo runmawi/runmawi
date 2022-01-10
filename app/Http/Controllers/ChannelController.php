@@ -131,9 +131,10 @@ class ChannelController extends Controller
        
         if(!empty($data['password_hash'])){
 
-
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
+
         $vid = $get_video_id->id;
+
         // echo "<pre>"; 
         $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
         ->select("artists.*")
@@ -149,6 +150,7 @@ class ChannelController extends Controller
       }else{
         $artists = [];
       }
+
         // $cast = Videoartist::where('video_id','=',$vid)->get();
         //   foreach($cast as $key => $artist){
         //     $artists[] = Artist::where('id','=',$artist->artist_id)->get();
@@ -177,6 +179,7 @@ class ChannelController extends Controller
 
         $current_date = date('Y-m-d h:i:s a', time()); 
          $view_increment = $this->handleViewCount_movies($vid);
+
         if ( !Auth::guest() ) {
 
           $sub_user = Session::get('subuser_id');
@@ -190,7 +193,7 @@ class ChannelController extends Controller
             $view = new RecentView;
             $view->video_id  = $vid;
             $view->user_id  = Auth::user()->id;
-            $view->videos_category_id = $get_video_id->video_category_id;
+            // $view->videos_category_id = $get_video_id->video_category_id;
             if($sub_user != null){
               $view->sub_user  = $sub_user;
             }
@@ -225,14 +228,19 @@ class ChannelController extends Controller
           }else {
             $watchtime = 0;
           }
+
            $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
            $user_id = Auth::user()->id;
 
            $categoryVideos = \App\Video::where('id',$vid)->first();
-           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-          $videocategory = $videocategory[0];
-           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+          //  $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
+          //  $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
+          // $videocategory = $videocategory[0];
+          //  $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+          // $categoryVideos = [];
+          $videocategory = [];
+          $recomended = [];
+
            $playerui = Playerui::first();
            $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
 
