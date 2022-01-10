@@ -992,7 +992,10 @@ endif; ?>
                        if( $Multiprofile != null ){
                            if($Multiprofile->user_type == "Kids"){
                          
-                        $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1')->where('age_restrict','<',18);
+                        $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                             ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                             ->where('age_restrict','<',18);
+
                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
                               $videos = $videos  ->whereNotIn('id',$blockvideos); }
                               if($Family_Mode == 1){
@@ -1003,7 +1006,9 @@ endif; ?>
                              }
                               $videos = $videos ->get();
                            }else{
-                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
+                     $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
+
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('id',$blockvideos);
                         }
@@ -1017,8 +1022,8 @@ endif; ?>
                        } } else {
 
                       
-
-                     $videos = App\Video::where('video_category_id','=',$category->id)->where('active', '=', '1');
+                     $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
                      
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('id',$blockvideos);

@@ -1272,7 +1272,7 @@ class HomeController extends Controller
         }
 
 
-// Most watched videos In Flicknexs
+// Most watched videos In website
 
         if( $getfeching->geofencing == 'ON'){
 
