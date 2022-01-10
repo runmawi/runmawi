@@ -39,6 +39,10 @@ use DateTime;
 use App\CurrencySetting as CurrencySetting;
 use App\HomeSetting as HomeSetting;
 use App\BlockVideo as BlockVideo;
+use App\CategoryVideo as CategoryVideo;
+use App\LanguageVideo;
+
+
 
 
 
@@ -232,14 +236,28 @@ class ChannelController extends Controller
            $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
            $user_id = Auth::user()->id;
 
-           $categoryVideos = \App\Video::where('id',$vid)->first();
-          //  $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-          //  $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-          // $videocategory = $videocategory[0];
-          //  $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-          // $categoryVideos = [];
+           $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
+           $category_name = CategoryVideo::select('video_categories.name as categories_name')
+           ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+           ->where('categoryvideos.video_id',$vid)
+           ->get();
+          //  dd($category_name);
+           $category_id = CategoryVideo::where('video_id', $vid)->get();
+           $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
+           $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
+           foreach($category_id as $key => $value){
+           $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+           ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+           ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+           ->where('videos.id','!=',$vid)
+           ->limit(10)->get();
+           }
+           foreach($recomendeds as $category){
+           if(in_array($category->categories_id, $categoryvideo)){
+            $recomended[] = $category;
+          }            
+          }
           $videocategory = [];
-          $recomended = [];
 
            $playerui = Playerui::first();
            $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
@@ -328,6 +346,7 @@ class ChannelController extends Controller
                  'artists' => $artists,
     		'ppv_video_play' => $ppv_video_play,
             'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
+            'category_name'=> $category_name,
 
                  );
              

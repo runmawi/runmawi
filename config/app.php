@@ -204,6 +204,7 @@ return [
         App\Providers\SettingsServiceProvider::class,
         App\Providers\SocialServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+        Zusamarehan\Tourify\TourifyServiceProvider::class
 
         
     ],

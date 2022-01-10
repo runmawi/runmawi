@@ -66,8 +66,8 @@ class AdminVideosController extends Controller
         endif;
         // $video = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
         // echo "<pre>";
-        // foreach($video as $key => $value){
-        //     print_r(@$value->category['categoryname']->name);
+        // foreach($videos as $key => $value){
+        //     print_r(@$value->category[$key]->categoryname->name);
 
         // }
         // exit();
