@@ -22,6 +22,43 @@
 @stop
 
 
+<style>
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  background-color: #dfd5d5;
+  width: auto;
+  height: auto;
+}
+
+.tab button {
+  display: block;
+  background-color: #fafafb;
+  color: #83878a;
+  padding: 15px 65px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-width: 0 0 1px;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.tab button:hover {
+  background-color: #eaeaf0;
+}
+.tab button.active {
+  background-color: #eaeaf0;
+}
+.col-md-6.submit {
+    position: absolute;
+    margin-top: -5%;
+}
+
+</style>
+
 @section('content')
 <div id="content-page" class="content-page">
             <div class="container-fluid">
@@ -29,9 +66,7 @@
      <div class="iq-card">
 	<!-- This is where -->
 
-	<div class="admin-section-title">
-		<h5><i class="entypo-credit-card"></i> Mobile Settings</h5> 
-	</div>
+
 	@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif
@@ -45,13 +80,24 @@
                         @endif
 	<div class="clear"></div>
 
-	<form method="POST" action="{{ URL::to('admin/mobile_app/store') }}" accept-charset="UTF-8" enctype="multipart/form-data">
-            
+	<div class="admin-section-title">
+		<h4><i class="entypo-globe"></i>  Mobile Settings</h4> 
+        <hr>
+	</div>
 
-		<div class="row">
+	<div class="d-flex" id="wrapper">
+	<div class="border-end bg-white" id="sidebar-wrapper">
+		<div class="tab">
+			<button class="tablinks" onclick="screen(event, 'Splash')" id="defaultOpen">Splash Screen</button>
+			<button class="tablinks" onclick="screen(event, 'Welcome')">Welcome Screen</button>
+		</div>
+	</div>
 
-			<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Splash Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+	<form method="POST" action="{{ URL::to('admin/mobile_app/store') }}" accept-charset="UTF-8" enctype="multipart/form-data"  id="Splash" class="mob_screens">
+		<div class="">
+
+			<div class="panel panel-primary col-md-12" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title"><label style="font-weight: 600;">Splash Screen </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body " style="display: block; > 
                     
 					@if(!empty($mobile_settings->splash_image))
@@ -64,8 +110,8 @@
 
                     
 			</div>
-                            <div class="col-md-6" align="right">
-                <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
+                            <div class="col-md-6 submit" align="right">
+                <input type="submit" value="Save Settings" class="btn btn-primary pull-right submit" />
                     </div>
 		</div>
 
@@ -77,28 +123,25 @@
 
 {{-- Welcome screen --}}
 
-<div class="admin-section-title">
-	<h5><i class="entypo-credit-card"></i>Welcome Setting</h5> 
-</div>
-
-	<form method="post" action="{{ URL::to('welcome-screen') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+	<form method="post" action="{{ URL::to('welcome-screen') }}" accept-charset="UTF-8" enctype="multipart/form-data" id="Welcome" class="mob_screens">
 		@csrf     
-		<div class="row">
-			<div class="panel panel-primary col-md-6" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Welcome Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+		<div class="">
+			<div class="panel panel-primary col-md-12" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title"><label style="font-weight: 600;">Welcome Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body " style="display: block;" > 
 					<p>Upload Welcome Screen:(960dp x 720dp)</p> 
 					<input type="file" multiple="true" class="form-control" name="welcome_image[]" id="welcome_image" />
 				</div> 
 			</div>
 
-            <div class="col-md-6" align="right">
+            <div class="col-md-6 submit" align="right">
                 <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
             </div>
 		</div>
 	</form>
 
 {{--End Welcome screen --}}
+</div>
 
 
 	<div class="clear"></div>
@@ -164,7 +207,6 @@
 
 
 
-
 	@section('javascript')
 
 		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
@@ -224,6 +266,27 @@
     })
 </script>
 <script src="{{ URL::to('/assets/admin/js/bootstrap-switch.min.js') }}"></script>
+
+
+<script>
+	function screen(evt, screens) {
+	  var i, mob_screens, tablinks;
+	  mob_screens = document.getElementsByClassName("mob_screens");
+	  for (i = 0; i < mob_screens.length; i++) {
+		mob_screens[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(screens).style.display = "block";
+	  evt.currentTarget.className += " active";
+	}
+	
+	// Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen").click();
+	</script>
+	   
 @stop
 
 @stop
