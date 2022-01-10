@@ -190,8 +190,11 @@ class CPPAdminLiveStreamController extends Controller
             if(!empty($settings)){
                 $ppv_price = $settings->ppv_price;
             }
-            }  else {
+            }  elseif(empty($data['ppv_price'])) {
                 $ppv_price = $data['ppv_price'];
+            }else{
+            $ppv_price = null;
+
             }  
             if ($request->slug != '') {
                 $data['slug'] = $this->createSlug($request->slug);
