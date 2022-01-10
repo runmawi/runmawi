@@ -733,7 +733,7 @@ if(!empty($artistsdata)){
         
         $validatedData = $request->validate([
             'title' => 'required|max:255',
-            'video_country' => 'required'        
+            // 'video_country' => 'required'        
         ]);
 
             $id = $data['id'];
@@ -1284,7 +1284,7 @@ if(!empty($artistsdata)){
 
             $validatedData = $request->validate([
                 'title' => 'required|max:255',
-                'video_country' =>'required',
+                // 'video_country' =>'required',
             ]);
 
             // dd($request->all());
