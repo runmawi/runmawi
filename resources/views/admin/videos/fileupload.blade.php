@@ -678,7 +678,7 @@ data: {
                                         <label><h5>Country</h5></label>
                                         <p class="p1">Choose the countries videos</p> 
                                         <select  name="video_country" class="form-control" id="country">
-                                        <option value="">Select Country </option>
+                                        <option value="All">Select Country </option>
                                             @foreach($countries as $country)
                                                 <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
                                             @endforeach
@@ -996,7 +996,7 @@ $('form[id="video_form"]').validate({
 	  title : 'required',
 	  image : 'required',
       trailer : 'required',
-      video_country : 'required',
+    //   video_country : 'required',
       video_category_id: {
                 required: true
             }
@@ -1005,7 +1005,7 @@ $('form[id="video_form"]').validate({
 	  title: 'This field is required',
 	  image: 'This field is required',
       trailer : 'This field is required',
-      video_country : 'This field is required',
+    //   video_country : 'This field is required',
       video_category_id: {
                 required: 'This field is required',
             }
