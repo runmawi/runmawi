@@ -108,6 +108,13 @@ Route::group([
     Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
     Route::post('mobile_login', 'ApiAuthController@MobileLogin');
 
+    // Episode like & Dislike
+    Route::post('Episode_like', 'ApiAuthController@Episode_like');
+    Route::post('Episode_dislike', 'ApiAuthController@Episode_dislike');
+    Route::post('Episode_addfavorite', 'ApiAuthController@Episode_addfavorite');
+    Route::post('Episode_addwishlist', 'ApiAuthController@Episode_addwishlist');
+    Route::post('Episode_addwatchlater', 'ApiAuthController@Episode_addwatchlater');
+
     // Season and Episodes list
     Route::post('SeasonsEpisodes', 'ApiAuthController@SeasonsEpisodes');
     // Wishlist Next Prev Video

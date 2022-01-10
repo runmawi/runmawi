@@ -2223,11 +2223,14 @@ class HomeController extends Controller
 
      public function Multipleprofile(){
 
+        $Website_name = Setting::first();
         $parent_id = Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
         $subcriber_user = User::where('id',$parent_id)->first();
  
         $users= Multiprofile::where('parent_id', $parent_id)->get();
-        return view ('Multipleprofile',compact('users',$users, 'subcriber_user',$subcriber_user));
+        return view ('Multipleprofile',compact('users',$users,
+                                            'Website_name',$Website_name,
+                                             'subcriber_user',$subcriber_user));
 
     }
 
