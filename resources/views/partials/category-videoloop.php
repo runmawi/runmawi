@@ -41,10 +41,14 @@ $setting= \App\HomeSetting::first();
 if($setting['Recommendation'] !=null || $setting['Recommendation'] != 0 ):
 if(isset($videos)) :
         foreach($videos as $category_video):
-            $top_category_videos = App\RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count')) 
-                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                ->where('video_category_id',100)->limit(20)->get();  
-                // $category_video->video_category_id
+            $top_category_videos = App\RecentView::select('recent_views.video_id','videos.*',DB::raw('COUNT(recent_views.video_id) AS count')) 
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                ->groupBy('video_id')->orderByRaw('count DESC' )
+                ->where('category_id','=',$category_video->video_category_id)
+                ->limit(20)
+                ->get();  
+
                 if(isset($top_category_videos)) :
                 foreach($top_category_videos as $top_category_video):
 ?>
