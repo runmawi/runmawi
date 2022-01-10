@@ -328,7 +328,7 @@ data: {
                                             <div class="col-sm-6 form-group" >
                                                 <label class="p-2">Select Video Category :</label>
                                                 <select class="form-control js-example-basic-multiple" id="video_category_id" name="video_category_id[]" style="width: 100%;" multiple="multiple">
-                                                    <!-- <option value="">Choose category</option> -->
+                                                   {{-- <option value="">Choose category</option>  --}}
                                                     @foreach($video_categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
@@ -678,7 +678,7 @@ data: {
                                         <label><h5>Country</h5></label>
                                         <p class="p1">Choose the countries videos</p> 
                                         <select  name="video_country" class="form-control" id="country">
-                                        <option value="">Select Country </option>
+                                        <option value="All">Select Country </option>
                                             @foreach($countries as $country)
                                                 <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
                                             @endforeach
@@ -992,12 +992,13 @@ $('#Next').click(function(){
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 $('form[id="video_form"]').validate({
+    ignore: [],
 	rules: {
 	  title : 'required',
 	  image : 'required',
       trailer : 'required',
-      video_country : 'required',
-      video_category_id: {
+    //   video_country : 'required',
+      'video_category_id[]': {
                 required: true
             }
 	},
@@ -1005,7 +1006,7 @@ $('form[id="video_form"]').validate({
 	  title: 'This field is required',
 	  image: 'This field is required',
       trailer : 'This field is required',
-      video_country : 'This field is required',
+    //   video_country : 'This field is required',
       video_category_id: {
                 required: 'This field is required',
             }

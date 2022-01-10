@@ -10,7 +10,7 @@
         <div class="col-md-12">
 
             <div class="form-group">
-                <h2>Who's watching Flicknexs ?</h2>
+                <h2>Who's watching {{ $Website_name ? $Website_name->website_name : 'Website Name' }} ?</h2>
             </div>
            
                     <div class="sign-in-from  m-auto" >

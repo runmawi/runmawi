@@ -464,11 +464,11 @@ $settings  = App\Setting::first();?>
 $('form[id="series_form"]').validate({
 	rules: {
 	  title: 'required',
-	  image: 'required',
+	//   image: 'required',
 	},
 	messages: {
 	  title: 'This field is required',
-	  image: 'This field is required',
+	//   image: 'This field is required',
 	},
 	submitHandler: function(form) {
 	  form.submit();

@@ -5005,6 +5005,174 @@ public function LocationCheck(Request $request){
   }
 
 
+  public function Episode_like(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $Episode_id = $request->Episode_id;
+    $like = $request->like;
+    $d_like = Likedislike::where("Episode_id",$Episode_id)->where("user_id",$user_id)->count();
+
+    if($d_like > 0){
+      $new_episode_like = Likedislike::where("Episode_id",$Episode_id)->where("user_id",$user_id)->first();
+      if($like == 1){
+        $new_episode_like->user_id = $request->user_id;
+        $new_episode_like->Episode_id = $request->Episode_id;
+        $new_episode_like->liked = 1;
+        $new_episode_like->disliked = 0; 
+        $new_episode_like->save(); 
+      }else{
+        $new_episode_like->user_id = $request->user_id;
+        $new_episode_like->Episode_id = $request->Episode_id;
+        $new_episode_like->liked = 0;
+        $new_episode_like->save(); 
+      }
+    }else{
+      $new_episode_like = new Likedislike;
+      $new_episode_like->user_id = $request->user_id;
+      $new_episode_like->Episode_id = $request->Episode_id;
+      $new_episode_like->liked = 1;
+      $new_episode_like->disliked = 0;
+      $new_episode_like->save(); 
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_episode_like->liked,
+      'disliked' => $new_episode_like->disliked,
+      'message'=>'success'
+    );
+    
+     return response()->json($response, 200); 
+   
+  }
+
+  public function Episode_dislike(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $Episode_id = $request->Episode_id;
+    $dislike = $request->dislike;
+    $d_like = Likedislike::where("Episode_id",$Episode_id)->where("user_id",$user_id)->count();
+
+    if($d_like > 0){
+      $new_Episode_dislike = Likedislike::where("Episode_id",$Episode_id)->where("user_id",$user_id)->first();
+      if($dislike == 1){
+        $new_Episode_dislike->user_id = $request->user_id;
+        $new_Episode_dislike->Episode_id = $request->Episode_id;
+        $new_Episode_dislike->liked = 0;
+        $new_Episode_dislike->disliked = 1; 
+        $new_Episode_dislike->save(); 
+      }else{
+        $new_Episode_dislike->user_id = $request->user_id;
+        $new_Episode_dislike->Episode_id = $request->Episode_id;
+        $new_Episode_dislike->disliked = 0;
+        $new_Episode_dislike->save(); 
+      }
+    }else{
+      $new_Episode_dislike = new Likedislike;
+      $new_Episode_dislike->user_id = $request->user_id;
+      $new_Episode_dislike->Episode_id = $request->Episode_id;
+      $new_Episode_dislike->liked = 0;
+      $new_Episode_dislike->disliked = 1;
+      $new_Episode_dislike->save(); 
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_Episode_dislike->liked,
+      'disliked' => $new_Episode_dislike->disliked,
+      'message'=>'success'
+    );
+    
+     return response()->json($response, 200); 
+  }
+
+  public function Episode_addfavorite(Request $request){
+
+    $user_id = $request->user_id;
+    $Episode_id = $request->Episode_id;
+
+    if($request->Episode_id != ''){
+      $count = Favorite::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->count();
+      if ( $count > 0 ) {
+        Favorite::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Favorite List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
+        Favorite::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Favorite List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+  }
+  
+  public function Episode_addwishlist(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $Episode_id = $request->Episode_id;
+
+    if($request->Episode_id != ''){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->count();
+      if ( $count > 0 ) {
+        Wishlist::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Wishlist List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
+        Wishlist::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Wishlist List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function Episode_addwatchlater(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $Episode_id = $request->Episode_id;
+
+    if($request->Episode_id != ''){
+      $count = Watchlater::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->count();
+      if ( $count > 0 ) {
+        Watchlater::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Watch Later List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
+        Watchlater::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Watch Later List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
 
   public function PaymentPlan(Request $request)
   {
