@@ -21,7 +21,7 @@ return [
     |
     */
     
-    'name' => env('APP_NAME', 'Flicknexs'),
+    'name' => env('APP_NAME', ''),
     //'site' => config('settings.logo'),
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
     */
 
 //      'url' => env('APP_URL', 'http://localhost/flicknexs/'),
-  'url' => env('APP_URL', 'http://flicknexui.webnexs.org/'),
+  'url' => env('APP_URL', ''),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

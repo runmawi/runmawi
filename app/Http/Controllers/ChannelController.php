@@ -252,11 +252,16 @@ class ChannelController extends Controller
            ->where('videos.id','!=',$vid)
            ->limit(10)->get();
            }
-           foreach($recomendeds as $category){
-           if(in_array($category->categories_id, $categoryvideo)){
-            $recomended[] = $category;
-          }            
-          }
+           if(!empty($recomendeds)){
+            foreach($recomendeds as $category){
+              if(in_array($category->categories_id, $categoryvideo)){
+               $recomended[] = $category;
+             }            
+             }
+           }else{
+             $recomended = [];
+           }
+       
           $videocategory = [];
 
            $playerui = Playerui::first();
