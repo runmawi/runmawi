@@ -1103,7 +1103,7 @@ if(!empty($artistsdata)){
             /*save artist*/
             if(!empty($language_id)){
                 LanguageVideo::where('video_id', $video->id)->delete();
-                foreach ($languagevideo as $key => $value) {
+                foreach ($language_id as $key => $value) {
                     $languagevideo = new LanguageVideo;
                     $languagevideo->video_id = $video->id;
                     $languagevideo->language_id = $value;

@@ -1311,7 +1311,7 @@ class HomeController extends Controller
             if($Kids_Mode == 1){
                 $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
             }
-            $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id',$blocking_videos)
+            $Most_watched_country = $Most_watched_country->where('recent_views.country_name', $countryName)->whereNotIn('videos.id',$blocking_videos)
             ->limit(20)->get();
         }else{
             $Most_watched_country=[];
