@@ -118,12 +118,12 @@ overflow-hidden {
             <div class="">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header d-flex align-items-center justify-content-between">
+                     <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
-                            <?php ;if(isset($recomended)) :
+                            <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
@@ -133,7 +133,7 @@ overflow-hidden {
                                     </div>
                                     <div class="block-description">
                                        <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
+                                       <div class="movie-time  align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
