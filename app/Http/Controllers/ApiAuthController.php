@@ -5195,4 +5195,115 @@ public function LocationCheck(Request $request){
     );
     return response()->json($response, 200);
   }
+
+    public function Deploy(Request $request)
+  {
+    $username = $request->username;
+    $password = $request->password;
+
+
+
+// Name of the file
+$filename = 'flicknexs.sql';
+// MySQL host
+$mysql_host = 'localhost';
+// MySQL username
+$mysql_username = 'manoj_main';
+// MySQL password
+$mysql_password = 't94d24w32F8W';
+// Database name
+$mysql_database = 'manoj_main1';
+
+// Connect to MySQL server
+mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
+// Select database
+mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error());
+
+// Temporary variable, used to store current query
+$templine = '';
+// Read in entire file
+$lines = file($filename);
+// Loop through each line
+foreach ($lines as $line)
+{
+// Skip it if it's a comment
+if (substr($line, 0, 2) == '--' || $line == '')
+    continue;
+
+// Add this line to the current segment
+$templine .= $line;
+// If it has a semicolon at the end, it's the end of the query
+if (substr(trim($line), -1, 1) == ';')
+{
+    // Perform the query
+    mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
+    // Reset temp variable to empty
+    $templine = '';
+}
+}
+ echo "Tables imported successfully";
+
+
+
+ 
+
+    error_reporting(E_ALL);
+
+    // Declare your username and password for authentication.
+    $username = $username;
+    $password = $password;
+    
+    // Define the API call.
+    $cpanel_host = 'localhost';
+    $request_uri = "https://75.119.145.126:2083/execute/Fileman/upload_files";
+    
+    // Define the filename and destination.
+    $upload_file = realpath("../index.php");
+    $destination_dir = "public_html";
+    
+    // Set up the payload to send to the server.
+    if( function_exists( 'curl_file_create' ) ) {
+        $cf = curl_file_create( $upload_file );
+    } else {
+        $cf = "@/".$upload_file;
+    }
+    // $payload = array(
+    //     'dir'    => $destination_dir,
+    //     'file-1' => $cf
+    // );
+    $payload  = shell_exec('git clone https://sanjai31@bitbucket.org/Akash0003/flicknexs.git');
+    // Set up the curl request object.
+    $ch = curl_init( $request_uri );
+    curl_setopt( $ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC );
+    curl_setopt( $ch, CURLOPT_USERPWD, $username . ':' . $password );
+    curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, false );
+    curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+    
+    // Set up a POST request with the payload.
+    curl_setopt( $ch, CURLOPT_POST, true );
+    curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+    
+    // Make the call, and then terminate the curl caller object.
+    $curl_response = curl_exec( $ch );
+    curl_close( $ch );
+    
+    // Decode and validate output.
+    $response = json_decode( $curl_response );
+    if( empty( $response ) ) {
+        echo "The curl call did not return valid JSON:\n";
+        die( $response );
+    } elseif ( !$response->status ) {
+        echo "The curl call returned valid JSON, but reported errors:\n";
+        die( $response->errors[0] . "\n" );
+    }
+    
+    // Print and exit.
+    die( print_r( $response ) );
+    $response = array(
+      // 'status' => $status,
+      'response' => $response
+    );
+    return response()->json($response, 200);
+  }
 }
