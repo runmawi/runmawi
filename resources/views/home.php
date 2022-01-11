@@ -1033,6 +1033,27 @@ endif; ?>
                     <?php }?>
                 </div>
                 <?php } ?>
+
+<!-- Most watched Videos - category -->
+
+               <?php
+                  $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
+                  foreach($parentCategories as $category){
+
+                  $top_category_videos = App\RecentView::select('recent_views.video_id','videos.*',DB::raw('COUNT(recent_views.video_id) AS count')) 
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                  ->join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                  ->groupBy('recent_views.video_id')->orderByRaw('count DESC' )
+                  ->where('categoryvideos.category_id','=',$category->id)
+                  ->limit(20)
+                  ->get();  
+                  ?>
+
+                  <?php if (count($top_category_videos) > 0) { 
+                     include('partials/home/most_Watched_category.blade.php');
+               } else { ?>
+               <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
+               <?php } } ?>
         </section> 
 </div>
 
