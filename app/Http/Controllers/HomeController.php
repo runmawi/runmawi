@@ -245,6 +245,8 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1)
         {
+        // dd('FirstLanging');
+
             $settings = Setting::first();
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
@@ -1461,7 +1463,7 @@ class HomeController extends Controller
                  'Mode' => $Mode,
 
              );
-            
+            // dd($Mode);
              return View::make('home', $data);
             }
         }
