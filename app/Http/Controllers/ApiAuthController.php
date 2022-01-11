@@ -5183,7 +5183,7 @@ public function LocationCheck(Request $request){
 
     if ($plans > 0) {
       $status = "true";
-      $plan_id = SubscriptionPlan::where('plans_name',$plan_name)->where('type',$payment_type)->first();
+      $plan_id = SubscriptionPlan::where('plans_name',$plan_name)->where('type',$payment_type)->get();
       // $plan_id = SubscriptionPlan::where('plans_name',$plan_name)->where('type',$payment_type)->pluck('plan_id');
     } else {
       $plan_id = [];

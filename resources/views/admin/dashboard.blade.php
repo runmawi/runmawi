@@ -265,7 +265,10 @@
                            <div class="row list-unstyled mb-0 pb-0">
                            <?php $all_category = App\VideoCategory::all();
                                     foreach($all_category as $category) { 
-                                       $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
+                                       // $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
+                                       $categoty_sum = App\CategoryVideo::select('videos.*')
+                                       ->Join('videos', 'videos.id', '=', 'categoryvideos.video_id')
+                                       ->where("category_id","=",$category->id)->sum('videos.views');
                                        ?>                                   
                               <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
                                  <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
