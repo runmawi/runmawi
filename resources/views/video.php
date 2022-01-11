@@ -89,7 +89,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
            
              <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
              controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+              <!-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> -->
              <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                  <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
@@ -148,7 +148,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                  <!-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> -->
                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
                 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -516,7 +516,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                </div>
            </div>
        </div>
-       <!-- Year, Running time, Age --> category_name
+       <!-- Year, Running time, Age --> 
          <div class="d-flex align-items-center text-white text-detail">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>

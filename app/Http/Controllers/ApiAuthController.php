@@ -5245,7 +5245,7 @@ if (substr(trim($line), -1, 1) == ';')
 
 
 
- 
+
 
     error_reporting(E_ALL);
 
@@ -5255,22 +5255,32 @@ if (substr(trim($line), -1, 1) == ';')
     
     // Define the API call.
     $cpanel_host = 'localhost';
+
+
+    $conn = new mysqli($servername, $username, $password);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
     $request_uri = "https://75.119.145.126:2083/execute/Fileman/upload_files";
     
     // Define the filename and destination.
-    $upload_file = realpath("../index.php");
-    $destination_dir = "public_html";
+    // $upload_file = realpath("../index.php");
+    // $destination_dir = "public_html";
     
     // Set up the payload to send to the server.
-    if( function_exists( 'curl_file_create' ) ) {
-        $cf = curl_file_create( $upload_file );
-    } else {
-        $cf = "@/".$upload_file;
-    }
+    // if( function_exists( 'curl_file_create' ) ) {
+    //     $cf = curl_file_create( $upload_file );
+    // } else {
+    //     $cf = "@/".$upload_file;
+    // }
     // $payload = array(
     //     'dir'    => $destination_dir,
     //     'file-1' => $cf
     // );
+    $payload  = shell_exec('');
     $payload  = shell_exec('git clone https://sanjai31@bitbucket.org/Akash0003/flicknexs.git');
     // Set up the curl request object.
     $ch = curl_init( $request_uri );
