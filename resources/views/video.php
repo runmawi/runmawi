@@ -746,9 +746,9 @@ $artists = [];
                <?php include('partials/video-loop.php');?>
            </div>
    </div>
-   <!-- <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
+   <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
        <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>"></video>
-  </div> -->
+  </div>
 
   <?php  if(Auth::guest()){ ?>
 <?php }else{ ?>
