@@ -19,6 +19,7 @@ class CreateRecentViewsTable extends Migration
             $table->integer('video_id')->nullable();
             $table->integer('audio_id')->nullable();
             $table->integer('videos_category_id')->nullable();
+            $table->string('country_name',100)->nullable();
             $table->integer('sub_user')->nullable();
             $table->integer('visited_at')->nullable();
             $table->timestamps();
