@@ -18,6 +18,9 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
+use App\CategoryVideo as CategoryVideo;
+use App\LanguageVideo;
+
 
 class AdminDashboardController extends Controller
 {
@@ -30,10 +33,19 @@ class AdminDashboardController extends Controller
                 return redirect('/home');
             }
         $videocategory = VideoCategory::get();
+        $categoryvideo = CategoryVideo::get();
         foreach($videocategory as $key => $category){
             // $video_category['name_category'] = $category->name;
-            $video_category[$category->name] = Video::where('video_category_id','=',$category->id)->count();
+            $video_category[$category->name] = CategoryVideo::where('category_id','=',$category->id)->count();
+            // $video_category[$category->name] = Video::where('video_category_id','=',$category->id)->count();
         }
+
+        $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+        ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+        // ->where('videos.id','!=',$vid)
+        ->limit(10)->get();
+        
         // dd($video_category);
 
          $settings = Setting::first();
