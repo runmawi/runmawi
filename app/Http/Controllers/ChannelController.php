@@ -197,6 +197,7 @@ class ChannelController extends Controller
             $view = new RecentView;
             $view->video_id  = $vid;
             $view->user_id  = Auth::user()->id;
+            $view->country_name  = $countryName;
             // $view->videos_category_id = $get_video_id->video_category_id;
             if($sub_user != null){
               $view->sub_user  = $sub_user;

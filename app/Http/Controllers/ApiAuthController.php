@@ -690,7 +690,7 @@ public function verifyandupdatepassword(Request $request)
 
   public function categorylist()
   {
-    $channellist = VideoCategory::where('order','=',1)->get()->map(function ($item) {
+    $channellist = VideoCategory::get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
         return $item;
       });
@@ -2930,7 +2930,8 @@ public function checkEmailExists(Request $request)
     }
     public function UserComments(Request $request){
                      
-          $comments =  Comment::where("video_id","=",$request->video_id)->get()->map(function ($item) {
+          $comments =  Comment::where("video_id","=",$request->video_id)
+         ->where('user_id',$request->user_id)->get()->map(function ($item) {
             //dd($item->count());
             $i = 0;
             while ($i<= $item->count()) {
