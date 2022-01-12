@@ -271,15 +271,23 @@
                 <label class="radio-inline">
                 <?php  foreach($payment_type as $payment){
                           if($payment->live_mode == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label>
                 <?php }elseif($payment->paypal_live_mode == 1){ ?>
                 <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label>
                 <?php }elseif($payment->live_mode == 0){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">Stripe</label><br>
+                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label><br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">PayPal</label>
+                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label>
 						<?php  } }?>
                         </div>
 				<div class="modal-footer">
