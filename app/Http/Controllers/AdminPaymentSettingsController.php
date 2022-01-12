@@ -58,9 +58,15 @@ class AdminPaymentSettingsController extends Controller
 		$payment_settings->live_secret_key = $request['live_secret_key'];
 		$payment_settings->live_publishable_key = $request['live_publishable_key'];
 		$payment_settings->plan_name = $request['plan_name'];
+		$payment_settings->stripe_lable = $request['stripe_lable'];
 		$payment_settings->payment_type = "Stripe";
-
 		
+
+		if(empty($payment_settings->stripe_lable)){
+			$payment_settings->stripe_lable   = '';
+		} else {
+            $payment_settings->stripe_lable   = $input['stripe_lable'];
+        }
 
 		// if(empty($payment_settings->live_mode) || $payment_settings->live_mode == ''){
             
@@ -121,10 +127,16 @@ class AdminPaymentSettingsController extends Controller
 		$payment_settings->live_paypal_password = $request['live_paypal_password'];
 		$payment_settings->live_paypal_signature = $request['live_paypal_signature'];
 		$payment_settings->paypal_plan_name = $request['paypal_plan_name'];
+		$payment_settings->paypal_lable = $request['paypal_lable'];
 		$payment_settings->payment_type = "PayPal";
 
 
         
+		if(empty($payment_settings->paypal_lable)){
+			$payment_settings->paypal_lable   = '';
+		} else {
+            $payment_settings->paypal_lable   = $input['paypal_lable'];
+        }
 		// if(empty($payment_settings->paypal_live_mode) || $payment_settings->paypal_live_mode == ''){
             
 		// 	$payment_settings->paypal_live_mode = 0;
