@@ -94,7 +94,7 @@
     .sign-in-from {
     padding: 22%;
     background-image: linear-gradient( rgb(10 10 10 / 50%), rgb(0 0 0 / 50%)  ),
-     url(public/uploads/avatars/Movies.jpg);
+     /* url(public/uploads/avatars/Movies.jpg); */
 }
 .fa-plus-circle:before {
     color: white;
