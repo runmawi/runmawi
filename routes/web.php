@@ -1201,4 +1201,8 @@ Route::resources([
 
 Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
 
-       
+    //    Theme Integration
+Route::get('admin/ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
+Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
+Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+

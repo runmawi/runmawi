@@ -1744,6 +1744,7 @@ public function verifyandupdatepassword(Request $request)
 
             $user_id = $request->user_id;
             $stripe_plan = SubscriptionPlan();
+            
             $user_details = User::where('id', '=', $user_id)->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
@@ -3089,7 +3090,10 @@ public function upnextAudio(Request $request){
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
-      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->get();
+      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->get()->map(function ($item)  {
+        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });;
 
       if(count($episodes) > 0){
         $msg = 'success';
