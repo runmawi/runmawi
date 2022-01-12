@@ -37,21 +37,29 @@
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
 <?php
+$str = $video->mp4_url;
+$uri_parts = explode('.', $video->mp4_url);
+$request_url = end($uri_parts);
+// print_r ($request_url);
+// exit();
 
 if(!Auth::guest()){
     
  if(!empty($password_hash)){
-if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
+if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
         <div class="container">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
+           <?php if($request_url == "m3u8"){ ?>
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                <?php } ?>
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
 
-                    <source src="<?=$video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                    <!--
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-                    -->
+                    <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                    
+                    <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                    <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
+                   
                 </video>
 
                 <div class="playertextbox hide">
@@ -72,7 +80,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
 
             <?php  } else {  ?>       
                 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                    <div id="video_bg_dim" <?php if ($video->access == 'guest' || ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+                    <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
                             <div class="ppv-block">
@@ -84,7 +92,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
                     </div>
                 </div>
             <?php } }
-            }else{  
+        }else{  
+        //   dd($settings);
+
                 if (Auth::guest() && empty($video->ppv_price)) { ?>
                 <div id="video_bg"> 
         <div class="container">
@@ -116,7 +126,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()) { ?>
 
             <?php  } else { ?>       
                 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                    <div id="video_bg_dim" <?php if ($video->access == 'guest' || ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+                    <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
                             <div class="ppv-block">
