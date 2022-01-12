@@ -83,6 +83,7 @@ use App\HomeSetting;
 use App\Videoartist;
 use App\Seriesartist;
 use App\WelcomeScreen;
+use App\CategoryVideo;
 
 
 
@@ -824,22 +825,29 @@ public function verifyandupdatepassword(Request $request)
           $ppv_video_status = "pay_now";
     }
 
+
          $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
-         $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
+        //  $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
          $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
     
+
+        $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+          ->where('video_id',$videoid)->pluck('name');
+         
+
     if(\App\AdsVideo::where('video_id',$videoid)->exists()){
         $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
         $videoads = \App\Advertisement::find($ads_id)->ads_path;
     }else{
         $videoads = '';
     }
+
     $response = array(
       'status' => $status,
       'wishlist' => $wishliststatus,
       'curr_time' => $curr_time,
       'ppv_video_status' => $ppv_video_status,
-      'main_genre' => $videos_cat[0]->name,
+      'main_genre' => $main_genre,
       'watchlater' => $watchlaterstatus,
       'favorite' => $favorite                                 ,
       'ppv_exist' => $ppv_exist,
@@ -852,6 +860,7 @@ public function verifyandupdatepassword(Request $request)
       'videossubtitles' => $moviesubtitles,
       'videoads' => $videoads
     );
+
     return response()->json($response, 200);
   }
 
