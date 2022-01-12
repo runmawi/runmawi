@@ -5206,13 +5206,34 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
-    public function Deploy(Request $request)
+  public function Deploy(Request $request)
+
+    // public function Deploy(Request $request)
   {
     $username = $request->username;
     $password = $request->password;
 
 
+    $cpanel_host = 'localhost';
+    // $servername = "localhost";
+    // $username = "username";
+    // $password = "password";
+    $filename = 'flicknexs.sql';
+    // MySQL host
+    $servername = 'localhost';
+    // MySQL username
+    $username = 'manoj_main';
+    // MySQL password
+    $mysql_password = 't94d24w32F8W';
+    // Database name
+    $mysql_password = 'manoj_main1';
+    $conn =  new mysqli($servername, $username, $password);
 
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+    echo "Connected successfully";
+    exit();
 // Name of the file
 $filename = 'flicknexs.sql';
 // MySQL host
@@ -5265,8 +5286,18 @@ if (substr(trim($line), -1, 1) == ';')
     
     // Define the API call.
     $cpanel_host = 'localhost';
-
-
+    // $servername = "localhost";
+    // $username = "username";
+    // $password = "password";
+    $filename = 'flicknexs.sql';
+    // MySQL host
+    $servername = 'localhost';
+    // MySQL username
+    $username = 'manoj_main';
+    // MySQL password
+    $mysql_password = 't94d24w32F8W';
+    // Database name
+    $mysql_password = 'manoj_main1';
     $conn = new mysqli($servername, $username, $password);
 
 // Check connection
@@ -5274,6 +5305,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 echo "Connected successfully";
+exit();
     $request_uri = "https://75.119.145.126:2083/execute/Fileman/upload_files";
     
     // Define the filename and destination.
