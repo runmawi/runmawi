@@ -371,24 +371,24 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <script>
-$('form[id="live_video"]').validate({
-	rules: {
-	  title: 'required',
-	  image: 'required',
-	   mp4_url: 'required',
-	},
-	messages: {
-	  title: 'This field is required',
-	  image: 'This field is required',
-	   mp4_url: 'This field is required',
+// $('form[id="live_video"]').validate({
+// 	rules: {
+// 	  title: 'required',
+// 	  image: 'required',
+// 	   mp4_url: 'required',
+// 	},
+// 	messages: {
+// 	  title: 'This field is required',
+// 	  image: 'This field is required',
+// 	   mp4_url: 'This field is required',
 
-	},
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
+// 	},
+// 	submitHandler: function(form) {
+// 	  form.submit();
+// 	}
+//   });
 </script>
- {{-- end validate --}}
+ <!-- {{-- end validate --}} -->
 
 
 	<script type="text/javascript">

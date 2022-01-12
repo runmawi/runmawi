@@ -53,6 +53,7 @@ class LiveStreamController extends Controller
           }
 
            $settings = Setting::first(); 
+
         if(!empty($data['password_hash'])){
 
            $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
