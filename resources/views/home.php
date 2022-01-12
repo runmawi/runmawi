@@ -1,14 +1,15 @@
 <!-- Header Start -->
-<?php 
-include('header.php');?>
+<?php include('header.php'); ?>
 <!-- Header End -->
 
-<!-- family & Kids Mode Restriction   -->
 
-   <!-- family_mode -->
+<!-- Theme Integration -->
 
-   
-<!-- End family & Kids Mode Restriction   -->
+<link rel="stylesheet" href="<?php echo URL::to('/public/themes/testing.css')?>">
+
+<!-- End theme -->
+
+
 
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
@@ -22,12 +23,8 @@ include('header.php');?>
     </symbol>
  </svg>
 </section>
+
 <!-- Slider End -->
-<?php
-// dd($LiveStream);
-?>
-
-
 
 <!-- MainContent -->
 <div class="main-content">

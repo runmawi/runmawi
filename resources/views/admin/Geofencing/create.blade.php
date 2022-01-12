@@ -15,6 +15,7 @@
     }
 </style>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 
