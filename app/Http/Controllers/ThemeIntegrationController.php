@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Redirect;
 use App\ThemeIntegration;
+use App\HomeSetting;
 use App\Setting;
 use App\User;
 use Session;
@@ -26,6 +27,9 @@ class ThemeIntegrationController extends Controller
 
         $Themes = $request->all();
 
+         $theme_css = $request->css_file->getClientOriginalName();  
+         $request->css_file->move(public_path('themes'), $theme_css);
+  
         $files = $Themes['theme_image'];
         $format=$files->getClientOriginalExtension();
         $filename =uniqid(). time(). '.' .  $format;
@@ -34,13 +38,19 @@ class ThemeIntegrationController extends Controller
         ThemeIntegration::create([
             'theme_images'  => $filename,
             'theme_name' => $request->theme_name,
+            'theme_css'=> $theme_css,
           ]);
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
     }
 
-    public function set_theme(){
+    public function set_theme(Request $request){
 
-        print_r('ss');
+        HomeSetting::first()
+       ->update([
+           'theme_choosen' => $request->id,
+        ]);
+
+        return 'success';
     }
 }
