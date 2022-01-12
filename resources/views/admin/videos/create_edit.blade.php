@@ -171,21 +171,6 @@
                                     @endif
                                  </div>
 
-                               
-                                    {{-- Block country --}}
-                                    <div class="col-sm-6 form-group">
-                                        <label><h5>Block Country</h5></label>
-                                        <p class="p1">Choose the countries for block the videos</p> 
-                                        <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                                            @foreach($countries as $country)
-                                            @if(in_array($country->country_name, $video_artist))
-                                                <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
-                                            @else
-                                                <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
-                                            @endif 
-                                            @endforeach
-                                        </select>
-                                    </div>
 
                                    <!-- <div class="col-md-6 form-group">
                                        <select class="form-control" id="video_category_id" name="video_category_id">
@@ -495,16 +480,34 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <label class="">Recommendation </label>
                                     <input type="text" class="form-control" id="Recommendation " name="Recommendation" value="@if(!empty($video->Recommendation)){{ $video->Recommendation }}@endif">
+                                </div> --}}
+
+
+
+                                 {{-- Block country --}}
+                                 <div class="col-sm-4 form-group">
+                                    <label><h5>Block Country</h5></label>
+                                    <p class="p1">Choose the countries for block the videos</p> 
+                                    <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                        @foreach($countries as $country)
+                                        @if(in_array($country->country_name, $video_artist))
+                                            <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
+                                        @else
+                                            <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
+                                        @endif 
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                    {{-- country --}}
                                    <div class="col-sm-4 form-group">
                                     <label><h5>Country</h5></label>
+                                    <p class="p1">Choose the country</p> 
                                     <select  name="video_country" class="form-control" id="country">
-                                    <option value="">Select Country </option>
+                                    <option value="All">Select Country </option>
                                         @foreach($countries as $country)
                                             <option value="{{ $country->country_name }}"  @if($video->country=== $country->country_name) selected='selected' @endif >{{ $country->country_name }}</option>
                                         @endforeach
