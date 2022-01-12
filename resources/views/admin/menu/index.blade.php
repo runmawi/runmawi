@@ -26,7 +26,8 @@
 		</div>
 	
 <hr>
-	<!-- Add New Modal -->
+	
+<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">

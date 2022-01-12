@@ -985,6 +985,9 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <?php } ?>
                  
 
+               <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li>
+ 
+
                </ul>
             </nav>
          </div>
@@ -1392,6 +1395,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
   <!-- End Notifications -->
 
+
+
   @yield('javascript')
  <!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -1619,3 +1624,4 @@ if(jQuery('#view-chart-13').length){
     
 </body>
 </html>
+
