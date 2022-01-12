@@ -261,7 +261,12 @@ class ChannelController extends Controller
            }else{
              $recomended = [];
            }
-       
+           if(!empty($recomended)){
+            $recomended = $recomended;
+           }else{
+            $recomended =[] ;
+           }
+           
           $videocategory = [];
 
            $playerui = Playerui::first();
