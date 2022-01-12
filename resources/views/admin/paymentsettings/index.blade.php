@@ -111,6 +111,12 @@
             <label>Live Publishable Key:</label> 
 			<input type="text" class="form-control" name="live_publishable_key" id="live_publishable_key" placeholder="Live Publishable Key" value="@if(!empty($payment_settings->live_publishable_key) && Auth::user()->role != 'demo'){{ $payment_settings->live_publishable_key }}@endif" />
 			</div>
+
+            <div class="col-md-6 mt-3">
+            <label>Stripe Lable:</label> 
+			<input type="text" class="form-control" name="stripe_lable" id="stripe_lable" placeholder="Stripe Lable" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
+			</div>
+
 			</div>
             <br>
             <br>
@@ -187,7 +193,9 @@
 		
             </div>
             <div class="col-md-6 mt-3">
-
+            <label>PayPal Lable:</label> 
+				<input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Lable" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
+		
             </div>
 		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />

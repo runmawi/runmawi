@@ -5349,4 +5349,23 @@ exit();
     );
     return response()->json($response, 200);
   }
+
+    public function connectcpanel(){
+      $servername = "localhost";
+      $username = 'manoj_main' ;
+      $password = 't94d24w32F8W';
+      $dbname ='manoj_main1' ;
+      // Create connection
+      $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+      if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+      }
+      echo "Connected successfully";
+      exit();
+    }
+
+
+
+
 }

@@ -246,7 +246,7 @@ Route::group([
     Route::get('Welcome_Screen', 'ApiAuthController@Welcome_Screen');
     Route::post('payment_plan', 'ApiAuthController@PaymentPlan');
     // Route::post('project_deploy', 'ApiAuthController@Deploy');
-    Route::get('project_deploy', 'ApiAuthController@Deploy');
+    Route::get('connectcpanel', 'ApiAuthController@connectcpanel');
 
 
 
