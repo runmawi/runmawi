@@ -123,6 +123,7 @@ class HomeController extends Controller
                 }
                 if (!empty($device_name))
                 {
+                    dd($device_name);
                     $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                         ->where('device_name', '=', $device_name)->first();
                     if (empty($devices_check))
@@ -239,12 +240,14 @@ class HomeController extends Controller
     }
     public function FirstLanging()
     {
+        
+        $data = Session::all();
         $settings = Setting::first();
         $multiuser=Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
 
-        if ($settings->access_free == 1)
+        if ($settings->access_free == 1 && empty($data['password_hash']))
         {
         // dd('FirstLanging');
 
@@ -376,7 +379,8 @@ class HomeController extends Controller
 
             }
             else
-            {
+            { 
+
                 $device_name = '';
                 if ($agent->isDesktop())
                 {
@@ -400,12 +404,15 @@ class HomeController extends Controller
                 }
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->count();
+                    $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
+                    ->count();
                 $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->get();
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '=', $device_name)->first();
-                if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1)
-                {
+
+                    if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ||  $subuser_check >= 1 && $subuser_check < 4 )
+                    {
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
                     $username = Auth::User()->username;
@@ -442,7 +449,7 @@ class HomeController extends Controller
 
                     }
                 }
-                if ($user_check >= 4 && Auth::User()->id != 1)
+                if ($user_check >= 4 && Auth::User()->id != 1 || $subuser_check >= 4 && Auth::User()->id != 1)
                 {
                     return view('device_logged', compact('alldevices', 'system_settings', 'user'));
                 }
@@ -911,6 +918,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $data = Session::all();
 
         $agent = new Agent();
         $settings = Setting::first();
@@ -918,7 +926,7 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
 
-        if ($settings->access_free == 1)
+        if ($settings->access_free == 1 && empty($data['password_hash']))
         {
 
             return Redirect::to('/');
@@ -965,11 +973,14 @@ class HomeController extends Controller
                 }
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->count();
+                $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
+                ->count();
                 $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->get();
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '=', $device_name)->first();
-                if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1)
+                    // dd($alldevices);
+                    if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ||  $subuser_check >= 1 && $subuser_check < 4 )
                 {
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
@@ -1007,7 +1018,7 @@ class HomeController extends Controller
 
                     }
                 }
-                if ($user_check >= 4 && Auth::User()->id != 1)
+                if ($user_check >= 4 && Auth::User()->id != 1 || $subuser_check >= 4 && Auth::User()->id != 1)
                 {
                     return view('device_logged', compact('alldevices', 'system_settings', 'user'));
                 }
@@ -2232,12 +2243,12 @@ class HomeController extends Controller
 
         $screen_image=ChooseProfileScene::pluck('choosenprofile_screen')->first();
 
-        $screen = 'public/uploads/avatars/'.$screen_image;
+        // $screen = URL::to('public/uploads/avatars/'.$screen_image);
 
         $users= Multiprofile::where('parent_id', $parent_id)->get();
         return view ('Multipleprofile',compact('users',$users,
                                             'Website_name',$Website_name,
-                                            'screen',$screen,
+                                            // 'screen',$screen,
                                              'subcriber_user',$subcriber_user));
 
     }
