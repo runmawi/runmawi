@@ -835,7 +835,7 @@ public function verifyandupdatepassword(Request $request)
     
 
         $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-          ->where('video_id',$videoid)->pluck('name');
+          ->where('video_id',$videoid)->get('name');
          
 
     if(\App\AdsVideo::where('video_id',$videoid)->exists()){
