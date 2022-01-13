@@ -31,6 +31,7 @@
                 </ul>
             </div>
         @endif   
+
         
         
 	@if(!empty($video->id))
