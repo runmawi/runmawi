@@ -52,6 +52,7 @@ use App\LoggedDevice;
 use App\ApprovalMailDevice;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\RecentView;
+use App\ChooseProfileScene;
 
 class HomeController extends Controller
 {
@@ -2228,10 +2229,15 @@ class HomeController extends Controller
         $Website_name = Setting::first();
         $parent_id = Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
         $subcriber_user = User::where('id',$parent_id)->first();
- 
+
+        $screen_image=ChooseProfileScene::pluck('choosenprofile_screen')->first();
+
+        $screen = 'public/uploads/avatars/'.$screen_image;
+
         $users= Multiprofile::where('parent_id', $parent_id)->get();
         return view ('Multipleprofile',compact('users',$users,
                                             'Website_name',$Website_name,
+                                            'screen',$screen,
                                              'subcriber_user',$subcriber_user));
 
     }

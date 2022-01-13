@@ -84,7 +84,6 @@ use App\Videoartist;
 use App\Seriesartist;
 use App\WelcomeScreen;
 use App\CategoryVideo;
-use cPanel;
 
 
 
@@ -721,7 +720,8 @@ public function verifyandupdatepassword(Request $request)
     foreach ($videocategories as $key => $videocategory) {
       $videocategoryid = $videocategory['id'];
       $genre_image = $videocategory['image'];
-      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('category_id',$videocategoryid)
+      ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -730,8 +730,10 @@ public function verifyandupdatepassword(Request $request)
 
       if(count($videos) > 0){
         $msg = 'success';
+        $status = 'True';
       }else{
         $msg = 'nodata';
+        $status = 'False';
       }
       $myData[] = array(
         "genre_name"   => $categorydetails->name,
@@ -746,7 +748,7 @@ public function verifyandupdatepassword(Request $request)
     $videos_cat = VideoCategory::where('id','=',$channelid)->get();
 
     $response = array(
-      'status' => 'true',
+      'status' => $status ,
       'main_genre' => $videos_cat[0]->name,
       'categoryVideos' => $videos
     );
@@ -1749,11 +1751,8 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
-
             $userdata = User::where('id', '=', $user_id)->first();
-
             if ($userdata->subscription($stripe_plan)) {
-
                 $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
                 $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
             }else{
@@ -1768,9 +1767,7 @@ public function verifyandupdatepassword(Request $request)
             }
 
             $stripe_plan = SubscriptionPlan();
-
-            // if ( $userdata->subscribed($stripe_plan)) {
-            if ( !empty($userdata)) {
+            if ( $userdata->subscribed($stripe_plan)) {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
             }else{
                 $curren_stripe_plan = "No Plan Found";
@@ -5370,15 +5367,13 @@ exit();
   }
 
     public function connectcpanel(){
-
-      // http://localhost/flicknexs/api/auth/connectcpanel
       $servername = "localhost";
       $username = 'manoj_main' ;
       $password = 't94d24w32F8W';
       $dbname ='manoj_main1' ;
       // Create connection
       $conn = mysqli_connect($servername, $username, $password, $dbname);
-      print_r($conn);exit();
+
       if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
       }
