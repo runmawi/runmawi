@@ -1201,6 +1201,11 @@ Route::resources([
 
 Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
 
+// Choose Profile Screen
+Route::get('admin/ChooseProfileScreen', 'WelcomeScreenController@ChooseProfileScreen')->name('ChooseProfileScreen');
+Route::post('admin/ChooseProfileScreen_store', 'WelcomeScreenController@ChooseProfileScreen_store')->name('ChooseProfileScreen_store');
+
+
     //    Theme Integration
 Route::get('admin/ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
