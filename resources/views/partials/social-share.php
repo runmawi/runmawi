@@ -28,7 +28,7 @@ elseif(isset($episode)):
 elseif(isset($series)):
     $media_title = $series->title;
     $url = URL::to('play_series');
-    $media_url = $url . '/' . $series->id; 
+    $media_url = $url . '/' . $series->slug; 
     $hidden = '<input type="hidden" value="'.$series->id.'" id="videoid">';
 else:
     $media_title = '';
