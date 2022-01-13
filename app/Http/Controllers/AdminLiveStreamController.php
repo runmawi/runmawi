@@ -345,8 +345,10 @@ class AdminLiveStreamController extends Controller
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
         
-        if(empty($data['active'])){
+        if(empty($data['active']) && $video->active == null){
             $data['active'] = 0;
+        }else{
+            $data['active'] = $video->active;
         } 
        
         if(empty($data['ppv_status'])){
@@ -470,7 +472,7 @@ class AdminLiveStreamController extends Controller
 
         // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
         $videos =    LiveStream::where('active', '=',0)
-            ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
+            // ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
             ->select('moderators_users.username', 'live_streams.*')
             ->orderBy('live_streams.created_at', 'DESC')->paginate(9);
             // dd($videos);

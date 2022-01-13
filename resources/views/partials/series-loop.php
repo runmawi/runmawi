@@ -120,7 +120,7 @@ endif; ?>
 foreach($series as $seriess): ?>
 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 new-art">
 	<article class="block expand">
-         <a class="block-thumbnail" href="<?= URL::to('play_series') ?><?= '/' . $seriess->id ?>">
+         <a class="block-thumbnail" href="<?= URL::to('play_series') ?><?= '/' . $seriess->slug ?>">
             <div class="play-button">
                 <div class="play-block">
                     <i class="fa fa-play flexlink" aria-hidden="true"></i> 

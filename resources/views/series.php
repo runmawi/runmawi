@@ -8,7 +8,8 @@
 </style>
 
 <?php 
-$series = $series_data ; ?>
+$series = $series_data ;
+ ?>
 <div class="container" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -57,7 +58,7 @@ $series = $series_data ; ?>
 						
 						<?php foreach($season as $key => $seasons):  
 							foreach($seasons->episodes as $key => $episodes): ?>
-								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->title;?>">
+								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >

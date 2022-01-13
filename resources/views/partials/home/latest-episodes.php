@@ -10,7 +10,7 @@
         // foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">
-          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
+          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -28,7 +28,7 @@
               </div>
               </div>
               <div class="block-description">
-              <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
+              <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
                   <h6><?php echo __($latest_episode->title); ?></h6>
                 </a>
                 <div class="movie-time d-flex align-items-center my-2">
@@ -36,7 +36,7 @@
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
                 </div>
                 <div class="hover-buttons d-flex">
-                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->title) ; }?> ">
+                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>

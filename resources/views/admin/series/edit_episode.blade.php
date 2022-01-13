@@ -14,7 +14,7 @@
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
-		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-primary">
+		<a href="{{URL::to('episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
@@ -237,9 +237,9 @@
 								<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
 								<?php if($settings->ppv_status == 1){ ?>
-								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+								<!-- <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>    -->
 								<?php } else{ ?>
-								<option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+								<!-- <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>    -->
 								<?php } ?>
 
 							</select>
@@ -282,13 +282,13 @@
 
 				<div class="row align-items-center"> 
 
-				<div class="col-sm-4" id="ppv_price"> 
+				<!-- <div class="col-sm-4" id="ppv_price"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($episodes->ppv_price)){{ $episodes->ppv_price }}@endif">
 
 					</div>
-				</div>
+				</div> -->
 
 				<div class="col-sm-4 mt-3"> 
 					<div class="panel panel-primary" data-collapsed="0"> 

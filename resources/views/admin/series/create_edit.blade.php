@@ -25,7 +25,7 @@ $settings  = App\Setting::first();?>
 		<h4>{{ $series->title }}</h4> 
                 </div>
             <div>
-		<a href="{{ URL::to('series') . '/' . $series->id }}" target="_blank" class="btn btn-primary">
+		<a href="{{ URL::to('play_series') . '/' . $series->slug }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a></div>
 	@else
@@ -68,7 +68,13 @@ $settings  = App\Setting::first();?>
                     </div>
                 </div>
             @endif
-
+			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title font-weight-bold"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+					<!-- <p class="p1">Select the series image (1280x720 px or 16:9 ratio):</p>  -->
+					<input type="text" class="form-control" name="slug" id="slug" placeholder="Series Slug" value="@if(!empty($series->slug)){{ $series->slug }}@endif"  />			
+				</div> 
+			</div>
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label>Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 

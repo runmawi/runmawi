@@ -9,14 +9,14 @@
     <?php  if(isset($latest_series)) :
       foreach($latest_series as $latest_serie): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title ) ?>">
+          <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
               </div>
               <div class="block-description">
-                <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title) ?> ">
+                <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
 
               <h6><?php echo __($latest_serie->title); ?></h6>
                 </a>
@@ -25,7 +25,7 @@
                   <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>
                 </div>
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->title) ?> " >
+                  <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>
