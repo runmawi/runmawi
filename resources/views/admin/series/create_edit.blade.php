@@ -322,9 +322,59 @@ $settings  = App\Setting::first();?>
                 <h3>Season & Episodes</h3> 
             </div>
 			<div class="col-md-4 d-flex justify-content-end">
-				<a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Create Season</a>
+            <div class="col-md-6" align="right"><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Create Season</a></div>
+
+				<!-- <a href="{{ URL::to('admin/season/create/') . '/' . $series->id  }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Create Season</a> -->
 			</div>
 		</div>
+		<!-- Add New Modal -->
+	<div class="modal fade" id="add-new">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+                    <h4 class="modal-title">Add Season</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
+				</div>
+				
+				<div class="modal-body">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/create/') }}" method="post">
+						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+						<input type="hidden" name="series_id" value="<?= $series->id ?>" />
+
+                                
+						    <div class="form-group">
+		                        <label> Choose Season Access:</label>
+								<select class="form-control" id="ppv_access" name="ppv_access">
+								<option value="free" >Free (everyone)</option>
+								<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
+							</select>
+		                        <!-- <input type="text" id="ppv_price" name="ppv_price" value="" class="form-control" placeholder="Plan Name"> -->
+                            </div>
+                      
+                            <div class="form-group" id="ppv_price">
+							<label class="">PPV Price:</label>
+								<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+		                    </div>  
+							<div class="form-group">
+		                        <label>PPV Interval:</label>
+								<p class="p1">Please Mention How Many Episodes are Free:</p>
+		                        <input type="text" id="ppv_interval" name="ppv_interval" value="" class="form-control">
+		                    </div>  
+                     
+                
+				    </form>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 		<div class="row p-3">
 <table class="table table-bordered genres-table">
 
@@ -363,6 +413,16 @@ $settings  = App\Setting::first();?>
 		$(document).ready(function(){
 
 			$('#title_error').hide();
+			$('#ppv_price').hide();
+
+
+			$('#access').change(function(){
+				if($('#access').val() == "ppv"){
+				$('#ppv_price').show();
+				}
+			});
+
+			
 
 		$('#title').change(function(){
    		//  alert(($('#title').val()));
@@ -461,6 +521,21 @@ $settings  = App\Setting::first();?>
 
 
         </script>
+
+<script>
+			
+$('#ppv_access').change(function(){
+	// alert($(this).val());
+
+	if($(this).val() == "ppv"){
+	$('#ppv_price').show();
+	}
+});
+
+$('#submit-new-cat').click(function(){
+	$('#new-cat-form').submit();
+});
+</script>
 
 @section('javascript')
 

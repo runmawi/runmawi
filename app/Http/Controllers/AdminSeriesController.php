@@ -593,13 +593,47 @@ class AdminSeriesController extends Controller
             @unlink('public/uploads/images/' . str_replace('.' . $ext, '-small.' . $ext, $series->image) );
         }
     }
-
-    public function create_season($id)
+    
+    public function create_season(Request $request)
     {
-        $data['series_id'] = $id; 
-        $series = SeriesSeason::create($data);
-        return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Created Season!', 'note_type' => 'success') );
+        $data = $request->all();
+        if(!empty($data['ppv_access'])){
+            $access = $data['ppv_access'];
+        }else{
+            $access = null;
+        }
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'];
+        }else{
+            $ppv_price = null;
+        }
+        if(!empty($data['ppv_interval'])){
+            $ppv_interval = $data['ppv_interval'];
+        }else{
+            $ppv_interval = null;
+        }
+        // $data['series_id'] = $data['series_id']; 
+        // $data['access'] = $access; 
+        // $data['ppv_price'] = $ppv_price; 
+        // $data['ppv_interval'] = $ppv_interval; 
+        $series = new SeriesSeason;
+        $series->series_id = $data['series_id'];
+        $series->access = $access;
+        $series->ppv_price = $ppv_price;
+        $series->ppv_interval = $ppv_interval;
+        $series->save();
+
+        // $series = SeriesSeason::create($data);
+        // return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Created Season!', 'note_type' => 'success') );
+        return Redirect::back();
     }
+
+    // public function create_season($id)
+    // {
+    //     $data['series_id'] = $id; 
+    //     $series = SeriesSeason::create($data);
+    //     return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Created Season!', 'note_type' => 'success') );
+    // }
 
     public function destroy_season($id)
     {
