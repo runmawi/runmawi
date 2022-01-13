@@ -1263,8 +1263,14 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
              <div class="row">
                 <div class="col-lg-6">
                    <ul class="list-inline mb-0">
-                      <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
-                      <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+                   <?php 
+                        $pages = App\Page::all();
+                        foreach($pages as $page): 
+                        if($page->title == "Privacy Policy" || $page->title =="Terms and Conditions"){ ?>
+							<li class="list-inline-item"><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+						<?php } endforeach; ?>
+                      <!-- <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                      <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li> -->
                    </ul>
                 </div>
                 <div class="col-lg-6 text-right">

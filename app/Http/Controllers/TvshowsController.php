@@ -163,7 +163,7 @@ class TvshowsController extends Controller
    	if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        $episode = Episode::where('title','=',$episode_name)->orderBy('id', 'DESC')->first();    
+        $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
         $id = $episode->id;
         // $episode = Episode::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -286,8 +286,7 @@ class TvshowsController extends Controller
             return Redirect::to('/login');
         endif;
   
-        
-        $series = Series::where('title','=',$name)->first();    
+        $series = Series::where('slug','=',$name)->first();    
 
         $id = $series->id;
 
@@ -319,7 +318,7 @@ class TvshowsController extends Controller
           $secret_key= null;
           $publishable_key= null;
       }    
-      $series = Series::where('title','=',$name)->first();    
+      $series = Series::where('slug','=',$name)->first();    
     //   dd($series);
             $data = array(
                 'series_data' => $series,
@@ -350,7 +349,7 @@ class TvshowsController extends Controller
         if(Auth::guest()):
              return Redirect::to('/login');
          endif;
-         $episode = Episode::where('title','=',$episode_name)->first();    
+         $episode = Episode::where('slug','=',$episode_name)->first();    
          $id = $episode->id;
          // $episode = Episode::findOrFail($id);
          $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();

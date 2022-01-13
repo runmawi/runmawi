@@ -84,6 +84,7 @@ use App\Videoartist;
 use App\Seriesartist;
 use App\WelcomeScreen;
 use App\CategoryVideo;
+use cPanel;
 
 
 
@@ -1748,8 +1749,11 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
+
             $userdata = User::where('id', '=', $user_id)->first();
+
             if ($userdata->subscription($stripe_plan)) {
+
                 $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
                 $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
             }else{
@@ -1764,7 +1768,9 @@ public function verifyandupdatepassword(Request $request)
             }
 
             $stripe_plan = SubscriptionPlan();
-            if ( $userdata->subscribed($stripe_plan)) {
+
+            // if ( $userdata->subscribed($stripe_plan)) {
+            if ( !empty($userdata)) {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
             }else{
                 $curren_stripe_plan = "No Plan Found";
@@ -5364,13 +5370,15 @@ exit();
   }
 
     public function connectcpanel(){
+
+      // http://localhost/flicknexs/api/auth/connectcpanel
       $servername = "localhost";
       $username = 'manoj_main' ;
       $password = 't94d24w32F8W';
       $dbname ='manoj_main1' ;
       // Create connection
       $conn = mysqli_connect($servername, $username, $password, $dbname);
-
+      print_r($conn);exit();
       if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
       }

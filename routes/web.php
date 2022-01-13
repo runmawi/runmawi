@@ -585,7 +585,7 @@ Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVid
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
 
 });
-Route::get('admin/cpp/  ',  'ModeratorsUserController@PendingUsers');
+Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
 
 Route::get('admin/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
 Route::get('admin/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');

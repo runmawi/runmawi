@@ -136,6 +136,12 @@ class AdminSeriesController extends Controller
             $genre_iddata = $data['genre_id'];
             unset($data['genre_id']);
         }
+        if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+            }
+        if($request->slug == ''){
+            $data['slug'] = $this->createSlug($data['title']);    
+        }
         if(!empty($data['language'])){
             $languagedata = $data['language'];
             unset($data['language']);
@@ -260,6 +266,7 @@ class AdminSeriesController extends Controller
             $ppv_status = 0;
         }
         $update_url->mp4_url = $data['mp4_url'];
+        $update_url->slug = $data['slug'];
         $update_url->mp4_url = $ppv_status;
 
 
@@ -332,6 +339,12 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+        if ($request->slug != '') {
+            $data['slug'] = $this->createSlug($request->slug);
+            }
+        if($request->slug == ''){
+            $data['slug'] = $this->createSlug($data['title']);    
+        }
 
          $path = public_path().'/uploads/videos/';
          $image_path = public_path().'/uploads/images/';
@@ -378,6 +391,7 @@ class AdminSeriesController extends Controller
 
                 $update_url->mp4_url = $data['mp4_url'];
 
+
                 $update_url->save();  
 
 
@@ -388,6 +402,9 @@ class AdminSeriesController extends Controller
         
         
         $series->update($data);
+        $series->slug = $data['slug'];
+        $series->save();
+
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);

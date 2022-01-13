@@ -50,7 +50,9 @@
 	<div class="admin-section-title">
 	@if(!empty($episodes->id))
 		<h4>{{ $episodes->title }}</h4> 
-		<a href="{{ URL::to('episodes') . '/' . $episodes->id }}" target="_blank" class="btn btn-primary">
+		<!-- {{ URL::to('episodes') . '/' . $episodes->id }} -->
+		
+		<a href="{{ URL::to('episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
 		</a>
 	@else
@@ -76,7 +78,7 @@
 
 	<div id="episode_video_data">
 
-	<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Episode_form">
+	<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
 @if(!empty($episodes->created_at))
 	<div class="row mt-4">
@@ -87,11 +89,6 @@
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
 					<p class="p1">Add the episodes title in the textbox below:</p> 
 					<input type="text" class="form-control" name="title" id="title" placeholder="Episode Title" value="@if(!empty($episodes->title)){{ $episodes->title }}@endif"  />
-				</div> 
-			<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<p class="p1">Add the episodes Slug in the textbox below:</p> 
-					<input type="text" class="form-control" name="slug" id="slug" placeholder="Episode Slug" value="@if(!empty($episodes->slug)){{ $episodes->slug }}@endif"  />
 				</div> 
 			</div>
 
@@ -106,128 +103,6 @@
 					<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($episodes->created_at)){{ $episodes->created_at }}@endif"/>
 				</div> 
 			</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Episode Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<p class="p1">IMDb Ratings 10 out of 10 </p>
-					<input class="form-control" name="rating" id="rating" value="" onkeyup="NumAndTwoDecimals(event , this);"  >
-				</div> 
-			</div>
-			</div>
-			</div>
-
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Episode Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<label for="type" >Episode Format</label>
-					<select class="form-control" id="type" name="type">
-						<option value="embed">Embed Code</option>
-						<option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
-						<option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
-					</select>
-
-				
-
-
-					<div class="new-episodes-file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'style="display:block"' }}@else style = "display:none" @endif>
-						<label for="mp4_url">Mp4 File URL:</label>
-						<input type="text" class="form-control" name="mp4_url" id="mp4_url" value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
-					</div>
-
-					<div class="new-episodes-embed" @if(!empty($episodes->type) && $episodes->type == 'embed')style="display:block"@else style = "display:none" @endif>
-						<label for="embed_code">Embed Code:</label>
-						<textarea class="form-control" name="embed_code" id="embed_code">@if(!empty($episodes->embed_code)){{ $episodes->embed_code }}@endif</textarea>
-					</div>
-
-					<div class="new-episodes-upload" @if(!empty($episodes->type) && $episodes->type == 'upload')style="display:block"@else style = "display:none" @endif>
-						<label for="embed_code">Upload Episode</label>
-						<input type="file" name="episode_upload" id="episode_upload">
-					</div>
-					@if(!empty($episodes->type) && ($episodes->type == 'upload' || $episodes->type == 'file'))
-					<video width="200" height="200" controls>
-					<source src="{{ $episodes->mp4_url }}" type="video/mp4">
-					</video>
-					@endif
-					@if(!empty($episodes->type) && $episodes->type == 'embed')
-					<iframe src="{{ $episodes->mp4_url }}"></iframe>
-					@endif
-				</div> 
-			</div>
-				{{-- <div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<label><h6>Age Restrict :</h6></label>
-				<select class="form-control" id="age_restrict" name="age_restrict">
-						<option selected disabled="">Choose Age</option>
-						@foreach($age_categories as $age)
-							<option value="{{ $age->id }}" @if(!empty($episodes->age_restrict) && $episodes->age_restrict == $age->id)selected="selected"@endif>{{ $age->slug }}</option>
-						@endforeach
-					</select>
-			</div> --}}
-
-			<div class="row align-items-center"> 
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title"> <label>Skip Intro Time</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<p>Please Give In Seconds</p> 
-						<div class="panel-body"> 
-							<input class="form-control" name="skip_intro" id="skip_intro" value="@if(!empty($episodes->skip_intro)){{ $episodes->skip_intro }}@endif" >
-						</div> 
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Intro Start Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<p>Please Give In Seconds</p> 
-						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-						<input class="form-control" name="intro_start_time" id="intro_start_time" value="@if(!empty($episodes->intro_start_time)){{ $episodes->intro_start_time }}@endif" >
-						</div> 
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Intro End Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<p>Please Give In Seconds</p> 
-						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-						<input class="form-control" name="intro_end_time" id="intro_end_time" value="@if(!empty($episodes->intro_end_time)){{ $episodes->intro_end_time }}@endif" >
-						</div> 
-					</div>
-				</div>
-
-				</div>
-
-				<div class="row align-items-center"> 
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-					<div class="panel-heading"> <div class="panel-title"> <label>Skip Recap Time</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<p>Please Give In Seconds</p> 
-						<div class="panel-body"> 
-							<input class="form-control" name="skip_recap" id="skip_recap" value="@if(!empty($episodes->skip_recap)){{ $episodes->skip_recap }}@endif" >
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title">Recap Start Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<p>Please Give In Seconds</p> 
-						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-						<input class="form-control" name="recap_start_time" id="recap_start_time" value="@if(!empty($episodes->recap_start_time)){{ $episodes->recap_start_time }}@endif" >
-						</div> 
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title">Recap End Time</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<p>Please Give In Seconds</p> 
-						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-						<input class="form-control" name="recap_end_time" id="recap_end_time" value="@if(!empty($episodes->recap_end_time)){{ $episodes->recap_end_time }}@endif" >
-					</div>	 
-					</div>
-				</div>
-				</div>
-
-
-
-
 		</div>
 	</div>
 @endif
@@ -390,9 +265,9 @@
 						<option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 						<option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
 						<?php if($settings->ppv_status == 1){ ?>
-						<option value="ppv" >PPV Users (Pay per movie)</option>   
+						<!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
 						<?php } else{ ?>
-						<option value="ppv" >PPV Users (Pay per movie)</option>   
+						<!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
 						<?php } ?>
 					</select>
 					<div class="clear"></div>
@@ -428,8 +303,8 @@
 					<div style="display: flex;
 						justify-content: start;
 						align-items: baseline;">
-						<!-- <label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
-						<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" /> -->
+						<label for="footer" style="float:left; display:block; margin-right:10px;">Is this episode display in Footer:</label>
+						<input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
 					</div>
 				</div> 
 			</div>
@@ -438,20 +313,20 @@
 
 		<div class="row align-items-center"> 
 
-			<div class="col-sm-4" id="ppv_price"> 
+			<!-- <div class="col-sm-4" id="ppv_price"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
 					<div class="panel-heading"> <div class="panel-title"> <label>PPV Price :</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" >
 		
 				</div>
-			</div>
+			</div> -->
 
 			<!-- <div class="col-sm-4 mt-3"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
 					<div class="panel-heading"> <div class="panel-title"> <label>Is this video Is PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<?php //if($settings->ppv_status == 1){ ?>
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
-					<?php // } else{ ?>
+					<?php// } else{ ?>
 						<div class="global_ppv_status">
 					<input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
 						</div>
@@ -662,29 +537,8 @@ CKEDITOR.replace( 'summary-ckeditor', {
 });
 </script>
 
-{{-- validate --}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-<script>
-$('form[id="Episode_form"]').validate({
-	rules: {
-	  title: 'required',
-	  image: 'required',
-	},
-	messages: {
-	  title: 'This field is required',
-	  image: 'This field is required',
-	},
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
-</script>
- {{-- end validate --}}
-
 <script type="text/javascript">
-
 var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 // alert('test');
 $('#buttonNext').hide();
@@ -718,8 +572,4 @@ $('#submit').show();
 
 	@stop
 
-	
-
 @stop
-
-
