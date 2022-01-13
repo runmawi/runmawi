@@ -25,7 +25,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Episode_edit">
 
 		@if(!empty($episodes->created_at))
 			<div class="row">
@@ -466,6 +466,27 @@ $(document).ready(function(){
 
 
 	</script>
+
+
+@section('javascript')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+
+$('form[id="Episode_edit"]').validate({
+	rules: {
+	  title: 'required',
+	},
+	messages: {
+	  title: 'This field is required',
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+</script>
+	@stop
 
 	@stop
 
