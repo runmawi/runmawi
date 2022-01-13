@@ -979,7 +979,7 @@ class HomeController extends Controller
                     ->get();
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '=', $device_name)->first();
-                    dd($alldevices);
+                    // dd($alldevices);
                     if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ||  $subuser_check >= 1 && $subuser_check < 4 )
                 {
                     $url1 = $_SERVER['REQUEST_URI'];
