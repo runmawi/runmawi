@@ -1760,17 +1760,19 @@ public function verifyandupdatepassword(Request $request)
             } 
             $user = User::find($user_id);
 
-            if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
-                $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            }else{
-                $ends_at = "";
-            }
+            // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
+            //     $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
+            // }else{
+            //     $ends_at = "";
+            // }
 
             $stripe_plan = SubscriptionPlan();
             if ( !empty($userdata) || $userdata->subscribed($stripe_plan)) {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
+                $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
             }else{
                 $curren_stripe_plan = "No Plan Found";
+                $ends_at = "";
             }
             $response = array(
                 'status'=>'true',

@@ -65,6 +65,19 @@ if (!empty($data['password_hash'])) {
    <!-- Responsive CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
+
+   <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/tourguide.css';?>"   />
+    <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/font-awesome.min.css';?>" />
+
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery-3.3.1.slim.min.js';?>"></script>
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/bootstrap.min.js';?>"></script>
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/tourguide.min.js';?>"></script>
+    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/tourguide.js';?>"></script>
+
+
+
+
   <!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
 
   <!-- HTML5 shim and Respond.js') }} IE8 support of HTML5 elements and media queries -->
@@ -127,7 +140,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li  data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description" class=" " data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description"><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div  class="mnu" style="">
                  
@@ -355,7 +368,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description" class=" " data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description"><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="mnu" style="">
                  
@@ -574,7 +587,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description" class=" " data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description"><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="mnu" style="">
                  
@@ -793,7 +806,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description" class=" " data-tour="step: 2; title: Promo code; content: Example cart promo code text displays promo code description"><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div style="">
                  
@@ -1632,7 +1645,10 @@ if(jQuery('#view-chart-13').length){
           window.location = '<?= URL::to('/') ?>';
       }
    </script>         
-    
+    <script>
+   //  var tourguide = new Tourguide();
+   //  tourguide.start();
+</script>
 </body>
 </html>
 
