@@ -1767,7 +1767,7 @@ public function verifyandupdatepassword(Request $request)
             }
 
             $stripe_plan = SubscriptionPlan();
-            if ( $userdata->subscribed($stripe_plan)) {
+            if ( !empty($userdata) || $userdata->subscribed($stripe_plan)) {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
             }else{
                 $curren_stripe_plan = "No Plan Found";
