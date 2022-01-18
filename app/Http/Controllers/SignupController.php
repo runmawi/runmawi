@@ -25,7 +25,9 @@ use App\EmailTemplate;
 use App\PaymentSetting;
 use App\Subscription;
 use App\SubscriptionPlan;
+use App\Homesetting;
 use Session;
+use Theme;
 
 
 class SignupController extends Controller
@@ -142,6 +144,10 @@ class SignupController extends Controller
 
     public function createStep1(Request $request)
     {
+        $Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
+      
             $signup_status = FreeRegistration();
 //            if ( $signup_status == 1 ) {
 //                return redirect('/signup');
@@ -152,9 +158,9 @@ class SignupController extends Controller
             $register = $request->session()->get('register');
             $settings = \App\Setting::first();
             if($settings->free_registration == 1) {
-                return view('register.step1',compact('register'));
+                return Theme::view('register.step1',compact('register'));
             } else {
-                return view('register.step1',compact('register'));
+                return Theme::view('register.step1',compact('register'));
             }
     }
     
