@@ -1792,7 +1792,7 @@ public function verifyandupdatepassword(Request $request)
                 'curren_stripe_plan'=>$curren_stripe_plan,
                 'user_details' => $user_details,
                 'next_billing' => $nextPaymentAttemptDate,
-                'ends_at' => $ends_at
+                'ends_at' => $ends_at[0],
             );
             return response()->json($response, 200);
         }
