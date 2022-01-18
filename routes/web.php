@@ -1211,4 +1211,5 @@ Route::post('admin/ChooseProfileScreen_store', 'WelcomeScreenController@ChoosePr
 Route::get('admin/ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 

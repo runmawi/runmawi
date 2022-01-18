@@ -183,6 +183,7 @@ return [
         Stevebauman\Location\LocationServiceProvider::class,
         Webnexs\Avod\AvodServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Facuz\Theme\ThemeServiceProvider::class,
 
 
         /*
@@ -268,7 +269,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Location' => 'Stevebauman\Location\Facades\Location',
         'Agent' => 'Jenssegers\Agent\Facades\Agent::class',
-
+        'Theme' => Facuz\Theme\Facades\Theme::class,
 
     ],
 

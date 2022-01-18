@@ -53,6 +53,7 @@ use App\ApprovalMailDevice;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\RecentView;
 use App\ChooseProfileScene;
+use Theme;
 
 class HomeController extends Controller
 {
@@ -918,6 +919,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
+        $Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses( $Theme );
+
         $data = Session::all();
 
         $agent = new Agent();
@@ -1476,7 +1481,7 @@ class HomeController extends Controller
 
              );
             // dd($Mode);
-             return View::make('home', $data);
+             return Theme::view('home', $data);
             }
         }
     }
