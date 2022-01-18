@@ -5,9 +5,11 @@ use Illuminate\Http\Request;
 use App\Wishlist;
 use App\Video as Video;
 use App\PpvVideo as PpvVideo;
+use App\Homesetting;
 use Auth;
 use View;
 use Session;
+use Theme;
 class WishlistController extends Controller
 {
     public function mywishlist(Request $request)
@@ -75,6 +77,9 @@ class WishlistController extends Controller
 
     public function show_mywishlists()
     {
+        $Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+        
         if (Auth::guest())
         {
             return redirect('/login');
@@ -106,7 +111,7 @@ class WishlistController extends Controller
             'channelwatchlater' => $videos
         );
 
-        return view('mywhislist', $data);
+        return Theme::view('mywhislist', $data);
 
     }
 

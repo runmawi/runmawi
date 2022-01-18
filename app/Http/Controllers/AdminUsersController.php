@@ -44,9 +44,8 @@ use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
 use App\Language;
 use App\Multiprofile;
-
-
-
+use App\Homesetting;
+use Theme;
 
 class AdminUsersController extends Controller
 {
@@ -360,6 +359,10 @@ class AdminUsersController extends Controller
     } 
     
     public function myprofile(){
+
+        $Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
         if(Auth::guest()){
             return redirect('/login');
         }
@@ -368,7 +371,7 @@ class AdminUsersController extends Controller
         if (empty($data['password_hash'])) {
             $system_settings = SystemSetting::first();
 
-            return view('auth.login',compact('system_settings'));
+            return Theme::view('auth.login',compact('system_settings'));
 
             // return View::make('auth.login', $data);
 
@@ -432,7 +435,7 @@ class AdminUsersController extends Controller
             'profile_details' => $profile_details,
             'Multiuser' => $Multiuser,
     		);
-    	return View::make('myprofile', $data);
+    	return Theme::view('myprofile', $data);
           }
     }
     public function ProfileImage(Request $request){
