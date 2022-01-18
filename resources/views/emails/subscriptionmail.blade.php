@@ -1,12 +1,12 @@
 <?php 
 
 // $plan_id = session()->get('planname');
-$plan_id = session()->get('plan_id');
+// $plan_id = session()->get('plan_id');
 
 
 $plan_details = App\SubscriptionPlan::where('plan_id','=',$plan_id)->first();
 // $plan_details = App\Plan::where("plan_id","=",$plan_id)->first();
-$plan_price = $plan_details->price;
+$plan_price = $price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;
 ?>
@@ -32,7 +32,7 @@ $discount_price = $discount_percentage;
 
 	<!-- <h2><?php //echo $template[0]->template_type;?></h2> -->
 
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $uname;?>,&nbsp;&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $name;?>,&nbsp;&nbsp;&nbsp;</p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;Welcome to <?php echo $settings->website_name;?>.&nbsp;&nbsp;&nbsp;</p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;Thank you for registering on <?php echo $settings->website_name;?> and subscribing to Plan <?php echo $plan_details->plans_name;?>.&nbsp;&nbsp;&nbsp;</p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;Click here to confirm your account and you can start watching our videos anytime.&nbsp;&nbsp;&nbsp;</p>
