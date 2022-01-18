@@ -25,7 +25,6 @@ class ThemeIntegrationController extends Controller
 
     public function create(Request $request){
 
-
         $Themes = $request->all();
 
         $files_zip = $Themes['theme_zip'];
@@ -47,19 +46,17 @@ class ThemeIntegrationController extends Controller
             'theme_css' => $fileName_zip,
           ]);
 
-      // Extract a file
+     
+   // Extract a file
 
           $zip_folder = ThemeIntegration::latest()->first();
-          
+        
           $zip_path=base_path().'/public/uploads/settings/'.$zip_folder->theme_css;
 
           $zip = Zip::open($zip_path);
 
           $zip->extract(public_path('uploads/settings/'),$zip );
 
-          echo '<pre>';
-          print_r($zip);
-          exit();
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
     }
