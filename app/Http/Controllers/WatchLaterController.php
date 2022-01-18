@@ -9,8 +9,11 @@ use App\PpvVideo as PpvVideo;
 use App\PpvPurchase as PpvPurchase;
 use App\LivePurchase as LivePurchase;
 use App\CurrencySetting as CurrencySetting;
+use App\Homesetting;
 use Auth;
 use View;
+use Theme;
+
 class WatchLaterController extends Controller
 {
   public function watchlater(Request $request){
@@ -60,6 +63,10 @@ class WatchLaterController extends Controller
     } 
     
      public function show_watchlaters(){
+
+      $Theme = Homesetting::pluck('theme_choosen')->first();
+      Theme::uses($Theme);
+
         if(Auth::guest()){
             return redirect('/login');
         }
@@ -85,7 +92,7 @@ class WatchLaterController extends Controller
                      'channelwatchlater' => $videos
               );
 
-             return view('mywatchlater', $data);
+             return Theme::view('mywatchlater', $data);
         
         }      
     
