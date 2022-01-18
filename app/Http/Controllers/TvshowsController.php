@@ -45,6 +45,8 @@ use Session;
 use App\RecentView as RecentView;
 use App\CurrencySetting as CurrencySetting;
 use App\Playerui as Playerui;
+use App\Homesetting;
+use Theme;
 
 class TvshowsController extends Controller
 {
@@ -67,6 +69,9 @@ class TvshowsController extends Controller
      */
     public function index(Request $request)
     {
+
+    $Theme = Homesetting::pluck('theme_choosen')->first();
+    Theme::uses( $Theme );
 
      $settings = Setting::first();
 
@@ -152,8 +157,7 @@ class TvshowsController extends Controller
       'free_Contents' => $free_Contents,  
 
     );
-    //echo "<pre>";print_r($data);exit;
-     return View::make('tv-home', $data);
+     return Theme::view('tv-home', $data);
    }
 
    public function play_episode($series_name,$episode_name)//
@@ -164,6 +168,7 @@ class TvshowsController extends Controller
             return Redirect::to('/login');
         endif;
         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+
         $id = $episode->id;
         // $episode = Episode::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -243,7 +248,7 @@ class TvshowsController extends Controller
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
-            return View::make('episode', $data);
+            return Theme::view('episode', $data);
             }else{
                 return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
 
@@ -280,7 +285,7 @@ class TvshowsController extends Controller
 
      public function play_series($name)
     {
-    
+
     	$settings = Setting::first();
         if(Auth::guest()):
             return Redirect::to('/login');
@@ -335,7 +340,7 @@ class TvshowsController extends Controller
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
 
-            return View::make('series', $data);
+            return Theme::view('series', $data);
 
         } else {
             return Redirect::to('series')->with(array('note' => 'Sorry, this series is no longer active.', 'note_type' => 'error'));

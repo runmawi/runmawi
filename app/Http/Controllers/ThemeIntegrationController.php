@@ -13,7 +13,7 @@ use App\User;
 use Session;
 use Auth;
 use DB;
-
+use ZanySoft\Zip\Zip;
 
 class ThemeIntegrationController extends Controller
 {
@@ -25,8 +25,15 @@ class ThemeIntegrationController extends Controller
 
     public function create(Request $request){
 
-
         $Themes = $request->all();
+
+        $files_zip = $Themes['theme_zip'];
+
+        $zip_format = $files_zip->getClientOriginalExtension();
+        $zip_filename =$Themes['theme_name'].'_'.'viewfile' .'.';
+        $fileName_zip = $zip_filename . $request->theme_zip->getClientOriginalExtension();  
+        $request->theme_zip->move(public_path('uploads/settings/'), $fileName_zip);
+
 
         $files = $Themes['theme_image'];
         $format=$files->getClientOriginalExtension();
@@ -36,7 +43,20 @@ class ThemeIntegrationController extends Controller
         ThemeIntegration::create([
             'theme_images'  => $filename,
             'theme_name' => $request->theme_name,
+            'theme_css' => $fileName_zip,
           ]);
+
+     
+   // Extract a file
+
+          $zip_folder = ThemeIntegration::latest()->first();
+        
+          $zip_path=base_path().'/public/uploads/settings/'.$zip_folder->theme_css;
+
+          $zip = Zip::open($zip_path);
+
+          $zip->extract(public_path('uploads/settings/'),$zip );
+
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
     }

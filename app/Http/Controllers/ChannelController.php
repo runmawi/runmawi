@@ -41,10 +41,7 @@ use App\HomeSetting as HomeSetting;
 use App\BlockVideo as BlockVideo;
 use App\CategoryVideo as CategoryVideo;
 use App\LanguageVideo;
-
-
-
-
+use Theme;
 
 
 class ChannelController extends Controller
@@ -59,6 +56,9 @@ class ChannelController extends Controller
         //$this->middleware('auth');
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses(  $this->Theme );
     }
     
     public function index()
@@ -80,7 +80,9 @@ class ChannelController extends Controller
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
-        $categoryVideos_count =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id)->count();
+        $categoryVideos_count = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                              ->where('category_id','=',$category_id)->where('active', '=', '1')->count();
+
         if ($categoryVideos_count > 0) {
     // blocked videos
               $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
@@ -90,12 +92,13 @@ class ChannelController extends Controller
                 }
               }    
               $blockvideos[]='';
-              $categoryVideos =  \App\Video::where('active', '=', '1')->where('video_category_id',$category_id);
+              $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                ->where('category_id','=',$category_id)->where('active', '=', '1');
+
               if($getfeching !=null && $getfeching->geofencing == 'ON'){
                  $categoryVideos = $categoryVideos  ->whereNotIn('id',$blockvideos);
                  }
                $categoryVideos = $categoryVideos ->paginate();
-              
               
           } else {
                 $categoryVideos = [];
@@ -122,8 +125,7 @@ class ChannelController extends Controller
 
             );
 
-        
-       return view('categoryvids',['data'=>$data]);
+       return Theme::view('categoryvids',['data'=>$data]);
         
     } 
     
@@ -409,7 +411,7 @@ class ChannelController extends Controller
 
             }
  
-       return view('video', $data);
+       return Theme::view('video', $data); 
     }else{
     
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
@@ -494,7 +496,7 @@ class ChannelController extends Controller
 
             }
  
-       return view('video_before_login', $data);
+       return Theme::view('video_before_login', $data);
     }
         }
     

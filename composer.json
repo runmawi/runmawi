@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "cartalyst/stripe-laravel": "^12.0",
+        "facuz/laravel-themes": "^3.2",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -32,8 +33,8 @@
         "symfony/psr-http-message-bridge": "^2.0",
         "unisharp/laravel-filemanager": "^2.3",
         "victorybiz/geoip-location": "^1.1",
-        "zusamarehan/tourify": "^0.5.4",
-        "facuz/laravel-themes": "^3.2"
+        "zanysoft/laravel-zip": "^1.0",
+        "zusamarehan/tourify": "^0.5.4"
     },
    
     "require-dev": {

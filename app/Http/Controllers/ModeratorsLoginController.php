@@ -71,11 +71,24 @@ use App\PpvVideo;
 use App\RecentView;
 use Session;
 use Redirect;
+use Theme;
 
 
 
 class ModeratorsLoginController extends Controller
 {   
+
+  /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+   
+    public function __construct()
+    {
+        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses(  $this->Theme );
+    }
 
   public function index()
   {
@@ -85,7 +98,7 @@ class ModeratorsLoginController extends Controller
     $settings = Setting::first();
     $user = User::where('id','=',1)->first();
 
-    return view('moderator.register',compact('settings','user'));
+    return Theme::view('moderator.register',compact('settings','user'));
   }else{
     return Redirect::to('/blocked');
   }
@@ -99,7 +112,7 @@ class ModeratorsLoginController extends Controller
     $settings = Setting::first();
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
-    return view('moderator.login',compact('system_settings','user','settings'));
+    return Theme::view('moderator.login',compact('system_settings','user','settings'));
     }else{
       return Redirect::to('/blocked');
     }
@@ -295,7 +308,7 @@ if($request->picture == ""){
   public function VerifyRequest(Request $request)
   {
   
-   return \View::make('verify_request');
+   return Theme::view('verify_request');
   
   }
 

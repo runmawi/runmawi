@@ -20,6 +20,8 @@ use Session;
 use App\Language;
 use App\PaymentSetting;
 use App\CurrencySetting as CurrencySetting;
+use App\Homesetting;
+use Theme;
 
 
 use Illuminate\Support\Facades\Cache;
@@ -31,17 +33,25 @@ class LiveStreamController extends Controller
 {
     public function Index()
     {
+        
+        $Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses( $Theme );
+
         $live = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
         
         $vpp = VideoPerPage();
         $data = array(
                      'videos' => $live,
          );
-       return view('liveVideos',$data);
+       return Theme::view('liveVideos',$data);
     }
     
     public function Play($vid)
         {
+        
+          $Theme = Homesetting::pluck('theme_choosen')->first();
+          Theme::uses( $Theme );
+
           // $category=null,
           $data = session()->all();
 
@@ -103,7 +113,7 @@ class LiveStreamController extends Controller
                  'mywishlisted' => $wishlisted
            );
 
-           return view('livevideo', $data);
+           return Theme::view('livevideo', $data);
           // }else{
           //   $system_settings = SystemSetting::first();
 

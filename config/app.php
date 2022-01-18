@@ -184,6 +184,7 @@ return [
         Webnexs\Avod\AvodServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Facuz\Theme\ThemeServiceProvider::class,
+        ZanySoft\Zip\ZipServiceProvider::class,
 
 
         /*
@@ -270,6 +271,7 @@ return [
         'Location' => 'Stevebauman\Location\Facades\Location',
         'Agent' => 'Jenssegers\Agent\Facades\Agent::class',
         'Theme' => Facuz\Theme\Facades\Theme::class,
+        'Zip' => ZanySoft\Zip\ZipFacade::class,
 
     ],
 

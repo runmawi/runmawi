@@ -48,6 +48,8 @@ use Carbon\Carbon as Carbon;
 use Session;
 use App\BlockAudio;
 use App\Geofencing;
+use Theme;
+Use App\Homesetting;
 
 class ThemeAudioController extends Controller{
 
@@ -59,6 +61,9 @@ class ThemeAudioController extends Controller{
         $this->audios_per_page = $settings->audios_per_page;
         $this->movies_per_page = $settings->audios_per_page;
         $this->series_per_page = $settings->audios_per_page;
+
+        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses(  $this->Theme );
     }
 
     /**
@@ -69,6 +74,7 @@ class ThemeAudioController extends Controller{
      */
     public function index($slug,$name = '')
       {
+
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
@@ -198,7 +204,7 @@ class ThemeAudioController extends Controller{
                 'error' =>'error'
                 );
 
-                return View::make('audio', $data);
+                return Theme::view('audio', $data);
             }
             
             
@@ -241,7 +247,7 @@ class ThemeAudioController extends Controller{
         // print_r($data);
         // exit();
            
-            return View::make('audio', $data);
+            return Theme::view('audio', $data);
 
         
     }
@@ -303,7 +309,7 @@ class ThemeAudioController extends Controller{
             'pages' => Page::where('active', '=', 1)->get(),
             );
 
-        return View::make('audio-list', $data);
+        return Theme::view('audio-list', $data);
     }
 
 
@@ -472,7 +478,7 @@ class ThemeAudioController extends Controller{
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );
-        return View::make('albums', $data);
+        return Theme::make('albums', $data);
     }
 
     public function add_favorite(Request $request)
@@ -579,7 +585,7 @@ class ThemeAudioController extends Controller{
             'artist_videos' => $artist_videos,
             'albums' => $albums,
         );
-        return View::make('artist', $data);
+        return Theme::view('artist', $data);
     }
 
 }

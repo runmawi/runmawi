@@ -69,6 +69,9 @@ class HomeController extends Controller
         //$this->middleware('auth');
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
+       
+        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        Theme::uses(  $this->Theme );
     }
 
     public function FirstLangingold()
@@ -919,9 +922,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-
-        $Theme = Homesetting::pluck('theme_choosen')->first();
-        Theme::uses( $Theme );
 
         $data = Session::all();
 
@@ -1859,6 +1859,25 @@ class HomeController extends Controller
 
     public function LatestVideos()
     {
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+
+        $getfeching = Geofencing::first();
+
+        $block_videos=BlockVideo::where('country_id',$countryName)->get();
+        if(!$block_videos->isEmpty()){
+            foreach($block_videos as $block_video){
+                $blockvideos[]=$block_video->video_id;
+            }
+        } else{
+            $blockvideos[]='';
+        }   
+     
+        
         $date = \Carbon\Carbon::today()->subDays(30);
         //            'videos' => Video::where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->simplePaginate(10),
         //
@@ -1867,14 +1886,18 @@ class HomeController extends Controller
             ->count();
         if ($latest_videos_count > 0)
         {
-            $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')
-                ->limit(10)
-                ->get();
+            $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC');
+
+            if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+             }
+              $latest_videos = $latest_videos ->limit(10)->get();
         }
         else
         {
             $latest_videos = [];
         }
+
         // $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
         // dd($latest_videos);
         $settings = Setting::first();
@@ -1899,11 +1922,37 @@ class HomeController extends Controller
             'currency' => $currency,
         );
 
-        return View('latestvideo', $data);
+        return Theme::view('latestvideo', $data);
     }
     public function LanguageVideo($lanid, $lan)
     {
-        $language_videos = Video::where('language', '=', $lanid)->get();
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+
+        $getfeching = Geofencing::first();
+
+        $block_videos=BlockVideo::where('country_id',$countryName)->get();
+        if(!$block_videos->isEmpty()){
+            foreach($block_videos as $block_video){
+                $blockvideos[]=$block_video->video_id;
+            }
+        } else{
+            $blockvideos[]='';
+        }   
+
+
+      $language_videos =  Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+       ->where('language_id','=',$lanid)->where('active', '=', '1');
+       
+       if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                 $language_videos = $language_videos->whereNotIn('id',$blockvideos);
+        }
+      $language_videos = $language_videos->get();
+
         $currency = CurrencySetting::first();
 
         $data = array(
@@ -1912,7 +1961,7 @@ class HomeController extends Controller
 
         );
 
-        return View('languagevideo', $data);
+        return Theme::View('languagevideo', $data);
     }
 
     public function StripeSubscription(Request $request)
