@@ -1779,20 +1779,21 @@ public function verifyandupdatepassword(Request $request)
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
-               $ends_at = Subscription::where('user_id',$user_id)->pluck('ends_at');
-                // $ends_at = "";
+               $ends_ats = Subscription::where('user_id',$user_id)->pluck('ends_at');
+                $ends_at = $ends_ats[0];
 
             } else{
                 $curren_stripe_plan = "No Plan Found";
                 $ends_at = "";
             }
+
             $response = array(
                 'status'=>'true',
                 'message'=>'success',
                 'curren_stripe_plan'=>$curren_stripe_plan,
                 'user_details' => $user_details,
                 'next_billing' => $nextPaymentAttemptDate,
-                'ends_at' => $ends_at[0],
+                'ends_at' => $ends_at,
             );
             return response()->json($response, 200);
         }
