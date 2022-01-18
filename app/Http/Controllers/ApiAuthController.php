@@ -292,15 +292,21 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
+                       $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
+                       $next_date = $plan_details->days;
+                       $current_date = date('Y-m-d h:i:s');
+                       $date = Carbon::parse($current_date)->addDays($next_date);
                       Mail::send('emails.subscriptionmail', array(
                                /* 'activation_code', $user->activation_code,*/
                                 'name'=>$user->username, 
                           'days' => $plan_details->days, 
-                          'price' => $plan_details->price, 
+                          'price' => $plan_details->price,
+                          'plan_id' => $plan_details->plan_id, 
                           'ends_at' => $date,
                           'created_at' => $current_date), function($message) use ($request,$user) {
                                                 $message->from(AdminMail(),'Flicknexs');
-                                                 $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+                                                //  $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+                                                $message->to($user->email, $user->username)->subject($request->get('subject'));
                                             });
 
 
@@ -767,7 +773,6 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-        
       if ( isset($request->user_id) && $request->user_id != '' ) { 
             $user_id = $request->user_id;
             $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
@@ -832,11 +837,14 @@ public function verifyandupdatepassword(Request $request)
          $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
         //  $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
          $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
-    
-
         $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
           ->where('video_id',$videoid)->get('name');
-         
+          foreach($main_genre as $value){
+            $category[] = $value['name']; 
+          }
+          $main_genre = implode(",",$category);
+          // echo "<pre>"; print_r($main_genre);exit;
+
 
     if(\App\AdsVideo::where('video_id',$videoid)->exists()){
         $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
@@ -1771,20 +1779,21 @@ public function verifyandupdatepassword(Request $request)
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
-               $ends_at = Subscription::where('user_id',$user_id)->pluck('ends_at');
-                // $ends_at = "";
+               $ends_ats = Subscription::where('user_id',$user_id)->pluck('ends_at');
+                $ends_at = $ends_ats[0];
 
             } else{
                 $curren_stripe_plan = "No Plan Found";
                 $ends_at = "";
             }
+
             $response = array(
                 'status'=>'true',
                 'message'=>'success',
                 'curren_stripe_plan'=>$curren_stripe_plan,
                 'user_details' => $user_details,
                 'next_billing' => $nextPaymentAttemptDate,
-                'ends_at' => $ends_at
+                'ends_at' => $ends_at,
             );
             return response()->json($response, 200);
         }
