@@ -11,6 +11,7 @@ class ThemeIntegration extends Model
     protected $fillable = [
         'theme_name',
         'theme_images',
+        'theme_css',
         'created_at',
         'updated_at',
     ];

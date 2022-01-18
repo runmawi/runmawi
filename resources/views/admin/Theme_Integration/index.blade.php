@@ -48,10 +48,15 @@
 				        <label for="name">Enter the New Themes Name below</label>
 				        <input name="theme_name" id="theme_name" placeholder="Theme Name"  class="form-control" value="" /><br />
 
-				        <label for="theme_image">Theme Preview Images</label>
 				   
                         <div class="control-group">
+				            <label for="theme_image">Theme Preview Images</label>
                             <input type="file" name="theme_image" id="theme_image" >
+                        </div>
+
+                        <div class="control-group">
+                             <label for="theme_zip">Theme Zip File</label><br>
+                            <input type="file" name="theme_zip" id="theme_zip" >
                         </div>
 
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
@@ -142,6 +147,9 @@ $( document ).ready(function() {
     $( "#ThemeIntegration" ).validate({
         rules: {
                 theme_image: {
+                    required: true,
+                },
+                theme_zip: {
                     required: true,
                 },
                 theme_name: {
