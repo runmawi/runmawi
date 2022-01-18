@@ -32,7 +32,8 @@
         "symfony/psr-http-message-bridge": "^2.0",
         "unisharp/laravel-filemanager": "^2.3",
         "victorybiz/geoip-location": "^1.1",
-        "zusamarehan/tourify": "^0.5.4"
+        "zusamarehan/tourify": "^0.5.4",
+        "facuz/laravel-themes": "^3.2"
     },
    
     "require-dev": {
@@ -45,7 +46,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
     "extra": {
         "laravel": {
