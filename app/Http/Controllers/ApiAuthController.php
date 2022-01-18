@@ -1767,10 +1767,14 @@ public function verifyandupdatepassword(Request $request)
             // }
 
             $stripe_plan = SubscriptionPlan();
-            if ( !empty($userdata) || $userdata->subscribed($stripe_plan)) {
+    // print_r();exit();
+
+            if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
-                $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            }else{
+               $ends_at = Subscription::where('user_id',$user_id)->pluck('ends_at');
+                // $ends_at = "";
+
+            } else{
                 $curren_stripe_plan = "No Plan Found";
                 $ends_at = "";
             }
@@ -2637,7 +2641,7 @@ public function checkEmailExists(Request $request)
         $wishliststatus = 'false';
         // $userrole = '';
       } 
-      if($request->user_id != ''){
+      if(!empty($request->user_id)){
         $user_id = $request->user_id;
         $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
         $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
@@ -2661,7 +2665,13 @@ public function checkEmailExists(Request $request)
       $favorite = 'false';
       // $userrole = '';
     }
-        $userrole = User::where('id','=',$user_id)->pluck('role');
+    if(!empty($request->user_id)){
+      $user_id = $request->user_id;
+      $userrole = User::where('id','=',$user_id)->pluck('role');
+
+    }else{
+      $userrole = '';
+    }
 
       $response = array(
         'status'=>'true',
@@ -5138,18 +5148,18 @@ public function LocationCheck(Request $request){
   {
 
     $user_id = $request->user_id;
-    $Episode_id = $request->Episode_id;
+    $episodeid = $request->episodeid;
 
-    if($request->Episode_id != ''){
-      $count = Wishlist::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->count();
+    if($request->episodeid){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episodeid)->count();
       if ( $count > 0 ) {
-        Wishlist::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
+        Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episodeid)->delete();
         $response = array(
           'status'=>'false',
           'message'=>'Removed From Your Wishlist List'
         );
       } else {
-        $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
+        $data = array('user_id' => $user_id, 'episode_id' => $episodeid );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
@@ -5157,6 +5167,8 @@ public function LocationCheck(Request $request){
         );
 
       }
+    }else{
+
     }
 
     return response()->json($response, 200);
