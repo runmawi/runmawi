@@ -44,20 +44,14 @@
 				</div>
 				
 				<div class="modal-body p-3">
-					<form id="" accept-charset="UTF-8" action="{{ URL::to('admin/ThemeIntegration/create') }}" method="post" enctype="multipart/form-data">
+					<form id="ThemeIntegration" accept-charset="UTF-8" action="{{ URL::to('admin/ThemeIntegration/create') }}" method="post" enctype="multipart/form-data">
 				        <label for="name">Enter the New Themes Name below</label>
-				        <input name="theme_name" id="theme_name" placeholder="Theme Name"  class="form-control" value="" required/><br />
+				        <input name="theme_name" id="theme_name" placeholder="Theme Name"  class="form-control" value="" /><br />
 
 				        <label for="theme_image">Theme Preview Images</label>
 				   
                         <div class="control-group">
-                            <input type="file" name="theme_image" id="theme_image" required>
-                        </div>
-
-				        <label for="theme_image">Theme css File</label>
-
-                        <div class="control-group">
-                            <input type="file" name="css_file" id="css_file" required>
+                            <input type="file" name="theme_image" id="theme_image" >
                         </div>
 
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
@@ -79,7 +73,7 @@
                         @foreach ($Themes as $theme_integration)
                             <div class="theme_image">
                                 <div class="themes">
-                                    <img src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" value={{ $theme_integration->id }} alt="theme" class="theme_img" style="width:50%">                              
+                                    <img src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:50%" id= {{ $theme_integration->id  }}>  
                                 </div>
                                 <div class="theme_name">{{ $theme_integration ? $theme_integration->theme_name : ''  }}</div>
                             </div>
@@ -102,31 +96,10 @@
 
 $( document ).ready(function() {
 
-    $(function()
-  {
-    $('#new_theme').validate(
-      {
-      rules:
-        { 
-          css_file:
-          {
-            required:true, 
-            accept:"application/pdf" 
-          }
-        },
-        messages:
-        {
-            css_file:
-          {
-            accept:"Upload the PDF file"
-          }
-        }
-      });
-    
-  });
 
+    $(".theme_img,#test").click(function(){
 
-    $(".theme_img").click(function(){
+    theme_id=this.id;
 
         swal({
             title: "Are you sure?",
@@ -164,9 +137,37 @@ $( document ).ready(function() {
 });
 });
 
+
+// validation
+    $( "#ThemeIntegration" ).validate({
+        rules: {
+                theme_image: {
+                    required: true,
+                },
+                theme_name: {
+                    required: true,
+                    remote: {
+                        url: '{{ URL::to('admin/ThemeIntegration/uniquevalidation') }}',
+                        type: "post",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            themename: function() {
+                            return $( "#theme_name" ).val(); }
+                        }
+                    }
+                }
+            },
+                messages: {
+                    theme_name: {
+                        required: "Theme Name is required",
+                        remote: "Theme Name already in taken ! Please try another Name"
+                    },
+                    theme_image: {
+                         required: "Theme Image is required",
+                    }
+                }
+    });
 });
-
-
 
 </script>
 @stop

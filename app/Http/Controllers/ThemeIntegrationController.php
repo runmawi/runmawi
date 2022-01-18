@@ -25,20 +25,17 @@ class ThemeIntegrationController extends Controller
 
     public function create(Request $request){
 
+
         $Themes = $request->all();
 
-         $theme_css = $request->css_file->getClientOriginalName();  
-         $request->css_file->move(public_path('themes'), $theme_css);
-  
         $files = $Themes['theme_image'];
         $format=$files->getClientOriginalExtension();
-        $filename =uniqid(). time(). '.' .  $format;
+        $filename =$Themes['theme_name'].'_'.'theme' .'.' .  $format;
         Image::make($files)->resize(300, 300)->save(base_path().'/public/uploads/settings/'.$filename );
 
         ThemeIntegration::create([
             'theme_images'  => $filename,
             'theme_name' => $request->theme_name,
-            'theme_css'=> $theme_css,
           ]);
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
@@ -46,11 +43,26 @@ class ThemeIntegrationController extends Controller
 
     public function set_theme(Request $request){
 
+        $theme_name = ThemeIntegration:: where('id',$request->id)->pluck('theme_name')->first();
+
         HomeSetting::first()
-       ->update([
-           'theme_choosen' => $request->id,
+        ->update([
+           'theme_choosen' => $theme_name,
         ]);
 
         return 'success';
+    }
+
+    public function uniquevalidation(Request $request){
+
+    $unique_name = ThemeIntegration::where('theme_name',$request->themename)->first();
+
+      if( $unique_name == null){
+            $message = "true";
+      }
+      else{
+        $message = "false";
+      }
+      return $message;
     }
 }

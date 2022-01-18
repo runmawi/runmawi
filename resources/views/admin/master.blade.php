@@ -299,6 +299,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Choose Profile Screen</span></a></li>
+                            <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li>
 
                      </ul>
                   </li>
@@ -520,6 +521,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Choose Profile Screen</span></a></li>
+                            <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li>
+
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
@@ -737,6 +740,8 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Choose Profile Screen</span></a></li>
+                            <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
@@ -956,6 +961,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Choose Profile Screen</span></a></li>
+                            <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li>
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
@@ -989,7 +995,6 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                   <?php } ?>
                  
 
-               {{-- <li><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme Integration</span></a></li> --}}
 
  
 
