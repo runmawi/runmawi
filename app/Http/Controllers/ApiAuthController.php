@@ -1769,7 +1769,9 @@ public function verifyandupdatepassword(Request $request)
             $stripe_plan = SubscriptionPlan();
             if ( !empty($userdata) || $userdata->subscribed($stripe_plan)) {
                 $curren_stripe_plan = CurrentSubPlanName($user_id);
-                $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
+               $ends_at = Subscription::where('user_id',$user_id)->pluck('ends_at');
+                // $ends_at = "";
+
             }else{
                 $curren_stripe_plan = "No Plan Found";
                 $ends_at = "";
