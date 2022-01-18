@@ -84,7 +84,9 @@ $settings  = App\Setting::first();?>
 					@endif
 					<p class="p1">Select the series image (1280x720 px or 16:9 ratio):</p> 
 					<input type="file" multiple="true" class="form-control" name="image" id="image" />
-					
+					{{-- for validate --}}
+					<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+
 				</div> 
 			</div>
 
@@ -545,11 +547,13 @@ $('#submit-new-cat').click(function(){
 $('form[id="series_form"]').validate({
 	rules: {
 	  title: 'required',
-	//   image: 'required',
+	  image: {
+        required: '#check_image:blank'
+    },
 	},
 	messages: {
 	  title: 'This field is required',
-	//   image: 'This field is required',
+	  image: 'This field is required',
 	},
 	submitHandler: function(form) {
 	  form.submit();
