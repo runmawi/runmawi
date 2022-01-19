@@ -571,7 +571,7 @@ class AdminUsersController extends Controller
     
     
     public function mobileapp() {
-          $mobile_settings = MobileApp::first();
+          $mobile_settings = MobileApp::get();
           $allCategories = MobileSlider::all();
           $data = array(
             'admin_user' => Auth::user(),
@@ -584,34 +584,41 @@ class AdminUsersController extends Controller
 
 
     public function mobileappupdate(Request $request) {
-        $input = $request->all();
-          $settings = MobileApp::first();
-          $path = public_path().'/uploads/settings/';
-          $splash_image = $request['splash_image'];
 
-          if($splash_image != '') {   
-            //code for remove old file
-            if($splash_image != ''  && $splash_image != null){
-              $file_old = $path.$splash_image;
-              if (file_exists($file_old)){
-                unlink($file_old);
-              }
-            }
-            //upload new file
-            $file = $splash_image;
-            $input['splash_image']  = $file->getClientOriginalName();
-            $file->move($path, $input['splash_image']);
-          }
-          $settings->update($input);
-          return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
+        $input = $request->all();
+
+        $path = public_path().'/uploads/settings/';
+        $splash_image = $request['splash_image'];
+        $file = $splash_image;
+        $input['splash_image']  = $file->getClientOriginalName();
+        $file->move($path, $input['splash_image']);
+
+        MobileApp::create([
+            'splash_image'  => $input['splash_image'] ,
+          ]);
+
+        return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
+
+        //   $settings = MobileApp::first();
+        //   $path = public_path().'/uploads/settings/';
+        //   $splash_image = $request['splash_image'];
+
+        //   if($splash_image != '') {   
+        //     //code for remove old file
+        //     if($splash_image != ''  && $splash_image != null){
+        //       $file_old = $path.$splash_image;
+        //       if (file_exists($file_old)){
+        //         unlink($file_old);
+        //       }
+        //     }
+        //     //upload new file
+        //     $file = $splash_image;
+        //     $input['splash_image']  = $file->getClientOriginalName();
+        //     $file->move($path, $input['splash_image']);
+        //   }
+        //   $settings->update($input);
     }  
 
-    
-    
-    
-    
-    
-    
     public function logout()
     {
         $data = \Session::all();
@@ -1645,6 +1652,49 @@ class AdminUsersController extends Controller
 
        return Redirect::to('/myprofile')->with(array('message' => 'Successfully Created Preference', 'note_type' => 'success') );
 
+    }
+
+     public function Splash_edit(Request $request,$id)
+    {
+
+        $Splash=MobileApp::where('id',$id)->first();
+        $allCategories = MobileSlider::all();
+
+        $data = array(
+            'admin_user' => Auth::user(),
+            'Splash' => $Splash,
+            'allCategories'=>$allCategories
+          );
+
+        return View::make('admin.mobile.splashEdit', $data);
+
+    }
+
+    public function Splash_update(Request $request,$id)
+    {
+        $input = $request->all();
+        $Splash = MobileApp::find($id);  
+
+         if($request->file('splash_image') )
+         {
+            $path = public_path().'/uploads/settings/';
+            $splash_image = $request['splash_image'];
+            $file = $splash_image;
+            $input['splash_image']  = $file->getClientOriginalName();
+            $file->move($path, $input['splash_image']);
+
+            $Splash->splash_image =  $input['splash_image'];  
+         }
+         $Splash->save();  
+
+       return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully updated!', 'note_type' => 'success') );
+    }
+
+    public function Splash_destroy($id)
+    {
+       $Splash=MobileApp::find($id);
+       $Splash->delete();
+       return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully deleted!', 'note_type' => 'success') );
     }
 
 }

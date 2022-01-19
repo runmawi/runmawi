@@ -51,7 +51,7 @@
 				   
                         <div class="control-group">
 				            <label for="theme_image">Theme Preview Images</label>
-                            <input type="file" name="theme_image" id="theme_image" >
+                            <input type="file" name="theme_image" id="theme_image" accept="image/*" >
                         </div>
 
                         <div class="control-group">
@@ -95,6 +95,7 @@
 
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <script>
 

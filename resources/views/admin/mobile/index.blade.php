@@ -93,31 +93,38 @@
 		</div>
 	</div>
 
-	<form method="POST" action="{{ URL::to('admin/mobile_app/store') }}" accept-charset="UTF-8" enctype="multipart/form-data"  id="Splash" class="mob_screens">
-		<div class="">
+	<div class="col-md-12 mob_screens" id="Splash" >
 
-			<div class="panel panel-primary col-md-12" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label style="font-weight: 600;">Splash Screen </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body " style="display: block; > 
-                    
-					@if(!empty($mobile_settings->splash_image))
-					<img src="{{ URL::to('/') . '/public/uploads/settings/' . $mobile_settings->splash_image }}" style="max-height:100px" />
-					@endif
-					<p>Upload Splash Screen:(960dp x 720dp)</p> 
-					<input type="file" multiple="true" class="form-control" name="splash_image" id="splash_image" />
-
-				</div> 
-
-                    
+		<div class="row">
+			<div class="col-md-8">
+				<label for="" align="left" >Splash Screen</label>
 			</div>
-                            <div class="col-md-6 submit" align="right">
-                <input type="submit" value="Save Settings" class="btn btn-primary pull-right submit" />
-                    </div>
+			<div class="col-md-4">
+				<a href="javascript:;" onclick="jQuery('#splash-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+			</div>
 		</div>
+	
 
-		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		
-	</form>
+		<div class="sign-in-from" >
+		<div class="row data">
+
+				@forelse ($mobile_settings as $splash)
+					<div class="splash_image" style="padding: 20px;">
+						<div class="">
+							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $splash->splash_image }}" style="max-height:100px" />
+						</div>
+
+						<div class="action" align="right">
+							<a href="{{ route('Splash_edit', ['id' => $splash->id]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+							<a href="{{ route('Splash_destroy', ['id' => $splash->id]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+					</div>
+				@empty  
+						<p> No Splash Screen Available </p>
+				@endforelse
+		</div>
+	</div>
+</div>
 
 
 
@@ -142,6 +149,50 @@
 
 {{--End Welcome screen --}}
 </div>
+
+
+
+<!-- Add New Splash  Modal -->
+<div class="modal fade" id="splash-new">
+	<div class="modal-dialog">
+		<div class="modal-content">
+				@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif    
+
+			
+			<div class="modal-header">
+				<h4 class="modal-title">New Splash</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				
+			</div>
+			
+			<div class="modal-body p-3">
+				<form id="Splash" accept-charset="UTF-8" action="{{ URL::to('admin/mobile_app/store') }}" method="post" enctype="multipart/form-data">
+			
+					<div class="control-group">
+						<label for="theme_image">Splash Preview Images</label>
+						<input type="file" name="splash_image" id="splash_image" accept="image/*" >
+					</div>
+
+					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End New Splash  Modal -->
 
 
 	<div class="clear"></div>
