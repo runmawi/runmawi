@@ -809,9 +809,9 @@ if(!empty($artistsdata)){
             }  
 
             if(empty($data['year'])){
-                $data['year'] = 0;
+                $year = 0;
             }  else {
-                $data['year'] =  $data['year'];
+                $year =  $data['year'];
             }   
         
             if(empty($data['language'])){
@@ -1056,6 +1056,7 @@ if(!empty($artistsdata)){
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
          $video->active=1;
+         $video->year = $year ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;

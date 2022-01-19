@@ -200,13 +200,29 @@ class CPPAdminLiveStreamController extends Controller
                 $data['slug'] = $this->createSlug($request->slug);
                 }
     
-                if($request->slug == ''){
-                        $data['slug'] = $this->createSlug($data['title']);    
-                }
-
+            if($request->slug == ''){
+                    $data['slug'] = $this->createSlug($data['title']);    
+            }
+            if(empty($data['embed_url'])){
+                $embed_url = null;
+            }else{
+                $embed_url = $data['embed_url'];
+            }     
+            if(empty($data['url_type'])){
+                $url_type = null;
+            }else{
+                $url_type = $data['url_type'];
+            }    
+            if(empty($data['mp4_url'])){
+                $mp4_url = null;
+            }else{
+                $mp4_url = $data['mp4_url'];
+            } 
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
+        $movie->embed_url =$embed_url;
+        $movie->url_type =$url_type;
         $movie->details =$data['details'];
         $movie->video_category_id =$data['video_category_id'];
         $movie->description =$data['description'];
@@ -399,7 +415,16 @@ class CPPAdminLiveStreamController extends Controller
                 $data['duration'] = $time_seconds;
         }
 
-       
+        if(empty($data['embed_url'])){
+            $embed_url = null;
+        }else{
+            $embed_url = $data['embed_url'];
+        }
+        if(empty($data['url_type'])){
+            $url_type = null;
+        }else{
+            $url_type = $data['url_type'];
+        }   
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
          $data['ppv_price'] = $request['ppv_price'];
@@ -407,6 +432,8 @@ class CPPAdminLiveStreamController extends Controller
          $data['active'] = 1 ;
 
         $video->update($data);
+        $video->embed_url =     $embed_url;
+        $video->url_type = $url_type;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
