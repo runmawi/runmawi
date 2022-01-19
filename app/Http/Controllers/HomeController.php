@@ -70,7 +70,7 @@ class HomeController extends Controller
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
        
-        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
     }
 

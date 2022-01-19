@@ -20,7 +20,7 @@ use Session;
 use App\Language;
 use App\PaymentSetting;
 use App\CurrencySetting as CurrencySetting;
-use App\Homesetting;
+use App\HomeSetting;
 use Theme;
 
 
@@ -34,7 +34,7 @@ class LiveStreamController extends Controller
     public function Index()
     {
         
-        $Theme = Homesetting::pluck('theme_choosen')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses( $Theme );
 
         $live = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
@@ -49,7 +49,7 @@ class LiveStreamController extends Controller
     public function Play($vid)
         {
         
-          $Theme = Homesetting::pluck('theme_choosen')->first();
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
 
           // $category=null,
