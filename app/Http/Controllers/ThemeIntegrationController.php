@@ -55,7 +55,7 @@ class ThemeIntegrationController extends Controller
 
           $zip = Zip::open($zip_path);
 
-          $zip->extract(public_path('uploads/settings/'),$zip );
+          $zip->extract(public_path('themes/'.$zip_folder->theme_name),$zip );
 
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );

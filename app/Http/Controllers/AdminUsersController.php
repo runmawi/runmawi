@@ -1675,7 +1675,8 @@ class AdminUsersController extends Controller
         $input = $request->all();
         $Splash = MobileApp::find($id);  
 
-         if( $input['splash_image'] != ''){
+         if($request->file('splash_image') )
+         {
             $path = public_path().'/uploads/settings/';
             $splash_image = $request['splash_image'];
             $file = $splash_image;

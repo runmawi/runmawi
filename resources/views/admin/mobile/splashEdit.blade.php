@@ -27,8 +27,9 @@
                     </div> 
                 </div>
     
-                <div class="col-md-6" align="right">
-                    <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
+                <div class="col-md-12 form-group" align="right">
+                    <input type="submit" value="Update Settings" class="btn btn-primary " />
+                    <a href="{{ URL::to('admin/mobileapp') }}" class="btn btn-danger" > Cancel </a>
                 </div>
             </div>
         </form>
