@@ -49,7 +49,7 @@ use Session;
 use App\BlockAudio;
 use App\Geofencing;
 use Theme;
-Use App\Homesetting;
+Use App\HomeSetting;
 
 class ThemeAudioController extends Controller{
 
@@ -62,7 +62,7 @@ class ThemeAudioController extends Controller{
         $this->movies_per_page = $settings->audios_per_page;
         $this->series_per_page = $settings->audios_per_page;
 
-        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
     }
 
