@@ -842,7 +842,11 @@ public function verifyandupdatepassword(Request $request)
           foreach($main_genre as $value){
             $category[] = $value['name']; 
           }
+          if(!empty($category)){
           $main_genre = implode(",",$category);
+          }else{
+            $main_genre = [];
+          }
           // echo "<pre>"; print_r($main_genre);exit;
 
 

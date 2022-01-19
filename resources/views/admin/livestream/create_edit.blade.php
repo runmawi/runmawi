@@ -128,12 +128,22 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
+				<select class="form-control" id="url_type" name="url_type">
+				<option value="" >Choose URL Format</option>
+				<option value="mp4" >MP4 URL</option>
+				<option value="embed" >Embed URL</option>
+			</select>
 					
-					
-                    <div class="new-video-upload mt-2">
+                    <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
-						<input type="url" name="mp4_url"  class="form-control" id="video_upload" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
+						<input type="url" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
 					</div>
+
+					<div class="new-video-upload mt-2" id="embed_code">
+						<label for="embed_code"><label>Live Embed URL</label></label>
+						<input type="text" name="embed_url"  class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif">
+					</div>
+
 					@if(!empty($video->mp4_url) )
 					<video width="200" height="200" controls>
 					<source src="{{ $video->mp4_url }}" type="video/mp4">
@@ -392,6 +402,25 @@
 
 
 	<script type="text/javascript">
+
+
+$(document).ready(function(){
+	$('#mp4_code').hide();
+	$('#embed_code').hide();		
+
+	$('#url_type').change(function(){
+	if($("#url_type").val() == 'mp4'){
+	$('#mp4_code').show();
+	$('#embed_code').hide();	
+
+	}else if($("#url_type").val() == 'embed'){
+		$('#embed_code').show();	
+	$('#mp4_code').hide();
+
+	}
+});
+});
+
 
 $(document).ready(function(){
 	$('#publishlater').hide();
