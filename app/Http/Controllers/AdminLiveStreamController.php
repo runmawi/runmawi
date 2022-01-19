@@ -190,7 +190,8 @@ class AdminLiveStreamController extends Controller
         if(empty($data['ppv_price'])){
             $settings = Setting::where('ppv_status','=',1)->first();
             if(!empty($settings)){
-                $ppv_price = $settings->ppv_price;
+                // $ppv_price = $settings->ppv_price;
+                $ppv_price = null;
             }else{
                 $ppv_price = null;
             }
@@ -201,20 +202,38 @@ class AdminLiveStreamController extends Controller
             }
             if ( !empty($data['rating'])) {
                 $rating  = $data['rating'];
-              } else {
-                   $rating  = null;
-              }
+            } else {
+                $rating  = null;
+            }
 
-              if ($request->slug != '') {
+            if ($request->slug != '') {
                 $data['slug'] = $this->createSlug($request->slug);
                 }
     
-                if($request->slug == ''){
-                        $data['slug'] = $this->createSlug($data['title']);    
-                }
+        if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
+        }
+        if(empty($data['embed_url'])){
+            $embed_url = null;
+        }else{
+            $embed_url = $data['embed_url'];
+        }     
+        if(empty($data['url_type'])){
+            $url_type = null;
+        }else{
+            $url_type = $data['url_type'];
+        }    
+        if(empty($data['mp4_url'])){
+            $mp4_url = null;
+        }else{
+            $mp4_url = $data['mp4_url'];
+        }    
         $movie = new LiveStream;
 
         $movie->title =$data['title'];
+        $movie->embed_url =$embed_url;
+        $movie->url_type =$url_type;
+
         $movie->details =$data['details'];
         $movie->rating =$rating;
         // $movie->video_category_id =$data['video_category_id'];
@@ -230,7 +249,7 @@ class AdminLiveStreamController extends Controller
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time =$data['publish_time'];
         $movie->image = $image;
-        $movie->mp4_url =$data['mp4_url'];
+        $movie->mp4_url =$mp4_url;
         $movie->year =$data['year'];
         $movie->active = 1 ;
         $movie->user_id =Auth::User()->id;
@@ -354,6 +373,11 @@ class AdminLiveStreamController extends Controller
         if(empty($data['ppv_status'])){
             $data['ppv_status'] = 0;
         }
+        if(empty($data['embed_url'])){
+            $embed_url = null;
+        }else{
+            $embed_url = $data['embed_url'];
+        }
         if ($request->slug != '') {
             $data['slug'] = $this->createSlug($request->slug);
             }
@@ -427,10 +451,18 @@ class AdminLiveStreamController extends Controller
           } else {
                $rating  = null;
           }
+          if(empty($data['url_type'])){
+            $url_type = null;
+        }else{
+            $url_type = $data['url_type'];
+        }   
         $video->rating = $rating;
+        $video->url_type = $url_type;
+
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
+        $video->embed_url =     $embed_url;
         $video->save();
 
         if(!empty($data['video_category_id'])){

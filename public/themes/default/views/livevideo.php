@@ -1,5 +1,7 @@
 
-<?php include ('header.php'); ?>
+<?php include ('header.php'); 
+        //    dd($data);
+          ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
@@ -38,8 +40,10 @@
 
 <?php
 $str = $video->mp4_url;
+if(!empty($str)){
 $uri_parts = explode('.', $video->mp4_url);
 $request_url = end($uri_parts);
+}
 // print_r ($request_url);
 // exit();
 
@@ -50,7 +54,8 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 <div id="video_bg"> 
         <div class="container">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-           <?php if($request_url == "m3u8"){ ?>
+            <?php if(!empty($video->mp4_url)){ 
+                if($request_url == "m3u8"){ ?>
                     <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
                 <?php } ?>
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
@@ -61,6 +66,16 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
                    
                 </video>
+            <?php }elseif(!empty($video->embed_url)){ ?> 
+                <div class="plyr__video-embed" id="player">
+            <iframe
+              src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+            ></iframe>
+          </div>
+                <?php } ?>
 
                 <div class="playertextbox hide">
                     <p> <?php if (isset($videonext)) { ?>
