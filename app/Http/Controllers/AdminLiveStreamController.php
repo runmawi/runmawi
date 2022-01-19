@@ -190,7 +190,8 @@ class AdminLiveStreamController extends Controller
         if(empty($data['ppv_price'])){
             $settings = Setting::where('ppv_status','=',1)->first();
             if(!empty($settings)){
-                $ppv_price = $settings->ppv_price;
+                // $ppv_price = $settings->ppv_price;
+                $ppv_price = null;
             }else{
                 $ppv_price = null;
             }

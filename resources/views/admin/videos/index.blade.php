@@ -39,13 +39,13 @@
                                  <tr>
                                     <th>Title</th>
                                     <th>Rating</th>
-                                    <th>Category</th>
+                                    <!-- <th>Category</th> -->
                                     <!-- <th>Release Year</th> -->
                                     <th>Uploaded by</th>
                                     <th>Video Type</th>
                                     <th>Video Access</th>
                                     <th>Status</th>
-                                    <th>Language</th>
+                                    <!-- <th>Language</th> -->
                                     <!--<th style="width: 20%;">Description</th>-->
                                      <th>Views</th>
                                     <th>Action</th>
@@ -77,7 +77,7 @@
                                     <!-- <td>@if(isset($video->category['categoryname']->name)) {{ @$video->category['categoryname']->name }} @endif</td> -->
                                     <!-- <td>@if(!empty(@$value->category[$key]->categoryname->name)) {{ @$value->category[$key]->categoryname->name }} @endif</td> -->
 
-                                    <td>{{ @$value->category[$key]->categoryname->name }}</td>
+                                    <!-- <td>{{ @$value->category[$key]->categoryname->name }}</td> -->
                                     <!-- <td>{{ $video->draft }}</td> -->
                                     <!-- <td>
                                    
@@ -98,7 +98,7 @@
                                     
                                     
                              
-                                    <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
+                                    <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
                                         {{ $video->views }}<i class="lar la-eye "></i>

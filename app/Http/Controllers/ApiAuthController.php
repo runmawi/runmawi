@@ -74,6 +74,7 @@ use App\AudioAlbums as AudioAlbums;
 use App\EmailTemplate;	
 use App\SubscriptionPlan;
 use App\Multiprofile;
+use App\LanguageVideo;
 use Session;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Geofencing;
@@ -847,7 +848,19 @@ public function verifyandupdatepassword(Request $request)
           }else{
             $main_genre = [];
           }
-          // echo "<pre>"; print_r($main_genre);exit;
+        // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+          $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
+          ->where('languagevideos.video_id',$videoid)->get('name');
+          // echo "<pre>"; print_r($languages);exit;
+
+          foreach($languages as $value){
+            $language[] = $value['name']; 
+          }
+          if(!empty($language)){
+          $languages = implode(",",$language);
+          }else{
+            $languages = [];
+          }
 
 
     if(\App\AdsVideo::where('video_id',$videoid)->exists()){
@@ -863,6 +876,7 @@ public function verifyandupdatepassword(Request $request)
       'curr_time' => $curr_time,
       'ppv_video_status' => $ppv_video_status,
       'main_genre' => $main_genre,
+      'languages' => $languages,
       'watchlater' => $watchlaterstatus,
       'favorite' => $favorite                                 ,
       'ppv_exist' => $ppv_exist,
