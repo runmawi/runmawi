@@ -86,7 +86,7 @@ class ModeratorsLoginController extends Controller
    
     public function __construct()
     {
-        $this->Theme = Homesetting::pluck('theme_choosen')->first();
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
     }
 

@@ -44,7 +44,7 @@ use Jenssegers\Agent\Agent;
 use App\ApprovalMailDevice;
 use App\Language;
 use App\Multiprofile;
-use App\Homesetting;
+use App\HomeSetting;
 use Theme;
 
 class AdminUsersController extends Controller
@@ -360,7 +360,7 @@ class AdminUsersController extends Controller
     
     public function myprofile(){
 
-        $Theme = Homesetting::pluck('theme_choosen')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
         if(Auth::guest()){

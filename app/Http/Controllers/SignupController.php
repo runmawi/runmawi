@@ -25,7 +25,7 @@ use App\EmailTemplate;
 use App\PaymentSetting;
 use App\Subscription;
 use App\SubscriptionPlan;
-use App\Homesetting;
+use App\HomeSetting;
 use Session;
 use Theme;
 
@@ -144,7 +144,7 @@ class SignupController extends Controller
 
     public function createStep1(Request $request)
     {
-        $Theme = Homesetting::pluck('theme_choosen')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
       
