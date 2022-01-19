@@ -45,7 +45,7 @@ use Session;
 use App\RecentView as RecentView;
 use App\CurrencySetting as CurrencySetting;
 use App\Playerui as Playerui;
-use App\Homesetting;
+use App\HomeSetting;
 use Theme;
 
 class TvshowsController extends Controller
@@ -70,7 +70,7 @@ class TvshowsController extends Controller
     public function index(Request $request)
     {
 
-    $Theme = Homesetting::pluck('theme_choosen')->first();
+    $Theme = HomeSetting::pluck('theme_choosen')->first();
     Theme::uses( $Theme );
 
      $settings = Setting::first();

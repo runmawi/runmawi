@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Wishlist;
 use App\Video as Video;
 use App\PpvVideo as PpvVideo;
-use App\Homesetting;
+use App\HomeSetting;
 use Auth;
 use View;
 use Session;
@@ -77,7 +77,7 @@ class WishlistController extends Controller
 
     public function show_mywishlists()
     {
-        $Theme = Homesetting::pluck('theme_choosen')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         
         if (Auth::guest())
