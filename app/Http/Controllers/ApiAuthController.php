@@ -84,10 +84,7 @@ use App\Videoartist;
 use App\Seriesartist;
 use App\WelcomeScreen;
 use App\CategoryVideo;
-
-
-
-
+use App\MobileApp;
 
 class ApiAuthController extends Controller
 {
@@ -1744,11 +1741,16 @@ public function verifyandupdatepassword(Request $request)
   }
 
   public function splash(){
-        $mobile_settings = DB::table('mobile_apps')->first();
+
+        $mobile_settings = MobileApp::get('splash_image')->map(function ($item) {
+          $item['splash_image'] = URL::to('/').'/public/uploads/settings/'.$item->splash_image;
+          return $item;
+      });
+
     $response = array(
       'status'=>'true',
       'message'=>'success',
-      'splash_image'=> URL::to('/').'/public/uploads/settings/'.$mobile_settings->splash_image
+      'splash_image'=> $mobile_settings,
     );
     return response()->json($response, 200);
   }  
@@ -2969,8 +2971,8 @@ public function checkEmailExists(Request $request)
     public function UserComments(Request $request){
                      
           $comments =  Comment::where("video_id","=",$request->video_id)
-         ->where('user_id',$request->user_id)->get()->map(function ($item) {
-            //dd($item->count());
+         ->where('user_id',$request->user_id)->take(1)->get()->map(function ($item) {
+         
             $i = 0;
             while ($i<= $item->count()) {
               $user =  User::where("id","=",$item->user_id)->get()->first();

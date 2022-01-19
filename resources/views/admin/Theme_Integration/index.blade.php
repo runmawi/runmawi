@@ -56,7 +56,7 @@
 
                         <div class="control-group">
                              <label for="theme_zip">Theme Zip File</label><br>
-                            <input type="file" name="theme_zip" id="theme_zip" accept=".zip,.rar,.7zip" >
+                            <input type="file" name="theme_zip" id="theme_zip" >
                         </div>
 
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
