@@ -45,6 +45,7 @@ use App\ApprovalMailDevice;
 use App\Language;
 use App\Multiprofile;
 use App\HomeSetting;
+use App\WelcomeScreen;
 use Theme;
 
 class AdminUsersController extends Controller
@@ -578,10 +579,12 @@ class AdminUsersController extends Controller
     public function mobileapp() {
           $mobile_settings = MobileApp::get();
           $allCategories = MobileSlider::all();
+          $welcome_screen =  WelcomeScreen::all();
           $data = array(
             'admin_user' => Auth::user(),
             'mobile_settings' => $mobile_settings,
-            'allCategories'=>$allCategories
+            'allCategories'=>$allCategories,
+            'welcome_screen'=> $welcome_screen,
           );
           return View::make('admin.mobile.index', $data);
 

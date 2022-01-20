@@ -117,7 +117,7 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-				<select class="form-control" id="url_type" name="url_type">
+				<select class="form-control url_type" id="url_type" name="url_type">
 				<option value="" >Choose URL Format</option>
 				<option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
 				<option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
@@ -295,7 +295,7 @@
 					</div>
 					<div class="col-sm-6" id="ppv_price">
 					<label class="">PPV Price:</label>
-					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price) ) {{ $video->ppv_price}}  @endif" >
+					<input type="text" class="form-control" name="ppv_price" id="price" value="<?php if(!empty($video->ppv_price)) { echo $video->ppv_price ; }else{  } ?>" >
 					<div class="clear"></div>
 					</div>
 					</div>
@@ -338,7 +338,7 @@
 			@if(isset($video->id))
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
 				<input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >
-				<input type="hidden"  name="ppv_price" id="price" value="$video->ppv_price">
+				<!-- <input type="hidden"  name="ppv_price" id="price" value="$video->ppv_price"> -->
 			@endif
 
 			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
