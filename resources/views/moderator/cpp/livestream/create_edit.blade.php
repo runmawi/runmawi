@@ -130,7 +130,7 @@
 					
                     <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
-						<input type="url" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
+						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
 					</div>
 
 					<div class="new-video-upload mt-2" id="embed_code">
@@ -268,7 +268,7 @@
                     <p class="p1">Publish Type</p>
 					<div class="form-group"> 
                             <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now <br>
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked>Publish Now <br>
 							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
                         </div></div> 
 			</div>
@@ -288,13 +288,13 @@
 			<div class="clear"></div>
 			<div class="row mt-3"> 
 				<div class="col-sm-6"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
+					<!-- <div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
 						</div> 
-					</div>
+					</div> -->
                     <div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body col-sm-6 p-0"> 
@@ -373,26 +373,56 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
-	{{-- validate --}}
+	<!-- {{-- validate --}} -->
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-	<!-- <script>
-		$('form[id="cpp_live_video"]').validate({
-           
-			rules: {
-                image : 'required',
-                title : 'required',
-                mp4_url : 'required',
-				description : 'required',
-				slug : 'required',
-				year : 'required',
-				details : 'required',
-				},
-			submitHandler: function(form) {
-				form.submit(); }
-			});
+
+<script>
+	$('form[id="cpp_live_video"]').validate({				
+		rules: {
+		  title: 'required',
+		  image: 'required',
+		  url_type: 'required',
+		  details: 'required',
+		  year: 'required',
+		  description : 'required',
+		  'video_category_id[]' :'required',
+		  'language[]' :'required',
+	
+			mp4_url: {
+			required : function(element) {
+				var action = $("#url_type").val();
+				if(action == "mp4") { 
+					return true;
+				} else {
+					return false;
+				}
+			 }
+			},
+	
+			embed_url: {
+					required : function(element) {
+						var action = $("#url_type").val();
+						if(action == "embed") { 
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			},
+		messages: {
+		  title: 'This field is required',
+		  image: 'This field is required',
+		   mp4_url: 'This field is required',
+	
+		},
+		submitHandler: function(form) {
+		  form.submit();
+		}
+	  });
 	</script>
-	{{-- End validate --}} -->
+<!-- {{-- End validate --}} -->
 
 
 	<script type="text/javascript">

@@ -128,7 +128,7 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-				<select class="form-control" id="url_type" name="url_type">
+				<select class="form-control url_type" id="url_type" name="url_type">
 				<option value="" >Choose URL Format</option>
 				<option value="mp4" >MP4 URL</option>
 				<option value="embed" >Embed URL</option>
@@ -136,7 +136,7 @@
 					
                     <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
-						<input type="url" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
+						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
 					</div>
 
 					<div class="new-video-upload mt-2" id="embed_code">
@@ -381,22 +381,47 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <script>
-// $('form[id="live_video"]').validate({
-// 	rules: {
-// 	  title: 'required',
-// 	  image: 'required',
-// 	   mp4_url: 'required',
-// 	},
-// 	messages: {
-// 	  title: 'This field is required',
-// 	  image: 'This field is required',
-// 	   mp4_url: 'This field is required',
+$('form[id="live_video"]').validate({
+	rules: {
+	  title: 'required',
+	  image: 'required',
+	  url_type: 'required',
+	  details: 'required',
+	  year: 'required',
+	  description : 'required',
 
-// 	},
-// 	submitHandler: function(form) {
-// 	  form.submit();
-// 	}
-//   });
+		mp4_url: {
+		required : function(element) {
+			var action = $(".url_type").val();
+			if(action == "mp4") { 
+				return true;
+			} else {
+				return false;
+			}
+		 }
+		},
+
+		embed_url: {
+				required : function(element) {
+					var action = $(".url_type").val();
+					if(action == "embed") { 
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	   mp4_url: 'This field is required',
+
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
 </script>
  <!-- {{-- end validate --}} -->
 
