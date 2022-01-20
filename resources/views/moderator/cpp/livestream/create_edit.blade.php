@@ -268,7 +268,7 @@
                     <p class="p1">Publish Type</p>
 					<div class="form-group"> 
                             <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" >Publish Now <br>
+							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked>Publish Now <br>
 							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
                         </div></div> 
 			</div>
@@ -376,23 +376,53 @@
 	{{-- validate --}}
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-	<script>
-		$('form[id="cpp_live_video"]').validate({
-           
-			rules: {
-                image : 'required',
-                title : 'required',
-                mp4_url : 'required',
-				description : 'required',
-				slug : 'required',
-				year : 'required',
-				details : 'required',
-				},
-			submitHandler: function(form) {
-				form.submit(); }
-			});
+
+<script>
+	$('form[id="cpp_live_video"]').validate({
+		rules: {
+		  title: 'required',
+		  image: 'required',
+		  url_type: 'required',
+		  details: 'required',
+		  year: 'required',
+		  description : 'required',
+		  'video_category_id[]' :'required',
+		  'language[]' :'required',
+	
+			mp4_url: {
+			required : function(element) {
+				var action = $("#url_type").val();
+				if(action == "mp4") { 
+					return true;
+				} else {
+					return false;
+				}
+			 }
+			},
+	
+			embed_url: {
+					required : function(element) {
+						var action = $("#url_type").val();
+						if(action == "embed") { 
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			},
+		messages: {
+		  title: 'This field is required',
+		  image: 'This field is required',
+		   mp4_url: 'This field is required',
+	
+		},
+		submitHandler: function(form) {
+		  form.submit();
+		}
+	  });
 	</script>
-	{{-- End validate --}}
+{{-- End validate --}}
 
 
 	<script type="text/javascript">
