@@ -447,7 +447,7 @@ class AdminLiveStreamController extends Controller
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
 
-         $data['ppv_price'] = $ppv_price;
+        //  $data['ppv_price'] = $ppv_price;
          $data['access'] = $request['access'];
          $data['active'] = 1 ;
 
