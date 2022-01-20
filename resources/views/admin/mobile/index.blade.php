@@ -56,7 +56,13 @@
     position: absolute;
     margin-top: -5%;
 }
-
+p.welcome_p {
+    display: block;
+    margin-top: 1em !important;
+    margin-bottom: 0em;
+    margin-left: 13em;
+    margin-right: 0;
+}
 </style>
 
 @section('content')
@@ -65,8 +71,6 @@
 <div id="admin-container">
      <div class="iq-card">
 	<!-- This is where -->
-
-
 	@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif
@@ -94,20 +98,17 @@
 	</div>
 
 	<div class="col-md-12 mob_screens" id="Splash" >
-
 		<div class="row">
 			<div class="col-md-8">
-				<label for="" align="left" >Splash Screen</label>
+				<label for="" align="left"  style="font-weight: 600;">Splash Screen</label>
 			</div>
 			<div class="col-md-4">
 				<a href="javascript:;" onclick="jQuery('#splash-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>
 	
-
 		<div class="sign-in-from" >
 		<div class="row data">
-
 				@forelse ($mobile_settings as $splash)
 					<div class="splash_image" style="padding: 20px;">
 						<div class="">
@@ -126,30 +127,39 @@
 	</div>
 </div>
 
-
-
 {{-- Welcome screen --}}
 
-	<form method="post" action="{{ URL::to('welcome-screen') }}" accept-charset="UTF-8" enctype="multipart/form-data" id="Welcome" class="mob_screens">
-		@csrf     
-		<div class="">
-			<div class="panel panel-primary col-md-12" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label style="font-weight: 600;">Welcome Screen</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body " style="display: block;" > 
-					<p>Upload Welcome Screen:(960dp x 720dp)</p> 
-					<input type="file" multiple="true" class="form-control" name="welcome_image[]" id="welcome_image" />
-				</div> 
+	<div id="Welcome" class="col-md-12 mob_screens">
+		<div class="row">
+			<div class="col-md-8">
+				<label for="" align="left" style="font-weight: 600;">Welcome Screen</label>
 			</div>
-
-            <div class="col-md-6 submit" align="right">
-                <input type="submit" value="Save Settings" class="btn btn-primary pull-right" />
-            </div>
+			<div class="col-md-4">
+				<a href="javascript:;" onclick="jQuery('#welcome-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+			</div>
 		</div>
-	</form>
 
+		<div class="sign-in-from" >
+			<div class="row data">
+					@forelse ($welcome_screen as $welcomeScreen)
+						<div class="welcome_image" style="padding: 20px;">
+							<div class="">
+								<img src="{{ URL::to('/') . '/public/uploads/settings/' . $welcomeScreen->welcome_images }}" style="max-height:100px" />
+							</div>
+	
+							<div class="action" align="right">
+								<a href="{{ route('welcomescreen_edit', ['id' => $welcomeScreen->id]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+								<a href="{{ route('welcomescreen_destroy', ['id' => $welcomeScreen->id]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					@empty  
+							<p class="welcome_p"> No Welcome Screen Available </p>
+					@endforelse
+			</div>
+		</div>
+	</div>
 {{--End Welcome screen --}}
 </div>
-
 
 
 <!-- Add New Splash  Modal -->
@@ -166,23 +176,54 @@
 				</div>
 			@endif    
 
-			
 			<div class="modal-header">
 				<h4 class="modal-title">New Splash</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				
 			</div>
 			
 			<div class="modal-body p-3">
 				<form id="Splash" accept-charset="UTF-8" action="{{ URL::to('admin/mobile_app/store') }}" method="post" enctype="multipart/form-data">
-			
 					<div class="control-group">
 						<label for="theme_image">Splash Preview Images</label>
 						<input type="file" name="splash_image" id="splash_image" accept="image/*" >
 					</div>
-
 					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End New Splash  Modal -->
+
+
+<!-- Add New welcome  Modal -->
+<div class="modal fade" id="welcome-new">
+	<div class="modal-dialog">
+		<div class="modal-content">
+				@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif    
+			<div class="modal-header">
+				<h4 class="modal-title">New welcome</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body p-3">
+				<form id="" accept-charset="UTF-8" action="{{ URL::to('welcome-screen') }}" method="post" enctype="multipart/form-data">
+					<div class="control-group">
+						<label for="theme_image">Welcome Preview Images</label>
+						<input type="file" class="form-control" name="welcome_image[]" id="welcome_image" accept="image/*" multiple="true" >
+					</div>
+					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
