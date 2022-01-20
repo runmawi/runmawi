@@ -351,6 +351,13 @@ class AdminLiveStreamController extends Controller
     {
         $data = $request->all();       
         $id = $data['id'];
+        if($data['access'] == "ppv"){
+            $ppv_price = $data['ppv_price'];
+        }else{
+        // dd($data);
+
+            $ppv_price = null;
+        }
         $video = LiveStream::findOrFail($id);  
         
          $validatedData = $request->validate([
@@ -440,7 +447,7 @@ class AdminLiveStreamController extends Controller
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
 
-         $data['ppv_price'] = $request['ppv_price'];
+         $data['ppv_price'] = $ppv_price;
          $data['access'] = $request['access'];
          $data['active'] = 1 ;
 
@@ -458,7 +465,7 @@ class AdminLiveStreamController extends Controller
         }   
         $video->rating = $rating;
         $video->url_type = $url_type;
-
+        $video->ppv_price = $ppv_price;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];

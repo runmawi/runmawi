@@ -45,6 +45,7 @@ class AdminAdvertiserController extends Controller
   public function ads_list()
   {
     $setting = Setting::first();
+    // dd($setting);
     if($setting->ads_on_videos == 1){
       $data = array(
         'advertisements' => Advertisement::orderBy('created_at', 'desc')->paginate(9),
