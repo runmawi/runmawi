@@ -447,7 +447,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     
     
-    
+
      /*  Email Setting  */
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
@@ -455,8 +455,16 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
+    Route::get('/advertiser/edit/{id}', 'AdminAdvertiserController@advertisersEdit');
+    Route::get('/advertiser/delete/{id}', 'AdminAdvertiserController@advertisersDelete');
+    Route::post('/advertiser/update', 'AdminAdvertiserController@advertisersUpdate');
+
     Route::get('/ads_categories', 'AdminAdvertiserController@ads_categories');
     Route::get('/ads_list', 'AdminAdvertiserController@ads_list');
+    Route::get('/advertisement/edit/{id}', 'AdminAdvertiserController@ads_Edit');
+    Route::get('/advertisement/delete/{id}', 'AdminAdvertiserController@ads_Delete');
+    Route::post('/advertisement/update', 'AdminAdvertiserController@ads_Update');
+
     Route::get('/ads_plans', 'AdminAdvertiserController@ads_plans');   
     Route::get('/ads_revenue', 'AdminAdvertiserController@ads_revenue');   
     Route::get('/adscategoryedit/{id}', 'AdminAdvertiserController@adscategoryedit');    

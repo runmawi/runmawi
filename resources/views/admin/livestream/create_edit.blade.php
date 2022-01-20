@@ -136,7 +136,7 @@
 					
                     <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
-						<input type="url" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
+						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
 					</div>
 
 					<div class="new-video-upload mt-2" id="embed_code">

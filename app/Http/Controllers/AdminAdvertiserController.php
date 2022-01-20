@@ -19,6 +19,7 @@ class AdminAdvertiserController extends Controller
   public function advertisers()
   {
     $setting = Setting::first();
+    // dd($setting);
     if($setting->ads_on_videos == 1){
       $data = array(
         'advertisers' => Advertiser::orderBy('created_at', 'desc')->paginate(9),
@@ -28,6 +29,52 @@ class AdminAdvertiserController extends Controller
       return abort(404);
     }
   }
+
+  public function advertisersEdit($id)
+  {
+    $setting = Setting::first();
+    // dd($setting);
+    if($setting->ads_on_videos == 1){
+      $data = array(
+        'advertisers' => Advertiser::where('id',$id)->first(),
+      );
+      return view('admin.ads_management.advertiser_edit',$data);
+    }else{
+      return abort(404);
+    }
+  }
+    public function advertisersDelete($id)
+    {
+      Advertiser::find($id)->delete();
+      return Redirect::back();
+    }
+    public function advertisersUpdate(Request $request)
+    {
+
+      $data = $request->all();
+      $id = $data['id'];
+      $advertisers = Advertiser::find($id);
+      $advertisers->company_name = $request->company_name;
+      $advertisers->license_number = $request->license_number;
+      $advertisers->address = $request->address;
+      $advertisers->mobile_number = $request->mobile_number;
+      $advertisers->email_id = $request->email_id;
+
+      $advertisers->save();
+
+      return Redirect::back()->with(array('message' => 'Successfully Updated Advertiser Details', 'note_type' => 'success') );
+      
+      // $setting = Setting::first();
+      // // dd($setting);
+      // if($setting->ads_on_videos == 1){
+      //   $data = array(
+      //     'advertisers' => Advertiser::orderBy('created_at', 'desc')->paginate(9),
+      //   );
+      //   return view('admin.ads_management.advertiser_list',$data);
+      // }else{
+      //   return abort(404);
+      // }
+    }
 
   public function ads_categories()
   {
@@ -45,7 +92,6 @@ class AdminAdvertiserController extends Controller
   public function ads_list()
   {
     $setting = Setting::first();
-    // dd($setting);
     if($setting->ads_on_videos == 1){
       $data = array(
         'advertisements' => Advertisement::orderBy('created_at', 'desc')->paginate(9),
@@ -56,6 +102,41 @@ class AdminAdvertiserController extends Controller
     }
   }
 
+  public function ads_Edit($id)
+  {
+    $setting = Setting::first();
+    // dd($setting);
+    if($setting->ads_on_videos == 1){
+      $data = array(
+        'advertisement' => Advertisement::where('id',$id)->first(),
+        'ads_categories' => Adscategory::get(),
+        'advertisers' => Advertiser::get(),
+      );
+      return view('admin.ads_management.advertisement_edit',$data);
+    }else{
+      return abort(404);
+    }
+  }
+    public function ads_Delete($id)
+    {
+      Advertisement::find($id)->delete();
+      return Redirect::back();
+    }
+    public function ads_Update(Request $request)
+    {
+
+      $data = $request->all();
+      $id = $data['id'];
+      $advertisement = Advertisement::find($id);
+      $advertisement->advertiser_id = $request->company_name;
+      $advertisement->ads_name = $request->ads_name;
+      $advertisement->ads_category	 = $request->ads_category	;
+      $advertisement->ads_position = $request->ads_position;
+      $advertisement->ads_path = $request->ads_path;
+      $advertisement->save();
+
+      return Redirect::back()->with(array('message' => 'Successfully Updated Advertisement Details', 'note_type' => 'success') );
+    }
   
   public function save_ads_status(Request $request)
   {

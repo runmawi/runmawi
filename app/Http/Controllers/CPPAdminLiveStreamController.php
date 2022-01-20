@@ -107,7 +107,14 @@ class CPPAdminLiveStreamController extends Controller
             // 'details' => 'required|max:255',
             // 'year' => 'required'
         ]);
-       
+        if(!empty($data['video_category_id'])){
+            $category_id = $data['video_category_id'];
+            unset($data['video_category_id']);
+        }
+        if(!empty($data['language'])){
+            $languagedata = $data['language'];
+            unset($data['language']);
+        }
         $image = (isset($data['image'])) ? $data['image'] : '';
         $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
         
@@ -224,10 +231,10 @@ class CPPAdminLiveStreamController extends Controller
         $movie->embed_url =$embed_url;
         $movie->url_type =$url_type;
         $movie->details =$data['details'];
-        $movie->video_category_id =$data['video_category_id'];
+        // $movie->video_category_id =$data['video_category_id'];
         $movie->description =$data['description'];
         $movie->featured =$data['featured'];
-        $movie->language =$data['language'];
+        // $movie->language =$data['language'];
         $movie->banner =$data['banner'];
         $movie->duration =$data['duration'];
         $movie->ppv_price =$ppv_price;
@@ -248,7 +255,29 @@ class CPPAdminLiveStreamController extends Controller
         $shortcodes = $request['short_code'];
         $languages = $request['language'];
 
-     
+        if(!empty($category_id)){
+            CategoryLive::where('live_id', $movie->id)->delete();
+            foreach ($category_id as $key => $value) {
+                $category = new CategoryLive;
+                $category->live_id = $movie->id;
+                $category->category_id = $value;
+                $category->save();
+            }
+
+        }
+    
+
+        /*save LiveLanguage*/
+        if(!empty($language_id)){
+            LiveLanguage::where('live_id', $movie->id)->delete();
+            foreach ($language_id as $key => $value) {
+                $serieslanguage = new LiveLanguage;
+                $serieslanguage->live_id = $movie->id;
+                $serieslanguage->language_id = $value;
+                $serieslanguage->save();
+            }
+
+        }
         
          return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
         }else{

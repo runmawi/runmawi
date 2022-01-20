@@ -31,6 +31,7 @@
                               <th><label>Ads Play</label></th>
                               <th><label>Status</label></th>
                               <th><label>Created At</label></th>
+                              <th><label>Action</label></th>
                            </tr>
                         </thead>
                         <tbody>
@@ -38,7 +39,7 @@
                            <tr>
                                  <td>{{$key+1}}</td>
                                  <td>{{$advertisement->ads_name}}</td>
-                                 <td>{{$advertisement->ads_category}}</td>
+                                 <td>{{@$advertisement->categories->name}}</td>
                                  <td>{{ucfirst($advertisement->ads_position)}}</td>
                                  <td>@if ($advertisement->status == 1)
                                    <p class="font-weight-bold text-success">Approved</p>
@@ -49,6 +50,10 @@
                                    <button class="btn btn-danger status_change" value="2" data-id="{{$advertisement->id}}">DisApprove</button>
                                 @endif</td>
                                  <td>{!! date('d/M/y', strtotime($advertisement->created_at)) !!}</td>
+                                 <td class="d-flex align-items-center list-user-action">								
+							            <a href="{{ URL::to('admin/advertisement/edit') . '/' . $advertisement->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
+                                 <a href="{{ URL::to('admin/advertisement/delete') . '/' . $advertisement->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i class="ri-delete-bin-line"></i></a>
+                                 </td>
                               </tr>
                               @endforeach
                            </tbody>
