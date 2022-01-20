@@ -367,6 +367,7 @@ class AdminUsersController extends Controller
             return redirect('/login');
         }
         $data = Session::all();
+      
         // $session_password = $data['password_hash'];
         if (empty($data['password_hash'])) {
             $system_settings = SystemSetting::first();
@@ -376,20 +377,23 @@ class AdminUsersController extends Controller
             // return View::make('auth.login', $data);
 
           }else{
-        
+          
     	$user_id = Auth::user()->id;
     	$user_role = Auth::user()->role;
-       
+        $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
+        ->get();
+        // print_r($user_role);
+        // exit();
         if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
+            
         }elseif($user_role == 'subscriber'){
 
     $user_role = Subscription::where('subscriptions.user_id','=',$user_id)
     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
     ->select('plans.plans_name')
     ->get(9);
-    //    print_r($user_role);
-    //    exit();
+
        if(!empty($user_role)){
         $role_plan = "No Plan";
        }else{
@@ -434,6 +438,7 @@ class AdminUsersController extends Controller
             'language' => $language,
             'profile_details' => $profile_details,
             'Multiuser' => $Multiuser,
+            'alldevices' => $alldevices,
     		);
     	return Theme::view('myprofile', $data);
           }

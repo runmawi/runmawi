@@ -773,7 +773,7 @@ $uppercase =  ucfirst($request_url);
                   </div>
               </div>
 
-{{-- Multiuser Profile --}}
+<!-- {{-- Multiuser Profile --}} -->
          <div class="col-lg-6 mb-3" >
             <div class="sign-user_card mb-3">
                <h4 class="card-title mb-0 manage"> Profile</h4>
@@ -798,7 +798,57 @@ $uppercase =  ucfirst($request_url);
               </div> 
             </div>
          </div>
-{{-- Multiuser Profile --}}
+<!-- {{-- Multiuser Profile --}} -->
+<?php $i=1; ?>
+<div>
+<div class="sign-user_card mb-3">
+               <h4 class="card-title mb-0 manage">Logged Deviecs</h4>
+               <br>
+               <table class="table">
+                  <tr class="table-header">
+                     <th style="color:white;"><label>S.No</label></th>
+                     <th style="color:white;"><label>Username</label></th>
+                     <th style="color:white;"><label>User Ip</label></th>
+                     <th style="color:white;"><label>Device Name</label></th>
+                     <!-- <th style="color:white;"><label>Action</label></th> -->
+
+                     @foreach($alldevices as $key => $devices)
+                     <tr>
+                        <td style="color:white;">{{ $i++ }}</td>
+                        <td style="color:white;" valign="bottom"><p>{{ @$devices->user_name->username }}</p></td>
+                        <td style="color:white;" valign="bottom"><p>{{ $devices->user_ip }}</p></td>
+                        <td style="color:white;" valign="bottom"><p>{{ $devices->device_name }}</p></td>
+                        <td style="color:red;" >
+                              <!-- <div class="d-flex align-items-center list-user-action">
+                                 <a href="{{ URL::to('/device/logout/verify/') . '/' . $devices->id }}" class="iq-bg-danger ml-2"><i
+                                 onclick="return confirm('Are you sure?')" ></i> Deregister</a>
+                              </div> -->
+                        </td>
+                     </tr>
+                     @endforeach
+                  </table>
+          <div class="col-md-12 profile_image">
+                      @forelse  ($profile_details as $profile)
+                        <div class="">
+                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                                 <div class="circle">
+                                    <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
+                                           <i class="fa fa-pencil"></i> </a>
+                                    @if($Multiuser == null)
+                                     <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                       <i class="fa fa-trash"></i> </a> 
+                                    @endif
+                                 </div>
+                                 <div class="name">{{ $profile ? $profile->user_name : ''  }}</div>
+                        </div>
+                      @empty
+                        <!-- <div class="col-sm-6">  <p class="name">No Profile</p>  </div> -->
+                      @endforelse
+                  </div>    
+              </div> 
+            </div>   
+</div>
+
             </div>
        </div>
         </div>
