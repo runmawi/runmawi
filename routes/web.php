@@ -1212,7 +1212,11 @@ Route::resources([
     'Choose-profile' => MultiprofileController::class,
 ]);
 
+// welcome-screen
 Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
+Route::get('/welcome-screen/destroy/{id}', 'WelcomeScreenController@destroy')->name('welcomescreen_destroy');
+Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('welcomescreen_edit');
+Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 // Choose Profile Screen
 Route::get('admin/ChooseProfileScreen', 'WelcomeScreenController@ChooseProfileScreen')->name('ChooseProfileScreen');
