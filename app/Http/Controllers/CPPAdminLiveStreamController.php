@@ -101,11 +101,11 @@ class CPPAdminLiveStreamController extends Controller
         
         // dd($data);
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'slug' => 'required|max:255',
-            'description' => 'required',
-            'details' => 'required|max:255',
-            'year' => 'required'
+            // 'title' => 'required|max:255',
+            // 'slug' => 'required|max:255',
+            // 'description' => 'required',
+            // 'details' => 'required|max:255',
+            // 'year' => 'required'
         ]);
        
         $image = (isset($data['image'])) ? $data['image'] : '';

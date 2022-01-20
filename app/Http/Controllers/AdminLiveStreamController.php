@@ -85,11 +85,11 @@ class AdminLiveStreamController extends Controller
         $data = $request->all();
         
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            // 'slug' => 'required|max:255',
-            'description' => 'required',
-            'details' => 'required|max:255',
-            'year' => 'required'
+            // 'title' => 'required|max:255',
+            // // 'slug' => 'required|max:255',
+            // 'description' => 'required',
+            // 'details' => 'required|max:255',
+            // 'year' => 'required'
         ]);
        
         // dd($data);

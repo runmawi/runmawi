@@ -63,7 +63,7 @@
 
 	
 
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;">
+		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="liveEdit_video">
 
 		@if(!empty($video->created_at))
 			<div class="row">
@@ -362,10 +362,57 @@
 	<script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 	<script type="text/javascript">
 
 $(document).ready(function(){
+
+
+//  validate 
+	$('form[id="liveEdit_video"]').validate({
+	rules: {
+	  title: 'required',
+	  url_type: 'required',
+	  details: 'required',
+	  year: 'required',
+	  description : 'required',
+
+		mp4_url: {
+		required : function(element) {
+			var action = $(".url_type").val();
+			if(action == "mp4") { 
+				return true;
+			} else {
+				return false;
+			}
+		 }
+		},
+
+		embed_url: {
+				required : function(element) {
+					var action = $(".url_type").val();
+					if(action == "embed") { 
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		},
+	messages: {
+	  title: 'This field is required',
+	  image: 'This field is required',
+	  mp4_url: 'This field is required',
+
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
+
+//  End validate
+
 
 	if($("#url_type").val() == 'mp4'){
 	$('#mp4_code').show();
