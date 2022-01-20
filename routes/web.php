@@ -447,6 +447,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     
     
+    
      /*  Email Setting  */
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
