@@ -295,7 +295,7 @@
 					</div>
 					<div class="col-sm-6" id="ppv_price">
 					<label class="">PPV Price:</label>
-					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+					<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price) ) {{ $video->ppv_price}}  @endif" >
 					<div class="clear"></div>
 					</div>
 					</div>

@@ -143,8 +143,8 @@ header .navbar ul li:last-child { margin-right: 0; }
 -----------------------------------------------------------------------*/
 .main-content { padding-top: 40px; }
 .block-space { padding: 40px 0; }
-.s-margin { margin-top: 40px; }
-.iq-main-header { margin-bottom: 18px; }
+.s-margin { margin-top: 15px; }
+.iq-main-header { margin-bottom: 0px; }
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}
 /*--------------------------*/

@@ -425,15 +425,23 @@ class CPPAdminLiveStreamController extends Controller
         }else{
             $url_type = $data['url_type'];
         }   
+        if($data['access'] == "ppv"){
+            $ppv_price = $data['ppv_price'];
+        }else{
+        // dd($data);
+
+            $ppv_price = null;
+        }
          $shortcodes = $request['short_code'];
          $languages = $request['language'];
-         $data['ppv_price'] = $request['ppv_price'];
+        //  $data['ppv_price'] = $request['ppv_price'];
          $data['access'] = $request['access'];
          $data['active'] = 1 ;
 
         $video->update($data);
         $video->embed_url =     $embed_url;
         $video->url_type = $url_type;
+        $video->ppv_price = $ppv_price;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
