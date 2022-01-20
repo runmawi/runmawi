@@ -376,7 +376,7 @@
 	{{-- validate --}}
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-	<script>
+	<!-- <script>
 		$('form[id="cpp_live_video"]').validate({
            
 			rules: {
@@ -392,7 +392,7 @@
 				form.submit(); }
 			});
 	</script>
-	{{-- End validate --}}
+	{{-- End validate --}} -->
 
 
 	<script type="text/javascript">
