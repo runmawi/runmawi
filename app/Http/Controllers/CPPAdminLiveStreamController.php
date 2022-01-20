@@ -339,11 +339,11 @@ class CPPAdminLiveStreamController extends Controller
         $id = $data['id'];
         $video = LiveStream::findOrFail($id);  
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'slug' => 'required|max:255',
-            'description' => 'required',
-            'details' => 'required|max:255',
-            'year' => 'required'
+            // 'title' => 'required|max:255',
+            // 'slug' => 'required|max:255',
+            // 'description' => 'required',
+            // 'details' => 'required|max:255',
+            // 'year' => 'required'
         ]);
         
            $image = ($request->file('image')) ? $request->file('image') : '';

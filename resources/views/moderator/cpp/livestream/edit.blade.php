@@ -378,23 +378,53 @@
 
 		{{-- validate --}}
 
-		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-		<script>
-			$('form[id="cpp_live_edit"]').validate({
-			   
-				rules: {
-					title : 'required',
-					mp4_url : 'required',
-					description : 'required',
-					slug : 'required',
-					year : 'required',
-					details : 'required',
-					},
-				submitHandler: function(form) {
-					form.submit(); }
-				});
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+	<script>
+		$('form[id="cpp_live_edit"]').validate({
+			rules: {
+			  title: 'required',
+			  url_type: 'required',
+			  details: 'required',
+			  year: 'required',
+			  description : 'required',
+			  'video_category_id[]' :'required',
+			  'language[]' :'required',
+		
+				mp4_url: {
+				required : function(element) {
+					var action = $("#url_type").val();
+					if(action == "mp4") { 
+						return true;
+					} else {
+						return false;
+					}
+				 }
+				},
+		
+				embed_url: {
+						required : function(element) {
+							var action = $("#url_type").val();
+							if(action == "embed") { 
+								return true;
+							} else {
+								return false;
+							}
+						}
+					}
+				},
+			messages: {
+			  title: 'This field is required',
+			  image: 'This field is required',
+			   mp4_url: 'This field is required',
+		
+			},
+			submitHandler: function(form) {
+			  form.submit();
+			}
+		  });
 		</script>
-		{{-- End validate --}}
+	{{-- End validate --}}
 
 	<script type="text/javascript">
 
