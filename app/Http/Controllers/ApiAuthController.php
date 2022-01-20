@@ -86,6 +86,10 @@ use App\Seriesartist;
 use App\WelcomeScreen;
 use App\CategoryVideo;
 use App\MobileApp;
+use App\SeriesCategory;
+use App\SeriesLanguage;
+
+
 
 class ApiAuthController extends Controller
 {
@@ -2701,6 +2705,46 @@ public function checkEmailExists(Request $request)
     }else{
       $userrole = '';
     }
+    $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+
+    if(!empty($series_id)){
+      $series_id = $series_id[0];
+      
+    $main_genre = SeriesCategory::Join('video_categories','video_categories.id','=','series_categories.category_id')
+    ->where('series_categories.series_id',$series_id)->get('name');
+
+    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+    ->where('series_languages.series_id',$series_id)->get('name');
+    }
+
+    if(!empty($series_id) && !empty($main_genre)){
+    foreach($main_genre as $value){
+      $category[] = $value['name']; 
+    }
+  }else{
+    $category = [];
+  }
+  // echo "<pre>";print_r($category);exit;
+
+    if(!empty($category)){
+    $main_genre = implode(",",$category);
+    }else{
+      $main_genre = [];
+    }
+
+    // echo "<pre>"; print_r($languages);exit;
+    if(!empty($series_id) && !empty($languages)){
+    foreach($languages as $value){
+      $language[] = $value['name']; 
+    }
+  }else{
+    $language = "";
+  }
+    if(!empty($language)){
+    $languages = implode(",",$language);
+    }else{
+      $languages = [];
+    }
 
       $response = array(
         'status'=>'true',
@@ -2712,6 +2756,9 @@ public function checkEmailExists(Request $request)
         'favorite' => $favorite,                               
         'like' => $like,
         'dislike' => $dislike,
+        'main_genre' => $main_genre,
+        'languages' => $languages,
+
       );
       return response()->json($response, 200);
     } 
