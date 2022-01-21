@@ -24,6 +24,7 @@ class CreateLikeDislikesTable extends Migration
             $table->tinyInteger('status')->nullable();
             $table->integer('liked')->nullable();
             $table->integer('disliked')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -14,6 +14,7 @@ class CreateVideosTable extends Migration
     public function up()
     {
         Schema::create('videos', function (Blueprint $table) {
+           
             $table->id();
             $table->integer('video_category_id')->nullable();
             $table->string('title')->nullable();
@@ -39,6 +40,7 @@ class CreateVideosTable extends Migration
             $table->string('slug')->nullable();
             $table->string('rating')->nullable();
             $table->integer('status')->nullable();
+            $table->integer('publish_type')->nullable();
             $table->integer('publish_status')->nullable();
             $table->string('publish_time')->nullable();
             $table->string('skip_recap')->nullable();

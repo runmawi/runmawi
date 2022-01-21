@@ -15,6 +15,30 @@ class CreateLiveStreamsTable extends Migration
     {
         Schema::create('live_streams', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable()->nullable();
+            $table->integer('user_id')->nullable();
+            $table->string('access')->nullable();
+            $table->string('ppv_price')->nullable();
+            $table->integer('active')->nullable();
+            $table->string('details')->nullable();
+            $table->integer('video_category_id')->nullable();
+            $table->longText('description')->nullable();
+            $table->integer('featured')->nullable();
+            $table->string('language')->nullable();
+            $table->integer('banner')->nullable();
+            $table->string('duration')->nullable();
+            $table->integer('footer')->nullable();
+            $table->string('slug')->nullable();
+            $table->integer('rating')->nullable();
+            $table->integer('publish_type')->nullable();
+            $table->string('publish_status')->nullable();
+            $table->integer('publish_time')->nullable();
+            $table->integer('status')->nullable();
+            $table->string('image')->nullable();
+            $table->longText('mp4_url')->nullable();
+            $table->string('embed_url')->nullable();
+            $table->string('url_type')->nullable();
+            $table->string('year')->nullable();
             $table->timestamps();
         });
     }
