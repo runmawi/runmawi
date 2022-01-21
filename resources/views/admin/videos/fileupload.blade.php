@@ -328,7 +328,7 @@ data: {
                                             <div class="col-sm-6 form-group" >
                                                 <label class="p-2">Select Video Category :</label>
                                                 <select class="form-control js-example-basic-multiple" id="video_category_id" name="video_category_id[]" style="width: 100%;" multiple="multiple">
-                                                   {{-- <option value="">Choose category</option>  --}}
+                                                   <!-- {{-- <option value="">Choose category</option>  --}} -->
                                                     @foreach($video_categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach

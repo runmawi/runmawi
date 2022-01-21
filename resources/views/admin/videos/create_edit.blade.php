@@ -221,8 +221,8 @@
                                     </video>
                                     @endif
                                     <?php }else{
-                                        echo "NO Video Uploaded";
-                                        }?>
+                                    echo "NO Video Uploaded";
+                                    } ?>
                                 </div>
                                 <?php   } elseif(!empty($video->mp4_url)){ ?>
                                 <div class="col-sm-6 form-group">

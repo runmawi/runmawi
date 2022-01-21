@@ -16,6 +16,8 @@ class CreateSeriesSeasonsTable extends Migration
         Schema::create('series_seasons', function (Blueprint $table) {
             $table->id();
             $table->integer('series_id')->nullable();
+            $table->string('image');
+            $table->string('trailer');
             $table->string('access')->nullable();
             $table->string('ppv_price')->nullable();
             $table->string('ppv_interval')->nullable();
