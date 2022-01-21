@@ -137,10 +137,12 @@ class AdminSeriesController extends Controller
             unset($data['genre_id']);
         }
         if ($request->slug != '') {
-            $data['slug'] = $this->createSlug($request->slug);
+            $slug = str_replace(' ', '_', $request->slug);
+            $data['slug'] =$slug;
             }
         if($request->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
+            $slug = str_replace(' ', '_', $request->title);
+            $data['slug'] =$slug;
         }
         if(!empty($data['language'])){
             $languagedata = $data['language'];
@@ -340,10 +342,12 @@ class AdminSeriesController extends Controller
                 $data['duration'] = $time_seconds;
         }
         if ($request->slug != '') {
-            $data['slug'] = $this->createSlug($request->slug);
+            $slug = str_replace(' ', '_', $request->slug);
+            $data['slug'] =$slug;
             }
         if($request->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
+            $slug = str_replace(' ', '_', $request->title);
+            $data['slug'] =$slug; 
         }
 
          $path = public_path().'/uploads/videos/';

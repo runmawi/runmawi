@@ -2710,7 +2710,7 @@ public function checkEmailExists(Request $request)
     if(!empty($series_id)){
       $series_id = $series_id[0];
       
-    $main_genre = SeriesCategory::Join('video_categories','video_categories.id','=','series_categories.category_id')
+    $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
     ->where('series_categories.series_id',$series_id)->get('name');
 
     $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
@@ -2756,7 +2756,7 @@ public function checkEmailExists(Request $request)
         'favorite' => $favorite,                               
         'like' => $like,
         'dislike' => $dislike,
-        'main_genre' => $main_genre,
+        'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
         'languages' => $languages,
 
       );
