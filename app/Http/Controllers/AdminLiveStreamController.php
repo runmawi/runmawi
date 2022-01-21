@@ -362,7 +362,7 @@ class AdminLiveStreamController extends Controller
         
          $validatedData = $request->validate([
             'title' => 'required|max:255',
-            'slug' => 'required|max:255',
+            // 'slug' => 'required|max:255',
             'description' => 'required',
             'details' => 'required|max:255',
             'year' => 'required'
@@ -386,11 +386,13 @@ class AdminLiveStreamController extends Controller
             $embed_url = $data['embed_url'];
         }
         if ($request->slug != '') {
-            $data['slug'] = $this->createSlug($request->slug);
+            $slug = str_replace(' ', '_', $request->slug);
+            $data['slug'] =$slug;
             }
 
         if($request->slug == ''){
-                $data['slug'] = $this->createSlug($data['title']);    
+                $slug = str_replace(' ', '_', $request->title);
+                $data['slug'] = $slug;    
         }
         if(empty($data['rating'])){
             $data['rating'] = 0;
