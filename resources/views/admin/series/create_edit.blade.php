@@ -341,13 +341,24 @@ $settings  = App\Setting::first();?>
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/create/') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/create/') }}" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="series_id" value="<?= $series->id ?>" />
 
+							<div class="form-group" >
+								<label> Season Trailer :</label>
+								<div class="new-video-file form_video-upload" style="position: relative;" >
+								<input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer">
+								<p style="font-size: 14px!important;">Drop and drag the video file</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+								<input type="file" name="image" id="image" >
+							</div>
                                 
 						    <div class="form-group">
-		                        <label> Choose Season Access:</label>
+		                        <label> Choose User Access:</label>
 								<select class="form-control" id="ppv_access" name="ppv_access">
 								<option value="free" >Free (everyone)</option>
 								<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
@@ -392,6 +403,7 @@ $settings  = App\Setting::first();?>
 				<td>
 					<p>
 						<a href="{{ URL::to('admin/season/edit') . '/' . $series->id. '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Manage Episodes</a>
+						<a href="{{ URL::to('admin/season/edit') . '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Edit Season</a>
 						<a href="{{ URL::to('admin/season/delete') . '/' . $seasons_value->id }}" class="btn btn-xs btn-white delete"><span class="fa fa-trash"></span> Delete</a>
 					</p>
 				</td>
@@ -409,6 +421,7 @@ $settings  = App\Setting::first();?>
 		@endif
 <!-- This is where now -->
 </div>
+
 	<script type="text/javascript">
 
 		$ = jQuery;
@@ -511,6 +524,7 @@ $settings  = App\Setting::first();?>
 	}
 
 	</script>
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     	
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
@@ -560,7 +574,24 @@ $('form[id="series_form"]').validate({
 	}
   });
 
+
+$('form[id="new-cat-form"]').validate({
+	rules: {
+		trailer: 'required',
+	  image: 'required',
+
+		},
+	messages: {
+		trailer: 'This field is required',
+	  image: 'This field is required',
+
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
 </script>
+
 	@stop
 
 @stop

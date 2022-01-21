@@ -601,6 +601,48 @@ class AdminSeriesController extends Controller
     public function create_season(Request $request)
     {
         $data = $request->all();
+        $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+        $image = (isset($data['image'])) ? $data['image'] : '';
+        
+        $image_path = public_path().'/uploads/season_images/';
+        $path = public_path().'/uploads/season_videos/';
+        
+        if($trailer != '') {   
+            //code for remove old file
+            if($trailer != ''  && $trailer != null){
+                 $file_old = $path.$trailer;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $trailer;
+            $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+            $file->move($path, $trailer_vid);
+            $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
+        } else {
+            $data['trailer'] = '';
+        }
+
+        if($image != '') {   
+            //code for remove old file
+            if($image != ''  && $image != null){
+                $file_old = $image_path.$image;
+                if (file_exists($file_old)){
+                unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $data['image']  = URL::to('/').'/public/uploads/season_images/'.$file->getClientOriginalName();
+            $file->move($image_path, $data['image']);
+
+        } else {
+            $data['image']  = 'default.jpg';
+        } 
+
         if(!empty($data['ppv_access'])){
             $access = $data['ppv_access'];
         }else{
@@ -622,6 +664,8 @@ class AdminSeriesController extends Controller
         // $data['ppv_interval'] = $ppv_interval; 
         $series = new SeriesSeason;
         $series->series_id = $data['series_id'];
+        $series->image = $data['image'];
+        $series->trailer = $data['trailer'];
         $series->access = $access;
         $series->ppv_price = $ppv_price;
         $series->ppv_interval = $ppv_interval;
@@ -638,7 +682,92 @@ class AdminSeriesController extends Controller
     //     $series = SeriesSeason::create($data);
     //     return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Created Season!', 'note_type' => 'success') );
     // }
+    public function Edit_season($id)
+    {
+        $season = SeriesSeason::where('id',$id)->first();
+        // dd($season);
+        $data =array(
+            'season' => $season,
+        );
 
+        return View::make('admin/series/season/edit',$data);
+    }
+    public function Update_season(Request $request)
+    {
+        $data = $request->all();
+        $id = $data['id'];
+        $series_season = SeriesSeason::findOrFail($id);
+
+        $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+        $image = (isset($data['image'])) ? $data['image'] : '';
+        
+        $image_path = public_path().'/uploads/season_images/';
+        $path = public_path().'/uploads/season_videos/';
+        
+        if($trailer != '') {   
+            //code for remove old file
+            if($trailer != ''  && $trailer != null){
+                 $file_old = $path.$trailer;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $trailer;
+            $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+            $file->move($path, $trailer_vid);
+            $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
+        } else {
+            $data['trailer'] = $series_season->trailer;
+        }
+
+        if($image != '') {   
+            //code for remove old file
+            if($image != ''  && $image != null){
+                $file_old = $image_path.$image;
+                if (file_exists($file_old)){
+                unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $data['image']  = URL::to('/').'/public/uploads/season_images/'.$file->getClientOriginalName();
+            $file->move($image_path, $data['image']);
+
+        } else {
+            $data['image']  = $series_season->image;
+        } 
+
+        if(!empty($data['ppv_access'])){
+            $access = $data['ppv_access'];
+        }else{
+            $access = $series_season->ppv_access;
+        }
+        if(!empty($data['ppv_price'])){
+            $ppv_price = $data['ppv_price'];
+        }else{
+            $ppv_price = $series_season->ppv_price;
+        }
+        if(!empty($data['ppv_interval'])){
+            $ppv_interval = $data['ppv_interval'];
+        }else{
+            $ppv_interval = $series_season->ppv_interval;
+        }
+    
+        $series_season->series_id = $series_season->series_id;
+        $series_season->image = $data['image'];
+        $series_season->trailer = $data['trailer'];
+        $series_season->access = $access;
+        $series_season->ppv_price = $ppv_price;
+        $series_season->ppv_interval = $ppv_interval;
+        $series_season->save();
+
+        return Redirect::back();
+    
+    }
+    
     public function destroy_season($id)
     {
         $series_id = SeriesSeason::find($id)->series_id;

@@ -876,8 +876,6 @@ public function verifyandupdatepassword(Request $request)
       'wishlist' => $wishliststatus,
       'curr_time' => $curr_time,
       'ppv_video_status' => $ppv_video_status,
-      'main_genre' => $main_genre,
-      'languages' => $languages,
       'watchlater' => $watchlaterstatus,
       'favorite' => $favorite                                 ,
       'ppv_exist' => $ppv_exist,
@@ -888,6 +886,8 @@ public function verifyandupdatepassword(Request $request)
       'shareurl' => URL::to('category/videos').'/'.$videodetail[0]->slug,
       'videodetail' => $videodetail,
       'videossubtitles' => $moviesubtitles,
+      'main_genre' => $main_genre,
+      'languages' => $languages,
       'videoads' => $videoads
     );
 

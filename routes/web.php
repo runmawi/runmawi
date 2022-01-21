@@ -424,6 +424,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
     Route::post('/season/create/', 'AdminSeriesController@create_season');
     Route::get('/season/edit/{series_id}/{season_id}', 'AdminSeriesController@manage_season');
+    Route::get('/season/edit/{season_id}', 'AdminSeriesController@Edit_season');
+    Route::post('/season/update', 'AdminSeriesController@Update_season');
     Route::get('/season/delete/{id}', 'AdminSeriesController@destroy_season');
 
     Route::post('/episode/create', 'AdminSeriesController@create_episode');
