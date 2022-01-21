@@ -22,6 +22,7 @@ class CreateVideoCategoriesTable extends Migration
             $table->string('image')->nullable();
             $table->string('slug')->nullable();
             $table->tinyInteger('in_home')->nullable();
+            $table->integer('footer')->nullable();
             $table->timestamps();
         });
     }

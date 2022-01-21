@@ -23,6 +23,7 @@ class CreatePaymentSettingsTable extends Migration
             $table->text('live_secret_key')->nullable();
             $table->string('plan_name')->nullable();
             $table->text('live_publishable_key')->nullable();
+            $table->string('stripe_lable')->nullable();
             $table->tinyInteger('paypal_live_mode')->nullable();
             $table->integer('paypal_status')->nullable();
             $table->text('test_paypal_username')->nullable();
@@ -32,6 +33,8 @@ class CreatePaymentSettingsTable extends Migration
             $table->text('live_paypal_password')->nullable();
             $table->text('live_paypal_signature')->nullable();
             $table->text('paypal_plan_name')->nullable();
+            $table->string('paypal_lable')->nullable();
+            $table->text('status')->nullable();
             $table->timestamps();
         });
     }
