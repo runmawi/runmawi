@@ -21,6 +21,7 @@ class CreateContinueWatchingsTable extends Migration
             $table->string('watch_percentage')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('multiuser')->nullable();
             $table->timestamps();
         });
     }

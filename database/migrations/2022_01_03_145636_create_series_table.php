@@ -15,11 +15,11 @@ class CreateSeriesTable extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             $table->id();
-
             $table->integer('user_id')->nullable();
             $table->integer('genre_id')->nullable();
             $table->string('title')->nullable();
             $table->string('type')->nullable();
+            $table->string('slug')->nullable();
             $table->string('access')->nullable();
             $table->text('details')->nullable();
             $table->text('description')->nullable();

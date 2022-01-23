@@ -17,6 +17,7 @@ class CreatePluginsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
+            $table->text('version')->nullable();
             $table->string('slug')->nullable();
             $table->tinyInteger('active')->nullable();
             $table->timestamps();

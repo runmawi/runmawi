@@ -33,6 +33,7 @@ class CreateAudioTable extends Migration
             $table->tinyInteger('featured')->nullable();
             $table->integer('duration')->nullable();
             $table->integer('views')->nullable();
+            $table->integer('banner')->nullable();
             $table->integer('year')->nullable();
             $table->integer('language')->nullable();
             $table->string('image')->nullable();

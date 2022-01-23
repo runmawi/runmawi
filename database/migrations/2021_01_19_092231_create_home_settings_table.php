@@ -19,11 +19,13 @@ class CreateHomeSettingsTable extends Migration
             $table->string('latest_videos')->nullable();
             $table->string('category_videos')->nullable();
             $table->string('live_videos')->nullable();
+            $table->string('series')->nullable();
             $table->string('audios')->nullable();
             $table->string('albums')->nullable();
             $table->integer('user_id')->nullable();
             $table->string('Recommendation')->nullable();
             $table->string('AutoIntro_skip')->nullable();
+            $table->string('theme_choosen')->nullable();
             $table->timestamps();
         });
     }

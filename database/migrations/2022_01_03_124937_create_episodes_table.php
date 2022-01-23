@@ -33,6 +33,7 @@ class CreateEpisodesTable extends Migration
             $table->tinyInteger('footer')->nullable();
             $table->integer('duration')->nullable();
             $table->string('title')->nullable();
+            $table->string('slug')->nullable();
             $table->string('age_restrict')->nullable();
             $table->integer('views')->nullable();
             $table->string('rating')->nullable();
