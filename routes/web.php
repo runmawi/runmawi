@@ -234,6 +234,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/player', 'Adminplayer@Index');
 
 
+    Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
 
     /* manage videos */
 

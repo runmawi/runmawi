@@ -45,6 +45,7 @@ use DB;
 use App\BlockVideo;
 use App\LanguageVideo;
 use App\CategoryVideo;
+use Exception;
 
 
 class AdminVideosController extends Controller
@@ -296,12 +297,14 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         return $value;
         
         }elseif($mp4_url != '' && $pack == "Pro") {
+            // print_r($request->file);
+            // exit();
             $rand = Str::random(16);
-            $path = $rand . '.' . $request->video->getClientOriginalExtension();
-            $request->video->storeAs('public', $path);
+            $path = $rand . '.' . $request->file->getClientOriginalExtension();
+            $request->file->storeAs('public', $path);
             /*dd('public', $path);*/
              
-             $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+             $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
              
              
              $video = new Video();
@@ -955,40 +958,24 @@ if(!empty($artistsdata)){
                 $data['duration'] = $time_seconds;
         }
 
-        // if( $mp4_url2 != ''){   
+        if( $mp4_url2 != ''){  
+            $data['status'] = 0; 
+            $data['processed_low'] = 0; 
+              //code for remove old file
+               $rand = Str::random(16);
+                $path = $rand . '.' . $request->video->getClientOriginalExtension();
+                $request->video->storeAs('public', $path);
+                $data['mp4_url'] = $path;
+                $data['path'] = $path;
+                $data['status'] = 0;
+                $data['processed_low'] = 0; 
+                $video->update($data);
+                
+                // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+                $original_name = URL::to('/').'/storage/app/public/'.$path;
+                ConvertVideoForStreaming::dispatch($video);
+         }
 
-        //     $ffprobe = \FFMpeg\FFProbe::create();
-        //     $disk = 'public';
-        //     $data['duration'] = $ffprobe->streams($request->video)
-        //     ->videos()
-        //     ->first()                  
-        //     ->get('duration'); 
-
-
-
-        //       //code for remove old file
-        //         $rand = Str::random(16);
-        //         $path = $rand . '.' . $request->video->getClientOriginalExtension();
-        //         $request->video->storeAs('public', $path);
-        //         $data['mp4_url'] = $path;
-        //         $data['path'] = $rand;
-
-        //         $thumb_path = 'public';
-        //         $this->build_video_thumbnail($request->video,$path, $data['slug']);
-             
-        //     // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-        //         $original_name = URL::to('/').'/storage/app/public/'.$path;
-        //         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        //         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-        //         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-        //         $converted_name = ConvertVideoForStreaming::handle($path);
-
-        //         ConvertVideoForStreaming::dispatch($video);
-               
-
-        //  }
-        
-      
        
           if(!empty($data['embed_code'])) {
              $video->embed_code = $data['embed_code'];
@@ -1772,4 +1759,8 @@ if(!empty($artistsdata)){
  
    
              }
+             function get_processed_percentage($id)
+             {
+                 return Video::where('id', '=', $id)->first();
+             } 
 }

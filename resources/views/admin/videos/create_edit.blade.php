@@ -792,8 +792,8 @@ $(function() {
 if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
 	setInterval(function(){ 
 		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
-			$('.low_bar').width(data.processed_low+'%');
-			$('.low_percent').html(data.processed_low+'%');
+			$('.low_bar').width(data.processed+'%');
+			$('.low_percent').html(data.processed+'%');
 		});
 	}, 3000);
 }
