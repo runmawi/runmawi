@@ -426,9 +426,14 @@ class AdminUsersController extends Controller
             $users =User::where('id',Auth::user()->id)->pluck('id')->first();   
             $profile_details = Multiprofile::where('parent_id', $users)->get();
         }
-
-
+        // $video = "";
+        if(!empty($video)){
         $video = array_unique($videos);
+        }else{
+            $video = [];
+        }
+        // $video = array_unique($videos);
+
     	$data = array(
     		'videos' => $video,
     		'videocategory' => $videocategory,
