@@ -15,7 +15,7 @@ class CreateLiveStreamsTable extends Migration
     {
         Schema::create('live_streams', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable()->nullable();
+            $table->string('title')->nullable();
             $table->integer('user_id')->nullable();
             $table->string('access')->nullable();
             $table->string('ppv_price')->nullable();

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             VideoCategoryTableSeeder::class,
             PlayeruiTableSeeder::class,
             VideoCommissionTableSeeder::class,
+            HomesettingTableSeeder::class,
         ]);
     
     }

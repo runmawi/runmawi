@@ -1341,7 +1341,8 @@ class HomeController extends Controller
 
                 if($preference_genres !=null ){
                     $video_genres = json_decode($preference_genres);
-                    $preference_gen = Video::whereIn('video_category_id',$video_genres)->whereNotIn('videos.id',$blocking_videos);
+                    $preference_gen = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')->whereIn('category_id',$video_genres)
+                                            ->whereNotIn('videos.id',$blocking_videos)->groupBy('categoryvideos.video_id');
                     if($Family_Mode == 1){
                         $preference_gen = $preference_gen->where('age_restrict', '<', 18);
                     }
@@ -1355,7 +1356,8 @@ class HomeController extends Controller
                 }
                 if($preference_language !=null ){
                     $video_language =json_decode($preference_language);
-                    $preference_Lan = Video::whereIn('language',$video_language)->whereNotIn('videos.id',$blocking_videos);
+                    $preference_Lan = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')->whereIn('language_id',$video_language)
+                                    ->whereNotIn('videos.id',$blocking_videos)->groupBy('languagevideos.video_id');
                     if($Family_Mode == 1){
                         $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
                     }
