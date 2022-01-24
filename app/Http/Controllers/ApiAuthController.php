@@ -860,7 +860,7 @@ public function verifyandupdatepassword(Request $request)
           if(!empty($language)){
           $languages = implode(",",$language);
           }else{
-            $languages = [];
+            $languages = "";
           }
 
 
@@ -887,7 +887,7 @@ public function verifyandupdatepassword(Request $request)
       'videodetail' => $videodetail,
       'videossubtitles' => $moviesubtitles,
       'main_genre' => $main_genre,
-      'languages' => $languages,
+      // 'languages' => $languages,
       'videoads' => $videoads
     );
 
