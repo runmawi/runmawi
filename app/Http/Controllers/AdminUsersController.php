@@ -432,7 +432,7 @@ class AdminUsersController extends Controller
         }else{
             $video = [];
         }
-        $video = array_unique($videos);
+        // $video = array_unique($videos);
 
     	$data = array(
     		'videos' => $video,
