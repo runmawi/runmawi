@@ -167,7 +167,7 @@ i.fa.fa-google-plus {
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                               <?php if($system_settings->facebook == 1){ ?>
+                               <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
                                     <p class="links">Login with using:</p>
                                 </div>
@@ -181,7 +181,7 @@ i.fa.fa-google-plus {
                                       <a href="{{ url('/auth/redirect/twiter') }}" class="" >
                                           <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>-->
-                                <?php if($system_settings->google == 0 ){  }else{ ?>
+                                <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                     <a href="{{ url('/auth/redirect/google') }}" class="" >
                                         <img src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
