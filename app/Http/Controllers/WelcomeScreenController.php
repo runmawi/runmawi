@@ -15,6 +15,8 @@ use Auth;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\MobileSlider;
+use File;    
+
 
 class WelcomeScreenController extends Controller
 {
@@ -88,13 +90,13 @@ class WelcomeScreenController extends Controller
 
     public function ChooseProfileScreen_store(Request $request){
 
+        $Website_name = Setting::pluck('Website_name')->first();
+
         $files = $request->screen_image;
         $format=$files->getClientOriginalExtension();
-        $filename =uniqid(). time(). '.' .  $format;
+        $filename =$Website_name .'_'. 'WelcomeScreen'. '.' .  $format;
         Image::make($files)->resize(300, 300)->save(base_path().'/public/uploads/avatars/'.$filename );
 
-
-  
         $screen=ChooseProfileScene::first();
 
         if($screen ==null){
@@ -103,6 +105,11 @@ class WelcomeScreenController extends Controller
                 'profile_name'  => $request->screen_name,
               ]);
         }else{
+
+        $files_unlink= $screen->choosenprofile_screen;
+        $file_path = public_path().'/uploads/avatars/'.$files_unlink;
+        unlink($file_path);
+          
         $screen=ChooseProfileScene::first()
         ->update([
             'choosenprofile_screen' => $filename,

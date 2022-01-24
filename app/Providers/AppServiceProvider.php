@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 use Laravel\Cashier\Cashier;
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -28,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        config()->set('social', \App\SystemSetting::first());
+
+        if (Schema::hasTable('system_settings'))
+        {
+           config()->set('social', \App\SystemSetting::first());
+        }
     }
 }
