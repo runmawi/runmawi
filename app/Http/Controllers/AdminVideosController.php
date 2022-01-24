@@ -245,11 +245,11 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $newfile = explode(".mp4",$file);
         $file_folder_name = $newfile[0];
    
-        
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
         
         $mp4_url = $data['file'];
-        
-        if($mp4_url != '') {
+        if($mp4_url != '' && $pack != "Pro") {
         // $ffprobe = \FFMpeg\FFProbe::create();
         // $disk = 'public';
         // $data['duration'] = $ffprobe->streams($request->file)
@@ -295,8 +295,38 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         
         return $value;
         
+        }elseif($mp4_url != '' && $pack == "Pro") {
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->video->getClientOriginalExtension();
+            $request->video->storeAs('public', $path);
+            /*dd('public', $path);*/
+             
+             $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
+             
+             
+             $video = new Video();
+             $video->disk = 'public';
+             $video->status = 0;
+             $video->original_name = 'public';
+             $video->path = $path;
+             $video->title = $file_folder_name;
+             $video->mp4_url = $path;
+             $video->draft = 0;
+             $video->user_id = Auth::user()->id;
+             $video->save();
+
+             ConvertVideoForStreaming::dispatch($video);
+             $video_id = $video->id;
+             $video_title = Video::find($video_id);
+             $title =$video_title->title; 
+      
+              $value['success'] = 1;
+              $value['message'] = 'Uploaded Successfully!';
+              $value['video_id'] = $video_id;
+              $value['video_title'] = $title;
+              
+              return $value;
         }
-        
         else {
          $value['success'] = 2;
          $value['message'] = 'File not uploaded.'; 
@@ -322,6 +352,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             }
             $settings = Setting::first();
 
+
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
             'post_route' => URL::to('admin/videos/fileupdate'),
@@ -337,6 +368,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'settings' => $settings,
             'countries' => CountryCode::all(),
             'video_artist' => [],
+            'page' => 'Creates',
             );
 
 
@@ -709,6 +741,7 @@ if(!empty($artistsdata)){
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
+            'page' => 'Edit',
 
 
             );
