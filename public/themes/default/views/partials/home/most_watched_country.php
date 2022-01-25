@@ -29,9 +29,20 @@
                                         </div>
                                     </div>
                                 </div>
-
+                        </div>
                                 <div class="block-description">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                                   
+                                   <div class="hover-buttons">
+                                       <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
+                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> 
+                                      </a>
+                                    <div>
+                                       <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
+                                </div>
+                                </div>
+                            </div>
+                        <div class="mt-2">
+                             <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
                                          <h6><?php echo __($Most_watched_countries->title); ?></h6>
                                     </a>
                                     <div class="movie-time d-flex align-items-center my-2">
@@ -39,15 +50,6 @@
                                         <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Most_watched_countries->duration); ?></span>
                                     </div>
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
-                                      </a>
-                                    <div>
-                                       <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
-                                </div>
-                                </div>
-                            </div>
                         </div>
                     </a>
                 </li>

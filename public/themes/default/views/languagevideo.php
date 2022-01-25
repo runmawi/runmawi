@@ -43,21 +43,14 @@
                                 ?>
                             </p>
                         </div>
-                    </div>
--->
+                    
+--></div>
                         <div class="block-description">
-                            <h3><?php echo __($video->title); ?></h3>
-                            <div class="movie-time d-flex align-items-center my-2">
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                                <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                            </div>
                             <div class="hover-buttons d-flex">
-                                <a type="button" class="text-white"
+                                <a type="button" class="text-white btn-cl"
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                Watch Now
+                               
                                 </a>
                                 <div >
                                     <!-- <a style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"> -->
@@ -68,8 +61,15 @@
                                     </div>  -->
                                     </a>
                                 </div>
+                            <div class="mt-2">
+                    <h3><?php echo __($video->title); ?></h3>
+                            <div class="movie-time d-flex align-items-center my-2">
+                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                                <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $video->duration); ?>
+                                </span>
                             </div>
-                        </div>
+                            </div>
                     </div>
                 </li>
                 </a>

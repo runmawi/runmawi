@@ -29,21 +29,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="block-description">
-                                       <h6><?php echo __($latest_video->title); ?></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
-                                       </div>
-                                       <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="text-white">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
-                                          </span>
-                                           </a>
+                                     </div>
+                                    <div class="block-description" style="left:50px!important;">
+                                       
+                                       <div class="hover-buttons d-flex justify-content-around">
                                            <div>
-                                           <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist
+                                           <a class="btnk mr-2" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
+                                          <span class="text-white ">
+                                          <i class="fa fa-play" aria-hidden="true"></i>
+                                        
+                                          </span>
+                                           </a></div>
+                                           <div>
+                                           <a   href="" class="text-white btnk m1-2"><i class="fa fa-plus" aria-hidden="true"></i> 
                        </a></div>
                                        </div>
                                        <div>
@@ -54,6 +52,13 @@
                                             </button>
                                         </div>
                                     </div>
+                                     <div class="mt-2">
+                                         <h6><?php echo __($latest_video->title); ?></h6>
+                                       <div class="movie-time d-flex align-items-center my-2">
+                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                       </div>
+                                     
 
                                    <!-- <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">

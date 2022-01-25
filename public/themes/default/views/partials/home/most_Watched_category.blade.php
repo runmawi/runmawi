@@ -1,35 +1,7 @@
-<style>
-    .playvid {
-        display: block;
-        width: 280%;
-        height: auto !important;
-        margin-left: -410px;
-    }
 
-    .btn.btn-primary.close {
-        margin-right: -17px;
-        background-color: #4895d1 !important;
-    }
-
-    button.close {
-        padding: 9px 30px !important;
-        border: 0;
-        -webkit-appearance: none;
-    }
-
-    .close {
-        margin-right: -429px !important;
-        margin-top: -1461px !important;
-    }
-
-    .modal-footer {
-        border-bottom: 0px !important;
-        border-top: 0px !important;
-
-    }
-
-</style>
-        <div class="col-sm-12 overflow-hidden">
+    
+<div class="fluid">
+        <div class="col-sm-12 overflow-hidden p-0">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
                 <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
@@ -78,27 +50,18 @@
                                         </p>
                                     </div>
                                 </div>
+                        </div>
                                 <div class="block-description">
-                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <h6>
-                                            <?php echo __($category_video->title); ?>
-                                        </h6>
-                                    </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $category_video->duration); ?>
-                                        </span>
-                                    </div>
+                                    
                                     <div class="hover-buttons">
-                                        <a type="button" class="text-white"
+                                        <a type="button" class="text-white btn-cl"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
 
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Watch Now
+                                           
 
                                         </a>
-                                        <div>
+                                     <!--   <div class="">
                                         <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
                             <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                           </span>
@@ -117,8 +80,22 @@
                                        </button></div>
                         -->
                                 </div>
+                                <div class="mt-2 d-flex justify-content-between">
+                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                        <h6>
+                                            <?php echo __($category_video->title); ?>
+                                        </h6>
+                                    </a>
+                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict ?></div>
+                                    </div>
                               
-                            </div>
+                                    <div class="movie-time d-flex align-items-center my-2">
+                                        
+                                        <span class="text-white"><i class="fa fa-clock-o"></i>
+                                            <?= gmdate('H:i:s', $category_video->duration); ?>
+                                        </span>
+                                    </div>
+                            
                     </li>
                     <?php           
                           endforeach; 
@@ -127,3 +104,4 @@
             </div>
         </div>
 
+</div>
