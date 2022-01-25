@@ -91,9 +91,21 @@ if(isset($videos)) :
                                          </p>
                                     </div>
                                 </div>
-
+                        </div>
                                 <div class="block-description">
-                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
+                                    
+
+                                    <div class="hover-buttons">
+                                        <a type="button" class="text-white "
+                                            href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> 
+                                        </a>
+                                  
+                                    </div>
+
+                                </div> 
+                        <div class="mt-2">
+                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                                         <h6> <?php echo __($top_category_video->title); ?> </h6>
                                     </a>
                                     <div class="movie-time d-flex align-items-center my-2">
@@ -102,16 +114,6 @@ if(isset($videos)) :
                                             <?= gmdate('H:i:s', $top_category_video->duration); ?>
                                         </span>
                                     </div>
-
-                                    <div class="hover-buttons">
-                                        <a type="button" class="text-white"
-                                            href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
-                                        </a>
-                                  
-                                    </div>
-
-                                </div> 
                         </div>
                     </li>
                 </ul>
@@ -173,24 +175,15 @@ if(isset($videos)) :
                                         </p>
                                     </div>
                                 </div>
+                        </div>
                                 <div class="block-description">
-                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <h6>
-                                            <?php echo __($category_video->title); ?>
-                                        </h6>
-                                    </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $category_video->duration); ?>
-                                        </span>
-                                    </div>
+                                    
                                     <div class="hover-buttons">
-                                        <a type="button" class="text-white"
+                                        <a type="button" class="text-white  btn-cl"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
 
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Watch Now
+                                           
 
                                         </a>
                                         <div class="d-flex">
@@ -214,6 +207,20 @@ if(isset($videos)) :
                                 </div>
                               
                             </div>
+                        <div class="mt-2 d-flex justify-content-between">
+                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                        <h6>
+                                            <?php echo __($category_video->title); ?>
+                                        </h6>
+                                    </a>
+                            <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict ?></div></div>
+                                    <div class="movie-time d-flex align-items-center my-2">
+                                        
+                                        <span class="text-white"><i class="fa fa-clock-o"></i>
+                                            <?= gmdate('H:i:s', $category_video->duration); ?>
+                                        </span>
+                                    </div>
+                        
                     </li>
                     <?php           
                           endforeach; 
@@ -240,7 +247,7 @@ $('.mywishlist').click(function(){
                             
                             $('#'+video_id).text('') ;
                             $('#'+video_id).text('Remove From Wishlist');
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
                           setTimeout(function() {
                             $('.add_watch').slideUp('fast');
                           }, 3000);
@@ -248,7 +255,7 @@ $('.mywishlist').click(function(){
                             
                             $('#'+video_id).text('') ;
                             $('#'+video_id).text('Add To Wishlist');
-                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
                           setTimeout(function() {
                           $('.remove_watch').slideUp('fast');
                           }, 3000);

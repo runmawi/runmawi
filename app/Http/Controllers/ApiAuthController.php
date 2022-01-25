@@ -847,7 +847,7 @@ public function verifyandupdatepassword(Request $request)
           if(!empty($category)){
           $main_genre = implode(",",$category);
           }else{
-            $main_genre = [];
+            $main_genre = "";
           }
         // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
           $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
@@ -2732,7 +2732,7 @@ public function checkEmailExists(Request $request)
     if(!empty($category)){
     $main_genre = implode(",",$category);
     }else{
-      $main_genre = [];
+      $main_genre = "";
     }
 
     // echo "<pre>"; print_r($languages);exit;
@@ -2746,7 +2746,7 @@ public function checkEmailExists(Request $request)
     if(!empty($language)){
     $languages = implode(",",$language);
     }else{
-      $languages = [];
+      $languages = "";
     }
 
       $response = array(

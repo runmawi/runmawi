@@ -67,6 +67,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script>
+        
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
    
  <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -91,7 +94,7 @@
                         @endif
                      <div class="iq-card-body">
                          <h5>Video Info Details</h5>
-                        <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                        <form id="form" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                            <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
@@ -519,30 +522,30 @@
                             <div id="success">
 
 </div>
-<div class="row text-center">
-    <input type="hidden" id="page" value="{{ $page }}">
-    @if(isset($video->id))
-    <input type="hidden" id="status" value="{{ $video->status }}">
-    @else
-    <input type="hidden" id="status" value="0">
-    @endif
-    @if($page == 'Create' || $page == 'Edit')
-    <div class="progress">
-        <div class="bar"></div >
-    </div>
-    <div class="percent">0%</div >
-    @endif
-    @if($page == 'Edit' && $video->status == 0)
-    <br><br><br>
-    <div class="col-sm-12">
-        Video Transcoding is under Progress
-        <div class="progress">
-            <div class="low_bar"></div >
-        </div>
-        <div class="low_percent">0%</div >
-    </div>
-    @endif
-</div>
+                            <div class="row text-center">
+                                <input type="hidden" id="page" value="{{ $page }}">
+                                @if(isset($video->id))
+                                <input type="hidden" id="status" value="{{ $video->status }}">
+                                @else
+                                <input type="hidden" id="status" value="0">
+                                @endif
+                                @if($page == 'Create' || $page == 'Edit')
+                                <!-- <div class="progress">
+                                    <div class="bar"></div >
+                                </div>
+                                <div class="percent">0%</div > -->
+                                @endif
+                                @if($page == 'Edit' && $video->status == 0)
+                                <br><br><br>
+                                <div class="col-sm-12">
+                                    Video Transcoding is under Progress
+                                    <div class="progress">
+                                        <div class="low_bar"></div >
+                                    </div>
+                                    <div class="low_percent">0%</div >
+                                </div>
+                                @endif
+                            </div>
 
 
                               @if(isset($video->id))
@@ -611,6 +614,50 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 
 
+<script type="text/javascript">
+    
+var SITEURL = "{{URL('/')}}";
+// $(function() {
+//     $(document).ready(function()
+//     {
+//         var bar = $('.bar');
+//         var percent = $('.percent');
+//           $('#form').ajaxForm({
+//             beforeSend: function() {
+//                 var percentVal = '0%';
+//                 bar.width(percentVal)
+//                 percent.html(percentVal);
+//             },
+//             uploadProgress: function(event, position, total, percentComplete) {
+//                 var percentVal = percentComplete + '%';
+//                 bar.width(percentVal)
+//                 percent.html(percentVal);
+//             },
+//             complete: function(xhr) {
+//                 alert('Successfully Updated Video!');
+//                 window.location.href = "{{ URL::to('admin/videos') }}";
+//             }
+//           });
+//     }); 
+//  }); 
+
+if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
+	setInterval(function(){ 
+		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
+			$('.low_bar').width(data.processed_low+'%');
+			$('.low_percent').html(data.processed_low+'%');
+		});
+	}, 3000);
+}
+</script>
+
+
+
+
+
+
+
+
 
   <script type="text/javascript">
  $ = jQuery;
@@ -621,7 +668,7 @@
     $('.js-example-basic-multiple').select2();
     $('.js-example-basic-single').select2();
 
-    $('#duration').mask("00:00:00");
+    // $('#duration').mask("00:00:00");
 
 });
 
@@ -744,6 +791,7 @@ $(document).ready(function(){
         filebrowserUploadMethod: 'form'
     });
     </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
     <script>
 
@@ -762,42 +810,6 @@ $(document).ready(function(){
     })
 </script>
 
-<script type="text/javascript">
-    
-var SITEURL = "{{URL('/')}}";
-$(function() {
-    $(document).ready(function()
-    {
-        var bar = $('.bar');
-        var percent = $('.percent');
-          $('form').ajaxForm({
-            beforeSend: function() {
-                var percentVal = '0%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            uploadProgress: function(event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            complete: function(xhr) {
-                alert('Successfully Updated Video!');
-                window.location.href = "{{ URL::to('admin/videos') }}";
-            }
-          });
-    }); 
- }); 
-
-if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
-	setInterval(function(){ 
-		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
-			$('.low_bar').width(data.processed+'%');
-			$('.low_percent').html(data.processed+'%');
-		});
-	}, 3000);
-}
-</script>
 @section('javascript')
 	@stop
 
