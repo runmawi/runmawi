@@ -248,7 +248,6 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
    
         $package = User::where('id',1)->first();
         $pack = $package->package;
-        
         $mp4_url = $data['file'];
         if($mp4_url != '' && $pack != "Pro") {
         // $ffprobe = \FFMpeg\FFProbe::create();
@@ -1414,8 +1413,9 @@ if(!empty($artistsdata)){
     //            if(empty($data['path'])){
     //                $data['path'] = 0;
     //            }  
-    
-                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+    $package = User::where('id',1)->first();
+    $pack = $package->package;
+                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro" ){
                         $data['status'] = 1;    
                     }
     
