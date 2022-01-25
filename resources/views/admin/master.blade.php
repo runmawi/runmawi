@@ -1627,6 +1627,8 @@ if(jQuery('#view-chart-13').length){
         chart.render();
     }
 });
+});
+
 </script>
 <?php } ?>
     
