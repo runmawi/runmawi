@@ -32,18 +32,15 @@
                                         </div>
                                     </div>
                                 </div>
+                              </div>
                                 <div class="block-description">
-                                   <h6><?php echo __($cont_video->title); ?></h6>
-                                   <div class="movie-time d-flex align-items-center my-2">
-                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $cont_video->age_restrict.' '.'+' ?></div>
-                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
-                                   </div>
+                                  
                                     
                                     
                                     
                                     <div class="hover-buttons text-white">
-                                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now
+                                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                         </a>
                                         <div>
                                     <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
@@ -60,7 +57,16 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                              
+                                 <div class="mt-2 d-flex justify-content-between p-0">
+                                 <h6><?php echo __($cont_video->title); ?></h6>
+                                      <div class="badge badge-secondary "><?php echo $cont_video->age_restrict.' '.'+' ?></div> </div>
+                                   <div class="movie-time my-2">
+                                     
+                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
+                                   </div>
+                                     
+                            
                           </a>
                        </li>
                        <?php                     

@@ -496,7 +496,7 @@ class ChannelController extends Controller
 
             }
  
-       return Theme::view('video_before_login', $data);
+       return view('video_before_login', $data);
     }
         }
     
