@@ -1510,13 +1510,16 @@ public function verifyandupdatepassword(Request $request)
   }
     
     public function payment_settings() {
+
       $payment_settings = PaymentSetting::get();
+      $active_payment_settings = PaymentSetting::where('status',1)->get();
       $stripe_payment_settings = PaymentSetting::where('payment_type','=','Stripe')->get();
       $paypal_payment_settings = PaymentSetting::where('payment_type','=','PayPal')->get();
   
       $response = array(
         'status'=>'true',
         'payment_settings'=> $payment_settings,
+        'active_payment_settings' => $active_payment_settings,
         'stripe_payment_settings'=> $stripe_payment_settings,
         'paypal_payment_settings'=> $paypal_payment_settings,
       );
