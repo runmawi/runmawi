@@ -3032,8 +3032,7 @@ public function checkEmailExists(Request $request)
     public function UserComments(Request $request){
                      
           $comments =  Comment::where("video_id","=",$request->video_id)
-         ->where('user_id',$request->user_id)->latest()->take(1)->get()->map(function ($item) {
-         
+         ->where('user_id',$request->user_id)->get()->map(function ($item) {
             $i = 0;
             while ($i<= $item->count()) {
               $user =  User::where("id","=",$item->user_id)->get()->first();
@@ -3052,9 +3051,19 @@ public function checkEmailExists(Request $request)
             }           
             return $item;
           });
+
+          $video_comments = Comment::join("users","users.id", "=", "comments.user_id")
+          ->select('comments.*','users.username','users.avatar')
+          ->where("comments.video_id", "=", $request->video_id)
+          ->get()
+          ->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->avatar;
+            return $item;
+          });
           $response = array(
             'status'=>'true',
-            'user_comments'=>$comments
+            'video_comments'=>$comments,
+            'user_comments'=>$video_comments,
           );
 
           return response()->json($response, 200);

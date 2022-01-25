@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+
 
 class SocialServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,9 @@ class SocialServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config()->set('social', \App\SystemSetting::first());
+        if (Schema::hasTable('system_settings'))
+        {
+            config()->set('social', \App\SystemSetting::first());
+        }
     }
 }

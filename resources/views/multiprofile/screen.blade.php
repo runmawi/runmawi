@@ -11,12 +11,18 @@
 				<h4><i class="entypo-list"></i> Choose Profile Screen </h4>
 			</div>
             <div class="col-md-8" align="right">
-                <a href="javascript:;" onclick="jQuery('#screen-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+                <a href="javascript:;" onclick="jQuery('#screen-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Update</a>
             </div>
             
 		</div>
     </div>
 
+<style>
+	.theme_name {
+		padding: 13px;
+		margin-left: 41px;
+	}
+</style>
 
     <!-- Add New Modal -->
 	<div class="modal fade" id="screen-new">
@@ -69,7 +75,7 @@
 						<div class="themes">
 							<img src="{{URL::asset('public/uploads/avatars/').'/'.$screen_image->choosenprofile_screen }}"  alt="theme" class="theme_img" style="width:50%">                              
 						</div>
-						<div class="theme_name">{{ $screen_image ? $screen_image->profile_name : ''  }}</div>
+						<div class="theme_name">{{ $screen_image ? ucwords($screen_image->profile_name) : ''  }}</div>
 					</div>
 				@empty 
 						<p> No Image Available </p>

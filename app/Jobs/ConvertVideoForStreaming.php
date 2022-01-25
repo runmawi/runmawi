@@ -1,188 +1,80 @@
 <?php
 
-// namespace App\Jobs;
-
-// use App\Video;
-// use Carbon\Carbon;
-// use FFMpeg;
-// use FFMpeg\Coordinate\Dimension;
-// use FFMpeg\Format\Video\X264;
-// use Illuminate\Bus\Queueable;
-// use Illuminate\Contracts\Queue\ShouldQueue;
-// use Illuminate\Foundation\Bus\Dispatchable;
-// use Illuminate\Queue\InteractsWithQueue;
-// use Illuminate\Queue\SerializesModels;
-// use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
-// use URL;
-// use File;
-// use Illuminate\Support\Str;
-
-
-// class ConvertVideoForStreaming implements ShouldQueue
-// {
-//     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-//     public $video;
-
-//     /**
-//      * Create a new job instance.
-//      *
-//      * @param Video $video
-//      */
-    
-
-//     /**
-//      * Execute the job.
-//      *
-//      * @return void
-//      */
-//     public static function handle($video,$file)
-//     {
-//         // print_r($file);
-//         // exit();
-//         // create a video format...
-//         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(250);
-//         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-//         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(1000);
-
-//         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
-        
-
-
-//         // open the uploaded video from the right disk...
-//         /*$disk = 'public';
-//         FFMpeg::fromDisk($disk)
-//             ->open($video)
-//             ->addFilter(function ($filters) {
-//                 $filters->resize(new Dimension(640, 480));
-//             })
-//             //->export()
-//             ->toDisk('streamable_videos')
-//             //->inFormat($lowBitrateFormat)
-//              ->save($converted_name);
-//         */
-//         $paths = URL::to('/storage/app/public/');
-//         $newpath = explode("https://localhost",$paths);
-//         // $newpath = explode(" https://",$paths);
-//         $newpaths = $newpath[1];
-//         $paths = $_SERVER['DOCUMENT_ROOT'];
-//         $folderpath = $paths.$newpaths;
-//         $rand = Str::random(16);
-//         // $newpaths = $newpath[1];
-
-//         $newfile = explode(".mp4",$file);
-//         $file_folder_name = $newfile[0];
-//         //       print_r($file);
-//         // exit();
-   
-//         $path = $rand . '.' . $video; 
-// $is_dir = File::makeDirectory($folderpath.'/'.$file_folder_name, 0755, true, true);
-//         $disk = 'public';
-//         FFMpeg::fromDisk($disk)
-//         ->open($video)
-//             ->exportForHLS()
-//             ->toDisk('public')
-//             ->addFormat($lowBitrateFormat)
-//             ->addFormat($midBitrateFormat)
-//             ->addFormat($highBitrateFormat)
-// //            ->onProgress(function ($percentage, $remaining, $rate) {
-// //                echo "{$remaining} seconds left at rate: {$rate}";
-// //            })
-//             ->save($file_folder_name.'/'.$converted_name);
-
-// //         $this->video->update([
-// //             'converted_for_streaming_at' => Carbon::now(),
-// //             'processed' => true,
-// //             'stream_path' => $converted_name
-// //         ]);
-        
-//          return $converted_name;
-//     }
-
-//     private static function getCleanFileName($filename){
-//         return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
-//     }
-// }
-
-
-
 namespace App\Jobs;
 
-use App\Video;
-use Carbon\Carbon;
 use FFMpeg;
+use App\Video as Video;
+use Carbon\Carbon;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
 
 class ConvertVideoForStreaming implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $video;
-
+    protected $video;
+    public $timeout = 14400;
     /**
      * Create a new job instance.
      *
      * @param Video $video
      */
-    
+    public function __construct(Video $video)
+    {
+        $this->video = $video;
+    }
 
     /**
      * Execute the job.
      *
      * @return void
      */
-    public static function handle($video)
+    public function handle()
     {
-        // create a video format...
-        $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(250);
-        $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(1000);
+        $video = $this->video->path;
+        $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(250);
+        //$midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(500);
+        $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
-        
-        
-        // open the uploaded video from the right disk...
-        /*$disk = 'public';
-        FFMpeg::fromDisk($disk)
-            ->open($video)
-            ->addFilter(function ($filters) {
-                $filters->resize(new Dimension(640, 480));
+       
+              $disk = 'public';
+              /*Low bitrate*/
+              FFMpeg::fromDisk($disk)
+              ->open($video)
+              ->exportForHLS()
+              ->toDisk('public')
+              ->onProgress(function ($percentage) {
+                $this->video->processed_low = $percentage; 
+                $this->video->save();
             })
-            //->export()
-            ->toDisk('streamable_videos')
-            //->inFormat($lowBitrateFormat)
-             ->save($converted_name);
-        */
-        $disk = 'public';
-        FFMpeg::fromDisk($disk)
-        ->open($video)
-            ->exportForHLS()
-            ->toDisk('public')
-            ->addFormat($lowBitrateFormat)
-            ->addFormat($midBitrateFormat)
-            ->addFormat($highBitrateFormat)
-//            ->onProgress(function ($percentage, $remaining, $rate) {
-//                echo "{$remaining} seconds left at rate: {$rate}";
+              ->addFormat($lowBitrateFormat, function($media) {
+                $media->addFilter('scale=640:480');
+            })
+//              ->addFormat($midBitrateFormat, function($media) {
+//                $media->addFilter('scale=960:720');
 //            })
-            ->save($converted_name);
+//              ->addFormat($highBitrateFormat, function($media) {
+//                $media->addFilter('scale=1920:1200');
+//            })
+              ->save($converted_name);
 
-//         $this->video->update([
-//             'converted_for_streaming_at' => Carbon::now(),
-//             'processed' => true,
-//             'stream_path' => $converted_name
-//         ]);
-        
-         return $converted_name;
+
+        $video_name = explode(".",$converted_name);
+        $vid_name = $video_name[0];
+        $this->video->update([
+            'path' =>  $vid_name,
+            'status' => 1
+        ]);
+
     }
-
-    private static function getCleanFileName($filename){
+  
+    private function getCleanFileName($filename){
         return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
     }
 }

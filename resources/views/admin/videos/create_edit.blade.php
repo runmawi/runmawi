@@ -516,6 +516,33 @@
                                 
                             </div>
                             </div>
+                            <div id="success">
+
+</div>
+<div class="row text-center">
+    <input type="hidden" id="page" value="{{ $page }}">
+    @if(isset($video->id))
+    <input type="hidden" id="status" value="{{ $video->status }}">
+    @else
+    <input type="hidden" id="status" value="0">
+    @endif
+    @if($page == 'Create' || $page == 'Edit')
+    <div class="progress">
+        <div class="bar"></div >
+    </div>
+    <div class="percent">0%</div >
+    @endif
+    @if($page == 'Edit' && $video->status == 0)
+    <br><br><br>
+    <div class="col-sm-12">
+        Video Transcoding is under Progress
+        <div class="progress">
+            <div class="low_bar"></div >
+        </div>
+        <div class="low_percent">0%</div >
+    </div>
+    @endif
+</div>
 
 
                               @if(isset($video->id))
@@ -529,6 +556,8 @@
                                  <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
                                  <button type="reset" class="btn btn-danger">cancel</button>
                               </div>
+
+                              
                         </form>
                      </div>
                   </div>
@@ -731,6 +760,43 @@ $(document).ready(function(){
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
+
+<script type="text/javascript">
+    
+var SITEURL = "{{URL('/')}}";
+$(function() {
+    $(document).ready(function()
+    {
+        var bar = $('.bar');
+        var percent = $('.percent');
+          $('form').ajaxForm({
+            beforeSend: function() {
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                alert('Successfully Updated Video!');
+                window.location.href = "{{ URL::to('admin/videos') }}";
+            }
+          });
+    }); 
+ }); 
+
+if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
+	setInterval(function(){ 
+		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
+			$('.low_bar').width(data.processed+'%');
+			$('.low_percent').html(data.processed+'%');
+		});
+	}, 3000);
+}
 </script>
 @section('javascript')
 	@stop
