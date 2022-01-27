@@ -361,6 +361,7 @@ class AdminUsersController extends Controller
     
     public function myprofile(){
 
+
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 

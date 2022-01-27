@@ -507,7 +507,7 @@ $uppercase =  ucfirst($request_url);
                     <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
                        ?>
                         <h3> Plan Details:</h3>
-                        <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->stripe_plan)){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p>
+                        <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->role == "subscriber")){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p>
                     <?php } ?>
                         <div class="col-sm-12 col-xs-12 padding-top-30">
                         <?php 
@@ -546,7 +546,7 @@ $uppercase =  ucfirst($request_url);
                             if ($user->subscription($stripe_plan)->ended()) { ?>
                             <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
                             <?php } else { ?>
-                            <p><a href="<?=URL::to('/upgrade-subscription');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
+                            <p><a href="<?=URL::to('/upgrade-subscription');?>" class="btn btn-primary plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
                             <?php  } } ?>
 
                             <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
@@ -554,7 +554,7 @@ $uppercase =  ucfirst($request_url);
                             <?php } ?>
 
                             <?php if ($user->subscribed($stripe_plan)) { ?>
-                            <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
+                            <!-- <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a> -->
                             <?php } ?>
                         </div>
                     </div>
