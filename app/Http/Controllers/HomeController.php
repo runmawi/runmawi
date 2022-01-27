@@ -244,6 +244,7 @@ class HomeController extends Controller
     }
     public function FirstLanging()
     {
+  
         
         $data = Session::all();
         $settings = Setting::first();
@@ -359,7 +360,13 @@ class HomeController extends Controller
                     ->get() ,
                 'albums' => AudioAlbums::orderBy('created_at', 'DESC')
                     ->get() ,
-
+                  'top_most_watched' =>  $top_most_watched=[],
+                  'most_watch_user' => $most_watch_user=[],
+                  'Most_watched_country' => $Most_watched_country=[],
+                  'preference_genres' => $preference_genres=[],
+                  'preference_Language' => $preference_Language=[],
+                  'Family_Mode' => $Family_Mode=2,
+                  'Kids_Mode' => $Kids_Mode=2,
             );
             return View::make('home', $data);
 
