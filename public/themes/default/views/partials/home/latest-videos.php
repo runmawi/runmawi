@@ -74,7 +74,7 @@
                                      
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                    </div>
-                             </div></div>
+                             </div>
                           </a>
                        </li>
                        <?php                     
