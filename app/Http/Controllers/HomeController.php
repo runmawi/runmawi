@@ -1002,7 +1002,7 @@ class HomeController extends Controller
 
                     if (empty($mail_check))
                     {
-                        dd($mail_check);
+                        // dd($mail_check);
 
                         // dd($user_check);
                         Mail::send('emails.device_approval', array(
@@ -1028,7 +1028,7 @@ class HomeController extends Controller
                     elseif (!empty($mail_check) && $mail_check->status == 2 ) 
                     // $mail_check->status == 0
                     {
-                        dd($mail_check);
+                        // dd($mail_check);
 
                         return View::make('auth.login');
 
@@ -1036,7 +1036,7 @@ class HomeController extends Controller
                 }
                 if ($user_check >= 4 && Auth::User()->id != 1 || $subuser_check >= 4 && Auth::User()->id != 1)
                 {
-                    dd($user_check);
+                    // dd($user_check);
 
                     return view('device_logged', compact('alldevices', 'system_settings', 'user'));
                 }

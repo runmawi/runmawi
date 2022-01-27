@@ -31,6 +31,8 @@ use Session;
 use App\LivePurchase;
 use App\Series;
 use App\SeriesSeason;
+use App\Devices;
+
 
 class PaymentController extends Controller
 {
@@ -615,13 +617,29 @@ public function RentPaypal(Request $request)
     
       public function BecomeSubscriber()
         {
+          if(!Auth::guest()){
             $uid = Auth::user()->id;
             $user = User::where('id',$uid)->first();
             $plans = SubscriptionPlan::get();
             $plans_data = $plans->groupBy('plans_name');
             // dd($plans_data);
             Session::put('plans_data ', $plans_data );
-
+            // if(!empty($plans->devices)){
+              $devices = Devices::all();
+            //   $permission = $plans->devices;
+            //   $user_devices = explode(",",$permission);
+            //   foreach($devices as $key => $value){
+            //       if(in_array($value->id, $user_devices)){
+            //           $devices_name[] = $value->devices_name;
+            //       }
+            //   }
+            //  $plan_devices = implode(",",$devices_name);
+            //  if(!empty($plan_devices)){
+            //  $devices_name = $plan_devices;
+            //  }else{
+            //  $devices_name = "";
+            //  }
+            //  }
 
             if ($user->stripe_id == NULL)
             {
@@ -634,8 +652,14 @@ public function RentPaypal(Request $request)
              /* ,compact('register')*/
              , compact('plans_data')
              ,'plans_data' => $plans_data
+             ,'devices' => $devices
 
             ]);
+          }else{
+            return View::make('auth.login');
+
+          }
+
         }
          public function TransactionDetails(){  
           $user_id = Auth::user()->id;

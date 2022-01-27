@@ -3,6 +3,8 @@
    <head>
       
 <?php
+// dd(Auth::User()->role);
+
 $data = Session::all();
 
 $uri_path = $_SERVER['REQUEST_URI']; 

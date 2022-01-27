@@ -195,6 +195,20 @@ body.loading .overlay{
                                             </div>
                                             <div class="plan-details">
                                                 <p>Grab this plan for your best Movies to Watch.</p>
+                                                <p>Available Specification :</p>
+                                                <h6 style ="color:yellow;background-color:black;"> Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
+                                                Video Resolution : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
+                                             <?php   
+                                                    $permission = $plan[0]->devices;
+                                                    $user_devices = explode(",",$permission);   
+                                                    foreach($devices as $key => $value){
+                                                        if(in_array($value->id, $user_devices)){
+                                                            $devices_name[] = $value->devices_name;
+                                                        }
+                                                    }    
+                                                    $plan_devices = implode(",",$devices_name);
+                                              ?>
+                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
                                                 <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
@@ -248,27 +262,27 @@ body.loading .overlay{
                            
                             <label class="radio-inline">
                             <?php  foreach($payment_type as $payment){
-                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                          if($payment->status == 1 || $payment->status == 1){ 
+                          if($payment->live_mode == 1 && $payment->status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
             </label>
-                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                <?php }elseif($payment->paypal_live_mode == 1 && $payment->status == 1){ ?>
                 <label class="radio-inline">
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
-                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                <?php }elseif($payment->live_mode == 0 && $payment->status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
             </label><br>
                           <?php 
-						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+						 }elseif( $payment->paypal_live_mode == 0 && $payment->status == 1){ ?>
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
 						<?php  } }else{
-                            echo "Please Turn on Payment Mode to Purchase";
+                            // echo "Please Turn on Payment Mode to Purchase";
                             break;
                          }
                          }?>
