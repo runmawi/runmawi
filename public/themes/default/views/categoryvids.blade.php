@@ -1,7 +1,5 @@
 <!-- Header -->
 @include('header')   
-<link href="<?php echo URL::to('public/themes/default/assets/css/style.css') ?>" rel="stylesheet">
-
 <!-- Header End -->
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
@@ -35,14 +33,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                                 </div>
+                                                <!-- </div> -->
 
-                                                <div class="block-description" >
+                                                <div class="block-description">
                                                     
-                                                        
+                                                        <h6><?php echo __($category_video->title); ?></h6>
+                                                    
+                                                    <div class="movie-time d-flex align-items-center my-2">
+                                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
+                                                        <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $category_video->duration); ?></span>
+                                                    </div>
                                                     <div class="hover-buttons">
-                                                        <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i></span>
+                                                        <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
                                                         </a>
                                                        
                   <!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<? // !Auth::guest() ?>" data-videoid="<? // $category_video->id ?>"><i style="color: white;" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php // endif; ?> >Add to Watchlist</i></span> -->
@@ -67,13 +70,6 @@
                                                     </div>
 -->
                                                 </div>
-                                            <div>
-                                            <h6><?php echo __($category_video->title); ?></h6>
-                                                    
-                                                    <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                                        <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $category_video->duration); ?></span>
-                                                    </div>
 <!--
                                                 <div class="block-social-info">
                                                     <ul class="list-inline p-0 m-0 music-play-lists">

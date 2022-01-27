@@ -89,11 +89,8 @@ $data = Session::all();
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
-<link href="<?php echo URL::to('public/themes/default/assets/css/style.css') ?>" rel="stylesheet">
-
-
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
