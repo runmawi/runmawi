@@ -29,26 +29,23 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+
                             <div class="block-description">
+                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                     <h6><?php echo __($most_watched_video->title); ?></h6>
+                                </a>
+                                <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $most_watched_video->age_restrict ?></div>
+                                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $most_watched_video->duration); ?></span>
+                                </div>
                                 
                                <div class="hover-buttons">
-                                   <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> 
+                                   <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
+                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                   </a>
                              
                             </div>
                         </div>
-                    <div class="mt-2 d-flex justify-content-between">
-                              <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                     <h6><?php echo __($most_watched_video->title); ?></h6>
-                                </a>
-                                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $most_watched_video->age_restrict ?></div></div>
-
-                                <div class="movie-time d-flex align-items-center my-2">
-                                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $most_watched_video->duration); ?></span>
-                                </div>
-                          
                     </div>
                 </a>
             </li>

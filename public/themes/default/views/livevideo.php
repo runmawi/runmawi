@@ -11,7 +11,7 @@
 		.vjs-menu-button-popup .vjs-menu {width: auto;}
 .btn.btn-default.views {color: #fff !important;}
 .pay-live{
-    vertical-align: middle;
+    vertical-align: middle; 
     padding: 150px 0;
     text-align: center;
 }
@@ -54,7 +54,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 <div id="video_bg"> 
         <div class="container">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-            <?php if(!empty($video->mp4_url)){ 
+            <?php if(!empty($video->mp4_url)){  
                 if($request_url == "m3u8"){ ?>
                     <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
                 <?php } ?>

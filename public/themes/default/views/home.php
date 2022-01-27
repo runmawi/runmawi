@@ -3,6 +3,14 @@
 <!-- Header End -->
 
 
+<!-- Theme Integration -->
+
+<link rel="stylesheet" href="<?php echo URL::to('/public/themes/testing.css')?>">
+
+<!-- End theme -->
+
+
+
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
@@ -161,7 +169,7 @@
           <?php if ( count($featured_videos) > 0 ) { 
             include('partials/home/trending-videoloop.php');
           } else {  ?>
-            <!-- <p class="no_video"> No Video Found</p> -->
+            <p class="no_video"> No Video Found</p>
           <?php } ?>
         </div>
       </div>

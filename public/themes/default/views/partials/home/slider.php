@@ -6,37 +6,22 @@
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:contain;background-position:right; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-4 col-lg-12 col-md-12">
-                        <h1 class="text-white text-uppercase mb-3" >
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        data-delay-in="0.6">
                         <?php echo __($slider_video->title); ?>
                     </h1>
-                            <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
-                    
+                    <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                    data-delay-in="1.2">
+                    <a href="<?php echo $slider_video->link; ?>"
+                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                    </div>
                 </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12">
-                        <div class="d-flex justify-content-around align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
-                           <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
-                             <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a>
-                               
-                            </div></div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                        <div class="">
-                             <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp">Specials !</h2>
-                        </div></div>
                 </div>
 
             </div>
@@ -56,22 +41,16 @@ endif; ?>
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-5 col-lg-12 col-md-12">
+                        <div class="col-xl-6 col-lg-12 col-md-12">
 <!--<a href="javascript:void(0);">
 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5" background-size:cover; background-position:center>
 <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
 </div>
 </a>-->
-<h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
+<h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
 <?php echo __($slider_video->title); ?>
 </h1>
-                            <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
@@ -123,22 +102,16 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:contain;background-position:right; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-4 col-lg-12 col-md-12">
-                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php echo __($videos->title); ?>
                     </h1>
-                            <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
                     <div data-animation-in="fadeInUp" data-delay-in="1.2"
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                         -webkit-line-clamp: 3;
@@ -146,26 +119,16 @@ endif; ?>
                         overflow: hidden;">
                         <?php echo __($videos->description); ?>
                         </div>
-                            
-                </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12">
-                        <div class="d-flex justify-content-around align-items- r-mb-23 mt-5" data-animation-in="fadeInUp"
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch NOW</a>
-                                <a href="#vide
-                                 o-trailer"
-                            class="video-open playbtn btn bd"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>
-                            </div></div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                        <div class="">
-                             <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp">Specials !</h2>
-                        </div></div>
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                <a class="black bl" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                            </div>    
                 </div>
-              <!--  <div class="trailor-video">
-                        <a href="#vide
-                                 o-trailer"
+                </div>
+                <div class="trailor-video">
+                        <a href="#video-trailer"
                             class="video-open playbtn">
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
@@ -178,7 +141,7 @@ endif; ?>
                         </svg>
                         <span class="w-trailor">Watch Trailer</span>
                     </a>
-                    </div>-->
+                    </div>
                     <div class="col-md-12">
             <div id="video-trailer" class="mfp-hide">
              <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
