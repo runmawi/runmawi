@@ -454,7 +454,8 @@ class HomeController extends Controller
                         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
                         return View::make('auth.login')->with('alert', $message);
                     }
-                    elseif (!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0)
+                    elseif (!empty($mail_check) && $mail_check->status == 2 )
+                    // || $mail_check->status == 0
                     {
                         return View::make('auth.login');
 
@@ -937,10 +938,8 @@ class HomeController extends Controller
         $multiuser=Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
-
         if ($settings->access_free == 1 && empty($data['password_hash']))
         {
-
             return Redirect::to('/');
         }
         else
@@ -958,10 +957,10 @@ class HomeController extends Controller
             if (empty($data['password_hash']))
             {
                 return View::make('auth.login');
-
             }
             else
             {
+
                 $device_name = '';
                 if ($agent->isDesktop())
                 {
@@ -994,6 +993,7 @@ class HomeController extends Controller
                     // dd($alldevices);
                     if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 ||  $subuser_check >= 1 && Auth::User()->id != 1 || $subuser_check < 4 && Auth::User()->id != 1 )
                 {
+
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
                     $username = Auth::User()->username;
@@ -1002,6 +1002,7 @@ class HomeController extends Controller
 
                     if (empty($mail_check))
                     {
+                        dd($mail_check);
 
                         // dd($user_check);
                         Mail::send('emails.device_approval', array(
@@ -1024,14 +1025,19 @@ class HomeController extends Controller
                         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
                         return View::make('auth.login')->with('alert', $message);
                     }
-                    elseif (!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0)
+                    elseif (!empty($mail_check) && $mail_check->status == 2 ) 
+                    // $mail_check->status == 0
                     {
+                        dd($mail_check);
+
                         return View::make('auth.login');
 
                     }
                 }
                 if ($user_check >= 4 && Auth::User()->id != 1 || $subuser_check >= 4 && Auth::User()->id != 1)
                 {
+                    dd($user_check);
+
                     return view('device_logged', compact('alldevices', 'system_settings', 'user'));
                 }
                 else
