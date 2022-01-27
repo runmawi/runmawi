@@ -2007,7 +2007,7 @@ class HomeController extends Controller
             $data = array(
                 'plan_name' => $plans->plan_id
             );
-            return view('register.become_subscription', ['intent' => $user->createSetupIntent() ]);
+            return Theme::view('register.become_subscription', ['intent' => $user->createSetupIntent() ]);
 
         }
         elseif ($request->payment_method == "PayPal")

@@ -31,6 +31,8 @@ use Session;
 use App\LivePurchase;
 use App\Series;
 use App\SeriesSeason;
+use App\HomeSetting;
+use Theme;
 
 class PaymentController extends Controller
 {
@@ -615,6 +617,10 @@ public function RentPaypal(Request $request)
     
       public function BecomeSubscriber()
         {
+
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+            Theme::uses(  $Theme );
+
             $uid = Auth::user()->id;
             $user = User::where('id',$uid)->first();
             $plans = SubscriptionPlan::get();
@@ -629,7 +635,8 @@ public function RentPaypal(Request $request)
             }
            /*return view('register.upgrade');*/
 
-           return view('register.upgrade', [
+
+           return Theme::view('register.upgrade', [
               'intent' => $user->createSetupIntent()
              /* ,compact('register')*/
              , compact('plans_data')
