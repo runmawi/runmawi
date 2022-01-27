@@ -1802,12 +1802,17 @@ public function verifyandupdatepassword(Request $request)
             // }
 
             $stripe_plan = SubscriptionPlan();
-    // print_r();exit();
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") {
-                $curren_stripe_plan = CurrentSubPlanName($user_id);
+              $curren_stripe_plan = CurrentSubPlanName($user_id);
                $ends_ats = Subscription::where('user_id',$user_id)->pluck('ends_at');
+               if(!empty($ends_ats[0])){
+
                 $ends_at = $ends_ats[0];
+               }else{
+
+                $ends_at = "";
+               }
 
             } else{
                 $curren_stripe_plan = "No Plan Found";

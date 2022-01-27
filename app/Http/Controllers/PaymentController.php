@@ -838,10 +838,30 @@ public function RentPaypal(Request $request)
     public function Upgrade()
     {
        $user = Auth::user();
-        
+       $uid = Auth::user()->id;
+       $user = User::where('id',$uid)->first();
+       $plans = SubscriptionPlan::get();
+       $plans_data = $plans->groupBy('plans_name');
+       // dd($plans_data);
+       Session::put('plans_data ', $plans_data );
+
+
+       if ($user->stripe_id == NULL)
+       {
+         $stripeCustomer = $user->createAsStripeCustomer();
+       }
+      /*return view('register.upgrade');*/
+
+      return view('register.upgrade', [
+         'intent' => $user->createSetupIntent()
+        /* ,compact('register')*/
+        , compact('plans_data')
+        ,'plans_data' => $plans_data
+
+       ]);
        //$user->subscription('test')->swap('yearly');
         
-       return View::make('upgrade');
+      //  return View::make('upgrade');
        
     }
     
