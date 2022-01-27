@@ -4,42 +4,8 @@
  $session = session()->all();
 
 ?>
-<footer class=" py-4 mt-auto">
-        <div class="container-fluid px-5">
-            <div class="row  justify-content-between flex-column flex-sm-row">
-                <div class="col-sm-3">
-                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
-                    <div class="d-flex p-0 text-white icon mt-4">
-                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
-                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
 
-                </div>
-                </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
-                    <ul class="text-white p-0 mt-3">
-                        <li>Home</li>
-                        <li>Movies</li>
-                    </ul>
-                </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
-                    <ul class="text-white p-0 mt-3">
-                        <li>Company</li>
-                        <li>Privacy Policy</li>
-                        <li>Terms & condition</li>
-                        <li>Contact us</li>
-                    </ul>
-                </div>
-                <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
-                    <p>Available on Play Store</p>
-                    <img src="assets/img/gp.png" alt="gp" class="">
-                </div>
-
-            </div>
-        </div>
-    </footer>
-<!--<footer class="mb-0">
+<footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row align-items-center">
@@ -102,7 +68,7 @@
                         <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
-                        // </a> 
+                        // </a> -->
                      </div>
                   </div>
                   
@@ -110,7 +76,7 @@
                      <ul class="f-link list-unstyled mb-0">
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li> -->
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
@@ -123,7 +89,7 @@
                         <li><a href="#">Terms & Conditions</a></li>
                         <li><a href="#">Help</a></li>
                      </ul>
-                  </div>
+                  </div>-->
                   <?php $video_category = App\VideoCategory::where('footer',1)->get(); ?>
                   <div class="col-lg-3 col-md-4">
                       <div class="row">
@@ -137,7 +103,7 @@
                         
                          <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> 
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
                           </ul>
                       </div>
 				</div>
@@ -153,7 +119,7 @@
                   
                    </div>
                </div>
-            </div>-->
+            </div>
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
