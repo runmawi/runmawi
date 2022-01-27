@@ -161,7 +161,7 @@
           <?php if ( count($featured_videos) > 0 ) { 
             include('partials/home/trending-videoloop.php');
           } else {  ?>
-            <p class="no_video"> No Video Found</p>
+            <!-- <p class="no_video"> No Video Found</p> -->
           <?php } ?>
         </div>
       </div>
