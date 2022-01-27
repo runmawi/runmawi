@@ -46,6 +46,8 @@ use App\Language;
 use App\Multiprofile;
 use App\HomeSetting;
 use App\WelcomeScreen;
+use App\SubscriptionPlan;
+use App\Devices;
 use Theme;
 
 class AdminUsersController extends Controller
@@ -384,23 +386,48 @@ class AdminUsersController extends Controller
     	$user_role = Auth::user()->role;
         $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
         ->get();
-        // print_r($user_role);
-        // exit();
+ 
         if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
-            
         }elseif($user_role == 'subscriber'){
+   
+    $user_role = Subscription::select('subscription_plans.*')
+    ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+    ->where('subscriptions.user_id',$user_id)
+    ->orderBy('created_at', 'DESC')
+    ->get();
+//     SELECT 
+// subscription_plans.* FROM subscriptions INNER JOIN subscription_plans ON 
+// subscriptions.stripe_plan = subscription_plans.plan_id 
+// WHERE subscriptions.user_id = 601
 
-    $user_role = Subscription::where('subscriptions.user_id','=',$user_id)
-    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-    ->select('plans.plans_name')
-    ->get(9);
 
-       if(!empty($user_role)){
-        $role_plan = "No Plan";
-       }else{
+
+       if(!empty($user_role[0])){
        $role_plan = $user_role[0]->plans_name;
+       $plans = SubscriptionPlan::where('plans_name',$role_plan)->first();
+       $devices = Devices::all();
+       $permission = $plans->devices;
+       $user_devices = explode(",",$permission);
+       }else{
+        $role_plan = "No Plan";
+        $plans = "";
        }
+
+       if(!empty($plans->devices)){
+        foreach($devices as $key => $value){
+            if(in_array($value->id, $user_devices)){
+                $devices_name[] = $value->devices_name;
+            }
+        }
+       $plan_devices = implode(",",$devices_name);
+       if(!empty($plan_devices)){
+       $devices_name = $plan_devices;
+       }else{
+       $devices_name = "";
+       }
+       }
+
         }
     	$user_role = Auth::user()->role;
 
@@ -438,6 +465,8 @@ class AdminUsersController extends Controller
     	$data = array(
     		'videos' => $video,
     		'videocategory' => $videocategory,
+    		'plans' => $plans,
+    		'devices_name' => $devices_name,
     		'user' => $user_details,
     		'role_plan' => $role_plan,
     		'user_role' => $user_role,
