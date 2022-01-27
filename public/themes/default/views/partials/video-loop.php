@@ -130,18 +130,21 @@ overflow-hidden {
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
-                                    </div></div>
+                                    </div>
                                     <div class="block-description">
-                                       
+                                       <h6><?php echo __($watchlater_video->title); ?></h6>
+                                       <div class="movie-time  align-items-center my-2">
+                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                       </div>
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">	
-                                          <span class="text-white btn-cl">
+                                          <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                         
+                                          Play Now
                                           </span>
                                            </a>
                                        </div>
-                                        
                                         <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
@@ -149,13 +152,6 @@ overflow-hidden {
                                                 </span>
                                                     </button></div>-->
                                         </div>
-                                     <div class="mt-2">
-                                         <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time  align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                       </div>
-                                     </div>
                                 <!--    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
@@ -163,7 +159,7 @@ overflow-hidden {
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
                                     </div>-->
-                                 
+                                 </div>
                               </a>
                            </li>
                            

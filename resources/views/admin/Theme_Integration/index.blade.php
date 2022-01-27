@@ -80,7 +80,7 @@
                                 <div class="themes">
                                     <img src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:50%" id= {{ $theme_integration->id  }}>  
                                 </div>
-                                <div class="theme_name">{{ $theme_integration ? $theme_integration->theme_name : ''  }}</div>
+                                <div class="theme_name">{{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}</div>
                             </div>
                         @endforeach  
                 </div>

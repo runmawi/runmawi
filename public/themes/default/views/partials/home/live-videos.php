@@ -24,18 +24,12 @@
                                             <?php } ?>
                                         </div>
                                     </div>                 
-                                 </div></div>
+                                </div>
                                 <div class="block-description" style="top:40px !important;">
-                                                                                      
-                                  
-                                                    </div>
-                           <div class="mt-2">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
-                             </a>    
-                              
-                             </div>
-                            <div class="hover-buttons">
+                             </a>                                                           
+                                   <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
@@ -45,7 +39,9 @@
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>
-                           
+                                                    </div>
+                              
+                             </div>
                           </a>
                        </li>
 

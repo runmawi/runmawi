@@ -110,9 +110,13 @@ overflow-hidden {
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
-                                     </div></div>
+                                    </div>
                                     <div class="block-description">
-                                       
+                                       <h6><?php echo __($watchlater_video->title); ?></h6>
+                                       <div class="movie-time d-flex align-items-center my-2">
+                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                       </div>
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
                                           <span class="btn btn-hover">
@@ -128,12 +132,6 @@ overflow-hidden {
                                                 </span>
                                                     </button></div>
                                         </div>
-                                  <div class="mt-2">
-                                      <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                       </div>
                                 <!--    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
