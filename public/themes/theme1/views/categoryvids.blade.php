@@ -1,6 +1,6 @@
 <!-- Header -->
 @include('header')   
-<link href="<?php echo URL::to('public/themes/default/assets/css/style.css') ?>" rel="stylesheet">
+<link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->

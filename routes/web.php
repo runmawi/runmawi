@@ -112,6 +112,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/stripe/transaction-details', 'HomeController@ViewStripeTrasaction');
     Route::get('/paypal/cancel-subscription', 'HomeController@CancelPaypal');
     Route::post('/subscribe-now', 'HomeController@StripeSubscription');
+
     Route::post('/paypal_subscription', 'HomeController@PaypalSubscription');  
 //Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
 });

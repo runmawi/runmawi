@@ -352,6 +352,9 @@ else {
 
 public function createStep2(Request $request)
     {
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
             if ($request->has('ref')) {
                 session(['referrer' => $request->query('ref')]);
             }
