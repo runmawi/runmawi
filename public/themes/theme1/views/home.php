@@ -73,7 +73,7 @@
 
    
    <?php 
-      if(($preference_genres) != null){ ?>
+      if(($preference_genres) != null && count($preference_genres) > 0){ ?>
        <section id="iq-favorites">
             <div class="fluid">
                <div class="row">
@@ -88,7 +88,7 @@
    
    <?php 
 
-      if(($preference_Language) != null){ ?>
+      if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
        <section id="iq-favorites">
             <div class="fluid">
                <div class="row">
