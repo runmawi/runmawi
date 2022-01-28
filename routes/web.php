@@ -132,6 +132,7 @@ Route::get('mywishlists', 'WishlistController@show_mywishlists');
 Route::get('cancelSubscription', 'PaymentController@CancelSubscription');
 Route::get('renew', 'PaymentController@RenewSubscription');
 Route::post('upgradeSubscription', 'PaymentController@UpgradeSubscription');
+Route::post('Upgrade_Subscription', 'PaymentController@Upgrade_Subscription');
 Route::post('upgrade-stripe-plan', 'PaymentController@UpgradeStripe');
 Route::post('upgrade-paypal-plan', 'PaymentController@UpgradePaypalPage');
 Route::post('upgradePaypal', 'PaymentController@upgradePaypal');

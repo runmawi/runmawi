@@ -436,9 +436,9 @@ public function RentPaypal(Request $request)
                 $template = EmailTemplate::where('id','=', 31)->first(); 
                 $heading = $template->heading;
 
-                $user = User::find(Auth::user()->id);
-                $user->role = 'registered';
-                $user->save();
+                // $user = User::find(Auth::user()->id);
+                // $user->role = 'registered';
+                // $user->save();
 
                 \Mail::send('emails.cancelsubscription', array(
                     'name' => $user->username,
@@ -899,6 +899,53 @@ public function RentPaypal(Request $request)
        
     }
     
-  
+    public function Upgrade_Subscription(Request $request) {
+
+        
+          $user_email = $request->session()->get('register.email');
+          $user_id = Auth::User()->id;
+          // echo "<pre>";print_r($user_id);
+
+          $user = User::where('email',$user_email)->first();
+          $subscription_user = Subscription::where('user_id',$user_id)->orderBy('created_at', 'DESC')->count();
+          if(!empty($subscription_user)){
+            $subscription_user = Subscription::where('user_id',$user_id)->orderBy('created_at', 'DESC')->get();
+            $date = $subscription_user[0]->ends_at;
+            $pervious_date = $date;
+          }else{
+            $pervious_date = date('Y-m-d H:i:s');
+          }
+          $paymentMethod = $request->get('py_id');
+          $plan = $request->get('plan');
+          $coupon_code = $request->coupon_code;
+          $payment_type = $request->payment_type;
+          $paymentMethods = $user->paymentMethods();
+          $apply_coupon = NewSubscriptionCouponCode();
+          $stripe_plan = SubscriptionPlan();
+          $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
+          $plan_name = ucfirst($plandetail->plans_name);
+          $template = EmailTemplate::where('id','=', 24)->first(); 
+          $heading = $template->heading; 
+          $current_date = $pervious_date;    
+          echo "<pre>";print_r($current_date);
+          $next_date = $plandetail->days;
+          $date = Carbon::parse($current_date)->addDays($next_date);
+            $ip = getenv('HTTP_CLIENT_IP');    
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();    
+            $countryName = $geoip->getCountry();
+            $regionName = $geoip->getregion();
+            $cityName = $geoip->getcity();
+
+          
+           
+        
+    // $response = array(
+    //   'status' => 'success'
+    // );             
+    // return response()->json($response);
+ 
+}
+
 
 }
