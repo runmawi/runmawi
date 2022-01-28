@@ -389,6 +389,9 @@ class AdminUsersController extends Controller
  
         if($user_role == 'registered' || $user_role == 'admin' ){
             $role_plan  = $user_role;
+            $plans = "";
+            $devices_name = "";
+
         }elseif($user_role == 'subscriber'){
    
     $user_role = Subscription::select('subscription_plans.*')

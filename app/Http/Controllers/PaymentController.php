@@ -434,7 +434,11 @@ public function RentPaypal(Request $request)
                 $start_date =  SubStartDate(Auth::user()->id);
                 $ends_at =  SubEndDate(Auth::user()->id);
                 $template = EmailTemplate::where('id','=', 31)->first(); 
-                $heading = $template->heading; 
+                $heading = $template->heading;
+
+                $user = User::find(Auth::user()->id);
+                $user->role = 'registered';
+                $user->save();
 
                 \Mail::send('emails.cancelsubscription', array(
                     'name' => $user->username,
