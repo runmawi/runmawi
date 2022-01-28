@@ -1981,10 +1981,12 @@ class HomeController extends Controller
 
     public function StripeSubscription(Request $request)
     {
-
+        $user = Auth::user();
+        $subscriptions = Subscription::where('user_id',$user->id)->first();
+        if(empty($subscriptions)){
         if ($request->payment_method == "Stripe")
         {
-
+            
             $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
@@ -2004,8 +2006,13 @@ class HomeController extends Controller
 
             $request->session()
                 ->put('become_plan', $plans->plan_id);
+                if(!empty($plans->plan_id)){
+                   $plan_id = $plans->plan_id;
+                }else{
+                    $plan_id = $plans->plan_id;
+                }
             $data = array(
-                'plan_name' => $plans->plan_id
+                'plan_name' => $plan_id
             );
             return Theme::view('register.become_subscription', ['intent' => $user->createSetupIntent() ]);
 
@@ -2034,6 +2041,38 @@ class HomeController extends Controller
             $plan_name = $request->get('register.email');
 
         }
+    }else{
+        $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+        ->where('type', '=', $request->payment_method)
+        ->first();
+
+    $request->session()
+        ->put('planname', $request->modal_plan_name);
+    $request->session()
+        ->put('plan_id', $plans->plan_id);
+    $request->session()
+        ->put('payment_type', $plans->payment_type);
+    $register = $request->session()
+        ->get('register');
+    $plan_name = $request->get('register.email');
+
+    $user = Auth::user();
+    $plan_name = $plans->plan_id;
+
+    $request->session()
+        ->put('become_plan', $plans->plan_id);
+        if(!empty($plans->plan_id)){
+           $plan_id = $plans->plan_id;
+        }else{
+            $plan_id = $plans->plan_id;
+        }
+    $data = array(
+        'plan_name' => $plan_id
+    );
+    return Theme::view('register.upgrade.stripe_upgrade', ['intent' => $user->createSetupIntent() ]);
+        // dd($subscriptions->id);
+
+    }
 
     }
 
