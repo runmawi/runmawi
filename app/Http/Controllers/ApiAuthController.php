@@ -1889,8 +1889,10 @@ public function verifyandupdatepassword(Request $request)
     public function StripeRecurringPlan() {
       
         // $plans = Plan::where("payment_type","=","recurring")->get();
-        $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name')->get();
         // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
+
+      $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name') ->orderBy('id', 'asc')->get();
+
       $response = array(
         'status'=>'true',
         'plans' => $plans
