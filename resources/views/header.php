@@ -3,6 +3,8 @@
    <head>
       
 <?php
+// dd(Auth::User()->role);
+
 $data = Session::all();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
@@ -503,6 +505,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -515,7 +518,7 @@ $data = Session::all();
                                           </a>
                               <!-- Multiuser Profile -->
                                           <?php
-                                          if(Auth::user()->role == "subscriber"){
+                                          } if(Auth::user()->role == "subscriber"){
 
                                           ?>
                                           <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">

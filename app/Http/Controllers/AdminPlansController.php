@@ -117,16 +117,21 @@ public function PaypalIndex()
         // $edit_plan = SubscriptionPlan::find($id);
         $edit_plan =  SubscriptionPlan::where('plans_name',$id)->get();
         $payment_settings = PaymentSetting::all();
-        // $permission = $edit_plan['devices'];
-        // $user_devices = explode(",",$permission);
-        // dd($edit_plan);
+        if(!empty($edit_plan[0]->devices)){
+            $permission = $edit_plan[0]['devices'];
+            $user_devices = explode(",",$permission);
+        }else{
+            $user_devices = [];
+        }
 
-        // $devices = Devices::all();
+        // dd($user_devices);
+
+        $devices = Devices::all();
 
         $data = array(
            'edit_plan' => $edit_plan,
-        //    'user_devices' => $user_devices,
-        //    'devices' => $devices,
+           'user_devices' => $user_devices,
+           'devices' => $devices,
            'payment_settings' => $payment_settings,
            );
        return view('admin.subscription_plans.edit',$data);
@@ -220,7 +225,6 @@ public function PaypalIndex()
                 'type' => 'required',
 
             ]);  
-            // dd($request->type);
 
             // echo "<pre>";     
             // print_r($request->all());exit();
@@ -231,6 +235,7 @@ public function PaypalIndex()
                 $plan_devices = null;
 
             }
+            // dd($plan_devices);
 
             foreach($request->plan_id as $key => $value){
 
@@ -362,7 +367,13 @@ public function PaypalIndex()
             'price' => 'required|max:255',
         ]);
         $input = $request->all();
-
+        $devices = $request['devices'];
+        if(!empty($devices)){
+        $plan_devices = implode(",",$devices);
+        }else{
+            $plan_devices = null;
+        }
+        // dd($plan_devices);
         if(!empty($input['subscription_plan_name'])){
         $subscription_plan_name = $input['subscription_plan_name'];
         }else{ $subscription_plan_name = [] ; }
@@ -374,6 +385,7 @@ public function PaypalIndex()
     	$plans->payment_type = $request['payment_type'];
         $plans->video_quality = $input['video_quality'];
         $plans->resolution = $input['resolution'];
+        $plans->devices = $plan_devices;
         foreach($input['plan_id'] as $key => $values){
             if($key == $value){
             $plans->plan_id  = $values;

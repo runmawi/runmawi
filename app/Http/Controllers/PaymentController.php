@@ -31,6 +31,7 @@ use Session;
 use App\LivePurchase;
 use App\Series;
 use App\SeriesSeason;
+use App\Devices;
 use App\HomeSetting;
 use Theme;
 
@@ -433,7 +434,11 @@ public function RentPaypal(Request $request)
                 $start_date =  SubStartDate(Auth::user()->id);
                 $ends_at =  SubEndDate(Auth::user()->id);
                 $template = EmailTemplate::where('id','=', 31)->first(); 
-                $heading = $template->heading; 
+                $heading = $template->heading;
+
+                $user = User::find(Auth::user()->id);
+                $user->role = 'registered';
+                $user->save();
 
                 \Mail::send('emails.cancelsubscription', array(
                     'name' => $user->username,
@@ -617,6 +622,7 @@ public function RentPaypal(Request $request)
     
       public function BecomeSubscriber()
         {
+          if(!Auth::guest()){
 
             $Theme = HomeSetting::pluck('theme_choosen')->first();
             Theme::uses(  $Theme );
@@ -627,7 +633,22 @@ public function RentPaypal(Request $request)
             $plans_data = $plans->groupBy('plans_name');
             // dd($plans_data);
             Session::put('plans_data ', $plans_data );
-
+            // if(!empty($plans->devices)){
+              $devices = Devices::all();
+            //   $permission = $plans->devices;
+            //   $user_devices = explode(",",$permission);
+            //   foreach($devices as $key => $value){
+            //       if(in_array($value->id, $user_devices)){
+            //           $devices_name[] = $value->devices_name;
+            //       }
+            //   }
+            //  $plan_devices = implode(",",$devices_name);
+            //  if(!empty($plan_devices)){
+            //  $devices_name = $plan_devices;
+            //  }else{
+            //  $devices_name = "";
+            //  }
+            //  }
 
             if ($user->stripe_id == NULL)
             {
@@ -641,8 +662,14 @@ public function RentPaypal(Request $request)
              /* ,compact('register')*/
              , compact('plans_data')
              ,'plans_data' => $plans_data
+             ,'devices' => $devices
 
             ]);
+          }else{
+            return View::make('auth.login');
+
+          }
+
         }
          public function TransactionDetails(){  
           $user_id = Auth::user()->id;
@@ -845,10 +872,30 @@ public function RentPaypal(Request $request)
     public function Upgrade()
     {
        $user = Auth::user();
-        
+       $uid = Auth::user()->id;
+       $user = User::where('id',$uid)->first();
+       $plans = SubscriptionPlan::get();
+       $plans_data = $plans->groupBy('plans_name');
+       // dd($plans_data);
+       Session::put('plans_data ', $plans_data );
+
+
+       if ($user->stripe_id == NULL)
+       {
+         $stripeCustomer = $user->createAsStripeCustomer();
+       }
+      /*return view('register.upgrade');*/
+
+      return view('register.upgrade', [
+         'intent' => $user->createSetupIntent()
+        /* ,compact('register')*/
+        , compact('plans_data')
+        ,'plans_data' => $plans_data
+
+       ]);
        //$user->subscription('test')->swap('yearly');
         
-       return View::make('upgrade');
+      //  return View::make('upgrade');
        
     }
     

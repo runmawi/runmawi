@@ -7,6 +7,8 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
+// dd(Auth::User()->id);
+
  ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -331,6 +333,7 @@ $uppercase =  ucfirst($request_url);
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -341,6 +344,7 @@ $uppercase =  ucfirst($request_url);
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php } ?>
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -507,7 +511,7 @@ $uppercase =  ucfirst($request_url);
                     <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
                        ?>
                         <h3> Plan Details:</h3>
-                        <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->stripe_plan)){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p>
+                        <!-- <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->role == "subscriber")){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p> -->
                     <?php } ?>
                         <div class="col-sm-12 col-xs-12 padding-top-30">
                         <?php 
@@ -519,19 +523,20 @@ $uppercase =  ucfirst($request_url);
                         }
 
                         $stripe_plan = SubscriptionPlan();
-                        if ( $user->subscribed($stripe_plan) && empty(Auth::user()->paypal_id) ) { 
+                        if ( $user->subscribed($stripe_plan)  || empty(Auth::user()->paypal_id) ) { 
+                           // dd($user->subscription($stripe_plan)->ended());
                         if ($user->subscription($stripe_plan)->ended()) { ?>
-                        <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
-                        <?php } else { ?>
+                        <!-- <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a> -->
+                        <?php } elseif(Auth::user()->role == "subscriber") { ?>
                         <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
                         <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> -->
-                        <?php  } } 
+                        <?php  }else{ } } 
                         elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
-                        {   ?>
-                            <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        {   ?><br>
+                            <!-- <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a> -->
 
                         <?php } else { echo $paypal_subscription; ?>
-                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <!-- <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a> -->
                         <?php } ?>
                         </div>
 
@@ -546,15 +551,15 @@ $uppercase =  ucfirst($request_url);
                             if ($user->subscription($stripe_plan)->ended()) { ?>
                             <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
                             <?php } else { ?>
-                            <p><a href="<?=URL::to('/upgrade-subscription');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
+                            <!-- <p><a href="<?=URL::to('/upgrade-subscription');?>" class="btn btn-primary plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p> -->
                             <?php  } } ?>
 
                             <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
-                            <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p>
+                            <!-- <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p> -->
                             <?php } ?>
 
                             <?php if ($user->subscribed($stripe_plan)) { ?>
-                            <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
+                            <!-- <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a> -->
                             <?php } ?>
                         </div>
                     </div>
@@ -709,17 +714,21 @@ $uppercase =  ucfirst($request_url);
             <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-3">
-                    <div class="sign-user_card" style="height: 183px;">
+                    <div class="sign-user_card" style="height: 400px;">
                         <h4 class="card-title mb-0">Plan Details</h4>
                         <div class="row align-items-center justify-content-between mb-3 mt-3">
                             <div class="col-sm-4">
                        <?php  if($user_role == 'registered'){ ?>
                               <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
-                              <h6>Subcriptions</h6>                                       
+                              <h6>Subscription</h6>                                       
                            <?php }elseif($user_role == 'subscriber'){ ?>
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
-                              <br>                                       
-                              <h6>Subcriptions</h6>  
+                              <br>       
+                           <h5 class="card-title mb-0">Available Specification :</h5><br>
+                              <h6> Video Quality : <p><?php echo $plans->video_quality; ?></p></h6>  
+                              <h6> Video Resolution : <p><?php echo $plans->resolution; ?></p></h6>                               
+                              <h6> Available Devices : <p><?php echo $devices_name; ?></p></h6>                              
+                              <!--<h6>Subscription</h6>-->
                            <?php } ?>
                            </div>
                             <div class="col-sm-6">
@@ -742,7 +751,7 @@ $uppercase =  ucfirst($request_url);
                     </div>
                 </div>
 
-      {{-- Preference for videos --}}
+      <!-- {{-- Preference for videos --}} -->
                 <div class="col-lg-6 mb-3" id="">
                   <div class="sign-user_card mb-3">
                       <h4 class="card-title mb-0">Preference for videos</h4>
@@ -773,7 +782,7 @@ $uppercase =  ucfirst($request_url);
                   </div>
               </div>
 
-{{-- Multiuser Profile --}}
+<!-- {{-- Multiuser Profile --}} -->
          <div class="col-lg-6 mb-3" >
             <div class="sign-user_card mb-3">
                <h4 class="card-title mb-0 manage"> Profile</h4>
