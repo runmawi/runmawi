@@ -27,7 +27,7 @@
                         <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
                     </div>
                     <div class="col-sm-3 bg-white ">
-                    <img src="{{ URL::to('/assets/img/apple.png') }}" width="" class="w-100 pt-4" >
+                    <img src="{{ URL::to('/assets/img/apple.jpg') }}" width="" class="w-100 pt-4" >
                     </div>
                     <div class="col-sm-3 bg-white">
                            <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >

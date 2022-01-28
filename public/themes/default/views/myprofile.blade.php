@@ -523,15 +523,16 @@ $uppercase =  ucfirst($request_url);
                         }
 
                         $stripe_plan = SubscriptionPlan();
-                        if ( $user->subscribed($stripe_plan) && empty(Auth::user()->paypal_id) ) { 
+                        if ( $user->subscribed($stripe_plan)  || empty(Auth::user()->paypal_id) ) { 
+                           // dd($user->subscription($stripe_plan)->ended());
                         if ($user->subscription($stripe_plan)->ended()) { ?>
-                        <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
-                        <?php } else { ?>
+                        <!-- <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a> -->
+                        <?php } elseif(Auth::user()->role == "subscriber") { ?>
                         <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
                         <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> -->
-                        <?php  } } 
+                        <?php  }else{ } } 
                         elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
-                        {   ?>
+                        {   ?><br>
                             <!-- <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a> -->
 
                         <?php } else { echo $paypal_subscription; ?>
@@ -550,11 +551,11 @@ $uppercase =  ucfirst($request_url);
                             if ($user->subscription($stripe_plan)->ended()) { ?>
                             <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
                             <?php } else { ?>
-                            <p><a href="<?=URL::to('/upgrade-subscription');?>" class="btn btn-primary plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p>
+                            <!-- <p><a href="<?=URL::to('/upgrade-subscription');?>" class="btn btn-primary plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p> -->
                             <?php  } } ?>
 
                             <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
-                            <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p>
+                            <!-- <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p> -->
                             <?php } ?>
 
                             <?php if ($user->subscribed($stripe_plan)) { ?>
