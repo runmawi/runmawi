@@ -1768,10 +1768,19 @@ public function verifyandupdatepassword(Request $request)
           return $item;
       });
 
+      $Splash_Screen_first = MobileApp::first();
+
+      $first_Splash_Screen[] =[
+        'Splash_Screen'=> $Splash_Screen_first->splash_image,
+        'splash_url'  => URL::to('/').'/public/uploads/settings/'.$Splash_Screen_first->splash_image,
+      ];
+
+
     $response = array(
       'status'=>'true',
       'message'=>'success',
       'Splash_Screen'=> $mobile_settings,
+      'first_Splash_Screen' => $first_Splash_Screen,
     );
     return response()->json($response, 200);
   }  
