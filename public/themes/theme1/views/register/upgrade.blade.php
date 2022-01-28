@@ -144,6 +144,13 @@ body.loading{
 body.loading .overlay{
     display: block;
 }
+    .bg-col{
+     background: #504C4C;
+    padding: 10px;
+    color: #fff;
+    border-radius: 10px;
+}
+
 </style>
 
 <script>
@@ -153,8 +160,37 @@ body.loading .overlay{
   });
     
   </script>
-
-<div class="container">
+ <section class="pt-2 mt-2">
+        <div class="container mb-3">
+            <h1 class="text-white">Choose Your plan</h1>
+            <div class="row justify-content-center">
+            @foreach($plans_data as $plan) 
+            @php $plan_name = $plan[0]->plans_name; @endphp
+            
+                <div class="col-md-7 mt-3">
+                    <div class="bg-col">
+                        <div class="container d-flex align-items-center justify-content-evenly">
+                           <div class="mr-3" style="font-size:60px;"> <input type="radio" class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name" id="plans_name_choose" data-price="{{ $plan[0]->price }}" data-name="{{ $plan[0]->plans_name }}" value="{{ $plan_name }}" ></div>
+                            <div>
+                                <p>  @if( $plan_name == 'Quarterly'){{ 'SAVE $ 1.98' }} @elseif( $plan_name == 'Half Yearly' ){{ 'SAVE $ 4.95' }} @elseif( $plan_name == 'Yearly' ) {{ 'SAVE $ 9.89' }} @endif </p>
+                                {{-- <p>SAVE $ 594</p> --}}
+                                <h1> {{ "$".$plan[0]->price }}
+                                    <span>for  <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?></span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <p>No recurring charges</p>
+                            <p>Non-refundable</p>
+                            <p>No free trail</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            </div>
+        </div>
+            </section>
+!<!--<div class="container">
     <div class="row justify-content-center page-height" id="signup-form">  
         <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
@@ -169,8 +205,8 @@ body.loading .overlay{
                         </button> -->
                         </div>
 
-<div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
+<!--<div id="stripe_pg" class="tabcontent" style="display:block;"> 
+        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> 
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
@@ -198,7 +234,7 @@ body.loading .overlay{
                                                 <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
-                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
+                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> 
                                                 </div>
                                             </div>
                                         </div>
@@ -229,12 +265,12 @@ body.loading .overlay{
                                     </a>
                             </div>
                             </div>
-                        </div>
+                        </div>-->
               <div class="modal fade" id="add-new">
-		<div class="modal-dialog">
-			<div class="modal-content">				
+		<div class="modal-dialog bg-col">
+			<div class="modal-content bg-col">				
 				<div class="modal-header">
-                    <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription Gate Way</h4>
+                    <h4 class="modal-title">You are one step away from purchasing subscription Gate Way</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
