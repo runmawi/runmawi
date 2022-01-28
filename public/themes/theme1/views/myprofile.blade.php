@@ -34,6 +34,17 @@ $uppercase =  ucfirst($request_url);
 
    </head>
     <style>
+         .bg-col li{
+             list-style: none;
+             text-align: left;
+    background: #161617;
+    padding: 10px;
+             padding-top: 15px;
+             padding-bottom: 15px;
+    color: #fff;
+    border-radius: 10px;
+             border-bottom: 1px solid #fff;
+}
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
         .form-control {
@@ -487,13 +498,27 @@ $uppercase =  ucfirst($request_url);
         <!-- MainContent -->
     <section class="m-profile setting-wrapper pt-0">        
         <div class="container">
-            <h4 class="main-title mb-4">Account Setting</h4>
+           
             <div class="row">
-                <div class="col-lg-4 mb-3">
+                <div class="col-lg-5 mb-3">
+                  
                     <div class="sign-user_card text-center mb-3">
-                        <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
-                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                        <a href="#updatepic" class="edit-icon text-primary">Edit</a>
+                           <h4 class="main-title mb-4">Account Setting</h4>
+                        <div class="mt-3">
+                            <ul class="bg-col">
+                                <li class="mt-2"><a class="" herf=#>Account ID</a></li>
+                                <li  class="mt-2">Subscribe Name</li>
+                                <li  class="mt-2">Login Password</li>
+                                <li  class="mt-2">Verfiy Phone.no</li>
+                                <li  class="mt-2">Payment</li>
+                                <li  class="mt-2">Logout</li>
+                                
+                            </ul>
+                        </div>
+                            
+                       
+                       
+                       <!-- <a href="#updatepic" class="edit-icon text-primary">Edit</a>-->
                     </div>
 <div class="row">
 <?php
@@ -502,6 +527,7 @@ $uppercase =  ucfirst($request_url);
 
         <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
+                
             <?php if ( Auth::user()->role != 'admin') { ?>
                 <div class="row">
                     <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
@@ -569,9 +595,11 @@ $uppercase =  ucfirst($request_url);
         </div>
 </div>
                 </div>
-                <div class="col-lg-8"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
-                    <div class="sign-user_card mb-3" id="personal_det">
+                <div class="col-lg-7 text-right"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
+                    <div class=" mb-3" id="personal_det">
                     <div class="col-md-12" >
+                        
+                       
                         <div class="d-flex align-items-baseline justify-content-between">
                         <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
                         <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
@@ -579,37 +607,50 @@ $uppercase =  ucfirst($request_url);
                         </div>
                         <div class="a-border"></div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                            <div class="col-md-12 mt-2">
+                                 <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                                  <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                                 <span class="text-light font-size-13">Email</span>
                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                             </div>   
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <span class="text-light font-size-13">Username</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div>   
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <span class="text-light font-size-13">Password</span>
                                 <p class="mb-0">**********</p>
                             </div>
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
 
-                        </div> </div>
+                        </div> 
+                        <div class="col-sm-12">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4 justify-content-end">
+                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+
+                </div>
+                </div>
+                    </div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title">Update Profile</h4>
+                    <h4 class="modal-title text-black">Update Profile</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					
 				</div>
@@ -619,24 +660,24 @@ $uppercase =  ucfirst($request_url);
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
-						    <div class="form-group">
-		                        <label> Username:</label>
+						    <div class="form-group text-left">
+		                        <label class=""> Username:</label>
 		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
                             </div>
                         
-                            <div class="form-group">
+                            <div class="form-group text-left">
 		                        <label> Email:</label>
 		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                             </div> 
                         
                         
-                            <div class="form-group">
+                            <div class="form-group text-left">
 		                        <label>Password:</label><br>
 		                        <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  >
 		                    </div> 
                         
                         
-                            <div class="form-group">
+                            <div class="form-group text-left">
 		                         <label> Phone:</label>
 		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                             </div>
