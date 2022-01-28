@@ -1,8 +1,32 @@
 <?php
 
+/* Notify the user if the server terminates the connection */
+function my_ssh_disconnect($reason, $message, $language) {
+    printf("Server disconnected with reason code [%d] and message: %s\n",
+           $reason, $message);
+  }
+  
+  $methods = array(
+    'kex' => 'diffie-hellman-group1-sha1',
+    'client_to_server' => array(
+      'crypt' => '3des-cbc',
+      'comp' => 'none'),
+    'server_to_client' => array(
+      'crypt' => 'aes256-cbc,aes192-cbc,aes128-cbc',
+      'comp' => 'none'));
+  
+  $callbacks = array('disconnect' => 'my_ssh_disconnect');
+  
+  $connection = ssh2_connect('75.119.145.126:', 2083, $methods, $callbacks);
+  if (!$connection) die('Connection failed');
 
-$connection = ssh2_connect('shell.example.com', 22);
+  exit();
+
+
+
+
 ssh2_auth_password($connection, 'manoj', 't94d24w32F8W');
+
 
 ssh2_scp_send($connection, '/local/filename', '/remote/filename', 0644);
 
@@ -21,4 +45,6 @@ echo "Error: " . stream_get_contents($errorStream);
 // Close the streams       
 fclose($errorStream);
 fclose($stream);
+
+?>
 
