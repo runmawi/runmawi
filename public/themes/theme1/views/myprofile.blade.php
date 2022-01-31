@@ -34,6 +34,9 @@ $uppercase =  ucfirst($request_url);
 
    </head>
     <style>
+        #bg-col{
+             background: #504C4C;
+        }
          .bg-col li{
              list-style: none;
              text-align: left;
@@ -526,7 +529,7 @@ $uppercase =  ucfirst($request_url);
          ?>
 
         <div class="col-sm-12">
-            <div class="sign-user_card text-center mb-3">
+            <div class="sign-user_card text-center mb-3" style="display:none;">
                 
             <?php if ( Auth::user()->role != 'admin') { ?>
                 <div class="row">
@@ -561,7 +564,7 @@ $uppercase =  ucfirst($request_url);
                         <?php } ?>
                         </div>
 
-                        <div class="col-sm-12 col-xs-12 padding-top-30">
+                      <!--  <div class="col-sm-12 col-xs-12 padding-top-30">
                             <?php
                             $billing_url = URL::to('/').'/paypal/billings-details';
                             if (!empty(Auth::user()->paypal_id)){
@@ -582,17 +585,17 @@ $uppercase =  ucfirst($request_url);
                             <?php if ($user->subscribed($stripe_plan)) { ?>
                             <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
                             <?php } ?>
-                        </div>
+                        </div>-->
                     </div>
             <?php } ?> 
             </div>
         </div>
 
-        <div class="col-sm-12">
+       <!-- <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
             </div>
-        </div>
+        </div>-->
 </div>
                 </div>
                 <div class="col-lg-7 text-right"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
@@ -646,8 +649,8 @@ $uppercase =  ucfirst($request_url);
                     </div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
-		<div class="modal-dialog">
-			<div class="modal-content">
+		<div class="modal-dialog" id="bg-col">
+			<div class="modal-content" id="bg-col">
 				
 				<div class="modal-header">
                     <h4 class="modal-title text-black">Update Profile</h4>
@@ -747,7 +750,7 @@ $uppercase =  ucfirst($request_url);
                     </div>
                 </div>
             </div>
-            <div class="container">
+           <!-- <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-3">
                     <div class="sign-user_card" style="height: 183px;">
@@ -772,12 +775,12 @@ $uppercase =  ucfirst($request_url);
                 <div class="col-lg-6 mb-3" id="updatepic">
                     <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-0">Manage Profile</h4>
-                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> 
                         <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" />     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
                         <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
                         </form>		
                     </div>
@@ -814,7 +817,7 @@ $uppercase =  ucfirst($request_url);
                   </div>
               </div>
 
-<!-- {{-- Multiuser Profile --}} -->
+<!-- {{-- Multiuser Profile --}} 
          <div class="col-lg-6 mb-3" >
             <div class="sign-user_card mb-3">
                <h4 class="card-title mb-0 manage"> Profile</h4>
@@ -839,7 +842,7 @@ $uppercase =  ucfirst($request_url);
               </div> 
             </div>
          </div>
-<!-- {{-- Multiuser Profile --}} -->
+<!-- {{-- Multiuser Profile --}} 
 <?php $i=1; ?>
 <div>
 <div class="sign-user_card mb-3">
@@ -851,7 +854,7 @@ $uppercase =  ucfirst($request_url);
                      <th style="color:white;"><label>Username</label></th>
                      <th style="color:white;"><label>User Ip</label></th>
                      <th style="color:white;"><label>Device Name</label></th>
-                     <!-- <th style="color:white;"><label>Action</label></th> -->
+                     <!-- <th style="color:white;"><label>Action</label></th> 
 
                      @foreach($alldevices as $key => $devices)
                      <tr>
@@ -863,7 +866,7 @@ $uppercase =  ucfirst($request_url);
                               <!-- <div class="d-flex align-items-center list-user-action">
                                  <a href="{{ URL::to('/device/logout/verify/') . '/' . $devices->id }}" class="iq-bg-danger ml-2"><i
                                  onclick="return confirm('Are you sure?')" ></i> Deregister</a>
-                              </div> -->
+                              </div> 
                         </td>
                      </tr>
                      @endforeach
@@ -883,7 +886,7 @@ $uppercase =  ucfirst($request_url);
                                  <div class="name">{{ $profile ? $profile->user_name : ''  }}</div>
                         </div>
                       @empty
-                        <!-- <div class="col-sm-6">  <p class="name">No Profile</p>  </div> -->
+                        <!-- <div class="col-sm-6">  <p class="name">No Profile</p>  </div> 
                       @endforelse
                   </div>    
               </div> 
@@ -893,7 +896,7 @@ $uppercase =  ucfirst($request_url);
             </div>
        </div>
         </div>
-    </section>
+    </section>-->
 
     <div id="main-admin-content">
         <div id="content-page" class="content-page">
@@ -932,7 +935,7 @@ $uppercase =  ucfirst($request_url);
                     </div></div>
 
           </div>
--->
+
 
           <div class="row">
           <div class="col-md-12">
@@ -952,7 +955,7 @@ $uppercase =  ucfirst($request_url);
                                     <th style="width:10%;">Rating</th>
                                     <th style="width:20%;">Category</th>
                                     <th style="width:10%;">Views</th>
-                                   <!-- <th style="width:10%;">User</th>-->
+                                   <!-- <th style="width:10%;">User</th>
                                      <th style="width:20%;">Date</th> 
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
