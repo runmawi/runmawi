@@ -19,9 +19,9 @@
               <div class="block-description">
                
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                  <a class="text-white btnk" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Watch Series
+                  
                   </a>
                 </div>
               </div>

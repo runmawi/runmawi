@@ -20,7 +20,7 @@
                   <div class="hover-buttons">
                   <a class="text-white btnk" href="<?php if($free_episode->series_id == $free_serie->id){ echo URL::to('/episode'.'/'.$free_serie->title.'/'.$free_episode->title) ; }?> ">
                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                     Watch Series
+                   
                     </a>
                   </div>
                 </div>
