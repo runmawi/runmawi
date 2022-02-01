@@ -500,7 +500,9 @@ public function RentPaypal(Request $request)
         public function UpgradeSubscription(Request $request)
          {
                 $user = Auth::user();
-                $upgrade_plan = $request->get('plan_name');
+                // $upgrade_plan = $request->get('plan_name');
+                $upgrade_plan = $request->get('plan');
+                $py_id = $request->get('py_id');
                 $coupon_code = $request->get('coupon_code');
                 $stripe_plan = SubscriptionPlan();
                 $subscription = $user->subscription($stripe_plan);
@@ -518,7 +520,7 @@ public function RentPaypal(Request $request)
                       $subscription->swapAndInvoice($upgrade_plan);
                   }
 
-                $plan = $request->get('plan_name');
+                $plan = $request->get('plan');
                 $plandetail = SubscriptionPlan::where('plan_id',$upgrade_plan)->first();
                     \Mail::send('emails.changeplansubscriptionmail', array(
                         'name' => $user->username,
@@ -905,8 +907,7 @@ public function RentPaypal(Request $request)
           $user_email = $request->session()->get('register.email');
           $user_id = Auth::User()->id;
           // echo "<pre>";print_r($user_id);
-
-          $user = User::where('email',$user_email)->first();
+  
           $subscription_user = Subscription::where('user_id',$user_id)->orderBy('created_at', 'DESC')->count();
           if(!empty($subscription_user)){
             $subscription_user = Subscription::where('user_id',$user_id)->orderBy('created_at', 'DESC')->get();
@@ -915,35 +916,54 @@ public function RentPaypal(Request $request)
           }else{
             $pervious_date = date('Y-m-d H:i:s');
           }
+          
+          $user = User::where('id',$user_id)->first();
+          $user = Auth::user();
+
           $paymentMethod = $request->get('py_id');
           $plan = $request->get('plan');
-          $coupon_code = $request->coupon_code;
           $payment_type = $request->payment_type;
-          $paymentMethods = $user->paymentMethods();
-          $apply_coupon = NewSubscriptionCouponCode();
+          // $paymentMethods = $user->paymentMethods();
           $stripe_plan = SubscriptionPlan();
+          $subscription = $user->subscription($stripe_plan);
+          //  print_r($stripe_plan);
           $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
-          $plan_name = ucfirst($plandetail->plans_name);
+          $upgrade_plan = ucfirst($plandetail->plans_name);
           $template = EmailTemplate::where('id','=', 24)->first(); 
           $heading = $template->heading; 
           $current_date = $pervious_date;    
-          echo "<pre>";print_r($current_date);
           $next_date = $plandetail->days;
           $date = Carbon::parse($current_date)->addDays($next_date);
-            $ip = getenv('HTTP_CLIENT_IP');    
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();    
-            $countryName = $geoip->getCountry();
-            $regionName = $geoip->getregion();
-            $cityName = $geoip->getcity();
+          // $user->subscription('default')->swapAndInvoice('price_1JpatJDLAfST3GpmWf4b6EMj');
+          // $user->subscription('default')->swapAndInvoice('price_1JpatJDLAfST3GpmWf4b6EMj');
 
+          // $user->subscription('price_1JpatIDLAfST3GpmBLYEVXbi')->swap('price_1JpatJDLAfST3Gpm24Ew2CRu');
+          // $user->subscription->swapAndInvoice(['prod_JBBTj8CPTb4bXu', 'price_1JpatJDLAfST3GpmWf4b6EMj']);
+
+          // $user->save();
+          $user->subscription('default')->swap('price_1JpatIDLAfST3GpmBLYEVXbi', 'price_1JpatJDLAfST3GpmWf4b6EMj');
+
+          // $subscription  = $user->subscription('default');
           
-           
-        
-    // $response = array(
-    //   'status' => 'success'
-    // );             
-    // return response()->json($response);
+          // $subscription->trials_ends_at = null;
+          // $subscription->swap('Yearly');
+          // prod_JBBTj8CPTb4bXu
+          // $user->subscription($stripe_plan)->swap($plandetail->plan_id);
+
+          $plandetail = SubscriptionPlan::where('plan_id',$upgrade_plan)->first();
+              \Mail::send('emails.changeplansubscriptionmail', array(
+                            'name' => $user->username,
+                            'plan' => ucfirst($plandetail->plans_name),
+                        ), function($message) use ($request,$user){
+                            $message->from(AdminMail(),'Flicknexs');
+                            $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
+                });
+                // return response()->json(['success'=>'Your plan has been changed.']);
+    $response = array(
+      'status' => 'success',
+      'success'=>'Your plan has been changed.'
+    );             
+    return response()->json($response);
  
 }
 
