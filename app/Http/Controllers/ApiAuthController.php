@@ -88,8 +88,8 @@ use App\CategoryVideo;
 use App\MobileApp;
 use App\SeriesCategory;
 use App\SeriesLanguage;
-
-
+use CPANEL;
+use App\Deploy;
 
 class ApiAuthController extends Controller
 {
@@ -5331,175 +5331,72 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
-  public function Deploy(Request $request)
-
-    // public function Deploy(Request $request)
-  {
-    $username = $request->username;
-    $password = $request->password;
-
-
-    $cpanel_host = 'localhost';
-    // $servername = "localhost";
-    // $username = "username";
-    // $password = "password";
-    $filename = 'flicknexs.sql';
-    // MySQL host
-    $servername = 'localhost';
-    // MySQL username
-    $username = 'manoj_main';
-    // MySQL password
-    $mysql_password = 't94d24w32F8W';
-    // Database name
-    $mysql_password = 'manoj_main1';
-    $conn =  new mysqli($servername, $username, $password);
-
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
-    echo "Connected successfully";
-    exit();
-// Name of the file
-$filename = 'flicknexs.sql';
-// MySQL host
-$mysql_host = 'localhost';
-// MySQL username
-$mysql_username = 'manoj_main';
-// MySQL password
-$mysql_password = 't94d24w32F8W';
-// Database name
-$mysql_database = 'manoj_main1';
-
-// Connect to MySQL server
-mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
-// Select database
-mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error());
-
-// Temporary variable, used to store current query
-$templine = '';
-// Read in entire file
-$lines = file($filename);
-// Loop through each line
-foreach ($lines as $line)
-{
-// Skip it if it's a comment
-if (substr($line, 0, 2) == '--' || $line == '')
-    continue;
-
-// Add this line to the current segment
-$templine .= $line;
-// If it has a semicolon at the end, it's the end of the query
-if (substr(trim($line), -1, 1) == ';')
-{
-    // Perform the query
-    mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
-    // Reset temp variable to empty
-    $templine = '';
-}
-}
- echo "Tables imported successfully";
-
-
-
-
-
-    error_reporting(E_ALL);
-
-    // Declare your username and password for authentication.
-    $username = $username;
-    $password = $password;
+  public function Deploy(Request $request){
     
-    // Define the API call.
-    $cpanel_host = 'localhost';
-    // $servername = "localhost";
-    // $username = "username";
-    // $password = "password";
-    $filename = 'flicknexs.sql';
-    // MySQL host
-    $servername = 'localhost';
-    // MySQL username
-    $username = 'manoj_main';
-    // MySQL password
-    $mysql_password = 't94d24w32F8W';
-    // Database name
-    $mysql_password = 'manoj_main1';
-    $conn = new mysqli($servername, $username, $password);
+  require('cpanel/cpanel/cPanel.php');
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-exit();
-    $request_uri = "https://75.119.145.126:2083/execute/Fileman/upload_files";
-    
-    // Define the filename and destination.
-    // $upload_file = realpath("../index.php");
-    // $destination_dir = "public_html";
-    
-    // Set up the payload to send to the server.
-    // if( function_exists( 'curl_file_create' ) ) {
-    //     $cf = curl_file_create( $upload_file );
-    // } else {
-    //     $cf = "@/".$upload_file;
-    // }
-    // $payload = array(
-    //     'dir'    => $destination_dir,
-    //     'file-1' => $cf
-    // );
-    $payload  = shell_exec('');
-    $payload  = shell_exec('git clone https://sanjai31@bitbucket.org/Akash0003/flicknexs.git');
-    // Set up the curl request object.
-    $ch = curl_init( $request_uri );
-    curl_setopt( $ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC );
-    curl_setopt( $ch, CURLOPT_USERPWD, $username . ':' . $password );
-    curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, false );
-    curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-    
-    // Set up a POST request with the payload.
-    curl_setopt( $ch, CURLOPT_POST, true );
-    curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
-    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-    
-    // Make the call, and then terminate the curl caller object.
-    $curl_response = curl_exec( $ch );
-    curl_close( $ch );
-    
-    // Decode and validate output.
-    $response = json_decode( $curl_response );
-    if( empty( $response ) ) {
-        echo "The curl call did not return valid JSON:\n";
-        die( $response );
-    } elseif ( !$response->status ) {
-        echo "The curl call returned valid JSON, but reported errors:\n";
-        die( $response->errors[0] . "\n" );
-    }
-    
-    // Print and exit.
-    die( print_r( $response ) );
-    $response = array(
-      // 'status' => $status,
-      'response' => $response
-    );
-    return response()->json($response, 200);
-  }
+      $Domain_Name = "domain";
+      $username    = 'manoj';
+      $password    = 't94d24w32F8W';
+      $host    = '75.119.145.126';
+      $port = '2083';
 
-    public function connectcpanel(){
-      $servername = "localhost";
-      $username = 'manoj_main' ;
-      $password = 't94d24w32F8W';
-      $dbname ='manoj_main1' ;
-      // Create connection
-      $conn = mysqli_connect($servername, $username, $password, $dbname);
+      $connection = ssh2_connect( $host, 22527);
+      ssh2_auth_password($connection, $username, $password);
 
-      if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-      }
-      echo "Connected successfully";
-      exit();
-    }
+      // Git clone
+        $stream = ssh2_exec($connection, "mkdir public_html/$Domain_Name && cd public_html/$Domain_Name && git clone https://manojbalaji2793@bitbucket.org/Akash0003/flicknexs.git .");
+        $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
+
+        stream_set_blocking($errorStream, true);
+        stream_set_blocking($stream, true);
+
+        echo "Output - GIT Clone: " .stream_get_contents($errorStream);
+
+        fclose($errorStream);
+        fclose($stream);
 
 
+      // ENV Upload
+        $upload_file = realpath(".env.example");
+        $destination_dir = "/home/manoj/public_html/$Domain_Name/.env";
+        ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
 
+
+      // Create a New database user
+        $cpanel = new CPANEL($username,$password,$host,$port); 
+
+        $create_db_user = $cpanel->uapi(
+            'Mysql', 'create_user',
+            array(
+                'name'       => 'manoj_'.$Domain_Name,
+                'password'   => 'CHennai@01',
+            ));
+
+      // Create a New database.
+            $create_db = $cpanel->uapi(
+                'Mysql', 'create_database',
+                array(
+                    'name'    => 'manoj_'.$Domain_Name,
+                ));
+
+      // Migration
+        $Stream1 = ssh2_exec($connection, "cd public_html/$Domain_Name &&  php artisan migrate;");
+        $errorStream1 = ssh2_fetch_Stream($Stream1, SSH2_STREAM_STDERR);
+
+        Stream_set_blocking($errorStream1, true);
+        Stream_set_blocking($Stream1, true);
+
+        echo "Output - Migration: " .stream_get_contents($Stream1);
+        echo "Output - Migration: " .Stream_get_contents($errorStream1);
+        fclose($errorStream1);
+        fclose($Stream1);
+
+        $Deploy = WelcomeScreen::create([
+          'name' => 'A new comment.',
+      ]);
+    
+
+     }
 
 }
