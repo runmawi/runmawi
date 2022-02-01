@@ -706,6 +706,7 @@ public function createStep3(Request $request)
                'paymentMethod' => $paymentMethod,
                'plan' => ucfirst($plandetail->plans_name),
                'price' => $plandetail->price,
+               'plan_id' => $plandetail->plan_id,
                'billing_interval' => $plandetail->billing_interval,
                /*'next_billing' => $nextPaymentAttemptDate,*/
            ), function($message) use ($request,$user){

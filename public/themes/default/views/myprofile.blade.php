@@ -524,8 +524,8 @@ $uppercase =  ucfirst($request_url);
 
                         $stripe_plan = SubscriptionPlan();
                         if ( $user->subscribed($stripe_plan)  || empty(Auth::user()->paypal_id) ) { 
-                           // dd($user->subscription($stripe_plan)->ended());
-                        if ($user->subscription($stripe_plan)->ended()) { ?>
+                           // dd($user->subscription($stripe_plan)->ended());->ended()
+                        if ($user->subscription($stripe_plan) ) { ?>
                         <!-- <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a> -->
                         <?php } elseif(Auth::user()->role == "subscriber") { ?>
                         <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>

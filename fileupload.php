@@ -1,76 +1,66 @@
 <?php
 
-error_reporting(E_ALL);
+require('cpanel/cpanel/cPanel.php');
 
+$Domain_Name = "domain";
+$username    = 'manoj';
+$password    = 't94d24w32F8W';
+$host    = '75.119.145.126';
+$port = '2083';
 
-$connection = ssh2_connect('75.119.145.126', 22527);
-ssh2_auth_password($connection, 'manoj', 't94d24w32F8W');
+$connection = ssh2_connect( $host, 22527);
+ssh2_auth_password($connection, $username, $password);
 
-// File upload 
-    // $upload_file = realpath("fileupload.php");
-    // $destination_dir = "/home/manoj/public_html/fileupload.php";
-    // ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
-
-
-// connecting 
-    $stream = ssh2_exec($connection, "cd /home/manoj/public_html/");
+// Git clone
+    $stream = ssh2_exec($connection, "mkdir public_html/$Domain_Name && cd public_html/$Domain_Name && git clone https://manojbalaji2793@bitbucket.org/Akash0003/flicknexs.git .");
     $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
 
     stream_set_blocking($errorStream, true);
     stream_set_blocking($stream, true);
 
-    stream_get_contents($stream);
-    stream_get_contents($errorStream);
+    // echo "Output: " .stream_get_contents($stream);
+    echo "Output - GIT Clone: " .stream_get_contents($errorStream);
 
     fclose($errorStream);
     fclose($stream);
-    
-
-// Remove the folder 
-
-    $stream2 = ssh2_exec($connection, "rm test");
-    $errorstream2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDERR);
-
-    stream_set_blocking($errorstream2, true);
-    stream_set_blocking($stream2, true);
-
-    echo "Output: " .stream_get_contents($stream2);
-    echo "Error: " .stream_get_contents($errorstream2);
-        
-    fclose($errorstream2);
-    fclose($stream2);
 
 
-// Git clone
+// ENV Upload
+    $upload_file = realpath(".env.example");
+    $destination_dir = "/home/manoj/public_html/$Domain_Name/.env";
+    ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
 
-    $stream1 = ssh2_exec($connection, "git clone https://manojbalaji2793@bitbucket.org/Akash0003/flicknexs.git .");
-    $errorStream1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDERR);
 
-    stream_set_blocking($errorStream1, true);
-    stream_set_blocking($stream1, true);
+// Create a New database user
+    $cpanel = new CPANEL($username,$password,$host,$port); 
 
-    echo "Output: " . stream_get_contents($stream1);
-    echo "Error: " . stream_get_contents($errorStream1);
+    $create_db_user = $cpanel->uapi(
+        'Mysql', 'create_user',
+        array(
+            'name'       => 'manoj_'.$Domain_Name,
+            'password'   => 'CHennai@01',
+        ));
 
+// Create a New database.
+        $create_db = $cpanel->uapi(
+            'Mysql', 'create_database',
+            array(
+                'name'    => 'manoj_'.$Domain_Name,
+            ));
+
+
+// Migration & Seeding
+    $Stream1 = ssh2_exec($connection, "cd public_html/$Domain_Name &&  php artisan migrate:refresh --seed;");
+    $errorStream1 = ssh2_fetch_Stream($Stream1, SSH2_STREAM_STDERR);
+
+    Stream_set_blocking($errorStream1, true);
+    Stream_set_blocking($Stream1, true);
+
+    echo "Output - Seeding: " .stream_get_contents($Stream1);
+    echo "Output - Migration: " .Stream_get_contents($errorStream1);
     fclose($errorStream1);
-    fclose($stream1);
-
-
-// Env Update 
-
-    // $stream3 = ssh2_exec($connection, "git clone https://Mk_webnexs@bitbucket.org/Akash0003/flicknexs.git");
-    // $errorstream3 = ssh2_fetch_stream($stream3, SSH2_STREAM_STDERR);
-
-    // stream_set_blocking($errorstream3, true);
-    // stream_set_blocking($stream3, true);
-
-    // echo "Output: " . stream_get_contents($stream3);
-    // echo "Error: " . stream_get_contents($errorstream3);
-
-    // fclose($errorstream3);
-    // fclose($stream3);
-
-
+    fclose($Stream1);
+    
 ?>
 
 
