@@ -88,7 +88,7 @@ use App\CategoryVideo;
 use App\MobileApp;
 use App\SeriesCategory;
 use App\SeriesLanguage;
-use cpanel\cpanel\CPANEL;
+use CPANEL;
 use App\Deploy;
 
 class ApiAuthController extends Controller
@@ -5332,8 +5332,10 @@ public function LocationCheck(Request $request){
   }
 
   public function Deploy(Request $request){
-    
-      $Domain_Name = "domain";
+
+  require('cpanel/cPanel/cPanel.php');
+
+      $Domain_Name = "Testing";
       $username    = 'manoj';
       $password    = 't94d24w32F8W';
       $host    = '75.119.145.126';
@@ -5353,15 +5355,14 @@ public function LocationCheck(Request $request){
 
         fclose($errorStream);
         fclose($stream);
-
-
+     
       // ENV Upload
         $upload_file = realpath("deploy_env");
         $destination_dir = "/home/manoj/public_html/$Domain_Name/.env";
         ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
 
         $Env_file = realpath('deploy_env');
-      
+
         $Old_database_name = 'AUTODEPLOY_DB_DATABASE';
         $New_database_name = 'manoj_'.$Domain_Name;
   
@@ -5378,7 +5379,6 @@ public function LocationCheck(Request $request){
         $str=str_replace($Old_DB_Password, $New_DB_password,$str);
   
         file_put_contents($Env_file, $str);
-        
 
       // Create a New database user
         $cpanel = new CPANEL($username,$password,$host,$port); 
