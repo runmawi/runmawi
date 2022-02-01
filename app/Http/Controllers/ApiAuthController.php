@@ -88,7 +88,7 @@ use App\CategoryVideo;
 use App\MobileApp;
 use App\SeriesCategory;
 use App\SeriesLanguage;
-use CPANEL;
+use cpanel\cpanel\CPANEL;
 use App\Deploy;
 
 class ApiAuthController extends Controller
@@ -5333,8 +5333,6 @@ public function LocationCheck(Request $request){
 
   public function Deploy(Request $request){
     
-  require('cpanel/cpanel/cPanel.php');
-
       $Domain_Name = "domain";
       $username    = 'manoj';
       $password    = 't94d24w32F8W';
@@ -5358,10 +5356,29 @@ public function LocationCheck(Request $request){
 
 
       // ENV Upload
-        $upload_file = realpath(".env.example");
+        $upload_file = realpath("deploy_env");
         $destination_dir = "/home/manoj/public_html/$Domain_Name/.env";
         ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
 
+        $Env_file = realpath('deploy_env');
+      
+        $Old_database_name = 'AUTODEPLOY_DB_DATABASE';
+        $New_database_name = 'manoj_'.$Domain_Name;
+  
+        $Old_DB_USERNAME = 'AUTODEPLOY_DB_USERNAME';
+        $New_DB_USERNAME = $username;
+  
+        $Old_DB_Password = 'AUTODEPLOY_DB_PASSWORD';
+        $New_DB_password = $password;
+  
+        $str=file_get_contents( $Env_file);
+  
+        $str=str_replace($Old_database_name, $New_database_name,$str);
+        $str=str_replace($Old_DB_USERNAME, $New_DB_USERNAME,$str);
+        $str=str_replace($Old_DB_Password, $New_DB_password,$str);
+  
+        file_put_contents($Env_file, $str);
+        
 
       // Create a New database user
         $cpanel = new CPANEL($username,$password,$host,$port); 
