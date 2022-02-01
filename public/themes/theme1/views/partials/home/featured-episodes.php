@@ -30,9 +30,9 @@
               <div class="block-description">
             
                 <div class="hover-buttons d-flex">
-                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
+                <a class="text-white btnk" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Watch Series
+                   
                   </a>
                 </div>
               </div>

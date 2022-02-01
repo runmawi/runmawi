@@ -52,17 +52,18 @@
                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                
                                 </a>
-                                <div >
-                                    <!-- <a style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"> -->
+                                <!--  <div >
+                                   <a style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"> -->
                                         <!-- <i style="" <?php //if(isset($video->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i> -->
                                     <!-- <div style="color:white;" id="<?= $video->id ?>">
                                         <?php //if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
                                       //  else { echo "Add To Wishlist" ; } ?>
-                                    </div>  -->
-                                    </a>
+                                    </a></div>  -->
+                                    
                                 </div>
+                    </div>
                             <div class="mt-2">
-                    <h3><?php echo __($video->title); ?></h3>
+                    <h5><?php echo __($video->title); ?></h5>
                             <div class="movie-time d-flex align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                 <span class="text-white"><i class="fa fa-clock-o"></i>
@@ -70,7 +71,7 @@
                                 </span>
                             </div>
                             </div>
-                    </div>
+                   
                 </li>
                 </a>
             </div>
@@ -84,9 +85,9 @@
 
 
             <!-- <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>"> -->
-        </div>
+        
         <?php endif; ?>
-         </div>
+       
       </section>
          </div>
      </div>

@@ -34,15 +34,13 @@
                                        
                                        <div class="hover-buttons d-flex justify-content-around">
                                            <div>
-                                           <a class="btnk mr-2" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="text-white ">
+                                           <a class=" mr-2" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
+                                          <span class="text-white btnk">
                                           <i class="fa fa-play" aria-hidden="true"></i>
                                         
                                           </span>
                                            </a></div>
-                                           <div>
-                                           <a   href="" class="text-white btnk m1-2"><i class="fa fa-plus" aria-hidden="true"></i> 
-                       </a></div>
+                                          
                                        </div>
                                        <div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $latest_video->id;?>">
