@@ -5340,6 +5340,7 @@ public function LocationCheck(Request $request){
       $password    = 't94d24w32F8W';
       $host    = '75.119.145.126';
       $port = '2083';
+      $database =  'manoj_'.$Domain_Name;
 
       $connection = ssh2_connect( $host, 22527);
       ssh2_auth_password($connection, $username, $password);
@@ -5357,28 +5358,16 @@ public function LocationCheck(Request $request){
         fclose($stream);
      
       // ENV Upload
-        $upload_file = realpath("deploy_env");
-        $destination_dir = "/home/manoj/public_html/$Domain_Name/.env";
-        ssh2_scp_send($connection, $upload_file, $destination_dir , 0644);
+       $stream5 = ssh2_exec($connection, "cd public_html/$Domain_Name && sed -e 's/DEPLOY_DATABASE/$database/g ; s/DEPLOY_USERNAME/$username/g ; s/DEPLOY_PASSWORD/$password/g' deploy_env > .env");
+       $errorStream5 = ssh2_fetch_stream($stream5, SSH2_STREAM_STDERR);
 
-        $Env_file = realpath('deploy_env');
+        stream_set_blocking($errorStream5, true);
+        stream_set_blocking($stream5, true);
 
-        $Old_database_name = 'AUTODEPLOY_DB_DATABASE';
-        $New_database_name = 'manoj_'.$Domain_Name;
-  
-        $Old_DB_USERNAME = 'AUTODEPLOY_DB_USERNAME';
-        $New_DB_USERNAME = $username;
-  
-        $Old_DB_Password = 'AUTODEPLOY_DB_PASSWORD';
-        $New_DB_password = $password;
-  
-        $str=file_get_contents( $Env_file);
-  
-        $str=str_replace($Old_database_name, $New_database_name,$str);
-        $str=str_replace($Old_DB_USERNAME, $New_DB_USERNAME,$str);
-        $str=str_replace($Old_DB_Password, $New_DB_password,$str);
-  
-        file_put_contents($Env_file, $str);
+        echo "Output - GIT Clone: " .stream_get_contents($errorStream5);
+
+        fclose($errorStream5);
+        fclose($stream5);
 
       // Create a New database user
         $cpanel = new CPANEL($username,$password,$host,$port); 
