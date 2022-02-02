@@ -11,7 +11,6 @@
     }
 </style>
 @section('content')
-
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
@@ -25,36 +24,54 @@
             </div>
             
 		</div>
-	<!-- Add New Modal -->
+	
+<hr>
+	
+<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				
+				    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif    
+    
+                
 				<div class="modal-header">
+                    <h4 class="modal-title">New Menu Item</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Menu Item</h4>
+					
 				</div>
 				
-				<div class="modal-body">
+				<div class="modal-body p-3">
 					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/store') }}" method="post">
 				        <label for="name">Enter the new menu item name below</label>
-				        <input name="name" id="name" placeholder="Menu Item Name" class="form-control" value="" /><br />
+				        <input name="name" id="name" placeholder="Menu Item Name"  required class="form-control" value="" /><br />
 				        <label for="url">Menu Item URL (ex. /site/url)</label>
-				        <input name="url" id="url" placeholder="URL" class="form-control" value="" /><br />
-				        <label for="dropdown">or Dropdown for:</label>
+				        <input name="url" id="url" placeholder="URL" class="form-control" required value="" /><br />
+				   
 				        <div class="clear"></div>
-				        <input type="radio" class="menu-dropdown-radio" name="type" value="none" checked="checked" /> None
-				        <input type="radio" class="menu-dropdown-radio" name="type" value="videos" /> Video Categories 
-                        <input type="radio" class="menu-dropdown-radio" name="type" value="audios" /> Audio Categories
-				        <input type="radio" class="menu-dropdown-radio" name="type" value="posts" /> Post Categories
+                        
+                        <label for="categories">Categories (Need to Display video categories in this Menu) ? </label><br>
+                     None :<input type="radio" name="in_menu" value="none" />
+                     Video Categories : <input type="radio" name="in_menu" value="video"  />
+				      
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
+				        </div>
+                        
 				    </form>
 				</div>
 				
-				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-menu">Save changes</button>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -75,7 +92,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Menu Items below: (max of 3 levels)
+					<p>Organize the Menu Items below: (max of 3 levels)</p>
 				</div>
 				
 				<div class="panel-options">
@@ -84,68 +101,68 @@
 			</div>
 			
 			
-			<div class="panel-body">
+			<div class="panel-body" style="color:#000000;">
 		
-			<div id="nestable" class="nested-list dd with-margins">
+				<div id="nestable" class="nested-list dd with-margins">
 
-<ol class="dd-list">
+					<ol class="dd-list">
 
-<?php $previous_item = array(); ?>
-<?php $first_parent_id = 0; ?>
-<?php $second_parent_id = 0; ?>
-<?php $depth = 0; ?>
-@foreach($menu as $menu_item)
+					<?php $previous_item = array(); ?>
+					<?php $first_parent_id = 0; ?>
+					<?php $second_parent_id = 0; ?>
+					<?php $depth = 0; ?>
+					@foreach($menu as $menu_item)
 
-	@if( (isset($previous_item->id) && $menu_item->parent_id == $previous_item->parent_id) || $menu_item->parent_id == NULL )
-		</li>
-	@endif
+						@if( (isset($previous_item->id) && $menu_item->parent_id == $previous_item->parent_id) || $menu_item->parent_id == NULL )
+							<li>
+						@endif
 
-	@if( (isset($previous_item->parent_id) && $previous_item->parent_id !== $menu_item->parent_id) && $previous_item->id != $menu_item->parent_id )
-		@if($depth == 2)
-			</li></ol>
-			<?php $depth -= 1; ?>
-		@endif
-		@if($depth == 1 && $menu_item->parent_id == $first_parent_id)
-			</li></ol>
-			<?php $depth -= 1; ?>
-		@endif
-		
-	@endif
+						@if( (isset($previous_item->parent_id) && $previous_item->parent_id !== $menu_item->parent_id) && $previous_item->id != $menu_item->parent_id )
+							@if($depth == 2)
+								<!--</li></ol>-->
+								<?php $depth -= 1; ?>
+							@endif
+							@if($depth == 1 && $menu_item->parent_id == $first_parent_id)
+								</li></ol>
+								<?php $depth -= 1; ?>
+							@endif
+							
+						@endif
 
-	@if(isset($previous_item->id) && $menu_item->parent_id == $previous_item->id && $menu_item->parent_id !== $previous_item->parent_id )
-		<?php if($first_parent_id != 0):
-			$first_parent_id = $menu_item->parent_id;
-		else:
-			$second_parent_id = $menu_item->parent_id;
-		endif; ?>
-		<ol class="dd-list">
-		<?php $depth += 1; ?>
-	@endif
+						@if(isset($previous_item->id) && $menu_item->parent_id == $previous_item->id && $menu_item->parent_id !== $previous_item->parent_id )
+							<?php if($first_parent_id != 0):
+								$first_parent_id = $menu_item->parent_id;
+							else:
+								$second_parent_id = $menu_item->parent_id;
+							endif; ?>
+                    <div class="d-flex">
+							<ol class="dd-list">
+							<?php $depth += 1; ?>
+						@endif
 
-
-	<div class="d-flex justify-content-between" style="width:30%;">
-	<li class="dd-item " data-id="{{ $menu_item->id }}">
-
+                                <div class="d-flex justify-content-between" style="width:30%;">
 							<div class="dd-handle mt-3">{{ $menu_item->name}}</div>
 							<div class=" align-items-center list-user-action mt-2"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
 </div>
-	<?php $previous_item = $menu_item; ?>
 
-@endforeach
-	
+						<?php $previous_item = $menu_item; ?>
+
+					@endforeach
 						
 						
 
 					</ol>
-						
+						</div>
 				</div>
 		
 			</div>
 		
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </div></div>
+    </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
@@ -204,7 +221,7 @@
 					console.log('show error');
 					window.location = '/admin/menu?menu_first_level=true';
 				} else {
-					alert('test');
+				
 	    			$('.menu-panel').addClass('reloading');
 	    			$.post('/admin/menu/order', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val() }, function(data){
 	    				console.log(data);
@@ -226,9 +243,24 @@
 			}
 		}
 
-		</script>
 
+	</script>
 
+<!-- {{-- validate --}} -->
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+			$('form[id="new-menu-form"]').validate({
+				rules: {
+					name : 'required',
+					url : 'required',
+				},
+				submitHandler: function(form) {
+				form.submit();
+				}
+			});
+
+</script>
 
 	@stop
 

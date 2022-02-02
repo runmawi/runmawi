@@ -90,6 +90,7 @@ class AdminMenuController extends Controller
 
     public function order(){
         $menu_item_order = json_decode(Input::get('order'));
+        echo "<pre>";print_r($menu_item_order);exit;
         $post_categories = Menu::all();
         $order = 1;
         
