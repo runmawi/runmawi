@@ -669,11 +669,11 @@ public function RentPaypal(Request $request)
             ]);
           }else{
             return View::make('auth.login');
-
           }
 
         }
          public function TransactionDetails(){  
+           if(!Auth::guest()){
           $user_id = Auth::user()->id;
           // dd($user_id);
           $subscriptions = Subscription::where('user_id',$user_id)->get(); 
@@ -684,6 +684,10 @@ public function RentPaypal(Request $request)
           if(!empty($ppvcharse)){ $ppvcharses = $ppvcharse; }else{ $ppvcharses =[]; }
           if(!empty($livepurchase)){ $livepurchases = $livepurchase; }else{ $livepurchases =[]; }
             return view('transactiondetails',['subscriptions'=>$subscriptions,'ppvcharse'=>$ppvcharses,'livepurchase'=>$livepurchases]);
+          }else{
+            return View::make('auth.login');
+
+          }
     }
 
      
