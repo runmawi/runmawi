@@ -131,7 +131,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script type="text/javascript">
       $(function () {
-        $("#table").DataTable();
+        // $("#table").DataTable();
 
         $( "#tablecontents" ).sortable({
           items: "tr",
