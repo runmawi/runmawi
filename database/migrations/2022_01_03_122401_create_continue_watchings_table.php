@@ -19,6 +19,7 @@ class CreateContinueWatchingsTable extends Migration
             $table->integer('episodeid')->nullable();
             $table->string('currentTime')->nullable();
             $table->string('watch_percentage')->nullable();
+            $table->integer('skip_time')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('multiuser')->nullable();

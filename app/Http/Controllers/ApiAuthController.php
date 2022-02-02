@@ -3558,17 +3558,18 @@ public function upnextAudio(Request $request){
       $user_id = $request->user_id;
       $current_duration = $request->current_duration;
       $watch_percentage = $request->watch_percentage;
+      $skip_time = $request->skip_time;
       if($request->video_id){
           $video_id = $request->video_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage]);
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
           );
         } else {
-            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage );
+            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
             ContinueWatching::insert($data);
             $response = array(
               'status'=>'true',
@@ -3598,6 +3599,7 @@ public function upnextAudio(Request $request){
       $videos = Video::whereIn('id', $k2)->get()->map(function ($item) use ($user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
         return $item;
       });
       $status = "true";
