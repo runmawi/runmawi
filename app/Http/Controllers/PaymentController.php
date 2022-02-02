@@ -922,9 +922,11 @@ public function RentPaypal(Request $request)
 
           $paymentMethod = $request->get('py_id');
           $plan = $request->get('plan');
-          $payment_type = $request->payment_type;
+          $payment_type = $request->py_id;
+          
+          $user->subscription('default')->swap('price_1HWI8oG5RKFecHohjpa5uy7b');
+          exit;
           // $paymentMethods = $user->paymentMethods();
-          $stripe_plan = SubscriptionPlan();
           $subscription = $user->subscription($stripe_plan);
           //  print_r($stripe_plan);
           $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();

@@ -9,9 +9,9 @@ LOG_CHANNEL=stack
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=manoj_test 
-DB_USERNAME=manoj
-DB_PASSWORD=t94d24w32F8W
+DB_DATABASE=DEPLOY_DATABASE 
+DB_USERNAME=DEPLOY_USERNAME
+DB_PASSWORD=DEPLOY_PASSWORD
 
 #DB_CONNECTION=mysql
 #DB_HOST=127.0.0.1
@@ -83,4 +83,5 @@ TWITTER_CLIENT_SECRET=
 TWITTER_URL=http://127.0.0.1:8000/login/twitter/callback
 GOOGLE_CLIENT_ID=238423126140-7no88finok037fmnkl355kgc1vt0b7ko.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=uDsC-Rm4owFsdcki_a6KRTmn
-GOOGLE_URL=https://flicknexs.webnexs.org/callback
+GOOGLE_URL=https://flicknexs.webnexs.org/callbackuser id date
+user id date
