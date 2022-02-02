@@ -5333,7 +5333,7 @@ public function LocationCheck(Request $request){
 
   public function Deploy(Request $request){
     
-  require('cpanel/cpanel/cPanel.php');
+      require('cpanel/cpanel/cPanel.php');
 
       $Domain_Name = "domain";
       $username    = 'manoj';

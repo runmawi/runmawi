@@ -29,7 +29,8 @@ class AdminMenuController extends Controller
      */
     public function index()
     {
-        $menu = json_decode(Menu::orderBy('order', 'ASC')->get()->toJson());
+        // $menu = json_decode(Menu::orderBy('order', 'ASC')->get()->toJson());
+        $menu = Menu::orderBy('order', 'asc')->get();
         $user = Auth::user();
 
         $data = array(
@@ -90,7 +91,7 @@ class AdminMenuController extends Controller
 
     public function order(){
         $menu_item_order = json_decode(Input::get('order'));
-        echo "<pre>";print_r($menu_item_order);exit;
+        // echo "<pre>";print_r($menu_item_order);exit;
         $post_categories = Menu::all();
         $order = 1;
         
@@ -145,5 +146,21 @@ class AdminMenuController extends Controller
         endforeach;
 
         return 1;
+    }
+    public function updateOrder(Request $request){
+
+        $post_categories = Menu::all();
+
+        foreach ($post_categories as $post) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $post->id) {
+                    $post->update(['order' => $order['position']]);
+                }
+            }
+        }
+        
+        return response('Update Successfully.', 200);
+    
+
     }
 }

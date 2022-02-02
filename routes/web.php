@@ -333,6 +333,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/menu/edit/{id}', 'AdminMenuController@edit');
     Route::post('/menu/update', array('before' => 'demo', 'uses' => 'AdminMenuController@update'));
     Route::post('/menu/order', array('before' => 'demo', 'uses' => 'AdminMenuController@order'));
+    Route::post('menu/update-order','AdminMenuController@updateOrder'); 
     Route::get('/menu/delete/{id}', array('before' => 'demo', 'uses' => 'AdminMenuController@destroy'));
 
     /* theme settings*/
