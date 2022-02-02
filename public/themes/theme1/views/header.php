@@ -181,7 +181,8 @@ $data = Session::all();
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                        $menus = App\Menu::all();
+                                       //  $menus = App\Menu::all();
+                                       $menus = App\Menu::orderBy('order', 'asc')->get();
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 

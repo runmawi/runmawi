@@ -10,6 +10,10 @@
         padding: 15px;
     }
 </style>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 @section('content')
 
 <div id="content-page" class="content-page">
@@ -86,59 +90,27 @@
 			
 			<div class="panel-body">
 		
-			<div id="nestable" class="nested-list dd with-margins">
-
-<ol class="dd-list">
-
-<?php $previous_item = array(); ?>
-<?php $first_parent_id = 0; ?>
-<?php $second_parent_id = 0; ?>
-<?php $depth = 0; ?>
-@foreach($menu as $menu_item)
-
-	@if( (isset($previous_item->id) && $menu_item->parent_id == $previous_item->parent_id) || $menu_item->parent_id == NULL )
-		</li>
-	@endif
-
-	@if( (isset($previous_item->parent_id) && $previous_item->parent_id !== $menu_item->parent_id) && $previous_item->id != $menu_item->parent_id )
-		@if($depth == 2)
-			</li></ol>
-			<?php $depth -= 1; ?>
-		@endif
-		@if($depth == 1 && $menu_item->parent_id == $first_parent_id)
-			</li></ol>
-			<?php $depth -= 1; ?>
-		@endif
-		
-	@endif
-
-	@if(isset($previous_item->id) && $menu_item->parent_id == $previous_item->id && $menu_item->parent_id !== $previous_item->parent_id )
-		<?php if($first_parent_id != 0):
-			$first_parent_id = $menu_item->parent_id;
-		else:
-			$second_parent_id = $menu_item->parent_id;
-		endif; ?>
-		<ol class="dd-list">
-		<?php $depth += 1; ?>
-	@endif
-
-
-	<div class="d-flex justify-content-between" style="width:30%;">
-	<li class="dd-item " data-id="{{ $menu_item->id }}">
-
-							<div class="dd-handle mt-3">{{ $menu_item->name}}</div>
-							<div class=" align-items-center list-user-action mt-2"><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
-</div>
-	<?php $previous_item = $menu_item; ?>
-
-@endforeach
-	
-						
-						
-
-					</ol>
+            <table id="table" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th width="30px">#</th>
+                  <th>Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="tablecontents">
+                @foreach($menu as $menu_item)
+    	            <tr class="row1" data-id="{{ $menu_item->id }}">
+    	              <td class="pl-3"><i class="fa fa-sort"></i>{{ $menu_item->id }}</td>
+    	              <td>{{ $menu_item->name }}</td>
+                      <td><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                    data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                    data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+<!-- </div> -->
+    	            </tr>
+                @endforeach
+              </tbody>                  
+            </table>
 						
 				</div>
 		
@@ -154,7 +126,51 @@
 	<?php endif; ?>
 
 	@section('javascript')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        $("#table").DataTable();
 
+        $( "#tablecontents" ).sortable({
+          items: "tr",
+          cursor: 'move',
+          opacity: 0.6,
+          update: function() {
+              sendOrderToServer();
+          }
+        });
+
+        function sendOrderToServer() {
+          var order = [];
+          var token = $('meta[name="csrf-token"]').attr('content');
+          $('tr.row1').each(function(index,element) {
+            order.push({
+              id: $(this).attr('data-id'),
+              position: index+1
+            });
+          });
+
+          $.ajax({
+            type: "POST", 
+            dataType: "json", 
+            url: "{{ url('admin/menu/update-order') }}",
+                data: {
+              order: order,
+              _token: token
+            },
+            success: function(response) {
+                if (response.status == "success") {
+                  console.log(response);
+                } else {
+                  console.log(response);
+                }
+            }
+          });
+        }
+      });
+    </script>
 		<script src="{{ URL::to ('/assets/admin/js/jquery.nestable.js') }}"></script>
 
 		<script type="text/javascript">
