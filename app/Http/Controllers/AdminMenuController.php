@@ -31,6 +31,7 @@ class AdminMenuController extends Controller
     {
         // $menu = json_decode(Menu::orderBy('order', 'ASC')->get()->toJson());
         $menu = Menu::orderBy('order', 'asc')->get();
+        // dd($menu);
         $user = Auth::user();
 
         $data = array(
@@ -150,6 +151,7 @@ class AdminMenuController extends Controller
     public function updateOrder(Request $request){
 
         $post_categories = Menu::all();
+
 
         foreach ($post_categories as $post) {
             foreach ($request->order as $order) {
