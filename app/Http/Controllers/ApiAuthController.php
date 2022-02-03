@@ -775,7 +775,7 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $skip_time = ContinueWatching::where('videoid','=',$videoid)->pluck('skip_time');
+      $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->min();
       if(!empty($skip_time)){
         $skiptime = $skip_time;
       if(!empty($skiptime[0])){
