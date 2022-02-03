@@ -739,7 +739,7 @@ class AdminUsersController extends Controller
                 $maildevice->status = 0;
                 $maildevice->save();
             $message = 'Mail Sent to the'.' '.$username;
-            return Redirect::back()->with('alert', $message);
+            return Redirect::back()->with('message', $message);
             }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
             return Redirect::back();
             }
@@ -794,7 +794,7 @@ class AdminUsersController extends Controller
             $system_settings = SystemSetting::first();
             $user = User::where('id','=',1)->first();
             $message = 'Approved User For Login';
-            return Redirect::to('/')->with('alert', $message);
+            return Redirect::to('/')->with('message', $message);
 
             // return View::make('auth.login')->with('alert', $message);
         }
@@ -806,7 +806,7 @@ class AdminUsersController extends Controller
             $system_settings = SystemSetting::first();
             $user = User::where('id','=',1)->first();
             $message = 'Approved User For Login';
-            return Redirect::back('/')->with('alert', $message);
+            return Redirect::back('/')->with('message', $message);
 
           
         }
