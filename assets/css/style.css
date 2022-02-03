@@ -1787,7 +1787,7 @@ padding: 15px;
     background-color: #578cea;
 }
 .show{
-    text-decoration: underline!important;
+   
     color: #578cea!important;
 }
 #signup-form{
@@ -1816,4 +1816,318 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     height: calc(100vh - 80px - 75px);
     max-width: none;
     width: 100%;
+}
+
+     a{
+        text-decoration: none!important;  
+     }
+
+@media only screen and (max-width: 600px) {
+ .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -43px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -43px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}
+
+}
+
+@media only screen and (min-width: 768px) {
+  .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -20px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -20px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}
+  
+}
+@media only screen and (min-width: 992px) {
+    .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -92px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -92px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}
+}
+
+@media only screen and (min-width: 1200px) {
+     .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 0px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: 0px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}
+}
+
+@media only screen and (min-width: 2560px){
+    .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -195px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -195px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}   
+}
+@media only screen and (min-width: 1920px){
+    .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -94px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -94px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}   
+}
+@media only screen and (min-width: 1600px){
+    .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -35px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -35px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}   
+}
+@media only screen and (min-width: px){
+    .p-tag{
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -65px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+    border-top: none;
+    border-left: none;
+       
+    border-bottom-right-radius: 15px;
+   
+   
+}
+
+.p-tag1 {
+    color: #000000!important;
+    position: absolute;
+    top: 8px;
+    left: -65px!important;
+    background-color: #00a8e1;
+    padding: 5px;
+    font-size: 12px;
+    border: 3px  solid #000000;
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 700;
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}   
 }
