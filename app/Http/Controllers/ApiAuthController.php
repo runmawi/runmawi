@@ -3558,7 +3558,11 @@ public function upnextAudio(Request $request){
       $user_id = $request->user_id;
       $current_duration = $request->current_duration;
       $watch_percentage = $request->watch_percentage;
+      if(!empty($request->skip_time)){
       $skip_time = $request->skip_time;
+      }else{
+        $skip_time = 0;
+      }
       if($request->video_id){
           $video_id = $request->video_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
