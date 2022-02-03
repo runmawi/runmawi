@@ -775,15 +775,17 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->min();
+      // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();
+      $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
+// print_r($skip_time->skip_time);exit();
       if(!empty($skip_time)){
-        $skiptime = $skip_time;
-      if(!empty($skiptime[0])){
-        $skip_time = $skiptime[0];
+        $skip_time = $skip_time->skip_time;
+      // if(!empty($skiptime[0])){
+        // $skip_time = $skiptime[0];
       }else{
         $skip_time = 0;
       }
-      }
+      // }
       if ( isset($request->user_id) && $request->user_id != '' ) { 
             $user_id = $request->user_id;
             $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
