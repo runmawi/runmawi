@@ -1022,7 +1022,7 @@ class HomeController extends Controller
                         $maildevice->status = 0;
                         $maildevice->save();
                         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        return View::make('auth.login')->with('alert', $message);
+                        return View::make('auth.login')->with('message', $message);
                     }
                     elseif (!empty($mail_check) && $mail_check->status == 2 ) 
                     // $mail_check->status == 0
