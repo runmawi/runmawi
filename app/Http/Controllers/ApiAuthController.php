@@ -3213,6 +3213,8 @@ public function upnextAudio(Request $request){
     $seriesid = $request->seriesid;
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
+    // print_r($seasonlist);exit();
+
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->get()->map(function ($item)  {

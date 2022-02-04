@@ -1,0 +1,8 @@
+/**
+ * Minified by jsDelivr using UglifyJS v3.3.21.
+ * Original file: /npm/plyr-resolution-selector@0.0.3/plyr-resolution-selector.js
+ * 
+ * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ */
+ !function(e){function a(e,t){for(var n=e.getMedia().getElementsByTagName("source"),i=0;i<n.length;i++){var r=n[i].getAttribute("res");if(null!=r){var a=document.createElement("option");a.innerHTML=r,a.dataset.res=r,t.appendChild(a)}}}function l(e){e.innerHTML=""}(window.PlyrResSelector=window.PlyrResSelector||{}).use=function(d,e){var t=d.getContainer(),n=document.createElement("select");n.dataset.plyr="resolution",n.setAttribute("class","plyr__resolution"),e=e||".plyr__volume";var i=t.querySelectorAll(e),r=i[i.length-1];r.parentNode.insertBefore(n,r.nextSibling),setTimeout(function(){l(n),a(d,n)},1),t.addEventListener("ready",function(){setTimeout(function(){l(n),a(d,n)},1)}),n.addEventListener("change",function(){for(var e=this.children[this.selectedIndex].dataset.res,t=d.getMedia().children.length,n=0;n<d.getMedia().children.length;n++){d.getMedia().children[n].getAttribute("res")==e&&(t=n)}d.getMedia().insertBefore(d.getMedia().children[t],d.getMedia().children[0]);var i=d.getMedia().currentTime,r=d.getMedia().paused;d.getMedia().load();var a=d.getMedia().addEventListener("loadeddata",function(){d.seek(i),d.getMedia().removeEventListener("loadeddata",a),r?d.getMedia().pause():d.getMedia().play()})})}}();
+ //# sourceMappingURL=/sm/3eb5dabf1465cd1e54e01c4cbe714a3aa4961609d75ef0297055e591aff6b287.map
