@@ -99,7 +99,7 @@ Route::group([
     Route::post('seriesepisodes', 'ApiAuthController@seriesepisodes');
     Route::post('episodedetails', 'ApiAuthController@episodedetails');
     Route::post('relatedepisodes', 'ApiAuthController@relatedepisodes');
-    Route::post('seasonepisodes', 'ApiAuthController@seasonepisodes');
+    Route::post('seasonepisodes', 'ApiAuthController@SeasonsEpisodes');
     Route::post('user_notifications', 'ApiAuthController@seasonepisodes');
     Route::post('user_comments', 'ApiAuthController@UserComments');
     Route::post('add_comment', 'ApiAuthController@AddComment');
