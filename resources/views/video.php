@@ -46,7 +46,8 @@ input.skips{
 // echo "<pre>";
 // print_r($ppv_video_play); exit();
 // dd($recomended);
-
+$package = App\User::where('id',1)->first();
+$pack = $package->package;
 
 if(!Auth::guest()) {
   // dd($video->access);
@@ -55,7 +56,8 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 
 //  dd(Auth::user()->role); 
       
-  if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
+  if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
@@ -148,7 +150,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                  <!-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> -->
                    <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
                 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -239,7 +241,11 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 
   </div>
 
- <?php }
+ <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
+ if(!empty($video->path)){ ?>
+  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+<?php } }
 /* For Registered User */       
    else {  ?>       
        <div id="video" class="fitvid" style="margin: 0 auto;">
