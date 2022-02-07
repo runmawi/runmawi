@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             PaymentSettingsTableSeeder::class,
             MenuTableSeeder::class,
             EmailTemplatesSeeder::class,
+            ThemeIntegrationSeeder::class,
         ]);
     
     }

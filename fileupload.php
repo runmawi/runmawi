@@ -64,3 +64,21 @@ ssh2_auth_password($connection, $username, $password);
 ?>
 
 
+
+<!-- 
+Main Account Credentials
+
+url: https://75.119.145.126:2087
+Username: root
+Password: As6EEE3wPM
+Cpanel access: 
+url: https://75.119.145.126:2083
+UserName: vodflicknexs
+PassWord: t94d24w32F8W
+
+Test Account for file deployment
+url: https://75.119.145.126:2083
+UserName: manoj
+PassWord: t94d24w32F8W -->
+
+

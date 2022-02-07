@@ -28,7 +28,7 @@ class HomesettingTableSeeder extends Seeder
                     'Recommendation' => 0,
                     'AutoIntro_skip' => null,
                     'user_id' => null,
-                    'theme_choosen' => null,
+                    'theme_choosen' => 'default',
                     'created_at' => Carbon::now(),
                 ],
         ];
