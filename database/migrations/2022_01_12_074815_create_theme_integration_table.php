@@ -16,6 +16,7 @@ class CreateThemeIntegrationTable extends Migration
         Schema::create('theme_integration', function (Blueprint $table) {
             $table->id();
             $table->string('theme_name')->nullable();
+            $table->string('theme_css',500)->nullable();
             $table->string('theme_images',500)->nullable();
             $table->timestamps();
         });
