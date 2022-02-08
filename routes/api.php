@@ -246,8 +246,4 @@ Route::group([
     Route::get('Welcome_Screen', 'ApiAuthController@Welcome_Screen');
     Route::post('payment_plan', 'ApiAuthController@PaymentPlan');
 
-// Auto deployment
-    Route::Post('Deploy', 'ApiAuthController@Deploy');
-
-
 });

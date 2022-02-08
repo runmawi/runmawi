@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             if($Email != null){
                 $email_id = $Email->Domain_name;
                 $password = Hash::make($Email->password);
-                $package = $Email->package;
+                $package = ucwords($Email->package);
             }else{
                 $email_id = 'admin@admin.com';
                 $password = '$2y$10$Z..MshqRRC17yUY32E6LKOItw2kTlrG2mwsrxHbGJ04LlOHOA7N9y';
