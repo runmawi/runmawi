@@ -25,7 +25,9 @@
       width: 25%;
       padding: 8px;
     }
-
+        .dl{
+            font-size: 20px;
+        }
     .price {
       list-style-type: none;
 
@@ -123,9 +125,26 @@
             background-color: #4895d1 !important;
             border: none !important;
         }
+        h1{
+            font-family: Chivo;
+font-style: normal;
+font-weight: normal;
+font-size: 60px;
+line-height: 31px;
 
+
+
+color: #FFFFFF;
+        }
+        span{
+            font-weight: 100;
+            font-size: 40px;
+        }
 </style>
 <style>
+    .ak{
+        border-right: 2px solid #fff;
+    }
 .overlay{
     display: none;
     position: fixed;
@@ -144,12 +163,44 @@ body.loading{
 body.loading .overlay{
     display: block;
 }
+    .bg-col p{
+        font-family: Chivo;
+font-style: normal;
+font-weight: normal;
+font-size: 26px;
+line-height: 31px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+    }
     .bg-col{
-     background: #504C4C;
+    background: #C4C4C4;
+mix-blend-mode: color-dodge;
+border-radius: 20px;
     padding: 10px;
     color: #fff;
-    border-radius: 10px;
+        
+   
 }
+    .bl{
+       background: #161617;
+        padding: 10px;
+
+
+    }
+    .edit li{
+        list-style: none;
+        padding: 10px 20px;
+    }
+    .bl1{
+        background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0) 100%);
+padding: 40px;
+border-radius: 20px;
+        color: #fff!important;
+    }
 
 </style>
 
@@ -160,35 +211,67 @@ body.loading .overlay{
   });
     
   </script>
- <section class="pt-2 mt-2">
-        <div class="container mb-3">
-            <h1 class="text-white">Choose Your plan</h1>
-            <div class="row justify-content-center">
-            @foreach($plans_data as $plan) 
-            @php $plan_name = $plan[0]->plans_name; @endphp
-            
-                <div class="col-md-7 mt-3">
+ <section class="bl pt-2 mt-2">
+
+        <div class="container mb-3 ">
+            <div class="bl1">
+            <h1 class="text-white text-center mb-4">Choose Your plan</h1>
+            <div class="row justify-content-center mt-5 ">
+                
+                <div class="col-md-4 col-lg-4 ak padding-20">
+                    <h2 class="">Plan Details</h2>
+                    <p class="text-white mt-2">Edit your name or change<br>
+your password.</p>
+                    <ul class="edit">
+                        <li>Edit Profile</li>
+                        <li>Plan</li>
+                        <li>Kids Safemode</li>
+                        <li>video Preferences</li>
+                    </ul>
+                </div>
+                <div class="col-lg-8">
+                <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                        <div class="container ">
+                          
+                        <p>SAVE $ 594</p>
+                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        </div>
+                        
+                    </div>
+                
+                 <div class="col-md-12 mt-3">
                     <div class="bg-col">
-                        <div class="container d-flex align-items-center justify-content-evenly">
-                           <div class="mr-3" style="font-size:60px;"> <input type="radio" class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name" id="plans_name_choose" data-price="{{ $plan[0]->price }}" data-name="{{ $plan[0]->plans_name }}" value="{{ $plan_name }}" ></div>
-                            <div>
-                                <p>  @if( $plan_name == 'Quarterly'){{ 'SAVE $ 1.98' }} @elseif( $plan_name == 'Half Yearly' ){{ 'SAVE $ 4.95' }} @elseif( $plan_name == 'Yearly' ) {{ 'SAVE $ 9.89' }} @endif </p>
-                                {{-- <p>SAVE $ 594</p> --}}
-                                <h1> {{ "$".$plan[0]->price }}
-                                    <span>for  <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?></span>
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-around">
-                            <p>No recurring charges</p>
-                            <p>Non-refundable</p>
-                            <p>No free trail</p>
-                        </div>
+                       <div class="container ">
+                           
+                        <p>SAVE $ 300</p>
+                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
+                      
+                    </div>
+            
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                       <div class="container ">
+                           
+                                
+                        <p>SAVE $ 99</p>
+                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
+                        
+                    </div>
+           
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                        <div class="container ">
+                          
+                        <p></p>
+                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
+                        
                     </div>
                 </div>
-            @endforeach
+               
             </div>
         </div>
+            </div>
             </section>
 !<!--<div class="container">
     <div class="row justify-content-center page-height" id="signup-form">  
@@ -344,7 +427,7 @@ body.loading .overlay{
         
         <!-- </form> -->
         
-        </div>
+        
 
     <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">

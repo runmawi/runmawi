@@ -12,7 +12,7 @@
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-4 col-lg-12 col-md-12">
-                        <h1 class="text-white text-uppercase mb-3" >
+                        <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
                         <?php echo __($slider_video->title); ?>
                     </h1>
                             <div class="mb-3">
@@ -23,7 +23,7 @@
 <span class="fa fa-star"></span></div>
                     
                 </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12">
+                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
                         <div class="d-flex justify-content-around align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                            <a href="<?php echo $slider_video->link; ?>"
@@ -148,7 +148,7 @@ endif; ?>
                         </div>
                             
                 </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12">
+                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
                         <div class="d-flex justify-content-around align-items- r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"

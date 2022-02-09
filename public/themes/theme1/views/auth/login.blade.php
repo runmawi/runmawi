@@ -83,7 +83,7 @@ i.fa.fa-google-plus {
                 
           </div>
          <div class="col-lg-5 col-12 col-md-12 align-self-center">
-            <div class="sign-user_card ">                    
+            <div class="sign-user_card1 ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">

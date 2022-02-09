@@ -18,19 +18,8 @@
                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>
-                                        
-                                         <div class="corner-text-wrapper">
-                                            <div class="corner-text">
-                                                <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
-                                                <?php  if(!empty($watchlater_video->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                            </div>
-                                        </div>
+                                 </div>
+                              </div>
                                         <div class="block-description">
                                             <h6><?php echo __($watchlater_video->title); ?></h6>
                                             <div class="movie-time d-flex align-items-center my-2">
@@ -41,10 +30,8 @@
                                             <div class="hover-buttons">
                                             <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
 
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Watch Now
+                                                                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
 
-                                            </a>
                                             <div class="d-flex">
                                             <!-- <a   href="<?php //echo URL::to('category') ?><? // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                                             <!-- </a> -->

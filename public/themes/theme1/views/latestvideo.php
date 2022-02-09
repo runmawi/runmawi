@@ -1,11 +1,12 @@
 <?php include('header.php'); ?>
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+     <h3 class="vid-title text-center mt-3 mb-3">Latest Videos</h3>               
+            <div class="container-fluid" style="background:#4b4a4b;padding:0px 60px!important;">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
-                        <h3 class="vid-title">Latest Videos</h3>                     
+                             
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
@@ -17,17 +18,7 @@
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
                                    
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php  if(!empty($latest_video->ppv_price)){?>
-                                          <p class="p-tag1" style="left:2px!important"><?php echo $currency->symbol.' '.$latest_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $latest_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null ){ ?>
-                                            <p class="p-tag" style="left:2px!important"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                      </div>
                                     <div class="block-description" style="left:50px!important;">
@@ -35,8 +26,8 @@
                                        <div class="hover-buttons d-flex justify-content-around">
                                            <div>
                                            <a class=" mr-2" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="text-white btnk">
-                                          <i class="fa fa-play" aria-hidden="true"></i>
+                                          <span class="text-white">
+                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">     
                                         
                                           </span>
                                            </a></div>

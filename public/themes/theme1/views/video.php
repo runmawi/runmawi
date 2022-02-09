@@ -55,8 +55,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 
 //  dd(Auth::user()->role); 
       
-if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
-|| (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?><?php //dd(Auth::user()->role); ?>
+  if ( $ppv_exist > 0  || Auth::user()->subscribed() || Auth::user()->role == 'admin' || Auth::user()->role =="subscriber" || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered')) { ?>
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
@@ -240,28 +239,9 @@ if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth
 
   </div>
 
-  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
-   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
- if(!empty($video->path)){ ?>
-          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-               <!-- Current time: <div id="current_time"></div> -->
-               <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   >
-  <!-- Captions are optional -->
-  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "German"){ ?>
-           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Spanish"){ ?>
-           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Hindi"){ ?>
-           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-           <?php } } } else { }  ?>  
-</video>
-</div>
-  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
-<?php } }
+ <?php }
 /* For Registered User */       
-   else {  ?>        
+   else {  ?>       
        <div id="video" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
