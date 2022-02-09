@@ -30,6 +30,7 @@ use View;
 use Hash;
 use Mail;
 use Nexmo;
+use Crypt;
 use Illuminate\Support\Facades\Cache;
 //use Image;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -2041,34 +2042,63 @@ class HomeController extends Controller
 
         }
     }else{
-        $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+        //         
+        $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
         ->where('type', '=', $request->payment_method)
         ->first();
 
     $request->session()
         ->put('planname', $request->modal_plan_name);
     $request->session()
-        ->put('plan_id', $plans->plan_id);
+        ->put('plan_id', $plan_details->plan_id);
     $request->session()
-        ->put('payment_type', $plans->payment_type);
+        ->put('payment_type', $plan_details->payment_type);
     $register = $request->session()
         ->get('register');
     $plan_name = $request->get('register.email');
 
     $user = Auth::user();
-    $plan_name = $plans->plan_id;
+    $plan_name = $plan_details->plan_id;
 
     $request->session()
-        ->put('become_plan', $plans->plan_id);
-        if(!empty($plans->plan_id)){
-           $plan_id = $plans->plan_id;
-        }else{
-            $plan_id = $plans->plan_id;
-        }
-    $data = array(
-        'plan_name' => $plan_id
-    );
-    return Theme::view('register.upgrade.stripe_upgrade', ['intent' => $user->createSetupIntent() ]);
+        ->put('become_plan', $plan_details->plan_id);
+    //     if(!empty($plans->plan_id)){
+    //        $plan_id = $plans->plan_id;
+    //     }else{
+    //         $plan_id = $plans->plan_id;
+    //     }
+    // $data = array(
+    //     'plan_name' => $plan_id
+    // );
+    $plan_id = $plan_details->modal_plan_name;
+    // $plan_details = Plan::where("plan_id","=",$plan_id)->first();
+    $payment_type = $plan_details->payment_type;
+// dd($plan_id);
+
+    $user = Auth::user();
+     if ( $plan_details->payment_type == "recurring") {
+          if ($user->stripe_id == NULL)
+               {
+                   $stripeCustomer = $user->createAsStripeCustomer();
+               }
+           $response = array(
+            "plans_details" => $plan_details,
+            "plan_id" => $plan_id,
+            "payment_type" => $plan_details->payment_type
+          );
+         return view('register.upgrade.stripe_upgrade',['intent' => $user->createSetupIntent()],$response); 
+       } else {
+       if ($user->stripe_id == NULL)
+       {
+           $stripeCustomer = $user->createAsStripeCustomer();
+       }
+       $response = array(
+           "plans_details" => $plan_details,
+           "plan_id" => $plan_id,
+           "payment_type" => $plan_details->payment_type
+       );
+    return Theme::view('register.upgrade.stripe',['intent' => $user->createSetupIntent()],$response);
+       }
         // dd($subscriptions->id);
 
     }

@@ -732,7 +732,7 @@ $uppercase =  ucfirst($request_url);
                            <?php } ?>
                            </div>
                             <div class="col-sm-6">
-                                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                             </div>
                         </div>
                     </div>

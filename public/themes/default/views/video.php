@@ -55,6 +55,7 @@ if(!Auth::guest()) {
 if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
 //  dd(Auth::user()->role); 
+
       
 if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
 || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?><?php //dd(Auth::user()->role); ?>
@@ -784,6 +785,9 @@ $artists = [];
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
+<?php }?>
+<?php if(!empty($ads_path)){ ?>
+  <input type="hidden" id="ads_path" name="ads_path" value="<?php echo $ads_path ?>">
 <?php }?>
 
 
