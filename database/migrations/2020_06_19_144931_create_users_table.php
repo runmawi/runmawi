@@ -55,7 +55,9 @@ class CreateUsersTable extends Migration
                 $table->bigInteger('stripe_active')->nullable();
                 $table->string('card_brand')->nullable()->nullable();
                 $table->string('card_last_four', 4)->nullable();
+                $table->timestamp('trial_starts_at')->nullable();
                 $table->timestamp('trial_ends_at')->nullable();
+                $table->tinyInteger('trial_in')->default(0);
                 $table->timestamp('mobile_verified_at')->nullable();
                 $table->string('FamilyMode')->nullable();
                 $table->string('Kidsmode')->nullable();

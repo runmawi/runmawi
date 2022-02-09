@@ -17,25 +17,14 @@
                                             <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                         </video>
                                     </a>
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                            <?php  if(!empty($watchlater_video->ppv_price)){?>
-                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
-                                            <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
-                                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                         </div>
                                 <div class="block-description">
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                      </a>
+                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
                                    
                                 </div>
                             </div>

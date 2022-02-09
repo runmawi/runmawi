@@ -94,8 +94,7 @@ $data = Session::all();
 <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
 
-       <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
-
+      
    <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
@@ -117,7 +116,13 @@ $data = Session::all();
        height: 100%;
         margin: 20px auto;
     }
-    
+        .media h6{
+            font-family: Chivo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 29px;
+        }
     i.fas.fa-child{
     font-size: 35px;
     color: white;
@@ -181,8 +186,7 @@ $data = Session::all();
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                       //  $menus = App\Menu::all();
-                                       $menus = App\Menu::orderBy('order', 'asc')->get();
+                                        $menus = App\Menu::all();
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
@@ -195,7 +199,7 @@ $data = Session::all();
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $cat as $category) { ?>
                                               <li>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
                                                 </a>
                                               </li>
@@ -378,7 +382,7 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome
+                                        <p class="mt-3" >Welcome
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');
@@ -589,7 +593,7 @@ $data = Session::all();
             position: absolute;
             top: <?php echo $playerui_settings->watermark_top; ?>;
             left: <?php echo $playerui_settings->watermark_left; ?>;
-            z-index: 2;
+            z-index: 10;
             content: '';
             height: 300px;
             width: <?php echo $playerui_settings->watermar_width; ?>;
