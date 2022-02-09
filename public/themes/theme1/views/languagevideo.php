@@ -9,11 +9,12 @@
 
  <!-- MainContent -->
  <div class="main-content">
-     <div class="container-fluid">
+     <h2 class="Continue Watching mb-3 text-center">Movies </h2>
+     <div class="container-fluid" style="background:#4b4a4b;padding:0px 60px!important;">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="Continue Watching">Movies </h4>
+            
         </div>
      </div>
      <section class="movie-detail ">
@@ -49,9 +50,7 @@
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white btn-cl"
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                               
-                                </a>
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
                                 <!--  <div >
                                    <a style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"> -->
                                         <!-- <i style="" <?php //if(isset($video->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i> -->

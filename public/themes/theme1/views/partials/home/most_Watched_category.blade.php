@@ -34,33 +34,14 @@
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>
                                     </a>
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
-                                        <p class="p-tag1">
-                                            
-                                            <?php if(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
-                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv .' '.$currency->symbol;
-                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo "Free"; 
-                                                }
-                                            ?>
-                                        
-                                        </p>
-                                    </div>
-                                </div>
+                                
                         </div>
                                 <div class="block-description">
                                     
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white btn-cl"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                           
-
-                                        </a>
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
                                      <!--   <div class="">
                                         <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
                             <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
