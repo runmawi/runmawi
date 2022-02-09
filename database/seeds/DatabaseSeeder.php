@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             MenuTableSeeder::class,
             EmailTemplatesSeeder::class,
             ThemeIntegrationSeeder::class,
+            countrycodesTableSeeder::class,
+            LanguageTableSeeder::class,
         ]);
     
     }
