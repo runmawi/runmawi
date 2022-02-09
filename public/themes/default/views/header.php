@@ -614,12 +614,19 @@ toggle.addEventListener('input', (e) => {
 });
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+<!-- 
+  <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.min.css';?>" />
 
-  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.css">
+
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.css';?>" />
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/demo.css';?>" /> -->
+
 
       </header>
       <!-- Header End -->
      
        <!-- MainContent End-->
+       
      
   

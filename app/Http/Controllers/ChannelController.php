@@ -41,6 +41,7 @@ use App\HomeSetting as HomeSetting;
 use App\BlockVideo as BlockVideo;
 use App\CategoryVideo as CategoryVideo;
 use App\LanguageVideo;
+use App\AdsVideo;
 use Theme;
 
 
@@ -325,7 +326,17 @@ class ChannelController extends Controller
                     }
                     }
             
-            
+                $ads = AdsVideo::select('advertisements.*')
+                ->Join('advertisements', 'advertisements.id', '=', 'ads_videos.ads_id')
+                ->where('ads_videos.video_id','=',$vid)
+                ->get();
+                // $ads = AdsVideo::where('video_id',126)->get();
+                // dd($ads);
+                if(!empty($ads)){
+                  $ads_path = $ads[0]->ads_path;
+                }else{
+                  $ads_path = "";
+                }
                 // $artists = [];
                 $payment_settings = PaymentSetting::first();  
                 $mode = $payment_settings->live_mode ;
@@ -346,6 +357,7 @@ class ChannelController extends Controller
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
+                     'ads_path' => $ads_path,
                      'ppv_exist' => $ppv_exist,
                      'ppv_price' => 100,
                     'publishable_key' => $publishable_key,

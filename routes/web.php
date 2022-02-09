@@ -8,6 +8,7 @@ use Carbon\Carbon as Carbon;
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
+Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
@@ -131,13 +132,22 @@ Route::post('ppvWishlist', 'WishlistController@ppvWishlist');
 Route::get('mywishlists', 'WishlistController@show_mywishlists');
 Route::get('cancelSubscription', 'PaymentController@CancelSubscription');
 Route::get('renew', 'PaymentController@RenewSubscription');
+// Route::post('upgradeSubscription', 'PaymentController@UpgradeSubscription');
+// Route::post('Upgrade_Subscription', 'PaymentController@Upgrade_Subscription');
+// Route::post('upgrade-stripe-plan', 'PaymentController@UpgradeStripe');
+// Route::post('upgrade-paypal-plan', 'PaymentController@UpgradePaypalPage');
+// Route::post('upgradePaypal', 'PaymentController@upgradePaypal');
+// Route::post('becomePaypal', 'PaymentController@BecomePaypal');
+// Route::get('upgrade-subscription', 'PaymentController@Upgrade');
 Route::post('upgradeSubscription', 'PaymentController@UpgradeSubscription');
-Route::post('Upgrade_Subscription', 'PaymentController@Upgrade_Subscription');
 Route::post('upgrade-stripe-plan', 'PaymentController@UpgradeStripe');
 Route::post('upgrade-paypal-plan', 'PaymentController@UpgradePaypalPage');
 Route::post('upgradePaypal', 'PaymentController@upgradePaypal');
 Route::post('becomePaypal', 'PaymentController@BecomePaypal');
 Route::get('upgrade-subscription', 'PaymentController@Upgrade');
+
+
+Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
 Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber');
 Route::get('transactiondetails','PaymentController@TransactionDetails');
 

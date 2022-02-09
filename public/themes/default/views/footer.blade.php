@@ -231,7 +231,24 @@ function myFunction() {
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
  <script src="<?= URL::to('/'). '/assets/js/plyr-resolution.js';?>"></script>
-          
+ <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+
+<!-- Google IMA3 SDK -->
+<script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+
+<!-- Plyr core script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.js"></script>
+
+<!-- Plyr ads script -->
+<script src="<?= URL::to('/'). '/assets/js/plyr-ads.min.js';?>"></script>
+
+<script src="<?= URL::to('/'). '/assets/js/plyr-ads.js';?>"></script>
+
+<!-- Docs script -->
+<!-- <script src="<?= URL::to('/'). '/assets/js/demo.js';?>"></script> -->
+
+<!-- Rangetouch to fix <input type="range"> on touch devices (see https://rangetouch.com) -->
+<script src="https://cdn.rangetouch.com/1.0.1/rangetouch.js" async></script>
  <script>
   // alert($('#hls_m3u8').val());
 
