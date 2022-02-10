@@ -22,6 +22,13 @@ class ThemeIntegrationSeeder extends Seeder
                 'created_at'     => Carbon::now(),
                 'updated_at'      => null,
             ],
+            [   'theme_name'     => 'theme1', 
+                'theme_images'   => null,
+                'theme_css'      => null,
+                'created_at'     => Carbon::now(),
+                'updated_at'      => null,
+            ],
+            
         ];
 
         ThemeIntegration::insert($ThemeIntegration);
