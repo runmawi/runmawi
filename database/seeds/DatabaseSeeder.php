@@ -32,6 +32,11 @@ class DatabaseSeeder extends Seeder
             ThemeIntegrationSeeder::class,
             countrycodesTableSeeder::class,
             LanguageTableSeeder::class,
+            ModeratorsPermissionsTableSeeder::class,
+            ModeratorsRolesTableSeeder::class,
+            ModeratorsUserTableSeeder::class,
+            AdvertisersTableseeder::class,
+            UserAccessesTableseeder::class,
         ]);
     
     }
