@@ -97,7 +97,7 @@ class ChannelController extends Controller
                                 ->where('category_id','=',$category_id)->where('active', '=', '1');
 
               if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                 $categoryVideos = $categoryVideos  ->whereNotIn('id',$blockvideos);
+                 $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',$blockvideos);
                  }
                $categoryVideos = $categoryVideos ->paginate();
               
@@ -183,7 +183,6 @@ class ChannelController extends Controller
           }
 
         }
-
         $current_date = date('Y-m-d h:i:s a', time()); 
          $view_increment = $this->handleViewCount_movies($vid);
 
@@ -331,8 +330,7 @@ class ChannelController extends Controller
                 ->where('ads_videos.video_id','=',$vid)
                 ->get();
                 // $ads = AdsVideo::where('video_id',126)->get();
-                // dd($ads);
-                if(!empty($ads)){
+                if(!empty($ads) && (count($ads)) > 0){
                   $ads_path = $ads[0]->ads_path;
                 }else{
                   $ads_path = "";
@@ -350,8 +348,8 @@ class ChannelController extends Controller
                       $secret_key= null;
                       $publishable_key= null;
                   }    
-             $currency = CurrencySetting::first();
 
+             $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
                      'video' => $categoryVideos,

@@ -1303,7 +1303,6 @@ class HomeController extends Controller
             $most_watch_user =[];
         }
 
-
 // Most watched videos In website
 
         if( $getfeching->geofencing == 'ON'){
@@ -1904,7 +1903,7 @@ class HomeController extends Controller
             $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC');
 
             if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+                $latest_videos = $latest_videos->whereNotIn('videos.id',$blockvideos);
              }
               $latest_videos = $latest_videos ->limit(10)->get();
         }
@@ -1964,7 +1963,7 @@ class HomeController extends Controller
        ->where('language_id','=',$lanid)->where('active', '=', '1');
        
        if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                 $language_videos = $language_videos->whereNotIn('id',$blockvideos);
+                 $language_videos = $language_videos->whereNotIn('videos.id',$blockvideos);
         }
       $language_videos = $language_videos->get();
 
