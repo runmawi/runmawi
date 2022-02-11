@@ -15,8 +15,7 @@ class CreateLiveCategoriesTable extends Migration
     {
         Schema::create('live_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('order')->nullable();
             $table->string('name')->nullable();

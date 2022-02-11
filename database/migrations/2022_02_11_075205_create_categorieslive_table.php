@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMoviesSubtitlesTable extends Migration
+class CreateCategoriesliveTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateMoviesSubtitlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('movies_subtitles', function (Blueprint $table) {
+        Schema::create('livecategories', function (Blueprint $table) {
             $table->id();
-            $table->integer('movie_id')->nullable();  
-            $table->string('sub_language')->nullable();
-            $table->string('shortcode')->nullable();
-            $table->string('url')->nullable();
+            $table->integer('live_id')->nullable();
+            $table->integer('category_id')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateMoviesSubtitlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movies_subtitles');
+        Schema::dropIfExists('livecategories');
     }
 }

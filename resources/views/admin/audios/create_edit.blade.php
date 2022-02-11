@@ -644,10 +644,13 @@ $('form[id="audio_form"]').validate({
 	rules: {
 	  title : 'required',
 	  image : 'required',
+	  album_id : 'required',
 	},
 	messages: {
 	  title: 'This field is required',
 	  image: 'This field is required',
+	  album_id: 'This field is required',
+	  
 	},
 	submitHandler: function(form) {
 	  form.submit();

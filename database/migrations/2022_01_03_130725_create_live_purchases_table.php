@@ -15,8 +15,7 @@ class CreateLivePurchasesTable extends Migration
     {
         Schema::create('live_purchases', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();
             $table->integer('audio_id')->nullable();
             $table->integer('movie_id')->nullable();
             $table->timestamp('expired_date');
