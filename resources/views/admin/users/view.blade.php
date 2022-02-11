@@ -18,7 +18,7 @@
                            <table class="table table-bordered table-striped w-auto mentors">       
         <tr>
           <th class="headings">Username</th>
-          <td>{{ $users->username }}</td>
+          <td>{{ ucwords($users->username) }}</td>
         </tr>
         <tr>
           <th class="headings">User ID</th>
@@ -61,16 +61,16 @@ $created_at = $start_date ;
 
         <tr>
           <th class="headings">Current Package </th>
-          <td>{{ $plans_name }}</td>
+          <td>{{ $plans_name ? $plans_name : '-' }}</td>
         </tr>
 
         <tr>
           <th class="headings">Subscription Start Date</th>
-          <td>{{ $created_at }}</td>
+          <td>{{ $created_at ? $created_at : '-' }}</td>
         </tr>
         <tr>
           <th class="headings">Subscription End Date</th>
-          <td> {{  $end_date }}</td>
+          <td> {{  $end_date ? $end_date : '-'}}</td>
         </tr>
    
         <tr>
