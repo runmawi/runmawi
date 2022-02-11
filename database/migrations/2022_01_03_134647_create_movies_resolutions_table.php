@@ -15,8 +15,7 @@ class CreateMoviesResolutionsTable extends Migration
     {
         Schema::create('movies_resolutions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id');
-            $table->foreign('movie_id')->references('id')->on('movies');
+            $table->integer('movie_id')->nullable();
             $table->integer('quality')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();

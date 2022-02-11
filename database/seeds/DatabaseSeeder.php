@@ -37,7 +37,11 @@ class DatabaseSeeder extends Seeder
             ModeratorsUserTableSeeder::class,
             AdvertisersTableseeder::class,
             UserAccessesTableseeder::class,
+            CurrenciesTableseeder::class,
+            CurrenciesSettingTableseeder::class,
+            SiteThemeTableseeder::class,
         ]);
     
     }
 }
+

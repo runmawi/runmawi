@@ -15,8 +15,7 @@ class CreateLikeDislikesTable extends Migration
     {
         Schema::create('like_dislikes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();
             $table->integer('video_id')->nullable();
             $table->integer('movie_id')->nullable();
             $table->integer('episode_id')->nullable();

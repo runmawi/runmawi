@@ -982,7 +982,7 @@ endif; ?>
                                              ->where('age_restrict','<',18);
 
                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                              $videos = $videos  ->whereNotIn('id',$blockvideos); }
+                              $videos = $videos  ->whereNotIn('videos.id',$blockvideos); }
                               if($Family_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 18);
                              }
@@ -995,7 +995,7 @@ endif; ?>
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
 
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
                         }
                         if($Family_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 18);
@@ -1011,7 +1011,7 @@ endif; ?>
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
                      
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
                            }
                            if($Family_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 18);
