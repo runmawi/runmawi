@@ -208,7 +208,8 @@ class AdminSeriesController extends Controller
         // dd($data['genre_id']);
 
         $series = Series::create($data);
-        
+        $series->slug =  $slug;
+        $series->save();
         if(!empty($artistsdata)){
             foreach ($artistsdata as $key => $value) {
                 $artist = new Seriesartist;
@@ -1004,7 +1005,7 @@ class AdminSeriesController extends Controller
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
-        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+        }elseif(!empty($input['ppv_price']) || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
         }else{
             $ppv_price = null;
