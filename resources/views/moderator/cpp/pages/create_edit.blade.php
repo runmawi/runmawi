@@ -21,8 +21,8 @@
             <div>
 		<h4>{{ $page->title }}</h4> </div>
             <div>
-		<a href="{{ URL::to('page') . '/' . $page->slug }}" target="_blank" class="btn btn-info">
-			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i></a></div></div>
+		<!-- <a href="{{ URL::to('page') . '/' . $page->slug }}" target="_blank" class="btn btn-info">
+			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i></a></div></div> -->
 		
 	@else
 		<h5><i class="entypo-plus"></i> Add New Page</h5> 

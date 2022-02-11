@@ -42,6 +42,9 @@ use DB;
 use Session;
 use App\LanguageVideo;
 use App\CategoryVideo;
+use App\CountryCode;
+use App\Advertisement;
+
 
 
 class CPPAdminVideosController extends Controller
@@ -323,7 +326,6 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
         //         return redirect('/home');
         //     }
             $settings = Setting::first();
-
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
             'post_route' => URL::to('cpp/videos/fileupdate'),
@@ -336,7 +338,10 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             'artists' => Artist::all(),
             'age_categories' => AgeCategory::all(),
             'settings' => $settings,
+            'countries' => CountryCode::all(),
             'video_artist' => [],
+            'ads' => Advertisement::where('status','=',1)->get(),
+
             );
         return View::make('moderator.cpp.videos.fileupload', $data);
                     // 'post_route' => URL::to('admin/videos/store'),
@@ -686,10 +691,12 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             // 'admin_user' => Auth::user(),
             'video_categories' => VideoCategory::all(),
             'video_subtitle' => VideosSubtitle::all(),
+            'ads' => Advertisement::where('status','=',1)->get(),
             'subtitles' => Subtitle::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'settings' => $settings,
+            'countries' => CountryCode::all(),
             'age_categories' => AgeCategory::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
