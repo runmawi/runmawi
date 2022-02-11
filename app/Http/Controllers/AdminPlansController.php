@@ -235,31 +235,34 @@ public function PaypalIndex()
                 $plan_devices = null;
 
             }
-            // dd($plan_devices);
+            // dd($request->plan_id);
+            if(!empty($request->plan_id)){
+                foreach($request->plan_id as $key => $value){
 
-            foreach($request->plan_id as $key => $value){
-
-                foreach($request->type as $typekey => $types){
-                    if($typekey == $key){
-
-                $new_plan = new SubscriptionPlan;
-                $new_plan->type = $types;
-                $new_plan->plans_name = $request->plans_name;
-                $new_plan->payment_type = $request->payment_type;
-                $new_plan->price = $request->price;
-                $new_plan->plan_id = $value;
-                $new_plan->billing_interval = $request->billing_interval;
-                $new_plan->billing_type = $request->billing_type;
-                $new_plan->days = $request->days;
-                $new_plan->video_quality = $request->video_quality;
-                $new_plan->resolution = $request->resolution;
-                $new_plan->devices = $plan_devices;
-                $new_plan->subscription_plan_name = $request->plans_name.$types;
-                $new_plan->user_id = Auth::User()->id;            
-                $new_plan->save();
+                    foreach($request->type as $typekey => $types){
+                        if($typekey == $key){
+    
+                    $new_plan = new SubscriptionPlan;
+                    $new_plan->type = $types;
+                    $new_plan->plans_name = $request->plans_name;
+                    $new_plan->payment_type = $request->payment_type;
+                    $new_plan->price = $request->price;
+                    $new_plan->plan_id = $value;
+                    $new_plan->billing_interval = $request->billing_interval;
+                    $new_plan->billing_type = $request->billing_type;
+                    $new_plan->days = $request->days;
+                    $new_plan->video_quality = $request->video_quality;
+                    $new_plan->resolution = $request->resolution;
+                    $new_plan->devices = $plan_devices;
+                    $new_plan->subscription_plan_name = $request->plans_name.$types;
+                    $new_plan->user_id = Auth::User()->id;            
+                    $new_plan->save();
+                        }
                     }
-                }
-                }
+                    }
+                }else{
+                    return Redirect::back()->with(array('message' => 'Please Enable Payment Systems to ADD PLAN ID and ADD Devices', 'note_type' => 'success'));
+            }
             // foreach($request->plan_id as $key => $value){
 
             //     $new_plan = new SubscriptionPlan;
