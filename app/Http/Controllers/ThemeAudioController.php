@@ -141,7 +141,11 @@ class ThemeAudioController extends Controller{
         } else {
            
             $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+            if(!empty($audio)){
             $audio = $audio->id;
+            }else{
+            $audio = "";
+            }
 
             $view = new RecentView;
             $view->audio_id = $audio;
