@@ -342,9 +342,13 @@ public function RolesPermissionStore(Request $request)
 $request->session()->flash('notification', 'Successfully Registered Role');
 
   $user_permission = $request->user_permission;
-$permission = implode(",",$user_permission);
+if(!empty($user_permission)){
+  $permission = implode(",",$user_permission);
+}else{
+  $permission = "";
+}
 // echo "<pre>";  
-// print_r($permission);
+// print_r($user_permission);
 // exit();
 $data = Session::all();
 if (!empty($data['password_hash'])) {
