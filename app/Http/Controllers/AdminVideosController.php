@@ -305,6 +305,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              
              $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
              
+            $storepath  = URL::to('/storage/app/public/'.$path);
              
              $video = new Video();
              $video->disk = 'public';
@@ -312,7 +313,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              $video->original_name = 'public';
              $video->path = $path;
              $video->title = $file_folder_name;
-             $video->mp4_url = $path;
+             $video->mp4_url = $storepath;
              $video->draft = 0;
              $video->user_id = Auth::user()->id;
              $video->save();
