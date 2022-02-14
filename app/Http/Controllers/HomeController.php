@@ -2488,6 +2488,26 @@ class HomeController extends Controller
     public function Movie_description(){
 
         $currency = CurrencySetting::first();
+        $Recomended = HomeSetting::first();
+        $home_settings = HomeSetting::first() ;
+
+
+        $latest_videos = Video::where('status', '=', '1')->take(10)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+
+        if (!Auth::guest())
+                {
+                    $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+                        ->pluck('videoid')
+                        ->toArray();
+                    $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+                }
+                else
+                {
+                    $cnt_watching = '';
+                }
 
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
             if (!empty($PPV_settings)){
@@ -2499,6 +2519,9 @@ class HomeController extends Controller
         $data = array(
             'ppv_gobal_price' => $ppv_gobal_price,
             'currency' => $currency,
+            'latest_videos' => $latest_videos,
+            'home_settings' => $home_settings,
+            'cnt_watching'  => $cnt_watching,
         );
 
         return Theme::view('movie_description', $data);
