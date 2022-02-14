@@ -19,7 +19,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => '1',
+                'order' => 1,
                 'in_menu' => null ,
                 'name' => 'Home', 
                 'url' => '/home',
@@ -29,7 +29,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => '2',
+                'order' => 2,
                 'in_menu' => 'video' ,
                 'name' => 'Categories', 
                 'url' => '/home',
@@ -40,7 +40,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => 1,
+                'order' => 3,
                 'in_menu' => 'movies' ,
                 'name' => 'Movies', 
                 'url' => '/home',
@@ -51,7 +51,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => 1,
+                'order' => 4,
                 'in_menu' => null ,
                 'name' => 'Latest Videos', 
                 'url' => '/latest-videos',
@@ -62,7 +62,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => 1,
+                'order' => 5,
                 'in_menu' => null ,
                 'name' => 'TV Shows', 
                 'url' => '/tv-shows',
@@ -72,7 +72,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => 1,
+                'order' => 6,
                 'in_menu' => null ,
                 'name' => 'Live', 
                 'url' => '/live',
@@ -82,7 +82,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => 1,
+                'order' => 7,
                 'in_menu' => null ,
                 'name' => 'Audio', 
                 'url' => '/audios',
