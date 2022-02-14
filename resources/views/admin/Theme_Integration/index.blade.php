@@ -76,9 +76,9 @@
 
                 <div class="row data">
                         @foreach ($Themes as $theme_integration)
-                            <div class="theme_image">
+                            <div class="theme_image col-md-4">
                                 <div class="themes">
-                                    <img src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:50%" id= {{ $theme_integration->id  }}>  
+                                    <img class="w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:25%" id= {{ $theme_integration->id  }}>  
                                 </div>
                                 <div class="theme_name">{{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}</div>
                             </div>
