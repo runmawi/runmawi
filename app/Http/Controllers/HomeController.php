@@ -2485,7 +2485,24 @@ class HomeController extends Controller
         return $request->kids_mode;
 
     }
-    
+    public function Movie_description(){
+
+        $currency = CurrencySetting::first();
+
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            if (!empty($PPV_settings)){
+                $ppv_gobal_price = $PPV_settings->ppv_price;            
+            }else{
+                $ppv_gobal_price = null;
+            }
+
+        $data = array(
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => $currency,
+        );
+
+        return Theme::view('movie_description', $data);
+    }
 
 }
 

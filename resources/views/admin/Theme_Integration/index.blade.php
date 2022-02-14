@@ -78,7 +78,7 @@
                         @foreach ($Themes as $theme_integration)
                             <div class="theme_image col-md-4">
                                 <div class="themes">
-                                    <img class="w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:25%" id= {{ $theme_integration->id  }}>  
+                                    <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
                                 </div>
                                 <div class="theme_name">{{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}</div>
                             </div>
@@ -104,7 +104,6 @@ $( document ).ready(function() {
 
 
     $(".theme_img,#test").click(function(){
-
     theme_id=this.id;
 
         swal({
