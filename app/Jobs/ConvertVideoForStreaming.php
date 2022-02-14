@@ -38,8 +38,8 @@ class ConvertVideoForStreaming implements ShouldQueue
     {
         $video = $this->video->path;
         $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(250);
-        //$midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(500);
-        $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
+        $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(500);
+        // $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
        
@@ -56,9 +56,9 @@ class ConvertVideoForStreaming implements ShouldQueue
               ->addFormat($lowBitrateFormat, function($media) {
                 $media->addFilter('scale=640:480');
             })
-//              ->addFormat($midBitrateFormat, function($media) {
-//                $media->addFilter('scale=960:720');
-//            })
+             ->addFormat($midBitrateFormat, function($media) {
+               $media->addFilter('scale=960:720');
+           })
 //              ->addFormat($highBitrateFormat, function($media) {
 //                $media->addFilter('scale=1920:1200');
 //            })
