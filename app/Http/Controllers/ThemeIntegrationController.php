@@ -20,7 +20,13 @@ class ThemeIntegrationController extends Controller
     public function index(){
 
         $Themes = ThemeIntegration::all();
-        return view ('admin.Theme_Integration.index')->with('Themes', $Themes);;
+        $active_Status = HomeSetting::first();
+
+        $data=array(
+            'Themes' => $Themes,
+            'active_Status' => $active_Status,
+        );
+        return view ('admin.Theme_Integration.index',$data);
     }
 
     public function create(Request $request){
