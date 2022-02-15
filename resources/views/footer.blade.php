@@ -230,43 +230,81 @@ function myFunction() {
 
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
-          
- <script>
-  // alert($('#hls_m3u8').val());
+ <script src="<?= URL::to('/'). '/assets/js/plyr-resolution.js';?>"></script>
+ <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
-   document.addEventListener('DOMContentLoaded', () => {
-	// const source = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
-  const source = $('#hls_m3u8').val();
-  // alert(source);
-	const video = document.querySelector('video');
-	
-	// For more options see: https://github.com/sampotts/plyr/#options
-	// captions.update is required for captions to work with hls.js
-	const player = new Plyr(video, {captions: {active: true, update: true, language: 'en'}});
-	
-	if (!Hls.isSupported()) {
-		video.src = source;
-	} else {
-		// For more Hls.js options, see https://github.com/dailymotion/hls.js
-		const hls = new Hls();
-		hls.loadSource(source);
-		hls.attachMedia(video);
-		window.hls = hls;
-		
-		// Handle changing captions
-		player.on('languagechange', () => {
-			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
-			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
-		});
-	}
-	
-	// Expose player so it can be used from the console
-	window.player = player;
+<!-- Google IMA3 SDK -->
+<script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
+<!-- Plyr core script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.js"></script>
+
+<!-- Plyr ads script -->
+<script src="<?= URL::to('/'). '/assets/js/plyr-ads.min.js';?>"></script>
+
+<script src="<?= URL::to('/'). '/assets/js/plyr-ads.js';?>"></script>
+
+<!-- Docs script -->
+<!-- <script src="<?= URL::to('/'). '/assets/js/demo.js';?>"></script> -->
+
+<!-- Rangetouch to fix <input type="range"> on touch devices (see https://rangetouch.com) -->
+<script src="https://cdn.rangetouch.com/1.0.1/rangetouch.js" async></script>
+<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+      <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<script>
+          document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  } else {
+    // default options with no quality update in case Hls is not supported
+    const player = new Plyr(video, defaultOptions);
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
 });
-// const player = new Plyr('#trailor-videos');
 
-</script>
+
+         
+      </script>
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
 
@@ -297,6 +335,7 @@ function myFunction() {
 
         });
 
+       
       </script>
 </body>
 </html>
