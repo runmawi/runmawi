@@ -3,7 +3,9 @@
 if(isset($video)):
     $media_title = $video->title;
     $url = URL::to('/category/videos');
+    $embed_url = URL::to('/category/videos/embed');
     $media_url = $url . '/' . $video->slug;
+    $embed_media_url = $embed_url . '/' . $video->slug;
     $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
 elseif(isset($audio)):
     $media_title = $audio->title;
@@ -45,6 +47,9 @@ i#like {
 }
 </style>
 <input type="hidden" value="<?= $media_url ?>" id="media_url">
+<?php
+$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" frameborder="0" allowfullscreen></iframe>';
+?>
 <!-- Buttons start here. Copy this ul to your document. -->
 <li class="share">
 <span><i class="ri-share-fill"></i></span>
@@ -62,7 +67,9 @@ i#like {
 <li>
     <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) {}?> class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i></span>
 </li>
-
+<li>
+    <span><a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
+</li>
 <?php echo $hidden; if (Auth::user()) { ?>
     <input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
 <?php } ?>
@@ -184,6 +191,19 @@ function Copy() {
   var url =  navigator.clipboard.writeText(window.location.href);
   var path =  navigator.clipboard.writeText(media_path);
   $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+// console.log(url);
+// console.log(media_path);
+// console.log(path);
+}
+function EmbedCopy() {
+    // var media_path = $('#media_url').val();
+    var media_path = '<?= $url_path ?>';
+  var url =  navigator.clipboard.writeText(window.location.href);
+  var path =  navigator.clipboard.writeText(media_path);
+  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);
