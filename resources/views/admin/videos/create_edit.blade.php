@@ -2,8 +2,13 @@
 
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 @stop
- 
+<?php
+$embed_url = URL::to('/category/videos/embed');
+$embed_media_url = $embed_url . '/' . $video->slug;
+$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" frameborder="0" allowfullscreen></iframe>';
+?>
     <style>
         span{
             color: gray;
@@ -59,6 +64,8 @@
 	display:block;
 }
    </style>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+<!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
 
 @section('content')
 
@@ -105,6 +112,9 @@
                 <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                     <!-- progressbar -->
                     <ul id="progressbar">
+                    @if($video->status == 1)
+                        <li class="active" id="account"><strong>Video</strong></li>
+                        @endif
                         <li class="active" id="account"><strong>Video Details</strong></li>
                         <li id="personal"><strong>Category</strong></li>
                         <li id="useraccess_ppvprice"><strong>User Video Access</strong></li>
@@ -112,11 +122,62 @@
                         <li id="payment"><strong>Upload Image & Trailer</strong></li>
                         <li id="confirm"><strong>Ads Management & Transcoding</strong></li>
                         <!-- <li id="confirm"><strong>Ads Management</strong></li> -->
+                      
 
                     </ul>
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                     </div> <br> <!-- fieldsets -->
+                    @if($video->status == 1)
+                    <fieldset>
+                           <div class="form-card">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="fs-title">Video Player:</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="">Player Embed Link:</label>
+                                <p>Click Icon to copy the URL</p>
+                                <li>
+                                <span><a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
+                                </li>
+                            </div>
+                        <div class="row">
+                    @if($video->type == 'mp4_url')
+                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                        <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                        <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >  
+                        </video>
+                    @elseif ($video->type == 'm3u8_url')
+                    <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+                    <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type="application/x-mpegURL" label='auto' > 
+                     </video>
+                    @elseif($video->type == 'embed')
+                     <div class="plyr__video-embed" id="player">
+                    <iframe
+                    src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
+                    allowfullscreen
+                    allowtransparency
+                    allow="autoplay"
+                    ></iframe>
+                    </div>
+
+                    @elseif ($video->type == '')
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source 
+                        type="application/x-mpegURL" 
+                        src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
+                    >
+                    </video>
+                    @endif
+                    </div>
+   
+                    </div>
+                <!-- </div> -->
+                <input type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                </fieldset>
+                    @endif
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
@@ -525,6 +586,7 @@
                         <input type="button" name="next" class="next action-button" value="Next" />
                          <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
+
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
@@ -1156,6 +1218,112 @@ $(document).ready(function(){
         }, 3000);
     })
 </script>
+
+<script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
+ <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
+          
+
+ <script src="plyr-plugin-capture.js"></script>
+ <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
+ <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+      <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+ <script>
+    var type = '<?= $video->type ?>';
+
+   if(type != ""){
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }
+else{
+          document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  } else {
+    // default options with no quality update in case Hls is not supported
+    const player = new Plyr(video, defaultOptions);
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+}
+function EmbedCopy() {
+    // var media_path = $('#media_url').val();
+    var media_path = '<?= $url_path ?>';
+  var url =  navigator.clipboard.writeText(window.location.href);
+  var path =  navigator.clipboard.writeText(media_path);
+  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+// console.log(url);
+// console.log(media_path);
+// console.log(path);
+}
+      </script>
+
 
 @section('javascript')
 	@stop

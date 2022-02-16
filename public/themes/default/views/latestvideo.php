@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                                     <div class="block-description">
-                                       <h6><?php echo __($latest_video->title); ?></h6>
+                                       <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
                                        <div class="movie-time d-flex align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
