@@ -19,16 +19,16 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
                     <ul class="text-white p-0 mt-3">
-                        <li>Home</li>
-                        <li>Movies</li>
+                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
+                        <li><a href="">Movies</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
                     <ul class="text-white p-0 mt-3">
-                        <li>Company</li>
-                        <li>Privacy Policy</li>
-                        <li>Terms & condition</li>
-                        <li>Contact us</li>
+                        <li><a href="">Company</a></li>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Terms & condition</a></li>
+                        <li><a href="">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
