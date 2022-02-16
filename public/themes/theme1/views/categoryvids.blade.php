@@ -1,5 +1,6 @@
 <!-- Header -->
-@partial('sections.category_header')
+@partial('category_header')
+<link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->
@@ -7,11 +8,12 @@
 
       <div class="main-content">
          <section id="iq-favorites">
-            <div class="container-fluid">
+              <h2 class="text-center  mb-3"><?php echo __($data['category_title']);?></h2>
+            <div class="container-fluid" style="background:#4b4a4b;padding:0px 30px!important;">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
-                        <h2 class=""><?php echo __($data['category_title']);?></h2>
+                       
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -23,15 +25,7 @@
                                                 <div class="img-box">
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
                                                 <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" style="left:22px!important"><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$data['currency']->symbol; ?></p>
-                                                    <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                                    <p class="p-tag" style="left:22px!important"><?php echo "Free"; ?></p>
-                                                    <?php } ?>
-                                                </div>
+                                        
                                             </div>
                                         </div>
                                                  </div>
@@ -41,9 +35,9 @@
                                                         
                                                     <div class="hover-buttons">
                                                         <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i></span>
-                                                        </a>
-                                                       
+                                                                                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+
+                                                      
                   <!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<? // !Auth::guest() ?>" data-videoid="<? // $category_video->id ?>"><i style="color: white;" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php // endif; ?> >Add to Watchlist</i></span> -->
                     <!-- <div class="hover-buttons d-flex">
                           <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
@@ -269,8 +263,7 @@
     <!-- Modal Starts -->
 <!-- MainContent End-->
 
-@partial('sections.category_footer')
-
+     @partial('category_footer')  
      <script>
     //    $('.mywishlist').click(function(){
     //    if($(this).data('authenticated')){

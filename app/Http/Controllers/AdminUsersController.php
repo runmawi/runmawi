@@ -280,15 +280,11 @@ class AdminUsersController extends Controller
          ]);
         
         $id = $request['id'];
-        
 		$user = User::find($id);        
-        $input = $request->all();        
-       // $user = Auth::user();       
+        $input = $request->all();             
         
-        $path = public_path().'/uploads/avatars/';         
+        $path = public_path().'/uploads/avatars/';             
         $input['email'] = $request['email'];  
-        
-        $path = public_path().'/uploads/avatars/';        
         $logo = $request['avatar'];        
         
         if($logo != '') {   
@@ -307,27 +303,21 @@ class AdminUsersController extends Controller
      }
       
         if ( $input['role'] =='subadmin' ){
-            
                 $request['role'] ='admin';
                 $request['sub_admin'] = 1;
                 $request['stripe_active'] = 1;
-            
         } else {
-            
              $request['role'] = $request['role'];
         }
         
         if ( empty($request['email'])){
             return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
-            
         } else {
-            
              $request['email'] = $request['email'];
         }
         
         $input['terms'] = 1;
         $input['stripe_active'] = 0;
-
 
         if(empty($request['passwords'])) {
         	$input['passwords'] = $user->password;
@@ -335,14 +325,29 @@ class AdminUsersController extends Controller
         else { 
                 $input['passwords'] = $request['passwords']; 
             }
-       
+
+        if(empty($input['active'])){
+            $active_status = '0';
+        }else{
+            $active_status = '1';
+        }
+
+        if(empty($input['avatar'])){
+            $avatar_image  = null;
+        }else{
+            $avatar_image  = $input['avatar'];;
+        }
         $user_update = User::find($id);
+        $user_update->username  = $input['username'];
         $user_update->email = $input['email'];
-        $user_update->password = $input['passwords'];
+        $user_update->ccode  = $input['ccode'];
+        $user_update->mobile  = $input['mobile'];
+        $user_update->password = Hash::make($input['passwords']);
         $user_update->role = $input['role'];
+        $user_update->active =  $active_status ;
         $user_update->terms = $input['terms'];
+        $user_update->avatar = $avatar_image;
         $user_update->stripe_active = $input['stripe_active'];
-        $user_update->username = $input['username'];
         $user_update->save();
         
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );

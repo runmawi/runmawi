@@ -33,9 +33,9 @@ class CreateVideosTable extends Migration
             $table->string('original_name')->nullable();
             $table->string('disk')->nullable();
             $table->string('stream_path')->nullable();
-            $table->tinyInteger('processed')->nullable();
+            $table->tinyInteger('processed_low')->nullable();
             $table->datetime('converted_for_streaming_at')->nullable();
-            $table->datetime('path')->nullable();
+            $table->string('path')->nullable();
             $table->integer('duration')->nullable();
             $table->string('slug')->nullable();
             $table->string('rating')->nullable();

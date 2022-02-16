@@ -14,7 +14,8 @@
 </section>
 
 <!-- MainContent -->
-<div class="main-content">
+<div class="main-content" style="background: #161617;
+mix-blend-mode: normal;">
 
 <!-- free Contents videos -->
 <section id="iq-favorites">

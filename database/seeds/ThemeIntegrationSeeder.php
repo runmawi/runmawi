@@ -17,11 +17,18 @@ class ThemeIntegrationSeeder extends Seeder
 
         $ThemeIntegration = [
             [   'theme_name'     => 'default', 
-                'theme_images'   => null,
+                'theme_images'   => 'default.png',
+                'theme_css'      =>  null,
+                'created_at'     => Carbon::now(),
+                'updated_at'      => null,
+            ],
+            [   'theme_name'     => 'theme1', 
+                'theme_images'   => 'theme1.png',
                 'theme_css'      => null,
                 'created_at'     => Carbon::now(),
                 'updated_at'      => null,
             ],
+            
         ];
 
         ThemeIntegration::insert($ThemeIntegration);

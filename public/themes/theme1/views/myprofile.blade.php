@@ -31,23 +31,12 @@ $uppercase =  ucfirst($request_url);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
 
    </head>
     <style>
-        #bg-col{
-             background: #504C4C;
-        }
-         .bg-col li{
-             list-style: none;
-             text-align: left;
-    background: #161617;
-    padding: 10px;
-             padding-top: 15px;
-             padding-bottom: 15px;
-    color: #fff;
-    border-radius: 10px;
-             border-bottom: 1px solid #fff;
-}
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
         .form-control {
@@ -66,11 +55,78 @@ $uppercase =  ucfirst($request_url);
    .col-md-12.profile_image {
     display: flex;
    }
-
+        .red{
+            color: #be0b14;
+        }
+        .gk{
+            background: #2a2a2c;
+           
+            border-bottom: 1px solid #fff;
+        }
+        .transpar{
+            border:1px solid #ddd;
+            background-color: transparent;
+            padding: 10px 40px;
+            color:#fff;
+        }
+        .sig{
+            background: #161617;
+mix-blend-mode: normal;
+            padding: 50px;
+            border-radius: 20px;
+        } .sig1{
+            background: #151516;
+mix-blend-mode: normal;
+            padding: 25px;
+            border-radius: 20px;
+        }
+        .btn{
+            
+           padding: 15px 120px;
+          color: #fff!important;
+            
+            border: 1px solid #fff;
+            background-color: transparent;
+        }
+        .ply{
+         background: #000;
+            
+            padding: 10px;
+            border-radius: 50%;
+        }
    img.multiuser_img {
-    padding: 9%;
+    padding: 10px;
     border-radius: 50%;
 }
+        .bg-col p{
+        font-family: Chivo;
+font-style: normal;
+font-weight: normal;
+font-size: 26px;
+line-height: 31px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+    }
+    .bg-col{
+       background:rgb(32, 32, 32);
+
+mix-blend-mode: color-dodge;
+border-radius: 20px;
+    padding: 10px;
+    color: #fff;
+        
+   
+}
+    .bl{
+       background: #161617;
+        padding: 10px;
+
+
+    }
 
 .name{
     font-size: larger;
@@ -78,6 +134,12 @@ $uppercase =  ucfirst($request_url);
     color: white;
     text-align: center;
 }
+        .edit li{
+            list-style: none;
+            padding: 10px 10px;
+            color: #fff;
+            line-height: 31px;
+        }
 
 .circle {
     color: white;
@@ -499,29 +561,292 @@ $uppercase =  ucfirst($request_url);
 		<!--<hr />-->
     
         <!-- MainContent -->
-    <section class="m-profile setting-wrapper pt-0">        
+    <section  class="m-profile setting-wrapper pt-0">
         <div class="container">
-           
-            <div class="row">
-                <div class="col-lg-5 mb-3">
+            <div class="row sig align-items-center">
+                <div class="col-md-4 mt-3 pt-3">
+                    <h4 class="main-title mb-4">My Account</h4>
+                    <p class="text-white">Edit your name or change<br>your password.</p>
+                    <ul class="edit p-0 mt-5">
+                        <li>
+                            <div class="d-flex showSingle" target="1">
+                                <a>
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/edit.png';  ?>"> 
+                                    Edit Profile
+                                </a>
+</div>
+                            </li>
+                        <li><div class="d-flex showSingle" target="2">
+                                <a>
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
+                                    Plan
+                                </a>
+</div></li>
+                        <li><div class="d-flex showSingle" target="3">
+                                <a>
+                            <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
+                                    Kids zone
+                                </a>
+</div></li>
+                        <li><div class="d-flex showSingle" target="4">
+                                <a>
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
+                                   Video preferences
+                                </a>
+</div></li>
+                    </ul>
+                </div>
+                <div class="col-md-8 targetDiv" id="div1">
+                    <div class="text-right">
+                     <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                       
+                    <button class="transpar">logout</button></div>
+                   
                   
-                    <div class="sign-user_card text-center mb-3">
-                           <h4 class="main-title mb-4">Account Setting</h4>
-                        <div class="mt-3">
-                            <ul class="bg-col">
-                                <li class="mt-2"><a class="" herf=#>Account ID</a></li>
-                                <li  class="mt-2">Subscribe Name</li>
-                                <li  class="mt-2">Login Password</li>
-                                <li  class="mt-2">Verfiy Phone.no</li>
-                                <li  class="mt-2">Payment</li>
-                                <li  class="mt-2">Logout</li>
-                                
-                            </ul>
+                    <div class=" mb-3" id="personal_det">
+                    <div class="col-md-12 text-rigth mt-4" >
+                        <div class="d-flex align-items-baseline justify-content-between">
+                        <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
+                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white" style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a>
+                            </div></div>
                         </div>
-                            
+                        <div class="a-border"></div>
+                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">Email</span>
+                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                            </div>   
+                            <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">Username</span>
+                                <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                            </div> 
+                        </div>
+                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">Password</span>
+                                <p class="mb-0">**********</p>
+                            </div>
+                             <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">Phone</span>
+                                <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                            </div>
+
+                        </div>
+                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">First Name</span>
+                                <p class="mb-0">**********</p>
+                            </div>
+                             <div class="col-md-6 d-flex justify-content-around mt-2">
+                                <span class="text-light font-size-13">Last Name</span>
+                                <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                            </div>
+
+                        </div>
+                        <hr style="color:#fff;">
+                        <div class="row align-items-center justify-content-end text-right mb-3">
+                           
+                        </div> </div>
+                </div>
+                <div class="col-md-8 targetDiv" id="div2">
+                <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                        <div class="container ">
+                          
+                        <p>SAVE $ 594</p>
+                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        </div>
+                        
+                    </div>
+                
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                       <div class="container ">
+                           
+                        <p>SAVE $ 300</p>
+                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
+                      
+                    </div>
+            
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                       <div class="container ">
+                           
+                                
+                        <p>SAVE $ 99</p>
+                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
+                        
+                    </div>
+           
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                        <div class="container ">
+                          
+                        <p></p>
+                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
+                        
+                    </div>
+                </div>
+                 <div class="col-md-8 targetDiv" id="div3">
+                <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                        <div class="container ">
+                          
+                        <p>SAVE $ 594</p>
+                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        </div>
+                        
+                    </div>
+                
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                       <div class="container ">
+                           
+                        <p>SAVE $ 300</p>
+                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
+                      
+                    </div>
+            
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                       <div class="container ">
+                           
+                                
+                        <p>SAVE $ 99</p>
+                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
+                        
+                    </div>
+           
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col">
+                        <div class="container ">
+                          
+                        <p></p>
+                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
+                        
+                    </div>
+                </div>
+               
+                <div class="col-md-8 targetDiv" id="div4">
+                  <div class=" mb-3">
+                      <h4 class="card-title mb-0">Preference for videos</h4>
+                      <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                      @csrf
+                      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+   
+                      <div class="form-group  mt-4 pt-5">
+                          <div class="col-md-6 p-0">
+                        <label><h5 class="mb-4">Preference Language</h5></label>
+                          
+                        <select id="" name="preference_language[]" class="js-example-basic-multiple myselect col-md-5" style="width: 46%!important;"  multiple="multiple">
+                            @foreach($language as $preference_language)
+                                <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                            @endforeach
+                        </select>
+                     </div> </div>
+   <div class="form-group  mt-4">
+                     <div class="col-sm-6 p-0">
+                         <label><h5 class="mb-4">Preference Genres</h5></label>
+      
+                        <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 46%;" multiple="multiple">
+                            @foreach($videocategory as $preference_genres)
+                                <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                            @endforeach
+                        </select>
+       </div>
+      </div><div class="">
+                           <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button></div> 
+                      </form>
+                   
+                </div>
+            </div>
+       
+            </div></div>
+    </section>
+    <!--<section  class="m-profile setting-wrapper pt-0  mt-4">
+        <div class="container">
+            <div class="sig1">
+               <h2 class="text-center mt-2 mb-3">Subscribe to Watch All </h2>
+                <div class="" style="padding:50px!important;">
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">All Content Movies, Live sports, TV, Special Shows</p>
+                    </div>
+                    <div class="col-md-2">
+                        <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                    <div class="col-md-2">
+                          <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                </div>
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">Watch on TV or Laptopt</p>
+                    </div>
+                    <div class="col-md-2">
+                          <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                    <div class="col-md-2">
+                          <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                </div>
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">Ads Free Movies & Shows</p>
+                    </div>
+                    <div class="col-md-2">
+                          <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                    <div class="col-md-2">
+                          <img class=" mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/tic.png';  ?>"> 
+                    </div>
+                </div>
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">Number of devices that can be logged in</p>
+                    </div>
+                    <div class="col-md-2 text-white">2</div>
+                    <div class="col-md-2 text-white">4</div>
+                </div>
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">Max Video Quality</p>
+                    </div>
+                    <div class="col-md-2 text-white">Full HD (1080p)</div>
+                    <div class="col-md-2 text-white">4K (2160p)</div>
+                </div>
+                <div class="row mt-5 pt-3  gk">
+                    <div class="col-md-8">
+                        <p class="text-white">Max Audio Quality</p>
+                    </div>
+                    <div class="col-md-2 text-white">Dolby 5.1</div>
+                    <div class="col-md-2 text-white">Dolby 5.1</div>
+                </div>
+                    <div class="row  pt-3 ">
+                        <div class="col-md-5 mr-3">
+                            <a class=" btn" herf=""><span class="red">Super</span> $899/year</a>
+                        </div>
+                        <div class="col-md-5 ml-5">
+                             <a class="btn" herf=""><span class="red">premium </span> $1499/year</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+            <div style="background: #2a2a2c;
+border-radius: 5px;padding:10px;">
+            <p class="text-white mt-3 text-center">Continue with Super ></p>
+        </div>
+     </div>
+        
+    </section>-->
+   <!-- <section class="m-profile setting-wrapper pt-0">        
+        <div class="container">
+            
+            <div class="row">
+                <div class="col-lg-4 mb-3">
+                    <div class="sign-user_card text-center mb-3">
                        
-                       
-                       <!-- <a href="#updatepic" class="edit-icon text-primary">Edit</a>-->
+
                     </div>
 <div class="row">
 <?php
@@ -529,8 +854,7 @@ $uppercase =  ucfirst($request_url);
          ?>
 
         <div class="col-sm-12">
-            <div class="sign-user_card text-center mb-3" style="display:none;">
-                
+            <div class="sign-user_card text-center mb-3">
             <?php if ( Auth::user()->role != 'admin') { ?>
                 <div class="row">
                     <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
@@ -553,7 +877,7 @@ $uppercase =  ucfirst($request_url);
                         <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a>
                         <?php } else { ?>
                         <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
-                        <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> -->
+                        <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> 
                         <?php  } } 
                         elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
                         {   ?>
@@ -564,7 +888,7 @@ $uppercase =  ucfirst($request_url);
                         <?php } ?>
                         </div>
 
-                      <!--  <div class="col-sm-12 col-xs-12 padding-top-30">
+                        <div class="col-sm-12 col-xs-12 padding-top-30">
                             <?php
                             $billing_url = URL::to('/').'/paypal/billings-details';
                             if (!empty(Auth::user()->paypal_id)){
@@ -585,24 +909,22 @@ $uppercase =  ucfirst($request_url);
                             <?php if ($user->subscribed($stripe_plan)) { ?>
                             <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>
                             <?php } ?>
-                        </div>-->
+                        </div>
                     </div>
             <?php } ?> 
             </div>
         </div>
 
-       <!-- <div class="col-sm-12">
+        <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
             </div>
-        </div>-->
+        </div>
 </div>
                 </div>
-                <div class="col-lg-7 text-right"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
-                    <div class=" mb-3" id="personal_det">
+                <div class="col-lg-8"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"
+                    <div class="sign-user_card mb-3" id="personal_det">
                     <div class="col-md-12" >
-                        
-                       
                         <div class="d-flex align-items-baseline justify-content-between">
                         <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
                         <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
@@ -610,52 +932,38 @@ $uppercase =  ucfirst($request_url);
                         </div>
                         <div class="a-border"></div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-12 mt-2">
-                                 <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
-                                  <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                            <div class="col-md-8">
                                 <span class="text-light font-size-13">Email</span>
                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                             </div>   
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <span class="text-light font-size-13">Username</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div>   
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <span class="text-light font-size-13">Password</span>
                                 <p class="mb-0">**********</p>
                             </div>
                         </div>
                         <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
 
-                        </div> 
-                        <div class="col-sm-12">
-                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
-                    <div class="d-flex p-0 text-white icon mt-4 justify-content-end">
-                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
-                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
-
-                </div>
-                </div>
-                    </div>
+                        </div> </div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
-		<div class="modal-dialog" id="bg-col">
-			<div class="modal-content" id="bg-col">
+		<div class="modal-dialog">
+			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title text-black">Update Profile</h4>
+                    <h4 class="modal-title">Update Profile</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					
 				</div>
 				
 				<div class="modal-body">
@@ -663,24 +971,24 @@ $uppercase =  ucfirst($request_url);
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
-						    <div class="form-group text-left">
-		                        <label class=""> Username:</label>
+						    <div class="form-group">
+		                        <label> Username:</label>
 		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
                             </div>
                         
-                            <div class="form-group text-left">
+                            <div class="form-group">
 		                        <label> Email:</label>
 		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                             </div> 
                         
                         
-                            <div class="form-group text-left">
+                            <div class="form-group">
 		                        <label>Password:</label><br>
 		                        <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  >
 		                    </div> 
                         
                         
-                            <div class="form-group text-left">
+                            <div class="form-group">
 		                         <label> Phone:</label>
 		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                             </div>
@@ -689,10 +997,9 @@ $uppercase =  ucfirst($request_url);
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" id="submit-new-cat">Save changes</button>
 				</div>
-			</div>
 		</div>
 	</div>
 <style>
@@ -746,11 +1053,11 @@ $uppercase =  ucfirst($request_url);
                                 <a href="#" class="text-body d-block">Download your person information</a>
                             </div>                            
                         </div>
--->
+
                     </div>
                 </div>
             </div>
-           <!-- <div class="container">
+            <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-3">
                     <div class="sign-user_card" style="height: 183px;">
@@ -817,7 +1124,7 @@ $uppercase =  ucfirst($request_url);
                   </div>
               </div>
 
-<!-- {{-- Multiuser Profile --}} 
+{{-- Multiuser Profile --}}
          <div class="col-lg-6 mb-3" >
             <div class="sign-user_card mb-3">
                <h4 class="card-title mb-0 manage"> Profile</h4>
@@ -842,61 +1149,11 @@ $uppercase =  ucfirst($request_url);
               </div> 
             </div>
          </div>
-<!-- {{-- Multiuser Profile --}} 
-<?php $i=1; ?>
-<div>
-<div class="sign-user_card mb-3">
-               <h4 class="card-title mb-0 manage">Logged Deviecs</h4>
-               <br>
-               <table class="table">
-                  <tr class="table-header">
-                     <th style="color:white;"><label>S.No</label></th>
-                     <th style="color:white;"><label>Username</label></th>
-                     <th style="color:white;"><label>User Ip</label></th>
-                     <th style="color:white;"><label>Device Name</label></th>
-                     <!-- <th style="color:white;"><label>Action</label></th> 
-
-                     @foreach($alldevices as $key => $devices)
-                     <tr>
-                        <td style="color:white;">{{ $i++ }}</td>
-                        <td style="color:white;" valign="bottom"><p>{{ @$devices->user_name->username }}</p></td>
-                        <td style="color:white;" valign="bottom"><p>{{ $devices->user_ip }}</p></td>
-                        <td style="color:white;" valign="bottom"><p>{{ $devices->device_name }}</p></td>
-                        <td style="color:red;" >
-                              <!-- <div class="d-flex align-items-center list-user-action">
-                                 <a href="{{ URL::to('/device/logout/verify/') . '/' . $devices->id }}" class="iq-bg-danger ml-2"><i
-                                 onclick="return confirm('Are you sure?')" ></i> Deregister</a>
-                              </div> 
-                        </td>
-                     </tr>
-                     @endforeach
-                  </table>
-          <div class="col-md-12 profile_image">
-                      @forelse  ($profile_details as $profile)
-                        <div class="">
-                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
-                                 <div class="circle">
-                                    <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
-                                           <i class="fa fa-pencil"></i> </a>
-                                    @if($Multiuser == null)
-                                     <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                       <i class="fa fa-trash"></i> </a> 
-                                    @endif
-                                 </div>
-                                 <div class="name">{{ $profile ? $profile->user_name : ''  }}</div>
-                        </div>
-                      @empty
-                        <!-- <div class="col-sm-6">  <p class="name">No Profile</p>  </div> 
-                      @endforelse
-                  </div>    
-              </div> 
-            </div>   
-</div>
-
+<!-- {{-- Multiuser Profile --}}
             </div>
        </div>
         </div>
-    </section>-->
+    </section>
 
     <div id="main-admin-content">
         <div id="content-page" class="content-page">
@@ -1545,6 +1802,30 @@ var chart_01_lable = $('#chart_01_lable').val();
 });
 </script>
 <?php } ?>
+     <script>
+            $(".targetDiv").hide(); 
+            $(".targetDiv#div1").show();
+            $(".showSingle .dimg").hide();
+            
+            
+        
+            
+          jQuery(function(){
+         jQuery('#showall').click(function(){
+               jQuery('.targetDiv').show();
+               jQuery('.showSingle .limg').show();
+                
+        });
+        jQuery('.showSingle').click(function(){
+              jQuery('.targetDiv').hide();
+              jQuery('.showSingle .dimg').hide();         
+              jQuery('#div'+$(this).attr('target')).show();
+        });
+});
+            
+        
+        </script>
+   
 <script type="text/javascript">
 
 jQuery(document).ready(function($){

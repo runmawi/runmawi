@@ -19,7 +19,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => '1',
+                'order' => 1,
                 'in_menu' => null ,
                 'name' => 'Home', 
                 'url' => '/home',
@@ -29,7 +29,7 @@ class MenuTableSeeder extends Seeder
 
             [   'parent_id' => null, 
                 'user_id' => null,
-                'order' => '2',
+                'order' => 2,
                 'in_menu' => 'video' ,
                 'name' => 'Categories', 
                 'url' => '/home',

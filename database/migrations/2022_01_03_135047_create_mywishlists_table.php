@@ -15,8 +15,7 @@ class CreateMywishlistsTable extends Migration
     {
         Schema::create('mywishlists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();  
             $table->integer('video_id')->nullable();
             $table->unsignedBigInteger('episode_id');
             $table->foreign('episode_id')->references('id')->on('episodes');

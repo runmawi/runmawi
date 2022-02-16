@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+
+@content()
+
+
+
+{{-- <!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -7,7 +12,7 @@
         <meta name="description" content="@get('description')">
         <meta name="author" content="@get('author')">
     
-        {{-- <title>@get('title')</title> --}}
+        <title>@get('title')</title>
 
         @styles()
         
@@ -23,4 +28,4 @@
         @scripts()
     </body>
 
-</html>
+</html> --}}

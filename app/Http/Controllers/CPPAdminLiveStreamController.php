@@ -349,7 +349,8 @@ class CPPAdminLiveStreamController extends Controller
     //  LiveStream::
     $user_package =    User::where('id', 1)->first();
     $package = $user_package->package;
-    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){destroy($id);
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        // destroy($id);
      LiveStream::destroy($id);
 
         return Redirect::back(); 

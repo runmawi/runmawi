@@ -4,8 +4,42 @@
  $session = session()->all();
 
 ?>
+<footer class=" py-4 mt-auto">
+        <div class="container-fluid px-5">
+            <div class="row  justify-content-between flex-column flex-sm-row">
+                <div class="col-sm-3">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4">
+                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
 
-<footer class="mb-0">
+                </div>
+                </div>
+                <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
+                    <ul class="text-white p-0 mt-3">
+                        <li>Home</li>
+                        <li>Movies</li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
+                    <ul class="text-white p-0 mt-3">
+                        <li>Company</li>
+                        <li>Privacy Policy</li>
+                        <li>Terms & condition</li>
+                        <li>Contact us</li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
+                    <p>Available on Play Store</p>
+                    <img src="assets/img/gp.png" alt="gp" class="">
+                </div>
+
+            </div>
+        </div>
+    </footer>
+<!--<footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row align-items-center">
@@ -68,7 +102,7 @@
                         <?php } ?>
                         <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
-                        // </a> -->
+                        // </a> 
                      </div>
                   </div>
                   
@@ -76,7 +110,7 @@
                      <ul class="f-link list-unstyled mb-0">
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li> -->
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
@@ -89,7 +123,7 @@
                         <li><a href="#">Terms & Conditions</a></li>
                         <li><a href="#">Help</a></li>
                      </ul>
-                  </div>-->
+                  </div>
                   <?php $video_category = App\VideoCategory::where('footer',1)->get(); ?>
                   <div class="col-lg-3 col-md-4">
                       <div class="row">
@@ -103,7 +137,7 @@
                         
                          <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> 
                           </ul>
                       </div>
 				</div>
@@ -119,7 +153,7 @@
                   
                    </div>
                </div>
-            </div>
+            </div>-->
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
@@ -230,65 +264,16 @@ function myFunction() {
 
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
- <script src="<?= URL::to('/'). '/assets/js/plyr-resolution.js';?>"></script>
- <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+          
 
-<!-- Google IMA3 SDK -->
-<script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-
-<!-- Plyr core script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.js"></script>
-
-<!-- Plyr ads script -->
-<script src="<?= URL::to('/'). '/assets/js/plyr-ads.min.js';?>"></script>
-
-<script src="<?= URL::to('/'). '/assets/js/plyr-ads.js';?>"></script>
-
-<!-- Docs script -->
-<!-- <script src="<?= URL::to('/'). '/assets/js/demo.js';?>"></script> -->
-
-<!-- Rangetouch to fix <input type="range"> on touch devices (see https://rangetouch.com) -->
-<script src="https://cdn.rangetouch.com/1.0.1/rangetouch.js" async></script>
- <script>
-  // alert($('#hls_m3u8').val());
-
-   document.addEventListener('DOMContentLoaded', () => {
-	// const source = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
-  const source = $('#hls_m3u8').val();
-  // alert(source);
-	const video = document.querySelector('video');
-	
-	// For more options see: https://github.com/sampotts/plyr/#options
-	// captions.update is required for captions to work with hls.js
-	const player = new Plyr(video, {captions: {active: true, update: true, language: 'en'}});
-	
-	if (!Hls.isSupported()) {
-		video.src = source;
-	} else {
-		// For more Hls.js options, see https://github.com/dailymotion/hls.js
-		const hls = new Hls();
-		hls.loadSource(source);
-		hls.attachMedia(video);
-		window.hls = hls;
-		
-		// Handle changing captions
-		player.on('languagechange', () => {
-			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
-			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
-		});
-	}
-	
-	// Expose player so it can be used from the console
-	window.player = player;
-
-});
-// const player = new Plyr('#trailor-videos');
-
-</script>
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
-
+ <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+      <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
  <script>
+    var type = $('#video_type').val();
+
+   if(type != ""){
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -314,8 +299,60 @@ function myFunction() {
 }
 
         });
+   }
+else{
+          document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
 
-       
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  } else {
+    // default options with no quality update in case Hls is not supported
+    const player = new Plyr(video, defaultOptions);
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+}
+         
       </script>
 </body>
 </html>

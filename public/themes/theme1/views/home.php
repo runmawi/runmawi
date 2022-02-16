@@ -74,7 +74,7 @@
    
    <?php 
       if(($preference_genres) != null && count($preference_genres) > 0){ ?>
-       <section id="iq-favorites">
+         <section id="iq-favorites">
             <div class="fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
@@ -88,8 +88,8 @@
    
    <?php 
 
-      if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
-       <section id="iq-favorites">
+   if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
+   <section id="iq-favorites">
             <div class="fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
@@ -974,7 +974,7 @@ endif; ?>
                                              ->where('age_restrict','<',18);
 
                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                              $videos = $videos  ->whereNotIn('id',$blockvideos); }
+                              $videos = $videos  ->whereNotIn('videos.id',$blockvideos); }
                               if($Family_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 18);
                              }
@@ -987,7 +987,7 @@ endif; ?>
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
 
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
                         }
                         if($Family_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 18);
@@ -1003,7 +1003,7 @@ endif; ?>
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
                      
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('id',$blockvideos);
+                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
                            }
                            if($Family_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 18);

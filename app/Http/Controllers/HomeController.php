@@ -1303,7 +1303,6 @@ class HomeController extends Controller
             $most_watch_user =[];
         }
 
-
 // Most watched videos In website
 
         if( $getfeching->geofencing == 'ON'){
@@ -1904,7 +1903,7 @@ class HomeController extends Controller
             $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC');
 
             if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                $latest_videos = $latest_videos->whereNotIn('id',$blockvideos);
+                $latest_videos = $latest_videos->whereNotIn('videos.id',$blockvideos);
              }
               $latest_videos = $latest_videos ->limit(10)->get();
         }
@@ -1964,7 +1963,7 @@ class HomeController extends Controller
        ->where('language_id','=',$lanid)->where('active', '=', '1');
        
        if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                 $language_videos = $language_videos->whereNotIn('id',$blockvideos);
+                 $language_videos = $language_videos->whereNotIn('videos.id',$blockvideos);
         }
       $language_videos = $language_videos->get();
 
@@ -2486,7 +2485,47 @@ class HomeController extends Controller
         return $request->kids_mode;
 
     }
-    
+    public function Movie_description(){
+
+        $currency = CurrencySetting::first();
+        $Recomended = HomeSetting::first();
+        $home_settings = HomeSetting::first() ;
+
+
+        $latest_videos = Video::where('status', '=', '1')->take(10)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+
+        if (!Auth::guest())
+                {
+                    $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+                        ->pluck('videoid')
+                        ->toArray();
+                    $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+                }
+                else
+                {
+                    $cnt_watching = '';
+                }
+
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            if (!empty($PPV_settings)){
+                $ppv_gobal_price = $PPV_settings->ppv_price;            
+            }else{
+                $ppv_gobal_price = null;
+            }
+
+        $data = array(
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => $currency,
+            'latest_videos' => $latest_videos,
+            'home_settings' => $home_settings,
+            'cnt_watching'  => $cnt_watching,
+        );
+
+        return Theme::view('movie_description', $data);
+    }
 
 }
 

@@ -77,20 +77,7 @@ if(isset($videos)) :
                                                 <source src="<?php echo $top_category_video->trailer;  ?>" type="video/mp4">
                                             </video>
                                 </a>
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
-                                        <p class="p-tag1">   
-                                            <?php if(!empty($top_category_video->ppv_price)) {
-                                                    echo $top_category_video->ppv_price.' '.$currency->symbol ; 
-                                                    } elseif(!empty($top_category_video->global_ppv) && $top_category_video->ppv_price == null) {
-                                                        echo $top_category_video->global_ppv .' '.$currency->symbol;
-                                                    } elseif(empty($top_category_video->global_ppv) && $top_category_video->ppv_price == null) {
-                                                        echo "Free"; 
-                                                    }
-                                            ?>
-                                         </p>
-                                    </div>
-                                </div>
+                                
                         </div>
                                 <div class="block-description">
                                     
@@ -98,8 +85,8 @@ if(isset($videos)) :
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white "
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                        </a>
+                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+
                                   
                                     </div>
 
@@ -181,10 +168,8 @@ if(isset($videos)) :
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white  btn-cl"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                           
-
+                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        
+                                        </a>
                                         </a>
                                         <div class="d-flex">
                                         <!-- <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php // endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">

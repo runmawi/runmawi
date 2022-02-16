@@ -15,8 +15,7 @@ class CreateMoviesSubtitlesTable extends Migration
     {
         Schema::create('movies_subtitles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id');
-            $table->foreign('movie_id')->references('id')->on('movies');    
+            $table->integer('movie_id')->nullable();  
             $table->string('sub_language')->nullable();
             $table->string('shortcode')->nullable();
             $table->string('url')->nullable();

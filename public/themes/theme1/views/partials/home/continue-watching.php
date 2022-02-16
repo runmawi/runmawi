@@ -20,17 +20,7 @@
                                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                                       </video>
                                      
-                                     <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php  if(!empty($cont_video->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$cont_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $cont_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                               </div>
                                 <div class="block-description">
@@ -39,9 +29,8 @@
                                     
                                     
                                     <div class="hover-buttons text-white">
-                                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                        </a>
+                                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+<img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
                                         <div>
                                     <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                                     <!-- </a> -->

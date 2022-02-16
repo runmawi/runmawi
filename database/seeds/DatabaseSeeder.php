@@ -30,7 +30,18 @@ class DatabaseSeeder extends Seeder
             MenuTableSeeder::class,
             EmailTemplatesSeeder::class,
             ThemeIntegrationSeeder::class,
+            countrycodesTableSeeder::class,
+            LanguageTableSeeder::class,
+            ModeratorsPermissionsTableSeeder::class,
+            ModeratorsRolesTableSeeder::class,
+            ModeratorsUserTableSeeder::class,
+            AdvertisersTableseeder::class,
+            UserAccessesTableseeder::class,
+            CurrenciesTableseeder::class,
+            CurrenciesSettingTableseeder::class,
+            SiteThemeTableseeder::class,
         ]);
     
     }
 }
+

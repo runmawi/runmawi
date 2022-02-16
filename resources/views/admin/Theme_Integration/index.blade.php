@@ -1,9 +1,26 @@
 @extends('admin.master')
 
-
-
-
 @section('content')
+
+<style>
+    .theme_image:hover {
+        border: 2px solid rgb(64, 172, 37);
+        padding: 10px;
+        border-radius: 25px;
+    }
+    .theme_name {
+        color: #c92727;
+        text-align: center;
+        font-family: 'FontAwesome';
+    }
+    .active{
+        color: #1ba31b;
+        position: absolute;
+        left: 15px;
+        font-family: unset;
+    }
+</style>
+
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 
@@ -19,7 +36,6 @@
             
 		</div>
     </div>
-
 
 
     <!-- Add New Modal -->
@@ -76,11 +92,18 @@
 
                 <div class="row data">
                         @foreach ($Themes as $theme_integration)
-                            <div class="theme_image">
-                                <div class="themes">
-                                    <img src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme" class="theme_img" style="width:50%" id= {{ $theme_integration->id  }}>  
+                            <div class="theme_image col-md-4">
+                                <div class="zoom themes">
+                                    <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
                                 </div>
-                                <div class="theme_name">{{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}</div>
+                                <div class="theme_name">
+                                    {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}
+                                    @if( $theme_integration->theme_name == $active_Status->theme_choosen)
+                                       <span class="active" >
+                                        <i class="far fa-check-circle"></i>  {{'Active'}}
+                                      </span>                                
+                                    @endif
+                                </div>
                             </div>
                         @endforeach  
                 </div>
@@ -102,9 +125,7 @@
 
 $( document ).ready(function() {
 
-
     $(".theme_img,#test").click(function(){
-
     theme_id=this.id;
 
         swal({

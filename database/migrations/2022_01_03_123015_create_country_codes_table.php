@@ -18,6 +18,9 @@ class CreateCountryCodesTable extends Migration
             $table->string('sortname')->nullable();
             $table->string('country_name')->nullable();
             $table->integer('phonecode')->nullable();
+            $table->string('name')->nullable();
+            $table->string('iso3')->nullable();
+            $table->string('numcode')->nullable();
             $table->timestamps();
         });
     }

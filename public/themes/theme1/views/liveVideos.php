@@ -75,14 +75,15 @@
                        </div>
                     </div>
                     <div class="epi-desc p-3">
-                       <div class="d-flex align-items-center justify-content-between">
+                       
+                    </div>
+                 </div>
+                <div class="d-flex align-items-center mt-2 justify-content-between">
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                        </div>
                        <a href="<?= URL::to('/') ?><?= '/live'.'/'. $video->slug ?>">
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
-                    </div>
-                 </div>
             </div>
             <!-- @$video->categories->name -->
               <?php endforeach; 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Setting;
 use Carbon\Carbon;
+use App\Deploy;
 
 class SettingTableSeeder extends Seeder
 {
@@ -15,8 +16,18 @@ class SettingTableSeeder extends Seeder
     {
         Setting::truncate();
 
+        $website = Deploy::first();
+
+        if($website != null){
+            $website_name = $website->username;
+            $domain_url   = $website->Domain_name;
+        }
+        else{
+            $website_name = 'Flicknexs';
+            $domain_url   = 'http://Flicknexs.com/';
+        }
         $setting = [
-            [  'website_name' => 'Flicknexs', 
+            [  'website_name' => $website_name, 
                'website_description' => 'Your Shows Online',
                 'logo' => 'logo (1).png' ,
                 'login_content' => 'Landban.png',
@@ -24,7 +35,7 @@ class SettingTableSeeder extends Seeder
                 'favicon' => 'fl-logo.png',
                 'system_email' => 'demos@webnexs.in' ,
                 'coupon_code' => '0' ,
-                'signature' => '<p><strong>http://Flicknexs.com/</strong></p>' ,
+                'signature' => '<p><strong>http://'.$domain_url.'/</strong></p>' ,
                 'demo_mode' => '0' ,
                 'enable_https' => '0' ,
                 'theme' => 'default' ,

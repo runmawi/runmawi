@@ -654,9 +654,9 @@ class AdminAudioController extends Controller
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
                     }else{
                         $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
-                        echo "<pre>";
-                        print_r($audio_upload);
-                        exit();  
+                        // echo "<pre>";
+                        // print_r($audio_upload);
+                        // exit();  
                         FFMpeg::open($audio_upload->getClientOriginalName())
                         ->export()
                         ->inFormat(new \FFMpeg\Format\Audio\Mp3)
@@ -770,6 +770,7 @@ class AdminAudioController extends Controller
         }
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
+        $audio->status =  1;
         $audio->ppv_status =  $data['ppv_status'];
         $audio->save();
 

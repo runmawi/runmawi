@@ -14,9 +14,8 @@ class CreateMovieTagTable extends Migration
     public function up()
     {
         Schema::create('movie_tag', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('movie_id');
-            $table->foreign('movie_id')->references('id')->on('movies');  
+            $table->id();  
+            $table->integer('movie_id')->nullable();
             $table->string('tag_id')->nullable();
             $table->timestamps();
         });

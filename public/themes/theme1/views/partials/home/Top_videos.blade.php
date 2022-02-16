@@ -1,3 +1,4 @@
+
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title"><a href=""> Top Most Watching Videos</a></h4>                      
 </div>
@@ -17,25 +18,16 @@
                                         <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4">
                                     </video>
                                 </a>
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
-                                        <?php  if(!empty($most_watched_video->ppv_price)){?>
-                                            <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
-                                        <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
-                                        <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                        <?php } ?>
-                                    </div>
-                                </div>
+                                
                             </div>
                     </div>
                             <div class="block-description">
                                 
                                <div class="hover-buttons">
-                                   <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                  </a>
+                                   <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+
+                                  
                              
                             </div>
                         </div>
@@ -49,7 +41,7 @@
                                     <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $most_watched_video->duration); ?></span>
                                 </div>
                           
-                    </div>
+                    
                 </a>
             </li>
                      <?php endforeach; endif; ?>

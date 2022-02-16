@@ -17,25 +17,14 @@
                                             <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4">
                                         </video>
                                     </a>
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                            <?php  if(!empty($Most_watched_countries->ppv_price)){?>
-                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
-                                            <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
-                                                <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                         </div>
                                 <div class="block-description">
                                    
                                    <div class="hover-buttons">
                                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                      </a>
+                                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
                                     <div>
                                        <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
                                 </div>

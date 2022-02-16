@@ -15,6 +15,7 @@ Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
+Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
@@ -1245,3 +1246,4 @@ Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create'
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
+Route::get('Movie-Description', 'HomeController@Movie_description');
