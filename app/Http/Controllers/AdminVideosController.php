@@ -759,7 +759,6 @@ if(!empty($artistsdata)){
      */
     public function update(Request $request)
     {
-     
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -1055,6 +1054,27 @@ if(!empty($artistsdata)){
               if(!empty($data['details'])){
             $video->details = $data['details'];
         }
+
+        if($request->pdf_file != null){
+            $pdf_files = time().'.'.$request->pdf_file->extension();  
+            $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+            $video->pdf_files =  $pdf_files;
+        }
+
+        $reels_videos= $request->reels_videos;
+            
+        if($reels_videos != null){
+            $reelvideo_name = time().'.'.$request->reels_videos->extension();  
+            $reelvideo_names = 'reels'.$reelvideo_name;
+            $reelvideo = $request->reels_videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+        
+            $ffmpeg = \FFMpeg\FFMpeg::create();
+            $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+            $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+            $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+            $video->reelvideo =  $reelvideo_names;
+        }
+        
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->mp4_url =  $data['mp4_url'];
@@ -1496,9 +1516,30 @@ if(!empty($artistsdata)){
             $category_id = $video_category_id;
             }
 
+            if($request->pdf_file != null){
+                $pdf_files = time().'.'.$request->pdf_file->extension();  
+                $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+                $video->pdf_files =  $pdf_files;
+            }
+
+        
+            $reels_videos= $request->reels_videos;
+            
+            if($reels_videos != null){
+                $reelvideo_name = time().'.'.$request->file('reels_videos')->extension();  
+                $reelvideo_names = 'reels'.$reelvideo_name;
+                $reelvideo =$request->file('reels_videos')->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+                $video->reelvideo =  $reelvideo_names;
+
+            }
+// dd($reelvideo);
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
-
              $video->video_category_id =  $category_id;
              $video->skip_recap =  $data['skip_recap'];
              $video->recap_start_time =  $data['recap_start_time'];
@@ -1507,7 +1548,6 @@ if(!empty($artistsdata)){
              $video->intro_start_time =  $data['intro_start_time'];
              $video->intro_end_time =  $data['intro_end_time'];   
 
-             
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
             $video->active = 1 ;

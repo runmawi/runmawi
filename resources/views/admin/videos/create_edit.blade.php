@@ -165,15 +165,14 @@
                                                 </select>
                                       </div>
                                  <div class="col-sm-6 form-group">
-                                     
-                                      <label>Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                                     <input type="file"  name="image" id="image" >
-                                  
+                                    <label>Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                                    <input type="file"  name="image" id="image" >
                                      @if(!empty($video->image))
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                     @endif
-                                 </div>
+                                </div>
 
+                                
 
                                    <!-- <div class="col-md-6 form-group">
                                        <select class="form-control" id="video_category_id" name="video_category_id">
@@ -515,6 +514,30 @@
                                             <option value="{{ $country->country_name }}"  @if($video->country=== $country->country_name) selected='selected' @endif >{{ $country->country_name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div class="col-sm-4 form-group">
+                                    <label>PDF Upload</label><br>
+                                    <p class="p1">upload the PDF file</p> 
+                                    <input type="file" class="form-control" name="pdf_file" accept="application/pdf" id="" >
+                                     @if(!empty($video->pdf_files))
+                                        <span class='pdf_file' >
+                                            <a href="{{ URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files }}" style="font-size:48px;" class="fa fa-file-pdf-o" width="" height="" download></a>
+                                            {{'Download file'}}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="col-sm-4 form-group">
+                                    <label>Reels videos</label><br>
+                                    <p class="p1">upload the Reels Videos</p> 
+                                    <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" >
+                                @if(!empty($video->reelvideo) && $video->reelvideo != null )
+                                    <video width="200" height="200" controls>
+                                        <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $video->reelvideo }}" type="video/mp4">
+                                    </video>
+                                @endif
+                                  
                                 </div>
                                 
                             </div>
