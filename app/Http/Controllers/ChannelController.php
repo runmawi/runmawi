@@ -23,6 +23,7 @@ use App\UserLogs;
 use App\Videoartist;
 use App\Artist;
 use App\PaymentSetting;
+use App\Language;
 use URL;
 use Auth;
 use View;
@@ -307,14 +308,12 @@ class ChannelController extends Controller
                       if($to_time >=  $now){
                         if($vid == $value->video_id){
                           $ppv_video_play = $value;
-                        // dd($ppv_video_play);    
 
     
                         }else{
                           $ppv_video_play = null;
                         }                 
                     }else{
-                        // dd('$now');                     
                         PpvPurchase::where('video_id', $vid)
                                 ->update([
                                     'status' => 'inactive'
@@ -349,6 +348,12 @@ class ChannelController extends Controller
                       $publishable_key= null;
                   }    
 
+            $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
+            ->where('video_id',$vid)->get();
+
+            $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+
+            $Reels_videos = Video::where('id',$vid)->get();
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
@@ -370,6 +375,9 @@ class ChannelController extends Controller
     		'ppv_video_play' => $ppv_video_play,
             'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
             'category_name'=> $category_name,
+            'langague_Name' => $langague_Name,
+            'release_year'  => $release_year,
+            'Reels_videos'  => $Reels_videos,
 
                  );
              
@@ -1151,5 +1159,19 @@ class ChannelController extends Controller
            return Theme::view('embedvideo', $data); 
         }
             }
+
+      public function Reals_videos(Request $request,$slug)
+      {
+        $video_id = \App\Video::where('slug',$slug)->pluck('id')->first(); 
+
+        $Reels_videos= Video::where('id',$video_id)->first();
+
+        $data = array(
+          'video' => $Reels_videos,
+        );
+
+        return Theme::view('Reelvideos',$data); 
+
+      }
     
 }

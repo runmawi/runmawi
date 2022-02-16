@@ -308,8 +308,32 @@
                                           @endif 
 						                  @endforeach
                                          </select>
-                                            </div>   
-                                            </div>   
+                                            </div> 
+
+                                            <div class="col-sm-4 form-group">
+                                                <label>PDF Upload</label><br>
+                                                <p class="p1">upload the PDF file</p> 
+                                                <input type="file" class="form-control" name="pdf_file" accept="application/pdf" id="" >
+                                                 @if(!empty($video->pdf_files))
+                                                    <span class='pdf_file' >
+                                                        <a href="{{ URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files }}" style="font-size:48px;" class="fa fa-file-pdf-o" width="" height="" download></a>
+                                                        {{'Download file'}}
+                                                    </span>
+                                                @endif
+                                            </div>
+            
+                                            <div class="col-sm-4 form-group">
+                                                <label>Reels videos</label><br>
+                                                <p class="p1">upload the Reels Videos</p> 
+                                                <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" >
+                                                @if(!empty($video->reelvideo) && $video->reelvideo != null )
+                                                    <video width="200" height="200" controls>
+                                                        <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $video->reelvideo }}" type="video/mp4">
+                                                    </video>
+                                                @endif
+                                            </div>
+
+                            </div>   
                                             <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 

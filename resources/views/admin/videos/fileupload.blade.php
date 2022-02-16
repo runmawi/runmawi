@@ -515,8 +515,6 @@ data: {
                                     <label class="p-2">Reels Videos</label>
                                     <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
                                 </div>  
-
-
                             </div>   
 
                             <div class="row mt-5">    
