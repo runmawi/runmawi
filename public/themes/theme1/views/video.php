@@ -483,20 +483,34 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                    
                    <h1 class="trending-text text-white big-title text-uppercase mt-3"> <?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                    <div class="d-flex col-md-8 justify-content-between p-0">
-                            <div>
-                        <p class="text-white cri1">Horror</p></div>
-                         <div><p class="text-white cri1">Drama</p></div>
-                        <div> <p class="text-white cri1">Fanasty</p></div> 
-                        <div> <p class="text-white cri1">Adventure</p></div> 
-                        <div> <p class="text-white cri1">Thirller</p></div> </div>
-                   <p class="text-white col-md-9 p-0">The centuries old vampire Count Dracula comes to
-England to seduce his barrister Jonathan Harker's
-fiancée Mina Murray and inflict havoc in the foreign</p>
+                     
+                   <?php   if(!empty($category_name)){
+                              foreach($category_name as $cat_name){ ?>
+                                <div><p class="text-white cri1"> <?php  echo $cat_name->categories_name ; ?>   </p></div> <?php
+                                } }  ?>
+              </div>
+
+                   <p class="text-white col-md-9 p-0">
+                      <?php if(!empty($video->description) ) { ?>
+                            <div class="text-white">
+                              <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+                            </div>
+                      <?php  }?>
+                    </p>
+      
                    <p class="text-white">Rating:	R (Sexuality|Horror|Violence)</p>
-                <p class="text-white">Language:	English</p>
-                <p class="text-white">Director:	Francis Ford Coppola</p>
-                <p class="text-white">Producer:	Francis Ford Coppola</p>
-                <p class="text-white">Release Date (Theaters):	Nov 13, 1992  Wide</p>
+                <p class="text-white">Language:	
+                                        <?php
+                                        if(!empty($langague_Name)){
+                                          foreach($langague_Name as $lanName){
+                                            echo $lanName->name.',' ;
+                                          }
+                                        }
+                                        ?>
+                </p>
+                <!-- <p class="text-white">Director:	Francis Ford Coppola</p>
+                <p class="text-white">Producer:	Francis Ford Coppola</p> -->
+                <p class="text-white">Release Year:	<?php if($release_year != null){ echo $release_year; }?></p>
                 
                        <!-- Category -->
                   
@@ -630,14 +644,7 @@ fiancée Mina Murray and inflict havoc in the foreign</p>
                </div>
            </div>
            <?php   } ?>
-           <?php if(!empty($video->description) ) { ?>
 
-<h4>Description</h4>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-</div>
-<?php  }?>
-<br>
 
 <?php if(!empty($video->details) ) { ?>
 
