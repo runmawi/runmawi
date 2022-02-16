@@ -24,12 +24,12 @@
                     
                 </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
-                        <div class="d-flex justify-content-around align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
+                        <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                            <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
+                        class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
                              <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a>
+                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a>
                                
                             </div></div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">
@@ -149,13 +149,13 @@ endif; ?>
                             
                 </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
-                        <div class="d-flex justify-content-around align-items- r-mb-23 mt-5" data-animation-in="fadeInUp"
+                        <div class="justify r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch NOW</a>
                                 <a href="#vide
                                  o-trailer"
-                            class="video-open playbtn btn bd"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>
+                            class="video-open playbtn btn bd ml-2"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>
                             </div></div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">
                         <div class="">
@@ -286,7 +286,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
   overflow: hidden;">
 <?php echo __($slider_video->description); ?>
 </div>
-<div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+<div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
