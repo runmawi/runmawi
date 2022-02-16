@@ -19,16 +19,16 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
                     <ul class="text-white p-0 mt-3">
-                        <li>Home</li>
-                        <li>Movies</li>
+                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
+                        <li><a href="">Movies</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
                     <ul class="text-white p-0 mt-3">
-                        <li>Company</li>
-                        <li>Privacy Policy</li>
-                        <li>Terms & condition</li>
-                        <li>Contact us</li>
+                        <li><a href="">Company</a></li>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Terms & condition</a></li>
+                        <li><a href="">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
@@ -265,15 +265,46 @@ function myFunction() {
  <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
           
+ <script>
+  // alert($('#hls_m3u8').val());
 
+   document.addEventListener('DOMContentLoaded', () => {
+	// const source = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+  const source = $('#hls_m3u8').val();
+  // alert(source);
+	const video = document.querySelector('video');
+	
+	// For more options see: https://github.com/sampotts/plyr/#options
+	// captions.update is required for captions to work with hls.js
+	const player = new Plyr(video, {captions: {active: true, update: true, language: 'en'}});
+	
+	if (!Hls.isSupported()) {
+		video.src = source;
+	} else {
+		// For more Hls.js options, see https://github.com/dailymotion/hls.js
+		const hls = new Hls();
+		hls.loadSource(source);
+		hls.attachMedia(video);
+		window.hls = hls;
+		
+		// Handle changing captions
+		player.on('languagechange', () => {
+			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
+			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+		});
+	}
+	
+	// Expose player so it can be used from the console
+	window.player = player;
+
+});
+// const player = new Plyr('#trailor-videos');
+
+</script>
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
- <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-      <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
- <script>
-    var type = $('#video_type').val();
 
-   if(type != ""){
+ <script>
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -299,60 +330,7 @@ function myFunction() {
 }
 
         });
-   }
-else{
-          document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector("video");
-  const source = video.getElementsByTagName("source")[0].src;
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  // captions.update is required for captions to work with hls.js
-  const defaultOptions = {};
 
-  if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
-
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
-
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        forced: true,        
-        onChange: (e) => updateQuality(e),
-      }
-
-      // Initialize here
-      const player = new Plyr(video, defaultOptions);
-    });
-    hls.attachMedia(video);
-    window.hls = hls;
-  } else {
-    // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
-  }
-
-  function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
-      }
-    });
-  }
-});
-
-}
-         
       </script>
 </body>
 </html>
