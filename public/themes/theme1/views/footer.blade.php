@@ -271,7 +271,7 @@ function myFunction() {
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
  <script>
-    var type = '<?= $video->type ?>';
+    var type = $('#video_type').val();
 
    if(type != ""){
         const player = new Plyr('#videoPlayer',{
