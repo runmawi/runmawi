@@ -18,6 +18,7 @@ class CreateAudioAlbumsTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('albumname')->nullable();
             $table->integer('parent_id')->nullable();
+            $table->integer('genre_id')->nullable();
             $table->string('image')->nullable();
             $table->string('slug')->nullable();
             $table->string('album')->nullable();

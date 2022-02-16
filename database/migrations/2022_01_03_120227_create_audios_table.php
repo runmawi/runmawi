@@ -30,8 +30,9 @@ class CreateAudiosTable extends Migration
             $table->tinyInteger('featured')->nullable();
             $table->integer('duration')->nullable();
             $table->integer('views')->nullable();
-            $table->integer('image')->nullable();
-            $table->integer('mp3_url')->nullable();
+            $table->varchar('image')->nullable();
+            $table->text('mobile_image')->nullable();
+            $table->varchar('mp3_url')->nullable();
             $table->timestamps();
         });
     }

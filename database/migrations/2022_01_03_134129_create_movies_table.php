@@ -44,6 +44,7 @@ class CreateMoviesTable extends Migration
             $table->integer('language')->nullable();
             $table->integer('year')->nullable();
             $table->text('trailer')->nullable();
+            $table->text('mobile_image')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();
         });

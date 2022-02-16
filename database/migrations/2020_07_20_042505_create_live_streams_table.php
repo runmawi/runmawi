@@ -17,10 +17,12 @@ class CreateLiveStreamsTable extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->integer('user_id')->nullable();
+            $table->integer('genre_id')->nullable();
             $table->string('access')->nullable();
             $table->string('ppv_price')->nullable();
             $table->integer('active')->nullable();
             $table->string('details')->nullable();
+            $table->text('dacast_url')->nullable();
             $table->integer('video_category_id')->nullable();
             $table->longText('description')->nullable();
             $table->integer('featured')->nullable();
@@ -39,6 +41,12 @@ class CreateLiveStreamsTable extends Migration
             $table->string('embed_url')->nullable();
             $table->string('url_type')->nullable();
             $table->string('year')->nullable();
+            $table->integer('views')->nullable();
+            $table->text('mobile_image')->nullable();
+            $table->integer('payment_status')->nullable();
+            $table->string('payment_amount')->nullable();
+            $table->integer('added_by')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

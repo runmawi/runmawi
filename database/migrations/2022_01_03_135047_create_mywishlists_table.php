@@ -21,6 +21,8 @@ class CreateMywishlistsTable extends Migration
             $table->unsignedBigInteger('episode_id');
             $table->foreign('episode_id')->references('id')->on('episodes');
             $table->integer('audio_id')->nullable();
+            $table->integer('movie_id')->nullable();
+            $table->integer('livestream_id')->nullable();
             $table->string('type')->nullable();
             $table->timestamps();
         });
@@ -36,3 +38,7 @@ class CreateMywishlistsTable extends Migration
         Schema::dropIfExists('mywishlists');
     }
 }
+
+
+
+
