@@ -1,5 +1,5 @@
 <!-- Header -->
-@partial('category_header')
+@include('header')   
 <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
@@ -9,7 +9,7 @@
       <div class="main-content">
          <section id="iq-favorites">
               <h2 class="text-center  mb-3"><?php echo __($data['category_title']);?></h2>
-            <div class="container-fluid" style="background:#4b4a4b;padding:0px 30px!important;">
+            <div class="container-fluid" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);padding:0px 30px!important;">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
@@ -24,9 +24,7 @@
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
-                                                <div class="corner-text-wrapper">
-                                        
-                                            </div>
+                                               
                                         </div>
                                                  </div>
 
@@ -263,7 +261,7 @@
     <!-- Modal Starts -->
 <!-- MainContent End-->
 
-     @partial('category_footer')  
+     @extends('footer')  
      <script>
     //    $('.mywishlist').click(function(){
     //    if($(this).data('authenticated')){
