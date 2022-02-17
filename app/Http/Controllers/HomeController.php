@@ -254,7 +254,6 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1 && empty($data['password_hash']))
         {
-        // dd('FirstLanging');
 
             $settings = Setting::first();
             $genre = Genre::all();
@@ -320,6 +319,7 @@ class HomeController extends Controller
                 // dd('$agent');
                 
             }
+
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
@@ -373,6 +373,7 @@ class HomeController extends Controller
         }
         else
         {
+
             $agent = new Agent();
             // dd($agent);
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -386,7 +387,7 @@ class HomeController extends Controller
             // $session_password = $data['password_hash'];
             if (empty($data['password_hash']))
             {
-                return View::make('auth.login');
+                return Theme::view('auth.login');
 
             }
             else
@@ -452,13 +453,12 @@ class HomeController extends Controller
                         $maildevice->status = 0;
                         $maildevice->save();
                         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        return View::make('auth.login')->with('alert', $message);
+                        return Theme::view('auth.login')->with('alert', $message);
                     }
                     elseif (!empty($mail_check) && $mail_check->status == 2 )
                     // || $mail_check->status == 0
                     {
-                        return View::make('auth.login');
-
+                        return Theme::view('auth.login');
                     }
                 }
                 if ($user_check >= 4 && Auth::User()->id != 1 || $subuser_check >= 4 && Auth::User()->id != 1)
@@ -956,7 +956,7 @@ class HomeController extends Controller
             // $session_password = $data['password_hash'];
             if (empty($data['password_hash']))
             {
-                return View::make('auth.login');
+                return Theme::view('auth.login');
             }
             else
             {
@@ -1023,14 +1023,15 @@ class HomeController extends Controller
                         $maildevice->status = 0;
                         $maildevice->save();
                         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        return View::make('auth.login')->with('message', $message);
+                        return Theme::view('auth.login')->with('message', $message);
+
                     }
                     elseif (!empty($mail_check) && $mail_check->status == 2 ) 
                     // $mail_check->status == 0
                     {
                         // dd($mail_check);
 
-                        return View::make('auth.login');
+                        return Theme::view('auth.login');
 
                     }
                 }
