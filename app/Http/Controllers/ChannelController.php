@@ -347,6 +347,11 @@ class ChannelController extends Controller
                       $secret_key= null;
                       $publishable_key= null;
                   }    
+            $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                  ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                  ->where('categoryvideos.video_id',$vid)
+                  ->get();
+                     
 
             $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
             ->where('video_id',$vid)->get();
@@ -416,6 +421,19 @@ class ChannelController extends Controller
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
     $currency = CurrencySetting::first();
 
+    $category_name = CategoryVideo::select('video_categories.name as categories_name')
+    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+    ->where('categoryvideos.video_id',$vid)
+    ->get();
+ 
+
+    $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
+    ->where('video_id',$vid)->get();
+
+    $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+
+    $Reels_videos = Video::where('id',$vid)->get();
+
             $data = array(
                  'currency' => $currency,
                  'video' => $categoryVideos,
@@ -425,6 +443,11 @@ class ChannelController extends Controller
                  'artists' => $artists,
                  'watched_time' => 0,
                  'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
+                 'category_name'=> $category_name,
+                 'langague_Name' => $langague_Name,
+                 'release_year'  => $release_year,
+                 'Reels_videos'  => $Reels_videos,
+     
             );
 
             }
@@ -476,6 +499,19 @@ class ChannelController extends Controller
                         $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
                     endif;
              $currency = CurrencySetting::first();
+             $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
+                                      ->where('video_id',$vid)->get();
+ 
+             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+ 
+             $Reels_videos = Video::where('id',$vid)->get();
+
+             $category_name = CategoryVideo::select('video_categories.name as categories_name')
+             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+             ->where('categoryvideos.video_id',$vid)
+             ->get();
+          
+
                  $data = array(
                     'currency' => $currency,
                      'video' => $categoryVideos,
@@ -490,6 +526,11 @@ class ChannelController extends Controller
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
                  'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
+                 'category_name'=> $category_name,
+                 'langague_Name' => $langague_Name,
+                 'release_year'  => $release_year,
+                 'Reels_videos'  => $Reels_videos,
+     
                  );
              
         } else {
@@ -501,6 +542,17 @@ class ChannelController extends Controller
     $playerui = Playerui::first();
     $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
     $currency = CurrencySetting::first();
+    $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
+    ->where('video_id',$vid)->get();
+
+    $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+
+    $Reels_videos = Video::where('id',$vid)->get();
+    $category_name = CategoryVideo::select('video_categories.name as categories_name')
+    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+    ->where('categoryvideos.video_id',$vid)
+    ->get();
+ 
 
             $data = array(
                  'currency' => $currency,
@@ -510,11 +562,16 @@ class ChannelController extends Controller
                  'subtitles' => $subtitle,
                  'watched_time' => 0,
                  'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
+                 'category_name'=> $category_name,
+                 'langague_Name' => $langague_Name,
+                 'release_year'  => $release_year,
+                 'Reels_videos'  => $Reels_videos,
+     
             );
 
             }
+            return view('video_before_login', $data); 
  
-       return view('video_before_login', $data);
     }
         }
     
@@ -859,7 +916,6 @@ class ChannelController extends Controller
             );
 
             }
- 
        return view('video_before_login', $data);
     }
         }
