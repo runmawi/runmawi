@@ -147,7 +147,6 @@ class SignupController extends Controller
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
-      
             $signup_status = FreeRegistration();
 //            if ( $signup_status == 1 ) {
 //                return redirect('/signup');
