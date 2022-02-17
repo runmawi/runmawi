@@ -3,6 +3,8 @@
    <head>
       
 <?php
+// dd(Auth::User()->role);
+
 $data = Session::all();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
@@ -80,11 +82,6 @@ $data = Session::all();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
-
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
-
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
@@ -93,17 +90,9 @@ $data = Session::all();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
     <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
-       <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
-
-       <!-- Icon - Remixicon & fontawesome  -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
-    
-
-
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
@@ -120,13 +109,7 @@ $data = Session::all();
        height: 100%;
         margin: 20px auto;
     }
-        .media h6{
-            font-family: Chivo;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 29px;
-        }
+    
     i.fas.fa-child{
     font-size: 35px;
     color: white;
@@ -190,7 +173,8 @@ $data = Session::all();
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                        $menus = App\Menu::all();
+                                       //  $menus = App\Menu::all();
+                                       $menus = App\Menu::orderBy('order', 'asc')->get();
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
@@ -203,7 +187,24 @@ $data = Session::all();
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $cat as $category) { ?>
                                               <li>
-                                                <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                  <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "Audio") { 
+                                        $cat_audio = App\AudioCategory::all();
+                                        ?>
+                                       <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $cat_audio as $category) { ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/audios/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
                                                 </a>
                                               </li>
@@ -386,7 +387,7 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" >Welcome
+                                        <p class="mt-3" style="font-size: 16px;">Welcome
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');
@@ -522,6 +523,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -532,8 +534,10 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+
                               <!-- Multiuser Profile -->
                                           <?php
+                                          }
                                           if(Auth::user()->role == "subscriber"){
 
                                           ?>
@@ -597,7 +601,7 @@ $data = Session::all();
             position: absolute;
             top: <?php echo $playerui_settings->watermark_top; ?>;
             left: <?php echo $playerui_settings->watermark_left; ?>;
-            z-index: 10;
+            z-index: 2;
             content: '';
             height: 300px;
             width: <?php echo $playerui_settings->watermar_width; ?>;
@@ -627,12 +631,19 @@ toggle.addEventListener('input', (e) => {
 });
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+<!-- 
+  <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.min.css';?>" />
 
-  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.css">
+
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.css';?>" />
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/demo.css';?>" /> -->
+
 
       </header>
       <!-- Header End -->
      
        <!-- MainContent End-->
+       
      
   

@@ -173,9 +173,8 @@ $data = Session::all();
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                        $menus = App\Menu::orderBy('order', 'asc')->get();
-
                                        //  $menus = App\Menu::all();
+                                       $menus = App\Menu::orderBy('order', 'asc')->get();
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
@@ -189,6 +188,23 @@ $data = Session::all();
                                               <?php foreach ( $cat as $category) { ?>
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                  <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "Audio") { 
+                                        $cat_audio = App\AudioCategory::all();
+                                        ?>
+                                       <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $cat_audio as $category) { ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/audios/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
                                                 </a>
                                               </li>
@@ -518,9 +534,11 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+
                               <!-- Multiuser Profile -->
                                           <?php
-                                          } if(Auth::user()->role == "subscriber"){
+                                          }
+                                          if(Auth::user()->role == "subscriber"){
 
                                           ?>
                                           <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">
@@ -613,12 +631,19 @@ toggle.addEventListener('input', (e) => {
 });
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+<!-- 
+  <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.min.css';?>" />
 
-  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.css">
+
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.css';?>" />
+<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/demo.css';?>" /> -->
+
 
       </header>
       <!-- Header End -->
      
        <!-- MainContent End-->
+       
      
   

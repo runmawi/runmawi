@@ -69,7 +69,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     /* Audio Pages */
     Route::get('audios', 'ThemeAudioController@audios');
-    //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
+    Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist' );
     //Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
     //Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');

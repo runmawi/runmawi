@@ -335,42 +335,63 @@ class ThemeAudioController extends Controller{
         
 
         $getID = AudioCategory::select('id')->where('slug', '=', $slug)->first();
-        $cat = AudioCategory::where('id', '=', $getID)->first();
+        $cat = AudioCategory::where('id', '=', $getID->id)->first();
         
-        $parent_cat = AudioCategory::where('parent_id', '=', $cat->id)->first();
+        $parent_cat = AudioCategory::where('id', '=', $cat->id)->first();
        
-        $albums = AudioAlbums::where('parent_id','=',$getID)->orderBy('created_at', 'DESC')->get();
+        $albums = AudioAlbums::where('parent_id','=',$getID->id)->orderBy('created_at', 'DESC')->get();
         
-        
-        
-        
-        if(!empty($parent_cat->id)){
-            $parent_cat2 = AudioCategory::where('parent_id', '=', $parent_cat->id)->first();
-            if(!empty($parent_cat2->id)){
-                $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orWhere('audio_category_id', '=', $parent_cat2->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
-            } else {
-                $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
-            }
-        } else {
-            $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+        if(!empty($albums)){
+
+      $audios_count = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
+      ->where('audio_albums.parent_id','=',$getID->id)
+      ->select('audios.*')
+      ->count();
+      $audios = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
+      ->where('audio_albums.parent_id','=',$getID->id)
+      ->select('audios.*')
+      ->get();
+        }else{
+            $audios_count = 0;
         }
+
+    // dd($audios_count);
+        
+        // if(!empty($parent_cat->id)){
+
+        //     $parent_cat2 = AudioCategory::where('parent_id', '=', $parent_cat->id)->first();
+        //     if(!empty($parent_cat2->id)){
+        //         $audios_count  = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orWhere('audio_category_id', '=', $parent_cat2->id)->orderBy('created_at', 'DESC')->count();
+        //         $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orWhere('audio_category_id', '=', $parent_cat2->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+        //     } else {
+
+        //         $audios_count  = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orderBy('created_at', 'DESC')->count();
+        //         $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orWhere('audio_category_id', '=', $parent_cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+        //     }
+        // } else {
+        //         $audios_count  = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orderBy('created_at', 'DESC')->count();
+        //     $audios = Audio::where('active', '=', '1')->where('audio_category_id', '=', $cat->id)->orderBy('created_at', 'DESC')->simplePaginate(9);
+        // }
 
 
         $data = array(
             'audios_category' => $audios,
-            'current_page' => $page,
-            'albums'=>$albums,
-            'category' => $cat,
-            'page_title' => 'Audios - ' . $cat->name,
-            'page_description' => 'Page ' . $page,
-            'pagination_url' => '/audios/category/' . $slug,
-            'menu' => Menu::orderBy('order', 'ASC')->get(),
-            'audio_categories' => AudioCategory::all(),
-            'theme_settings' => ThemeHelper::getThemeSettings(),
-            'pages' => Page::where('active', '=', 1)->get(),
-        );
+            // 'current_page' => $page,
+            // 'albums'=>$albums,
+            // 'category' => $cat,
+            // 'page_title' => 'Audios - ' . $cat->name,
+            // 'page_description' => 'Page ' . $page,
+            // 'pagination_url' => '/audios/category/' . $slug,
+            // 'menu' => Menu::orderBy('order', 'ASC')->get(),
+            // 'audio_categories' => AudioCategory::all(),
+            // 'theme_settings' => ThemeHelper::getThemeSettings(),
+            // 'pages' => Page::where('active', '=', 1)->get(),
+            'audios_count' => $audios_count,
 
-        return View::make('audio-list', $data);
+        );
+        return Theme::view('audiocategory', $data);
+
+        // return View::make('audio-list', $data);
     }
 
     public function handleViewCount($id){

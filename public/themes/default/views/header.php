@@ -194,6 +194,23 @@ $data = Session::all();
                                               <?php } ?>
                                             </ul>
                                           </li>
+                                          <?php }elseif ( $menu->in_menu == "Audio") { 
+                                        $cat_audio = App\AudioCategory::all();
+                                        ?>
+                                       <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $cat_audio as $category) { ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/audios/category/'.$category->slug;?>"> 
+                                                  <?php echo $category->name;?> 
+                                                </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
