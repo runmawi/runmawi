@@ -21,12 +21,7 @@
                                  </div>
                               </div>
                                         <div class="block-description">
-                                            <h6><?php echo __($watchlater_video->title); ?></h6>
-                                            <div class="movie-time d-flex align-items-center my-2">
-                                                <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                                                <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                            </div>
-
+                                            
                                             <div class="hover-buttons">
                                             <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
 
@@ -54,8 +49,14 @@
                                     </div>
 -->
                                     </div>
-                              
-                             
+                              <div>
+                                  <h6><?php echo __($watchlater_video->title); ?></h6>
+                                            <div class="movie-time d-flex align-items-center my-2">
+                                                <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
+                                                <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                            </div>
+
+                             </div>
                           </a>
                        </li>
                        <?php      
