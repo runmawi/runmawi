@@ -129,7 +129,7 @@ overflow-hidden {
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->mobile_image;  ?>" class="img-fluid" alt="">
                                     </div></div>
                                     <div class="block-description">
                                        
@@ -600,7 +600,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                     <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->mobile_image;  ?>" class="thumb-img">
 			
 		                   <?php } ?>  
 			            <div class="play-button-trail" >
