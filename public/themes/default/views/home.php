@@ -949,7 +949,8 @@ endif; ?>
          </section>*/ ?>
 
         <section id="iq-tvthrillers" class="s-margin">
-            <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
+            <?php if ( GetCategoryVideoStatus() == 1 ) {  
+                      ?>
             <div class="fluid">
                <?php
                      $getfeching = App\Geofencing::first();
@@ -972,9 +973,11 @@ endif; ?>
                       else{
                         $blockvideos[]='';
                       } 
-
                     foreach($parentCategories as $category) {
+                     //  dd('$null');
+
                        if( $Multiprofile != null ){
+
                            if($Multiprofile->user_type == "Kids"){
                          
                         $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
@@ -991,6 +994,7 @@ endif; ?>
                              }
                               $videos = $videos ->get();
                            }else{
+
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
 
@@ -1005,8 +1009,8 @@ endif; ?>
                        }
                       $videos = $videos ->get();
                        } } else {
+                    
 
-                      
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                           ->where('category_id','=',$category->id)->where('active', '=', '1');
                      
