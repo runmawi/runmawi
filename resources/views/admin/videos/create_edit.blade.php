@@ -107,8 +107,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
     <div class="row ">
         <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
             <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
-                <h2 id="heading">Sign Up Your User Account</h2>
-                <p>Fill all form field to go to next step</p>
+                <!-- <h2 id="heading">Sign Up Your User Account</h2> -->
+                <!-- <p>Fill all form field to go to next step</p> -->
                 <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                     <!-- progressbar -->
                     <ul id="progressbar">
@@ -175,7 +175,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
    
                     </div>
                 <!-- </div> -->
-                <input type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                <input type="button" name="next" class="next action-button" value="Next" /> 
                 </fieldset>
                     @endif
                     <fieldset>
@@ -301,7 +301,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                             </div>
                                 </div>
 
-                      </div> <input type="button" name="next" class="next action-button" value="Next" />
+                      </div> <input type="button" name="next" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
                     <fieldset>
                         <div class="form-card">
