@@ -107,8 +107,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
     <div class="row ">
         <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
             <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
-                <h2 id="heading">Sign Up Your User Account</h2>
-                <p>Fill all form field to go to next step</p>
+                <!-- <h2 id="heading">Sign Up Your User Account</h2> -->
+                <!-- <p>Fill all form field to go to next step</p> -->
                 <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                     <!-- progressbar -->
                     <ul id="progressbar">
@@ -175,7 +175,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
    
                     </div>
                 <!-- </div> -->
-                <input type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                <input type="button" name="next" class="next action-button" value="Next" /> 
                 </fieldset>
                     @endif
                     <fieldset>
@@ -301,7 +301,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                             </div>
                                 </div>
 
-                      </div> <input type="button" name="next" class="next action-button" value="Next" />
+                      </div> <input type="button" name="next" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
                     <fieldset>
                         <div class="form-card">
@@ -709,8 +709,7 @@ p {
     margin-top: 2px;
     width: 100%;
     box-sizing: border-box;
-    font-family: montserrat;
-    color: #2C3E50;
+    color: #000;
     background-color: #ECEFF1;
     font-size: 16px;
     letter-spacing: 1px
@@ -792,15 +791,17 @@ p {
     color: gray;
     text-align: left
 }
-
 #progressbar {
     margin-bottom: 30px;
     overflow: hidden;
-    color: lightgrey
+    color: black;
+    /* border: 1px solid #f5f5f5; /
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px #e1e1e1; */
 }
 
-#progressbar .active {
-    color: #673AB7
+#progressbar li.active {
+    color: #000000!important;
 }
 
 #progressbar li {
@@ -809,7 +810,9 @@ p {
     width: 20%;
     float: left;
     position: relative;
-    font-weight: 400
+    font-weight: 400;
+    background-color: white;
+    padding: 10px;
 }
 
 #progressbar #account:before {
@@ -856,11 +859,9 @@ p {
     z-index: -1
 }
 
-#progressbar li.active:before,
-#progressbar li.active:after {
-    background: #673AB7
+#progressbar li.active:before, #progressbar li.active:after {
+    background: #4ca3d9;
 }
-
 .progress {
     height: 20px
 }

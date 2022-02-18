@@ -24,7 +24,7 @@
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                               <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+                                               <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                        </a>
                                     <!-- <div>
                                        <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_Languages->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>
                                 </div> -->

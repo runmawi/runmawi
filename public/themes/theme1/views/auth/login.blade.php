@@ -16,16 +16,16 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="assets/css/typography.css" />
+      <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link rel="stylesheet" href="assets/css/style.css" />
+      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme1/assets/css/responsive.css') ?>" rel="stylesheet">
+
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
 
-      <link rel="stylesheet" href="assets/css/responsive.css" />
-    
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
