@@ -709,8 +709,7 @@ p {
     margin-top: 2px;
     width: 100%;
     box-sizing: border-box;
-    font-family: montserrat;
-    color: #2C3E50;
+    color: #000;
     background-color: #ECEFF1;
     font-size: 16px;
     letter-spacing: 1px
@@ -792,15 +791,17 @@ p {
     color: gray;
     text-align: left
 }
-
 #progressbar {
     margin-bottom: 30px;
     overflow: hidden;
-    color: lightgrey
+    color: black;
+    /* border: 1px solid #f5f5f5; /
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px #e1e1e1; */
 }
 
-#progressbar .active {
-    color: #673AB7
+#progressbar li.active {
+    color: #000000!important;
 }
 
 #progressbar li {
@@ -809,7 +810,9 @@ p {
     width: 20%;
     float: left;
     position: relative;
-    font-weight: 400
+    font-weight: 400;
+    background-color: white;
+    padding: 10px;
 }
 
 #progressbar #account:before {
@@ -856,11 +859,9 @@ p {
     z-index: -1
 }
 
-#progressbar li.active:before,
-#progressbar li.active:after {
-    background: #673AB7
+#progressbar li.active:before, #progressbar li.active:after {
+    background: #4ca3d9;
 }
-
 .progress {
     height: 20px
 }
