@@ -359,6 +359,7 @@ class ChannelController extends Controller
             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
             $Reels_videos = Video::where('id',$vid)->get();
+  
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
