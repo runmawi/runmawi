@@ -326,7 +326,7 @@ class HomeController extends Controller
                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->simplePaginate($this->videos_per_page) ,
-                'video_banners' => Video::where('active', '=', '1')
+                'video_banners' => Video::where('banner', '=', '1')
                     ->where('status', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->simplePaginate(130000) ,
