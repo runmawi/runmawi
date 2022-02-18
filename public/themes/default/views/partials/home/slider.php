@@ -144,7 +144,29 @@ endif; ?>
                     </div>
                     <div class="col-md-12">
             <div id="video-trailer" class="mfp-hide">
+                <?php if($videos->type == "embed"){ ?>
+                    <div class="plyr__video-embed" id="player">
+            <iframe
+              src="<?php if(!empty($videos->embed_code)){ echo $videos->embed_code; }else { echo $videos->trailer;} ?>"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+            ></iframe>
+          </div>
+                       <?php }elseif($videos->type == "mp4_url"){ ?>
              <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <?php }elseif($videos->type == "m3u8_url"){ ?>
+                <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+                   <source src="<?php if(!empty($videos->m3u8_url)){ echo $videos->m3u8_url; }else { echo $videos->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
+        </video>
+        <!-- https://iframe.dacast.com/live/3d2beab1-99b4-c208-83d2-2a569e9244e4/174b7bd3-24ea-8507-6d93-05be603ae1ba -->
+             <?php }elseif($videos->type == ""){ ?>
+                <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+      <source 
+        type="application/x-mpegURL" 
+        src="<?php echo URL::to('/storage/app/public/').'/'.$videos->path . '.m3u8'; ?>"
+      >
+    </video>             <?php } ?>
                     </div>
             </div>
             </div>

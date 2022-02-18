@@ -168,6 +168,10 @@ overflow-hidden {
                            </li>
                            
                             <?php endforeach; 
+                            else:
+                              ?>
+                              <h4>No Recomended Videos</h4>
+		                          <?php
 		                          endif; ?>
                         </ul>
                      </div>

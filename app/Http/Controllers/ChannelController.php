@@ -133,15 +133,15 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
-
         $data['password_hash'] = "";
         $data = session()->all();
        
         if(!empty($data['password_hash'])){
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
-
+          
         $vid = $get_video_id->id;
+        // dd($vid);
 
         // echo "<pre>"; 
         $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
@@ -270,7 +270,7 @@ class ChannelController extends Controller
            }else{
             $recomended =[] ;
            }
-           
+          //  dd($recomendeds);
           $videocategory = [];
 
            $playerui = Playerui::first();

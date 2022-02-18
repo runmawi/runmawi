@@ -349,7 +349,7 @@ class AdminAudioController extends Controller
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
-        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+        }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
         }
         $audio = Audio::findOrFail($id);

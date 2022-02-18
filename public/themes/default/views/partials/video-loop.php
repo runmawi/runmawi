@@ -123,7 +123,7 @@ overflow-hidden {
                      </div>
                      <div class="favorites-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
-                            <?php if(isset($recomended)) :
+                            <?php if(isset($recomended)) : 
                            foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
@@ -164,7 +164,10 @@ overflow-hidden {
                            </li>
                            
                             <?php endforeach; 
-		                          endif; ?>
+                            else:
+                              ?>
+                              <h4>No Recomended Videos</h4>
+		                          <?php endif; ?>
                         </ul>
                      </div>
                   </div>

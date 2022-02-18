@@ -101,7 +101,7 @@ class LiveStreamController extends Controller
                     $publishable_key= null;
                 }        
              $currency = CurrencySetting::first();
-
+                // dd($categoryVideos);
            $data = array(
                  'currency' => $currency,
                  'video' => $categoryVideos,

@@ -50,6 +50,8 @@ use App\BlockAudio;
 use App\Geofencing;
 use Theme;
 Use App\HomeSetting;
+Use App\CategoryAudio;
+
 
 class ThemeAudioController extends Controller{
 
@@ -331,29 +333,45 @@ class ThemeAudioController extends Controller{
         } else {
             $page = 1;
         }
-        
-        
-
         $getID = AudioCategory::select('id')->where('slug', '=', $slug)->first();
-        $cat = AudioCategory::where('id', '=', $getID->id)->first();
-        
-        $parent_cat = AudioCategory::where('id', '=', $cat->id)->first();
-       
-        $albums = AudioAlbums::where('parent_id','=',$getID->id)->orderBy('created_at', 'DESC')->get();
-        
-        if(!empty($albums)){
+        $categoryAudio = CategoryAudio::where('category_id', $getID->id)->pluck('audio_id')->toArray();
+            if(!empty($getID)){    
+           $audios_count = Audio::select('audio.*','audio_categories.name as categories_name','category_audios.category_id as categories_id')
+           ->Join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+           ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+           ->where('audio_categories.id','=',$getID->id)
+           ->count();
+           $audios = Audio::select('audio.*','audio_categories.name as categories_name','category_audios.category_id as categories_id')
+           ->Join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+           ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+           ->where('audio_categories.id','=',$getID->id)
+           ->get();
 
-      $audios_count = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
-      ->where('audio_albums.parent_id','=',$getID->id)
-      ->select('audios.*')
-      ->count();
-      $audios = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
-      ->where('audio_albums.parent_id','=',$getID->id)
-      ->select('audios.*')
-      ->get();
         }else{
             $audios_count = 0;
         }
+        //    dd($audios);
+
+    //     $getID = AudioCategory::select('id')->where('slug', '=', $slug)->first();
+    //     $cat = AudioCategory::where('id', '=', $getID->id)->first();
+        
+    //     $parent_cat = AudioCategory::where('id', '=', $cat->id)->first();
+       
+    //     $albums = AudioAlbums::where('parent_id','=',$getID->id)->orderBy('created_at', 'DESC')->get();
+        
+    //     if(!empty($albums)){
+
+    //   $audios_count = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
+    //   ->where('audio_albums.parent_id','=',$getID->id)
+    //   ->select('audios.*')
+    //   ->count();
+    //   $audios = AudioAlbums::join('audios', 'audios.album_id', '=', 'audio_albums.id')
+    //   ->where('audio_albums.parent_id','=',$getID->id)
+    //   ->select('audios.*')
+    //   ->get();
+    //     }else{
+    //         $audios_count = 0;
+    //     }
 
     // dd($audios_count);
         
@@ -464,7 +482,6 @@ class ThemeAudioController extends Controller{
     }
     
     public function album($album_slug) {
-        
        
         if(Auth::guest()):
             return Redirect::to('/login');
@@ -503,7 +520,7 @@ class ThemeAudioController extends Controller{
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );
-        return Theme::make('albums', $data);
+        return Theme::view('albums', $data);
     }
 
     public function add_favorite(Request $request)
