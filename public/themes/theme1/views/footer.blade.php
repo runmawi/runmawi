@@ -1,3 +1,45 @@
+<<<<<<< HEAD
+<?php $settings = App\Setting::first();
+ $user = App\User::where('id','=',1)->first(); 
+ $app_setting = App\AppSetting::where('id','=',1)->first();
+ $session = session()->all();
+
+?>
+<footer class=" py-4 mt-auto">
+        <div class="container-fluid px-5">
+            <div class="row  justify-content-between flex-column flex-sm-row">
+                <div class="col-sm-3">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4">
+                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+
+                </div>
+                </div>
+                <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
+                    <ul class="text-white p-0 mt-3">
+                        <li>Home</li>
+                        <li>Movies</li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
+                    <ul class="text-white p-0 mt-3">
+                        <li>Company</li>
+                        <li>Privacy Policy</li>
+                        <li>Terms & condition</li>
+                        <li>Contact us</li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
+                    <p>Available on Play Store</p>
+                    <img src="assets/img/gp.png" alt="gp" class="">
+                </div>
+
+            </div>
+        </div>
+=======
 <?php $settings = App\Setting::first(); ?>
 <footer class="mb-0">
          <div class="container-fluid">
@@ -83,6 +125,7 @@
                    </div>
                </div>
             </div>
+>>>>>>> 0464bcf15fd4becd8c2f315aac6d90ca9b476f3c
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>

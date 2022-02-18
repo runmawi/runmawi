@@ -24,7 +24,7 @@
                                 
                                <div class="hover-buttons">
                                    <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                        </a>
 
                                   
                              

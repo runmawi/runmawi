@@ -30,7 +30,7 @@
                                     
                                     <div class="hover-buttons text-white">
                                         <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-<img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+<img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                        </a>
                                         <div>
                                     <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                                     <!-- </a> -->
