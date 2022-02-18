@@ -91,8 +91,9 @@ $data = Session::all();
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
-<link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme1/assets/css/responsive.css') ?>" rel="stylesheet">
 
       
    <link rel="preconnect" href="https://fonts.googleapis.com">
