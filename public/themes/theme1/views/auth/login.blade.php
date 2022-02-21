@@ -58,6 +58,7 @@ $system_settings = App\SystemSetting::find(1);
 font-size: 48px;
 line-height: 57px;
         font-weight: 900;
+        color: #fff;
 
 
     }
@@ -122,6 +123,7 @@ i.fa.fa-google-plus {
         background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%)!important;
         padding: 40px;
         padding-top: 100px;
+        border-radius: 20px;
     }  
 </style>
     </head>

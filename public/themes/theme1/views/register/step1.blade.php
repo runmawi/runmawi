@@ -30,6 +30,9 @@ $uppercase =  ucfirst($request_url);
       <!-- Style -->
       <link rel="stylesheet" href="assets/css/style.css" />
       <!-- Responsive -->
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="assets/css/responsive.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -192,6 +195,7 @@ i.fa.fa-google-plus {
     .sign-in-page{
         background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%)!important;
         padding: 40px;
+        border-radius: 20px;
         
     } 
     ::placeholder { color: #fff!important; opacity: 1; word-spacing: 9px !important;font-size: 18px!important;letter-spacing: 2px;font-weight: 100!important;text-transform: uppercase;}
@@ -387,7 +391,7 @@ i.fa.fa-google-plus {
                             </select>
                             </div>
                             <div class="col-sm-8 lab">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('MOBLIE') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Moblie') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
