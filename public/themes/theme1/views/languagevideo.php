@@ -10,7 +10,7 @@
  <!-- MainContent -->
  <div class="main-content">
      <h2 class="Continue Watching mb-3 text-center">Movies </h2>
-     <div class="container-fluid" style="background:#4b4a4b;padding:0px 60px!important;">
+     <div class="container-fluid" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);padding:0px 60px!important;">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">

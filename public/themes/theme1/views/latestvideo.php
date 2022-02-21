@@ -1,7 +1,7 @@
 <?php include('header.php'); ?>
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
@@ -17,30 +17,13 @@
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
                                    
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php  if(!empty($latest_video->ppv_price)){?>
-                                          <p class="p-tag1" style="left:2px!important"><?php echo $currency->symbol.' '.$latest_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $latest_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null ){ ?>
-                                            <p class="p-tag" style="left:2px!important"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                     <div class="block-description">
-                                       <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
-                                       </div>
+                                       
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="text-white">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
-                                          </span>
+                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
                                            </a>
                                            <div>
                                            <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
@@ -64,6 +47,13 @@
                                     </div>-->
 
                                  </div>
+                                  <div>
+                                      <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
+                                       <div class="movie-time d-flex align-items-center my-2">
+                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                       </div>
+                                  </div>
                               </a>
                            </li>
                            

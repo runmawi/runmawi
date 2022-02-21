@@ -474,7 +474,7 @@ class ThemeAudioController extends Controller{
                 'theme_settings' => ThemeHelper::getThemeSettings(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
-            return View::make('Theme::audio', $data);
+            return View::view('Theme::audio', $data);
 
         } else {
             return Redirect::to('audios')->with(array('note' => 'Sorry, this audio is no longer active.', 'note_type' => 'error'));
