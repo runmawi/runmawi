@@ -814,7 +814,7 @@ pre code {
   }
 
   .col-sm-3 {
-    -ms-flex: 0 0 25%;
+    /*-ms-flex: 0 0 25%;*/
     flex: 0 0 25%;
     
   }
