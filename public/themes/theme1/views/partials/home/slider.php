@@ -122,9 +122,16 @@ endif; ?>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-                                <a class="black bl" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
-                            </div>    
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
+                                <a href="#vide
+                                 o-trailer"
+                            class="video-open playbtn btn bd ml-2"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>
+                            </div></div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">
+                        <div class="">
+                             <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
+                            <h2 class="sp">Specials !</h2>
+                        </div></div>
                 </div>
                 </div>
                 <div class="trailor-video">

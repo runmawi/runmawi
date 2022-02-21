@@ -28,15 +28,18 @@
                                    
                                 </div>
                             </div>
-                        <div class="mt-2">
-                                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                         <h6><?php echo __($watchlater_video->title); ?></h6>
-                                    </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                    </div>
-                              
+
+                        <div class="mt-2 d-flex justify-content-between">
+                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                 <h6><?php  echo (strlen($watchlater_video->title) > 19) ? substr($watchlater_video->title,0,20).'...' : $watchlater_video->title; ?></h6>
+                             </a>
+                            <div class="badge badge-secondary p-1 mr-2">
+                                <?php echo $watchlater_video->age_restrict ?>
+                            </div>
+                        </div>
+    
+                        <div class="movie-time d-flex align-items-center my-2">
+                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                         </div>
                     </a>
                 </li>

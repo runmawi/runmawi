@@ -53,7 +53,8 @@
                                  <div class="p-0">
                                  <div class="d-flex mt-2 justify-content-between">
                                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                   <h6><?php echo __($watchlater_video->title); ?></h6>
+                                   <h6><?php  echo (strlen($watchlater_video->title) > 19) ? substr($watchlater_video->title,0,20).'...' : $watchlater_video->title; ?></h6>
+
                                     </a>
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                      </div>
