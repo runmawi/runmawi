@@ -30,7 +30,7 @@
                             <div class="hover-buttons">
                                    <div class="d-flex align-items-center justify-content-between">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                          <span class="text-white"><?= ucfirst($video->title); ?></span>
+                                  <span class="text-white"><?= (strlen($video->title) > 19) ? substr($video->title,0,20).'...' : $video->title; ?></span>
                              </a>                       
                        </div>
                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
