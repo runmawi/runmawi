@@ -4322,7 +4322,7 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
 
 .search-toggle {
   padding: .25rem .75rem;
-  font-size: 1.25rem;
+  font-size: 18px;
   line-height: 1;
   background-color: transparent;
   border: 1px solid transparent;
