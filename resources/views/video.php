@@ -52,14 +52,25 @@ $pack = $package->package;
 if(!Auth::guest()) {
   // dd($video->access);
   // dd('test');
-if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
-
-//  dd(Auth::user()->role); 
-
-      
-if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
-|| (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?><?php //dd(Auth::user()->role); ?>
-
+  if( !empty($ppv_video_play) || Auth::user()->role == 'registered' 
+  || $video->global_ppv == null && $video->access == 'subscriber' 
+  || $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' 
+  || $video->global_ppv == null && $video->ppv_price == null
+  && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' 
+  || $video->access == 'guest'&& Auth::user()->role == 'subscriber' 
+  || $video->access == 'ppv' && Auth::user()->role == 'admin'
+  || $video->access == 'subscriber' && Auth::user()->role == 'admin' 
+  || $video->access == 'registered' && Auth::user()->role == 'admin'
+  || $video->access == 'registered' && Auth::user()->role == 'subscriber'
+  || $video->access == 'registered' && Auth::user()->role == 'registered' 
+  || Auth::user()->role == 'admin'){
+  
+  
+        
+  if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || 
+  Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
+  || (!Auth::guest() && $video->access == 'registered' || Auth::user()->role == 'registered' && $video->type != ""))   { ?>
+  <?php //dd(Auth::user()->role); ?>
  <div id="video_bg">
    <div class=" page-height">
      <?php 
