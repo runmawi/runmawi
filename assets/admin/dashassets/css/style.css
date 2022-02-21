@@ -1074,9 +1074,10 @@ select{
     }
     
 .select2-selection__rendered{
-       background-color: #F2F5FA!important;
-        border: none!important;
-    height: 45px;
+    background-color: #F2F5FA!important;
+    border: none!important;
+    height: 43px;
+    border-radius: 0;
     }
     .select2-container--default .select2-selection--multiple{
         border: none!important;
