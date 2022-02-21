@@ -725,10 +725,21 @@ public function verifyandupdatepassword(Request $request)
 
     $videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
     $myData = array();
+
+    $videos_category= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+    // ->Join('video_categories','video_categories.id','=',$channelid)
+    ->where('categoryvideos.category_id',$channelid)
+    ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['video_url'] = URL::to('/').'/storage/app/public/';
+      return $item;
+    });
+    // 
+    
     foreach ($videocategories as $key => $videocategory) {
       $videocategoryid = $videocategory['id'];
       $genre_image = $videocategory['image'];
-      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('category_id',$videocategoryid)
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
       ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
@@ -748,7 +759,8 @@ public function verifyandupdatepassword(Request $request)
         "genre_id"   => $videocategoryid,
         "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
-        "videos" => $videos
+        "videos" => $videos,
+        "videos_category"   => $videos_category,
       );
 
     }
