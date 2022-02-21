@@ -765,7 +765,7 @@ if(!empty($artistsdata)){
         }
         
         $data = $request->all();
-        
+        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'video_country' => 'required'        
@@ -826,9 +826,12 @@ if(!empty($artistsdata)){
     //    dd($trailer);
         
            $update_mp4 = $request->get('video');
-            if(empty($data['active'])){
-            $data['active'] = 0;
-            } 
+           if(empty($data['active'])){
+            $active = 0;
+        }  else{
+         $active = 1;
+        }
+        
         
 
          if(empty($data['webm_url'])){
@@ -878,12 +881,19 @@ if(!empty($artistsdata)){
 
         
     
-//        if(empty($data['featured'])){
-//            $data['featured'] = 0;
-//        }  
-            if(empty($data['featured'])){
-                $data['featured'] = 0;
-            } 
+                if(empty($data['featured'])){
+                $featured = 0;
+                }else{
+                $featured = 1;
+                }  
+                if(empty($data['active'])){
+                    $active = 0;
+                    }else{
+                    $active = 1;
+                    }  
+            // if(empty($data['featured'])){
+            //     $data['featured'] = 0;
+            // } 
              if(!empty($data['embed_code'])){
                 $data['embed_code'] = $data['embed_code'];
             } 
@@ -891,9 +901,9 @@ if(!empty($artistsdata)){
                 $data['m3u8_url'] = $data['m3u8_url'];
             } 
 
-            if(empty($data['active'])){
-                $data['active'] = 0;
-            } 
+            // if(empty($data['active'])){
+            //     $data['active'] = 0;
+            // } 
               if(empty($data['video_gif'])){
                 $data['video_gif'] = '';
             }
@@ -997,7 +1007,6 @@ if(!empty($artistsdata)){
             }   
             if(!empty($data['banner'])){
                 // dd($data['global_ppv']);
-        
                  $banner =$data['banner'];
                 }else{
                  $banner = 0;
@@ -1087,9 +1096,6 @@ if(!empty($artistsdata)){
          $video->intro_start_time =  $request['intro_start_time'];
          $video->intro_end_time =  $request['intro_end_time'];
          $video->country =  $request['video_country'];
-
-
-
          $video->publish_status = $request['publish_status'];
          $video->publish_type = $request['publish_type'];
          $video->publish_time = $request['publish_time'];
@@ -1100,6 +1106,9 @@ if(!empty($artistsdata)){
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;
+         $video->featured=$featured ;
+         $video->active=$active ;
+         $video->banner=$banner ;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
          $video->description = strip_tags($data['description']);
@@ -1405,9 +1414,11 @@ if(!empty($artistsdata)){
                 } 
             
         
-    //        if(empty($data['featured'])){
-    //            $data['featured'] = 0;
-    //        }  
+           if(empty($data['featured'])){
+               $featured = 0;
+           }  else{
+            $featured = 1;
+           }
                 if(empty($data['featured'])){
                     $data['featured'] = 0;
                 } 
@@ -1508,7 +1519,12 @@ if(!empty($artistsdata)){
             if(!empty($data['age_restrict'])) {
                 $video->age_restrict =  $data['age_restrict'];
            }
+           if(!empty($data['banner'])) {
+            $banner =  1 ;
+       }else{
+        $banner =  0 ;
 
+       }
 
            if(!empty($data['video_category_id'])){
             $video_category_id = implode(',',$request->video_category_id);
@@ -1557,9 +1573,9 @@ if(!empty($artistsdata)){
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
-             $video->banner =  $data['banner'];
+             $video->banner =  $banner;
+             $video->featured =  $featured;
              $video->country =  $data['video_country'];
-
             $video->enable =  1;
 
              $video->update($data);
