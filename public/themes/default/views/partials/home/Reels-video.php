@@ -30,23 +30,20 @@
             </li>
                      <?php endforeach; endif; ?>
     </ul>
-</div>
 
-
-
-<!-- Reels Modal -->
+    <!-- Reels Modal -->
 
 <div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
             <div class="modal-body" id="Reels_player" >
-                <video  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
-                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
+                <video>
                     <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
                 </video>
             </div>
       </div>
     </div>
+</div>
 </div>
 
 <!-- Reels Player -->
