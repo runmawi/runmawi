@@ -32,7 +32,7 @@
                             </div>
                         <div class="mt-2 d-flex justify-content-between">
                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                         <h6><?php echo __($preference_Languages->title); ?></h6>
+                                         <h6><?php  echo (strlen($preference_Languages->title) > 19) ? substr($preference_Languages->title,0,20).'...' : $preference_Languages->title; ?></h6>
                                     </a>
                              <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_Languages->age_restrict ?></div></div>
                                     <div class="movie-time d-flex align-items-center my-2">
