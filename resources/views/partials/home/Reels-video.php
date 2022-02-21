@@ -31,18 +31,23 @@
                      <?php endforeach; endif; ?>
     </ul>
 
-    <!-- Reels Modal -->
+ <!-- Reels Modal -->
 
 <div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true">
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-            <div class="modal-body" id="Reels_player" >
+            <div class="modal-body" id="Reels_player"  >
                 <video>
                     <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
                 </video>
             </div>
+
+            <div class="modal-footer" style="">
+                <button type="button" class="btn btn-secondary reelsclose" data-dismiss="modal">Close</button>
+            </div>
       </div>
     </div>
+   
 </div>
 </div>
 
@@ -52,10 +57,21 @@
 <script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
 
 <script>
-
     var Reels = <?php echo json_encode($ReelVideos); ?>;
-    var player = new Playerjs({id:"Reels_player", file:Reels});
+    var player = new Playerjs({id:"Reels_player", file:Reels,autoplay:1});
 
+    $(document).ready(function(){
+        $(".reelsclose").click(function(){
+            var player = new Playerjs({id:"Reels_player", file:Reels,stop:1});
+        });
+    });
 </script>
 
- 
+<style>
+    .modal-body{
+        position: unset;
+    }
+    .modal-footer{
+        background: black;
+    }
+</style>
