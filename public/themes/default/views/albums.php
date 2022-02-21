@@ -215,20 +215,26 @@ border-bottom: 1px solid #141414;
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
-<ul class="album_list mt-3" style="display: flex;">
+<ul class="album_list mt-3 album-slider list-inline"  >
+
     <?php foreach ($other_albums as $other_album) { ?>
         <li>
+            <div class="">
             <?php if($other_album->album != ''){ ?>
                 <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                 <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-              
-
+                </a>
+                <div class="d-flex justify-content-around">
+                    <div>
                 <div class="play-block">
                     <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
-                </div>
-            </a>
+                </div></div>
+        
+            <div>
             <p><?php echo ucfirst($other_album->albumname);?>
+            </div></div>
             <?php  } ?>
+            </div>
         </li>
     <?php }?>
 </ul>

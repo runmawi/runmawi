@@ -374,6 +374,45 @@ Index Of Script
 				}
 			]
 		});
+		jQuery('.album-slider').slick({
+			dots: false,
+			arrows: true,
+			infinite: true,
+			speed: 300,
+			autoplay: false,
+			slidesToShow: 4,
+			slidesToScroll: 1,		
+			// appendArrows: $('#sm-slick-arrow'),
+			
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+			responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: true,
+				dots: true
+				}
+			},
+			{
+				breakpoint: 768,
+				settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				// arrows: false,
+				slidesToShow: 1,
+				slidesToScroll: 1
+				}
+			}
+			]
+		});
 
 		/*---------------------------------------------------------------------
 			Owl Carousel

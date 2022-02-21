@@ -214,8 +214,8 @@ border-bottom: 1px solid #141414;
 <div class="container">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
-<p  class="album-title">Other Albums </p>
-<ul class="album_list mt-3" style="display: flex;">
+<p  class="album-title">Other Albumsres </p>
+<ul class="album_list mt-3" >
     <?php foreach ($other_albums as $other_album) { ?>
         <li>
             <?php if($other_album->album != ''){ ?>
