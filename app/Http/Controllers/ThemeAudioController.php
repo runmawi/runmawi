@@ -435,7 +435,7 @@ class ThemeAudioController extends Controller{
                 'theme_settings' => ThemeHelper::getThemeSettings(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
-            return View::make('Theme::audio', $data);
+            return View::view('Theme::audio', $data);
 
         } else {
             return Redirect::to('audios')->with(array('note' => 'Sorry, this audio is no longer active.', 'note_type' => 'error'));
@@ -482,7 +482,7 @@ class ThemeAudioController extends Controller{
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );
-        return Theme::make('albums', $data);
+        return Theme::view('albums', $data);
     }
 
     public function add_favorite(Request $request)
