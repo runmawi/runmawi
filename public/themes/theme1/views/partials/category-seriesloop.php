@@ -23,12 +23,9 @@
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                         <a href="<?php echo URL::to('/play_series').'/'.$category->id;?>">
-        <h6>
-<img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
-    class="img-fluid" alt=""> 
-  <!--   <video class="thevideo" loop poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>">
-        <source src="<?php echo $category_series->trailer;  ?>" type="video/mp4">
-        </video> -->
+        
+<img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"class="img-fluid" alt=""> 
+  
     </a>
 
     </div>
@@ -49,13 +46,13 @@
         <a type="button" class="btn btn-primary btn-hover"
         href="<?php echo URL::to('play_series') ?>/<?= $category_series->slug ?>">
 
-        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-        Play Now
+       <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
 
     </a>
 </div>
 
 </div>
+                                    </div>
 </a>
 </li>
 
