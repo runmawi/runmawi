@@ -358,7 +358,7 @@ class ChannelController extends Controller
 
             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
-            $Reels_videos = Video::where('id',$vid)->get();
+            $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
   
              $currency = CurrencySetting::first();
                  $data = array(
@@ -433,7 +433,7 @@ class ChannelController extends Controller
 
     $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
-    $Reels_videos = Video::where('id',$vid)->get();
+    $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
 
             $data = array(
                  'currency' => $currency,
@@ -505,7 +505,7 @@ class ChannelController extends Controller
  
              $release_year = Video::where('id',$vid)->pluck('year')->first(); 
  
-             $Reels_videos = Video::where('id',$vid)->get();
+             $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
 
              $category_name = CategoryVideo::select('video_categories.name as categories_name')
              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
@@ -548,7 +548,7 @@ class ChannelController extends Controller
 
     $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
-    $Reels_videos = Video::where('id',$vid)->get();
+    $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
     $category_name = CategoryVideo::select('video_categories.name as categories_name')
     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
     ->where('categoryvideos.video_id',$vid)
