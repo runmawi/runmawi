@@ -30,7 +30,7 @@
         </div>
     </section>
 
-
+<!-- Top Watched Videos -->
     <?php if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
             <div class="fluid">
@@ -44,6 +44,7 @@
    <?php } ?>
 
 
+<!-- Most Watched Videos User -->
     <?php if(count($most_watch_user) > 0){ ?>
        <section id="iq-favorites">
             <div class="fluid">
@@ -57,6 +58,7 @@
    <?php } ?>
 
 
+<!-- Most Watched Videos Country -->
    <?php 
       if(count($Most_watched_country) > 0){ ?>
        <section id="iq-favorites">
@@ -71,7 +73,7 @@
    <?php } ?>
 
 
-   
+   <!-- Preference By Genres -->
    <?php 
       if(($preference_genres) != null && count($preference_genres) > 0){ ?>
          <section id="iq-favorites">
@@ -85,9 +87,8 @@
          </section>
    <?php } ?>
 
-   
+   <!-- Preference By Language -->
    <?php 
-
    if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
    <section id="iq-favorites">
             <div class="fluid">
@@ -101,6 +102,7 @@
    <?php } ?>
 
 
+<!-- Recently Added Movies -->
     <?php if($home_settings->latest_videos == 1){ ?>
       <section id="iq-favorites">
          <div class="fluid">
@@ -113,7 +115,7 @@
       </section>
    <?php } ?>
 
-
+<!-- Live Videos -->
 <?php if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
@@ -152,7 +154,7 @@
 </section>
 <?php } ?>
 
-
+<!--  Featured Movies  -->
 <?php if ( GetTrendingVideoStatus() == 1 ) { ?>
   <section id="iq-favorites">
     <div class="fluid">
