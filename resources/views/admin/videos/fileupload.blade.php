@@ -496,16 +496,28 @@ data: {
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                                <label class="p-2">Choose Language:</label>
-                                                <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                                    <label class="p-2">Choose Language:</label>
+                                    <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
                                                     <!-- <option selected disabled="">Choose Language</option> -->
-                                                    @foreach($languages as $language)
-                                                        <option value="{{ $language->id }}" >{{ $language->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>   
-                                            </div>   
-                                            <div class="row mt-5">    
+                                        @foreach($languages as $language)
+                                            <option value="{{ $language->id }}" >{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>   
+
+                                <div class="col-sm-6 form-group">
+                                    <label class="p-2">Pdf upload</label>
+                                    <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
+                                </div>  
+
+
+                                <div class="col-sm-6 form-group">
+                                    <label class="p-2">Reels Videos</label>
+                                    <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
+                                </div>  
+                            </div>   
+
+                            <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
                                         <div class="panel-title" style="color: #000;">Subtitles (srt or txt)

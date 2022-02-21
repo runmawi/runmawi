@@ -759,6 +759,13 @@ $artists = [];
    <php endforeach; ?>
    </div>
 -->
+
+
+    <div class="video-list you-may-like">
+           <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
+               <?php include('partials/home/Reels-video.php');?>
+           </div>
+   </div>
        
    <div class="video-list you-may-like">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>

@@ -15,7 +15,10 @@ class Video extends Model
 
 	public static $rules = array();
 
-	protected $fillable = array('user_id', 'video_category_id', 'slug' , 'status' ,'title', 'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured','banner', 'footer', 'duration', 'image', 'embed_code', 'mp4_url', 'webm_url', 'ogg_url','views','rating','language' ,'year','trailer','created_at','path','Recommendation','country');
+	protected $fillable = array('user_id', 'video_category_id', 'slug' , 'status' ,'title', 
+		'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured','banner', 
+		'footer', 'duration', 'image', 'embed_code', 'mp4_url', 'webm_url', 'ogg_url','views','rating',
+		'language' ,'year','trailer','created_at','path','Recommendation','country','pdf_files','reelvideo');
 
 	public function tags(){
 		return $this->belongsToMany('Tag');

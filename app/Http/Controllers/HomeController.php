@@ -210,6 +210,7 @@ class HomeController extends Controller
                         ->simplePaginate($this->videos_per_page) ,
                     'video_banners' => Video::where('active', '=', '1')
                         ->where('status', '=', '1')
+                        ->where('banner','=','1')
                         ->orderBy('created_at', 'DESC')
                         ->simplePaginate(130000) ,
                     'sliders' => Slider::where('active', '=', '1')
@@ -326,10 +327,11 @@ class HomeController extends Controller
                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->simplePaginate($this->videos_per_page) ,
-                'video_banners' => Video::where('banner', '=', '1')
-                    ->where('status', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->simplePaginate(130000) ,
+                    'video_banners' => Video::where('active', '=', '1')
+                                    ->where('status', '=', '1')
+                                    ->where('banner','=','1')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->simplePaginate(130000) ,
                 'sliders' => Slider::where('active', '=', '1')
                     ->orderBy('order_position', 'ASC')
                     ->get() ,
@@ -878,7 +880,11 @@ class HomeController extends Controller
                         'currency' => $currency,
                          'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                         //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-                         'video_banners' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                        'video_banners' => Video::where('active', '=', '1')
+                                        ->where('status', '=', '1')
+                                        ->where('banner','=','1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(130000) ,
                          'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
                          'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                          'cnt_watching' => $cnt_watching,
@@ -1457,7 +1463,11 @@ class HomeController extends Controller
                 'currency' => $currency,
                  'videos' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate($this->videos_per_page),
                 //  'video_banners' => Video::where('banner', '=', '1')->where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
-                 'video_banners' => Video::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
+                'video_banners' => Video::where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->where('banner','=','1')
+                                ->orderBy('created_at', 'DESC')
+                                ->simplePaginate(130000) ,
                  'sliders' => Slider::where('active', '=', '1')->orderBy('order_position', 'ASC')->get(),
                  'live_banner' => LiveStream::where('banner', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(111111),
                  'cnt_watching' => $cnt_watching,

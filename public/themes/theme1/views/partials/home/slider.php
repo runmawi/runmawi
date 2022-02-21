@@ -23,7 +23,7 @@
 <span class="fa fa-star"></span></div>
                     
                 </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-5 pt-5 b2">
                         <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                            <a href="<?php echo $slider_video->link; ?>"
@@ -90,7 +90,7 @@ data-delay-in="1.2">
 <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="black bl" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>

@@ -139,10 +139,11 @@ $uppercase =  ucfirst($request_url);
        
 }
 .phselect{
-    width: 100px !important;
+    width: 120px !important;
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
+    border:none;
 }
     .form-control{
         padding-left: 4px;
@@ -382,7 +383,7 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12 mt-3">
                                             <div class="row p-0 justify-content-between">
                                
-                           <div class="col-sm-3 p-0 lab">
+                           <div class="col-sm-4 p-0 lab">
                               <select class="phselect" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
