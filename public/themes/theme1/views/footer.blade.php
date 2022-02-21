@@ -39,7 +39,7 @@
 
             </div>
         </div>
-=======
+
 <?php $settings = App\Setting::first(); ?>
 <footer class="mb-0">
          <div class="container-fluid">
@@ -125,7 +125,7 @@
                    </div>
                </div>
             </div>
->>>>>>> 0464bcf15fd4becd8c2f315aac6d90ca9b476f3c
+
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
