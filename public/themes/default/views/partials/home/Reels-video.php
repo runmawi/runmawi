@@ -34,14 +34,13 @@
 
 
 
-
 <!-- Reels Modal -->
 
 <div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-            <div class="modal-body">
-                <video id="ReelsVideos" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
+            <div class="modal-body" id="Reels_player" >
+                <video  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
                     controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
                     <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
                 </video>
@@ -50,33 +49,16 @@
     </div>
 </div>
 
+<!-- Reels Player -->
 
-
-<script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
+<?php $ReelVideos = URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;  ?>
+<script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
 
 <script>
 
+    var Reels = <?php echo json_encode($ReelVideos); ?>;
+    var player = new Playerjs({id:"Reels_player", file:Reels});
 
-// for Reels videos
-const player = new Plyr('#ReelsVideos',{
-          controls: [
+</script>
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-});
-    </script>
  
