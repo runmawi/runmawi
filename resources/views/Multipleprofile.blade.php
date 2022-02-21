@@ -14,11 +14,12 @@
 <div class="container">
     <div class="row  align-items-center ">
         <div class="col-md-12 align-items-center">
-
+  
                     <div class="sign-in-from  m-auto" >
-
-                    <div class="row data" style="display:flex;justify-content: space-evenly;">
-
+<div class="row1">
+    <h1 class="mt-5">Who's Watching ?</h1>
+                    <div class="row-data" style="display:flex; heigth:400px;" >
+                      
                     
                         <div class="member ">
                             <a  href="{{ route('home')}}">
@@ -51,23 +52,30 @@
         </div>
     </div>
 </div>
-
+</div>
  @endsection
 
  <style>
-
+     .row1{
+         background-color: #151515;
+         border-radius:30px;
+         padding: 20px;
+     }
+     .row1 h1{
+         text-align: center;
+          color: white;
+         font-family: 'Chivo';
+     }
      h2{
         text-align: center;
-        font-family: auto;
+        font-family: 'Chivo';
         font-family: cursive;
         color: white;
      }
      .multiuser_img{
-        width: 120px;
-        border-radius: 50;
-        border-radius: 50%;
+       
         padding: 5px;
-        border: 5px solid #9f9191
+        
      }
      .multiuser_img:hover {
         -ms-transform: scale(1.5); /* IE 9 */
@@ -81,33 +89,37 @@
         display: none;
     }
     .member {
-        float:left;
+       /* float:left;
        
         margin:4%;
-        margin-top: -10%;
+        margin-top: -10%;*/
+        padding: 15px;
     }
     .name{
-        margin-top: 1rem;
+
         font-size: larger;
-        font-family: auto;
+       font-family: 'Chivo';
         color: white;
         text-align: center;
     }
     .sign-in-from {
-    padding: 22%;
-    /* background-image: linear-gradient( rgb(10 10 10 / 50%), rgb(0 0 0 / 50%)  ), */
-    background-image: linear-gradient( rgb(10 10 10 / 50%), rgb(0 0 0 / 50%)  ),
+    padding: 20%;
+    /* background-image: linear-gradient( rgb(10 10 10 / 50%), rgb(0 0 0 / 50%)  ), 
+    background-image: linear-gradient( rgb(10 10 10 / 100%), rgb(0 0 0 / 100%)  ),
    /* url(public/uploads/avatars/Movies.jpg);  */
         url("{{ $screen }}") ;
+        background-color: rgb(14 14 14);
         background-repeat: no-repeat;
         background-size: cover;
+        font-family: 'Chivo';
 }
 .fa-plus-circle:before {
     color: white;
-    font-size: 63px;
+    font-size: 25px;
 }
 a.fa.fa-plus-circle.fa-10x {
-    margin-top: -10%;
+    margin-top: 20%;
+    display: none;
 }
 html.js-focus-visible {
     background: #141414;
@@ -116,7 +128,7 @@ html.js-focus-visible {
     color: white;
    
    
-    font-size: 27px;
+    font-size: 20px;
     text-align: center;
 }
 a.fa.fa-edit {
@@ -129,7 +141,7 @@ a.fa.fa-edit {
          display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 10px;
+   
      }
      a{
         text-decoration: none!important;  
