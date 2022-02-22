@@ -798,7 +798,7 @@ class AdminUsersController extends Controller
             $maildevice->save();
             $system_settings = SystemSetting::first();
             $user = User::where('id','=',1)->first();
-            $message = 'Approved User For Login';
+            $message = 'Approved User to Login';
             return Redirect::to('/')->with('message', $message);
 
             // return View::make('auth.login')->with('alert', $message);

@@ -398,7 +398,7 @@
                            </div>
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                                 <label class="m-0"><h3 class="fs-title" style="display:block;">Publish Type</h3></label>
+                                 <label class="m-0" style="display:block;"><h3 class="fs-title">Publish Type</h3></label>
                                  <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" > Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                  <input type="radio" id="publish_later" name="publish_type" value = "publish_later" > Publish Later
                               </div>
@@ -469,7 +469,7 @@
                            <div class="row mt-5">
                               <div class="panel panel-primary" data-collapsed="0">
                                  <div class="panel-heading col-sm-12">
-                                    <div class="panel-title" style="color: #000;"> <label class="m-0">Subtitles (srt or txt) :</label>
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (srt or txt) :</h3></label>
                                     </div>
                                     <div class="panel-options"> 
                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
@@ -511,10 +511,7 @@
                               --}}
                               {{-- Block country --}}
                               <div class="col-sm-4 form-group">
-                                 <label>
-                                    <h5>Block Country</h5>
-                                 </label>
-                                 <p class="p1">Choose the countries for block the videos</p>
+                                 <label class="m-0">Block Country <small>Choose the countries for block the videos</small></label>
                                  <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                     @foreach($countries as $country)
                                     <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
@@ -523,10 +520,7 @@
                               </div>
                               {{-- country --}}
                               <div class="col-sm-4 form-group">
-                                 <label>
-                                    <h5>Country</h5>
-                                 </label>
-                                 <p class="p1">Choose the countries videos</p>
+                                 <label class="m-0">Country <small>Choose the countries videos</small></label>
                                  <select  name="video_country" class="form-control" id="country">
                                     <option value="All">Select Country </option>
                                     @foreach($countries as $country)
@@ -751,11 +745,11 @@
 
 #msform .action-button {
     width: 100px;
-    background: #51b7e5;
+    background: #0993D2;
     font-weight: 500;
     color: white;
     border: 0 none;
-    border-radius: 0px;
+    border-radius: 4px;
     cursor: pointer;
     padding: 10px 5px;
     margin: 10px 0px 10px 5px;
@@ -770,12 +764,12 @@
 #msform .action-button-previous {
     width: 100px;
     background: #616161;
-    font-weight: bold;
+    font-weight: 500;
     color: white;
     border: 0 none;
-    border-radius: 0px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 10px 5px;
+    padding: 7px 5px;
     margin: 10px 5px 10px 0px;
     float: right
 }
@@ -792,7 +786,7 @@
 }
 
 .fs-title {
-    font-size: 22px;
+    font-size: 20px;
     color: #000;
     margin-bottom: 15px;
     text-align: left;

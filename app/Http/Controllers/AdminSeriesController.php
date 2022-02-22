@@ -126,7 +126,6 @@ class AdminSeriesController extends Controller
         
          /*Slug*/
         $data = $request->all();
-        
        if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
@@ -205,10 +204,32 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-        // dd($data['genre_id']);
+        if(!empty($data['ppv_status'])){
 
+            $data['ppv_status'] = $data['ppv_status'];
+        }else{
+            $data['ppv_status'] = 0;
+        }
         $series = Series::create($data);
+        // dd($series->id);
+        if(!empty($data['ppv_status'])){
+
+            $ppv_status = $data['ppv_status'];
+        }else{
+            $ppv_status = 0;
+        }
         $series->slug =  $slug;
+
+        $series = Series::find($series->id);
+
+      
+        $series->slug = $slug;
+        $series->ppv_status = $ppv_status;
+
+
+        $series->save();  
+
+       
         $series->save();
         if(!empty($artistsdata)){
             foreach ($artistsdata as $key => $value) {
@@ -263,11 +284,7 @@ class AdminSeriesController extends Controller
         
         $update_url = Series::find($resolution_data['series_id']);
 
-        if(!empty($data['ppv_status'])){
-            $ppv_status = $data['ppv_status'];
-        }else{
-            $ppv_status = 0;
-        }
+      
         $update_url->mp4_url = $data['mp4_url'];
         $update_url->slug = $data['slug'];
         $update_url->mp4_url = $ppv_status;
