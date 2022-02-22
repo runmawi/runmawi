@@ -2,28 +2,16 @@
 
 
 @section('content')
-<style>
-    .form-control {
-    background-color: var(--iq-body-bg);
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-text);
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-</style>
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 <div class="iq-card">
+    <h4><i class="entypo-archive"></i> Manage Age Category</h4>
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/age/update') }}" method="post" enctype="multipart/form-data">
        
          <div class="form-group ">
 
-                        <label>AGE:</label>
+                        <label>Age:</label>
                         <input type="text" id="age" name="age" value="{{ $categories[0]->age }}" class="form-control" placeholder="Enter Name">
                     </div>
 

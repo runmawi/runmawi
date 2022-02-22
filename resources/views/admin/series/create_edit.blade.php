@@ -33,7 +33,7 @@ $settings  = App\Setting::first();?>
 		
 	@endif
 	</div>
-<h4><i class="entypo-plus"></i> Add New Series</h4> 
+        <h4><i class="entypo-plus"></i> Add New Series</h4> 
         <hr>
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="series_form">
 
@@ -41,23 +41,20 @@ $settings  = App\Setting::first();?>
 			<div class="row mt-3">
 				<div class="col-sm-6">
 		@endif
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title font-weight-bold"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-							<p class="p1">Add the series title in the textbox below:</p> 
-							<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
-						</div> 
-						<span class="invalid-feedback" id="title_error" role="alert">
-						<strong>{{ $message }}</strong>
-					</span>
-					</div>
+
+                <label>Title <small>( Add the series title in the textbox below )</small></label> 
+                <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
+                <span class="invalid-feedback" id="title_error" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+
 					
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> -->
                     
             @if(!empty($series->created_at))
                     </div>
-                    <div class="col-sm-">
+                    <div class="col-sm-6">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title font-weight-bold"><label>Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                             <div class="panel-body" style="display: block;"> 

@@ -2,32 +2,18 @@
 
 
 @section('content')
-<style>
-    .form-control {
-    background-color: var(--iq-body-bg);
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-text);
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-</style>
+
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-<!--<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Update Category</h4>
-</div>-->
+
 <div class="iq-card">
+    <h4><i class="entypo-archive"></i> Add New Category</h4>
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/update') }}" method="post" enctype="multipart/form-data">
        
          <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
 
-                        <label>Name:</label>
+                        <label class="m-0">Name:</label>
 
                         <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">
                         @if ($errors->has('name'))
@@ -40,7 +26,7 @@
 
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
 
-                        <label>Slug:</label>
+                        <label class="m-0">Slug:</label>
 
                         <input type="text" id="slug" name="slug" value="{{ $categories[0]->slug }}" class="form-control" placeholder="Enter Slug">
                         @if ($errors->has('slug'))
@@ -52,24 +38,26 @@
         
         
                 <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
-                        <label>Display In Home page:</label>
-                        <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_home == 1) { echo "checked";} ?>>Yes
-                        <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>>No
+                        <label class="m-0">Display In Home page:</label>
+                        <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_home == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>> No
 
                     </div>
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
-                        <label>Display In Footer page:</label>
-                        <input type="radio" id="footer" name="footer" value="1" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>>Yes
-                        <input type="radio" id="footer" name="footer" value="0" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>>No
+                        <label class="m-0">Display In Footer page:</label>
+                        <input type="radio" id="footer" name="footer" value="1" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="footer" name="footer" value="0" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> No
                     </div>
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                        <label>Image:</label>
+                        <label class="m-0">Image:</label>
                         @if(!empty($categories[0]->image))
                         <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->image }}" class="movie-img" width="200"/>
                         @endif
-                        <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
+                    </div>
+        
+                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                        <label class="m-0">Choose Category image (1280x720 px or 16:9 ratio):</label> 
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
-
                     </div>
 
 
@@ -77,7 +65,7 @@
 
                     <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
 
-                        <label>Category:</label>
+                        <label class="m-0">Category:</label>
                         <select id="parent_id" name="parent_id" class="form-control">
                         	
                             <option value="0">Select</option>
