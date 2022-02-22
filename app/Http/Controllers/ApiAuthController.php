@@ -747,6 +747,13 @@ public function verifyandupdatepassword(Request $request)
       });
       $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
 
+      if(count($videos_category) > 0){
+        $msg = 'success';
+        $status = 'True';
+      }else{
+        $msg = 'nodata';
+        $status = 'False';
+      }
       if(count($videos) > 0){
         $msg = 'success';
         $status = 'True';
