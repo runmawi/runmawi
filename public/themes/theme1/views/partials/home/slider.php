@@ -22,6 +22,20 @@
                         class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
                     </div>
                 </div>
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-5 pt-5 b2">
+                        <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
+                            data-delay-in="1.2">
+                           <a href="<?php echo $slider_video->link; ?>"
+                        class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
+                             <a href="<?php echo $slider_video->link; ?>"
+                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a>
+                               
+                            </div></div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">
+                        <div class="">
+                             <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
+                            <h2 class="sp">Specials !</h2>
+                        </div></div>
                 </div>
 
             </div>
@@ -69,7 +83,7 @@ data-delay-in="1.2">
 <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="black bl" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>

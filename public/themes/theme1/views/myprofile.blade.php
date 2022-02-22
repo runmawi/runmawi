@@ -598,7 +598,7 @@ border-radius: 20px;
                 </div>
                 <div class="col-md-8 targetDiv" id="div1">
                     <div class="text-right">
-                     <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                     <img class="rounded-circle img-fluid d-block ml-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                        
                     <button class="transpar">logout</button></div>
                    

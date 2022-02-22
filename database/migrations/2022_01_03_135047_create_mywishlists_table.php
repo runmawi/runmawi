@@ -17,8 +17,7 @@ class CreateMywishlistsTable extends Migration
             $table->id();
             $table->integer('user_id')->nullable();  
             $table->integer('video_id')->nullable();
-            $table->unsignedBigInteger('episode_id');
-            $table->foreign('episode_id')->references('id')->on('episodes');
+            $table->integer('episode_id')->nullable();
             $table->integer('audio_id')->nullable();
             $table->integer('movie_id')->nullable();
             $table->integer('livestream_id')->nullable();
