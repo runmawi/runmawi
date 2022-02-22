@@ -2238,3 +2238,10 @@ a {
     border-radius: 30px!important;
     padding: 15px 30px!important;
 }
+
+
+@media (max-width: 576px) { 
+    .b2{
+        margin-top: 0px!important;
+    }
+}

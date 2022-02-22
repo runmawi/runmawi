@@ -1247,3 +1247,6 @@ Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_t
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
 Route::get('Movie-Description', 'HomeController@Movie_description');
+
+Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
+

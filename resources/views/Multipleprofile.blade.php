@@ -8,7 +8,8 @@
 
         <title> {{ $Website_name ? $Website_name->website_name : 'Website Name' }} </title>
     <style>
-        li{        list-style:none;}
+        li{list-style:none;}
+        body{background: #0e0e0e;padding: 20px;vertical-align: middle;height: 100%;}
 
     </style>
 </head>
@@ -76,14 +77,14 @@
         color: white;
      }
      .multiuser_img{
-       
         padding: 5px;
+        transition: 0.3s;
         
      }
      .multiuser_img:hover {
-        -ms-transform: scale(1.5); /* IE 9 */
-        -webkit-transform: scale(1.5); /* Safari 3-8 */
-        transform: scale(1.5); 
+        -ms-transform: scale(1.1); /* IE 9 */
+        -webkit-transform: scale(1.1); /* Safari 3-8 */
+        transform: scale(1.1); 
     }
     ul#top-menu {
     display: none;
@@ -106,11 +107,11 @@
         text-align: center;
     }
     .sign-in-from {
-    padding: 20%;
+/*    padding: 20%;*/
     /* background-image: linear-gradient( rgb(10 10 10 / 50%), rgb(0 0 0 / 50%)  ), 
     background-image: linear-gradient( rgb(10 10 10 / 100%), rgb(0 0 0 / 100%)  ),
-   /* url(public/uploads/avatars/Movies.jpg);  */
-        url("{{ $screen }}") ;
+   /* url(public/uploads/avatars/Movies.jpg);  
+        url("{{ $screen }}") ;*/
         background-color: rgb(14 14 14);
         background-repeat: no-repeat;
         background-size: cover;
