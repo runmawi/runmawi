@@ -393,8 +393,22 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                                                     </video>
                                                 @endif
                                             </div>
-
                             </div>   
+
+                            <div class="row mt-5">
+                                <div class="col-sm-6 form-group">
+                                    <label>URL Link</label><br>
+                                    <p>Please Enter Link</p> 
+                                    <input type="text" class="form-group" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" >
+                                </div>
+
+                                <div class="col-sm-6 form-group"> 
+                                    <label class="m-0" style="display:block;">URL Start Time</label>
+                                    <p>(HH:MM:SS)</p> 
+                                    <input type="text" class="form-group" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" >
+                                 </div>
+
+                            </div>
                                             <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
@@ -1008,6 +1022,11 @@ return false;
         {
             format: 'hh:mm '
         });
+
+        $('#url_linkty').datetimepicker(
+        {
+            format: 'hh:mm:ss ',
+        });
 </script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
@@ -1323,6 +1342,7 @@ function EmbedCopy() {
 // console.log(media_path);
 // console.log(path);
 }
+
       </script>
 
 

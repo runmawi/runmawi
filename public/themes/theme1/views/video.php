@@ -645,6 +645,14 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
            </div>
            <?php   } ?>
 
+<!-- url link -->
+
+<?php if(!empty($video->details) ) { ?>
+<div class="text-white" id="url_linkdetails" >
+    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->url_link); ?></p>
+</div>
+<?php  }?>
+
 
 <?php if(!empty($video->details) ) { ?>
 
@@ -1057,6 +1065,25 @@ else{
     });
 }
 </script>
+
+
+<!-- Link on Player -->
+
+<script>
+    document.getElementById("url_linkdetails").style.display = "none"; 
+    var video_player  =  document.getElementById("videoPlayer");
+    var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
+    var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
+
+      this.video_player.addEventListener('timeupdate', (e) => {
+        document.getElementById("url_linkdetails").style.display = "none"; 
+        
+        if (start_urltime <= e.target.currentTime && e.target.currentTime < End_urltime) {
+                document.getElementById("url_linkdetails").style.display = "block"; 
+          } 
+        });
+</script>
+
 
    </div>
 
