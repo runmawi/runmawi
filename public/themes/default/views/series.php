@@ -56,7 +56,9 @@ $series = $series_data ;
 					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 <!-- $series->title -->
 						
-						<?php foreach($season as $key => $seasons):  
+						<?php 
+						// if($series->ppv_status == null){						
+						foreach($season as $key => $seasons):  
 							foreach($seasons->episodes as $key => $episodes): ?>
 								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
@@ -75,7 +77,9 @@ $series = $series_data ;
 								</div>
 							</a>
 							<?php endforeach; 
-						endforeach; ?>
+						endforeach;
+					// }
+						?>
 							</div>
 							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 								Related
@@ -240,4 +244,4 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php include('footer.blade.php'); ?>
+<?php //include('footer.blade.php'); ?>
