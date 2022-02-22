@@ -14,7 +14,19 @@
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
+                <div class="corner-text-wrapper">
+                <div class="corner-text">
+                    <?php  if(!empty($latest_serie->ppv_status)){?>
+                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                    <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
+                      <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
+                      <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
+                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <?php } ?>
+                  </div>
               </div>
+              </div>
+
               <div class="block-description">
                 <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
 
