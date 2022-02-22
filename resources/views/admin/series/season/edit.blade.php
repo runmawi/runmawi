@@ -1,6 +1,3 @@
-
-
-
 @extends('admin.master')
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -10,12 +7,6 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
              <div class="iq-card">
-<!--
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">Update Category</h4>
-</div>
--->
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/update') }}" method="post" enctype="multipart/form-data">
        
