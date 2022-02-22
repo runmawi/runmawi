@@ -285,7 +285,6 @@ class TvshowsController extends Controller
 
      public function play_series($name)
     {
-
     	$settings = Setting::first();
         if(Auth::guest()):
             return Redirect::to('/login');
@@ -305,6 +304,10 @@ class TvshowsController extends Controller
        
         // $series = Series::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
+        // dd($series);
+
+        // dd($season);
+
         $episodefirst = Episode::where('series_id', '=', $id)->orderBy('id', 'ASC')->first();
         //Make sure series is active
         if((!Auth::guest() && Auth::user()->role == 'admin') || $series->active){
