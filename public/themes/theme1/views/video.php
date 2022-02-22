@@ -38,6 +38,13 @@ input.skips{
 #Auto_skip{
 	display: none;
 }
+div#url_linkdetails {
+    position: absolute;
+    top: 70%;
+    left: 30%;
+    font-size: x-large;
+    font-family: 'remixicon';
+}
   </style>
 <?php
 
@@ -474,6 +481,13 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 </div>
  <?php }  ?>
            
+<!-- url link -->
+
+<?php if(!empty($video->url_link) ) { ?>
+<div class="text-white" id="url_linkdetails" >
+    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" ><?php echo __($video->url_link); ?></a></p>
+</div>
+<?php  }?>
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
    <div class="container" >
@@ -644,15 +658,6 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
                </div>
            </div>
            <?php   } ?>
-
-<!-- url link -->
-
-<?php if(!empty($video->details) ) { ?>
-<div class="text-white" id="url_linkdetails" >
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->url_link); ?></p>
-</div>
-<?php  }?>
-
 
 <?php if(!empty($video->details) ) { ?>
 
