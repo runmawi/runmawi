@@ -313,7 +313,17 @@
         
         <div class="text-white">
             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-        </div>
+        </div><br>
+
+<?php if(!empty($video->pdf_files) ) { ?>
+<h4>PDF</h4>
+<p class="p1">Download the PDF file</p> 
+<div class="text-white">
+    <a  href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;" class="fa fa-file-pdf-o video_pdf" width="" height="" download></a>
+</div>
+<?php  }?>
+<br>
+
    <!-- Button trigger modal -->
 
     <!-- Modal -->
