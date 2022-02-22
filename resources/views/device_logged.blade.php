@@ -74,6 +74,17 @@ i.fa.fa-google-plus {
     </head>
 
 <body>
+            @if (Session::has('message'))
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+            @endif
+            @if(count($errors) > 0)
+            @foreach( $errors->all() as $message )
+            <div class="alert alert-danger display-hide" id="successMessage" >
+            <button id="successMessage" class="close" data-close="alert"></button>
+            <span>{{ $message }}</span>
+            </div>
+            @endforeach
+            @endif
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
         <div class="container">
             <div class="row  align-items-center height-self-center">
@@ -109,6 +120,16 @@ i.fa.fa-google-plus {
             </div>
    </div>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
                     <script>
