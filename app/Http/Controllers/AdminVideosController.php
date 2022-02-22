@@ -1463,7 +1463,12 @@ if(!empty($artistsdata)){
     //            }  
     $package = User::where('id',1)->first();
     $pack = $package->package;
-                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro" ){
+    if(Auth::user()->role =='admin' ){
+        $data['status'] = 1;    
+    }
+                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro"  ){
+                        $data['status'] = 1;    
+                    }elseif(Auth::user()->role =='admin' ){
                         $data['status'] = 1;    
                     }
     
