@@ -1366,7 +1366,7 @@ class HomeController extends Controller
                     }
 
                 }
-                dd($user_role);
+                // dd($user_role);
 
                 $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
                     ->today())
