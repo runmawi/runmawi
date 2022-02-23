@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             CurrenciesTableseeder::class,
             CurrenciesSettingTableseeder::class,
             SiteThemeTableseeder::class,
-            SubtitleTableseeder::class,
+            AddPlansTableSeeder::class,
 
         ]);
     

@@ -1199,12 +1199,17 @@ class HomeController extends Controller
                 $mail_check = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->count();
-
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
                     ->count();
 
                 if (count($alldevices) == 1 && $user_role == "registered" && Auth::User()->id != 1)
                 {
+
+                    LoggedDevice::where('user_ip','=', $userIp)
+                    ->where('user_id','=', Auth::User()->id)
+                    ->where('device_name','=', $device_name)
+                    ->delete();
+
                     Mail::send('emails.register_device_login', array(
                         'id' => Auth::User()->id,
                         'name' => Auth::User()->username,
@@ -1214,11 +1219,6 @@ class HomeController extends Controller
                         $message->from(AdminMail() , 'Flicknexs');
                         $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
                     });
-                    $maildevice = new ApprovalMailDevice;
-                    $maildevice->user_ip = $userIp;
-                    $maildevice->device_name = $device_name;
-                    $maildevice->status = 0;
-                    $maildevice->save();
                     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
                     Auth::logout();
                     unset($data['password_hash']);
@@ -1228,70 +1228,76 @@ class HomeController extends Controller
                         'note_type' => 'success'
                     ));
                 }
-                elseif ($user_check >= 1 && $user_check < $device_limit && $user_role == "subscriber" && Auth::User()->id != 1)
-                {
-                    //     dd();
-                    // $url1 = $_SERVER['REQUEST_URI'];
-                    // header("Refresh: 120; URL=$url1");
-                    if (empty($mail_check))
-                    {
-                        // dd($user_check);
-                        Mail::send('emails.device_approval', array(
-                            /* 'activation_code', $user->activation_code,*/
-                            'device_name' => $device_name,
-                            'ip' => $userIp,
-                            'id' => Auth::User()->id,
-                            // 'id' => $id,
+
+                // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
+                // {
+
+                //     // dd($mail_check);
+
+                //     $url1 = $_SERVER['REQUEST_URI'];
+                //     header("Refresh: 120; URL=$url1");
+                //     $username = Auth::User()->username;
+                //     $email = Auth::User()->email;
+                //     $mail_check = ApprovalMailDevice::where('user_id', '=', Auth::user()->id)
+                //     ->where('device_name', '=', $device_name)
+                //     ->count();
+                //     // dd($mail_check); 
+                //     if ( empty($mail_check) )
+                //     {
+                //         // dd($mail_check); 
+
+                //         Mail::send('emails.device_approval', array(
+                //             /* 'activation_code', $user->activation_code,*/
+                //             'device_name' => $device_name,
+                //             'ip' => $userIp,
+                //             'id' => Auth::User()->id,
+                //             // 'id' => $id,
                             
-                        ) , function ($message) use ($email, $username)
-                        {
-                            $message->from(AdminMail() , 'Flicknexs');
-                            $message->to($email, $username)->subject('Request to Apporve New Device');
-                        });
-                        $maildevice = new ApprovalMailDevice;
-                        $maildevice->user_ip = $userIp;
-                        $maildevice->device_name = $device_name;
-                        $maildevice->status = 0;
-                        $maildevice->save();
-                        $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        return Theme::view('auth.login')->with('message', $message);
-                        // Mail::send('emails.device_approval', array(
-                        // 'device_name' => $device_name,
-                        // 'ip' => $userIp,
-                        // 'id' => Auth::User()->id,
-                        // ) , function ($message) use ($email, $username)
-                        // {
-                        //     $message->from(AdminMail() , 'Flicknexs');
-                        //     $message->to($email, $username)->subject('Request to Apporve New Device');
-                        // });
-                        // $maildevice = new ApprovalMailDevice;
-                        // $maildevice->user_ip = $userIp;
-                        // $maildevice->device_name = $device_name;
-                        // $maildevice->status = 0;
-                        // $maildevice->save();
-                        // $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        // Auth::logout();
-                        // unset($data['password_hash']);
-                        // \Session::flush();
-                        // return Redirect::to('/')->with(array('message' => $message, 'note_type' => 'success') );
+                //         ) , function ($message) use ($email, $username)
+                //         {
+                //             $message->from(AdminMail() , 'Flicknexs');
+                //             $message->to($email, $username)->subject('Request to Apporve New Device');
+                //         });
+                //         $maildevice = new ApprovalMailDevice;
+                //         $maildevice->user_ip = $userIp;
+                //         $maildevice->user_id = Auth::User()->id;
+                //         $maildevice->device_name = $device_name;
+                //         $maildevice->status = 0;
+                //         $maildevice->save();
+                //         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
                         
-                    }
-                    else if (!empty($mail_check) && $mail_check->status == 2)
-                    {
-                        Auth::logout();
-                        unset($data['password_hash']);
-                        \Session::flush();
-                        $message = 'Login Access Rejected BY ' . ' ' . $username;
-                        return Redirect::to('/')->with(array(
-                            'message' => $message,
-                            'note_type' => 'success'
-                        ));
-                    }
-                }
-                elseif ($user_check > $device_limit && Auth::User()->id != 1)
+                //     }
+                //     elseif(!empty($mail_check) && $mail_check->status == 0)
+                //     {
+                //         $message = 'Please Wait to Approve Your Login Request By ' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
+                //     }
+                //     elseif(!empty($mail_check) && $mail_check->status == 2)
+                //     {
+
+                //         Auth::logout();
+                //         unset($data['password_hash']);
+                //         \Session::flush();
+                //         $message = 'Login Access Rejected BY ' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
+                //     }
+                // }
+                elseif ($user_check >= $device_limit && Auth::User()->id != 1)
                 {
+                    $url1 = $_SERVER['REQUEST_URI'];
+                    header("Refresh: 120; URL=$url1");
                     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user'))->with(array(
+                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
                         'message' => $message,
                         'note_type' => 'success'
                     ));
@@ -1323,8 +1329,11 @@ class HomeController extends Controller
 
                     if (!empty($device_name))
                     {
+                        
                         $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                             ->where('device_name', '=', $device_name)->first();
+                    //  dd('devices_check');
+
                         if (empty($devices_check))
                         {
                             $adddevice = new LoggedDevice;
@@ -1334,39 +1343,41 @@ class HomeController extends Controller
                             $adddevice->save();
                         }
                     }
-                    $logged = UserLogs::where('user_id', '=', Auth::User()->id)
+ 
+
+                }
+
+                // dd($user_role);
+                $logged = UserLogs::where('user_id', '=', Auth::User()->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                    ->today())
+                    ->first();
+                if (!empty($logged))
+                {
+                    $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
                         ->orderBy('created_at', 'DESC')
                         ->whereDate('created_at', '>=', \Carbon\Carbon::now()
                         ->today())
-                        ->first();
-                    if (!empty($logged))
-                    {
-                        $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
-                            ->orderBy('created_at', 'DESC')
-                            ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                            ->today())
-                            ->delete();
-                        $new_login = new UserLogs;
-                        $new_login->user_id = Auth::User()->id;
-                        $new_login->user_ip = $userIp;
-                        $new_login->countryname = $countryName;
-                        $new_login->regionname = $regionName;
-                        $new_login->cityname = $cityName;
-                        $new_login->save();
-                    }
-                    else
-                    {
-                        $new_login = new UserLogs;
-                        $new_login->user_id = Auth::User()->id;
-                        $new_login->user_ip = $userIp;
-                        $new_login->countryname = $countryName;
-                        $new_login->regionname = $regionName;
-                        $new_login->cityname = $cityName;
-                        $new_login->save();
-                    }
-
+                        ->delete();
+                    $new_login = new UserLogs;
+                    $new_login->user_id = Auth::User()->id;
+                    $new_login->user_ip = $userIp;
+                    $new_login->countryname = $countryName;
+                    $new_login->regionname = $regionName;
+                    $new_login->cityname = $cityName;
+                    $new_login->save();
                 }
-                // dd($user_role);
+                else
+                {
+                    $new_login = new UserLogs;
+                    $new_login->user_id = Auth::User()->id;
+                    $new_login->user_ip = $userIp;
+                    $new_login->countryname = $countryName;
+                    $new_login->regionname = $regionName;
+                    $new_login->cityname = $cityName;
+                    $new_login->save();
+                }
 
                 $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
                     ->today())
