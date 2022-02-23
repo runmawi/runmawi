@@ -712,7 +712,7 @@ class AdminUsersController extends Controller
             return Redirect::to('admin/users')->with(array('message' => 'Successfully Deleted User', 'note_type' => 'success') );
         }
 
-        public function VerifyDevice($id)
+        public function VerifyDevice($userIp,$id)
         {
             // dd($id);
 
@@ -721,10 +721,12 @@ class AdminUsersController extends Controller
             $email = @$device->user_name->email;
             $user_ip = @$device->user_ip;
             $device_name = @$device->device_name;
+            $user_id = @$device->user_id;
 
-            $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
 
-            if(empty($mail_check)){
+            // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+
+            // if(empty($mail_check)){
             // dd($device->user_name->username);
 
             Mail::send('emails.device_logout', array(
@@ -741,27 +743,41 @@ class AdminUsersController extends Controller
                 $maildevice = new ApprovalMailDevice;
                 $maildevice->user_ip = $userIp;
                 $maildevice->device_name = $device_name;
+                $maildevice->device_name = $user_id;
                 $maildevice->status = 0;
                 $maildevice->save();
             $message = 'Mail Sent to the'.' '.$username;
             return Redirect::back()->with('message', $message);
-            }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
-            return Redirect::back();
-            }
+            // }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
+            // return Redirect::back();
+            // }
         }
         public function LogoutDevice($id)
         {
-            // dd($id);
             $device = LoggedDevice::find($id);
             $username = @$device->user_name->username;
             $email = @$device->user_name->email;
             $device_name = @$device->device_name;
-            $maildevice = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+            $user_ip = @$device->user_ip;
+
+
+            $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
+            // dd($maildevice);
+
             $maildevice->status = 1;
             $maildevice->save();
 
             LoggedDevice::destroy($id);
 
+            Mail::send('emails.register_device_login', array(
+                'id' => Auth::User()->id,
+                'name' => Auth::User()->username,
+
+            ) , function ($message) use ($email, $username)
+            {
+                $message->from(AdminMail() , 'Flicknexs');
+                $message->to($email, $username)->subject('Advance Plan Subscriptions Plan To Access Multiple Devices');
+            });
             
             return Redirect::to('home');
             // return Redirect::to('/home');

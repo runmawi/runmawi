@@ -1229,80 +1229,82 @@ class HomeController extends Controller
                     ));
                 }
 
-                else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
+                // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
+                // {
+
+                //     // dd($mail_check);
+
+                //     $url1 = $_SERVER['REQUEST_URI'];
+                //     header("Refresh: 120; URL=$url1");
+                //     $username = Auth::User()->username;
+                //     $email = Auth::User()->email;
+                //     $mail_check = ApprovalMailDevice::where('user_id', '=', Auth::user()->id)
+                //     ->where('device_name', '=', $device_name)
+                //     ->count();
+                //     // dd($mail_check); 
+                //     if ( empty($mail_check) )
+                //     {
+                //         // dd($mail_check); 
+
+                //         Mail::send('emails.device_approval', array(
+                //             /* 'activation_code', $user->activation_code,*/
+                //             'device_name' => $device_name,
+                //             'ip' => $userIp,
+                //             'id' => Auth::User()->id,
+                //             // 'id' => $id,
+                            
+                //         ) , function ($message) use ($email, $username)
+                //         {
+                //             $message->from(AdminMail() , 'Flicknexs');
+                //             $message->to($email, $username)->subject('Request to Apporve New Device');
+                //         });
+                //         $maildevice = new ApprovalMailDevice;
+                //         $maildevice->user_ip = $userIp;
+                //         $maildevice->user_id = Auth::User()->id;
+                //         $maildevice->device_name = $device_name;
+                //         $maildevice->status = 0;
+                //         $maildevice->save();
+                //         $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
+                        
+                //     }
+                //     elseif(!empty($mail_check) && $mail_check->status == 0)
+                //     {
+                //         $message = 'Please Wait to Approve Your Login Request By ' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
+                //     }
+                //     elseif(!empty($mail_check) && $mail_check->status == 2)
+                //     {
+
+                //         Auth::logout();
+                //         unset($data['password_hash']);
+                //         \Session::flush();
+                //         $message = 'Login Access Rejected BY ' . ' ' . $username;
+                //         return Redirect::to('/')->with(array(
+                //             'message' => $message,
+                //             'note_type' => 'success'
+                //         ));
+                //     }
+                // }
+                elseif ($user_check >= $device_limit && Auth::User()->id != 1)
                 {
-
-                    // dd($mail_check);
-
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
-                    $username = Auth::User()->username;
-                    $email = Auth::User()->email;
-                    $mail_check = ApprovalMailDevice::where('user_id', '=', Auth::user()->id)
-                    ->where('device_name', '=', $device_name)
-                    ->count();
-                    dd($mail_check); 
-                    if ( empty($mail_check) )
-                    {
-                        // dd($mail_check); 
-
-                        Mail::send('emails.device_approval', array(
-                            /* 'activation_code', $user->activation_code,*/
-                            'device_name' => $device_name,
-                            'ip' => $userIp,
-                            'id' => Auth::User()->id,
-                            // 'id' => $id,
-                            
-                        ) , function ($message) use ($email, $username)
-                        {
-                            $message->from(AdminMail() , 'Flicknexs');
-                            $message->to($email, $username)->subject('Request to Apporve New Device');
-                        });
-                        $maildevice = new ApprovalMailDevice;
-                        $maildevice->user_ip = $userIp;
-                        $maildevice->user_id = Auth::User()->id;
-                        $maildevice->device_name = $device_name;
-                        $maildevice->status = 0;
-                        $maildevice->save();
-                        $message = 'Mail Sent For Approval Login After Approved By' . ' ' . $username;
-                        return Redirect::to('/')->with(array(
-                            'message' => $message,
-                            'note_type' => 'success'
-                        ));
-                        
-                    }
-                    elseif(!empty($mail_check) && $mail_check->status == 0)
-                    {
-                        $message = 'Please Wait to Approve Your Login Request By ' . ' ' . $username;
-                        return Redirect::to('/')->with(array(
-                            'message' => $message,
-                            'note_type' => 'success'
-                        ));
-                    }
-                    elseif(!empty($mail_check) && $mail_check->status == 2)
-                    {
-
-                        Auth::logout();
-                        unset($data['password_hash']);
-                        \Session::flush();
-                        $message = 'Login Access Rejected BY ' . ' ' . $username;
-                        return Redirect::to('/')->with(array(
-                            'message' => $message,
-                            'note_type' => 'success'
-                        ));
-                    }
-                }
-                elseif ($user_check > $device_limit && Auth::User()->id != 1)
-                {
                     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user'))->with(array(
+                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
                         'message' => $message,
                         'note_type' => 'success'
                     ));
                 }
                 else
                 {
-                    dd($device_name);
+                    // dd($device_name);
                     $device_name = '';
                     if ($agent->isDesktop())
                     {
@@ -1330,7 +1332,7 @@ class HomeController extends Controller
                         
                         $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                             ->where('device_name', '=', $device_name)->first();
-                     dd('devices_check');
+                    //  dd('devices_check');
 
                         if (empty($devices_check))
                         {
@@ -1345,7 +1347,7 @@ class HomeController extends Controller
 
                 }
 
-                dd($user_role);
+                // dd($user_role);
                 $logged = UserLogs::where('user_id', '=', Auth::User()->id)
                     ->orderBy('created_at', 'DESC')
                     ->whereDate('created_at', '>=', \Carbon\Carbon::now()
