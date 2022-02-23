@@ -235,42 +235,41 @@ $settings  = App\Setting::first();?>
 				</div>
                 </div>
                 <div class="row align-items-center mt-3 p-3"> 
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<div class="d-flex align-items-baseline">
-							<?php if($settings->ppv_status == 1){ ?>
-						      <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-						      <?php } else{ ?>
-                                <div class="global_ppv_status">
-                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-                                </div>
-                               <?php } ?>
-									
-							<div class="clear"></div>
-						</div> 
-					</div>
-				</div>
+                    <div class="col-sm-4"> 
+                        <label class="m-0">Apply Global PPV Price:</label>
+                            <div class="panel-body"> 
+                                <div class="d-flex align-items-baseline">
+                                <?php if($settings->ppv_status == 1){ ?>
+                                  <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                  <?php } else{ ?>
+                                    <div class="global_ppv_status">
+                                        <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                    </div>
+                                   <?php } ?>
 
+                                <div class="clear"></div>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
-                </div>
-                <div class="mt-3" style="display: flex;
-    justify-content: flex-end;">
-                    @if(!isset($series->user_id))
-				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
-			@endif
-
-			@if(isset($series->id))
-				<input type="hidden" id="id" name="id" value="{{ $series->id }}" />
-			@endif
-
-			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-primary" /></div>
-			</div><!-- row -->
             </div>
-		</form>
-    </div>
+            <div class="row mt-3">
+                <div class="col-sm-12"> 
+                    @if(!isset($series->user_id))
+                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
+                    @endif
+
+                    @if(isset($series->id))
+                        <input type="hidden" id="id" name="id" value="{{ $series->id }}" />
+                    @endif
+
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+                </div>
+			</div><!-- row -->
+        </div>
+    </form>
+</div>
 
 		<div class="clear"></div>
 		<!-- Manage Season -->
