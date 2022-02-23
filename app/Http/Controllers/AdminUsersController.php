@@ -762,23 +762,29 @@ class AdminUsersController extends Controller
 
 
             $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
-            // dd($maildevice);
+            $LoggedDevice = LoggedDevice::get();
+            if(!empty($LoggedDevice)){
+            $user_id = $LoggedDevice[0]->user_id;
+            $user = User::where('id',$user_id)->first();
+            $username = $user->username;
+            }
+            // dd($user);
 
             $maildevice->status = 1;
             $maildevice->save();
 
             LoggedDevice::destroy($id);
-
+            if(!empty($user_id)){
             Mail::send('emails.register_device_login', array(
-                'id' => Auth::User()->id,
-                'name' => Auth::User()->username,
+                'id' => $user_id,
+                'name' => $username,
 
             ) , function ($message) use ($email, $username)
             {
                 $message->from(AdminMail() , 'Flicknexs');
-                $message->to($email, $username)->subject('Advance Plan Subscriptions Plan To Access Multiple Devices');
+                $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
             });
-            
+        }
             return Redirect::to('home');
             // return Redirect::to('/home');
 
