@@ -11,6 +11,8 @@ use Session;
 use Theme;
 use Auth;
 use Razorpay\Api\Api;
+use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
+
 
 class RazorpayController extends Controller
 {
@@ -24,16 +26,24 @@ class RazorpayController extends Controller
 
     public function RazorpayIntegration(Request $request,$plan_amount)
     {
-
-        $user_details =Auth::User();
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $user_details =Auth::User();
+
+        $formcurrency = 'USD';
+        $pay = PaymentCurreny::convert()
+                ->from($formcurrency)
+                ->to('INR')
+                ->round(2)
+                ->amount($plan_amount)
+                ->get();
+        
 
         $RandomNumber = random_int(10000000, 999999999);
         $receiptid= 'rcptid'.'-'.$RandomNumber;
 
         $orderData = [
             'receipt'         => $receiptid,
-            'amount'          => $plan_amount, 
+            'amount'          => $pay * 100,  // Converting to Paisa
             'currency'        => 'INR'
         ];
         
@@ -91,6 +101,7 @@ class RazorpayController extends Controller
 
     public function RazorpayPaymentDetails(Request $request){
 
+        // for testing purpose 
         $paymentId = "pay_IzOaUGUHSGju4j";
         $orderId   = "order_IzOZdhUbVfWExo";
         $amount    = '10000';

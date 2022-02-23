@@ -10,7 +10,7 @@
 <body>
     <div class="login">
         <div class="form">
-            <form class="login-form" action="{{ route('RazorpayIntegration') }}" method="POST">
+            <form class="login-form" action="" method="POST">
                 {{ csrf_field() }}
                 <span class="material-icons">lock</span>
                 <input type="text" placeholder="Name" name="name" required/>
