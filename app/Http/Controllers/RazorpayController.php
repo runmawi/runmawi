@@ -28,9 +28,12 @@ class RazorpayController extends Controller
         $user_details =Auth::User();
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
+        $RandomNumber = random_int(10000000, 999999999);
+        $receiptid= 'rcptid'.'-'.$RandomNumber;
+
         $orderData = [
-            'receipt'         => 'rcptid_11',
-            'amount'          => $plan_amount, //  rupees in paise
+            'receipt'         => $receiptid,
+            'amount'          => $plan_amount, 
             'currency'        => 'INR'
         ];
         
