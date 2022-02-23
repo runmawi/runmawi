@@ -281,17 +281,17 @@
                             <div class="panel-body">
                                 <div>
                                     <label for="featured">Is this video Featured:</label>
-                                    <input type="checkbox" @if(!empty($video- />featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
+                                    <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
                                     <label for="active">Is this video Active:</label>
-                                    <input type="checkbox" @if(!empty($video- />active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
+                                    <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
                                     <label for="banner">Is this video display in Banner:</label>
-                                    <input type="checkbox" @if(!empty($video- />banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
+                                    <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                 </div>
                                 <div>
                                     <!-- <label for="footer" >Is this video display in footer:</label>
