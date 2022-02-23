@@ -26,7 +26,7 @@ class CreateSubscriptionPlansTable extends Migration
             $table->string('price')->nullable();
             $table->string('video_quality')->nullable();
             $table->string('resolution')->nullable();
-            $table->integer('devices')->nullable();
+            $table->string('devices')->nullable();
             $table->timestamps();
         });
     }

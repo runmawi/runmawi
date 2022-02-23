@@ -693,8 +693,8 @@ class AdminUsersController extends Controller
         if(!empty($device_name)){
             $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
             if(!empty($devices_check)){
-                $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
-                }
+            $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
+            }
         }
         Auth::logout();
         unset($data['password_hash']);
