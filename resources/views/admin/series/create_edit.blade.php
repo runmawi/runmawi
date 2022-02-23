@@ -1,9 +1,5 @@
 @extends('admin.master')
-<style>
-    .p1{
-        font-size: 12px!important;
-    }
-</style>
+
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -29,47 +25,43 @@ $settings  = App\Setting::first();?>
         </div>
         @endif
 	</div>
-        <h4><i class="entypo-plus"></i> Edit Series</h4> 
+        <h4><i class="entypo-plus"></i> Add New Series</h4> 
         <hr>
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="series_form">
 
-		@if(!empty($series->created_at))
+		
 			<div class="row mt-3">
-				<div class="col-sm-6">
-		@endif
-
-                <label class="m-0">Title</label> 
-                <p class="p1">Add the series title in the textbox below.</p> 
-                <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
-                <span class="invalid-feedback" id="title_error" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-
+				<div class="col-sm-6 mb-3">
+                    <label class="m-0">Title</label> 
+                    <p class="p1">Add the series title in the textbox below.</p> 
+                    <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
+                    <span class="invalid-feedback" id="title_error" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                </div>
 					
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> -->
                     
-            @if(!empty($series->created_at))
-                    </div>
+                @if(!empty($series->created_at))
+                    
                     <div class="col-sm-6">
-                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title font-weight-bold"><label class="m-0">Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                            <div class="panel-body" style="display: block;"> 
-                                <p class="p1">Select Date/Time Below</p> 
-                                <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($series->created_at)){{ $series->created_at }}@endif" />
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            @endif
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<!-- <p class="p1">Select the series image (1280x720 px or 16:9 ratio):</p>  -->
+                        <label class="m-0">Created Date</label>
+                        <div class="panel-body" style="display: block;"> 
+                            <p class="p1">Select Date/Time Below</p> 
+                            <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($series->created_at)){{ $series->created_at }}@endif" />
+                        </div> 
+                    </div>   
+                @endif
+            
+			<div class="col-sm-6" data-collapsed="0">
+                <label class="m-0">Slug</label>
+				<div class="panel-body">
+                    <p class="p1">Add a URL Slug</p> 
 					<input type="text" class="form-control" name="slug" id="slug" placeholder="Series Slug" value="@if(!empty($series->slug)){{ $series->slug }}@endif"  />			
 				</div> 
 			</div>
-
+            </div>
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
@@ -387,7 +379,7 @@ $settings  = App\Setting::first();?>
 		@endif
 <!-- This is where now -->
 </div>
-</div>
+
 	<script type="text/javascript">
 
 		$ = jQuery;
