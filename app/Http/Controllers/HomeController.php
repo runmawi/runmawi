@@ -2489,6 +2489,15 @@ class HomeController extends Controller
                 $plan_name = $request->get('register.email');
 
             }
+            elseif($request->payment_method == "Razorpay"){
+
+                $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+                    ->where('type', '=', $request->payment_method)
+                    ->first();
+
+                $plan_amount =$plans->price;
+                return Redirect::route('RazorpayIntegration',$plan_amount);
+            }
         }
         else
         {

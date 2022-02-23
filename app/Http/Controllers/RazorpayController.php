@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Session;
 use Theme;
+use Auth;
 use Razorpay\Api\Api;
 
 class RazorpayController extends Controller
@@ -21,15 +22,15 @@ class RazorpayController extends Controller
         return view('Razorpay.create');
     }
 
-    public function RazorpayIntegration(Request $request)
+    public function RazorpayIntegration(Request $request,$plan_amount)
     {
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
-        $user_details = $request->all();
+        $user_details =Auth::User();
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         $orderData = [
             'receipt'         => 'rcptid_11',
-            'amount'          => $user_details['amount'] * 100, //  rupees in paise
+            'amount'          => $plan_amount, //  rupees in paise
             'currency'        => 'INR'
         ];
         
@@ -38,13 +39,13 @@ class RazorpayController extends Controller
         $respond=array(
             'orderId'        =>  $razorpayOrder['id'],
             'razorpaykeyId'  =>  $this->razorpaykeyId,
-            'amount'         =>  $razorpayOrder['amount'],
-            'name'           =>  $user_details['name'],
+            'amount'         =>  $plan_amount,
+            'name'           =>  $user_details->name,
             'currency'       =>  'INR',
-            'email'          =>  $user_details['Email'],
-            'contactNumber'  =>  '7092748422',
-            'address'        =>   'perambur',
-            'description'    =>    'null',
+            'email'          =>  $user_details['email'],
+            'contactNumber'  =>  $user_details->mobile,
+            'address'        =>  'India',
+            'description'    =>   'null',
         );
 
         return view('Razorpay.checkout',compact('respond'),$respond);
