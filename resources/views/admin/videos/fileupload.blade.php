@@ -11,14 +11,13 @@
    #optionradio {color: #000;}
    #video_upload {margin-top: 5%;}
    .file {
-   padding: 30;
-   background: rgba(56, 87, 127, 0.34);
-   border-radius: 10px;
-   text-align: center;
-   margin: 0 auto;
-   width: 75%;
-   }
-   #video_upload .file form{border: 2px dashed;}
+        background: rgb(255 255 255 / 100%);
+        border-radius: 10px;
+        text-align: center;
+        margin: 0 auto;
+        width: 75%;
+        border: 2px dashed;
+    }
    #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id="content-page content_videopage" class="content-page">
@@ -72,14 +71,14 @@
                         <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
                      </div>
                   </div>
-                  <!-- Video upload -->        
+                  <!-- Video upload -->   
                   <div id="video_upload" style="">
                      <div class='content file'>
-                        <h4 class="card-title">Upload Full Video Here</h4>
+                        <h3 class="card-title upload-ui">Upload Full Video Here</h4>
                         <!-- Dropzone -->
                         <form action="{{URL::to('admin/uploadFile')}}" method= "post" class='dropzone' ></form>
                      </div>
-                     <p style="margin-top: -3%;margin-left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trailers Can Be Uploaded From Video Edit Screen</p>
+                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                   </div>
                   <div class="text-center" style="margin-top: 30px;">
                      <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
