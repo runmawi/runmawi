@@ -1252,6 +1252,8 @@ Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
 
     // Razorpay 
 Route::get('Razorpay', 'RazorpayController@Razorpay');
-Route::get('/RazorpayIntegration/{id}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');;
-Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');;
-Route::get('/RazorpayPaymentDetails', 'RazorpayController@RazorpayPaymentDetails')->name('RazorpayPaymentDetails');;
+Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');
+Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
+Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
+Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
+

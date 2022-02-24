@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\Authenticatable;
+use \Redirect as Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Session;
 use Theme;
 use Auth;
+use App\Subscription;
 use Razorpay\Api\Api;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
@@ -21,35 +23,43 @@ class RazorpayController extends Controller
 
     public function Razorpay(Request $request)
     {
+        
         return view('Razorpay.create');
     }
 
-    public function RazorpayIntegration(Request $request,$plan_amount)
+    public function RazorpayIntegration(Request $request,$Plan_Id)
     {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+
         $user_details =Auth::User();
-
-        $plan_id= 'plan_Izlh4Evtfv9lRd';
-
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $planId = $api->plan->fetch($plan_id);
+        $planId = $api->plan->fetch($Plan_Id);
 
         $subscription = $api->subscription->create(array(
         'plan_id' =>  $planId->id, 
         'customer_notify' => 1,
         'total_count' => 6, 
-        'addons' => array(array('item' => array('name' => $planId['item']->name , 'amount' => $planId['item']->amount, 'currency' => 'INR')))));
+        ));
 
         $respond=array(
             'razorpaykeyId'  =>  $this->razorpaykeyId,
-            'name'           =>   $planId['item']->name,
+            'name'           =>  $planId['item']->name,
             'subscriptionId' =>  $subscription->id ,
             'short_url'      =>  $subscription->short_url,
             'currency'       =>  'INR',
             'email'          =>  $user_details['email'],
             'contactNumber'  =>  $user_details['mobile'],
+            'user_id'        =>  $user_details->id,
             'user_name'      =>  $user_details->name,
-            'address'        =>  'India',
-            'description'    =>   null,
+            'address'        =>  $cityName,
+            'description'    =>  null,
+            'countryName'    =>  $countryName,
+            'regionName'     =>  $regionName,
+            'cityName'       =>  $cityName,
+            'PaymentGateway' =>  'razorpay',
         );
 
         return view('Razorpay.checkout',compact('respond'),$respond);
@@ -64,13 +74,26 @@ class RazorpayController extends Controller
         );
 
         if($SignatureStatus == true){
-            $data = array(
-             'razorpay_payment_id'  =>   $request->razorpay_payment_id,
-             'razorpay_subscription_id'  =>   $request->razorpay_subscription_id,
-             'razorpay_signature'   =>   $request->razorpay_signature
-            );
+                    $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+           $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
+           $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
-            return $data;
+           Subscription::create([
+            'user_id'       =>  $request->user_id,
+            'name'          =>  $plan_id['item']->name,
+            // 'days'          =>  $fileName_zip,
+            'price'         =>  $plan_id['item']->amount,
+            'stripe_id'     =>  $subscription['id'],
+            'stripe_status' =>  $subscription['status'],
+            'stripe_plan'   =>  $subscription['plan_id'],
+            'quantity'      =>  $subscription['quantity'],
+            'countryname'   =>  $request->countryName,
+            'regionname'    =>  $request->cityName,
+            'cityname'      =>  $request->regionName,
+          ]);
+
+          return Redirect::route('home');
+
         }
         else{
             echo 'fails';
@@ -90,17 +113,24 @@ class RazorpayController extends Controller
         }
     }
 
-    public function RazorpayPaymentDetails(Request $request){
+    public function RazorpayUpgrade(Request $request){
 
-        // for testing purpose 
-        $subscriptionId = "sub_Izmhyzu5n2cCsO";
+        $subscriptionId = "sub_IzpuMPU38PntuD";
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $attributes  = array('plan_id'  => 'plan_Izr2tFN32PpNq1', 'remaining_count' => 5 );
+
+        $testing =   $api->subscription->fetch($subscriptionId)->update($attributes);
+
+    }
+    
+    public function RazorpayCancelSubscriptions(Request $request)
+    {
+        $subscriptionId = "sub_IzpuMPU38PntuD";
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-
-        $data = 
-$api->subscription->fetch($subscriptionId);
-
-        dd ($data) ;
-
+        $options  = array('cancel_at_cycle_end'  => 0);
+        $CancelSubscriptions = $api->subscription->fetch($subscriptionId)->cancel($options);
+        
+        return Redirect::route('home');
     }
 }

@@ -21,9 +21,6 @@ var options = {
         "email": "{{$respond['email']}}",
         "contact": "{{$respond['contactNumber']}}",
     },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
     "theme": {
         "color": "#3399cc"
     }
@@ -50,10 +47,14 @@ document.getElementById('rzp-button1').onclick = function(e){
 
 <form action="{{ route('RazorpayCompleted') }}" method="POST" hidden>
     {{ csrf_field() }}
-    <input type="text"  name="razorpay_payment_id" id="razorpay_payment_id" value= />
-    <input type="text"  name="razorpay_subscription_id"   id="razorpay_subscription_id"value= />
-    <input type="text"  name="razorpay_signature"  id="razorpay_signature" value=  />
-    
+    <input type="text"  name="razorpay_payment_id"       id="razorpay_payment_id" value= />
+    <input type="text"  name="razorpay_subscription_id"  id="razorpay_subscription_id"value= />
+    <input type="text"  name="razorpay_signature"        id="razorpay_signature" value=  />
+    <input type="text"  name="user_id"     id="user_id" value= {{ $respond['user_id'] }} />
+    <input type="text"  name="countryName" id="countryName" value= {{ $respond['countryName'] }} />
+    <input type="text"  name="cityName"    id="cityName" value= {{ $respond['cityName'] }} />
+    <input type="text"  name="regionName"  id="regionName" value= {{ $respond['regionName'] }}   />
+
     <button type="submit" id="razorpay_respond">Pay</button>
 </form>
 

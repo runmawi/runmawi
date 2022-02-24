@@ -2507,7 +2507,7 @@ class HomeController extends Controller
                     ->first();
 
                 $plan_amount =$plans->price;
-                return Redirect::route('RazorpayIntegration',$plan_amount);
+                return Redirect::route('RazorpayIntegration',$PlanId);
             }
         }
         else
