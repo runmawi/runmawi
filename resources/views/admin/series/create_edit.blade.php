@@ -378,10 +378,15 @@ $settings  = App\Setting::first();?>
 		@endif
 <!-- This is where now -->
 </div>
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script type="text/javascript">
+   $ = jQuery;
+   $(document).ready(function($){
+    $("#duration").mask("00:00:00");
+   });
 
-	<script type="text/javascript">
-
-		$ = jQuery;
 		$(document).ready(function(){
 
 			$('#title_error').hide();
@@ -421,7 +426,7 @@ $settings  = App\Setting::first();?>
 			// alert("fd");
 		$('.js-example-basic-multiple').select2();
 
-		$('#duration').mask('00:00:00');
+		// $('#duration').mask('00:00:00');
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){

@@ -168,7 +168,7 @@ class TvshowsController extends Controller
             return Redirect::to('/login');
         endif;
         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
-
+        // dd($episode_name);
         $id = $episode->id;
         // $episode = Episode::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -227,6 +227,8 @@ class TvshowsController extends Controller
                   $secret_key= null;
                   $publishable_key= null;
               }    
+            //   dd($series->ppv_status);
+              
          if($series->ppv_status != 1 || $ppv_exits > 0){
 
             $data = array(
@@ -250,6 +252,7 @@ class TvshowsController extends Controller
                 );
             return Theme::view('episode', $data);
             }else{
+                // dd('exit');
                 return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
 
             }

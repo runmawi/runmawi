@@ -309,6 +309,12 @@
         <script>
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
+                $('#intro_start_time').mask("00:00:00");
+                $('#intro_end_time').mask("00:00:00");
+                $('#recap_start_time').mask("00:00:00");
+                $('#recap_end_time').mask("00:00:00");
+                $('#skip_intro').mask("00:00:00");
+                $('#skip_recap').mask("00:00:00");
             });
 
             $(document).ready(function () {
@@ -334,18 +340,18 @@
                     }
                 });
             });
-            $("#intro_start_time").datetimepicker({
-                format: "hh:mm ",
-            });
-            $("#intro_end_time").datetimepicker({
-                format: "hh:mm ",
-            });
-            $("#recap_start_time").datetimepicker({
-                format: "hh:mm ",
-            });
-            $("#recap_end_time").datetimepicker({
-                format: "hh:mm ",
-            });
+            // $("#intro_start_time").datetimepicker({
+            //     format: "hh:mm ",
+            // });
+            // $("#intro_end_time").datetimepicker({
+            //     format: "hh:mm ",
+            // });
+            // $("#recap_start_time").datetimepicker({
+            //     format: "hh:mm ",
+            // });
+            // $("#recap_end_time").datetimepicker({
+            //     format: "hh:mm ",
+            // });
         </script>
         <script type="text/javascript">
             $ = jQuery;

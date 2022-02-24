@@ -199,10 +199,49 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
- <script>
+      <script>
     var type = $('#video_type').val();
+    // var type = $('#hls_m3u8').val();
+    var request_url = $('#request_url').val();
+    var live = $('live').val();
+    var live = $('live').val();
+    var video_video = $('video_video').val();
 
-   if(type != ""){
+
+
+    // alert(video_video)
+
+   if(type != "" && video_video == 'video'){
+    // alert('m3u8')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }else if(type != "" && request_url != 'm3u8'){
+    // alert('m3u8')
+
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -265,9 +304,36 @@ else{
     });
     hls.attachMedia(video);
     window.hls = hls;
+
+    
   } else {
     // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
+    // const player = new Plyr(video, defaultOptions);
+    const player = new Plyr('#video',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
   }
 
   function updateQuality(newQuality) {
