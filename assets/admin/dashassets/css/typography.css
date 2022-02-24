@@ -84,7 +84,7 @@ h6 { font-size: 1.0em; line-height: 1.3em;color:#000000; }
 /*----------------------------------------------
 Input
 ------------------------------------------------*/
-label { color:#000000 /*var(--iq-white)*/; }
+label { color:#000000 /*var(--iq-white)*/;font-weight: 500; }
 .form-control.form-control-sm { height: 30px; }
 .form-control.form-control-lg { height: 50px; line-height: 50px; }
 

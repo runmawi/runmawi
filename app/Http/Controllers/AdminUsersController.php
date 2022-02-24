@@ -693,8 +693,8 @@ class AdminUsersController extends Controller
         if(!empty($device_name)){
             $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
             if(!empty($devices_check)){
-                $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
-                }
+            $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
+            }
         }
         Auth::logout();
         unset($data['password_hash']);
@@ -712,7 +712,7 @@ class AdminUsersController extends Controller
             return Redirect::to('admin/users')->with(array('message' => 'Successfully Deleted User', 'note_type' => 'success') );
         }
 
-        public function VerifyDevice($id)
+        public function VerifyDevice($userIp,$id)
         {
             // dd($id);
 
@@ -721,10 +721,12 @@ class AdminUsersController extends Controller
             $email = @$device->user_name->email;
             $user_ip = @$device->user_ip;
             $device_name = @$device->device_name;
+            $user_id = @$device->user_id;
 
-            $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
 
-            if(empty($mail_check)){
+            // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+
+            // if(empty($mail_check)){
             // dd($device->user_name->username);
 
             Mail::send('emails.device_logout', array(
@@ -741,28 +743,48 @@ class AdminUsersController extends Controller
                 $maildevice = new ApprovalMailDevice;
                 $maildevice->user_ip = $userIp;
                 $maildevice->device_name = $device_name;
+                $maildevice->device_name = $user_id;
                 $maildevice->status = 0;
                 $maildevice->save();
             $message = 'Mail Sent to the'.' '.$username;
             return Redirect::back()->with('message', $message);
-            }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
-            return Redirect::back();
-            }
+            // }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
+            // return Redirect::back();
+            // }
         }
         public function LogoutDevice($id)
         {
-            // dd($id);
             $device = LoggedDevice::find($id);
             $username = @$device->user_name->username;
             $email = @$device->user_name->email;
             $device_name = @$device->device_name;
-            $maildevice = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+            $user_ip = @$device->user_ip;
+
+
+            $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
+            $LoggedDevice = LoggedDevice::get();
+            if(!empty($LoggedDevice)){
+            $user_id = $LoggedDevice[0]->user_id;
+            $user = User::where('id',$user_id)->first();
+            $username = $user->username;
+            }
+            // dd($user);
+
             $maildevice->status = 1;
             $maildevice->save();
 
             LoggedDevice::destroy($id);
+            if(!empty($user_id)){
+            Mail::send('emails.register_device_login', array(
+                'id' => $user_id,
+                'name' => $username,
 
-            
+            ) , function ($message) use ($email, $username)
+            {
+                $message->from(AdminMail() , 'Flicknexs');
+                $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
+            });
+        }
             return Redirect::to('home');
             // return Redirect::to('/home');
 
@@ -798,7 +820,7 @@ class AdminUsersController extends Controller
             $maildevice->save();
             $system_settings = SystemSetting::first();
             $user = User::where('id','=',1)->first();
-            $message = 'Approved User For Login';
+            $message = 'Approved User to Login';
             return Redirect::to('/')->with('message', $message);
 
             // return View::make('auth.login')->with('alert', $message);

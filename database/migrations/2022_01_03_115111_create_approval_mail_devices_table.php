@@ -16,6 +16,7 @@ class CreateApprovalMailDevicesTable extends Migration
         Schema::create('approval_mail_devices', function (Blueprint $table) {
             $table->id();
             $table->string('user_ip')->nullable();
+            $table->integer('user_id')->nullable();
             $table->string('device_name')->nullable();
             $table->integer('status')->nullable();
             $table->timestamps();
