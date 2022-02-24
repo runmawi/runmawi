@@ -3,22 +3,21 @@
 <script>
 var options = {
     "key": "{{$respond['razorpaykeyId']}}", // Enter the Key ID generated from the Dashboard
-    "amount": "{{$respond['amount']}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "subscription_id": "{{$respond['subscriptionId']}}",
     "currency": "INR",
     "name": "{{$respond['name']}}",
     "description": "{{$respond['description']}}",
     "image": "https://example.com/your_logo",
-    "order_id": "{{$respond['orderId']}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
 
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-        document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+        document.getElementById('razorpay_subscription_id').value = response.razorpay_subscription_id;
         document.getElementById('razorpay_signature').value = response.razorpay_signature;
 
         document.getElementById('razorpay_respond').click();
     },
     "prefill": {
-        "name": "{{$respond['name']}}",
+        "name": "{{$respond['user_name']}}",
         "email": "{{$respond['email']}}",
         "contact": "{{$respond['contactNumber']}}",
     },
@@ -52,8 +51,11 @@ document.getElementById('rzp-button1').onclick = function(e){
 <form action="{{ route('RazorpayCompleted') }}" method="POST" hidden>
     {{ csrf_field() }}
     <input type="text"  name="razorpay_payment_id" id="razorpay_payment_id" value= />
-    <input type="text"  name="razorpay_order_id"   id="razorpay_order_id"value= />
+    <input type="text"  name="razorpay_subscription_id"   id="razorpay_subscription_id"value= />
     <input type="text"  name="razorpay_signature"  id="razorpay_signature" value=  />
     
     <button type="submit" id="razorpay_respond">Pay</button>
 </form>
+
+
+

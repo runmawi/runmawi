@@ -26,39 +26,30 @@ class RazorpayController extends Controller
 
     public function RazorpayIntegration(Request $request,$plan_amount)
     {
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $user_details =Auth::User();
 
-        $formcurrency = 'USD';
-        $pay = PaymentCurreny::convert()
-                ->from($formcurrency)
-                ->to('INR')
-                ->round(2)
-                ->amount($plan_amount)
-                ->get();
-        
+        $plan_id= 'plan_Izlh4Evtfv9lRd';
 
-        $RandomNumber = random_int(10000000, 999999999);
-        $receiptid= 'rcptid'.'-'.$RandomNumber;
+        $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $planId = $api->plan->fetch($plan_id);
 
-        $orderData = [
-            'receipt'         => $receiptid,
-            'amount'          => $pay * 100,  // Converting to Paisa
-            'currency'        => 'INR'
-        ];
-        
-        $razorpayOrder = $api->order->create($orderData);
+        $subscription = $api->subscription->create(array(
+        'plan_id' =>  $planId->id, 
+        'customer_notify' => 1,
+        'total_count' => 6, 
+        'addons' => array(array('item' => array('name' => $planId['item']->name , 'amount' => $planId['item']->amount, 'currency' => 'INR')))));
 
         $respond=array(
-            'orderId'        =>  $razorpayOrder['id'],
             'razorpaykeyId'  =>  $this->razorpaykeyId,
-            'amount'         =>  $plan_amount,
-            'name'           =>  $user_details->name,
+            'name'           =>   $planId['item']->name,
+            'subscriptionId' =>  $subscription->id ,
+            'short_url'      =>  $subscription->short_url,
             'currency'       =>  'INR',
             'email'          =>  $user_details['email'],
-            'contactNumber'  =>  $user_details->mobile,
+            'contactNumber'  =>  $user_details['mobile'],
+            'user_name'      =>  $user_details->name,
             'address'        =>  'India',
-            'description'    =>   'null',
+            'description'    =>   null,
         );
 
         return view('Razorpay.checkout',compact('respond'),$respond);
@@ -68,14 +59,14 @@ class RazorpayController extends Controller
     {
         $SignatureStatus = $this->RazorpaySignatureVerfiy(
                 $request->razorpay_payment_id,
-                $request->razorpay_order_id,
+                $request->razorpay_subscription_id,
                 $request->razorpay_signature
         );
 
         if($SignatureStatus == true){
             $data = array(
              'razorpay_payment_id'  =>   $request->razorpay_payment_id,
-             'razorpay_order_id'  =>   $request->razorpay_order_id,
+             'razorpay_subscription_id'  =>   $request->razorpay_subscription_id,
              'razorpay_signature'   =>   $request->razorpay_signature
             );
 
@@ -86,11 +77,11 @@ class RazorpayController extends Controller
         }
     }
 
-    private function RazorpaySignatureVerfiy($razorpay_payment_id,$razorpay_order_id,$razorpay_signature)
+    private function RazorpaySignatureVerfiy($razorpay_payment_id,$razorpay_subscription_id,$razorpay_signature)
     {
         try {
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-            $attributes  = array('razorpay_signature'  => $razorpay_signature,  'razorpay_payment_id'  => $razorpay_payment_id ,  'razorpay_order_id' => $razorpay_order_id);
+            $attributes  = array('razorpay_signature'  => $razorpay_signature,  'razorpay_payment_id'  => $razorpay_payment_id ,  'razorpay_subscription_id' => $razorpay_subscription_id);
             $order  = $api->utility->verifyPaymentSignature($attributes);
             return true;
 
@@ -102,23 +93,12 @@ class RazorpayController extends Controller
     public function RazorpayPaymentDetails(Request $request){
 
         // for testing purpose 
-        $paymentId = "pay_IzOaUGUHSGju4j";
-        $orderId   = "order_IzOZdhUbVfWExo";
-        $amount    = '10000';
+        $subscriptionId = "sub_Izmhyzu5n2cCsO";
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
-        $payment =$api->payment->fetch($paymentId);
-
-        $order = $api->order->fetch($orderId)->payments();
-        // $otp   = $api->payment->fetch($paymentId)->otpSubmit(array('otp'=> '12345'));
-
-        $data =array(
-            $payment,
-            $order,
-            // $otp,
-        );
-
+        $data = 
+$api->subscription->fetch($subscriptionId);
 
         dd ($data) ;
 
