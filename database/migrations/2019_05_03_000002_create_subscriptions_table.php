@@ -18,7 +18,7 @@ class CreateSubscriptionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->string('days');
-            $table->float('price');
+            $table->string('price');
             $table->string('stripe_id');
             $table->string('stripe_status');
             $table->string('stripe_plan')->nullable();
