@@ -231,29 +231,29 @@
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
+                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ gmdate('H:i:s', $video->skip_intro) }}@endif">
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
+                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ gmdate('H:i:s', $video->intro_start_time) }}@endif" >
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
+                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ gmdate('H:i:s', $video->intro_end_time) }}@endif" >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
+                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ gmdate('H:i:s', $video->skip_recap) }}@endif">
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
+                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ gmdate('H:i:s', $video->recap_start_time) }}@endif">
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
+                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ gmdate('H:i:s', $video->recap_end_time) }}@endif" >
                     </div>
                 </div>
                <div class="row">
@@ -900,22 +900,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
-   $('#intro_start_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#intro_end_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#recap_start_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#recap_end_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
+   // $('#intro_start_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#intro_end_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#recap_start_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#recap_end_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
 </script>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -969,7 +969,13 @@
       $('.js-example-basic-single').select2();
    
       // $('#duration').mask("00:00:00");
-   
+      $('#duration').mask("00:00:00");
+      $('#intro_start_time').mask("00:00:00");
+      $('#intro_end_time').mask("00:00:00");
+      $('#recap_start_time').mask("00:00:00");
+      $('#recap_end_time').mask("00:00:00");
+      $('#skip_intro').mask("00:00:00");
+      $('#skip_recap').mask("00:00:00");
    });
    
    
