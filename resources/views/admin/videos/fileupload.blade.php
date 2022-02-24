@@ -77,8 +77,9 @@
                         <h3 class="card-title upload-ui">Upload Full Video Here</h4>
                         <!-- Dropzone -->
                         <form action="{{URL::to('admin/uploadFile')}}" method= "post" class='dropzone' ></form>
+                        <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                      </div>
-                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                     
                   </div>
                   <div class="text-center" style="margin-top: 30px;">
                      <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
@@ -494,12 +495,9 @@
                      <fieldset>
                         <div class="form-card">
                            <div class="row">
-                              <div class="col-7">
-                                 <h2 class="fs-title">User Access:</h2>
-                              </div>
-                              <div class="col-5">
-                                 <!-- <h2 class="steps">Step 3 - 4</h2> -->
-                              </div>
+                              <div class="col-sm-12">
+                                    <h2 class="fs-title">Geo-location for Videos</h2>
+                               </div>
                            </div>
                            <div class="row">
                               {{-- 
@@ -509,8 +507,9 @@
                               </div>
                               --}}
                               {{-- Block country --}}
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Block Country <small>Choose the countries for block the videos</small></label>
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0">Block Country </label>
+                                 <p class="p1">( Choose the countries for block the videos )</p>
                                  <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                     @foreach($countries as $country)
                                     <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
@@ -518,8 +517,9 @@
                                  </select>
                               </div>
                               {{-- country --}}
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Country <small>Choose the countries videos</small></label>
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0"> Country </label>
+                                 <p class="p1">( Choose the countries videos )</p>
                                  <select  name="video_country" class="form-control" id="country">
                                     <option value="All">Select Country </option>
                                     @foreach($countries as $country)
@@ -528,11 +528,12 @@
                                  </select>
                               </div>
                            </div>
+                            
                            <div class="row">
-                              <div class="col-sm-4 form-group">
+                              <div class="col-sm-6 form-group">
                                  <label class="m-0">User Access</label>
                                  <select id="access" name="access"  class="form-control" >
-                                    <option value="guest" >Guess( everyone )</option>
+                                    <option value="guest" >Guest ( Everyone )</option>
                                     <option value="subscriber" >Subscriber ( Must subscribe to watch )</option>
                                     <option value="registered" >Registered Users( Must register to watch )</option>
                                     <?php if($settings->ppv_status == 1){ ?>
@@ -542,12 +543,12 @@
                                     <?php } ?>
                                  </select>
                               </div>
-                           </div>
-                           <div class="row">
                               <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                  <label class="">PPV Price:</label>
                                  <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                               </div>
+                           </div>
+                           <div class="row">
                               <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                  <?php if($settings->ppv_status == 1){ ?>
                                  <label for="global_ppv">Is this video Is Global PPV:</label>
@@ -559,9 +560,7 @@
                                  </div>
                                  <?php } ?>
                               </div>
-                           </div>
-                           <div class="row">
-                              <div class="col-sm-6 mt-3">
+                               <div class="col-sm-6 mt-3">
                                  <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
                                        <div class="panel-title">
@@ -750,7 +749,7 @@
     border: 0 none;
     border-radius: 4px;
     cursor: pointer;
-    padding: 10px 5px;
+    padding: 7px 5px;
     margin: 10px 0px 10px 5px;
     float: right;
 }
