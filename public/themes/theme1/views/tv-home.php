@@ -1,5 +1,18 @@
 <!-- Header Start -->
-<?php include('header.php');?>
+<?php include('header.php'); ?>
+<?php  if (Session::has('message')){ ?>
+<div id="successMessage" class="alert alert-info"><?php echo Session::get('message'); ?></div>
+<?php }
+if(count($errors) > 0){
+foreach( $errors->all() as $message ){ ?>
+<div class="alert alert-danger display-hide" id="successMessage" >
+<button id="successMessage" class="close" data-close="alert"></button>
+<span><?php echo $message ; ?></span>
+</div>
+<?php
+}
+}
+?>
 <!-- Header End -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
@@ -14,8 +27,7 @@
 </section>
 
 <!-- MainContent -->
-<div class="main-content" style="background: #161617;
-mix-blend-mode: normal;">
+<div class="main-content">
 
 <!-- free Contents videos -->
 <section id="iq-favorites">
@@ -78,4 +90,14 @@ mix-blend-mode: normal;">
       </div>
   </section> 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
 <?php include('footer.blade.php');?>

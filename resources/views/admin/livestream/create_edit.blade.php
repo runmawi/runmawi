@@ -335,8 +335,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script type="text/javascript">
+   $ = jQuery;
 
-<script>
+   $(document).ready(function($){
+    $("#duration").mask("00:00:00");
+   });
+
     $('form[id="live_video"]').validate({
         rules: {
             title: "required",
@@ -444,7 +452,7 @@
     $(document).ready(function () {
         $(".js-example-basic-multiple").select2();
 
-        $("#duration").mask("00:00:00");
+        // $("#duration").mask("00:00:00");
         $("#tags").tagsInput();
 
         $("#type").change(function () {
