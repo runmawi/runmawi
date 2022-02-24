@@ -2506,8 +2506,8 @@ class HomeController extends Controller
                     ->where('type', '=', $request->payment_method)
                     ->first();
 
-                $plan_amount =$plans->price;
-                return Redirect::route('RazorpayIntegration',$PlanId);
+                    $PlanId =$plans->plan_id;
+                    return Redirect::route('RazorpayIntegration',$PlanId);
             }
         }
         else

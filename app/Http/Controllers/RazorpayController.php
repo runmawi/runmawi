@@ -13,6 +13,7 @@ use Theme;
 use Auth;
 use App\Subscription;
 use Razorpay\Api\Api;
+use App\User;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 
@@ -34,7 +35,15 @@ class RazorpayController extends Controller
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
 
-        $user_details =Auth::User();
+        $users_details =Auth::User();
+
+        if($users_details != null){
+            $user_details =Auth::User();
+        }else{
+            $userEmailId = $request->session()->get('register.email');
+            $user_details =User::where('email',$userEmailId)->first();
+        }
+
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $planId = $api->plan->fetch($Plan_Id);
 
