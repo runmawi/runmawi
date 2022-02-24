@@ -913,22 +913,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
-   $('#intro_start_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#intro_end_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#recap_start_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
-   $('#recap_end_time').datetimepicker(
-   {
-       format: 'hh:mm '
-   });
+   // $('#intro_start_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#intro_end_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#recap_start_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
+   // $('#recap_end_time').datetimepicker(
+   // {
+   //     format: 'hh:mm '
+   // });
 </script>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -982,7 +982,13 @@
       $('.js-example-basic-single').select2();
    
       // $('#duration').mask("00:00:00");
-   
+      $('#duration').mask("00:00:00");
+      $('#intro_start_time').mask("00:00:00");
+      $('#intro_end_time').mask("00:00:00");
+      $('#recap_start_time').mask("00:00:00");
+      $('#recap_end_time').mask("00:00:00");
+      $('#skip_intro').mask("00:00:00");
+      $('#skip_recap').mask("00:00:00");
    });
    
    

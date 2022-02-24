@@ -44,6 +44,7 @@ if(!empty($str)){
 $uri_parts = explode('.', $video->mp4_url);
 $request_url = end($uri_parts);
 }
+// dd($request_url);
 // print_r ($request_url);
 // exit();
 
@@ -54,10 +55,8 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 <div id="video_bg"> 
         <div class="container">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-            <?php if(!empty($video->mp4_url)){  
-                if($request_url == "m3u8"){ ?>
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                <?php } ?>
+            <?php if(!empty($video->mp4_url && $request_url != "m3u8")){  
+            ?>
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
 
                     <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
@@ -75,6 +74,19 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
               allow="autoplay"
             ></iframe>
           </div>
+                <?php  }elseif(!empty($request_url == "m3u8")){  ?> 
+                <!-- <div class="plyr__video-embed" id="player"> -->
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                <input type="hidden" id="live" name="live" value="live">
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+              <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+      <source 
+        type="application/x-mpegURL" 
+        src="<?php echo $video->mp4_url; ?>"
+      >
+    </video>
+          <!-- </div>  -->
                 <?php } ?>
 
                 <div class="playertextbox hide">
