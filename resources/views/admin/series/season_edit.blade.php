@@ -29,15 +29,11 @@
         margin-top: 5%;
     }
     .file {
-        padding: 30;
         background: rgb(255 255 255 / 100%);
         border-radius: 10px;
         text-align: center;
         margin: 0 auto;
         width: 75%;
-        border: 1px dashed;
-    }
-    #video_upload .file form {
         border: 2px dashed;
     }
     #video_upload .file form i {
@@ -68,10 +64,10 @@
             <div class="clear"></div>
             <div id="episode_uploads">
                 <div class="content file">
-                    <h3 class="card-title">Upload Full Episode Here</h3>
+                    <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
                     <form action="{{URL::to('admin/episode_upload')}}" method="post" class="dropzone"></form>
-                    <p class="p1 text-right">Trailers Can Be Uploaded From Video Edit Screen</p>
+                    <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>
             <div class="text-center" id="buttonNext" style="margin-top: 30px;">
