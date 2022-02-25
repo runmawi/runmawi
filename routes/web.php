@@ -1256,4 +1256,5 @@ Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegrat
 Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
 Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
 Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
+Route::get('/RazorpaySubscriptionStore/{sub_id}', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 

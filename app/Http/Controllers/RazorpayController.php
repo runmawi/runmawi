@@ -24,7 +24,6 @@ class RazorpayController extends Controller
 
     public function Razorpay(Request $request)
     {
-        
         return view('Razorpay.create');
     }
 
@@ -83,25 +82,10 @@ class RazorpayController extends Controller
         );
 
         if($SignatureStatus == true){
-                    $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-           $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
-           $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-           Subscription::create([
-            'user_id'       =>  $request->user_id,
-            'name'          =>  $plan_id['item']->name,
-            // 'days'          =>  $fileName_zip,
-            'price'         =>  $plan_id['item']->amount,
-            'stripe_id'     =>  $subscription['id'],
-            'stripe_status' =>  $subscription['status'],
-            'stripe_plan'   =>  $subscription['plan_id'],
-            'quantity'      =>  $subscription['quantity'],
-            'countryname'   =>  $request->countryName,
-            'regionname'    =>  $request->cityName,
-            'cityname'      =>  $request->regionName,
-          ]);
-
-          return Redirect::route('home');
+            $userId = $request->user_id;
+            $RazorpaySubscription = $request->razorpay_subscription_id;
+          
+          return Redirect::route('RazorpaySubscriptionStore',$RazorpaySubscription,$userId);
 
         }
         else{
@@ -134,12 +118,38 @@ class RazorpayController extends Controller
     
     public function RazorpayCancelSubscriptions(Request $request)
     {
-        $subscriptionId = "sub_IzpuMPU38PntuD";
+        $subscriptionId = "sub_J087LBL1UHl445";
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $options  = array('cancel_at_cycle_end'  => 0);
-        $CancelSubscriptions = $api->subscription->fetch($subscriptionId)->cancel($options);
+        $CancelSubscriptions = $api->subscription->fetch($subscriptionId);
+
+        dd($CancelSubscriptions);
         
+        return Redirect::route('home');
+    }
+
+    public function RazorpaySubscriptionStore($SubId){
+
+        $razorpay_subscription_id = $SubId;
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $subscription = $api->subscription->fetch($razorpay_subscription_id);
+        $plan_id      = $api->plan->fetch($subscription['plan_id']);
+
+            Subscription::create([
+            'user_id'       =>  1,
+            'name'          =>  $plan_id['item']->name,
+            // 'days'          =>  $fileName_zip,
+            'price'         =>  $plan_id['item']->amount,
+            'stripe_id'     =>  $subscription['id'],
+            'stripe_status' =>  $subscription['status'],
+            'stripe_plan'   =>  $subscription['plan_id'],
+            'quantity'      =>  $subscription['quantity'],
+            'countryname'   =>  $request->countryName,
+            'regionname'    =>  $request->cityName,
+            'cityname'      =>  $request->regionName,
+        ]);
+
         return Redirect::route('home');
     }
 }

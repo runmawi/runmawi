@@ -2435,10 +2435,11 @@ class HomeController extends Controller
 
     public function StripeSubscription(Request $request)
     {
+
         $user = Auth::user();
         $subscriptions = Subscription::where('user_id', $user->id)
             ->first();
-        if (empty($subscriptions))
+        if ($subscriptions != null)
         {
             if ($request->payment_method == "Stripe")
             {
