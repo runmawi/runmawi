@@ -11,7 +11,7 @@
                 <a href="<?php echo URL::to('home') ?>">
                     <div class="block-images position-relative">
                             <div class="img-box">
-                                <a  href="<?php echo URL::to('Reals_videos') ?><?= '/videos/' . $reel->slug ?>">
+                                <a  href="#">
                                     <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->image;  ?>"  data-play="hover" >
                                         <source src="<?php echo $reel->trailer;  ?>" type="video/mp4">
                                     </video>
@@ -27,9 +27,9 @@
                     </div>
 
                     <div class="mt-2">
-                              <a  href="<?php echo URL::to('Reals_videos') ?><?= '/videos/' . $reel->slug ?>">
-                                     <h6><?php echo __($reel->title); ?></h6> </a>
-
+                              <!-- <a  href="<?php //echo URL::to('Reals_videos') ?><?// '/videos/' . $reel->slug ?>">
+                                      </a> -->
+                                      <h6><?php echo __($reel->title); ?></h6>
                                 <div class="movie-time d-flex align-items-center my-2">
                                     <div class="badge badge-secondary p-1 mr-2"><?php echo $reel->age_restrict ?></div>
                                 </div>
