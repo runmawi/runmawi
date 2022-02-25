@@ -269,7 +269,7 @@ function myFunction() {
         });
    }
 else{
-  alert('test');
+  // alert('test');
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;
