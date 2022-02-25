@@ -152,4 +152,44 @@ class RazorpayController extends Controller
 
         return Redirect::route('home');
     }
+    public function RazorpaySubscriptionUpdate(Request $request,$planId){
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+
+        $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $planId = $api->plan->fetch($planId);
+        $user_id =Auth::User()->id;
+
+        $subscriptionId  = Subscription::where('user_id',$user_id)->latest()->pluck('stripe_id')->first();
+
+        $subscription = $api->subscription->fetch($subscriptionId);
+        $remaining_count  =  $subscription['remaining_count'] ;
+
+        $options  = array('plan_id'  => $planId, 'remaining_count' => $remaining_count );
+        $api->subscription->fetch($subscriptionId)->update($options);
+
+        $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
+        $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
+
+        if (is_null($subscriptionId)) {
+            return false;
+        }
+        else{
+            Subscription::where('user_id',$user_id)->latest()->update([
+                'price'         =>  $updatedPlan['item']->amount,
+                'stripe_id'     =>  $UpdatedSubscription['id'],
+                'stripe_status' =>  $UpdatedSubscription['status'],
+                'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
+                'quantity'      =>  $UpdatedSubscription['quantity'],
+                'countryname'   =>  $countryName,
+                'regionname'    =>  $regionName,
+                'cityname'      =>  $cityName,
+        ]);
+        }
+
+        return Redirect::route('home');
+    }
 }
