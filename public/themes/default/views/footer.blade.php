@@ -209,10 +209,12 @@ function myFunction() {
 
 
 
-    // alert(video_video)
+    // alert(type)
+    // alert(request_url)
+
 
    if(type != "" && video_video == 'video'){
-    // alert('m3u8')
+    // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
           controls: [
@@ -269,6 +271,8 @@ function myFunction() {
         });
    }
 else{
+  // alert('else')
+
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;
