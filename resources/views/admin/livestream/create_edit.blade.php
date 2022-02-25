@@ -261,7 +261,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-4">
                             <label class="m-0">Publish Type</label>
-                            <div class="panel-body">
+                            <div class="panel-body" style="color: black;">
                                 <input type="radio" id="publish_now" name="publish_type" value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                                 <input type="radio" id="publish_later" name="publish_type" value="publish_later" /> Publish Later
                             </div>
