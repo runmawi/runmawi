@@ -85,8 +85,7 @@ class RazorpayController extends Controller
             $userId = $request->user_id;
             $RazorpaySubscription = $request->razorpay_subscription_id;
           
-          return Redirect::route('RazorpaySubscriptionStore',$RazorpaySubscription,$userId);
-
+            return Redirect::route('RazorpaySubscriptionStore',['RazorpaySubscription' => $RazorpaySubscription,'userId' => $userId]);
         }
         else{
             echo 'fails';
@@ -129,15 +128,16 @@ class RazorpayController extends Controller
         return Redirect::route('home');
     }
 
-    public function RazorpaySubscriptionStore($SubId){
+    public function RazorpaySubscriptionStore(Request $request){
 
-        $razorpay_subscription_id = $SubId;
+        $razorpay_subscription_id = $request->RazorpaySubscription;
+
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $subscription = $api->subscription->fetch($razorpay_subscription_id);
         $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
             Subscription::create([
-            'user_id'       =>  1,
+            'user_id'       =>  $request->userId,
             'name'          =>  $plan_id['item']->name,
             // 'days'          =>  $fileName_zip,
             'price'         =>  $plan_id['item']->amount,
