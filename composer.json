@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "amrshawky/laravel-currency": "^5.0",
         "cartalyst/stripe-laravel": "^12.0",
         "facuz/laravel-themes": "^3.2",
         "fideloper/proxy": "^4.2",
@@ -27,7 +28,7 @@
         "paypal/rest-api-sdk-php": "^1.14",
         "pbmedia/laravel-ffmpeg": "^7.0",
         "phpoffice/phpspreadsheet": "^1.18",
-        "razorpay/razorpay": "^2.8",
+        "razorpay/razorpay": "2.*",
         "stevebauman/location": "^5.2",
         "sybio/gif-creator": "^1.0",
         "symfony/psr-http-message-bridge": "^2.0",
