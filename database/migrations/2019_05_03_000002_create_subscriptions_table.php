@@ -23,9 +23,10 @@ class CreateSubscriptionsTable extends Migration
             $table->string('stripe_status');
             $table->string('stripe_plan')->nullable();
             $table->integer('quantity')->nullable();
-            $table->integer('countryname')->nullable();
-            $table->integer('regionname')->nullable();
-            $table->integer('cityname')->nullable();
+            $table->string('countryname')->nullable();
+            $table->string('regionname')->nullable();
+            $table->string('cityname')->nullable();
+            $table->string('PaymentGateway')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();

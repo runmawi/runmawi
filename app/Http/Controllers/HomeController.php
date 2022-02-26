@@ -2435,10 +2435,11 @@ class HomeController extends Controller
 
     public function StripeSubscription(Request $request)
     {
+
         $user = Auth::user();
         $subscriptions = Subscription::where('user_id', $user->id)
             ->first();
-        if (empty($subscriptions))
+        if ($subscriptions != null)
         {
             if ($request->payment_method == "Stripe")
             {
@@ -2499,6 +2500,15 @@ class HomeController extends Controller
                     ->get('register');
                 $plan_name = $request->get('register.email');
 
+            }
+            elseif($request->payment_method == "Razorpay"){
+
+                $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+                    ->where('type', '=', $request->payment_method)
+                    ->first();
+
+                    $PlanId =$plans->plan_id;
+                    return Redirect::route('RazorpayIntegration',$PlanId);
             }
         }
         else
