@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Notification;
 use \Redirect as Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -143,7 +144,7 @@ class RazorpayController extends Controller
 
         User::where('id',$request->userId)->update([
             'role'                  =>  'subscriber',
-            'stripe_id'             =>  $subscription['customer_id'] ? $subscription['customer_id'] : null,
+            'stripe_id'             =>  $subscription['id'] ,
             'subscription_start'    =>  $Sub_Startday,
             'subscription_ends_at'  =>  $Sub_Endday,
         ]);
@@ -199,12 +200,18 @@ class RazorpayController extends Controller
 
     public function RazorpayCancelSubscriptions(Request $request)
     {
-        $subscriptionId = "sub_J087LBL1UHl445";
-
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $options  = array('cancel_at_cycle_end'  => 0);
-        $CancelSubscriptions = $api->subscription->fetch($subscriptionId);
+
+        $subscriptionId = User::where('id',Auth::user()->id)->pluck('stripe_id')->first();
         
-        return Redirect::route('home');
+        $options  = array('cancel_at_cycle_end'  => 0);
+
+        $api->subscription->fetch($subscriptionId)->cancel($options);
+
+        Subscription::where('stripe_id',$subscriptionId)->update([
+            'stripe_status' =>  'Cancelled',
+        ]);
+
+        return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
 }
