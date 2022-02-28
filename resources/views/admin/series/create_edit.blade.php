@@ -234,6 +234,7 @@ $settings  = App\Setting::first();?>
 					</div>
 				</div>
                 </div>
+				@if($settings->series_season == 0)
                 <div class="row align-items-center mt-3 p-3"> 
                     <div class="col-sm-4"> 
                         <label class="m-0">Apply Global PPV Price:</label>
@@ -252,6 +253,9 @@ $settings  = App\Setting::first();?>
                         </div>
                     </div>
                 </div>
+				@else if
+				<input type="hidden" name="ppv_status" value="" id="ppv_status" />
+				@endif
             </div>
             <div class="row mt-3">
                 <div class="col-sm-12"> 
@@ -318,7 +322,9 @@ $settings  = App\Setting::first();?>
 		                        <label> Choose User Access:</label>
 								<select class="form-control" id="ppv_access" name="ppv_access">
 								<option value="free" >Free (everyone)</option>
+								@if($settings->series_season == 1)
 								<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
+								@endif
 							</select>
 		                        <!-- <input type="text" id="ppv_price" name="ppv_price" value="" class="form-control" placeholder="Plan Name"> -->
                             </div>
@@ -327,13 +333,13 @@ $settings  = App\Setting::first();?>
 							<label class="">PPV Price:</label>
 								<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
 		                    </div>  
+							@if($settings->series_season == 1)
 							<div class="form-group">
 		                        <label>PPV Interval:</label>
 								<p class="p1">Please Mention How Many Episodes are Free:</p>
 		                        <input type="text" id="ppv_interval" name="ppv_interval" value="" class="form-control">
 		                    </div>  
-                     
-                
+							@endif                   
 				    </form>
 				</div>
 				

@@ -57,7 +57,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    /*TV-shows*/
+    /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');

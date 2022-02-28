@@ -48,7 +48,7 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
         {
-        
+        // dd($vid);
           $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
 
