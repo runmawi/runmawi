@@ -115,19 +115,6 @@ class RazorpayController extends Controller
 
     }
     
-    public function RazorpayCancelSubscriptions(Request $request)
-    {
-        $subscriptionId = "sub_J087LBL1UHl445";
-
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $options  = array('cancel_at_cycle_end'  => 0);
-        $CancelSubscriptions = $api->subscription->fetch($subscriptionId);
-
-        dd($CancelSubscriptions);
-        
-        return Redirect::route('home');
-    }
-
     public function RazorpaySubscriptionStore(Request $request){
 
         $razorpay_subscription_id = $request->RazorpaySubscription;
@@ -136,18 +123,29 @@ class RazorpayController extends Controller
         $subscription = $api->subscription->fetch($razorpay_subscription_id);
         $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
+        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
+        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+
             Subscription::create([
-            'user_id'       =>  $request->userId,
-            'name'          =>  $plan_id['item']->name,
-            // 'days'          =>  $fileName_zip,
-            'price'         =>  $plan_id['item']->amount,
-            'stripe_id'     =>  $subscription['id'],
-            'stripe_status' =>  $subscription['status'],
-            'stripe_plan'   =>  $subscription['plan_id'],
-            'quantity'      =>  $subscription['quantity'],
-            'countryname'   =>  $request->countryName,
-            'regionname'    =>  $request->cityName,
-            'cityname'      =>  $request->regionName,
+            'user_id'        =>  $request->userId,
+            'name'           =>  $plan_id['item']->name,
+            // 'days'        =>  $fileName_zip,
+            'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
+            'stripe_id'      =>  $subscription['id'],
+            'stripe_status'  =>  $subscription['status'],
+            'stripe_plan'    =>  $subscription['plan_id'],
+            'quantity'       =>  $subscription['quantity'],
+            'countryname'    =>  $request->countryName,
+            'regionname'     =>  $request->cityName,
+            'cityname'       =>  $request->regionName,
+            'PaymentGateway' =>  'Razorpay',
+        ]);
+
+        User::where('id',$request->userId)->update([
+            'role'                  =>  'subscriber',
+            'stripe_id'             =>  $subscription['customer_id'] ? $subscription['customer_id'] : null,
+            'subscription_start'    =>  $Sub_Startday,
+            'subscription_ends_at'  =>  $Sub_Endday,
         ]);
 
         return Redirect::route('home');
@@ -168,28 +166,45 @@ class RazorpayController extends Controller
         $subscription = $api->subscription->fetch($subscriptionId);
         $remaining_count  =  $subscription['remaining_count'] ;
 
-        $options  = array('plan_id'  => $planId, 'remaining_count' => $remaining_count );
-        $api->subscription->fetch($subscriptionId)->update($options);
+        if($subscription->payment_method != "upi"){
+            
+            $options  = array('plan_id'  => $planId, 'remaining_count' => $remaining_count );
+            $api->subscription->fetch($subscriptionId)->update($options);
 
-        $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
-        $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
+            $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
+            $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
 
-        if (is_null($subscriptionId)) {
-            return false;
+            if (is_null($subscriptionId)) {
+                return false;
+            }
+            else{
+                Subscription::where('user_id',$user_id)->latest()->update([
+                    'price'         =>  $updatedPlan['item']->amount,
+                    'stripe_id'     =>  $UpdatedSubscription['id'],
+                    'stripe_status' =>  $UpdatedSubscription['status'],
+                    'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
+                    'quantity'      =>  $UpdatedSubscription['quantity'],
+                    'countryname'   =>  $countryName,
+                    'regionname'    =>  $regionName,
+                    'cityname'      =>  $cityName,
+            ]);
+            }
+            return Redirect::route('home');
         }
+
         else{
-            Subscription::where('user_id',$user_id)->latest()->update([
-                'price'         =>  $updatedPlan['item']->amount,
-                'stripe_id'     =>  $UpdatedSubscription['id'],
-                'stripe_status' =>  $UpdatedSubscription['status'],
-                'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
-                'quantity'      =>  $UpdatedSubscription['quantity'],
-                'countryname'   =>  $countryName,
-                'regionname'    =>  $regionName,
-                'cityname'      =>  $cityName,
-        ]);
+            return view('Razorpay.UPI'); 
         }
+    }
 
+    public function RazorpayCancelSubscriptions(Request $request)
+    {
+        $subscriptionId = "sub_J087LBL1UHl445";
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $options  = array('cancel_at_cycle_end'  => 0);
+        $CancelSubscriptions = $api->subscription->fetch($subscriptionId);
+        
         return Redirect::route('home');
     }
 }
