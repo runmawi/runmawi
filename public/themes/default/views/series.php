@@ -57,11 +57,44 @@ $series = $series_data ;
 <!-- $series->title -->
 						
 						<?php 
-						// dd($settings);
 						// if($series->ppv_status == null){						
 						foreach($season as $key => $seasons):  
-							foreach($seasons->episodes as $key => $episodes): ?>
+							foreach($seasons->episodes as $key => $episodes):
+								// dd($seasons->ppv_interval);
+								if($seasons->ppv_interval > $key):
+							 ?>
 								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
+									<div class="col-md-3">
+										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
+										<div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+								</div>
+									<div class="col-md-7">
+										<h2><?= $episodes->title; ?></h2>
+										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
+                                        <p class="date"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+										<p><?= gmdate("H:i:s", $episodes->duration); ?></p>
+									</div>
+									<div class="col-md-2">
+									</div>
+								</div>
+							</a>
+							<?php else : ?>
+								
+							<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
@@ -89,7 +122,8 @@ $series = $series_data ;
 									</div>
 								</div>
 							</a>
-							<?php endforeach; 
+							<?php endif;
+							endforeach; 
 						endforeach;
 					// }
 						?>
@@ -322,4 +356,4 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php include('footer.blade.php'); ?>
+<?php //include('footer.blade.php'); ?>
