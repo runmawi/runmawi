@@ -246,6 +246,8 @@ public function RentPaypal(Request $request)
     // dd($request->all());
     $data = $request->all();
     $episode_id = $data['episode_id'];
+    $season_id = $data['season_id'];
+
     $setting = Setting::first();  
     $ppv_hours = $setting->ppv_hours;
     // $to_time =  Carbon::now()->addHour($ppv_hours);
@@ -290,6 +292,7 @@ public function RentPaypal(Request $request)
     $purchase = new PpvPurchase;
     $purchase->user_id = $user_id;
     $purchase->episode_id = $episode_id;
+    $purchase->season_id = $season_id;
     $purchase->total_amount = $total_amount;
     $purchase->admin_commssion = $admin_commssion;
     $purchase->moderator_commssion = $moderator_commssion;
