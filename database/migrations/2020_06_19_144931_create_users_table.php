@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
                 $table->string('coupon_expired')->nullable();
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
-                $table->timestamp('subscription_ends_at')->nullable();
+                $table->string('subscription_ends_at')->nullable();
                 $table->longText('paypal_end_at')->nullable();
                 $table->string('password')->nullable();
                 $table->string('avatar')->nullable();
