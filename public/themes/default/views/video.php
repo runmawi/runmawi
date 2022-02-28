@@ -1,6 +1,16 @@
 
 <?php include('header.php'); ?>
+<?php
 
+$str = $video->m3u8_url;
+if(!empty($str)){
+$request_url = 'm3u8';
+// dd($video->m3u8);  
+}
+if(!empty($request_url)){
+?>
+<input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+<?php } ?>
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
@@ -10,7 +20,6 @@
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
   <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
   <input type="hidden" id="video_video" value="video">
-
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
@@ -1048,9 +1057,9 @@ location.reload();
     $end_time = $Intro_skip->intro_end_time;
 
     $StartParse = date_parse($start_time);
-    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
     $EndParse = date_parse($end_time);
-    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+    $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
 ?>
 
 <script>

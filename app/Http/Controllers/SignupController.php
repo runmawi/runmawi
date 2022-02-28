@@ -409,6 +409,7 @@ public function createStep2(Request $request)
 
 public function PostcreateStep2(Request $request)
 {
+
    $validatedData = $request->validate([
     // 'modal_plan_name' => 'required',
 
@@ -439,9 +440,7 @@ public function PostcreateStep2(Request $request)
     }
 }elseif($request->payment_method == "PayPal"){
     $plans = SubscriptionPlan::where('plans_name','=',$request->modal_plan_name)->where('type','=',$request->payment_method)->first();
-    // echo"<pre>";
-    // print_r($plans);
-    // exit();
+    
     $request->session()->put('planname', $request->modal_plan_name);
     $request->session()->put('plan_id', $plans->plan_id);
     $request->session()->put('payment_type', $plans->payment_type);
@@ -468,6 +467,15 @@ return redirect('/subscribe/paypal');
  else {
         return redirect('/subscribe/paypal');
  }
+}
+elseif($request->payment_method == "Razorpay"){
+
+            $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+                ->where('type', '=', $request->payment_method)
+                ->first();
+
+            $PlanId =$plans->plan_id;
+            return Redirect::route('RazorpayIntegration',$PlanId);
 }
 }
     

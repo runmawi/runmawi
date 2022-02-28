@@ -1,6 +1,15 @@
 
 <?php include('header.php'); ?>
-
+<?php
+$str = $video->m3u8_url;
+if(!empty($str)){
+$request_url = 'm3u8';
+// dd($video->m3u8);  
+}
+if(!empty($request_url)){
+?>
+<input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+<?php } ?>
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
@@ -8,6 +17,8 @@
   <input type="hidden" name="current_time" id="current_time" value="<?php if(isset($watched_time)) { echo $watched_time; } else{ echo "0";}?>">
   <input type="hidden" id="videoslug" value="<?php if(isset($video->slug)) { echo $video->slug; } else{ echo "0";}?>">
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
+  <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
+  <input type="hidden" id="video_video" value="video">
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
@@ -38,6 +49,13 @@ input.skips{
 #Auto_skip{
 	display: none;
 }
+div#url_linkdetails {
+    position: absolute;
+    top: 70%;
+    left: 30%;
+    font-size: x-large;
+    font-family: 'remixicon';
+}
   </style>
 <?php
 
@@ -47,7 +65,8 @@ input.skips{
 // print_r($ppv_video_play); exit();
 // dd($recomended);
 
-
+$package = App\User::where('id',1)->first();
+$pack = $package->package;
 if(!Auth::guest()) {
   // dd($video->access);
   // dd('test');
@@ -83,7 +102,7 @@ if(!Auth::guest()) {
          <?php if($video->type == 'embed'): ?>
            <div id="video_container" class="fitvid">
              <?php
-              if(!empty($video->embed_code)){ ?>
+              if(!empty($video->embed_code)){?>
               <div class="plyr__video-embed" id="player">
             <iframe
               src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
@@ -159,9 +178,9 @@ if(!Auth::guest()) {
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
-                  <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                  <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
-                   <source src="<?php if(!empty($video->mp4_url)){ echo $video->mp4_url; }else { echo $video->trailer;} ?>"  type='video/mp4' label='auto' > 
+                   <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
                 
                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
                    <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
@@ -251,9 +270,34 @@ if(!Auth::guest()) {
 
   </div>
 
- <?php }
+  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
+ if(!empty($video->path)){  ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+               <!-- Current time: <div id="current_time"></div> -->
+               <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+      <source 
+        type="application/x-mpegURL" 
+        src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
+      >
+    </video>
+               <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
+  <!-- Captions are optional -->
+  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "German"){ ?>
+           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Spanish"){ ?>
+           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Hindi"){ ?>
+           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+           <?php } } } else { }  ?>  
+</video>
+</div>
+  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+<?php } }
 /* For Registered User */       
-   else {  ?>       
+   else {  ?>      
        <div id="video" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
@@ -486,64 +530,26 @@ if(!Auth::guest()) {
 </div>
  <?php }  ?>
            
+<!-- url link -->
+
+<?php if(!empty($video->url_link) ) { ?>
+<div class="text-white" id="url_linkdetails" >
+    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" ><?php echo __($video->url_link); ?></a></p>
+</div>
+<?php  }?>
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-   <div class="container" >
+   <div class="container-fluid video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
            <div class="row">
-               <div class="col-sm-7 col-md-7 col-xs-12 head">
-                   
-                   <h1 class="trending-text text-white big-title text-uppercase mt-3"> <?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
-                   <div class="d-flex col-md-8 justify-content-between p-0">
-                     
-                   <?php   if(!empty($category_name)){
-                              foreach($category_name as $cat_name){ ?>
-                                <div><p class="text-white cri1"> <?php  echo $cat_name->categories_name ; ?>   </p></div> <?php
-                                } }  ?>
-              </div>
-
-                   <p class="text-white col-md-9 p-0">
-                      <?php if(!empty($video->description) ) { ?>
-                            <div class="text-white">
-                              <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-                            </div>
-                      <?php  }?>
-                    </p>
-      
-                   <p class="text-white">Rating:	R (Sexuality|Horror|Violence)</p>
-                <p class="text-white">Language:	
-                                        <?php
-                                        if(!empty($langague_Name)){
-                                          foreach($langague_Name as $lanName){
-                                            echo $lanName->name.',' ;
-                                          }
-                                        }
-                                        ?>
-                </p>
-                <!-- <p class="text-white">Director:	Francis Ford Coppola</p>
-                <p class="text-white">Producer:	Francis Ford Coppola</p> -->
-                <p class="text-white">Release Year:	<?php if($release_year != null){ echo $release_year; }?></p>
-                
+               <div class="col-sm-9 col-md-9 col-xs-12">
+                   <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                        <!-- Category -->
-                  
+                   <ul class="p-0 list-inline d-flex align-items-center movie-content">
+                    <li class="text-white"><?//= $videocategory ;?></li>
+                   </ul>
                </div>
-               <div class="col-md-5 mt-5 pt-3">
-                  <ul class="list-inline p-0 mt-4 mb-5 share-icons music-play-lists">
-                         <!-- Watchlater -->
-                        <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-                         <!-- Wishlist -->
-                        <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                         <!-- Social Share, Like Dislike -->
-                            <?php include('partials/social-share.php'); ?>                     
-                     </ul>
-                   <div class="mb-4">
-                         <a class="big1 text-white">Watch on Flicknexs </a>
-                                        </div>
-                        <div class="mt-5 pt-2">
-                                            <a class="big1 text-white">+ Add to  Watchlist</a></div>
-                    <div class="mt-5 pt-2">
-                                            <a class="big1 text-white">Share Link FB</a></div>
-                                                
+               <div class="col-md-12">
             <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
              <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
@@ -573,9 +579,31 @@ if(!Auth::guest()) {
                </div>
            </div>
        </div>
-        
+       <!-- Year, Running time, Age --> 
+         <div class="d-flex align-items-center text-white text-detail">
+            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
+            <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+            <span class="trending-year"><?php
+            foreach($category_name as $value){
+              echo $value->categories_name. ',';  
+            }
+             ?></span>
+
+         </div>
+           
        <?php if(!Auth::guest()) { ?>
        <div class="row">
+           <div class="col-sm-6 col-md-6 col-xs-12">
+                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                     <!-- Watchlater -->
+                    <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+                     <!-- Wishlist -->
+                    <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                     <!-- Social Share, Like Dislike -->
+                        <?php include('partials/social-share.php'); ?>                     
+                 </ul>
+           </div>
                
            <div class="col-sm-6 col-md-6 col-xs-12">
 <!--
@@ -605,7 +633,11 @@ if(!Auth::guest()) {
                        <?php } ?>
                    </li>
                    <li>
-                      
+                       <div class="btn btn-default views">
+                           <span class="view-count"><i class="fa fa-eye"></i> 
+                               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                           </span>
+                       </div>
                    </li>
                </ul>
            </div>
@@ -656,7 +688,14 @@ if(!Auth::guest()) {
                </div>
            </div>
            <?php   } ?>
+           <?php if(!empty($video->description) ) { ?>
 
+<h4>Description</h4>
+<div class="text-white">
+    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+</div>
+<?php  }?>
+<br>
 
 <?php if(!empty($video->details) ) { ?>
 
@@ -782,7 +821,7 @@ $artists = [];
    <php endforeach; ?>
    </div>
 -->
-
+       
 
 <?php if(count($Reels_videos) > 0){ ?>
     <div class="video-list you-may-like">
@@ -791,7 +830,8 @@ $artists = [];
            </div>
    </div>
 <?php } ?>
-       
+
+
    <div class="video-list you-may-like">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
@@ -801,13 +841,16 @@ $artists = [];
    <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
        <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>"></video>
   </div>
-        
+
   <?php  if(Auth::guest()){ ?>
 <?php }else{ ?>
   <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
+<?php }?>
+<?php if(!empty($ads_path)){ ?>
+  <input type="hidden" id="ads_path" name="ads_path" value="<?php echo $ads_path ?>">
 <?php }?>
 
 
@@ -1026,9 +1069,9 @@ location.reload();
     $end_time = $Intro_skip->intro_end_time;
 
     $StartParse = date_parse($start_time);
-    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
     $EndParse = date_parse($end_time);
-    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+    $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
 ?>
 
 <script>
@@ -1070,7 +1113,23 @@ else{
 }
 </script>
 
-   </div>
+<!-- Link on Player -->
 
+<script>
+    document.getElementById("url_linkdetails").style.display = "none"; 
+    var video_player  =  document.getElementById("videoPlayer");
+    var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
+    var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
+
+      this.video_player.addEventListener('timeupdate', (e) => {
+        document.getElementById("url_linkdetails").style.display = "none"; 
+        
+        if (start_urltime <= e.target.currentTime && e.target.currentTime < End_urltime) {
+                document.getElementById("url_linkdetails").style.display = "block"; 
+          } 
+        });
+</script>
+
+   </div>
 <?php include('footer.blade.php');?>
 

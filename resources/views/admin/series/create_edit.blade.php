@@ -1,9 +1,5 @@
 @extends('admin.master')
-<style>
-    .p1{
-        font-size: 12px!important;
-    }
-</style>
+
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -29,47 +25,43 @@ $settings  = App\Setting::first();?>
         </div>
         @endif
 	</div>
-        <h4><i class="entypo-plus"></i> Edit Series</h4> 
+        <h4><i class="entypo-plus"></i> Add New Series</h4> 
         <hr>
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="series_form">
 
-		@if(!empty($series->created_at))
+		
 			<div class="row mt-3">
-				<div class="col-sm-6">
-		@endif
-
-                <label class="m-0">Title</label> 
-                <p class="p1">Add the series title in the textbox below.</p> 
-                <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
-                <span class="invalid-feedback" id="title_error" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-
+				<div class="col-sm-6 mb-3">
+                    <label class="m-0">Title</label> 
+                    <p class="p1">Add the series title in the textbox below.</p> 
+                    <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
+                    <span class="invalid-feedback" id="title_error" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                </div>
 					
 <!--<input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif" style="background-color:#000000;!important" />
 						</div> -->
                     
-            @if(!empty($series->created_at))
-                    </div>
+                @if(!empty($series->created_at))
+                    
                     <div class="col-sm-6">
-                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title font-weight-bold"><label class="m-0">Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                            <div class="panel-body" style="display: block;"> 
-                                <p class="p1">Select Date/Time Below</p> 
-                                <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($series->created_at)){{ $series->created_at }}@endif" />
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            @endif
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-					<!-- <p class="p1">Select the series image (1280x720 px or 16:9 ratio):</p>  -->
+                        <label class="m-0">Created Date</label>
+                        <div class="panel-body" style="display: block;"> 
+                            <p class="p1">Select Date/Time Below</p> 
+                            <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($series->created_at)){{ $series->created_at }}@endif" />
+                        </div> 
+                    </div>   
+                @endif
+            
+			<div class="col-sm-6" data-collapsed="0">
+                <label class="m-0">Slug</label>
+				<div class="panel-body">
+                    <p class="p1">Add a URL Slug</p> 
 					<input type="text" class="form-control" name="slug" id="slug" placeholder="Series Slug" value="@if(!empty($series->slug)){{ $series->slug }}@endif"  />			
 				</div> 
 			</div>
-
+            </div>
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
@@ -243,42 +235,41 @@ $settings  = App\Setting::first();?>
 				</div>
                 </div>
                 <div class="row align-items-center mt-3 p-3"> 
-				<div class="col-sm-4"> 
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Is this video Is Global PPV:</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body"> 
-							<div class="d-flex align-items-baseline">
-							<?php if($settings->ppv_status == 1){ ?>
-						      <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-						      <?php } else{ ?>
-                                <div class="global_ppv_status">
-                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
-                                </div>
-                               <?php } ?>
-									
-							<div class="clear"></div>
-						</div> 
-					</div>
-				</div>
+                    <div class="col-sm-4"> 
+                        <label class="m-0">Apply Global PPV Price:</label>
+                            <div class="panel-body"> 
+                                <div class="d-flex align-items-baseline">
+                                <?php if($settings->ppv_status == 1){ ?>
+                                  <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                  <?php } else{ ?>
+                                    <div class="global_ppv_status">
+                                        <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                    </div>
+                                   <?php } ?>
 
+                                <div class="clear"></div>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
-                </div>
-                <div class="mt-3" style="display: flex;
-    justify-content: flex-end;">
-                    @if(!isset($series->user_id))
-				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
-			@endif
-
-			@if(isset($series->id))
-				<input type="hidden" id="id" name="id" value="{{ $series->id }}" />
-			@endif
-
-			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-primary" /></div>
-			</div><!-- row -->
             </div>
-		</form>
-    </div>
+            <div class="row mt-3">
+                <div class="col-sm-12"> 
+                    @if(!isset($series->user_id))
+                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
+                    @endif
+
+                    @if(isset($series->id))
+                        <input type="hidden" id="id" name="id" value="{{ $series->id }}" />
+                    @endif
+
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+                </div>
+			</div><!-- row -->
+        </div>
+    </form>
+</div>
 
 		<div class="clear"></div>
 		<!-- Manage Season -->
@@ -387,10 +378,15 @@ $settings  = App\Setting::first();?>
 		@endif
 <!-- This is where now -->
 </div>
-</div>
-	<script type="text/javascript">
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script type="text/javascript">
+   $ = jQuery;
+   $(document).ready(function($){
+    $("#duration").mask("00:00:00");
+   });
 
-		$ = jQuery;
 		$(document).ready(function(){
 
 			$('#title_error').hide();
@@ -430,7 +426,7 @@ $settings  = App\Setting::first();?>
 			// alert("fd");
 		$('.js-example-basic-multiple').select2();
 
-		$('#duration').mask('00:00:00');
+		// $('#duration').mask('00:00:00');
 
 		$('#type').change(function(){
 			if($(this).val() == 'file'){

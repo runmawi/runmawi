@@ -199,7 +199,7 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
- <script>
+      <script>
     var type = $('#video_type').val();
     // var type = $('#hls_m3u8').val();
     var request_url = $('#request_url').val();
@@ -210,9 +210,11 @@ function myFunction() {
 
 
     // alert(type)
+    // alert(request_url)
+
 
    if(type != "" && video_video == 'video'){
-    // alert('m3u8')
+    // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
           controls: [
@@ -269,6 +271,8 @@ function myFunction() {
         });
    }
 else{
+  // alert('else')
+
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;

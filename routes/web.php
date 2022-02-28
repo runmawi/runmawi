@@ -1239,6 +1239,7 @@ Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->na
 Route::get('admin/ChooseProfileScreen', 'WelcomeScreenController@ChooseProfileScreen')->name('ChooseProfileScreen');
 Route::post('admin/ChooseProfileScreen_store', 'WelcomeScreenController@ChooseProfileScreen_store')->name('ChooseProfileScreen_store');
 
+Route::get('Movie-Description', 'HomeController@Movie_description');
 
     //    Theme Integration
 Route::get('admin/ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
@@ -1246,7 +1247,15 @@ Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create'
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
-Route::get('Movie-Description', 'HomeController@Movie_description');
-
+    // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
+
+    // Razorpay 
+Route::get('Razorpay', 'RazorpayController@Razorpay');
+Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');
+Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
+Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
+Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
+Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
+Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 

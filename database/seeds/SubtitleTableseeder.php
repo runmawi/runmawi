@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Subtitle;
 use Carbon\Carbon;
 
-class AddPlansTableSeeder extends Seeder
+class SubtitleTableseeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class AddPlansTableSeeder extends Seeder
      */
     public function run()
     {
-        SubtitleTableseeder::truncate();
+      Subtitle::truncate();
 
         $Subtitle = [
             [ 'language' => 'English', 
