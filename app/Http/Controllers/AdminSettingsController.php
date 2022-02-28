@@ -65,6 +65,11 @@ class AdminSettingsController extends Controller
         }else{
         $skype_page_id = null;
         }
+      if(!empty($request['series_season'])){
+        $series_season = $request['series_season'];
+        }else{
+        $series_season = 0;
+        }
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
 		$settings->ppv_hours = $request['ppv_hours'];
@@ -87,6 +92,7 @@ class AdminSettingsController extends Controller
 		$settings->instagram_page_id = $instagram_page_id;
 		$settings->linkedin_page_id = $linkedin_page_id;
 		$settings->whatsapp_page_id = $whatsapp_page_id;
+		$settings->series_season = $series_season;
 		$settings->skype_page_id = $skype_page_id;
 		$settings->youtube_page_id = $request['youtube_page_id'];
 		$settings->google_tracking_id = $request['google_tracking_id'];

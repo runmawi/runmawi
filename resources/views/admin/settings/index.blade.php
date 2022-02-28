@@ -89,9 +89,9 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
-
                 </div>
             </div>
 
@@ -614,6 +614,39 @@
         </div>
 
     </div>
+    <div class="container-fluid" id="season_setting" style="">
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title"><label>Series Setting</label></div>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                            style="width: ;">
+                            <div><label class="mt-1">Enable PPV Season</label></div>
+                            <div class="d-flex justify-content-between">
+
+                                <div>ON</div>
+
+                                <div class="mt-1">
+                                    <label class="switch">
+                                    <input type="checkbox" @if(!isset($settings->series_season) ||
+                                    (isset($settings->series_season) && $settings->series_season))checked="checked"
+                                    value="1"@else value="0"@endif name="series_season" id="series_season" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div>OFF</div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        </div>
+
+
+    </div>
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
             </form>
@@ -723,8 +756,7 @@
         $('#script').hide();
 		$('#app').hide();
 		$('#advertisement').hide();
-
-    
+		$('#season_setting').hide();
 
 
 	$('#site_setting').click(function(){
@@ -740,6 +772,8 @@
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+		$('#season_setting').hide();
+
 	});
 	$('#ppv_setting').click(function(){
 		// alert();
@@ -755,6 +789,8 @@
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+		$('#season_setting').hide();
+
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -781,6 +817,8 @@
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+		$('#season_setting').hide();
+
 	});
 	$('#email_setting').click(function(){
 		$('#site').hide();
@@ -794,6 +832,8 @@
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+		$('#season_setting').hide();
+
 	});
 	$('#social_setting').click(function(){
 		$('#site').hide();
@@ -808,6 +848,7 @@
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
+		$('#season_setting').hide();
 
 	});
 	$('#subscription_setting').click(function(){
@@ -823,6 +864,7 @@
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
+		$('#season_setting').hide();
 
 	});
 	$('#login_setting').click(function(){
@@ -839,6 +881,7 @@
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
+		$('#season_setting').hide();
 
 	});
 	$('#advertisement_setting').click(function(){
@@ -854,6 +897,7 @@
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
+		$('#season_setting').hide();
 
 	});
 
@@ -874,6 +918,7 @@
 		$('#scriptsetting').show();
 
 		$('#settingupdate').hide();
+		$('#season_setting').hide();
 
 
 	});
@@ -894,8 +939,26 @@
 		$('#settingupdate').hide();
 		$('#appupdate').show();
 		$('#scriptsetting').hide();
+		$('#season_setting').hide();
 
 
+
+	});
+    $('#series_setting').click(function(){
+		$('#season_setting').show();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
+		$('#site').hide();
 
 	});
 

@@ -2670,8 +2670,11 @@ public function checkEmailExists(Request $request)
         $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
         return $item;
       });
+      $settings = Setting::first();
       $response = array(
-          'series' => $series
+        'series' => $series,
+        "settings"   => $settings,
+
         );
       return response()->json($response, 200);
     }
@@ -3247,14 +3250,18 @@ public function upnextAudio(Request $request){
         $msg = 'nodata';
       }
       $season_name = 'Season '.($key+1);
+      $settings = Setting::first();
+
       $myData[] = array(
         "season_name"   => $season_name,
+        "settings"   => $settings,
         "season_id"   => $seasonid,
         "message" => $msg,
         "episodes" => $episodes
       );
     }
 
+    
     $response = array(
       'status' => 'true',
       'SeasonsEpisodes' => $myData
