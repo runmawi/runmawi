@@ -428,30 +428,43 @@ public function RentPaypal(Request $request)
 
     public function CancelSubscription()
         {
-                $user = Auth::user();
-                $stripe_plan = SubscriptionPlan();
-                $user->subscription($stripe_plan)->cancel();
-                $plan_name =  CurrentSubPlanName(Auth::user()->id);
-                $start_date =  SubStartDate(Auth::user()->id);
-                $ends_at =  SubEndDate(Auth::user()->id);
-                $template = EmailTemplate::where('id','=', 31)->first(); 
-                $heading = $template->heading;
 
-                // $user = User::find(Auth::user()->id);
-                // $user->role = 'registered';
-                // $user->save();
+          $Razorpay = User::where('users.id',Auth::user()->id)
+          ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
+          ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
+          ->first();
 
-                \Mail::send('emails.cancelsubscription', array(
-                    'name' => $user->username,
-                    'plan_name' => $plan_name,
-                    'start_date' => $start_date,
-                    'ends_at' => $ends_at,
-                 
-                ), function($message) use ($user,$heading,$plan_name){
-                    $message->from(AdminMail(),'Flicknexs');
-                    $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
-                });
-                return redirect::to('myprofile');
+          if($Razorpay != null && $Razorpay->PaymentGateway  ==  "Razorpay"){
+            return redirect::to('RazorpayCancelSubscriptions');
+          }
+          else{
+            $user = Auth::user();
+            $stripe_plan = SubscriptionPlan();
+            $user->subscription($stripe_plan)->cancel();
+            $plan_name =  CurrentSubPlanName(Auth::user()->id);
+            $start_date =  SubStartDate(Auth::user()->id);
+            $ends_at =  SubEndDate(Auth::user()->id);
+            $template = EmailTemplate::where('id','=', 31)->first(); 
+            $heading = $template->heading;
+
+            // $user = User::find(Auth::user()->id);
+            // $user->role = 'registered';
+            // $user->save();
+
+            \Mail::send('emails.cancelsubscription', array(
+                'name' => $user->username,
+                'plan_name' => $plan_name,
+                'start_date' => $start_date,
+                'ends_at' => $ends_at,
+             
+            ), function($message) use ($user,$heading,$plan_name){
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
+            });
+            return redirect::to('myprofile');
+
+          }
+              
        }
 
         public function RenewSubscription()
