@@ -476,24 +476,21 @@ public function RentPaypal(Request $request)
 
         }
     
-    
-    
      public function UpgradeStripe(Request $request){
+
          $plan_id = $request->get('modal_plan_name');
 
          $payment_method = $request->payment_method;
+
+      if($request->payment_method == "Stripe"){
          $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
-        //  dd($plan_details);
-        //  $plan_details = SubscriptionPlan::where("plan_id","=",$plan_id)->first();
-        //  $response = array(
-        //      "plans_details" => $plan_details
-        //  );
+
         $payment_type = $plan_details->payment_type;
         $user = Auth::user();
 
-         if ( $plan_details->payment_type == "recurring") {
+        if ( $plan_details->payment_type == "recurring") {
 
               if ($user->stripe_id == NULL)
                    {
@@ -517,7 +514,17 @@ public function RentPaypal(Request $request)
                "payment_type" => $plan_details->payment_type
            );
            return view('register.upgrade.stripe',['intent' => $user->createSetupIntent()],$response);
-         }             
+         }      
+      }
+      elseif($request->payment_method == "Razorpay"){
+
+        $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+        ->where('type', '=', $request->payment_method)
+        ->first();
+
+        $PlanId   = $plan_details['plan_id']; 
+        return Redirect::route('RazorpaySubscriptionUpdate',$PlanId);
+      }       
      }  
     
     public function UpgradePaypalPage(Request $request){
@@ -851,6 +858,7 @@ public function RentPaypal(Request $request)
     
        public function Upgrade_Plan()
        {
+         
         $user = Auth::user();
         $uid = Auth::user()->id;
         $user = User::where('id',$uid)->first();
