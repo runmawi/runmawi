@@ -13,7 +13,7 @@ class SubtitleTableseeder extends Seeder
      */
     public function run()
     {
-        SubtitleTableseeder::truncate();
+      Subtitle::truncate();
 
         $Subtitle = [
             [ 'language' => 'English', 
