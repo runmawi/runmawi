@@ -398,6 +398,7 @@ class AdminSeriesController extends Controller
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
+
         
         $series_upload = $request->file('series_upload');
         $resolution_data['series_id'] = $series->id;
@@ -426,7 +427,13 @@ class AdminSeriesController extends Controller
         
         
         $series->update($data);
+        if(empty($data['ppv_status'])){
+            $ppv_status = 0;
+        }else{
+            $ppv_status = 1;
+        }
         $series->slug = $data['slug'];
+        $series->ppv_status = $ppv_status;
         $series->save();
 
         if(!empty($data['artists'])){

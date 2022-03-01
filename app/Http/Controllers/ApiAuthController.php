@@ -2756,6 +2756,7 @@ public function checkEmailExists(Request $request)
       $settings = Setting::first();
       $response = array(
         'series' => $series,
+        'ppv_video_status' => $ppv_video_status,
         "settings"   => $settings,
 
         );
