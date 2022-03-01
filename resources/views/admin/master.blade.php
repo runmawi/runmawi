@@ -566,7 +566,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
 
 
                   <!-- Ads Menu ends -->
-                  <?php }elseif($test ==1 ||  $package == "Business" && auth()->user()->role = "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
+                  <?php }elseif($package == "Business" && auth()->user()->role = "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 <!-- Sidebar 3-->
       <div class="iq-sidebar">
