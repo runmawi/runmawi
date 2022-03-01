@@ -30,14 +30,14 @@ if(!empty($request_url)){
 .vjs-seek-to-live-control {
            display: none !important;
        }
-.intro_skips {
+.intro_skips,.Recap_skip {
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
     margin-left: 80%;
     margin-right: 0;
 }
-input.skips{
+input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
     padding: 15px 32px;
@@ -252,7 +252,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <div class="col-sm-12 intro_skips">
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
 
+  <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   </div>
 
   <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
@@ -685,8 +688,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <br>
 
 <?php if(!empty($video->pdf_files) ) { ?>
-<h4>PDF</h4>
-<p class="p1">Download the PDF file</p> 
+<h4>E-Paper:</h4>
+<p class="p1">Download the E-Paper</p> 
 <div class="text-white">
     <a  href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;" class="fa fa-file-pdf-o video_pdf" width="" height="" download></a>
 </div>
@@ -1042,6 +1045,7 @@ location.reload();
 
 <?php
     $Auto_skip = App\HomeSetting::first();
+    $SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
     $Intro_skip = App\Video::where('id',$video->id)->first();
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
@@ -1053,42 +1057,78 @@ location.reload();
 ?>
 
 <script>
-
+  var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
   var video = document.getElementById("videoPlayer");
   var button = document.getElementById("intro_skip");
   var Start = <?php echo json_encode($startSec); ?>;
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
 
-button.addEventListener("click", function(e) {
-	video.currentTime = End;
-  video.play();
-})
-if(AutoSkip != 1){
-      this.video.addEventListener('timeupdate', (e) => {
-        document.getElementById("intro_skip").style.display = "none";
-        document.getElementById("Auto_skip").style.display = "none";
+if( SkipIntroPermissions == 1 ){
+  button.addEventListener("click", function(e) {
+    video.currentTime = End;
+    video.play();
+  })
+    if(AutoSkip != 1){
+          this.video.addEventListener('timeupdate', (e) => {
+            document.getElementById("intro_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
 
-        if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                document.getElementById("intro_skip").style.display = "block"; // Manual skip
+            if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+            } 
+        });
+    }
+    else{
+      this.video.addEventListener('timeupdate', (e) => {
+            document.getElementById("intro_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
+
+            var before_Start = Start - 5;
+            var trigger = Start - 1;
+            if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+                document.getElementById("Auto_skip").style.display = "block";
+                  if(trigger  <= e.target.currentTime){
+                    document.getElementById("intro_skip").click();    // Auto skip
+                  }
+            }
+        });
+    }
+}
+</script>
+
+<!-- Recap video skip -->
+
+<?php
+    $Recap_skip = App\Video::where('id',$video->id)->first();
+    $RecapStart_time = $Recap_skip->recap_start_time;
+    $RecapEnd_time = $Recap_skip->recap_end_time;
+
+    $RecapStartParse = date_parse($RecapStart_time);
+    $RecapstartSec = $RecapStartParse['hour']  * 60 *  60  + $RecapStartParse['minute']  * 60  + $RecapStartParse['second'];
+    $RecapEndParse = date_parse($RecapEnd_time);
+    $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
+?>
+
+<script>
+  
+  var videoId = document.getElementById("videoPlayer");
+  var button = document.getElementById("Recaps_Skip");
+  var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
+  var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
+
+  button.addEventListener("click", function(e) {
+    videoId.currentTime = RecapEnd;
+    videoId.play();
+  })
+
+      this.videoId.addEventListener('timeupdate', (e) => {
+        document.getElementById("Recaps_Skip").style.display = "none";
+
+        if (RecapStart <= e.target.currentTime && e.target.currentTime < RecapEnd) {
+                document.getElementById("Recaps_Skip").style.display = "block"; // Manual skip
         } 
     });
-}
-else{
-  this.video.addEventListener('timeupdate', (e) => {
-        document.getElementById("intro_skip").style.display = "none";
-        document.getElementById("Auto_skip").style.display = "none";
-
-        var before_Start = Start - 5;
-        var trigger = Start - 1;
-        if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
-            document.getElementById("Auto_skip").style.display = "block";
-               if(trigger  <= e.target.currentTime){
-                 document.getElementById("intro_skip").click();    // Auto skip
-               }
-        }
-    });
-}
 </script>
 
    </div>
