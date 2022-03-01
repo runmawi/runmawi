@@ -56,13 +56,61 @@ $series = $series_data ;
 					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 <!-- $series->title -->
 						
-						<?php foreach($season as $key => $seasons):  
-							foreach($seasons->episodes as $key => $episodes): ?>
+						<?php 
+						// if($series->ppv_status == null){						
+						foreach($season as $key => $seasons):  
+							foreach($seasons->episodes as $key => $episodes):
+								// dd($seasons->ppv_interval);
+								if($seasons->ppv_interval > $key):
+							 ?>
 								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
+										<div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+								</div>
+									<div class="col-md-7">
+										<h2><?= $episodes->title; ?></h2>
+										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
+                                        <p class="date"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+										<p><?= gmdate("H:i:s", $episodes->duration); ?></p>
 									</div>
+									<div class="col-md-2">
+									</div>
+								</div>
+							</a>
+							<?php else : ?>
+								
+							<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
+									<div class="col-md-3">
+										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
+										<div class="corner-text-wrapper">
+                                        <div class="corner-text">
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+								</div>
 									<div class="col-md-7">
 										<h2><?= $episodes->title; ?></h2>
 										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
@@ -74,8 +122,11 @@ $series = $series_data ;
 									</div>
 								</div>
 							</a>
-							<?php endforeach; 
-						endforeach; ?>
+							<?php endif;
+							endforeach; 
+						endforeach;
+					// }
+						?>
 							</div>
 							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 								Related
@@ -95,9 +146,10 @@ $series = $series_data ;
 
 				<div class="col-md-2 text-center text-white">
                 <div class="col-md-4">
-			<?php if ( $series->ppv_status == 1 && Auth::User()->role =="admin") { ?>
-			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-			<?php echo __('Purchase for').' '.$currency->symbol.' '.$settings->ppv_price;?> </button>
+			<?php if ( $series->ppv_status == 1 && Auth::User()->role !="admin") { ?>
+			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
+			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
+
 			<?php } ?>
             <br>
 			</div>
@@ -173,7 +225,71 @@ $series = $series_data ;
 
    <script src="https://checkout.stripe.com/checkout.js"></script>
 	
-	<script type="text/javascript"> 
+<input type="hidden" id="purchase_url" name="purchase_url" value="<?php echo URL::to("/purchase-series") ?>">
+<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key ?>">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<script type="text/javascript">
+var purchase_series = $('#purchase_url').val();
+var publishable_key = $('#publishable_key').val();
+
+
+// alert(livepayment);
+
+$(document).ready(function () {  
+$.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+});
+});
+
+function pay(amount) {
+var series_id = $('#series_id').val();
+
+var handler = StripeCheckout.configure({
+
+key: publishable_key,
+locale: 'auto',
+token: function (token) {
+// You can access the token ID with `token.id`.
+// Get the token ID to your server-side code for use.
+console.log('Token Created!!');
+console.log(token);
+$('#token_response').html(JSON.stringify(token));
+$.ajax({
+ url: '<?php echo URL::to("purchase-series") ;?>',
+ method: 'post',
+ data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , series_id: series_id },
+ success: (response) => {
+   alert("You have done  Payment !");
+   setTimeout(function() {
+     location.reload();
+   }, 2000);
+
+ },
+ error: (error) => {
+   swal('error');
+}
+})
+
+}
+});
+
+
+handler.open({
+name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+description: 'PAY PeR VIEW',
+amount: amount * 100
+});
+}
+</script>
+
+	<!-- <script type="text/javascript"> 
 
 	// videojs('Player').videoJsResolutionSwitcher(); 
 	$(document).ready(function () {  
@@ -228,7 +344,7 @@ description: 'Rent a Episode',
 amount: amount * 100
 });
 }
-</script>
+</script> -->
 
 <script type="text/javascript">
 	var first = $('select').val();
@@ -240,4 +356,4 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php include('footer.blade.php'); ?>
+<?php //include('footer.blade.php'); ?>

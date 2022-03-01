@@ -20,8 +20,8 @@ use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 class RazorpayController extends Controller
 {
-    private $razorpaykeyId = 'rzp_test_008H40SUs59YLK';
-    private $razorpaykeysecret = '32tTF7snfEyXZj0z5tEiGdzm';
+    private $razorpaykeyId = 'rzp_live_GSQdyMTtnW9KXq';
+    private $razorpaykeysecret = 'KKg08x8hSoYWf9vNRXXYbYoF';
 
     public function Razorpay(Request $request)
     {
@@ -159,7 +159,7 @@ class RazorpayController extends Controller
         $cityName = $geoip->getcity();
 
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $planId = $api->plan->fetch($planId);
+        $plan_Id = $api->plan->fetch($planId);
         $user_id =Auth::User()->id;
 
         $subscriptionId  = Subscription::where('user_id',$user_id)->latest()->pluck('stripe_id')->first();
@@ -169,12 +169,11 @@ class RazorpayController extends Controller
 
         if($subscription->payment_method != "upi"){
             
-            $options  = array('plan_id'  => $planId, 'remaining_count' => $remaining_count );
+            $options  = array('plan_id'  =>$plan_Id['id'], 'remaining_count' => $remaining_count );
             $api->subscription->fetch($subscriptionId)->update($options);
 
             $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
             $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
-
             if (is_null($subscriptionId)) {
                 return false;
             }
