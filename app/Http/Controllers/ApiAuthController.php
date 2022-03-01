@@ -90,6 +90,8 @@ use App\SeriesCategory;
 use App\SeriesLanguage;
 use CPANEL;
 use App\Deploy;
+use App\LoggedDevice;
+
 
 class ApiAuthController extends Controller
 {
@@ -345,7 +347,13 @@ class ApiAuthController extends Controller
   {
 
     $settings = Setting::first();
+    $mobile = $request->user_ip;
+    $device_name = $request->device_name;
+    $email = $request->email;
     $token = $request->token;
+    $users = User::where('email',$email)->first();
+   
+    
     $email_login = array(
       'email' => $request->get('email'),
       'password' => $request->get('password')
@@ -358,6 +366,17 @@ class ApiAuthController extends Controller
       'mobile' => $request->get('mobile'),
       'otp' => $request->get('otp')
     );
+
+    if(!empty($users)){
+
+    $user_id = $users->id;
+    $adddevice = new LoggedDevice;
+    $adddevice->user_id = $user_id;
+    $adddevice->user_ip = $userIp;
+    $adddevice->device_name = $device_name;
+    $adddevice->save();
+
+    }
   
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
@@ -2714,6 +2733,7 @@ public function checkEmailExists(Request $request)
     public function episodedetails(Request $request){
       
       $episodeid = $request->episodeid;
+
       $episode = Episode::where('id',$episodeid)->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
@@ -2753,11 +2773,12 @@ public function checkEmailExists(Request $request)
     }
     if(!empty($request->user_id)){
       $user_id = $request->user_id;
-      $userrole = User::where('id','=',$user_id)->pluck('role');
-
+      $users = User::where('id','=',$user_id)->first();
+      $userrole = $users->role;
     }else{
       $userrole = '';
     }
+
     $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
 
     if(!empty($series_id)){
