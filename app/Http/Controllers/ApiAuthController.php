@@ -3270,6 +3270,53 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   } 
 
+  public function SeasonsPPV(Request $request)
+  {
+    // $season_id = $request->season_id;
+    $episode_id = $request->episode_id;
+
+    $episode = Episode::where('id','=',$episode_id)->orderBy('id', 'DESC')->first();    
+    $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    if(!empty($season)){
+      $ppv_price = $season[0]->ppv_price;
+      $ppv_interval = $season[0]->ppv_interval;
+      $season_id = $season[0]->id;
+  }
+  // Free Interval Episodes   
+
+  if(!empty($ppv_price) && !empty($ppv_interval)){
+      foreach($season as $key => $seasons):  
+          foreach($seasons->episodes as $key => $episodes):
+                  if($seasons->ppv_interval > $key):
+                      $free_episode[$episodes->id] = Episode::where('id','=',$episode_id)->count();    
+                  else :
+                      $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();  
+                  endif;
+          endforeach; 
+      endforeach;
+      if (array_key_exists($episode_id,$free_episode)){ 
+        $free_episode = 'Free';  
+      }else{ 
+        $free_episode = 'PPV'; 
+      }
+      if(empty($free_episode)){
+
+        $free_episode = 'PPV'; 
+      }
+  }else{
+    $free_episode = 'PPV'; 
+  }
+
+    $response = array(
+      'status' => 'true',
+      'access' => $free_episode,
+      'episode' => $episode,
+      'season' => $season,
+    );
+
+    return response()->json($response, 200);
+  } 
+
 
   public function nextwishlistvideo(Request $request)
   {
