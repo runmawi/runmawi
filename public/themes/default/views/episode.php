@@ -9,7 +9,7 @@ $series=App\series::first();
  ?>
 
 <!-- free content - hide & show -->
-<div class="row free_content">
+<!-- <div class="row free_content">
 	<div class="col-md-12">
 		<p class="Subscribe">Subscribe to watch</p>
 	</div>
@@ -24,7 +24,7 @@ $series=App\series::first();
 			<a href="#" onclick="window.location.reload(true);"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
 		</div>
 	</div>
-</div>
+</div> -->
 
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
@@ -34,9 +34,15 @@ $series=App\series::first();
 			
 			<?php 
 			if(!Auth::guest()){
-			if($ppv_exits > 0|| Auth::user()->role == 'admin' ||  Auth::guest()){ 
-			if($episode->access == 'guest' || ( ($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
 
+			if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
+
+			if($episode->access == 'guest' ||
+			 ( ($episode->access == 'subscriber' || $episode->access == 'registered')
+			  && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo'
+			   || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' 
+			   && $settings->free_registration && Auth::user()->role == 'registered') ): 
+			?>
 				
 					<?php if($episode->type == 'embed'): ?>
 						<div id="series_container" class="fitvid">
@@ -103,18 +109,29 @@ $series=App\series::first();
 				</div>
 			
 			<?php endif; 
-			}else{ ?>
-                <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+			}else{  	//dd($season);	?>
+			<div id="series_container">
+			<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+				<source src="<?= $season[0]->trailer; ?>" type='video/mp4' label='auto' >
+				<?php  if(isset($episodesubtitles)){
+				foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+				<track kind="captions" src="<?= $episodesubtitles_file->url; ?>" srclang="<?= $episodesubtitles_file->sub_language; ?>" label="<?= $episodesubtitles_file->shortcode; ?>" default>
+				<?php } } ?>
+			</video>
+
+                <!-- <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<div id="ppv">
 				<h2>Purchase to Watch the Episodes <?php if($episode->access == 'subscriber'): ?>Subscribers<?php elseif($episode->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 				<div class="clear"></div>
-				<?php if(!Auth::guest() ): ?>
-					<!-- <form method="get" action="<?// URL::to('/')?>/user/<?// Auth::user()->username ?>/upgrade_subscription">
+				<?php //if(!Auth::guest() ): ?>
+					<form method="get" action="<?// URL::to('/')?>/user/<?// Auth::user()->username ?>/upgrade_subscription">
 						<button id="button">Purchase to Watch <?php //$currency->symbol.' '.$episode->ppv_price ?></button>
-					</form> -->
-				<?php else: ?>
+					</form>
+				<?php //else: ?>
 
-				<?php endif; ?>
+				<?php //endif; ?> -->
+			</div>
+			<div>
 			</div>
 		<?php } }
 			?>
@@ -128,6 +145,25 @@ $series=App\series::first();
 	<div id="series_title">
 		<div class="container">
             <div class="row">
+			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
+			}else{ ?>
+			<div class="col-md-6">
+			<span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
+			<?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
+			</p>
+		
+	</div>
+	<div class="col-md-6">
+		<?php if (!empty($season)) { // dd($season[0]->ppv_price) ;?>
+		<input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
+
+			<button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
+			Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
+	</div>
+	<?php	} } ?>
+	<br>
+	<br>
+	<br>
                 <div class="col-md-6">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
 		
@@ -137,12 +173,17 @@ $series=App\series::first();
             
 
 		</h3>-->
-                <div class="col-md-2 text-center text-white">
-<span class="view-count  btn btn-primary" style="float:right;"><i class="fa fa-eye"></i> <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?><?php else: ?><?= $episode->views ?><?php endif; ?> Views </span></div>
-                <div class="col-md-4">
-           <div class="watchlater btn btn-primary text-white  <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>
-			
+		
+			<div class="col-md-2 text-center text-white">
+			<span class="view-count  btn btn-primary" style="float:right;">
+			<i class="fa fa-eye"></i> 
+			<?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
+			<?php else: ?><?= $episode->views ?><?php endif; ?> Views 
+			</span>
+			</div>
+			<div class="col-md-4">
+            <div class="watchlater btn btn-primary text-white  <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
+			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>			
 			</div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
@@ -336,6 +377,8 @@ $series=App\series::first();
              var publishable_key = $('#publishable_key').val();
 
              var episode_id = $('#episode_id').val();
+             var season_id = $('#season_id').val();
+
             // alert(video_id);
              var handler = StripeCheckout.configure({
 
@@ -351,7 +394,7 @@ $('#token_response').html(JSON.stringify(token));
 $.ajax({
  url: '<?php echo URL::to("purchase-episode") ;?>',
  method: 'post',
- data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , episode_id: episode_id },
+ data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , episode_id: episode_id , season_id: season_id},
  success: (response) => {
    alert("You have done  Payment !");
    setTimeout(function() {
