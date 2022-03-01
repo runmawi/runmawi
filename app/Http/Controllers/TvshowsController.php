@@ -262,7 +262,7 @@ class TvshowsController extends Controller
                  if((!empty($ppv_price))){
                     $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                     ->where('season_id', '=', $season_id)
-                    ->where('series_id', '=', $$episode->series_id)
+                    ->where('series_id', '=', $episode->series_id)
                     ->count();
                 }else{
                     $ppv_exits = 0 ;
