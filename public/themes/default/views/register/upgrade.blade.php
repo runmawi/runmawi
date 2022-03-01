@@ -198,17 +198,24 @@ body.loading .overlay{
                                                 <p>Available Specification :</p>
                                                 <h6 style ="color:yellow;background-color:black;"> Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
                                                 Video Resolution : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
-                                             <?php   
+                                                <?php   
                                                     $permission = $plan[0]->devices;
+                                                    // dd($permission);
+                                                    if(!empty($permission)){
                                                     $user_devices = explode(",",$permission);   
                                                     foreach($devices as $key => $value){
                                                         if(in_array($value->id, $user_devices)){
                                                             $devices_name[] = $value->devices_name;
                                                         }
-                                                    }    
+                                                    }
                                                     $plan_devices = implode(",",$devices_name);
+                                                }else{
+
+                                                }   
+                                                if(!empty($plan_devices)){ 
                                               ?>
-                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
+                                                <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>   
+                                            <?php } ?>
                                                 <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
