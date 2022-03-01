@@ -458,7 +458,7 @@
                                  </select>
                               </div>
                               <div class="col-sm-6 form-group">
-                                 <label class="m-0" style="display:block;">Pdf Upload: </label>
+                                 <label class="m-0" style="display:block;">E-Paper: <small>(Upload your PDF file)</small></label>
                                  <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
                               </div>
                               <div class="col-sm-6 form-group">
