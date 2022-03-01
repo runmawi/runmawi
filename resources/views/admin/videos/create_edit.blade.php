@@ -342,7 +342,7 @@
                </select>
                </div> 
                <div class="col-sm-4 form-group">
-                    <label class="m-0">PDF Upload <small>(Upload your PDF file)</small> </label>
+                    <label class="m-0">E-Paper: <small>(Upload your PDF file)</small> </label>
                     <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" >
                    @if(!empty($video->pdf_files))
                         <span class='pdf_file' >
@@ -352,7 +352,7 @@
                    @endif
                </div>
                <div class="col-sm-4 form-group">
-                   <label class="m-0">Reels videos <small>( Upload the 1 min Videos )</small></label>
+                   <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
                    <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" >
                    @if(!empty($video->reelvideo) && $video->reelvideo != null )
                         <video width="200" height="200" controls>
