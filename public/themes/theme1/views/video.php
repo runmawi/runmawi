@@ -522,6 +522,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  <?php }  ?>
            
 <!-- url link -->
+<div class=" page-height">
+        <div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
+        <video  id="videoPlayers" class=""  
+        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+        type="video/mp4" src="<?php echo $video->trailer;?>">
+      </video>
+    </div>
 
 <?php if(!empty($video->url_link) ) { ?>
 <div class="text-white" id="url_linkdetails" >
@@ -563,7 +570,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class=" d-flex mt-4 pull-right">     
                        <?php if($video->trailer != ''){ ?>
-                           <!-- <div id="videoplay" class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div> -->
+                           <div id="videoplay" class="btn btn-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                        <?php } ?>
                    </div>
@@ -829,9 +836,7 @@ $artists = [];
                <?php include('partials/video-loop.php');?>
            </div>
    </div>
-   <div id="watch_trailer" class="fitvid" style="margin: 0 auto;">
-       <video  id="videoPlayer" class=""  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" src="<?php echo $video->trailer;?>"></video>
-  </div>
+
 
   <?php  if(Auth::guest()){ ?>
 <?php }else{ ?>
@@ -877,8 +882,10 @@ $artists = [];
           //  });
           var vid = document.getElementById("videoPlayer"); 
           $('#watch_trailer').hide();
-          $('.watch_trailer').click(function(){
+          $('#videoplay').click(function(){
+            // alert('test');
             $('#video_container').hide();
+            const player = new Plyr('#videoPlayers');
             $('#watch_trailer').show();
           });
            /*Skip Video*/

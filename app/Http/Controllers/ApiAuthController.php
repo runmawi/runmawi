@@ -375,7 +375,7 @@ class ApiAuthController extends Controller
     $adddevice->user_ip = $userIp;
     $adddevice->device_name = $device_name;
     $adddevice->save();
-    
+
     }
   
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
@@ -2733,6 +2733,7 @@ public function checkEmailExists(Request $request)
     public function episodedetails(Request $request){
       
       $episodeid = $request->episodeid;
+
       $episode = Episode::where('id',$episodeid)->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
@@ -2772,11 +2773,12 @@ public function checkEmailExists(Request $request)
     }
     if(!empty($request->user_id)){
       $user_id = $request->user_id;
-      $userrole = User::where('id','=',$user_id)->pluck('role');
-
+      $users = User::where('id','=',$user_id)->first();
+      $userrole = $users->role;
     }else{
       $userrole = '';
     }
+
     $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
 
     if(!empty($series_id)){
