@@ -301,7 +301,6 @@ class AdminSeriesController extends Controller
         $languages = $request->get('language');
 
         return Redirect::to('admin/series-list')->with(array('note' => 'New Series Successfully Added!', 'note_type' => 'success') );
-    
     }
 
     /**
@@ -315,6 +314,8 @@ class AdminSeriesController extends Controller
         
             $series = Series::find($id);
             $results = Episode::all();
+            $settings  = Setting::first();
+
             //$episode = Episode::all();
             $seasons = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
@@ -322,6 +323,7 @@ class AdminSeriesController extends Controller
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
+            'settings' => $settings,
             'seasons' => $seasons,
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
@@ -674,7 +676,7 @@ class AdminSeriesController extends Controller
         if(!empty($data['ppv_interval'])){
             $ppv_interval = $data['ppv_interval'];
         }else{
-            $ppv_interval = null;
+            $ppv_interval = 0;
         }
         // $data['series_id'] = $data['series_id']; 
         // $data['access'] = $access; 

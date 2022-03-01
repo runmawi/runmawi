@@ -200,6 +200,7 @@ class TvshowsController extends Controller
         // dd($ppv_exits);
 
         }
+      
        
         $watchlater = false;
         
@@ -228,11 +229,55 @@ class TvshowsController extends Controller
                   $publishable_key= null;
               }    
             //   dd($series->ppv_status);
+            // dd($season->ppv_price);
+            if(!empty($season)){
+                $ppv_price = $season[0]->ppv_price;
+                $ppv_interval = $season[0]->ppv_interval;
+                $season_id = $season[0]->id;
+            }
+            // Free Interval Episodes   
+            if(!empty($ppv_price) && !empty($ppv_interval)){
+                // dd($season);
+                // echo "<pre>";
+                foreach($season as $key => $seasons):  
+                    foreach($seasons->episodes as $key => $episodes):
+                            if($seasons->ppv_interval > $key):
+                                // dd($key);
+                                // print_r($key);
+                                $free_episode[$episodes->slug] = Episode::where('slug','=',$episodes->slug)->count();    
+                            else :
+                                $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();  
+                                // print_r($free_episode);
+                                // dd($free_episode);
+
+                            endif;
+                    endforeach; 
+                endforeach;
+                if (array_key_exists($episode_name,$free_episode))
+                { $free_episode = 1;  }
+                else{ $free_episode = 0; }
+                }
+
+                // Season Ppv Purchase exit check
+                 if((!empty($ppv_price))){
+                    $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                    ->where('season_id', '=', $season_id)->count();
+                }else{
+                    $ppv_exits = 0 ;
+        
+                }
+                // dd($ppv_exits);
+                if($series->ppv_status == null) { $series_ppv_status = 1; }else{ $series_ppv_status = 0; }
+
               
-         if($series->ppv_status != 1 || $ppv_exits > 0){
+         if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
+         || $free_episode > 0){
+
+            // dd($series->ppv_status);
 
             $data = array(
              'currency' => $currency,
+             'free_episode' => $free_episode,
              'ppv_exits' => $ppv_exits,
              'publishable_key' => $publishable_key,
                 'episode' => $episode,
@@ -250,10 +295,33 @@ class TvshowsController extends Controller
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
+
             return Theme::view('episode', $data);
             }else{
                 // dd('exit');
-                return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
+                $data = array(
+                    'currency' => $currency,
+                    'ppv_exits' => $ppv_exits,
+                    'free_episode' => $free_episode,
+                    'publishable_key' => $publishable_key,
+                    'episode' => $episode,
+                    'season' => $season,
+                    'series' => $series,
+                    'playerui_settings' => $playerui,
+                    'episodenext' => $episodenext,
+                    'episodeprev' => $episodeprev,
+                    'mywishlisted' => $wishlisted,
+                    'watchlatered' => $watchlater,
+                    'url' => 'episodes',
+                        'settings' => $settings,
+                    'menu' => Menu::orderBy('order', 'ASC')->get(),
+                    'view_increment' => $view_increment,
+                    'series_categories' => Genre::all(),
+                    'pages' => Page::where('active', '=', 1)->get(),
+                    );
+
+            return Theme::view('episode', $data);
+         // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
 
             }
         } else {
@@ -313,7 +381,7 @@ class TvshowsController extends Controller
 
         $episodefirst = Episode::where('series_id', '=', $id)->orderBy('id', 'ASC')->first();
         //Make sure series is active
-        if((!Auth::guest() && Auth::user()->role == 'admin') || $series->active){
+        if((!Auth::guest() && Auth::user()->role == 'admin') || $series->active || $ppv_exits > 0 ){
 
             $view_increment = 5;
     $currency = CurrencySetting::first();
@@ -349,6 +417,20 @@ class TvshowsController extends Controller
             return Theme::view('series', $data);
 
         } else {
+            $data = array(
+                'series_data' => $series,
+                'currency' => $currency,
+                'ppv_exits' => $ppv_exits,
+                'season' => $season,
+                'publishable_key' => $publishable_key,
+                'settings' => $settings,
+                'episodenext' => $episodefirst,
+                'url' => "episodes",
+                'menu' => Menu::orderBy('order', 'ASC')->get(),
+                'view_increment' => $view_increment,
+                'series_categories' => Genre::all(),
+                'pages' => Page::where('active', '=', 1)->get(),
+                );
             return Redirect::to('series')->with(array('note' => 'Sorry, this series is no longer active.', 'note_type' => 'error'));
         }
     }

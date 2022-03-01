@@ -53,6 +53,7 @@ class CreateSettingsTable extends Migration
             $table->tinyInteger('activation_email')->nullable();
             $table->tinyInteger('premium_upgrade')->nullable();
             $table->integer('access_free')->nullable();
+            $table->integer('series_season')->nullable();
             $table->string('watermark_top')->nullable();
             $table->string('watermark_bottom')->nullable();
             $table->string('watermark_opacity')->nullable();

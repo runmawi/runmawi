@@ -57,7 +57,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    /*TV-shows*/
+    /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
@@ -1257,4 +1257,5 @@ Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name(
 Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
 Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
+Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 

@@ -246,6 +246,8 @@ public function RentPaypal(Request $request)
     // dd($request->all());
     $data = $request->all();
     $episode_id = $data['episode_id'];
+    $season_id = $data['season_id'];
+
     $setting = Setting::first();  
     $ppv_hours = $setting->ppv_hours;
     // $to_time =  Carbon::now()->addHour($ppv_hours);
@@ -290,6 +292,7 @@ public function RentPaypal(Request $request)
     $purchase = new PpvPurchase;
     $purchase->user_id = $user_id;
     $purchase->episode_id = $episode_id;
+    $purchase->season_id = $season_id;
     $purchase->total_amount = $total_amount;
     $purchase->admin_commssion = $admin_commssion;
     $purchase->moderator_commssion = $moderator_commssion;
@@ -428,30 +431,43 @@ public function RentPaypal(Request $request)
 
     public function CancelSubscription()
         {
-                $user = Auth::user();
-                $stripe_plan = SubscriptionPlan();
-                $user->subscription($stripe_plan)->cancel();
-                $plan_name =  CurrentSubPlanName(Auth::user()->id);
-                $start_date =  SubStartDate(Auth::user()->id);
-                $ends_at =  SubEndDate(Auth::user()->id);
-                $template = EmailTemplate::where('id','=', 31)->first(); 
-                $heading = $template->heading;
 
-                // $user = User::find(Auth::user()->id);
-                // $user->role = 'registered';
-                // $user->save();
+          $Razorpay = User::where('users.id',Auth::user()->id)
+          ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
+          ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
+          ->first();
 
-                \Mail::send('emails.cancelsubscription', array(
-                    'name' => $user->username,
-                    'plan_name' => $plan_name,
-                    'start_date' => $start_date,
-                    'ends_at' => $ends_at,
-                 
-                ), function($message) use ($user,$heading,$plan_name){
-                    $message->from(AdminMail(),'Flicknexs');
-                    $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
-                });
-                return redirect::to('myprofile');
+          if($Razorpay != null && $Razorpay->PaymentGateway  ==  "Razorpay"){
+            return redirect::to('RazorpayCancelSubscriptions');
+          }
+          else{
+            $user = Auth::user();
+            $stripe_plan = SubscriptionPlan();
+            $user->subscription($stripe_plan)->cancel();
+            $plan_name =  CurrentSubPlanName(Auth::user()->id);
+            $start_date =  SubStartDate(Auth::user()->id);
+            $ends_at =  SubEndDate(Auth::user()->id);
+            $template = EmailTemplate::where('id','=', 31)->first(); 
+            $heading = $template->heading;
+
+            // $user = User::find(Auth::user()->id);
+            // $user->role = 'registered';
+            // $user->save();
+
+            \Mail::send('emails.cancelsubscription', array(
+                'name' => $user->username,
+                'plan_name' => $plan_name,
+                'start_date' => $start_date,
+                'ends_at' => $ends_at,
+             
+            ), function($message) use ($user,$heading,$plan_name){
+                $message->from(AdminMail(),'Flicknexs');
+                $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
+            });
+            return redirect::to('myprofile');
+
+          }
+              
        }
 
         public function RenewSubscription()
@@ -476,24 +492,21 @@ public function RentPaypal(Request $request)
 
         }
     
-    
-    
      public function UpgradeStripe(Request $request){
+
          $plan_id = $request->get('modal_plan_name');
 
          $payment_method = $request->payment_method;
+
+      if($request->payment_method == "Stripe"){
          $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
-        //  dd($plan_details);
-        //  $plan_details = SubscriptionPlan::where("plan_id","=",$plan_id)->first();
-        //  $response = array(
-        //      "plans_details" => $plan_details
-        //  );
+
         $payment_type = $plan_details->payment_type;
         $user = Auth::user();
 
-         if ( $plan_details->payment_type == "recurring") {
+        if ( $plan_details->payment_type == "recurring") {
 
               if ($user->stripe_id == NULL)
                    {
@@ -517,7 +530,17 @@ public function RentPaypal(Request $request)
                "payment_type" => $plan_details->payment_type
            );
            return view('register.upgrade.stripe',['intent' => $user->createSetupIntent()],$response);
-         }             
+         }      
+      }
+      elseif($request->payment_method == "Razorpay"){
+
+        $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
+        ->where('type', '=', $request->payment_method)
+        ->first();
+
+        $PlanId   = $plan_details['plan_id']; 
+        return Redirect::route('RazorpaySubscriptionUpdate',$PlanId);
+      }       
      }  
     
     public function UpgradePaypalPage(Request $request){
@@ -851,6 +874,7 @@ public function RentPaypal(Request $request)
     
        public function Upgrade_Plan()
        {
+         
         $user = Auth::user();
         $uid = Auth::user()->id;
         $user = User::where('id',$uid)->first();
