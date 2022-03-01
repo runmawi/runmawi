@@ -434,6 +434,8 @@ class AdminUsersController extends Controller
        }else{
        $devices_name = "";
        }
+       }else{
+       $devices_name = "";
        }
 
         }
