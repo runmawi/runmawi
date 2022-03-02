@@ -20,8 +20,8 @@ use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 class RazorpayController extends Controller
 {
-    private $razorpaykeyId = 'rzp_live_GSQdyMTtnW9KXq';
-    private $razorpaykeysecret = 'KKg08x8hSoYWf9vNRXXYbYoF';
+    private $razorpaykeyId = 'rzp_live_JGOJJF4AqOoWdO';
+    private $razorpaykeysecret = 'YkDxuEbnx7EJ8lYqMFQmaT6C';
 
     public function Razorpay(Request $request)
     {
