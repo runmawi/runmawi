@@ -204,12 +204,7 @@ class AdminSeriesController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-        if(!empty($data['ppv_status'])){
 
-            $data['ppv_status'] = $data['ppv_status'];
-        }else{
-            $data['ppv_status'] = 0;
-        }
         $series = Series::create($data);
         // dd($series->id);
         if(!empty($data['ppv_status'])){
@@ -219,18 +214,12 @@ class AdminSeriesController extends Controller
             $ppv_status = 0;
         }
         $series->slug =  $slug;
-
         $series = Series::find($series->id);
-
-      
         $series->slug = $slug;
         $series->ppv_status = $ppv_status;
-
-
         $series->save();  
 
-       
-        $series->save();
+
         if(!empty($artistsdata)){
             foreach ($artistsdata as $key => $value) {
                 $artist = new Seriesartist;
@@ -354,6 +343,7 @@ class AdminSeriesController extends Controller
 
        
         $data = $input;
+        // dd($data);
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -388,7 +378,7 @@ class AdminSeriesController extends Controller
                   $file->move($image_path, $data['image']);
 
             } else {
-                $data['image'] = 'placeholder.jpg';
+                $data['image'] = $series->image;
             }
 
         if(empty($data['active'])){
