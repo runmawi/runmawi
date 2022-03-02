@@ -249,4 +249,10 @@ Route::group([
     Route::post('PurchaseSeries', 'ApiAuthController@PurchaseSeries');
 
 
+// Razorpay 
+    Route::post('RazorpaySubscription', 'ApiAuthController@RazorpaySubscription');
+    Route::post('RazorpaySignatureVerfiy', 'ApiAuthController@RazorpaySignatureVerfiy');
+    Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
+
+    
 });

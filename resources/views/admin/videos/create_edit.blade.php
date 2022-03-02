@@ -937,7 +937,23 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script type="text/javascript">
+
+   $(document).ready(function($){
+      $('#duration').mask("00:00:00");
+      $('#intro_start_time').mask("00:00:00");
+      $('#intro_end_time').mask("00:00:00");
+      $('#recap_start_time').mask("00:00:00");
+      $('#recap_end_time').mask("00:00:00");
+      $('#skip_intro').mask("00:00:00");
+      $('#skip_recap').mask("00:00:00");
+   });
+
+
+
    var SITEURL = "{{URL('/')}}";
    // $(function() {
    //     $(document).ready(function()
@@ -982,13 +998,7 @@
       $('.js-example-basic-single').select2();
    
       // $('#duration').mask("00:00:00");
-      $('#duration').mask("00:00:00");
-      $('#intro_start_time').mask("00:00:00");
-      $('#intro_end_time').mask("00:00:00");
-      $('#recap_start_time').mask("00:00:00");
-      $('#recap_end_time').mask("00:00:00");
-      $('#skip_intro').mask("00:00:00");
-      $('#skip_recap').mask("00:00:00");
+
    });
    
    

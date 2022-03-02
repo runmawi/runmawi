@@ -575,6 +575,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <div class=" d-flex mt-4 pull-right">     
                        <?php if($video->trailer != ''){ ?>
                            <div id="videoplay" class="btn btn-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i>Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                        <?php } ?>
                    </div>
@@ -886,11 +887,24 @@ $artists = [];
           //  });
           var vid = document.getElementById("videoPlayer"); 
           $('#watch_trailer').hide();
+          $('#close_trailer').hide();
+          // Play Trailer
           $('#videoplay').click(function(){
             // alert('test');
             $('#video_container').hide();
             const player = new Plyr('#videoPlayers');
             $('#watch_trailer').show();
+            $('#videoplay').hide();
+            $('#close_trailer').show();
+          });
+          // Close Trailer
+          $('#close_trailer').click(function(){
+            // alert('test');
+            $('#watch_trailer').hide();
+            const player = new Plyr('#videoPlayers');
+            $('#video_container').show();
+            $('#videoplay').show();            
+            $('#close_trailer').hide();
           });
            /*Skip Video*/
           //  $(document).on("click",".skip",function() {
