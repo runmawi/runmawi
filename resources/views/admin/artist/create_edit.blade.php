@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 
-<div>
+<div id="content-page" class="content-page">
     <!-- This is where -->
     <div class="iq-card">
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
@@ -33,8 +33,8 @@
         @endforeach @endif
         <div class="admin-section-title">
             @if(!empty($artist->id))
-            <h3 class="fs-title">{{ $artist->name }}</h3>
-            @elseif
+            <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
+            @else
             <h3 class="fs-title">Manage Artist</h3>
             @endif
         </div>
@@ -43,7 +43,7 @@
         <div class="clear"></div>
 
         <form id="artist_form" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-            <div class="@if(!empty($artist->created_at)) col-sm-6 @else col-sm-8 @endif">
+            <div class="@if(!empty($artist->created_at)) col-sm-12 @else col-sm-12 @endif">
                 <div class="row mt-3">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Artist</label>
