@@ -1189,7 +1189,7 @@ if( SkipIntroPermissions == 1 ){
 
 <script>
     document.getElementById("url_linkdetails").style.display = "none"; 
-    var video_player  =  document.getElementById("videoPlayer");
+    var video_player  =  document.getElementById(videotypeId);
     var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
     var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
 
