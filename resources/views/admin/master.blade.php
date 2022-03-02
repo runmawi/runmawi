@@ -454,13 +454,13 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="las la-user-friends"></i><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -676,13 +676,13 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="las la-user-friends"></i><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -897,13 +897,13 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                        class="las la-user-friends"></i><span>Moderators</span><i
+                        class="las la-user-friends"></i><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Moderators</a></li>
-                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Moderators For Approval</a></li>
+                        <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
@@ -1294,7 +1294,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    </ul>
                 </div>
                 <div class="col-lg-6 text-right">
-                   Copyright 2021 <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
+                   Copyright <?php date('Y');; ?> <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
                 </div>
              </div>
           </div>
