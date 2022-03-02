@@ -1099,8 +1099,12 @@ location.reload();
 
     $StartParse = date_parse($start_time);
     $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
+
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+    $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
+    $skipIntroTime =  $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
 
     if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
       $video_type_id = "videoPlayer";
@@ -1117,10 +1121,11 @@ location.reload();
   var Start = <?php echo json_encode($startSec); ?>;
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+  var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
-    video.currentTime = End;
+    video.currentTime = IntroskipEnd;
     video.play();
   })
     if(AutoSkip != 1){
@@ -1160,6 +1165,10 @@ if( SkipIntroPermissions == 1 ){
 
     $RecapStartParse = date_parse($RecapStart_time);
     $RecapstartSec = $RecapStartParse['hour']  * 60 *  60  + $RecapStartParse['minute']  * 60  + $RecapStartParse['second'];
+    
+    $SkipRecapParse = date_parse($Recap_skip['skip_recap']);
+    $skipRecapTime =  $SkipRecapParse['hour'] * 60 * 60 + $SkipRecapParse['minute'] * 60 + $SkipRecapParse['second'];
+
     $RecapEndParse = date_parse($RecapEnd_time);
     $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
 ?>
@@ -1170,9 +1179,11 @@ if( SkipIntroPermissions == 1 ){
   var button = document.getElementById("Recaps_Skip");
   var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
   var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
+  var RecapskipEnd = <?php echo json_encode($skipRecapTime); ?>;
+
 
   button.addEventListener("click", function(e) {
-    videoId.currentTime = RecapEnd;
+    videoId.currentTime = RecapskipEnd;
     videoId.play();
   })
 
@@ -1200,12 +1211,13 @@ if( SkipIntroPermissions == 1 ){
                 document.getElementById("url_linkdetails").style.display = "block"; 
           } 
         });
-
 // Tool Tip
-        $(document).ready(function(){
+    $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   
         });
+        
 </script>
+
 
    </div>
 <?php include('footer.blade.php');?>
