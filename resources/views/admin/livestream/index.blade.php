@@ -84,11 +84,11 @@
 					<?php }?>  
 						<td>{{ $video->access }}</td>
 						<?php if($video->active == 0){ ?>
-						<td class="bg-warning"> <?php echo "Pending"; ?></td>
+                        <td> <p class = "bg-warning video_active"><?php echo "Pending"; ?></p></td>
 					<?php }elseif($video->active == 1){ ?>
-						<td class="bg-success"> <?php  echo "Approved"; ?></td>
+                        <td> <p class = "bg-warning video_active"> <?php  echo "Approved"; ?></p></td>
 					<?php }elseif($video->active == 2){ ?>
-						<td class="bg-danger"> <?php  echo "Rejected"; ?></td>
+                        <td>  <p class = "bg-warning video_active"><?php  echo "Rejected"; ?></p></td>
 					<?php }?>  
 
 						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
@@ -106,7 +106,7 @@
 
 		<div class="clear"></div>
 
-		<div class="pagination-outter"><?= $videos->appends(Request::only('s'))->render(); ?></div>
+		<div class="pagination-outter mt-3 pull-right"><?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
 		
 	</div>

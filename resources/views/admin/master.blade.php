@@ -1294,7 +1294,7 @@ if($package == "Basic" && auth()->user()->role = "subscriber" || $package == "Ba
                    </ul>
                 </div>
                 <div class="col-lg-6 text-right">
-                   Copyright <?php date('Y');; ?> <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
+                   Copyright <?php echo date('Y'); ?> <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a>. All Rights Reserved.
                 </div>
              </div>
           </div>
