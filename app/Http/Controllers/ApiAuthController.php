@@ -2804,6 +2804,8 @@ public function checkEmailExists(Request $request)
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
+      //  print_r($episode);exit;
+       
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
@@ -2888,8 +2890,8 @@ public function checkEmailExists(Request $request)
     if (!empty($episode)) {
 
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
-    ->where('season_id',$episode->season_id)
-    ->where('series_id',$episode->series_id)
+    ->where('season_id',$episode[0]->season_id)
+    ->where('series_id',$episode[0]->series_id)
     ->count();
   } else {
     $ppv_exist = 0;
