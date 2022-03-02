@@ -49,10 +49,9 @@ input.skips,input#Recaps_Skip{
 }
 div#url_linkdetails {
     position: absolute;
-    top: 70%;
-    left: 30%;
+    top: 22%;
+    left: 83%;
     font-size: x-large;
-    font-family: 'remixicon';
 }
   </style>
 <?php
@@ -523,9 +522,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <?php if(!empty($video->url_link) ) { ?>
 <div class="text-white" id="url_linkdetails" >
-    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" ><?php echo __($video->url_link); ?></a></p>
+    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" data-toggle="tooltip" data-placement="left" title=<?php echo __($video->url_link); ?> class="fa fa-info-circle" >
+  </a></p>
 </div>
 <?php  }?>
+
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
    <div class="container-fluid video-details" style="width:90%!important;">
@@ -1173,6 +1174,27 @@ if( SkipIntroPermissions == 1 ){
                 document.getElementById("Recaps_Skip").style.display = "block"; // Manual skip
         } 
     });
+</script>
+
+<!-- Link on Player -->
+
+<script>
+    document.getElementById("url_linkdetails").style.display = "none"; 
+    var video_player  =  document.getElementById(videotypeId);
+    var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
+    var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
+
+      this.video_player.addEventListener('timeupdate', (e) => {
+        document.getElementById("url_linkdetails").style.display = "none"; 
+        
+        if (start_urltime <= e.target.currentTime && e.target.currentTime < End_urltime) {
+                document.getElementById("url_linkdetails").style.display = "block"; 
+          } 
+        });
+// Tool Tip
+    $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+        });
 </script>
 
    </div>
