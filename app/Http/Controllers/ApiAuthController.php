@@ -91,10 +91,13 @@ use App\SeriesLanguage;
 use CPANEL;
 use App\Deploy;
 use App\LoggedDevice;
-
+use Razorpay\Api\Api;
 
 class ApiAuthController extends Controller
 {
+
+  private $razorpaykeyId = 'rzp_test_008H40SUs59YLK';
+  private $razorpaykeysecret = '32tTF7snfEyXZj0z5tEiGdzm';
 
   public function signup(Request $request)
   {
@@ -5533,6 +5536,130 @@ public function LocationCheck(Request $request){
       'plan' => $plan_id
     );
     return response()->json($response, 200);
+  }
+
+  public function RazorpaySubscription(Request $request){
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+
+        $user_id = $request->user_id;
+        $user_details =User::where('id',$user_id)->first();
+
+        $Plan_Id = $request->plan_id;
+        $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $planId = $api->plan->fetch($Plan_Id);
+
+        $subscription = $api->subscription->create(array(
+        'plan_id' =>  $planId->id, 
+        'customer_notify' => 1,
+        'total_count' => 6, 
+        ));
+
+
+        $respond=array(
+            'razorpaykeyId'  =>  $this->razorpaykeyId,
+            'name'           =>  $planId['item']->name,
+            'subscriptionId' =>  $subscription->id ,
+            'short_url'      =>  $subscription->short_url,
+            'currency'       =>  'INR',
+            'email'          =>  $user_details['email'],
+            'contactNumber'  =>  $user_details['mobile'],
+            'user_id'        =>  $user_details->id,
+            'user_name'      =>  $user_details->name,
+            'address'        =>  $cityName,
+            'description'    =>  null,
+            'countryName'    =>  $countryName,
+            'regionName'     =>  $regionName,
+            'cityName'       =>  $cityName,
+            'PaymentGateway' =>  'razorpay',
+        );
+
+        return response()->json([
+          'respond' => $respond], 200);
+  }
+
+  public function RazorpaySignatureVerfiy(Request $request)
+  {
+    $razorpay_signature       = $request->razorpay_signature ;
+    $razorpay_payment_id      = $request->razorpay_payment_id;
+    $razorpay_subscription_id = $request->razorpay_subscription_id;
+
+    try{                                                              // Payment verify
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $attributes  = array('razorpay_signature'  => $razorpay_signature,  'razorpay_payment_id'  => $razorpay_payment_id ,  'razorpay_subscription_id' => $razorpay_subscription_id);
+        $order  = $api->utility->verifyPaymentSignature($attributes);
+        $PaymentStatus = true;
+    } 
+    catch (\Exception $e) {
+        return response()->json([
+          'status'  => 'false',
+          'Message' => 'Payment is Not completed'], 200);
+    }
+
+    if($PaymentStatus == true){
+      try{                                                          // Store the Razorpay subscription detials
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $subscription = $api->subscription->fetch($razorpay_subscription_id);
+            $plan_id      = $api->plan->fetch($subscription['plan_id']);
+
+            $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
+            $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+
+                Subscription::create([
+                'user_id'        =>  $request->userId,
+                'name'           =>  $plan_id['item']->name,
+                // 'days'        =>  $fileName_zip,
+                'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subscription['id'],
+                'stripe_status'  =>  $subscription['status'],
+                'stripe_plan'    =>  $subscription['plan_id'],
+                'quantity'       =>  $subscription['quantity'],
+                'countryname'    =>  $request->countryName,
+                'regionname'     =>  $request->cityName,
+                'cityname'       =>  $request->regionName,
+                'PaymentGateway' =>  'Razorpay',
+            ]);
+
+            User::where('id',$request->userId)->update([
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subscription['id'] ,
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+            ]);
+
+              return response()->json([
+                'status'  => 'true',
+                'Message' => 'Payment Done Successfully'], 200);
+          }
+        catch (\Exception $e){
+          return response()->json([
+            'status'  => 'false',
+            'Message' => 'While Storing the value on Serve Error'], 200);
+      }
+    }
+  }
+
+  public function RazorpaySubscriptionCancel(Request $request)
+  {
+    $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+    $subscriptionId = User::where('id',$request->user_id)->pluck('stripe_id')->first();
+    
+    $options  = array('cancel_at_cycle_end'  => 0);
+
+    $api->subscription->fetch($subscriptionId)->cancel($options);
+
+    Subscription::where('stripe_id',$subscriptionId)->update([
+        'stripe_status' =>  'Cancelled',
+    ]);
+
+    return response()->json([
+      'status'  => 'true',
+      'Message' => 'Subscription Cancel Successfully'], 200);
   }
 
 }
