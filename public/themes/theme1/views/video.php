@@ -31,10 +31,8 @@ if(!empty($request_url)){
        }
 .intro_skips,.Recap_skip {
     position: absolute;
-    margin-top: -14%;
-    margin-bottom: 0;
-    margin-left: 80%;
-    margin-right: 0;
+    top: -19%;
+    left: 79%;
 }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
@@ -253,16 +251,6 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php endif; ?>            
    </div>
  
-
-   <div class="col-sm-12 intro_skips">
-       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-  </div>
-
-  <div class="col-sm-12 Recap_skip">
-      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-  </div>
-
   <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
    || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
  if(!empty($video->path)){  ?>
@@ -691,7 +679,22 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                </div>
            </div>
            <?php   } ?>
-           <?php if(!empty($video->description) ) { ?>
+
+           
+<!-- Intro Skip and Recap Skip -->
+
+   <div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
+
+  <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  </div>
+
+<!--End Intro Skip and Recap Skip -->
+
+<?php if(!empty($video->description) ) { ?>
 
 <h4>Description</h4>
 <div class="text-white">
@@ -1076,7 +1079,7 @@ location.reload();
 
        </script>
 
-<!-- INTRO SKIP  -->
+     <!-- INTRO SKIP  -->
 
 <?php
     $Auto_skip = App\HomeSetting::first();
@@ -1089,66 +1092,54 @@ location.reload();
     $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+    if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
+      $video_type_id = "videoPlayer";
+    }else{
+      $video_type_id = "video";
+    }
 ?>
 
 <script>
-
   var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
-  var video = document.getElementById("videoPlayer");
+  var videotype_Id = <?php echo json_encode($video_type_id); ?>;
+  var video = document.getElementById(videotype_Id);
   var button = document.getElementById("intro_skip");
   var Start = <?php echo json_encode($startSec); ?>;
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
 
 if( SkipIntroPermissions == 1 ){
-
   button.addEventListener("click", function(e) {
     video.currentTime = End;
     video.play();
   })
-  if(AutoSkip != 1){
-        this.video.addEventListener('timeupdate', (e) => {
-          document.getElementById("intro_skip").style.display = "none";
-          document.getElementById("Auto_skip").style.display = "none";
+    if(AutoSkip != 1){
+          this.video.addEventListener('timeupdate', (e) => {
+            document.getElementById("intro_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
 
-          if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                  document.getElementById("intro_skip").style.display = "block"; // Manual skip
-          } 
-      });
-  }
-  else{
-    this.video.addEventListener('timeupdate', (e) => {
-          document.getElementById("intro_skip").style.display = "none";
-          document.getElementById("Auto_skip").style.display = "none";
-
-          var before_Start = Start - 5;
-          var trigger = Start - 1;
-          if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
-              document.getElementById("Auto_skip").style.display = "block";
-                if(trigger  <= e.target.currentTime){
-                  document.getElementById("intro_skip").click();    // Auto skip
-                }
-          }
-      });
-  }
-}
-</script>
-
-<!-- Link on Player -->
-
-<script>
-    document.getElementById("url_linkdetails").style.display = "none"; 
-    var video_player  =  document.getElementById("videoPlayer");
-    var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
-    var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
-
-      this.video_player.addEventListener('timeupdate', (e) => {
-        document.getElementById("url_linkdetails").style.display = "none"; 
-        
-        if (start_urltime <= e.target.currentTime && e.target.currentTime < End_urltime) {
-                document.getElementById("url_linkdetails").style.display = "block"; 
-          } 
+            if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+            } 
         });
+    }
+    else{
+      this.video.addEventListener('timeupdate', (e) => {
+            document.getElementById("intro_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
+
+            var before_Start = Start - 5;
+            var trigger = Start - 1;
+            if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+                document.getElementById("Auto_skip").style.display = "block";
+                  if(trigger  <= e.target.currentTime){
+                    document.getElementById("intro_skip").click();    // Auto skip
+                  }
+            }
+        });
+    }
+}
 </script>
 
 <!-- Recap video skip -->
@@ -1165,8 +1156,8 @@ if( SkipIntroPermissions == 1 ){
 ?>
 
 <script>
-  
-  var videoId = document.getElementById("videoPlayer");
+  var videotypeId = <?php echo json_encode($video_type_id); ?>;
+  var videoId = document.getElementById(videotypeId);
   var button = document.getElementById("Recaps_Skip");
   var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
   var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
