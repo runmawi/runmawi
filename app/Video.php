@@ -18,7 +18,8 @@ class Video extends Model
 	protected $fillable = array('user_id', 'video_category_id', 'slug' , 'status' ,'title', 
 		'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured','banner', 
 		'footer', 'duration', 'image', 'embed_code', 'mp4_url', 'webm_url', 'ogg_url','views','rating',
-		'language' ,'year','trailer','created_at','path','Recommendation','country','pdf_files','reelvideo');
+		'language' ,'year','trailer','created_at','path','Recommendation','country','pdf_files',
+		'reelvideo','url_link','url_linktym','url_linksec','urlEnd_linksec');
 
 	public function tags(){
 		return $this->belongsToMany('Tag');

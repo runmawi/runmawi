@@ -1069,7 +1069,7 @@ if(!empty($artistsdata)){
             $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
             $video->pdf_files =  $pdf_files;
         }
-
+    // Reels videos
         $reels_videos= $request->reels_videos;
             
         if($reels_videos != null){
@@ -1083,6 +1083,22 @@ if(!empty($artistsdata)){
             $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
             $video->reelvideo =  $reelvideo_names;
         }
+    //URL Link
+          $url_link = $request->url_link;
+
+          if($url_link != null){
+              $video->url_link =  $url_link;
+          }
+
+          $url_linktym = $request->url_linktym;
+
+          if($url_linktym != null){
+              $StartParse = date_parse($request->url_linktym);
+              $startSec = $StartParse['hour'] * 60 *60 + $StartParse['minute'] * 60 + $StartParse['second'];
+              $video->url_linktym =  $url_linktym;
+              $video->url_linksec =  $startSec ;
+              $video->urlEnd_linksec =  $startSec + 60 ;
+          }
         
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
@@ -1543,7 +1559,7 @@ if(!empty($artistsdata)){
                 $video->pdf_files =  $pdf_files;
             }
 
-        
+    //Reels videos
             $reels_videos= $request->reels_videos;
             
             if($reels_videos != null){
@@ -1556,7 +1572,23 @@ if(!empty($artistsdata)){
                 $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
                 $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
                 $video->reelvideo =  $reelvideo_names;
+            }
 
+    //URL Link
+            $url_link = $request->url_link;
+
+            if($url_link != null){
+                $video->url_link =  $url_link;
+            }
+
+            $url_linktym = $request->url_linktym;
+
+            if($url_linktym != null){
+                $StartParse = date_parse($request->url_linktym);
+                $startSec = $StartParse['hour'] * 60 *60 + $StartParse['minute'] * 60 + $StartParse['second'];
+                $video->url_linktym =  $url_linktym;
+                $video->url_linksec =  $startSec ;
+                $video->urlEnd_linksec =  $startSec + 60 ;
             }
 // dd($reelvideo);
              $shortcodes = $request['short_code'];        

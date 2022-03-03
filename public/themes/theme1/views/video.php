@@ -49,10 +49,9 @@ input.skips,input#Recaps_Skip{
 }
 div#url_linkdetails {
     position: absolute;
-    top: 70%;
-    left: 30%;
+    top: 22%;
+    left: 83%;
     font-size: x-large;
-    font-family: 'remixicon';
 }
   </style>
 <?php
@@ -523,9 +522,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <?php if(!empty($video->url_link) ) { ?>
 <div class="text-white" id="url_linkdetails" >
-    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" ><?php echo __($video->url_link); ?></a></p>
+    <p class="trending-dec w-100 mb-0 text-white"><a href="<?php echo __($video->url_link); ?>" target="_blank" data-toggle="tooltip" data-placement="left" title=<?php echo __($video->url_link); ?> class="fa fa-info-circle" >
+  </a></p>
 </div>
 <?php  }?>
+
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
    <div class="container-fluid video-details" style="width:90%!important;">
@@ -1089,8 +1090,12 @@ location.reload();
 
     $StartParse = date_parse($start_time);
     $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
+    
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+    $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
+    $skipIntroTime =  $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
 
     if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
       $video_type_id = "videoPlayer";
@@ -1107,10 +1112,11 @@ location.reload();
   var Start = <?php echo json_encode($startSec); ?>;
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+  var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
-    video.currentTime = End;
+    video.currentTime = IntroskipEnd;
     video.play();
   })
     if(AutoSkip != 1){
@@ -1150,6 +1156,10 @@ if( SkipIntroPermissions == 1 ){
 
     $RecapStartParse = date_parse($RecapStart_time);
     $RecapstartSec = $RecapStartParse['hour']  * 60 *  60  + $RecapStartParse['minute']  * 60  + $RecapStartParse['second'];
+    
+    $SkipRecapParse = date_parse($Recap_skip['skip_recap']);
+    $skipRecapTime =  $SkipRecapParse['hour'] * 60 * 60 + $SkipRecapParse['minute'] * 60 + $SkipRecapParse['second'];
+
     $RecapEndParse = date_parse($RecapEnd_time);
     $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
 ?>
@@ -1160,9 +1170,11 @@ if( SkipIntroPermissions == 1 ){
   var button = document.getElementById("Recaps_Skip");
   var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
   var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
+  var RecapskipEnd = <?php echo json_encode($skipRecapTime); ?>;
+
 
   button.addEventListener("click", function(e) {
-    videoId.currentTime = RecapEnd;
+    videoId.currentTime = RecapskipEnd;
     videoId.play();
   })
 
@@ -1173,6 +1185,27 @@ if( SkipIntroPermissions == 1 ){
                 document.getElementById("Recaps_Skip").style.display = "block"; // Manual skip
         } 
     });
+</script>
+
+<!-- Link on Player -->
+
+<script>
+    document.getElementById("url_linkdetails").style.display = "none"; 
+    var video_player  =  document.getElementById(videotypeId);
+    var start_urltime =  <?php echo json_encode($video->url_linksec); ?>;
+    var End_urltime   =  <?php echo json_encode($video->urlEnd_linksec); ?>;
+
+      this.video_player.addEventListener('timeupdate', (e) => {
+        document.getElementById("url_linkdetails").style.display = "none"; 
+        
+        if (start_urltime <= e.target.currentTime && e.target.currentTime < End_urltime) {
+                document.getElementById("url_linkdetails").style.display = "block"; 
+          } 
+        });
+// Tool Tip
+    $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+        });
 </script>
 
    </div>
