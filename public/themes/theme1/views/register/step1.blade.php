@@ -23,12 +23,17 @@ $uppercase =  ucfirst($request_url);
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-     <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <!-- Typography CSS -->
-      <link rel="stylesheet" href="assets/css/typography.css" />
-      <!-- Style -->
-      <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Bootstrap CSS -->
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css') ?>" />
+
+    <!-- Typography CSS -->
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" />
+         
+    <!-- Style -->
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" />
+  
+         
       <!-- Responsive -->
        <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
