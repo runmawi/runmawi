@@ -180,11 +180,14 @@ $uppercase =  ucfirst($request_url);
 /*input[type="file"] {
     display: none;
     }*/.lab{
-        background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:3px;
+        background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:3px;color: #fff!important
     }
     .catag {
     padding-right: 150px !important;
 }
+    .sign-user_card input{
+        background-color: transparent!important;
+    }
 i.fa.fa-google-plus {
     padding: 10px !important;
 }
@@ -197,6 +200,7 @@ i.fa.fa-google-plus {
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
+        position: absolute;
     }
     .sign-in-page{
         background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%)!important;
