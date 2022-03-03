@@ -5666,4 +5666,52 @@ public function LocationCheck(Request $request){
       'Message' => 'Subscription Cancel Successfully'], 200);
   }
 
+  public function RazorpaySubscriptionUpdate(Request $request){
+
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName = $geoip->getCountry();
+    $regionName = $geoip->getregion();
+    $cityName = $geoip->getcity();
+
+    $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+    $plan_Id = $api->plan->fetch($request->plan_id);
+    $user_id =$request->user_id;
+
+    $subscriptionId  = Subscription::where('user_id',$user_id)->latest()->pluck('stripe_id')->first();
+
+    $subscription = $api->subscription->fetch($subscriptionId);
+    $remaining_count  =  $subscription['remaining_count'] ;
+
+    if($subscription->payment_method != "upi"){
+        
+        $options  = array('plan_id'  =>$plan_Id['id'], 'remaining_count' => $remaining_count );
+        $api->subscription->fetch($subscriptionId)->update($options);
+
+        $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
+        $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
+        if (is_null($subscriptionId)) {
+            return false;
+        }
+        else{
+            Subscription::where('user_id',$user_id)->latest()->update([
+                'price'         =>  $updatedPlan['item']->amount,
+                'stripe_id'     =>  $UpdatedSubscription['id'],
+                'stripe_status' =>  $UpdatedSubscription['status'],
+                'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
+                'quantity'      =>  $UpdatedSubscription['quantity'],
+                'countryname'   =>  $countryName,
+                'regionname'    =>  $regionName,
+                'cityname'      =>  $cityName,
+        ]);
+        }
+        return response()->json([
+          'status'  => 'true',
+          'Message' => 'Subscription Updated Successfully'], 200);    }
+
+    else{
+      return response()->json([
+        'status'  => 'fails',
+        'Message' => 'Subscription Updated cannot done for UPI payment'], 200);}
+}
+
 }
