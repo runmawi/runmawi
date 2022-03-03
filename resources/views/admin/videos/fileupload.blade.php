@@ -465,6 +465,16 @@
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
                                  <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
                               </div>
+
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0" style="display:block;">URL Link </label>
+                                 <input type="text" class="form-group" name="url_link" accept="" id="url_link" >
+                              </div>
+
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0">URL Start Time <small>Format (HH:MM:SS)</small></label>
+                                 <input type="text" class="form-group" name="url_linktym" accept="" id="url_linktym" >
+                              </div>
                            </div>
                            <div class="row mt-5">
                               <div class="panel panel-primary" data-collapsed="0">
@@ -973,10 +983,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
    // $('#intro_start_time').datetimepicker(
    // {
