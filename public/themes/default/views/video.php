@@ -1133,10 +1133,14 @@ if( SkipIntroPermissions == 1 ){
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
             document.getElementById("Auto_skip").style.display = "none";
+            var RemoveSkipbutton = End + 1;
 
             if (Start <= e.target.currentTime && e.target.currentTime < End) {
                     document.getElementById("intro_skip").style.display = "block"; // Manual skip
             } 
+            if(RemoveSkipbutton  <= e.target.currentTime){
+                  $("#intro_skip").remove();   // Button Shows only one tym
+            }
         });
     }
     else{
@@ -1191,11 +1195,14 @@ if( SkipIntroPermissions == 1 ){
       this.videoId.addEventListener('timeupdate', (e) => {
         document.getElementById("Recaps_Skip").style.display = "none";
 
-          if(RecapValue == "Recap Intro"){
+        var RemoveRecapsbutton = RecapEnd + 1;
               if (RecapStart <= e.target.currentTime && e.target.currentTime < RecapEnd) {
                   document.getElementById("Recaps_Skip").style.display = "block"; 
-              } 
-          }
+              }
+               
+              if(RemoveRecapsbutton  <= e.target.currentTime){
+                  $("#Recaps_Skip").remove();   // Button Shows only one tym
+              }
     });
 </script>
 
