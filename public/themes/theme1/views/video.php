@@ -601,59 +601,6 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
          </div>
            
-       <?php if(!Auth::guest()) { ?>
-       <div class="row">
-           <div class="col-sm-6 col-md-6 col-xs-12">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                     <!-- Watchlater -->
-                    <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-                     <!-- Wishlist -->
-                    <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                     <!-- Social Share, Like Dislike -->
-                        <?php include('partials/social-share.php'); ?>                     
-                 </ul>
-           </div>
-               
-           <div class="col-sm-6 col-md-6 col-xs-12">
-<!--
-                 <div class="d-flex align-items-center series mb-4">
-                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                          alt=""></a>
-                    <span class="text-gold ml-3">#2 in Series Today</span>
-                 </div>
--->                 
-               <ul class="list-inline p-0 mt-4 rental-lists">
-               <!-- Subscribe -->
-                   <li>
-                       <?php     
-                           $user = Auth::user(); 
-                           if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                               <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                       <?php } ?>
-                   </li>
-                   <!-- PPV button -->
-                   <li>
-                       <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) { ?>
-                       <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
-
-                         <!-- && ($video->global_ppv == 1 ) -->
-                           <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                           <?php echo __('Rents');?> </button>
-                       <?php } ?>
-                   </li>
-                   <li>
-                       <div class="btn btn-default views">
-                           <span class="view-count"><i class="fa fa-eye"></i> 
-                               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                           </span>
-                       </div>
-                   </li>
-               </ul>
-           </div>
-       </div>
-
-       <?php } ?>
-       
           <?php if(Auth::guest()) { ?>
  
            <div class="row">
