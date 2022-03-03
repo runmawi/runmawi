@@ -33,6 +33,9 @@ $uppercase =  ucfirst($request_url);
     <!-- Style -->
          <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" />
   
+    <!-- font awesome Icon -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
          
       <!-- Responsive -->
        <link rel="preconnect" href="https://fonts.googleapis.com">
