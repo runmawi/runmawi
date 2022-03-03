@@ -361,6 +361,19 @@
                    @endif
                </div>
                </div>   
+
+            
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label class="m-0">URL Link <small>( Please Enter Link with https )</small></label>
+                    <input type="text" class="form-control" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" />
+                </div>
+            
+                <div class="col-sm-6 form-group">
+                    <label class="m-0">URL Start Time <small>( HH:MM:SS )</small></label>
+                    <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" />
+                </div>
+            </div>
                 <hr />
                <div class="row">    
                <div class="panel panel-primary" data-collapsed="0"> 
