@@ -3390,11 +3390,13 @@ public function upnextAudio(Request $request){
 
   public function SeasonsPPV(Request $request)
   {
-    // $season_id = $request->season_id;
+    $season_id = $request->season_id;
     $episode_id = $request->episode_id;
 
     $episode = Episode::where('id','=',$episode_id)->orderBy('id', 'DESC')->first();    
-    $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
+    ->with('episodes')->get();
     if(!empty($season)){
       $ppv_price = $season[0]->ppv_price;
       $ppv_interval = $season[0]->ppv_interval;
