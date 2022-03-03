@@ -361,6 +361,19 @@
                    @endif
                </div>
                </div>   
+
+            
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label class="m-0">URL Link <small>( Please Enter Link with https )</small></label>
+                    <input type="text" class="form-control" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" />
+                </div>
+            
+                <div class="col-sm-6 form-group">
+                    <label class="m-0">URL Start Time <small>( HH:MM:SS )</small></label>
+                    <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" />
+                </div>
+            </div>
                 <hr />
                <div class="row">    
                <div class="panel panel-primary" data-collapsed="0"> 
@@ -917,16 +930,11 @@
    //     format: 'hh:mm '
    // });
 </script>
+
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
-<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
 <script type="text/javascript">
 
    $(document).ready(function($){
@@ -938,7 +946,17 @@
       $('#skip_intro').mask("00:00:00");
       $('#skip_recap').mask("00:00:00");
    });
+</script>
 
+<script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
+
+<script type="text/javascript">
 
 
    var SITEURL = "{{URL('/')}}";
