@@ -1126,6 +1126,7 @@ location.reload();
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
     video.currentTime = IntroskipEnd;
+       $("#intro_skip").remove();  // Button Shows only one tym
     video.play();
   })
     if(AutoSkip != 1){
@@ -1140,8 +1141,8 @@ if( SkipIntroPermissions == 1 ){
     }
     else{
       this.video.addEventListener('timeupdate', (e) => {
-            document.getElementById("intro_skip").style.display = "none";
             document.getElementById("Auto_skip").style.display = "none";
+            document.getElementById("intro_skip").style.display = "none";
 
             var before_Start = Start - 5;
             var trigger = Start - 1;
@@ -1180,19 +1181,21 @@ if( SkipIntroPermissions == 1 ){
   var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
   var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
   var RecapskipEnd = <?php echo json_encode($skipRecapTime); ?>;
-
+  var RecapValue  = $("#Recaps_Skip").val();
 
   button.addEventListener("click", function(e) {
     videoId.currentTime = RecapskipEnd;
+    $("#Recaps_Skip").remove();   // Button Shows only one tym
     videoId.play();
   })
-
       this.videoId.addEventListener('timeupdate', (e) => {
         document.getElementById("Recaps_Skip").style.display = "none";
 
-        if (RecapStart <= e.target.currentTime && e.target.currentTime < RecapEnd) {
-                document.getElementById("Recaps_Skip").style.display = "block"; // Manual skip
-        } 
+          if(RecapValue == "Recap Intro"){
+              if (RecapStart <= e.target.currentTime && e.target.currentTime < RecapEnd) {
+                  document.getElementById("Recaps_Skip").style.display = "block"; 
+              } 
+          }
     });
 </script>
 
