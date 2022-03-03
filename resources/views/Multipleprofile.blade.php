@@ -16,13 +16,14 @@
       
 @section('content')
 <div class="container">
-    <div class="row  align-items-center ">
-        <div class="col-md-12 align-items-center">
+    <div class="row">
+        <div class="col-md-6 align-items-center" style=" padding-top: 140px;">
   
-                    <div class="sign-in-from  m-auto" >
-<div class="row1">
+                 
+<div class="col-md-4">
+    <div class="row1">
     <h1 class="mt-5">Who's Watching ?</h1>
-                    <div class="row-data" style="display:flex; heigth:400px;" >
+                    <div class="row-data" style="display:flex; " >
                       
                     
                         <div class="member ">
@@ -64,6 +65,8 @@
          background-color: #151515;
          border-radius:30px;
          padding: 20px;
+        width: 60%;
+         margin: 0 auto;
      }
      .row1 h1{
          text-align: center;
@@ -79,6 +82,7 @@
      .multiuser_img{
         padding: 5px;
         transition: 0.3s;
+         border-radius: 20px;
         
      }
      .multiuser_img:hover {
