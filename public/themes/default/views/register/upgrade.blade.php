@@ -198,7 +198,7 @@ body.loading .overlay{
                                                 <p>Available Specification :</p>
                                                 <h6 style ="color:yellow;background-color:black;"> Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
                                                 Video Resolution : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
-                                             <?php   
+                                                <?php   
                                                     $permission = $plan[0]->devices;
                                                     // dd($permission);
                                                     if(!empty($permission)){

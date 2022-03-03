@@ -246,5 +246,13 @@ Route::group([
     Route::get('Welcome_Screen', 'ApiAuthController@Welcome_Screen');
     Route::post('payment_plan', 'ApiAuthController@PaymentPlan');
     Route::post('SeasonsPPV', 'ApiAuthController@SeasonsPPV');
+    Route::post('PurchaseSeries', 'ApiAuthController@PurchaseSeries');
 
+
+// Razorpay 
+    Route::post('RazorpaySubscription', 'ApiAuthController@RazorpaySubscription');
+    Route::post('RazorpaySignatureVerfiy', 'ApiAuthController@RazorpaySignatureVerfiy');
+    Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
+
+    
 });

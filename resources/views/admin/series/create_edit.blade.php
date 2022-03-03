@@ -241,10 +241,10 @@ $settings  = App\Setting::first();?>
                             <div class="panel-body"> 
                                 <div class="d-flex align-items-baseline">
                                 <?php if($settings->ppv_status == 1){ ?>
-                                  <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                  <input type="checkbox" name="ppv_status" value="1" id="ppv_status" {{  $series->ppv_status == "1" ? "checked" : "" }} />
                                   <?php } else{ ?>
                                     <div class="global_ppv_status">
-                                        <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($episodes->ppv_status) && $episodes->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->ppv_status)){{ 'checked="checked"' }}@endif />
+                                        <input type="checkbox" name="ppv_status" value="1" id="ppv_status" {{  $series->ppv_status == "1" ? "checked" : "" }} />
                                     </div>
                                    <?php } ?>
 

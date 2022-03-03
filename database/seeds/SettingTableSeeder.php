@@ -29,7 +29,7 @@ class SettingTableSeeder extends Seeder
         $setting = [
             [  'website_name' => $website_name, 
                'website_description' => 'Your Shows Online',
-                'logo' => 'logo (1).png' ,
+                'logo' => 'trail-logo.png' ,
                 'login_content' => 'Landban.png',
                 'coupon_status' => '1' ,
                 'favicon' => 'fl-logo.png',
