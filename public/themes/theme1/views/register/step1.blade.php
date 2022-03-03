@@ -180,7 +180,7 @@ $uppercase =  ucfirst($request_url);
 /*input[type="file"] {
     display: none;
     }*/.lab{
-        background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:3px;color: #fff!important
+        background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:6px;color: #fff!important
     }
     .catag {
     padding-right: 150px !important;
