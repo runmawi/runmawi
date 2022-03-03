@@ -2891,7 +2891,8 @@ public function checkEmailExists(Request $request)
       $languages = "";
     }
     if (!empty($episode)) {
-
+    $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
+    // print_r();exit;
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
     ->where('season_id',$episode[0]->season_id)
     ->where('series_id',$episode[0]->series_id)
@@ -2903,7 +2904,10 @@ public function checkEmailExists(Request $request)
 
           $ppv_video_status = "can_view";
 
-      } else {
+      } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
+        $ppv_video_status = "can_view";
+      }
+      else {
             $ppv_video_status = "pay_now";
       }
 
