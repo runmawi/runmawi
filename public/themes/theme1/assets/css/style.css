@@ -2258,4 +2258,6 @@ a {
     .btn-primary{
         background-color: #45c5e1 !important;
     }
-}  
+}  .row-data{
+    flex-wrap: wrap;
+}
