@@ -259,18 +259,31 @@ class TvshowsController extends Controller
                 }
 
                 // Season Ppv Purchase exit check
-                 if((!empty($ppv_price))){
+                 if($ppv_price != 0 ||  $ppv_price != null){
+
                     $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                     ->where('season_id', '=', $season_id)
                     ->where('series_id', '=', $episode->series_id)
                     ->count();
                 }else{
                     $ppv_exits = 0 ;
-        
                 }
-                // dd($ppv_exits);
-                if($series->ppv_status == null) { $series_ppv_status = 1; }else{ $series_ppv_status = 0; }
 
+                if($series->ppv_status == 0 && $ppv_price == 0 ||  $ppv_price == null) { 
+                    $series_ppv_status = 0;
+                    $free_episode = 1;
+            // dd($series->ppv_status);
+
+                }else{ 
+                    $series_ppv_status = 1; 
+            // dd('$series->ppv_status');
+
+                }
+                // 
+
+                if(Auth::user()->role == 'admin'){
+                    $free_episode = 1;
+                }
               
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
