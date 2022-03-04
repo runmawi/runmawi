@@ -1202,8 +1202,9 @@ class HomeController extends Controller
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
                     ->count();
 
-                if (count($alldevices) == 1 && $user_role == "registered" && Auth::User()->id != 1)
+                if (count($alldevices) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
+                    dd($alldevices);
 
                     LoggedDevice::where('user_ip','=', $userIp)
                     ->where('user_id','=', Auth::User()->id)
@@ -1292,8 +1293,10 @@ class HomeController extends Controller
                 //         ));
                 //     }
                 // }
-                elseif ($user_check >= $device_limit && Auth::User()->role != "admin")
+                elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
                 {
+                    // dd(Auth::User()->role);
+
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
                     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
