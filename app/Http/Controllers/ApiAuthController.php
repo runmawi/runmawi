@@ -5566,7 +5566,7 @@ public function LocationCheck(Request $request){
         ));
 
 
-        $respond=array(
+        $respond[]=array(
             'razorpaykeyId'  =>  $this->razorpaykeyId,
             'name'           =>  $planId['item']->name,
             'subscriptionId' =>  $subscription->id ,
