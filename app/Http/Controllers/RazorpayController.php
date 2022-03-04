@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 use Session;
 use Theme;
 use Auth;
+use Carbon\Carbon;
 use App\Subscription;
 use Razorpay\Api\Api;
 use App\User;
+use App\ThemeIntegration;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 
@@ -110,8 +112,19 @@ class RazorpayController extends Controller
 
         $subscriptionId = "sub_IzpuMPU38PntuD";
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $attributes  = array('plan_id'  => 'plan_Izr2tFN32PpNq1', 'remaining_count' => 5 );
+        $subscription = $api->subscription->fetch($subscriptionId);
+        $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
+        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
+        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+        $carbon = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+
+
+        ThemeIntegration::where('id',1)->update([
+            'created_at'    =>  $carbon ,
+    ]);
+
+dd($carbon);
         $testing =   $api->subscription->fetch($subscriptionId)->update($attributes);
 
     }
@@ -126,6 +139,7 @@ class RazorpayController extends Controller
 
         $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
         $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+        $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
 
             Subscription::create([
             'user_id'        =>  $request->userId,
@@ -140,6 +154,8 @@ class RazorpayController extends Controller
             'regionname'     =>  $request->cityName,
             'cityname'       =>  $request->regionName,
             'PaymentGateway' =>  'Razorpay',
+            'trial_ends_at'  =>  $trial_ends_at,
+            'ends_at'        =>  $trial_ends_at,
         ]);
 
         User::where('id',$request->userId)->update([
@@ -167,6 +183,10 @@ class RazorpayController extends Controller
         $subscription = $api->subscription->fetch($subscriptionId);
         $remaining_count  =  $subscription['remaining_count'] ;
 
+        $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
+        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+
         if($subscription->payment_method != "upi"){
             
             $options  = array('plan_id'  =>$plan_Id['id'], 'remaining_count' => $remaining_count );
@@ -179,19 +199,25 @@ class RazorpayController extends Controller
             }
             else{
                 Subscription::where('user_id',$user_id)->latest()->update([
-                    'price'         =>  $updatedPlan['item']->amount,
-                    'stripe_id'     =>  $UpdatedSubscription['id'],
+                    'price'          =>  $updatedPlan['item']->amount,
+                    'stripe_id'      =>  $UpdatedSubscription['id'],
                     'stripe_status' =>  $UpdatedSubscription['status'],
-                    'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
-                    'quantity'      =>  $UpdatedSubscription['quantity'],
-                    'countryname'   =>  $countryName,
-                    'regionname'    =>  $regionName,
-                    'cityname'      =>  $cityName,
-            ]);
+                    'stripe_plan'    =>  $UpdatedSubscription['plan_id'],
+                    'quantity'       =>  $UpdatedSubscription['quantity'],
+                    'countryname'    =>  $countryName,
+                    'regionname'     =>  $regionName,
+                    'cityname'       =>  $cityName,
+                    'trial_ends_at'  =>  $trial_ends_at,
+                    'ends_at'        =>  $trial_ends_at,
+                ]);
+
+                User::where('id',$user_id)->update([
+                    'subscription_start'    =>  $Sub_Startday,
+                    'subscription_ends_at'  =>  $Sub_Endday,
+                ]);
             }
             return Redirect::route('home');
         }
-
         else{
             return view('Razorpay.UPI'); 
         }

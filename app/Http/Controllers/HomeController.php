@@ -1204,7 +1204,6 @@ class HomeController extends Controller
 
                 if (count($alldevices) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
-                    dd($alldevices);
 
                     LoggedDevice::where('user_ip','=', $userIp)
                     ->where('user_id','=', Auth::User()->id)
@@ -2520,6 +2519,12 @@ class HomeController extends Controller
             $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
+
+
+            if($plan_details['type'] == "Razorpay"){
+                $PlanId =$plan_details->plan_id;
+                return Redirect::route('RazorpayIntegration',$PlanId);
+            }
 
             $request->session()
                 ->put('planname', $request->modal_plan_name);
