@@ -2891,7 +2891,8 @@ public function checkEmailExists(Request $request)
       $languages = "";
     }
     if (!empty($episode)) {
-
+    $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
+    // print_r();exit;
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
     ->where('season_id',$episode[0]->season_id)
     ->where('series_id',$episode[0]->series_id)
@@ -2903,7 +2904,10 @@ public function checkEmailExists(Request $request)
 
           $ppv_video_status = "can_view";
 
-      } else {
+      } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
+        $ppv_video_status = "can_view";
+      }
+      else {
             $ppv_video_status = "pay_now";
       }
 
@@ -3386,11 +3390,13 @@ public function upnextAudio(Request $request){
 
   public function SeasonsPPV(Request $request)
   {
-    // $season_id = $request->season_id;
+    $season_id = $request->season_id;
     $episode_id = $request->episode_id;
 
     $episode = Episode::where('id','=',$episode_id)->orderBy('id', 'DESC')->first();    
-    $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
+    ->with('episodes')->get();
     if(!empty($season)){
       $ppv_price = $season[0]->ppv_price;
       $ppv_interval = $season[0]->ppv_interval;
@@ -5560,7 +5566,7 @@ public function LocationCheck(Request $request){
         ));
 
 
-        $respond=array(
+        $respond[]=array(
             'razorpaykeyId'  =>  $this->razorpaykeyId,
             'name'           =>  $planId['item']->name,
             'subscriptionId' =>  $subscription->id ,
@@ -5661,5 +5667,53 @@ public function LocationCheck(Request $request){
       'status'  => 'true',
       'Message' => 'Subscription Cancel Successfully'], 200);
   }
+
+  public function RazorpaySubscriptionUpdate(Request $request){
+
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName = $geoip->getCountry();
+    $regionName = $geoip->getregion();
+    $cityName = $geoip->getcity();
+
+    $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+    $plan_Id = $api->plan->fetch($request->plan_id);
+    $user_id =$request->user_id;
+
+    $subscriptionId  = Subscription::where('user_id',$user_id)->latest()->pluck('stripe_id')->first();
+
+    $subscription = $api->subscription->fetch($subscriptionId);
+    $remaining_count  =  $subscription['remaining_count'] ;
+
+    if($subscription->payment_method != "upi"){
+        
+        $options  = array('plan_id'  =>$plan_Id['id'], 'remaining_count' => $remaining_count );
+        $api->subscription->fetch($subscriptionId)->update($options);
+
+        $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
+        $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
+        if (is_null($subscriptionId)) {
+            return false;
+        }
+        else{
+            Subscription::where('user_id',$user_id)->latest()->update([
+                'price'         =>  $updatedPlan['item']->amount,
+                'stripe_id'     =>  $UpdatedSubscription['id'],
+                'stripe_status' =>  $UpdatedSubscription['status'],
+                'stripe_plan'   =>  $UpdatedSubscription['plan_id'],
+                'quantity'      =>  $UpdatedSubscription['quantity'],
+                'countryname'   =>  $countryName,
+                'regionname'    =>  $regionName,
+                'cityname'      =>  $cityName,
+        ]);
+        }
+        return response()->json([
+          'status'  => 'true',
+          'Message' => 'Subscription Updated Successfully'], 200);    }
+
+    else{
+      return response()->json([
+        'status'  => 'fails',
+        'Message' => 'Subscription Updated cannot done for UPI payment'], 200);}
+}
 
 }

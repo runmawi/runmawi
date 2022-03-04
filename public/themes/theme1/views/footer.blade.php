@@ -1,6 +1,6 @@
 <?php $settings = App\Setting::first();
  $user = App\User::where('id','=',1)->first(); 
- $app_setting = App\AppSetting::where('id','=',1)->first();
+ $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
  $session = session()->all();
 
 ?>
