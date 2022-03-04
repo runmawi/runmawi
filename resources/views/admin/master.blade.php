@@ -15,6 +15,7 @@ if (!empty($data['password_hash'])) {
    $id = auth()->user()->id;
    $user_package =    DB::table('users')->where('id', 1)->first();
    $package = $user_package->package;
+   $test = 1;
    // dd(auth()->user()->role);
    ?>
 <input type="hidden" id="session" value="session">
@@ -567,7 +568,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
 
                   <!-- Ads Menu ends -->
-                  <?php }elseif($package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
+                  <?php }elseif($test ==1 ||  $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 <!-- Sidebar 3-->
       <div class="iq-sidebar">
@@ -788,7 +789,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
 
                   <!-- Ads Menu ends -->
-                  <?php } elseif(auth()->user()->role == "admin" && $package == "Pro" || $package == "Business"){ ?>
+                  <?php } elseif(auth()->user()->role == "admin" && $package == "Pro" && $package == "Business"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar 4-->
       <div class="iq-sidebar">

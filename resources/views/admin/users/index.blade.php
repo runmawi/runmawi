@@ -2,8 +2,10 @@
 
 @section('content')
 <?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
-<script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
-		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<!-- <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script> -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <div id="content-page" class="content-page">
             <div class="container-fluid">
                <div class="row">
@@ -71,7 +73,7 @@
                         </div>
                         <div class="iq-card-body">
                            <div class="table-view">
-                              <table class="data-tables table movie_table" style="width:100%">
+                              <table class="data-tables table movie_table" id="users_detail" style="width:100%">
                                  <thead>
                                     <tr>
                                        <th style="width: 10%;">Profile</th>
@@ -129,9 +131,17 @@
 	@section('javascript')
 
 	<script>
+// Datatables
+$(document).ready( function () {
+    $('#users_detail').DataTable();
+});
+	
 
 		$ = jQuery;
 		$(document).ready(function(){
+         
+         // $('#users_detail').DataTable();
+
 			$('.delete').click(function(e){
 				e.preventDefault();
 				if (confirm("Are you sure you want to delete this user?")) {
