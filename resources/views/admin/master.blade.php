@@ -16,7 +16,6 @@ if (!empty($data['password_hash'])) {
    $user_package =    DB::table('users')->where('id', 1)->first();
    $package = $user_package->package;
    $test = 1;
-   // dd(auth()->user()->role);
    ?>
 <input type="hidden" id="session" value="session">
 

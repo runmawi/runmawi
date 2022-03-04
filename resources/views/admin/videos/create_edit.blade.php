@@ -236,10 +236,13 @@
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
                         <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
+                        <span><p id="error_intro_start_time" style="color:red;">* Fill Intro Start Time </p></span>
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
                         <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
+                        <span><p id="error_intro_end_time" style="color:red;">* Fill Intro End Time </p></span>
+
                     </div>
                 </div>
                 <div class="row">
@@ -250,10 +253,12 @@
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
                         <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
+                        <span><p id="error_recap_start_time" style="color:red;" >* Fill Recap Start Time </p></span>
                     </div>
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label> 
                         <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
+                        <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
                     </div>
                 </div>
                <div class="row">
@@ -277,7 +282,7 @@
                         <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
                     </div>
                 </div>
-               </div> <input type="button" name="next" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                </fieldset>
                <fieldset>
                <div class="form-card">
@@ -913,6 +918,99 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
+
+
+
+$(document).ready(function($){
+      $('#error_intro_start_time').hide();
+      $('#error_intro_end_time').hide();
+
+      $('#error_recap_start_time').hide();
+      $('#error_recap_end_time').hide();
+   $('#skip_intro').change(function(){
+      if($('#skip_intro').val() != "" ){
+         $('#error_intro_start_time').show();
+         $('#error_intro_end_time').show();
+         $('#next2').attr('disabled','disabled');
+      }else{
+         $('#next2').removeAttr('disabled');
+      }
+   });
+   $('#intro_start_time').change(function(){
+      if($('#skip_intro').val() != "" && $('#intro_start_time').val() != "" && $('#intro_end_time').val() == ""){
+         $('#error_intro_start_time').hide();
+         $('#error_intro_end_time').show();
+         $('#next2').attr('disabled','disabled');
+      }else if($('#skip_intro').val() != "" && $('#intro_start_time').val() != "" && $('#intro_end_time').val() != ""){
+         $('#error_intro_start_time').hide();
+         $('#error_intro_end_time').hide();
+         $('#next2').removeAttr('disabled');
+      }
+      else{
+         $('#next2').attr('disabled','disabled');
+      }
+   });
+   $('#intro_end_time').change(function(){
+      if($($('#skip_intro').val() != "" && '#intro_end_time').val() != "" && $('#intro_end_time').val() != "" ){
+         $('#error_intro_start_time').hide();
+         $('#error_intro_end_time').hide();
+         $('#next2').removeAttr('disabled');
+      }else if($('#skip_intro').val() != "" && $('#intro_start_time').val() == "" && $('#intro_end_time').val() != ""){
+         $('#error_intro_start_time').show();
+         $('#error_intro_end_time').hide();
+         $('#next2').attr('disabled','disabled');
+      }else{
+         $('#next2').attr('disabled','disabled');
+      }
+   });
+
+// validation recap
+  
+   $('#skip_recap').change(function(){
+      if($('#skip_recap').val() != "" ){
+         $('#error_recap_start_time').show();
+         $('#error_recap_end_time').show();
+         $('#next2').attr('disabled','disabled');
+      }else{
+         $('#next2').removeAttr('disabled');
+      }
+   });
+   $('#recap_start_time').change(function(){
+      if($('#skip_recap').val() != "" && $('#recap_start_time').val() != "" && $('#recap_end_time').val() == ""){
+         $('#error_recap_start_time').hide();
+         $('#error_recap_end_time').show();
+         $('#next2').attr('disabled','disabled');
+      }else if($('#skip_recap').val() != "" && $('#recap_start_time').val() != "" && $('#recap_end_time').val() != ""){
+         $('#error_recap_start_time').hide();
+         $('#error_recap_end_time').hide();
+         $('#next2').removeAttr('disabled');
+      }
+      else{
+         $('#next2').attr('disabled','disabled');
+      }
+   });
+   $('#recap_end_time').change(function(){
+      if($($('#skip_recap').val() != "" && '#recap_end_time').val() != "" && $('#recap_end_time').val() != "" ){
+         $('#error_recap_start_time').hide();
+         $('#error_recap_end_time').hide();
+         $('#next2').removeAttr('disabled');
+      }else if($('#skip_recap').val() != "" && $('#recap_start_time').val() == "" && $('#recap_end_time').val() != ""){
+         $('#error_recap_start_time').show();
+         $('#error_recap_end_time').hide();
+         $('#next2').attr('disabled','disabled');
+      }else{
+         $('#next2').attr('disabled','disabled');
+      }
+   });
+
+
+
+
+   });
+
+
+
+
    // $('#intro_start_time').datetimepicker(
    // {
    //     format: 'hh:mm '
