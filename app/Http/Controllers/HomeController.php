@@ -1202,7 +1202,7 @@ class HomeController extends Controller
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
                     ->count();
 
-                if (count($alldevices) == 1 && $user_role == "registered" && Auth::User()->id != 1)
+                if (count($alldevices) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
 
                     LoggedDevice::where('user_ip','=', $userIp)
@@ -1292,8 +1292,10 @@ class HomeController extends Controller
                 //         ));
                 //     }
                 // }
-                elseif ($user_check >= $device_limit && Auth::User()->role != "admin")
+                elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
                 {
+                    // dd(Auth::User()->role);
+
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
                     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
@@ -2517,6 +2519,12 @@ class HomeController extends Controller
             $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
+
+
+            if($plan_details['type'] == "Razorpay"){
+                $PlanId =$plan_details->plan_id;
+                return Redirect::route('RazorpayIntegration',$PlanId);
+            }
 
             $request->session()
                 ->put('planname', $request->modal_plan_name);
