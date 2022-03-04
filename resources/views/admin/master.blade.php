@@ -15,6 +15,7 @@ if (!empty($data['password_hash'])) {
    $id = auth()->user()->id;
    $user_package =    DB::table('users')->where('id', 1)->first();
    $package = $user_package->package;
+   $test = 1;
    ?>
 <input type="hidden" id="session" value="session">
 

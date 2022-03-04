@@ -20,7 +20,7 @@ if(!empty($request_url)){
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
   <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
   <input type="hidden" id="video_video" value="video">
-  <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){ echo get_adurl($ads->ads_id);}?>">
+  <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
    font-size: 2.4em;
