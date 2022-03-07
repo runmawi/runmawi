@@ -570,7 +570,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         
         
          if($mp4_url != '') {
-            $ffprobe = \FFMpeg\FFProbe::create();
+            $ffprobe = \FFMpeg\FFMpeg\FFProbe::create();
             $disk = 'public';
             $data['duration'] = $ffprobe->streams($request->video)
             ->videos()
@@ -1077,10 +1077,10 @@ if(!empty($artistsdata)){
             $reelvideo_names = 'reels'.$reelvideo_name;
             $reelvideo = $request->reels_videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
         
-            $ffmpeg = \FFMpeg\FFMpeg::create();
+            $ffmpeg = \FFMpeg\FFMpeg\FFMpeg::create();
             $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
             $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-            $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+            $videos->save(new \FFMpeg\FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
             $video->reelvideo =  $reelvideo_names;
         }
     //URL Link
@@ -1267,7 +1267,7 @@ if(!empty($artistsdata)){
             }
 
     // Use FFProbe to get the duration of the video.
-            $ffprobe = \FFMpeg\FFProbe::create();
+            $ffprobe = \FFMpeg\FFMpeg\FFProbe::create();
             $duration = $ffprobe->streams($video_path)
             ->videos()
             ->first()                  
@@ -1567,7 +1567,8 @@ if(!empty($artistsdata)){
                 $reelvideo_names = 'reels'.$reelvideo_name;
                 $reelvideo =$request->file('reels_videos')->move(public_path('uploads/reelsVideos'), $reelvideo_name);
             
-                $ffmpeg = \FFMpeg\FFMpeg::create();
+                // $ffmpeg = \FFMpeg\FFMpeg::create();
+                $ffmpeg = \FFMpeg\FFMpeg\FFMpeg::create();
                 $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
                 $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
                 $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);

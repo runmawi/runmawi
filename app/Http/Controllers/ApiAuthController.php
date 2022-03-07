@@ -350,7 +350,7 @@ class ApiAuthController extends Controller
   {
 
     $settings = Setting::first();
-    $mobile = $request->user_ip;
+    $userIp = $request->user_ip;
     $device_name = $request->device_name;
     $email = $request->email;
     $token = $request->token;
