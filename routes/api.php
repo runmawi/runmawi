@@ -255,6 +255,5 @@ Route::group([
     Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
     Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
 
-    Route::post('RazorpaySubscriptionStore', 'ApiAuthController@RazorpaySubscriptionStore');
 
 });

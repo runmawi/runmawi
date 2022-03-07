@@ -214,19 +214,50 @@ class ApiAuthController extends Controller
 
             if($paymentMode == "Razorpay"){
                 
-                $Plan_Id = $request->plan_id;
-                $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        
-                $subscription = $api->subscription->create(array(
-                'plan_id' =>  $Plan_Id, 
-                'customer_notify' => 1,
-                'total_count' => 6, 
-                ));
-                      $response = array(
-                        'status' => 'true',
-                        'message' => 'Registered Successfully.',
-                        'user_id' => $userid,
-                    );
+            try{
+              $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+              $countryName = $geoip->getCountry();
+              $regionName = $geoip->getregion();
+              $cityName = $geoip->getcity();
+              
+                                                                                // Store the Razorpay subscription detials
+              $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+              $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
+              $plan_id      = $api->plan->fetch($subscription['plan_id']);
+          
+              $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
+              $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+          
+                  Subscription::create([
+                  'user_id'        =>  $request->userId,
+                  'name'           =>  $plan_id['item']->name,
+                  // 'days'        =>  $fileName_zip,
+                  'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
+                  'stripe_id'      =>  $subscription['id'],
+                  'stripe_status'  =>  $subscription['status'],
+                  'stripe_plan'    =>  $subscription['plan_id'],
+                  'quantity'       =>  $subscription['quantity'],
+                  'countryname'    =>  $countryName,
+                  'regionname'     =>  $regionName,
+                  'cityname'       =>  $cityName,
+                  'PaymentGateway' =>  'Razorpay',
+              ]);
+          
+              User::where('id',$request->userId)->update([
+                  'role'                  =>  'subscriber',
+                  'stripe_id'             =>  $subscription['id'] ,
+                  'subscription_start'    =>  $Sub_Startday,
+                  'subscription_ends_at'  =>  $Sub_Endday,
+              ]);
+          
+                return $response = array('status'=>'true',
+                'message' => 'Registered Successfully.');
+            }
+          catch (\Exception $e){
+            return response()->json([
+              'status'  => 'false',
+              'Message' => 'Error,While Storing the data on Serve Error'], 200);
+          }
             }
             else{
                      $payment_type = $input['payment_type'];
@@ -5568,56 +5599,6 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
-  public function RazorpaySubscriptionStore(Request $request){
-
-    try{       
-      
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $countryName = $geoip->getCountry();
-      $regionName = $geoip->getregion();
-      $cityName = $geoip->getcity();
-      
-                                                                        // Store the Razorpay subscription detials
-      $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-      $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
-      $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-      $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-      $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
-
-          Subscription::create([
-          'user_id'        =>  $request->userId,
-          'name'           =>  $plan_id['item']->name,
-          // 'days'        =>  $fileName_zip,
-          'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
-          'stripe_id'      =>  $subscription['id'],
-          'stripe_status'  =>  $subscription['status'],
-          'stripe_plan'    =>  $subscription['plan_id'],
-          'quantity'       =>  $subscription['quantity'],
-          'countryname'    =>  $countryName,
-          'regionname'     =>  $regionName,
-          'cityname'       =>  $cityName,
-          'PaymentGateway' =>  'Razorpay',
-      ]);
-
-      User::where('id',$request->userId)->update([
-          'role'                  =>  'subscriber',
-          'stripe_id'             =>  $subscription['id'] ,
-          'subscription_start'    =>  $Sub_Startday,
-          'subscription_ends_at'  =>  $Sub_Endday,
-      ]);
-
-        return response()->json([
-          'status'  => 'true',
-          'Message' => 'User Created Successfully'], 200);
-    }
-  catch (\Exception $e){
-    return response()->json([
-      'status'  => 'false',
-      'Message' => 'Error,While Storing the data on Serve Error'], 200);
-  }
-
-  }
 
   public function RazorpaySubscription(Request $request){
 
@@ -5625,10 +5606,7 @@ public function LocationCheck(Request $request){
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
-
-        $user_id = $request->user_id;
-        $user_details =User::where('id',$user_id)->first();
-
+        
         $Plan_Id = $request->plan_id;
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
@@ -5647,10 +5625,6 @@ public function LocationCheck(Request $request){
             'subscriptionId' =>  $subscription->id ,
             'short_url'      =>  $subscription->short_url,
             'currency'       =>  'INR',
-            'email'          =>  $user_details['email'],
-            'contactNumber'  =>  $user_details['mobile'],
-            'user_id'        =>  $user_details->id,
-            'user_name'      =>  $user_details->name,
             'address'        =>  $cityName,
             'description'    =>  null,
             'countryName'    =>  $countryName,
