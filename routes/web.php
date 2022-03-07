@@ -1260,3 +1260,4 @@ Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSub
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
+
