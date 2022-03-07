@@ -1370,6 +1370,9 @@ li.list-group-item {width: 375px;}
 .main-head{
     margin-top: -40px;
 }
+.row-data{
+    display: flex;
+}
 .social_share p {
     display: inline-block;
     font-weight: 700;
@@ -2138,3 +2141,20 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     border-bottom-right-radius: 15px;
 }   
 }
+@media (max-width: 768px) {
+    .sign-in-page{
+        padding: 0px!important;
+        padding-top: 40px!important;
+    }
+    .sign-in-page-data h3 {
+    color: #cdcece;
+    font-size: 30px;
+    font-family: 'Chivo';
+}
+    .btn-primary{
+        background-color: #45c5e1 !important;
+    }
+ .row-data{
+    flex-wrap: wrap!important;
+}
+    } 

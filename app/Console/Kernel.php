@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         //
         Commands\LivestreamCron::class,
         Commands\VideostreamCron::class,
+        Commands\Autodeploy::class,
 
     ];
 
@@ -27,11 +28,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('Autodeploy:cron')
+        ->everyMinute();
+
         // $schedule->command('inspire')->hourly();
         $schedule->command('livestream:cron')
         ->everyMinute();
+
         $schedule->command('videostream:cron')
         ->everyMinute();
+
     }
 
     /**

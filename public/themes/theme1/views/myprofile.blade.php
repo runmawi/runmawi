@@ -611,38 +611,40 @@ border-radius: 20px;
                             </div></div>
                         </div>
                         <div class="a-border"></div>
-                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-around mt-2">
-                                <span class="text-light font-size-13">Email</span>
-                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
-                            </div>   
-                            <div class="col-md-6 d-flex justify-content-around mt-2">
-                                <span class="text-light font-size-13">Username</span>
-                                <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
-                            </div> 
-                        </div>
-                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-around mt-2">
-                                <span class="text-light font-size-13">Password</span>
-                                <p class="mb-0">**********</p>
-                            </div>
-                             <div class="col-md-6 d-flex justify-content-around mt-2">
-                                <span class="text-light font-size-13">Phone</span>
-                                <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
-                            </div>
-
-                        </div>
-                        <div class="row align-items-center text-right justify-content-end mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-around mt-2">
+                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">First Name</span>
-                                <p class="mb-0">**********</p>
+                                <p class="mb-0">ALB</p>
                             </div>
-                             <div class="col-md-6 d-flex justify-content-around mt-2">
+                             <div class="col-md-6 d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">Last Name</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
 
                         </div>
+                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Email</span>
+                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                            </div>   
+                            <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Username</span>
+                                <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                            </div> 
+                        </div>
+                        
+                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
+                            <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Password</span>
+                                <p class="mb-0">**********</p>
+                            </div>
+                             <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Phone</span>
+                                <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                            </div>
+
+                        </div>
+                        
                         <hr style="color:#fff;">
                         <div class="row align-items-center justify-content-end text-right mb-3">
                            
