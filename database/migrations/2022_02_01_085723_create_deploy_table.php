@@ -22,6 +22,7 @@ class CreateDeployTable extends Migration
             $table->string('port')->nullable();
             $table->string('package')->nullable();
             $table->string('trial_starts_at')->nullable();
+            $table->string('trail_End_at')->nullable();
             $table->timestamps();
         });
     }

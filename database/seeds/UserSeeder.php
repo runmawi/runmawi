@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
                 $password = Hash::make($Email->password);
                 $package = ucwords($Email->package);
                 $trail_start = $Email->trial_starts_at;
-                $trail_end   = Carbon::now()->addDays(10);
+                $trail_end   = $Email->trail_End_at;
                 $trial_in    = 1;
             }else{
                 $email_id = 'admin@admin.com';
