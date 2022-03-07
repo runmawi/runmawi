@@ -240,8 +240,5 @@ dd($carbon);
         return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
 
-    public function Autodeploy(Request $request){
-       $realpath = realpath('public');
-        dd($realpath);
-    }
+ 
 }

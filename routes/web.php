@@ -1261,4 +1261,3 @@ Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptio
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
 
-Route::get('/Autodeploy', 'RazorpayController@Autodeploy')->name('Autodeploy');
