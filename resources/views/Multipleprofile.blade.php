@@ -154,5 +154,11 @@ a.fa.fa-edit {
      a{
         text-decoration: none!important;  
      }
+     @media (max-width: 768px) {
+    
+ .row-data{
+    flex-wrap: wrap!important;
+}
+    } 
  </style>
 

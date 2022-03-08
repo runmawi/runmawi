@@ -239,4 +239,6 @@ dd($carbon);
 
         return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
+
+ 
 }
