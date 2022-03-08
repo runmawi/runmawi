@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use FFMpeg\FFMpeg;
+use FFMpeg;
 use App\Video as Video;
 use Carbon\Carbon;
-use FFMpeg\FFMpeg\Coordinate\Dimension;
-use FFMpeg\FFMpeg\Format\Video\X264;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
