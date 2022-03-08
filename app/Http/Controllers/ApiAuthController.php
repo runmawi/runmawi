@@ -229,7 +229,7 @@ class ApiAuthController extends Controller
               $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
           
                   Subscription::create([
-                  'user_id'        =>  $request->userId,
+                  'user_id'        =>  $userid,
                   'name'           =>  $plan_id['item']->name,
                   // 'days'        =>  $fileName_zip,
                   'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
@@ -243,7 +243,7 @@ class ApiAuthController extends Controller
                   'PaymentGateway' =>  'Razorpay',
               ]);
           
-              User::where('id',$request->userId)->update([
+              User::where('id',$userid)->update([
                   'role'                  =>  'subscriber',
                   'stripe_id'             =>  $subscription['id'] ,
                   'subscription_start'    =>  $Sub_Startday,
@@ -405,7 +405,7 @@ class ApiAuthController extends Controller
   {
 
     $settings = Setting::first();
-    $mobile = $request->user_ip;
+    $userIp = $request->user_ip;
     $device_name = $request->device_name;
     $email = $request->email;
     $token = $request->token;

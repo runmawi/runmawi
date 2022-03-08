@@ -141,7 +141,6 @@ class TvshowsController extends Controller
      $pages = Page::all();
      $data = array(
       'episodes' => Episode::where('active', '=', '1')->where('status', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
-      'banner' => Episode::where('active', '=', '1')->where('status', '=', '1')->where('banner', '=', '1')->orderBy('id', 'DESC')->simplePaginate(120000),
       'trendings' => $trending_episodes,
       'latest_episodes' => $latest_episodes,
       'featured_episodes' => $featured_episodes,
@@ -155,8 +154,9 @@ class TvshowsController extends Controller
       'free_episodes' => $free_episodes,
       'currency' => $currency,
       'free_Contents' => $free_Contents,  
-
+      'banner' => Episode::where('active','1')->where('status','1')->where('banner','1')->orderBy('id', 'DESC')->simplePaginate(120000),
     );
+
      return Theme::view('tv-home', $data);
    }
 
