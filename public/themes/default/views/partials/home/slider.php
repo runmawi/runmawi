@@ -230,8 +230,11 @@ endif; ?>
 
 </script>
 -->
-<!-- Banners -->
-<?php if(isset($banner)) : 
+
+
+<!-- Tv show Banners -->
+<?php
+ if(isset($banner)) : 
     foreach($banner as $key => $slider_video): 
             ?>
 
