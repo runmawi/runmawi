@@ -23,7 +23,7 @@
 <span class="fa fa-star"></span></div>
                     
                 </div>
-                        <div class="col-xl-4 col-lg-6 col-md-12 mt-5 pt-5 b2">
+                        <div class="col-xl-4 col-lg-12 col-md-6 mt-5 pt-5 b2">
                         <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                            <a href="<?php echo $slider_video->link; ?>"

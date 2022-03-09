@@ -24,7 +24,8 @@
                   
                     </a>
                   </div>
-                    <div class="movie-time d-flex align-items-center my-2">
+                  </div>
+                    <div class="movie-time d-flex align-items-center justify-content-between my-2">
                          <a href="<?php if($free_episode->series_id == $free_serie->id){ echo URL::to('/episode'.'/'.$free_serie->title.'/'.$free_episode->slug) ; }?> ">
                     <h6><?php echo __($free_episode->title); ?></h6>
                   </a>
@@ -32,7 +33,7 @@
                     <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_episode->duration); ?></span>
                   </div>
                 </div>
-              </div>
+             
             </a>
           </li>
         <?php  } }
