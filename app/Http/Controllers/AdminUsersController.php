@@ -87,12 +87,13 @@ class AdminUsersController extends Controller
         if(!empty($search_value)):
             $users = User::where('username', 'LIKE', '%'.$search_value.'%')->orWhere('email', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->take(9000)->get();
         else:
-            $users = User::orderBy('created_at', 'desc')->take(9000)->get();
+            // $users = User::orderBy('created_at', 'desc')->take(9000)->get();
+            $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
         endif;
 // print_r($total_revenew);
 // exit();
 		$data = array(
-			'users' => $users,
+			'users' => $allUsers,
             'total_subscription' => $total_subscription,
             'total_revenew' => $total_revenew,
             'total_recent_subscription' => $total_recent_subscription,
