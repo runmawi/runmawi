@@ -573,6 +573,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
+                 <?php if(!empty($video->description) ) { ?>
+
+<h4>Description</h4>
+<div class="text-white">
+    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+</div>
+<?php  }?>
              </div>
              <div class="col-sm-1 col-md-1 col-xs-12">
                  <div class="btn btn-default views text-white">
