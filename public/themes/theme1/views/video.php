@@ -559,19 +559,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         <span class="w-trailor">Watch Trailer</span>
                     </a>
                     </div> -->
-               <div class="col-sm-12 col-md-12 col-xs-12 text-right">
-                   <div class=" d-flex justify-content-end">     
-                       <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i>Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
-                       <?php } ?>
-                   </div>
-               </div>
+               
            </div>
        </div>
        <!-- Year, Running time, Age --> 
-         <div class="row align-items-center text-white text-detail justify-content-between">
+         <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-5 col-md-5 col-xs-12">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
@@ -589,15 +581,26 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            </span>
                        </div>
              </div>
-             <div class="col-sm-6 col-md-6 col-xs-12 text-right">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                     <!-- Watchlater -->
+             <div class="col-sm-6 col-md-6 col-xs-12 text-right mt-4">
+               <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                     Watchlater 
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-                     <!-- Wishlist -->
+                     <!-- Wishlist 
                     <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                     <!-- Social Share, Like Dislike -->
-                        <?php include('partials/social-share.php'); ?>                     
-                 </ul>
+                     <!-- Social Share, Like Dislike
+                                           
+                 </ul>-->
+                 <div class="row justify-content-end">
+           <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
+                   <div class=" d-flex justify-content-end">     
+                       <?php if($video->trailer != ''){ ?>
+                           <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+                       <?php } ?>
+                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3" style="border-radius:none!important;"> + Add to Whislist</div>
+                   </div> 
+               </div></div>
            </div>
          </div>
            
