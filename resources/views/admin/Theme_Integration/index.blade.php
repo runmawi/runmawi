@@ -114,7 +114,7 @@
 </div>
 
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
@@ -124,44 +124,39 @@
 
 
 $( document ).ready(function() {
-
     $(".theme_img,#test").click(function(){
     theme_id=this.id;
 
-        swal({
-            title: "Are you sure?",
-            text: "To Apply this Theme",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-            closeOnConfirm: false,
-        })
-         .then((willDelete) => {
-            if (willDelete) {
-            $.ajax({
-                    url: '{{ URL::to('admin/ThemeIntegration/set_theme') }}',
-                    type: "get",
-                    data:{ 
-                        _token: "{{csrf_token()}}" ,
-                            id: theme_id,
-                        }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'To Apply this Theme!',
+        icon: 'warning',
+        allowOutsideClick:false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, change it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+    $.ajax({
+            url: '{{ URL::to('admin/ThemeIntegration/set_theme') }}',
+            type: "get",
+            data:{ 
+                _token: "{{csrf_token()}}" ,
+                id: theme_id, }
                 }).done(function() {
-                    swal({
-                        title: "Applied", 
-                        text: "Theme has been successfully Changed", 
-                        type: "success"
+                    swal.fire({
+                        title: 'Applied', 
+                        text: 'Theme has been successfully Changed', 
+                        allowOutsideClick:false,
+                        type: 'success',
+                        icon: 'success',
                     }).then(function() {
                         location.href = '{{ URL::to('admin/ThemeIntegration') }}';
                     });
-                });   
-                } else {
-                    swal({
-                        title: "Restored", 
-                        text: "Theme has been successfully Restored", 
-                        type: "success"
-                    })
-                }
-});
+                });
+  }
+});      
 });
 
 
