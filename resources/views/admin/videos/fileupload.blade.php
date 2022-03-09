@@ -1158,6 +1158,7 @@ $(document).ready(function($){
   
 });
 
+});
 
 
    // $('#intro_start_time').datetimepicker(

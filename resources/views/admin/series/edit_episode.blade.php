@@ -133,26 +133,21 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-4">
-                        <label class="m-0">Skip Intro Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        
+                        <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="skip_intro" id="skip_intro" value="@if(!empty($episodes->skip_intro)){{ $episodes->skip_intro }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Intro Start Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="intro_start_time" id="intro_start_time" value="@if(!empty($episodes->intro_start_time)){{ $episodes->intro_start_time }}@endif" />
                         </div>
                     </div>
                     
                     <div class="col-sm-4">
-                        <label class="m-0">Intro End Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="intro_end_time" id="intro_end_time" value="@if(!empty($episodes->intro_end_time)){{ $episodes->intro_end_time }}@endif" />
                         </div>
@@ -161,25 +156,19 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-4">
-                        <label class="m-0">Skip Recap Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                     <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="skip_recap" id="skip_recap" value="@if(!empty($episodes->skip_recap)){{ $episodes->skip_recap }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Recap Start Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="recap_start_time" id="recap_start_time" value="@if(!empty($episodes->recap_start_time)){{ $episodes->recap_start_time }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Recap End Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="recap_end_time" id="recap_end_time" value="@if(!empty($episodes->recap_end_time)){{ $episodes->recap_end_time }}@endif" />
                         </div>
@@ -307,14 +296,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
         <script>
+
+            
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
-                $('#intro_start_time').mask("00:00:00");
-                $('#intro_end_time').mask("00:00:00");
-                $('#recap_start_time').mask("00:00:00");
-                $('#recap_end_time').mask("00:00:00");
-                $('#skip_intro').mask("00:00:00");
-                $('#skip_recap').mask("00:00:00");
+                // $('#intro_start_time').mask("00:00:00");
+                // $('#intro_end_time').mask("00:00:00");
+                // $('#recap_start_time').mask("00:00:00");
+                // $('#recap_end_time').mask("00:00:00");
+                // $('#skip_intro').mask("00:00:00");
+                // $('#skip_recap').mask("00:00:00");
             });
 
             $(document).ready(function () {

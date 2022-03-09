@@ -564,7 +564,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        </div>
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
-             <div class="col-sm-5 col-md-5 col-xs-12">
+             <div class="col-sm-6 col-md-6 col-xs-12">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
@@ -573,7 +573,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
-             </div>
+                 <div class="col-sm-12 mt-4 p-0">
+                 <?php if(!empty($video->description) ) { ?>
+
+<h5>Description:</h5>
+<div class="text-white">
+    <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
+</div>
+<?php  }?>
+             </div></div>
              <div class="col-sm-1 col-md-1 col-xs-12">
                  <div class="btn btn-default views text-white">
                            <span class="view-count"><i class="fa fa-eye"></i> 
@@ -581,7 +589,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            </span>
                        </div>
              </div>
-             <div class="col-sm-6 col-md-6 col-xs-12 text-right mt-4">
+             <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                      Watchlater 
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
@@ -598,7 +606,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3" style="border-radius:none!important;"> + Add to Whislist</div>
+                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Whislist <?php endif; ?>
+                        </div>
                    </div> 
                </div></div>
            </div>
@@ -660,7 +669,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   </div>
 
-<!--End Intro Skip and Recap Skip -->
+<!--End Intro Skip and Recap Skip 
 
 <?php if(!empty($video->description) ) { ?>
 
@@ -669,7 +678,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
 </div>
 <?php  }?>
-<br>
+<br>-->
 
 <?php if(!empty($video->details) ) { ?>
 
@@ -987,7 +996,8 @@ location.reload();
          $(this).toggleClass('active');
          $(this).html("");
              if($(this).hasClass('active')){
-              $(this).html('<i class="ri-heart-fill"></i>');
+              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
+            
               $(".add_data_test").empty();
               $(".add_data_test").append("<div>Remove from Wishlist</div> ");
                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
@@ -995,7 +1005,7 @@ location.reload();
                 $('.add_watch').slideUp('fast');
                }, 3000);
              }else{
-              $(this).html('<i class="ri-heart-line"></i>');
+              $(this).html('+ Add to Whislist');
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to  Wishlist</div> ");
