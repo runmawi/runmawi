@@ -35,7 +35,7 @@
 
     <!-- Reels Modal -->
 
-<div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true">
+<div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
             <div class="modal-body" id="Reels_player"  >
@@ -60,6 +60,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
+
     var Reels = <?php echo json_encode($ReelVideos); ?>;
     var player = new Playerjs({id:"Reels_player", file:Reels,autoplay:1});
 
