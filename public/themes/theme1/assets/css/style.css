@@ -147,7 +147,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .w-trailor { font-size: 17px; letter-spacing: 3.5px; font-weight: 600; color: var(--iq-white); margin-left: 5px; }
 .slider-inner{position: relative;overflow: hidden;width: 100%;}
 .big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: transparent; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.slick-track{margin:unset!important;}
+.slick-track{margin:unset!important;width: 0 auto!important;}
 .favorites-contens{
     padding: 10px;
 }
@@ -2274,4 +2274,5 @@ a {
 }
 .trending-dec{
     font-size: 16px;
+    text-align: justify;
 }
