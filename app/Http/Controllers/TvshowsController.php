@@ -162,7 +162,9 @@ class TvshowsController extends Controller
 
    public function play_episode($series_name,$episode_name)//
    {
-        
+    $Theme = HomeSetting::pluck('theme_choosen')->first();
+    Theme::uses( $Theme );
+
    	$settings = Setting::first();
    	if(Auth::guest()):
             return Redirect::to('/login');
@@ -371,6 +373,9 @@ class TvshowsController extends Controller
 
      public function play_series($name)
     {
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses( $Theme );
+        
     	$settings = Setting::first();
         if(Auth::guest()):
             return Redirect::to('/login');
