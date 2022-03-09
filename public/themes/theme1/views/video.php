@@ -564,7 +564,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        </div>
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
-             <div class="col-sm-5 col-md-5 col-xs-12">
+             <div class="col-sm-6 col-md-6 col-xs-12">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
@@ -573,14 +573,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
+                 <div class="col-sm-12 mt-4 p-0">
                  <?php if(!empty($video->description) ) { ?>
 
-<h4>Description</h4>
+<h5>Description:</h5>
 <div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
 </div>
 <?php  }?>
-             </div>
+             </div></div>
              <div class="col-sm-1 col-md-1 col-xs-12">
                  <div class="btn btn-default views text-white">
                            <span class="view-count"><i class="fa fa-eye"></i> 
@@ -588,7 +589,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            </span>
                        </div>
              </div>
-             <div class="col-sm-6 col-md-6 col-xs-12 text-right mt-4">
+             <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                      Watchlater 
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
@@ -667,7 +668,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   </div>
 
-<!--End Intro Skip and Recap Skip -->
+<!--End Intro Skip and Recap Skip 
 
 <?php if(!empty($video->description) ) { ?>
 
@@ -676,7 +677,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
 </div>
 <?php  }?>
-<br>
+<br>-->
 
 <?php if(!empty($video->details) ) { ?>
 

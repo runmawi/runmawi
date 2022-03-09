@@ -30,8 +30,9 @@
                     <h6><?php echo __($free_episode->title); ?></h6>
                   </a>
                     <div class="badge badge-secondary p-1 mr-2"><?php echo $free_episode->age_restrict.' '.'+' ?></div>
-                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_episode->duration); ?></span>
                   </div>
+                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_episode->duration); ?></span>
+
                 </div>
              
             </a>
