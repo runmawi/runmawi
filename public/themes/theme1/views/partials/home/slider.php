@@ -291,7 +291,7 @@ data-delay-in="1.2">
 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="black bl" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>
