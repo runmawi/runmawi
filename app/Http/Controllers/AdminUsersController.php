@@ -139,7 +139,7 @@ class AdminUsersController extends Controller
         if($row->active == 1){ $active = "Active" ;$class="bg-success"; }elseif($row->active == 0){ $active = "Deactive" ;$class="bg-danger"; }
         $output .= '
         <tr>
-        <td><img class="remove" src="'.$image_url.'" alt="" /></td>
+        <td><img class="img-fluid avatar-50" alt="author-profile" src="'.$image_url.'" alt="" /></td>
         <td>'.$username.'</td>
         <td>'.$row->mobile.'</td>
         <td>'.$username.'</td>
