@@ -432,18 +432,59 @@
                 title: { 
                     required: true, 
                 },
+
+                intro_start_time: {
+                    required: function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    greaterThan:function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                skip_intro: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                intro_end_time: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#skip_intro').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
                 
-                intro_start_time: { 
-                    required: true, 
-                    greaterThan: "#intro_end_time" 
-                },
-                skip_intro: { 
-                    required: true, 
-                    Skipintro_greaterThan: "#intro_start_time" 
-                },
-                intro_end_time: { 
-                    required: true, 
-                },
 
                 recap_start_time: { 
                     required: true, 
