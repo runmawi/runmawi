@@ -572,6 +572,8 @@ Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
 Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
 Route::post('/moderatoruser/update', 'ModeratorsUserController@update');
 Route::get('/live_search', 'AdminVideosController@live_search');
+Route::get('/users_search', 'AdminUsersController@Usersearch');
+
 
 
 Route::get('/devices', 'AdminPlansController@DevicesIndex');

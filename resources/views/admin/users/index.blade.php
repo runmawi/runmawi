@@ -1,6 +1,12 @@
 @extends('admin.master')
 
 @section('content')
+<style>
+.pagination{
+   margin-left: 62%;
+}
+
+</style>
 <?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
@@ -70,6 +76,9 @@
                            <div class="iq-header-title">
                               <h4 class="card-title">User Lists</h4>
                            </div>
+                           <div class="form-group mr-2">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
+                    </div>
                         </div>
                         <div class="iq-card-body">
                            <div class="table-view">
@@ -153,6 +162,34 @@ $(document).ready( function () {
 		});
 
 	</script>
+         <script>
+$(document).ready(function(){
+
+ fetch_customer_data();
+
+ function fetch_customer_data(query = '')
+ {
+  $.ajax({
+   url:"{{ URL::to('/admin/users_search') }}",
+   method:'GET',
+   data:{query:query},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+   }
+  })
+ }
+
+ $(document).on('keyup', '#search', function(){
+  var query = $(this).val();
+  fetch_customer_data(query);
+ });
+});
+</script>
+
+
 <style>
 
 .form-control {
