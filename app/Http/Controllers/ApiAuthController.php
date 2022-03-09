@@ -2811,9 +2811,11 @@ public function checkEmailExists(Request $request)
           } else {
                 $ppv_video_status = "pay_now";
           }
+      $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
       $settings = Setting::first();
       $response = array(
         'series' => $series,
+        'seasonfirst' => $seasonfirst,
         'ppv_video_status' => $ppv_video_status,
         "settings"   => $settings,
 
