@@ -400,17 +400,65 @@
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script>
-            $('form[id="Episode_edit"]').validate({
-                rules: {
-                    title: "required",
-                },
-                messages: {
-                    title: "This field is required",
-                },
-                submitHandler: function (form) {
-                    form.submit();
-                },
+
+            $.validator.addMethod('greaterThan', function(value, element) {
+                var intro_start_time = $("#intro_start_time").val();
+                var intro_end_time = $('#intro_end_time').val();
+                return intro_start_time < intro_end_time;
             });
+
+            $.validator.addMethod('Skipintro_greaterThan', function(value, element) {
+                var intro_end_time = $("#intro_end_time").val();
+                var skip_time = $('#skip_intro').val();
+                return skip_time > intro_end_time;
+            });
+
+
+            $.validator.addMethod('RecapgreaterThan', function(value, element) {
+                var recap_start_time = $("#recap_start_time").val();
+                var recap_end_time = $('#recap_end_time').val();
+                return recap_start_time < recap_end_time;
+            });
+
+            $.validator.addMethod('Recapintro_greaterThan', function(value, element) {
+                var recap_end_time = $("#recap_end_time").val();
+                var skip_recap = $('#skip_recap').val();
+                return skip_recap > recap_end_time;
+            });
+
+
+        $("#Episode_edit").validate({
+            rules: {
+                title: { 
+                    required: true, 
+                },
+                
+                intro_start_time: { 
+                    required: true, 
+                    greaterThan: "#intro_end_time" 
+                },
+                skip_intro: { 
+                    required: true, 
+                    Skipintro_greaterThan: "#intro_start_time" 
+                },
+                intro_end_time: { 
+                    required: true, 
+                },
+
+                recap_start_time: { 
+                    required: true, 
+                    RecapgreaterThan: "#recap_end_time" 
+                },
+                skip_recap: { 
+                    required: true, 
+                    Recapintro_greaterThan: "#recap_start_time" 
+                },
+                recap_end_time: { 
+                    required: true, 
+                },
+            },
+       
+        });
         </script>
         @stop @stop @stop
     </div>
