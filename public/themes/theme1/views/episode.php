@@ -85,11 +85,17 @@ $series=App\series::first();
 						</div>
 					<?php endif; ?>
 					
-					
-<div class="col-sm-12 intro_skips">
-       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-  </div>
+						<!-- Intro Skip and Recap Skip -->
+
+			<div class="col-sm-12 intro_skips">
+				<input type="button" class="skips" value="Skip Intro" id="intro_skip">
+				<input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+			</div>
+
+  			<div class="col-sm-12 Recap_skip">
+     			 <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  			</div>
+						<!-- Intro Skip and Recap Skip -->
 
 
 			<?php else: ?>
@@ -462,14 +468,14 @@ location.reload();
 		color: #c5bcbc;
 		font-size: 51px !important;
 	}
-	.intro_skips {
+	.intro_skips,.Recap_skip {
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
     margin-left: 80%;
     margin-right: 0;
 }
-input.skips{
+input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
     padding: 15px 32px;
@@ -491,51 +497,111 @@ input.skips{
     $Intro_skip = App\Episode::where('id',$episode->id)->first();
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
+	$SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
 
     $StartParse = date_parse($start_time);
-    $startSec = $StartParse['hour'] * 60 + $StartParse['minute'] + $StartParse['second'];
+    $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
+
     $EndParse = date_parse($end_time);
-    $EndSec = $EndParse['hour'] * 60 + $EndParse['minute'] + $EndParse['second'];
+    $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+	$SkipIntroParse = date_parse($Intro_skip['skip_intro']);
+    $skipIntroTime =  $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
+
+// dd($SkipIntroPermission);
 ?>
 
 <script>
 
+  var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
   var video = document.getElementById("videoPlayer");
   var button = document.getElementById("intro_skip");
   var Start = <?php echo json_encode($startSec); ?>;
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
+  var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
-button.addEventListener("click", function(e) {
-	video.currentTime = End;
-  video.play();
-})
-if(AutoSkip != 1){
+  if( SkipIntroPermissions == 0 ){
+  button.addEventListener("click", function(e) {
+    video.currentTime = IntroskipEnd;
+       $("#intro_skip").remove();  // Button Shows only one tym
+    video.play();
+  })
+    if(AutoSkip != 1){
+          this.video.addEventListener('timeupdate', (e) => {
+            document.getElementById("intro_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
+            var RemoveSkipbutton = End + 1;
 
+            if (Start <= e.target.currentTime && e.target.currentTime < End) {
+                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+            } 
+            if(RemoveSkipbutton  <= e.target.currentTime){
+                  $("#intro_skip").remove();   // Button Shows only one tym
+            }
+        });
+    }
+    else{
       this.video.addEventListener('timeupdate', (e) => {
-        document.getElementById("intro_skip").style.display = "none";
-        document.getElementById("Auto_skip").style.display = "none";
+            document.getElementById("Auto_skip").style.display = "none";
+            document.getElementById("intro_skip").style.display = "none";
 
-        if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                document.getElementById("intro_skip").style.display = "block"; // Manual skip
-        } 
-    });
+            var before_Start = Start - 5;
+            var trigger = Start - 1;
+            if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
+                document.getElementById("Auto_skip").style.display = "block";
+                  if(trigger  <= e.target.currentTime){
+                    document.getElementById("intro_skip").click();    // Auto skip
+                  }
+            }
+        });
+    }
 }
-else{
-  this.video.addEventListener('timeupdate', (e) => {
-        document.getElementById("intro_skip").style.display = "none";
-        document.getElementById("Auto_skip").style.display = "none";
+</script>
 
-        var before_Start = Start - 5;
-        var trigger = Start - 1;
-        if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
-            document.getElementById("Auto_skip").style.display = "block";
-               if(trigger  <= e.target.currentTime){
-                 document.getElementById("intro_skip").click();    // Auto skip
-               }
-        }
+<!-- Recap video skip -->
+
+<?php
+    $Recap_skip = App\Episode::where('id',$episode->id)->first();
+
+    $RecapStart_time = $Recap_skip->recap_start_time;
+    $RecapEnd_time = $Recap_skip->recap_end_time;
+
+	$SkipRecapParse = date_parse($Recap_skip['skip_recap']);
+    $skipRecapTime =  $SkipRecapParse['hour'] * 60 * 60 + $SkipRecapParse['minute'] * 60 + $SkipRecapParse['second'];
+
+    $RecapStartParse = date_parse($RecapStart_time);
+    $RecapstartSec = $RecapStartParse['hour']  * 60 *  60  + $RecapStartParse['minute']  * 60  + $RecapStartParse['second'];
+
+    $RecapEndParse = date_parse($RecapEnd_time);
+    $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
+?>
+
+<script>
+  var videoId = document.getElementById("videoPlayer");
+  var button = document.getElementById("Recaps_Skip");
+  var RecapStart = <?php echo json_encode($RecapstartSec); ?>;
+  var RecapEnd = <?php echo json_encode($RecapEndSec); ?>;
+  var RecapskipEnd = <?php echo json_encode($skipRecapTime); ?>;
+  var RecapValue  = $("#Recaps_Skip").val();
+
+  button.addEventListener("click", function(e) {
+    videoId.currentTime = RecapskipEnd;
+    $("#Recaps_Skip").remove();   // Button Shows only one tym
+    videoId.play();
+  })
+      this.videoId.addEventListener('timeupdate', (e) => {
+        document.getElementById("Recaps_Skip").style.display = "none";
+
+        var RemoveRecapsbutton = RecapEnd + 1;
+              if (RecapStart <= e.target.currentTime && e.target.currentTime < RecapEnd) {
+                  document.getElementById("Recaps_Skip").style.display = "block"; 
+              }
+               
+              if(RemoveRecapsbutton  <= e.target.currentTime){
+                  $("#Recaps_Skip").remove();   // Button Shows only one tym
+              }
     });
-}
 </script>
 	
 <?php include('footer.blade.php'); ?>

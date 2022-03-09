@@ -606,7 +606,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3" style="border-radius:none!important;"> + Add to Whislist</div>
+                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Whislist <?php endif; ?>
+                        </div>
                    </div> 
                </div></div>
            </div>
@@ -995,7 +996,8 @@ location.reload();
          $(this).toggleClass('active');
          $(this).html("");
              if($(this).hasClass('active')){
-              $(this).html('<i class="ri-heart-fill"></i>');
+              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
+            
               $(".add_data_test").empty();
               $(".add_data_test").append("<div>Remove from Wishlist</div> ");
                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
@@ -1003,7 +1005,7 @@ location.reload();
                 $('.add_watch').slideUp('fast');
                }, 3000);
              }else{
-              $(this).html('<i class="ri-heart-line"></i>');
+              $(this).html('+ Add to Whislist');
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to  Wishlist</div> ");
