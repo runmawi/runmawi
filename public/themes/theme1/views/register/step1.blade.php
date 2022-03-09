@@ -211,7 +211,7 @@ i.fa.fa-google-plus {
         border-radius: 20px;
         
     } 
-    ::placeholder { color: #fff!important; opacity: 1; word-spacing: 9px !important;font-size: 18px!important;letter-spacing: 2px;font-weight: 100!important;text-transform: uppercase;}
+    ::placeholder { color: #fff!important; opacity: 1; word-spacing: 9px !important;font-size: 16px!important;letter-spacing: 2px;font-weight: 100!important;text-transform: uppercase;}
 :-ms-input-placeholder { color: #d9d5d5 !important;  word-spacing: 9px !important;}
 ::-ms-input-placeholder { color: #d9d5d5 !important;  word-spacing: 9px !important;}
 
@@ -512,7 +512,7 @@ i.fa.fa-google-plus {
                           </div>
                       
                           <div class="d-flex justify-content-center links mb-3">
-                     Already have an account? <a href="<?= URL::to('/login')?>" class=" ml-2" style="color: #007bff!important">SIGN IN</a>
+                     Already have an account? <a href="<?= URL::to('/login')?>" class=" ml-2" style="color: #007bff!important;font-weight: 600;">SIGN IN</a>
                   </div>  
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
