@@ -20,6 +20,63 @@
         
     </script>
     <style>
+        .btn_prd_up_22:after {
+   position: absolute;
+    left: 33.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         .ply{
+         background: #000;
+            
+            padding: 10px;
+            border-radius: 50%;
+        }
+         .btn_prd_up_33:after {
+   position: absolute;
+    left: 65.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+        ul{
+            list-style: none;
+        }
+        .sig{
+            background: #161617;
+mix-blend-mode: normal;
+            padding: 50px;
+            border-radius: 20px;
+        } .sig1{
+            background: #151516;
+mix-blend-mode: normal;
+            padding: 25px;
+            border-radius: 20px;
+        }
     * {
       box-sizing: border-box;
     }
@@ -127,6 +184,40 @@
             background-color: #4895d1 !important;
             border: none !important;
         }
+.bg-col p{
+        font-family: Chivo;
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 31px;
+/* identical to box height */
+padding-top:10px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+    }
+        .container h1{
+            padding-left: 10px;
+        }
+    .bg-col{
+       background:rgb(32, 32, 32);
+
+mix-blend-mode: color-dodge;
+border-radius: 20px;
+    padding: 10px;
+    color: #fff;
+        height: 150px;
+        padding-left: 90px;
+        
+   
+}
+    .bl{
+       background: #161617;
+        padding: 10px;
+
+
+    }
 
 </style>
 <style>
@@ -157,8 +248,89 @@ body.loading .overlay{
   });
     
   </script>
-
-<div class="container">
+ <section  class="m-profile setting-wrapper pt-0">
+        <div class="container">
+            <div class="row sig ">
+                <div class="col-md-4 mt-3 pt-3">
+                    <h4 class="main-title mb-4">My Account</h4>
+                    <p class="text-white">Edit your name or change<br>your password.</p>
+                    <ul class="edit p-0 mt-5">
+                        
+                        <li><div class="d-flex showSingle" target="2">
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="text-white">
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
+                                    Plan
+                                </a>
+</div></li>
+                        
+                      
+                    </ul>
+                </div>
+                
+                <div class="col-md-8 targetDiv" id="div2">
+                    <div class="d-flex justify-content-around text-white">
+                        <div class="d-felx text-center">
+                        <p>Choose plan</p>
+                        <input type="radio">
+                            <ul>
+                                <li class="btn_prd_up_22"></li>
+                            </ul>
+                        </div>
+                        <div class="d-felx text-center">
+                        <p>Make payment</p>
+                            <input type="radio">
+                             <ul>
+                                <li class="btn_prd_up_33"></li>
+                            </ul>
+                        </div>
+                        <div class="d-felx text-center">
+                        <p>Confirmation</p>
+                            <input type="radio"></div>
+                    </div>
+                <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                        <div class="container ">
+                          
+                        <p>SAVE $594</p>
+                        <h1><span class="dl">$</span>1197 <span class="dl1">for 9 months</span></h1></div>
+                        </div>
+                        
+                    </div>
+                
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                       <div class="container ">
+                           
+                        <p>SAVE $300</p>
+                        <h1><span class="dl">$</span>894 <span class="dl1">for 6 months</span></h1></div> </div>
+                      
+                    </div>
+            
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                       <div class="container ">
+                           
+                                
+                        <p>SAVE $99</p>
+                        <h1><span class="dl">$</span>498 <span class="dl1">for 3 months</span></h1></div></div>
+                        
+                    </div>
+           
+                 <div class="col-md-12 mt-3">
+                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                        <div class="container ">
+                          
+                        <p></p>
+                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>
+                        
+                    </div>
+                </div>
+                 
+                
+       
+            </div></div>
+    </section>
+<!--<div class="container">
     <div class="row justify-content-center page-height" id="signup-form">  
         <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
@@ -170,11 +342,11 @@ body.loading .overlay{
                           </button>
                         <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
                             <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/PayPal-Logo.png');?>">
-                        </button> -->
+                        </button> 
                         </div>
 
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
+        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> 
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
@@ -212,11 +384,11 @@ body.loading .overlay{
                                                     }    
                                                     $plan_devices = implode(",",$devices_name);
                                               ?>
-                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
+                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    
                                                 <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
-                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
+                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> 
                                                 </div>
                                             </div>
                                         </div>
@@ -247,7 +419,7 @@ body.loading .overlay{
                                     </a>
                             </div>
                             </div>
-                        </div>
+                        </div>-->
               <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">				
