@@ -577,7 +577,7 @@ border-radius: 20px;
 </div>
                             </li>
                         <li><div class="d-flex showSingle" target="2">
-                                <a>
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
                                     Plan
                                 </a>

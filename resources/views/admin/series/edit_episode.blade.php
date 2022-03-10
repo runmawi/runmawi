@@ -300,12 +300,12 @@
             
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
-                // $('#intro_start_time').mask("00:00:00");
-                // $('#intro_end_time').mask("00:00:00");
-                // $('#recap_start_time').mask("00:00:00");
-                // $('#recap_end_time').mask("00:00:00");
-                // $('#skip_intro').mask("00:00:00");
-                // $('#skip_recap').mask("00:00:00");
+                $('#intro_start_time').mask("00:00:00");
+                $('#intro_end_time').mask("00:00:00");
+                $('#recap_start_time').mask("00:00:00");
+                $('#recap_end_time').mask("00:00:00");
+                $('#skip_intro').mask("00:00:00");
+                $('#skip_recap').mask("00:00:00");
             });
 
             $(document).ready(function () {
@@ -400,17 +400,151 @@
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script>
-            $('form[id="Episode_edit"]').validate({
-                rules: {
-                    title: "required",
-                },
-                messages: {
-                    title: "This field is required",
-                },
-                submitHandler: function (form) {
-                    form.submit();
-                },
+
+            $.validator.addMethod('greaterThan', function(value, element) {
+                var intro_start_time = $("#intro_start_time").val();
+                var intro_end_time = $('#intro_end_time').val();
+                return intro_start_time < intro_end_time;
             });
+
+            $.validator.addMethod('Skipintro_greaterThan', function(value, element) {
+                var intro_end_time = $("#intro_end_time").val();
+                var skip_time = $('#skip_intro').val();
+                return skip_time > intro_end_time;
+            });
+
+
+            $.validator.addMethod('RecapgreaterThan', function(value, element) {
+                var recap_start_time = $("#recap_start_time").val();
+                var recap_end_time = $('#recap_end_time').val();
+                return recap_start_time < recap_end_time;
+            });
+
+            $.validator.addMethod('Recapintro_greaterThan', function(value, element) {
+                var recap_end_time = $("#recap_end_time").val();
+                var skip_recap = $('#skip_recap').val();
+                return skip_recap > recap_end_time;
+            });
+
+
+        $("#Episode_edit").validate({
+            rules: {
+                title: { 
+                    required: true, 
+                },
+
+                intro_start_time: {
+                    required: function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    greaterThan:function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                skip_intro: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                intro_end_time: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#skip_intro').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+                
+                recap_start_time: {
+                    required: function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    RecapgreaterThan:function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                skip_recap: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+                recap_end_time: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+            },
+
+            messages: {
+                intro_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                intro_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_intro: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+
+                recap_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                recap_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_recap: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+        }
+        });
         </script>
         @stop @stop @stop
     </div>
