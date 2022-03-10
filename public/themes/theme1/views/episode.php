@@ -488,6 +488,10 @@ input.skips,input#Recaps_Skip{
 #Auto_skip{
 	display: none;
 }
+    .slick-track{
+        width: 0 auto!important;
+        
+    }
 	</style>
 
 <!-- INTRO SKIP  -->
