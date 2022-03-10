@@ -1,7 +1,9 @@
 @extends('layouts.app')
-
 @section('content')
-@include('/header')
+@php
+    include(public_path('themes\theme1\views\header.php'));
+@endphp
+
 <head>
      <?php
    $settings = App\Setting::find(1);
@@ -16,6 +18,63 @@
         
     </script>
     <style>
+        .btn_prd_up_22:after {
+   position: absolute;
+    left: 33.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         .ply{
+         background: #000;
+            
+            padding: 10px;
+            border-radius: 50%;
+        }
+         .btn_prd_up_33:after {
+   position: absolute;
+    left: 65.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+        ul{
+            list-style: none;
+        }
+        .sig{
+            background: #161617;
+mix-blend-mode: normal;
+            padding: 50px;
+            border-radius: 20px;
+        } .sig1{
+            background: #151516;
+mix-blend-mode: normal;
+            padding: 25px;
+            border-radius: 20px;
+        }
     * {
       box-sizing: border-box;
     }
@@ -123,6 +182,41 @@
             background-color: #4895d1 !important;
             border: none !important;
         }
+.bg-col p{
+        font-family: Chivo;
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 31px;
+/* identical to box height */
+padding-top:10px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+    }
+        .container h1{
+            padding-left: 10px;
+        }
+    .bg-col{
+       background:rgb(32, 32, 32);
+
+mix-blend-mode: color-dodge;
+border-radius: 20px;
+    padding: 10px;
+    color: #fff;
+        height: 150px;
+        width: 650px;
+        padding-left: 90px;
+        
+   
+}
+    .bl{
+       background: #161617;
+        padding: 10px;
+
+
+    }
 
 </style>
 <style>
@@ -153,97 +247,110 @@ body.loading .overlay{
   });
     
   </script>
-
-<div class="container">
-    <div class="row justify-content-center page-height" id="signup-form">  
-        <div class="col-md-11 col-sm-offset-1 plandetails">
-			<div class="login-block">
-                    <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
-                     <div class="panel-body become-sub">
-                        <div class="tab">
-                          <!-- <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
-                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
-                          </button>
-                        <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
-                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/PayPal-Logo.png');?>">
-                        </button> -->
+ <section  class="m-profile setting-wrapper pt-0">
+        <div class="container">
+            <div class="row sig ">
+                <div class="col-md-4 mt-3 pt-3">
+                    <h4 class="main-title mb-4">My Account</h4>
+                    <!-- <p class="text-white">Edit your name or change<br>your password.</p> -->
+                    <ul class="edit p-0 mt-5">
+                        
+                        <li><div class="d-flex showSingle" target="2">
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="text-white">
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
+                                    Plan
+                                </a>
+</div></li>
+                        
+                      
+                    </ul>
+                </div>
+                
+                <div class="col-md-8 targetDiv" id="div2">
+                    <div class="d-flex justify-content-around text-white">
+                        <!-- <div class="d-felx text-center">
+                        <p>Choose plan</p>
+                        <input type="radio">
+                            <ul>
+                                <li class="btn_prd_up_22"></li>
+                            </ul>
                         </div>
+                        <div class="d-felx text-center">
+                        <p>Make payment</p>
+                            <input type="radio">
+                             <ul>
+                                <li class="btn_prd_up_33"></li>
+                            </ul>
+                        </div>
+                        <div class="d-felx text-center">
+                        <p>Confirmation</p>
+                            <input type="radio"></div>
+                    </div> -->
 
-<div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
-                <div id="AddPassport" >
-                    <div class="row">
-                      <?php 
-                            // $plans = App\Plan::get();
+                          
+  
 
+
+
+                                <?php                          
                                foreach($plans_data as $plan) {
                                   $plan_name = $plan[0]->plans_name;
                             ?>
-                                    <div class="col-sm-3">
-                                        <div class="plan-card">
-                                            <div class="header">
-                                                <h3 class="plan-head">
-                                                    <?php echo $plan[0]->plans_name;?></h3>
-                                            </div>
-                                            <div class="plan-price">
-                                                <p>plan</p>
-                                                <h4><?php echo "$".$plan[0]->price;?>
-                                                    <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                                                    </small>
-                                                </h4>
-                                            </div>
-                                            <div class="plan-details">
-                                                <p>Grab this plan for your best Movies to Watch.</p>
-                                                <p>Available Specification :</p>
-                                                <h6 style ="color:yellow;background-color:black;"> Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
-                                                Video Resolution : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
-                                             <?php   
-                                                    $permission = $plan[0]->devices;
-                                                    $user_devices = explode(",",$permission);   
-                                                    foreach($devices as $key => $value){
-                                                        if(in_array($value->id, $user_devices)){
-                                                            $devices_name[] = $value->devices_name;
-                                                        }
-                                                    }    
-                                                    $plan_devices = implode(",",$devices_name);
-                                              ?>
-                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
-                                                <div class="mt-4">
-                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
-                                            </button>
-                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                           <?php } ?>
-                    </div>
+                 <div class="col-md-12 mt-3 p-0">
+                    <button  data-price="<?php echo $plan[0]->price;?>" 
+                    data-name="<?php echo $plan[0]->plans_name;?>"  
+                    class="bg-col plans_name_choose" onclick="jQuery('#add-new').modal('show');" 
+                     name="plan_name"  value="<?php echo $plan_name;?>">
+                   
+                    <div class="container">
+                        <p><?php echo $plan[0]->plans_name;?></p>
+                        <h1><span class="dl">$</span><?php echo $plan[0]->price;?> </span><span class="dl1">
+
+                        <!-- <h1><span class=""><?php echo "$".' '.$plan[0]->price;?></span><span class="dl1">  -->
+                        <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                        </span></h1></div>
+                        <input type="hidden" class="theme_planname" value="<?php echo $plan[0]->plans_name;?>" >      
+                        <!-- <div class="mt-4">
+                        </div> -->
+                  
+
+                    </button>
+                       <?php } ?>
                 </div>
-              </div>    
+            </div>
+                         
+
+
+
+                        </div>
+                        
+                    </div>
+                
+     </div> 
+    </section>
               @csrf
                             
-                            @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
                         <div class="form-group row">
                             <div class="col-md-11 col-sm-offset-1">
                             <div class="sign-up-buttons" align="center">
 
-                                    <p> <span>Or</span></p>
-                                    <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
-                                        <?php echo __('Skip');?>
-                                    </a>
+                                    <!-- <p> <span>Or</span></p> -->
+                                    <!-- <a type="button" href="<?php //echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
+                                        <?php //echo __('Skip');?>
+                                    </a> -->
                             </div>
                             </div>
-                        </div>
+                        </div>-->
               <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">				
@@ -531,5 +638,7 @@ body.loading .overlay{
         </script>
 
 
-@include('footer')
+@php
+    include(public_path('themes\theme1\views\footer.blade.php'));
+@endphp
 @endsection 
