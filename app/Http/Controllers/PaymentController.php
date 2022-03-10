@@ -876,7 +876,8 @@ public function RentPaypal(Request $request)
     
        public function Upgrade_Plan()
        {
-         
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses(  $Theme );
         $user = Auth::user();
         $uid = Auth::user()->id;
         $user = User::where('id',$uid)->first();
@@ -886,7 +887,7 @@ public function RentPaypal(Request $request)
         $devices = Devices::all();
 
         Session::put('plans_data ', $plans_data );
-          return View::make('upgrade', [
+          return Theme::view('upgrade', [
             'intent' => $user->createSetupIntent()
            /* ,compact('register')*/
            , compact('plans_data')
