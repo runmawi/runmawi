@@ -58,6 +58,46 @@ $uppercase =  ucfirst($request_url);
         .red{
             color: #be0b14;
         }
+        .btn_prd_up_22:after {
+   position: absolute;
+    left: 33.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         .btn_prd_up_33:after {
+   position: absolute;
+    left: 65.7%;
+    top: -8%;
+    bottom: calc(50% + 8px);
+    width: 1px;
+    height: calc(245px - 19px);
+    transform: rotate(90deg);
+    background: #fff;
+    content: "";
+    z-index: 0;
+}
+         input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+        ul{
+            list-style: none;
+        }
         .gk{
             background: #2a2a2c;
            
@@ -101,16 +141,19 @@ mix-blend-mode: normal;
         .bg-col p{
         font-family: Chivo;
 font-style: normal;
-font-weight: normal;
+font-weight: 400;
 font-size: 26px;
 line-height: 31px;
 /* identical to box height */
-
+padding-top:10px;
 display: flex;
 align-items: center;
 
 color: #FFFFFF;
     }
+        .container h1{
+            padding-left: 10px;
+        }
     .bg-col{
        background:rgb(32, 32, 32);
 
@@ -118,6 +161,8 @@ mix-blend-mode: color-dodge;
 border-radius: 20px;
     padding: 10px;
     color: #fff;
+        height: 150px;
+        padding-left: 90px;
         
    
 }
@@ -140,6 +185,10 @@ border-radius: 20px;
             color: #fff;
             line-height: 31px;
         }
+        .dl1{
+            font-weight: 100;
+            font-size: 40px;
+        }
 
 .circle {
     color: white;
@@ -149,6 +198,9 @@ border-radius: 20px;
     margin-bottom: 0;
     margin-right: 0;
 }
+        .dl{
+            font-size: 16px;
+        }
     </style>
    <body>
       <!-- loader Start -->
@@ -563,7 +615,7 @@ border-radius: 20px;
         <!-- MainContent -->
     <section  class="m-profile setting-wrapper pt-0">
         <div class="container">
-            <div class="row sig align-items-center">
+            <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
                     <h4 class="main-title mb-4">My Account</h4>
                     <p class="text-white">Edit your name or change<br>your password.</p>
@@ -651,12 +703,31 @@ border-radius: 20px;
                 </div>
                 <hr style="color:#fff;">
                 <div class="col-md-8 targetDiv" id="div2">
+                    <div class="d-flex justify-content-around text-white">
+                        <div class="d-felx text-center">
+                        <p>Choose plan</p>
+                        <input type="radio">
+                            <ul>
+                                <li class="btn_prd_up_22"></li>
+                            </ul>
+                        </div>
+                        <div class="d-felx text-center">
+                        <p>Make payment</p>
+                            <input type="radio">
+                             <ul>
+                                <li class="btn_prd_up_33"></li>
+                            </ul>
+                        </div>
+                        <div class="d-felx text-center">
+                        <p>Confirmation</p>
+                            <input type="radio"></div>
+                    </div>
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
                         <div class="container ">
                           
-                        <p>SAVE $ 594</p>
-                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        <p>SAVE $594</p>
+                        <h1><span class="dl">$</span>1197 <span class="dl1">for 9 months</span></h1></div>
                         </div>
                         
                     </div>
@@ -665,8 +736,8 @@ border-radius: 20px;
                     <div class="bg-col">
                        <div class="container ">
                            
-                        <p>SAVE $ 300</p>
-                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
+                        <p>SAVE $300</p>
+                        <h1><span class="dl">$</span>894 <span class="dl1">for 6 months</span></h1></div> </div>
                       
                     </div>
             
@@ -675,8 +746,8 @@ border-radius: 20px;
                        <div class="container ">
                            
                                 
-                        <p>SAVE $ 99</p>
-                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
+                        <p>SAVE $99</p>
+                        <h1><span class="dl">$</span>498 <span class="dl1">for 3 months</span></h1></div></div>
                         
                     </div>
            
@@ -685,7 +756,7 @@ border-radius: 20px;
                         <div class="container ">
                           
                         <p></p>
-                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
+                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>
                         
                     </div>
                 </div>
@@ -721,7 +792,7 @@ border-radius: 20px;
            
                  <div class="col-md-12 mt-3">
                     <div class="bg-col">
-                        <div class="container ">
+                        <div class="container mt-4">
                           
                         <p></p>
                                 <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
