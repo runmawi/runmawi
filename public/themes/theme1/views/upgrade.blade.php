@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-@include('/header')
+@partial('category_header')
 <head>
      <?php
    $settings = App\Setting::find(1);
@@ -531,5 +531,5 @@ body.loading .overlay{
         </script>
 
 
-@include('footer')
+@partial('category_footer')  
 @endsection 
