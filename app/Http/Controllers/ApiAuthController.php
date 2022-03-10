@@ -1276,6 +1276,7 @@ public function verifyandupdatepassword(Request $request)
         $path = URL::to('/').'/public/uploads/avatars/';
         $logo = $request->file('avatar');
         if($logo != '' && $logo != null) {
+
             $file_old = $path.$logo;
             if (file_exists($file_old)){
               unlink($file_old);
@@ -1284,8 +1285,16 @@ public function verifyandupdatepassword(Request $request)
           $avatar = $file->getClientOriginalName();
           $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
+        }elseif(!empty($user->avatar)){
+          $avatar = $user->avatar;
         } else {
           $avatar = 'default.png';
+        }
+        if(!empty($request->user_password)){
+          $user_password = Hash::make($request->user_password); 
+          print_r($user_password);exit;
+        }else{
+          $user_password = $user->password;
         }
         $user = User::find($id);
         $user->email = $request->user_email;
@@ -1293,13 +1302,14 @@ public function verifyandupdatepassword(Request $request)
         $user->name = $request->user_name;
         $user->ccode = $request->user_ccode;
         $user->mobile = $request->user_mobile;
+        $user->password = $user_password;
         $user->avatar = $avatar;
         $user->save();
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
       );
-    send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
+    // send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
         return response()->json($response, 200);
    }
 
