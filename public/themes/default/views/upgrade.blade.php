@@ -209,7 +209,7 @@ body.loading .overlay{
                                                     $plan_devices = implode(",",$devices_name);
                                               ?>
                                                 <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
-                                                <div class="mt-4 mb-3">
+                                                <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
                                                     <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
@@ -356,7 +356,7 @@ body.loading .overlay{
 					<div class="plan-details">
 						<p>Grab this plan for your best Movies to Watch.</p>
                        
-                        <div class="mt-4 mb-3">
+                        <div class="mt-4">
 							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
 						</div>
 <!--

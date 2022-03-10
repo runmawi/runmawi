@@ -577,7 +577,7 @@ border-radius: 20px;
 </div>
                             </li>
                         <li><div class="d-flex showSingle" target="2">
-                                <a>
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
                                     Plan
                                 </a>
@@ -596,6 +596,7 @@ border-radius: 20px;
 </div></li>
                     </ul>
                 </div>
+                
                 <div class="col-md-8 targetDiv" id="div1">
                     <div class="text-right">
                      <img class="rounded-circle img-fluid d-block ml-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
@@ -611,45 +612,44 @@ border-radius: 20px;
                             </div></div>
                         </div>
                         <div class="a-border"></div>
-                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-between mt-2">
+                        <div class="row  text-right justify-content-between mt-3 mb-3">
+                            <h4 class="p-3">Account Details</h4>
+                            <div class="col-md-6 ">
+                                <div class="d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">First Name</span>
-                                <p class="mb-0">ALB</p>
-                            </div>
-                             <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <p class="mb-0">ALB</p></div>
+                                <div class="d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">Last Name</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
-
-                        </div>
-                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Email</span>
-                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
-                            </div>   
-                            <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <div class="d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Password</span>
+                                    <p class="mb-0">**********</p></div>
+                                <div class="d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">Username</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div> 
-                        </div>
-                        
-                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
-                            <div class="col-md-6 d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Password</span>
-                                <p class="mb-0">**********</p>
+                                <div class="d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Email</span>
+                                <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                            </div>   
                             </div>
-                             <div class="col-md-6 d-flex justify-content-between mt-2">
+                        </div> 
+                          <hr style="color:#fff;">
+                        <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
+                         <div class="col-md-6 d-flex justify-content-between mt-2">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
-
+                        <div class="col-md-6 d-flex justify-content-between mt-2">
+                                <span class="text-light font-size-13">Country</span>
+                                <p class="mb-0">India</p>
+                            </div>
+                          
                         </div>
-                        
-                        <hr style="color:#fff;">
-                        <div class="row align-items-center justify-content-end text-right mb-3">
-                           
-                        </div> </div>
                 </div>
+                </div>
+                <hr style="color:#fff;">
                 <div class="col-md-8 targetDiv" id="div2">
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
@@ -1565,7 +1565,7 @@ function myFunction() {
 </html>
 	
 	
-</div>
+
    <?php 
    if (isset($page) && $page =='admin-dashboard') {
             $visitor_count = TotalVisitorcount();
@@ -1624,7 +1624,9 @@ function myFunction() {
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 
-    
+        
+   
+
     <script>
 function openForm() {
   document.getElementById("myForm").style.display = "block";
@@ -1804,7 +1806,7 @@ var chart_01_lable = $('#chart_01_lable').val();
 });
 </script>
 <?php } ?>
-     <script>
+ <script>
             $(".targetDiv").hide(); 
             $(".targetDiv#div1").show();
             $(".showSingle .dimg").hide();
@@ -1827,7 +1829,6 @@ var chart_01_lable = $('#chart_01_lable').val();
             
         
         </script>
-   
 <script type="text/javascript">
 
 jQuery(document).ready(function($){

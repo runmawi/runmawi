@@ -135,10 +135,7 @@ overflow-hidden {
                                        
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">	
-                                          <span class="text-white btn-cl">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                         
-                                          </span>
+                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
                                            </a>
                                        </div>
                                         
@@ -149,12 +146,15 @@ overflow-hidden {
                                                 </span>
                                                     </button></div>-->
                                         </div>
-                                     <div class="mt-2">
-                                         <h6><?php echo __($watchlater_video->title); ?></h6>
-                                       <div class="movie-time  align-items-center my-2">
+                                     <div class="">
+                                        
+                                       <div class="movie-time  align-items-center d-flex justify-content-between">
+                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
+</div>
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                        
                                        </div>
+                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                      </div>
                                 <!--    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">

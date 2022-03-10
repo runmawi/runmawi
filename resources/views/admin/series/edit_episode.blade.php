@@ -133,26 +133,21 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-4">
-                        <label class="m-0">Skip Intro Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        
+                        <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="skip_intro" id="skip_intro" value="@if(!empty($episodes->skip_intro)){{ $episodes->skip_intro }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Intro Start Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="intro_start_time" id="intro_start_time" value="@if(!empty($episodes->intro_start_time)){{ $episodes->intro_start_time }}@endif" />
                         </div>
                     </div>
                     
                     <div class="col-sm-4">
-                        <label class="m-0">Intro End Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="intro_end_time" id="intro_end_time" value="@if(!empty($episodes->intro_end_time)){{ $episodes->intro_end_time }}@endif" />
                         </div>
@@ -161,25 +156,19 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-4">
-                        <label class="m-0">Skip Recap Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                     <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="skip_recap" id="skip_recap" value="@if(!empty($episodes->skip_recap)){{ $episodes->skip_recap }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Recap Start Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="recap_start_time" id="recap_start_time" value="@if(!empty($episodes->recap_start_time)){{ $episodes->recap_start_time }}@endif" />
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label class="m-0">Recap End Time</label>
-                        <p class="p1">Give In Seconds</p>
-
+                        <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label>
                         <div class="panel-body">
                             <input class="form-control" name="recap_end_time" id="recap_end_time" value="@if(!empty($episodes->recap_end_time)){{ $episodes->recap_end_time }}@endif" />
                         </div>
@@ -307,6 +296,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
         <script>
+
+            
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
                 $('#intro_start_time').mask("00:00:00");
@@ -409,17 +400,151 @@
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script>
-            $('form[id="Episode_edit"]').validate({
-                rules: {
-                    title: "required",
-                },
-                messages: {
-                    title: "This field is required",
-                },
-                submitHandler: function (form) {
-                    form.submit();
-                },
+
+            $.validator.addMethod('greaterThan', function(value, element) {
+                var intro_start_time = $("#intro_start_time").val();
+                var intro_end_time = $('#intro_end_time').val();
+                return intro_start_time < intro_end_time;
             });
+
+            $.validator.addMethod('Skipintro_greaterThan', function(value, element) {
+                var intro_end_time = $("#intro_end_time").val();
+                var skip_time = $('#skip_intro').val();
+                return skip_time > intro_end_time;
+            });
+
+
+            $.validator.addMethod('RecapgreaterThan', function(value, element) {
+                var recap_start_time = $("#recap_start_time").val();
+                var recap_end_time = $('#recap_end_time').val();
+                return recap_start_time < recap_end_time;
+            });
+
+            $.validator.addMethod('Recapintro_greaterThan', function(value, element) {
+                var recap_end_time = $("#recap_end_time").val();
+                var skip_recap = $('#skip_recap').val();
+                return skip_recap > recap_end_time;
+            });
+
+
+        $("#Episode_edit").validate({
+            rules: {
+                title: { 
+                    required: true, 
+                },
+
+                intro_start_time: {
+                    required: function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    greaterThan:function(element){
+                        if($('#skip_intro').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                skip_intro: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                intro_end_time: {
+                    required: function(element){
+                        if($('#intro_start_time').val() !='' || $('#skip_intro').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Skipintro_greaterThan:function(element){
+                        if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+                
+                recap_start_time: {
+                    required: function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    RecapgreaterThan:function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+
+                skip_recap: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+                recap_end_time: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
+            },
+
+            messages: {
+                intro_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                intro_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_intro: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+
+                recap_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                recap_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_recap: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+        }
+        });
         </script>
         @stop @stop @stop
     </div>
