@@ -496,6 +496,9 @@ public function RentPaypal(Request $request)
     
      public function UpgradeStripe(Request $request){
 
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses(  $Theme );
+
          $plan_id = $request->get('modal_plan_name');
 
          $payment_method = $request->payment_method;
@@ -520,7 +523,12 @@ public function RentPaypal(Request $request)
                 "payment_type" => $plan_details->payment_type
               );
 
-             return view('register.upgrade.stripe',['intent' => $user->createSetupIntent()],$response); 
+             return Theme::view('register.upgrade.stripe',[
+                        "intent" => $user->createSetupIntent(),
+                        "plans_details" => $plan_details,
+                        "plan_id" => $plan_id,
+                        "payment_type" => $plan_details->payment_type
+            ]); 
            } else {
            if ($user->stripe_id == NULL)
            {
@@ -531,7 +539,12 @@ public function RentPaypal(Request $request)
                "plan_id" => $plan_id,
                "payment_type" => $plan_details->payment_type
            );
-           return view('register.upgrade.stripe',['intent' => $user->createSetupIntent()],$response);
+           return Theme::view('register.upgrade.stripe',[
+                              "intent" => $user->createSetupIntent(),
+                              "plans_details" => $plan_details,
+                              "plan_id" => $plan_id,
+                              "payment_type" => $plan_details->payment_type
+            ]);
          }      
       }
       elseif($request->payment_method == "Razorpay"){

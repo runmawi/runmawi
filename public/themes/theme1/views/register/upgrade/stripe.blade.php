@@ -1,5 +1,8 @@
 @extends('layouts.app')
-@include('/header')
+@php
+   include(public_path('themes\theme1\views\header.php'));
+@endphp
+
 @section('content')
 
 <?php
@@ -353,7 +356,10 @@ $('.is_apply').on('change', function(){
 }).change();
 
 </script>
- @include('footer')
+@php
+    include(public_path('themes\theme1\views\footer.blade.php'));
+@endphp
+
 @endsection
 
 
