@@ -1292,7 +1292,7 @@ public function verifyandupdatepassword(Request $request)
         }
         if(!empty($request->user_password)){
           $user_password = Hash::make($request->user_password); 
-          print_r($user_password);exit;
+          // print_r($user_password);exit;
         }else{
           $user_password = $user->password;
         }
