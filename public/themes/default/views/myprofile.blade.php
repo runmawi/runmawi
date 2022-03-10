@@ -732,7 +732,11 @@ $uppercase =  ucfirst($request_url);
                            <?php } ?>
                            </div>
                             <div class="col-sm-6">
+                               <?php if(Auth::user()->role == "subscriber"){ ?>
                                 <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <?php }else{ ?>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <?php } ?>
                             </div>
                         </div>
                     </div>
