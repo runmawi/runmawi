@@ -300,12 +300,12 @@
             
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
-                // $('#intro_start_time').mask("00:00:00");
-                // $('#intro_end_time').mask("00:00:00");
-                // $('#recap_start_time').mask("00:00:00");
-                // $('#recap_end_time').mask("00:00:00");
-                // $('#skip_intro').mask("00:00:00");
-                // $('#skip_recap').mask("00:00:00");
+                $('#intro_start_time').mask("00:00:00");
+                $('#intro_end_time').mask("00:00:00");
+                $('#recap_start_time').mask("00:00:00");
+                $('#recap_end_time').mask("00:00:00");
+                $('#skip_intro').mask("00:00:00");
+                $('#skip_recap').mask("00:00:00");
             });
 
             $(document).ready(function () {
@@ -475,7 +475,6 @@
                              return false;
                         }
                     },
-
                     Skipintro_greaterThan:function(element){
                         if($('#intro_start_time').val() !='' || $('#intro_end_time').val() !='' ){
                              return true;
@@ -485,20 +484,66 @@
                     },
                 },
                 
+                recap_start_time: {
+                    required: function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    RecapgreaterThan:function(element){
+                        if($('#skip_recap').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                },
 
-                recap_start_time: { 
-                    required: true, 
-                    RecapgreaterThan: "#recap_end_time" 
+                skip_recap: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#recap_end_time').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
                 },
-                skip_recap: { 
-                    required: true, 
-                    Recapintro_greaterThan: "#recap_start_time" 
-                },
-                recap_end_time: { 
-                    required: true, 
+                recap_end_time: {
+                    required: function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
+                    Recapintro_greaterThan:function(element){
+                        if($('#recap_start_time').val() !='' || $('#skip_recap').val() !='' ){
+                             return true;
+                        } else {
+                             return false;
+                        }
+                    },
                 },
             },
-       
+
+            messages: {
+                intro_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                intro_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_intro: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+
+                recap_start_time: "Please Enter the valid Intro Start Time,  Lesser than End Time",
+                recap_end_time: "Please Enter the valid Intro End Time,  Greater than End Time",
+                skip_recap: "Please Enter the valid Skip Intro Time,  Greater than End Time",
+        }
         });
         </script>
         @stop @stop @stop
