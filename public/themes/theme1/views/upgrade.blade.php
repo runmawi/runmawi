@@ -330,7 +330,7 @@ body.loading .overlay{
        
             </div></div>
     </section>
-<div class="container">
+<!--<div class="container">
     <div class="row justify-content-center page-height" id="signup-form">  
         <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
@@ -342,11 +342,11 @@ body.loading .overlay{
                           </button>
                         <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
                             <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/PayPal-Logo.png');?>">
-                        </button> -->
+                        </button> 
                         </div>
 
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
+        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> 
                 <div id="AddPassport" >
                     <div class="row">
                       <?php 
@@ -384,11 +384,11 @@ body.loading .overlay{
                                                     }    
                                                     $plan_devices = implode(",",$devices_name);
                                               ?>
-                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    -->
+                                                <!-- <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>    
                                                 <div class="mt-4">
                                                 <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
-                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
+                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> 
                                                 </div>
                                             </div>
                                         </div>
@@ -419,7 +419,7 @@ body.loading .overlay{
                                     </a>
                             </div>
                             </div>
-                        </div>
+                        </div>-->
               <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">				
