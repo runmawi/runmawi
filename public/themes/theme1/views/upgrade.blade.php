@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-@partial('category_header')
+
+@php
+    include(public_path('themes\theme1\views\header.php'));
+@endphp
+
 <head>
      <?php
    $settings = App\Setting::find(1);
@@ -703,5 +707,7 @@ body.loading .overlay{
         </script>
 
 
-@partial('category_footer')  
+@php
+    include(public_path('themes\theme1\views\footer.blade.php'));
+@endphp
 @endsection 

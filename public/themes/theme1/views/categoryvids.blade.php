@@ -1,4 +1,5 @@
 <!-- Header -->
+
 @partial('category_header')
 <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
@@ -262,7 +263,9 @@
     <!-- Modal Starts -->
 <!-- MainContent End-->
 
-    @partial('category_footer')  
+@php
+    include(public_path('themes\theme1\views\footer.blade.php'));
+@endphp
      <script>
     //    $('.mywishlist').click(function(){
     //    if($(this).data('authenticated')){
