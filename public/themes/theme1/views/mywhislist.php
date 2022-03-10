@@ -9,7 +9,7 @@
 
  <!-- MainContent -->
  <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
-    padding: 0px 60px 40px;!important;">
+    padding: 15px 60px 40px;!important;">
      <div class="container-fluid">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
@@ -29,7 +29,7 @@
                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
-                   
+                    </div>
 <!--
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
