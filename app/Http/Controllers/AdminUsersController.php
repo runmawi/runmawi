@@ -85,14 +85,15 @@ class AdminUsersController extends Controller
         $search_value = '';
         
         if(!empty($search_value)):
-            $users = User::where('username', 'LIKE', '%'.$search_value.'%')->orWhere('email', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get();
+            $users = User::where('username', 'LIKE', '%'.$search_value.'%')->orWhere('email', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->take(9000)->get();
         else:
-            $users = User::all();
+            // $users = User::orderBy('created_at', 'desc')->take(9000)->get();
+            $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
         endif;
 // print_r($total_revenew);
 // exit();
 		$data = array(
-			'users' => $users,
+			'users' => $allUsers,
             'total_subscription' => $total_subscription,
             'total_revenew' => $total_revenew,
             'total_recent_subscription' => $total_recent_subscription,
@@ -102,6 +103,78 @@ class AdminUsersController extends Controller
 		return \View::make('admin.users.index', $data);
 	}
     
+
+
+
+    public function Usersearch(Request $request)
+    {
+        if($request->ajax())
+     {
+
+      $output = '';
+      $query = $request->get('query');
+
+         $slug = URL::to('admin/user/view');
+         $edit = URL::to('admin/user/edit');
+         $delete = URL::to('admin/user/delete');
+      if($query != '')
+      {
+        $data = User::where('username', 'LIKE', '%'.$query.'%')
+        ->orWhere('mobile','LIKE', '%'.$query.'%')
+        ->orWhere('email','LIKE', '%'.$query.'%')
+        ->orderBy('created_at', 'desc')->paginate(10);
+      }
+      else
+      {
+        return Redirect::to('admin/users');
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        if(!empty($row->username)){ $username = $row->username ; }else{ $username = $row->name ;}
+        if(!empty($row->avatar)){ $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar ; }
+        else{ $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar ;}
+        if($row->active == 1){ $active = "Active" ;$class="bg-success"; }elseif($row->active == 0){ $active = "Deactive" ;$class="bg-danger"; }
+        $output .= '
+        <tr>
+        <td><img class="img-fluid avatar-50" alt="author-profile" src="'.$image_url.'" alt="" /></td>
+        <td>'.$username.'</td>
+        <td>'.$row->mobile.'</td>
+        <td>'.$username.'</td>
+        <td>'.$row->email.'</td>
+         <td>'.$row->role.'</td>
+        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
+         <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->id'><i class='lar la-eye'></i>
+        </a>".'
+        '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+        </a>".'
+        '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+        </a>".'
+        </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+
     public function create(){
         
         $data = array(
@@ -494,7 +567,7 @@ class AdminUsersController extends Controller
     public function ProfileImage(Request $request){
       
     $input = $request->all();
-
+// dd($input);  
    $id = $request['user_id'];
 
    $path = public_path().'/uploads/avatars/';         
@@ -537,13 +610,13 @@ class AdminUsersController extends Controller
        $user = User::find($id);        
 
        
-       if ( empty($request['email'])){
-           return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
+    //    if ( empty($request['email'])){
+    //        return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
            
-       } else {
+    //    } else {
            
-            $request['email'] = $request['email'];
-       }
+    //         $request['email'] = $request['email'];
+    //    }
 
 
 
