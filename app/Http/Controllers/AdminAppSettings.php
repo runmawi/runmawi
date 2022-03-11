@@ -122,11 +122,20 @@ class AdminAppSettings extends Controller
         // $app_setting = new AppSetting;      
 
         // dd($app_setting);
+        if(!empty($app_setting)){
         $app_setting->android_url = $input['android_url'];
         $app_setting->ios_url = $input['ios_url'];
         // $app_setting->status = $status;
         $app_setting->user_id = Auth::User()->id;
         $app_setting->save();
+        }else{
+          $app_setting = new AppSetting;
+          $app_setting->android_url = $input['android_url'];
+          $app_setting->ios_url = $input['ios_url'];
+          // $app_setting->status = $status;
+          $app_setting->user_id = Auth::User()->id;
+          $app_setting->save();
+        }
         return Redirect::back()->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
       }
   

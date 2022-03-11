@@ -11,7 +11,7 @@ use App\User;
 use Hash;
 use App\EmailTemplate;
 use Mail;
-
+use App\Setting;
 class ResetPasswordController extends Controller
 {
     /*
@@ -84,6 +84,7 @@ public function reset(Request $request)
 
     }
     // dd($heading);exit();
+    $settings = Setting::find(1);
 
 
       Mail::send('emails.changed_password', array(
@@ -91,8 +92,8 @@ public function reset(Request $request)
                             'email' => $request->email,
                             'username' => $user[0]->username,
                          
-                        ), function($message) use ($user){
-                            $message->from(AdminMail(),'Flicknexs');
+                        ), function($message) use ($user,$settings){
+                            $message->from(AdminMail(),$settings->website_name);
                             $message->to($user[0]->email,$user[0]->username);
                             $message->subject('Password is changed successfully');
             

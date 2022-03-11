@@ -145,7 +145,7 @@
                     <p class="p1">Upload Your Site Logo:</p>
                     <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
                 </div>
-                <div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0">
+                <div class="panel panel-primary mt-3 col-md-12 p-0" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Favicon</label></div>
                         <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -161,8 +161,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-   
+        </div>   
 	</div>
 
         <!-- <div class="container-fluid" id="ppv" > -->
@@ -351,7 +350,7 @@
     </div>
 
         <!-- <div class="container-fluid" id="email"> -->
-        <div lass="container-fluid row mt-3 " id="email" class="row mt-3">
+        <div lass="container-fluid row mt-3 " style="margin-left: 0%;" id="email" class="row mt-3">
             <div class="col-md-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -647,12 +646,14 @@
 
 
     </div>
+    </div>
+
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-    <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
+    <input type="submit" id ="settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
             </form>
 </div>
 
-<div class="container-fluid" id="script" style="margin-top: -52%;margin-left: 22%;">
+<div class="container-fluid" id="script" style="margin-top: -62%;margin-left: 22%;">
 <h5>APP Script:</h5>
     <div class="row">
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
@@ -674,7 +675,7 @@
     </div>
 <!-- </div> -->
 
-<div class="container-fluid" id="app" style="margin-top: -52%;margin-left: 22%;">
+<div class="container-fluid" id="app" style="margin-top: -62%;margin-left: 22%;">
 <h5>APP Setting:</h5>
     <div class="row">
 	<form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
