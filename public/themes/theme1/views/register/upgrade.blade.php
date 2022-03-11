@@ -19,6 +19,37 @@
     * {
       box-sizing: border-box;
     }
+        .modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+   
+}
+        .bg-col p{
+        font-family: Chivo;
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 31px;
+/* identical to box height */
+padding-top:10px;
+display: flex;
+align-items: center;
+ padding-left: 20px;
+color: #FFFFFF;
+    }
+         .bg-col{
+       background:rgb(32, 32, 32);
+
+mix-blend-mode: color-dodge;
+border-radius: 20px;
+    padding: 10px;
+    color: #fff;
+        height: 150px;
+        width: 650px;
+        padding-left: 50px;
+        
+   
+}
 
     .columns {
       float: left;
@@ -261,8 +292,8 @@ your password.</p>
     </section>
 
               <div class="modal fade" id="add-new">
-		<div class="modal-dialog bg-col">
-			<div class="modal-content bg-col">				
+		<div class="modal-dialog ">
+			<div class="modal-content " style=" background:rgb(32, 32, 32);">				
 				<div class="modal-header">
                     <h4 class="modal-title">You are one step away from purchasing subscription Gate Way</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -448,11 +479,7 @@ your password.</p>
           
         </form>         
         </div>
-         </div>
-    </div>
-</div>
-    </div>
-</div>
+         
 
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 <input type="hidden" id="stripe_coupon_code" value="<?php echo NewSubscriptionCouponCode();?>">

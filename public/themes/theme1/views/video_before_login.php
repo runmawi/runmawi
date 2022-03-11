@@ -204,8 +204,8 @@
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                            <div class="btn1 btn-secondary btn-lg btn-block watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <div style=" display: none;" class="skiptrailer btn btn-primary skip mt-2">Skip</div>
                         <?php } ?>
                     </div>
                 </div>
@@ -226,8 +226,8 @@
                      <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                       <!-- Wishlist -->
                      <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                      <!-- Social Share, Like Dislike -->
-                         <?php include('partials/social-share.php'); ?>                     
+                     
+                                           
                   </ul>
             </div>
                 
@@ -256,7 +256,7 @@
                         <?php } ?>
                     </li>
                     <li>
-                        <div class="btn btn-default views">
+                        <div class="btn btn-default views text-white">
                             <span class="view-count"><i class="fa fa-eye"></i> 
                                 <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                             </span>
@@ -292,11 +292,11 @@
                     <ul class="list-inline p-0 mt-4 rental-lists">
                     <!-- Subscribe -->
                         <li>
-                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-secondary btn-lg btn-block subsc-video"><?php echo __('Subscribe');?> </span></a>
                         </li>
                         <!-- PPV button -->
                         <li>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
+                            <a class="view-count btn btn-secondary btn-lg btn-block rent-video text-white" href="<?php echo URL::to('/login');?>">
                                 <?php echo __('Rent');?> </a>
                         </li>
                         <li>

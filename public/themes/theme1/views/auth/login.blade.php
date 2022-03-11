@@ -132,8 +132,10 @@ i.fa.fa-google-plus {
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
       <div class="row  align-items-center justify-content-center height-self-center">
-         
          <div class="col-lg-6 col-12 col-md-12 align-self-center">
+             <div class="text-center">
+                 <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+             </div>
             <div class="sign-user_card " style=" background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
