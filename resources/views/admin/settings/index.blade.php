@@ -84,65 +84,67 @@
                     </div>
                     <div class="col-sm-8" id="sidebar-wrapper">
                         <form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-                            <div class="col-md-12">
-                                <div class="panel panel-primary" data-collapsed="0">
-                                    <label class="m-0">Site Name</label>
-                                    <p class="p1">Enter Your Website Name Below:</p>
-                                </div>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" name="website_name" id="website_name" placeholder="Site Title" value="@if(!empty($settings->website_name)){{ $settings->website_name }}@endif" />
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="panel panel-primary" data-collapsed="0">
-                                    <div class="panel-heading">
-                                        <div class="panel-title"><label>Site Description</label></div>
-                                        <div class="panel-options">
-                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                        </div>
+                            <div class="container-fluid row mt-3" id="site">
+                                <div class="col-md-12">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <label class="m-0">Site Name</label>
+                                        <p class="p1">Enter Your Website Name Below:</p>
                                     </div>
-                                    <div class="panel-body" style="display: block;">
-                                        <p class="p1">Enter Your Website Description Below:</p>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="website_description"
-                                            id="website_description"
-                                            placeholder="Site Description"
-                                            value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif"
-                                        />
+                                    <div class="panel-body">
+                                        <input type="text" class="form-control" name="website_name" id="website_name" placeholder="Site Title" value="@if(!empty($settings->website_name)){{ $settings->website_name }}@endif" />
                                     </div>
                                 </div>
-                                <!-- </div> -->
-                                <div class="panel panel-primary col-md-12 mt-3 p-0" data-collapsed="0">
-                                    <div class="panel-heading">
-                                        <div class="panel-title">
-                                            <label>Logo <small>(Dimensions: 180px X 29px)</small></label>
-                                        </div>
-                                        <div class="panel-options">
-                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="panel-body" style="display: block;">
-                                        @if(!empty($settings->logo))
-                                        <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}" style="max-height: 100px;" />
-                                        @endif
-                                        <p class="p1">Upload Your Site Logo:</p>
-                                        <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
-                                    </div>
-                                    <div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0">
+                                <div class="col-md-12">
+                                    <div class="panel panel-primary" data-collapsed="0">
                                         <div class="panel-heading">
-                                            <div class="panel-title"><label>Favicon</label></div>
+                                            <div class="panel-title"><label>Site Description</label></div>
                                             <div class="panel-options">
                                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                             </div>
                                         </div>
                                         <div class="panel-body" style="display: block;">
-                                            @if(!empty($settings->favicon))
-                                            <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->favicon }}" style="max-height: 20px;" />
+                                            <p class="p1">Enter Your Website Description Below:</p>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                name="website_description"
+                                                id="website_description"
+                                                placeholder="Site Description"
+                                                value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif"
+                                            />
+                                        </div>
+                                    </div>
+                                    <!-- </div> -->
+                                    <div class="panel panel-primary col-md-12 mt-3 p-0" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <label>Logo <small>(Dimensions: 180px X 29px)</small></label>
+                                            </div>
+                                            <div class="panel-options">
+                                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+                                            @if(!empty($settings->logo))
+                                            <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}" style="max-height: 100px;" />
                                             @endif
-                                            <p class="p1">Upload Your Site Favicon:</p>
-                                            <input type="file" multiple="true" class="form-control" name="favicon" id="favicon" />
+                                            <p class="p1">Upload Your Site Logo:</p>
+                                            <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
+                                        </div>
+                                        <div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0">
+                                            <div class="panel-heading">
+                                                <div class="panel-title"><label>Favicon</label></div>
+                                                <div class="panel-options">
+                                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body" style="display: block;">
+                                                @if(!empty($settings->favicon))
+                                                <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->favicon }}" style="max-height: 20px;" />
+                                                @endif
+                                                <p class="p1">Upload Your Site Favicon:</p>
+                                                <input type="file" multiple="true" class="form-control" name="favicon" id="favicon" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
