@@ -229,126 +229,37 @@ your password.</p>
                         <li>video Preferences</li>
                     </ul>
                 </div>
-                <div class="col-lg-8">
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
-                        <div class="container ">
-                          
-                        <p>SAVE $ 594</p>
-                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
-                        </div>
-                        
-                    </div>
-                
-                 <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                       <div class="container ">
-                           
-                        <p>SAVE $ 300</p>
-                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
-                      
-                    </div>
-            
-                 <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                       <div class="container ">
-                           
-                                
-                        <p>SAVE $ 99</p>
-                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
-                        
-                    </div>
-           
-                 <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container ">
-                          
-                        <p></p>
-                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
-                        
-                    </div>
-                </div>
-               
-            </div>
-        </div>
-            </div>
-            </section>
-!<!--<div class="container">
-    <div class="row justify-content-center page-height" id="signup-form">  
-        <div class="col-md-11 col-sm-offset-1 plandetails">
-			<div class="login-block">
-                    <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
-                     <div class="panel-body become-sub">
-                        <div class="tab">
-                          <!-- <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
-                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
-                          </button>
-                        <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
-                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/PayPal-Logo.png');?>">
-                        </button> -->
-                        </div>
-
-<!--<div id="stripe_pg" class="tabcontent" style="display:block;"> 
-        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> 
-                <div id="AddPassport" >
-                    <div class="row">
-                      <?php 
-                            // $plans = App\Plan::get();
-
+                <div class="col-md-8 targetDiv" id="div2">
+                    <div class="d-flex justify-content-around text-white">
+                                 <?php                          
                                foreach($plans_data as $plan) {
                                   $plan_name = $plan[0]->plans_name;
                             ?>
-                                    <div class="col-sm-3">
-                                        <div class="plan-card">
-                                            <div class="header">
-                                                <h3 class="plan-head">
-                                                    <?php echo $plan[0]->plans_name;?></h3>
-                                            </div>
-                                            <div class="plan-price">
-                                                <p>plan</p>
-                                                <h4><?php echo "$".$plan[0]->price;?>
-                                                    <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                                                    </small>
-                                                </h4>
-                                            </div>
-                                            <div class="plan-details">
-                                                <p>Grab this plan for your best Movies to Watch.</p>
-                                                <div class="mt-4">
-                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
-                                            </button>
-                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                           <?php } ?>
-                    </div>
+                 <div class="col-md-12 mt-3 p-0">
+                    <button  data-price="<?php echo $plan[0]->price;?>" 
+                    data-name="<?php echo $plan[0]->plans_name;?>"  
+                    class="bg-col plans_name_choose" onclick="jQuery('#add-new').modal('show');" 
+                     name="plan_name"  value="<?php echo $plan_name;?>">
+                   
+                    <div class="container">
+                        <p><?php echo $plan[0]->plans_name;?></p>
+                        <h1><span class="dl">$</span><?php echo $plan[0]->price;?> </span><span class="dl1">
+
+                        <!-- <h1><span class=""><?php echo "$".' '.$plan[0]->price;?></span><span class="dl1">  -->
+                        <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                        </span></h1></div>                
+
+                    </button>
+                       <?php } ?>
                 </div>
-              </div>    
-              @csrf
-                            
-                            @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+            </div>
+                       </div>
+                        
+                    </div>
+                
+     </div> 
+    </section>
 
-                        <div class="form-group row">
-                            <div class="col-md-11 col-sm-offset-1">
-                            <div class="sign-up-buttons" align="center">
-
-                                    <p> <span>Or</span></p>
-                                    <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
-                                        <?php echo __('Skip');?>
-                                    </a>
-                            </div>
-                            </div>
-                        </div>-->
               <div class="modal fade" id="add-new">
 		<div class="modal-dialog bg-col">
 			<div class="modal-content bg-col">				
