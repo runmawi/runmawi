@@ -83,17 +83,15 @@ class SignupController extends Controller
     public function EmailValidation(Request $request) {
       $email = $request->get('email');
         
-        $uid = Auth::user();
         $user = User::where('email',$email)->first();
-        if (!empty($user))
-        {
-            $value['user_exits'] = "yes";
-            return $value;  
 
-        }else{
-            $value['user_exits'] = "no";
-            return $value;  
+        if( $user == null){
+              $message = "true";
         }
+        else{
+          $message = "false";
+        }
+        return $message;
 
     }
     
@@ -826,7 +824,18 @@ public function createStep3(Request $request)
               echo "kljl";  
         }
 
+    public function SignupMobile_val(Request $request)
+        {
+            $mobile_No = User::where('mobile',$request->mobile)->first();
 
+            if( $mobile_No == null){
+                  $message = "true";
+            }
+            else{
+              $message = "false";
+            }
+            return $message;
+        }
 
         // old saveSubscription function for first time
 
