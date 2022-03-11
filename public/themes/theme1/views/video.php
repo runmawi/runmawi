@@ -1,5 +1,6 @@
 
-<?php include('header.php'); ?>
+<?php
+include('header.php'); ?>
 <?php
 $str = $video->m3u8_url;
 if(!empty($str)){
@@ -510,6 +511,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <?php endif; ?>            
 </div>
  <?php }  ?>
+
+
+ <!-- logo In player -->
+
+ <div class="logo_player"> </div>
            
 <!-- url link -->
 <div class=" page-height">
@@ -1196,6 +1202,43 @@ if( SkipIntroPermissions == 1 ){
         });
         
 </script>
+
+<!-- logo on player -->
+
+<script>
+$(document).ready(function(){
+
+  $(".logo_player").hide();
+  $('.plyr__video-wrapper').bind('contextmenu', function() {
+      $(".logo_player").show();
+      setTimeout(function() {
+            $('.logo_player').fadeOut('fast');
+        }, 30000); 
+    });
+
+});
+</script>
+
+<?php
+  $player_ui = App\Playerui::pluck('show_logo')->first();
+  $logo = App\Setting::pluck('logo')->first();
+  $logo_url = '/public/uploads/settings/'. $logo ;
+    if($player_ui == 1){
+?>
+        <style>
+            .logo_player {
+            position: absolute;
+            top: 50%;
+            left: 80%;
+            z-index: 2;
+            content: '';
+            height: 200px;
+            width: 10%;
+            background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
+            background-size: 100px auto, auto;
+            }
+        </style>
+<?php } ?>
 
    </div>
 <?php include('footer.blade.php');?>
