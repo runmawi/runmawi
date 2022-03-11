@@ -620,7 +620,7 @@ $uppercase =  ucfirst($request_url);
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/profile/update') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
@@ -637,7 +637,7 @@ $uppercase =  ucfirst($request_url);
                         
                             <div class="form-group">
 		                        <label>Password:</label><br>
-		                        <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  >
+		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="Password"  class="form-control"  >
 		                    </div> 
                         
                         
@@ -745,7 +745,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-0">Manage Profile</h4>
                         <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
-                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
@@ -1001,12 +1001,12 @@ $uppercase =  ucfirst($request_url);
 
 		</div>
 		<?php $settings = App\Setting::first(); ?>
-<footer class="mb-0">
+      <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt=""> </a>
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
@@ -1027,35 +1027,27 @@ $uppercase =  ucfirst($request_url);
                   </div>
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                      </ul>
-                  </div>
-                  <!--<div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Help</a></li>
-                     </ul>
-                  </div>-->
-                  
+                  </div>                  
                   <div class="col-lg-3 col-md-4">
-                      <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag">
-                        <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
+                      <!-- <div class="row">
+                     <ul class="f-link list-unstyled mb-0 catag"> -->
+                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
                         <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
                         <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
+                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
                          
-                          </ul>
-                          <ul class="f-link list-unstyled mb-0">
+                          <!-- </ul>
+                          <ul class="f-link list-unstyled mb-0"> -->
                         
-                         <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
-                          </ul>
-                      </div>
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
+                          <!-- </ul> -->
+                      <!-- </div> -->
                       
                       <!--<ul class="f-link list-unstyled mb-0">
                         
@@ -1099,6 +1091,7 @@ $uppercase =  ucfirst($request_url);
             </div>
          </div>
       </footer>
+
           <!-- back-to-top End -->
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
