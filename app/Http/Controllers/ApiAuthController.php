@@ -5649,28 +5649,16 @@ public function LocationCheck(Request $request){
           'respond' => $respond], 200);
   }
 
-  public function RazorpaySignatureVerfiy(Request $request)
+  public function RazorpayStore(Request $request)
   {
-    $razorpay_signature       = $request->razorpay_signature ;
-    $razorpay_payment_id      = $request->razorpay_payment_id;
-    $razorpay_subscription_id = $request->razorpay_subscription_id;
-
-    try{                                                              // Payment verify
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $attributes  = array('razorpay_signature'  => $razorpay_signature,  'razorpay_payment_id'  => $razorpay_payment_id ,  'razorpay_subscription_id' => $razorpay_subscription_id);
-        $order  = $api->utility->verifyPaymentSignature($attributes);
-        $PaymentStatus = true;
-    } 
-    catch (\Exception $e) {
-        return response()->json([
-          'status'  => 'false',
-          'Message' => 'Payment is Not completed'], 200);
-    }
-
-    if($PaymentStatus == true){
-      try{                                                          // Store the Razorpay subscription detials
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+          $countryName = $geoip->getCountry();
+          $regionName = $geoip->getregion();
+          $cityName = $geoip->getcity();
+    
+      try{                                                        
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-            $subscription = $api->subscription->fetch($razorpay_subscription_id);
+            $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
             $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
             $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
@@ -5679,15 +5667,14 @@ public function LocationCheck(Request $request){
                 Subscription::create([
                 'user_id'        =>  $request->userId,
                 'name'           =>  $plan_id['item']->name,
-                // 'days'        =>  $fileName_zip,
                 'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
                 'stripe_id'      =>  $subscription['id'],
                 'stripe_status'  =>  $subscription['status'],
                 'stripe_plan'    =>  $subscription['plan_id'],
                 'quantity'       =>  $subscription['quantity'],
-                'countryname'    =>  $request->countryName,
-                'regionname'     =>  $request->cityName,
-                'cityname'       =>  $request->regionName,
+                'countryname'    =>  $countryName,
+                'regionname'     =>  $regionName,
+                'cityname'       =>  $cityName,
                 'PaymentGateway' =>  'Razorpay',
             ]);
 
@@ -5707,7 +5694,6 @@ public function LocationCheck(Request $request){
             'status'  => 'false',
             'Message' => 'While Storing the value on Serve Error'], 200);
       }
-    }
   }
 
   public function RazorpaySubscriptionCancel(Request $request)

@@ -6,10 +6,14 @@ $settings = App\Setting::find(1);
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
         <title>Reset Password | <?php echo $settings->website_name ; ?></title>
         <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/bootstrap.min.css'); ?>" />
+       
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
-        <link rel="stylesheet" href="<?=  URL::to('/assets/css/style.css'); ?>" />
+          <link rel="stylesheet" href="<?=  URL::to('/assets/css/style.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/bootstrap.min.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/typography.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/responsive.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/admin/css/animate.min.css'); ?>" />
         <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/rrssb.css'); ?>" />
         <link rel="stylesheet" href="<?=  URL::to('/assets/admin/css/animate.min.css'); ?>" />
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
@@ -108,7 +112,7 @@ $settings = App\Setting::find(1);
 						</div>
 
 						<div class="form-group row mb-0">
-							<div class="col-md-12">
+							<div class="col-md-12 text-center">
 								<button type="submit" class="btn btn-primary btn-hover">
 									{{ __('Reset Password') }}
 								</button>

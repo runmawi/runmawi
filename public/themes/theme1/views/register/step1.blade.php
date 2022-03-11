@@ -234,6 +234,7 @@ i.fa.fa-google-plus {
     
 
 ?>
+    
 
 <!--<div class="container">
     <div class="row justify-content-center" id="signup-form">
@@ -361,9 +362,14 @@ i.fa.fa-google-plus {
         </div>
     </div>
 </div>-->
+    
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
+          
          <div class="col-sm-10 col-md-7 col-lg-6 align-self-center text-center">
+             <div class="text-center">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">  
+          </div>
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
