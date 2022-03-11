@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 @php
     include(public_path('themes\theme1\views\header.php'));
 @endphp
@@ -254,7 +252,7 @@ body.loading .overlay{
             <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
                     <h4 class="main-title mb-4">My Account</h4>
-                    <p class="text-white">Edit your name or change<br>your password.</p>
+                    <!-- <p class="text-white">Edit your name or change<br>your password.</p> -->
                     <ul class="edit p-0 mt-5">
                         
                         <li><div class="d-flex showSingle" target="2">
@@ -294,21 +292,21 @@ body.loading .overlay{
 
 
 
- <?php 
-                            // $plans = App\Plan::get();
-
+                                <?php                          
                                foreach($plans_data as $plan) {
                                   $plan_name = $plan[0]->plans_name;
                             ?>
                  <div class="col-md-12 mt-3 p-0">
-                    <button class="bg-col"  data-price="<?php echo $plan[0]->price;?>" 
+                    <button  data-price="<?php echo $plan[0]->price;?>" 
                     data-name="<?php echo $plan[0]->plans_name;?>"  
-                    class="plans_name_choose" onclick="jQuery('#add-new').modal('show');" 
+                    class="bg-col plans_name_choose" onclick="jQuery('#add-new').modal('show');" 
                      name="plan_name"  value="<?php echo $plan_name;?>">
                    
                     <div class="container">
                         <p><?php echo $plan[0]->plans_name;?></p>
-                        <h1><span class=""><?php echo "$".$plan[0]->price;?></span><span class="dl1"> 
+                        <h1><span class="dl">$</span><?php echo $plan[0]->price;?> </span><span class="dl1">
+
+                        <!-- <h1><span class=""><?php echo "$".' '.$plan[0]->price;?></span><span class="dl1">  -->
                         <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                         </span></h1></div>
                         <input type="hidden" class="theme_planname" value="<?php echo $plan[0]->plans_name;?>" >      
@@ -346,10 +344,10 @@ body.loading .overlay{
                             <div class="col-md-11 col-sm-offset-1">
                             <div class="sign-up-buttons" align="center">
 
-                                    <p> <span>Or</span></p>
-                                    <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
-                                        <?php echo __('Skip');?>
-                                    </a>
+                                    <!-- <p> <span>Or</span></p> -->
+                                    <!-- <a type="button" href="<?php //echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
+                                        <?php //echo __('Skip');?>
+                                    </a> -->
                             </div>
                             </div>
                         </div>-->
