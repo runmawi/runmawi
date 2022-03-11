@@ -637,7 +637,7 @@ $uppercase =  ucfirst($request_url);
                         
                             <div class="form-group">
 		                        <label>Password:</label><br>
-		                        <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  >
+		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="Password"  class="form-control"  >
 		                    </div> 
                         
                         
