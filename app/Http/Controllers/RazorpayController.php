@@ -17,6 +17,8 @@ use App\Subscription;
 use Razorpay\Api\Api;
 use App\User;
 use App\ThemeIntegration;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 
@@ -46,8 +48,10 @@ class RazorpayController extends Controller
             $user_details =User::where('email',$userEmailId)->first();
         }
 
+        $plan_Id =Crypt::decryptString($Plan_Id);
+        
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $planId = $api->plan->fetch($Plan_Id);
+        $planId = $api->plan->fetch($plan_Id);
 
         $subscription = $api->subscription->create(array(
         'plan_id' =>  $planId->id, 

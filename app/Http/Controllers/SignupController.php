@@ -472,7 +472,8 @@ elseif($request->payment_method == "Razorpay"){
                 ->where('type', '=', $request->payment_method)
                 ->first();
 
-            $PlanId =$plans->plan_id;
+            $PlanId =Crypt::encryptString($plans->plan_id);
+
             return Redirect::route('RazorpayIntegration',$PlanId);
 }
 }

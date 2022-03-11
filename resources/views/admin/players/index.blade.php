@@ -79,7 +79,7 @@
 								</label>
 							</div>
 						</div>
-						<div class="flex">
+						{{-- <div class="flex">
 							<div>
 								<label>Thumbnails on seekbar</label>
 							</div>
@@ -92,10 +92,10 @@
 
 								</label>
 							</div>
-						</div>
+						</div> --}}
 					
                      </div>
-					 <div class="col-md-6">
+					 <div class="col-md-6 Section2" style="margin-top: -4%;">
 						<div class="flex">
 							<div>
 								<label>Skip intro <br><span class="span1">(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
@@ -125,7 +125,7 @@
 							</div>
 						</div>
 						<div class="flex">
-							<div>
+							{{-- <div>
 								<label>Advanced player <br><span class="span1">(Allows you to change add html code)</span></label>
 							</div>
 							<div>
@@ -136,9 +136,10 @@
 									<span class="slider round"></span>
 
 								</label>
-							</div>
+							</div> --}}
 						</div>
-						<div class="flex">
+						
+						{{-- <div class="flex">
 							<div>
 								<label>Enable video cards</label>
 							</div>
@@ -151,7 +152,7 @@
 
 								</label>
 							</div>
-						</div>
+						</div> --}}
 						</div></div>
 						
 						

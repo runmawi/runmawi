@@ -2510,7 +2510,7 @@ class HomeController extends Controller
                     ->where('type', '=', $request->payment_method)
                     ->first();
 
-                    $PlanId =$plans->plan_id;
+                    $PlanId =Crypt::encryptString($plans->plan_id);
                     return Redirect::route('RazorpayIntegration',$PlanId);
             }
         }
@@ -2523,7 +2523,7 @@ class HomeController extends Controller
 
 
             if($plan_details['type'] == "Razorpay"){
-                $PlanId =$plan_details->plan_id;
+                $PlanId =Crypt::encryptString($plan_details->plan_id);
                 return Redirect::route('RazorpayIntegration',$PlanId);
             }
 

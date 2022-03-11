@@ -1117,6 +1117,8 @@ $(document).ready(function($){
       $('#recap_end_time').mask("00:00:00");
       $('#skip_intro').mask("00:00:00");
       $('#skip_recap').mask("00:00:00");
+      $('#url_linktym').mask("00:00:00");
+
    });
 </script>
 

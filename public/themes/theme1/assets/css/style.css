@@ -2265,7 +2265,9 @@ a {
     flex-wrap: wrap;
 }
 
-
+.views{
+    color: #fff!important;
+}
 
 .btn1 {
    
