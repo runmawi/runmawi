@@ -599,12 +599,12 @@ class AdminUsersController extends Controller
 
 }
     public function myprofileupdate(Request $request){
-            echo "<pre>";
+            // echo "<pre>";
       
         $input = $request->all();
         
-        print_r($input);
-        exit();
+        // print_r($input);
+        // exit();
        $id = $request['user_id'];
        
        $user = User::find($id);        
