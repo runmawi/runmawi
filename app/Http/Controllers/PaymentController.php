@@ -500,7 +500,7 @@ public function RentPaypal(Request $request)
         Theme::uses(  $Theme );
 
          $plan_id = $request->get('modal_plan_name');
-
+      dd($plan_id);
          $payment_method = $request->payment_method;
 
       if($request->payment_method == "Stripe"){

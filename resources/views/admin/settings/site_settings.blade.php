@@ -38,12 +38,11 @@
 <!-- This is where -->
 	
 	<div class="admin-section-title">
-		<h4><i class="entypo-globe"></i> Site Settings</h4> 
+		<h4><i class="entypo-globe"></i> Platform Settings</h4> 
         <hr>
 	</div>
 	<div class="clear"></div>
 
-	
 
 	<form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 		

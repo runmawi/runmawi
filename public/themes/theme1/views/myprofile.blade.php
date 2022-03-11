@@ -576,12 +576,20 @@ border-radius: 20px;
                                 </a>
 </div>
                             </li>
-                        <li><div class="d-flex showSingle" target="2">
-                                <a href="<?=URL::to('/upgrade-subscription_plan');?>">
+                        <li><div class="d-flex " target="#">
+                        <?php if(Auth::User()->role == "registered"){ ?>
+                           <a href="<?=URL::to('/becomesubscriber');?>">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
                                     Plan
                                 </a>
-</div></li>
+                                <?php } ?></div></li>
+                                <li><div class="d-flex showSingle" target="2">
+                        <?php if(Auth::User()->role == "subscriber"){ ?>
+                           <!-- <a href="<?=URL::to('/upgrade-subscription_plan');?>"> -->
+                           <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
+                            Plan
+                                <!-- </a> -->
+                                <?php } ?></div></li>
                         <li><div class="d-flex showSingle" target="3">
                                 <a>
                             <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
@@ -652,16 +660,34 @@ border-radius: 20px;
                 <hr style="color:#fff;">
                 <div class="col-md-8 targetDiv" id="div2">
                 <div class="col-md-12 mt-3">
-                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
+                    <div class="bg-col">
                         <div class="container ">
                           
-                        <p>SAVE $ 594</p>
-                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        <p>Existing Plan : </p>
+
+                        <?php  if($user_role == 'registered'){ ?>
+                              <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
+                              <h6>Subscription</h6>                                       
+                           <?php }elseif($user_role == 'subscriber'){ ?>
+                              <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                              <br>       
+                           <h5 class="card-title mb-0">Available Specification :</h5><br>
+                              <h6> Video Quality : <p><?php echo $plans->video_quality; ?></p></h6>  
+                              <h6> Video Resolution : <p><?php echo $plans->resolution; ?></p></h6>                               
+                              <h6> Available Devices : <p><?php echo $devices_name; ?></p></h6>                              
+                              <!--<h6>Subscription</h6>-->
+                           <?php } ?>
+
+                        <!-- <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div> -->
                         </div>
+                        <br>       
+
+                    <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                    <br>       
                         
                     </div>
                 
-                 <div class="col-md-12 mt-3">
+                 <!-- <div class="col-md-12 mt-3">
                     <div class="bg-col">
                        <div class="container ">
                            
@@ -687,8 +713,8 @@ border-radius: 20px;
                         <p></p>
                                 <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
                         
-                    </div>
-                </div>
+                    </div> -->
+                <!-- </div> -->
                  <div class="col-md-8 targetDiv" id="div3">
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >

@@ -2445,6 +2445,7 @@ class HomeController extends Controller
         {
             if ($request->payment_method == "Stripe")
             {
+                // dd($request->payment_method);
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
