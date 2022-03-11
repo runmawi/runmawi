@@ -1066,7 +1066,7 @@ border-radius: 5px;padding:10px;">
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/profile/update') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
