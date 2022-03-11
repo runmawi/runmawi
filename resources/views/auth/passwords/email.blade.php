@@ -6,15 +6,15 @@ $settings = App\Setting::find(1);
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
         <title>Reset Password | <?php echo $settings->website_name ; ?></title>
         <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/bootstrap.min.css'); ?>" />
-        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/noty.css'); ?>" />
         <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/font-awesome.min.css'); ?>" />
         <link rel="stylesheet" href="<?= URL::to( '/assets/admin/css/email/hellovideo-fonts.css'); ?>" />
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
 
         <link rel="stylesheet" href="<?=  URL::to('/assets/css/style.css'); ?>" />
-        <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/rrssb.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/bootstrap.min.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/typography.css'); ?>" />
+        <link rel="stylesheet" href="<?=  URL::to('/assets/css/responsive.css'); ?>" />
         <link rel="stylesheet" href="<?=  URL::to('/assets/admin/css/animate.min.css'); ?>" />
 
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
@@ -31,7 +31,7 @@ $settings = App\Setting::find(1);
 }
    
     .container-fluid{
-        width: 90%!important;
+      
     }
     h1{
         color: #fff;
@@ -39,6 +39,17 @@ $settings = App\Setting::find(1);
     .h{
         color: #fff; 
     }
+            .km {
+    text-align: center;
+    font-size: 75px;
+    font-weight: 900;
+}
+            input{
+                border: 1px solid gray!important;
+            }
+            .reset-help{
+                margin-top: 10px;
+                            }
 </style>
     </head>
 <body>
@@ -46,9 +57,9 @@ $settings = App\Setting::find(1);
 
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
 <div class="container  page-height">
-    <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-12 align-self-center">
-              <div class="col-lg-9" >
+    <div class="row justify-content-around">
+        <div class="col-lg-7 col-12 align-self-center">
+              <div class="" >
               <h1 class="km"><?php echo $settings->login_text; ?></h1>
                   </div>
           </div>
@@ -73,9 +84,9 @@ $settings = App\Setting::find(1);
                         @csrf
 
                         <div class="form-group row">
-                            <div class="col-sm-offset-1 col-sm-12">
+                            <div class=" col-sm-12">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder= "email@example.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
-								<p class="reset-help">We will send you an email with instructions on how to reset your password.</p>
+								<p class="reset-help text-center">We will send you an email<br> with instructions on how to <br>reset your password.</p>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -95,6 +106,7 @@ $settings = App\Setting::find(1);
     </div>
     </div>
 </section>
+  @include('footer')
 
-@extends('footer')
+    </body>
 </html>

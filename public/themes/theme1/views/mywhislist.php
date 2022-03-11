@@ -8,7 +8,8 @@
  <!-- loader END -->
 
  <!-- MainContent -->
- <div class="main-content">
+ <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
+    padding: 15px 60px 40px;!important;">
      <div class="container-fluid">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
@@ -28,7 +29,7 @@
                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
-                   
+                    </div>
 <!--
                     <div class="corner-text-wrapper">
                         <div class="corner-text">
@@ -79,9 +80,11 @@
     <?php endforeach; 
             else:
             ?>
-            <p><h2>No Media in My WishLists</h2></p>
+            <h2>No Media in My WishLists</h2>
                 <div class="col-md-12 text-center mt-4">
-            <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+            <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" height="400" width="400">
+                     <p class="text-white text-center">We are having a temporary playback issue,we are working on it and <br>will be back very soon!</p>
+                     <a class="mb-5 text-white">Please refresh your page to retry</a>
         </div>
         <?php endif; ?>
          </div>

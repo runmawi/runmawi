@@ -9,12 +9,13 @@
 
 
 <!-- MainContent -->
- <div class="main-content">
+ <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
+    padding: 0px 60px 40px;!important;">
      <div class="container-fluid">
-          <div class="row">
+          <div class="row justify-content-center">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="Continue Watching">Media in My Watchlater</h4>
+           <!-- <h4 class="Continue Watching">Media in My Watchlater</h4>-->
         </div>
      </div>
      <section class="movie-detail ">
@@ -77,9 +78,11 @@
             </div>
     <?php endforeach; 
         else: ?>
-            <p><h2>No Media in My Watchlater</h2></p>
+          <!--  <h2>No Media in My Watchlater</h2>-->
                  <div class="col-md-12 text-center mt-4">
-             <img class="w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>">
+             <img class=" text-center" src="<?php echo  URL::to('/assets/img/watch.png')?>" height="400" width="400">
+                     <p class="text-white text-center">We are having a temporary playback issue,we are working on it and <br>will be back very soon!</p>
+                     <a class="mb-5 text-white">Please refresh your page to retry</a>
          </div>
         <?php endif; ?>
          </div>
