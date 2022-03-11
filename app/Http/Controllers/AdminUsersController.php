@@ -567,7 +567,7 @@ class AdminUsersController extends Controller
     public function ProfileImage(Request $request){
       
     $input = $request->all();
-
+// dd($input);  
    $id = $request['user_id'];
 
    $path = public_path().'/uploads/avatars/';         
@@ -599,24 +599,24 @@ class AdminUsersController extends Controller
 
 }
     public function myprofileupdate(Request $request){
-            // echo "<pre>";
+            echo "<pre>";
       
         $input = $request->all();
         
-        // print_r($input);
-        // exit();
+        print_r($input);
+        exit();
        $id = $request['user_id'];
        
        $user = User::find($id);        
 
        
-       if ( empty($request['email'])){
-           return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
+    //    if ( empty($request['email'])){
+    //        return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
            
-       } else {
+    //    } else {
            
-            $request['email'] = $request['email'];
-       }
+    //         $request['email'] = $request['email'];
+    //    }
 
 
 

@@ -620,7 +620,7 @@ $uppercase =  ucfirst($request_url);
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/profile/update') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
@@ -745,7 +745,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-0">Manage Profile</h4>
                         <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
-                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />

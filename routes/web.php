@@ -82,9 +82,6 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
     Route::post('/directVerify', 'SignupController@directVerify');
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
-    Route::post('/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
-
-    
 
     Route::get('/registerUser', 'SignupController@SaveAsRegisterUser');
     Route::get('/register2', 'SignupController@createStep2');
@@ -128,7 +125,8 @@ Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
-Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
+Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
+Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
 Route::post('mywishlist', 'WishlistController@mywishlist');
