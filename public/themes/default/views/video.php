@@ -631,7 +631,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <!-- PPV button -->
                    <li>
                        <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) { ?>
-                       <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                       <?php if ( $video->access != 'ppv' && $video->global_ppv != null && $user->role!="admin" || $video->access != 'ppv' && $video->ppv_price != null  && $user->role!="admin") { ?>
 
                          <!-- && ($video->global_ppv == 1 ) -->
                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
