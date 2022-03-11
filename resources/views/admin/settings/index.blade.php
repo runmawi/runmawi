@@ -163,7 +163,7 @@
                                         <div class="panel-body row">
                                             <p class="col-md-8 p1">Enable Pay per View:</p>
                                             <div class="form-group col-md-4">
-                                                <input type="checkbox" name="ppv_status" id="ppv_status" @if(!isset($settings- />ppv_status) || (isset($settings->ppv_status) && $settings->ppv_status))checked="checked" value="1"@else
+                                                <input type="checkbox" name="ppv_status" id="ppv_status" @if(!isset($settings->ppv_status) || (isset($settings->ppv_status) && $settings->ppv_status))checked="checked" value="1"@else
                                                 value="0"@endif />
                                             </div>
                                         </div>
@@ -280,7 +280,7 @@
 
                                                         <div class="mt-1">
                                                             <label class="switch">
-                                                                <input type="checkbox" @if(!isset($settings- />free_registration) || (isset($settings->free_registration) && $settings->free_registration))checked="checked" value="1"@else
+                                                                <input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->free_registration) && $settings->free_registration))checked="checked" value="1"@else
                                                                 value="0"@endif name="free_registration" id="free_registration" />
                                                                 <span class="slider round"></span>
                                                             </label>
@@ -295,7 +295,7 @@
                                                     <div>ON</div>
                                                     <div class="mt-1">
                                                         <label class="switch">
-                                                            <input type="checkbox" @if(!isset($settings- />activation_email) || (isset($settings->activation_email) && $settings->activation_email))checked="checked" value="1"@else
+                                                            <input type="checkbox" @if(!isset($settings->activation_email) || (isset($settings->activation_email) && $settings->activation_email))checked="checked" value="1"@else
                                                             value="0"@endif name="activation_email" id="activation_email" />
                                                             <span class="slider round"></span>
                                                         </label>
@@ -309,7 +309,7 @@
                                                     <div>ON</div>
                                                     <div class="mt-1">
                                                         <label class="switch">
-                                                            <input type="checkbox" @if(!isset($settings- />premium_upgrade) || (isset($settings->premium_upgrade) && $settings->premium_upgrade))checked="checked" value="1"@else
+                                                            <input type="checkbox" @if(!isset($settings->premium_upgrade) || (isset($settings->premium_upgrade) && $settings->premium_upgrade))checked="checked" value="1"@else
                                                             value="0"@endif name="premium_upgrade" id="premium_upgrade" />
                                                             <span class="slider round"></span>
                                                         </label>
@@ -324,7 +324,7 @@
                                                         <div>ON</div>
                                                         <div class="mt-1">
                                                             <label class="switch">
-                                                                <input type="checkbox" @if(!isset($settings- />access_free) || (isset($settings->access_free) && $settings->access_free))checked="checked" value="1"@else value="0"@endif
+                                                                <input type="checkbox" @if(!isset($settings->access_free) || (isset($settings->access_free) && $settings->access_free))checked="checked" value="1"@else value="0"@endif
                                                                 name="access_free" id="access_free" />
                                                                 <span class="slider round"></span>
                                                             </label>
@@ -402,7 +402,7 @@
                                         </div>
                                         <div class="panel-body" style="display: block;">
                                             <label class="panel-title">Enable / Disable:</label>
-                                            <input type="checkbox" @if($settings- />coupon_status == 1)checked="checked" value="1"@else value="0"@endif name="coupon_status">
+                                            <input type="checkbox" @if($settings->coupon_status == 1)checked="checked" value="1"@else value="0"@endif name="coupon_status">
                                         </div>
                                     </div>
                                 </div>
@@ -488,12 +488,12 @@
                                             <div class="col-sm-6">
                                                 <div class="panel-body" style="display: block;">
                                                     <label class="panel-title">Coupon Enable / Disable:</label>
-                                                    <label><input type="checkbox" @if($settings- />new_subscriber_coupon == 1)checked="checked" value="1"@else value="0"@endif name="new_subscriber_coupon"></label>
+                                                    <label><input type="checkbox" @if($settings->new_subscriber_coupon == 1)checked="checked" value="1"@else value="0"@endif name="new_subscriber_coupon"></label>
                                                 </div>
                                                 <div class="panel-body mt-3" style="display: block;">
                                                     <label class="panel-title">Discount %:</label>
                                                     <div class="form-group add-profile-pic checkbox">
-                                                        <input type="text" class="form-control" @if(isset($settings- />discount_percentage)) value="
+                                                        <input type="text" class="form-control" @if(isset($settings->discount_percentage)) value="
                                                         <?=$settings->discount_percentage;?>"@endif placeholder="Discount %:" name="discount_percentage">
                                                     </div>
                                                 </div>
@@ -502,7 +502,7 @@
                                                 <div class="panel-body" style="display: block;">
                                                     <label class="panel-title">Coupon Code:</label>
                                                     <div class="form-group add-profile-pic checkbox">
-                                                        <input type="text" class="form-control" @if(isset($settings- />coupon_code)) value="
+                                                        <input type="text" class="form-control" @if(isset($settings->coupon_code)) value="
                                                         <?=$settings->coupon_code;?>"@endif placeholder="Enter Coupon Code" name="coupon_code">
                                                     </div>
                                                 </div>
@@ -614,7 +614,7 @@
 
                                                     <div class="form-group col-md-4">
                                                         <div class="make-switch" data-on="success" data-off="warning">
-                                                            <input type="checkbox" @if(!isset($settings- />ads_on_videos) || (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked" value="1"@else value="0"@endif
+                                                            <input type="checkbox" @if(!isset($settings->ads_on_videos) || (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked" value="1"@else value="0"@endif
                                                             name="ads_on_videos" id="ads_on_videos" />
                                                         </div>
                                                     </div>
@@ -642,7 +642,7 @@
 
                                                         <div class="mt-1">
                                                             <label class="switch">
-                                                                <input type="checkbox" @if(!isset($settings- />series_season) || (isset($settings->series_season) && $settings->series_season))checked="checked" value="1"@else value="0"@endif
+                                                                <input type="checkbox" @if(!isset($settings->series_season) || (isset($settings->series_season) && $settings->series_season))checked="checked" value="1"@else value="0"@endif
                                                                 name="series_season" id="series_season" />
                                                                 <span class="slider round"></span>
                                                             </label>
