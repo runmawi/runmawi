@@ -120,6 +120,7 @@
 			</div>
             <br>
             <br>
+            @if(!empty($paypal_payment_settings))
             <p><h3>PayPal Payment</h3></p>
             <div class="row">
             <div class="col-md-6 mt-3">
@@ -207,7 +208,7 @@
 
             
 	</form>
-
+    @Endif
                   </div>
              </div>
     </div>
