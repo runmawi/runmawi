@@ -43,7 +43,7 @@
 	<div class="clear"></div>
 
 	
-    <p><h3>Stripe Payment</h3></p>
+    <p><h3>RazorPay Payment</h3></p>
 
 	<form method="POST" action="{{ URL::to('admin/payment_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 	<div class="row">
