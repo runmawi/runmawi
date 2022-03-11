@@ -318,6 +318,8 @@ class AdminUsersController extends Controller
             //   echo "<pre>";
             // print_r($heading);
             // exit();
+    $settings = Setting::find(1);
+
             if($input['role'] == "subscriber"){
 
             Mail::send('emails.sub_user', array(
@@ -326,8 +328,8 @@ class AdminUsersController extends Controller
                 'email' => $request['email'], 
                 'password' => $request['passwords'], 
 
-                ), function($message) use ($request,$user,$heading) {
-                $message->from(AdminMail(),'Flicknexs');
+                ), function($message) use ($request,$user,$heading,$settings) {
+                $message->from(AdminMail(),$settings->website_name);
                 $message->to($request['email'], $request['username'])->subject($heading.$request['username']);
                 });
 
@@ -798,6 +800,7 @@ class AdminUsersController extends Controller
             $device_name = @$device->device_name;
             $user_id = @$device->user_id;
 
+            $settings = Setting::find(1);
 
             // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
 
@@ -811,8 +814,8 @@ class AdminUsersController extends Controller
                 'user_ip' => $user_ip, 
                 'device_name' => $device_name, 
                 'id' => $id, 
-                ), function($message) use ($email,$username) {
-                $message->from(AdminMail(),'Flicknexs');
+                ), function($message) use ($email,$username,$settings) {
+                $message->from(AdminMail(),$settings->website_name);
                 $message->to($email, $username)->subject('Request to Logout Device');
                 });
                 $maildevice = new ApprovalMailDevice;
@@ -849,14 +852,16 @@ class AdminUsersController extends Controller
             $maildevice->save();
 
             LoggedDevice::destroy($id);
+            $settings = Setting::find(1);
+
             if(!empty($user_id)){
             Mail::send('emails.register_device_login', array(
                 'id' => $user_id,
                 'name' => $username,
 
-            ) , function ($message) use ($email, $username)
+            ) , function ($message) use ($email, $username, $settings)
             {
-                $message->from(AdminMail() , 'Flicknexs');
+                $message->from(AdminMail() , $settings->website_name);
                 $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
             });
         }
