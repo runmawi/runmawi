@@ -1439,12 +1439,12 @@ border-radius: 5px;padding:10px;">
 
 		</div>
 		<?php $settings = App\Setting::first(); ?>
-<footer class="mb-0">
+      <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt=""> </a>
+                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                         <i class="ri-facebook-fill"></i>
@@ -1465,35 +1465,27 @@ border-radius: 5px;padding:10px;">
                   </div>
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
-                        <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
+                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
                      </ul>
-                  </div>
-                  <!--<div class="col-lg-3 col-md-4">
-                     <ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Help</a></li>
-                     </ul>
-                  </div>-->
-                  
+                  </div>                  
                   <div class="col-lg-3 col-md-4">
-                      <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag">
-                        <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
+                      <!-- <div class="row">
+                     <ul class="f-link list-unstyled mb-0 catag"> -->
+                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
                         <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
                         <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li>
+                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
                          
-                          </ul>
-                          <ul class="f-link list-unstyled mb-0">
+                          <!-- </ul>
+                          <ul class="f-link list-unstyled mb-0"> -->
                         
-                         <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li>
-                          </ul>
-                      </div>
+                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
+                          <!-- </ul> -->
+                      <!-- </div> -->
                       
                       <!--<ul class="f-link list-unstyled mb-0">
                         
