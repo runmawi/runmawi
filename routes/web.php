@@ -82,6 +82,9 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');  
     Route::post('/directVerify', 'SignupController@directVerify');
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
+    Route::post('/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
+
+    
 
     Route::get('/registerUser', 'SignupController@SaveAsRegisterUser');
     Route::get('/register2', 'SignupController@createStep2');

@@ -47,6 +47,10 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+        .error {
+    color: brown;
+    font-family: 'Chivo' !important;
+    }
     .sign-user_card {
        background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;
 
@@ -661,27 +665,27 @@ $.ajaxSetup({
 	$(document).ready(function(){
         $('#email_error').hide();
 
-$('#email').change(function(){
+// $('#email').change(function(){
     // alert(($('#email').val()));
 
-	var email = $('#email').val();
-	$.ajax({
-        url:"{{ URL::to('/emailvalidation') }}",
-        method:'GET',
-data: {
-               _token: '{{ csrf_token() }}',
-               email: $('#email').val()
+// 	var email = $('#email').val();
+// 	$.ajax({
+//         url:"{{ URL::to('/emailvalidation') }}",
+//         method:'GET',
+// data: {
+//                _token: '{{ csrf_token() }}',
+//                email: $('#email').val()
 
-         },        success: function(value){
-			console.log(value.email);
-            if(value.user_exits == "yes"){
-            $('#email_error').show();
-            }else{
-            $('#email_error').hide();
-            }
-        }
-    });
-})
+//          },        success: function(value){
+// 			console.log(value.email);
+//             if(value.user_exits == "yes"){
+//             $('#email_error').show();
+//             }else{
+//             $('#email_error').hide();
+//             }
+//         }
+//     });
+// })
 
 });
 	
@@ -879,6 +883,64 @@ $(document).ready(function() {
         $('#loginModalLong').modal({backdrop: 'static', keyboard: false}) 
         
     </script>
+
+
+{{-- Validation --}}
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+
+
+$( "#stripe_plan" ).validate({
+    rules: {
+            username: {
+                required: true,
+            },
+            password:{
+                required: true,
+            },
+            mobile: {
+                required: true,
+                remote: {
+                    url: '{{ URL::to('SignupMobile_val') }}',
+                    type: "post",
+                    data: {
+                        _token: "{{csrf_token()}}" ,
+                        MobileNo: function() {
+                        return $( "#mobile" ).val(); }
+                    }
+                }
+            },
+            email: {
+                required: true,
+                remote: {
+                    url:"{{ URL::to('/emailvalidation') }}",
+                    type: "get",
+                    data: {
+                        _token: "{{csrf_token()}}" ,
+                        success: function() {
+                        return $('#email').val(); }
+                    }
+                }
+            }
+        },
+            messages: {
+                mobile: {
+                    required: "Please Enter the Mobile Number",
+                    remote: "Mobile Number already in taken ! Please try another Mobile Number"
+                },
+                username: {
+                     required: "Please Enter the Name",
+                },
+                email: {
+                    required: "Please Enter the Email Id",
+                    remote: "Email Id already in taken ! Please try another Mobile Number"
+                },
+               
+               
+            }
+});
+</script>
 
 
  <!-- jQuery, Popper JS -->
