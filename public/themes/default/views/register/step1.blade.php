@@ -164,6 +164,10 @@ i.fa.fa-google-plus {
     background: transparent !important;
     color: #fff !important;
     }
+    .error {
+    color: brown;
+    font-family: 'remixicon';
+    }
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
@@ -614,27 +618,26 @@ $.ajaxSetup({
 	$(document).ready(function(){
         $('#email_error').hide();
 
-$('#email').change(function(){
-    // alert(($('#email').val()));
+// $('#email').change(function(){
 
-	var email = $('#email').val();
-	$.ajax({
-        url:"{{ URL::to('/emailvalidation') }}",
-        method:'GET',
-data: {
-               _token: '{{ csrf_token() }}',
-               email: $('#email').val()
+// 	var email = $('#email').val();
+// 	$.ajax({
+//         url:"{{ URL::to('/emailvalidation') }}",
+//         method:'GET',
+//         data: {
+//                _token: '{{ csrf_token() }}',
+//                email: $('#email').val()
 
-         },        success: function(value){
-			console.log(value.email);
-            if(value.user_exits == "yes"){
-            $('#email_error').show();
-            }else{
-            $('#email_error').hide();
-            }
-        }
-    });
-})
+//          },        success: function(value){
+// 			console.log(value.email);
+//             if(value.user_exits == "yes"){
+//             $('#email_error').show();
+//             }else{
+//             $('#email_error').hide();
+//             }
+//         }
+//     });
+// })
 
 });
 	
@@ -832,6 +835,63 @@ $(document).ready(function() {
         $('#loginModalLong').modal({backdrop: 'static', keyboard: false}) 
         
     </script>
+
+{{-- Validation --}}
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    <script>
+
+
+    $( "#stripe_plan" ).validate({
+        rules: {
+                username: {
+                    required: true,
+                },
+                password:{
+                    required: true,
+                },
+                mobile: {
+                    required: true,
+                    remote: {
+                        url: '{{ URL::to('SignupMobile_val') }}',
+                        type: "post",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            MobileNo: function() {
+                            return $( "#mobile" ).val(); }
+                        }
+                    }
+                },
+                email: {
+                    required: true,
+                    remote: {
+                        url:"{{ URL::to('/emailvalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#email').val(); }
+                        }
+                    }
+                }
+            },
+                messages: {
+                    mobile: {
+                        required: "Please Enter the Mobile Number",
+                        remote: "Mobile Number already in taken ! Please try another Mobile Number"
+                    },
+                    username: {
+                         required: "Please Enter the Name",
+                    },
+                    email: {
+                        required: "Please Enter the Email Id",
+                        remote: "Email Id already in taken ! Please try another Mobile Number"
+                    },
+                   
+                   
+                }
+    });
+</script>
 
 
  <!-- jQuery, Popper JS -->
