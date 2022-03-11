@@ -132,6 +132,7 @@ $uppercase =  ucfirst($request_url);
     color: var(--iq-white) !important;
     border-radius: 0;
     margin-bottom: 1rem !important;
+    border: 1px solid gray!important;
 }
     .form-control:focus {
      color: var(--iq-white) !important;
@@ -139,6 +140,7 @@ $uppercase =  ucfirst($request_url);
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+        
 }
     .custom-file-upload {
     border: 1px solid #ccc;

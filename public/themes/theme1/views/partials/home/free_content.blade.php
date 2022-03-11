@@ -15,6 +15,7 @@
                 <div class="img-box">
                   <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_episode->image;  ?>" class="img-fluid w-100" alt="">
                 </div>
+                   </div>
                 <div class="block-description">
                
                   
@@ -33,7 +34,7 @@
                   </div>
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_episode->duration); ?></span>
 
-                </div>
+               
              
             </a>
           </li>
