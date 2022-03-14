@@ -631,6 +631,18 @@ border-radius: 20px;
                                 </a>
 </div>
                             </li>
+                        <li><div class="d-flex showSingle" target="3">
+                                <a>
+                            <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
+                                    Kids zone
+                                </a>
+                        </div></li>
+                        <li><div class="d-flex showSingle" target="4">
+                                <a>
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
+                                   Video preferences
+                                </a>
+                     </div></li>
                         <li><div class="d-flex " target="#">
                         <?php if(Auth::User()->role == "registered"){ ?>
                            <a href="<?=URL::to('/becomesubscriber');?>">
@@ -645,18 +657,6 @@ border-radius: 20px;
                             Plan
                                 <!-- </a> -->
                                 <?php } ?></div></li>
-                        <li><div class="d-flex showSingle" target="3">
-                                <a>
-                            <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
-                                    Kids zone
-                                </a>
-</div></li>
-                        <li><div class="d-flex showSingle" target="4">
-                                <a>
-                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
-                                   Video preferences
-                                </a>
-</div></li>
                     </ul>
                 </div>
                 
@@ -867,6 +867,7 @@ border-radius: 20px;
          
        
     </section>
+    
     <!--<section  class="m-profile setting-wrapper pt-0  mt-4">
         <div class="container">
             <div class="sig1">
