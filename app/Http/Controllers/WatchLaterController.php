@@ -97,12 +97,15 @@ class WatchLaterController extends Controller
         }      
     
         public function showPayperview(){
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
+          Theme::uses($Theme);
+          
             if(Auth::guest()){
                 return redirect('/login');
             }
           $showppv = PpvPurchase::where('user_id', '=', Auth::user()->id)->get();
           $ppvlive = LivePurchase::where('user_id', '=', Auth::user()->id)->get();
-        //   dd($ppvlive); 
+       
 
           $ppv_array = array();
           $ppvlive_array = array();
@@ -111,10 +114,8 @@ class WatchLaterController extends Controller
           }
           foreach($ppvlive as $key => $ccfave){
             array_push($ppvlive_array, $ccfave->video_id);
-            // echo"";
-            // print_r();
           }
-        //   exit();
+      
           $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
           $ppvlivevideos = Video::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
           $data = array(
@@ -123,7 +124,7 @@ class WatchLaterController extends Controller
             'currency' => CurrencySetting::first(),
             
           );
-          return view('myppv', $data);
+          return Theme::view('myppv', $data);
         } 
     
 }
