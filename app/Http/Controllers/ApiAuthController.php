@@ -1940,18 +1940,38 @@ public function verifyandupdatepassword(Request $request)
 
             $user_id = $request->user_id;
             $stripe_plan = SubscriptionPlan();
-            
+
             $user_details = User::where('id', '=', $user_id)->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
             $userdata = User::where('id', '=', $user_id)->first();
-            if ($userdata->subscription($stripe_plan)) {
-                $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
-                $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
-            }else{
+            $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
+
+
+          if($paymode_type != null && $paymode_type == "Razorpay" &&  !empty($userdata) && $userdata->role == "subscriber"){
+
+            $subscription_id = User::where('id', '=', $user_id)->pluck('stripe_id')->first();
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+              if($subscription_id != null){
+                $subscription = $api->subscription->fetch($subscription_id);
+                $nextPaymentAttemptDate = Carbon::createFromTimeStamp($subscription->current_end)->toFormattedDateString();
+              }else{
                 $nextPaymentAttemptDate = '';
+              }
+           
             } 
+          else{
+            if ($userdata->subscription($stripe_plan)) {
+                  $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
+                  $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
+              }else{
+                   $nextPaymentAttemptDate = '';
+              } 
+          } 
+
+          
             $user = User::find($user_id);
 
             // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
@@ -1959,21 +1979,35 @@ public function verifyandupdatepassword(Request $request)
             // }else{
             //     $ends_at = "";
             // }
-
+           
             $stripe_plan = SubscriptionPlan();
+           
+            if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") 
+            {
+             
+                $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
+              
+                if( $paymode_type != null && $paymode_type == "Razorpay"){
+                  $curren_stripe_plan = CurrentSubPlanName($user_id);
+                  $ends_ats = Subscription::where('user_id',$user_id)->latest()->pluck('ends_at');
+                    if(!empty($ends_ats[0])){
+                        $ends_at = $ends_ats[0];
+                    }else{
+                      $ends_at = "";
+                    }
 
-            if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber") {
-              $curren_stripe_plan = CurrentSubPlanName($user_id);
-               $ends_ats = Subscription::where('user_id',$user_id)->pluck('ends_at');
-               if(!empty($ends_ats[0])){
-
-                $ends_at = $ends_ats[0];
-               }else{
-
-                $ends_at = "";
-               }
-
-            } else{
+                }
+                else{
+                  $curren_stripe_plan = CurrentSubPlanName($user_id);
+                  $ends_ats = Subscription::where('user_id',$user_id)->pluck('ends_at');
+                    if(!empty($ends_ats[0])){
+                        $ends_at = $ends_ats[0];
+                    }else{
+                      $ends_at = "";
+                    }
+                } 
+            } 
+            else{
                 $curren_stripe_plan = "No Plan Found";
                 $ends_at = "";
             }
