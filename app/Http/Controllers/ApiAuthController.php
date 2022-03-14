@@ -220,7 +220,7 @@ class ApiAuthController extends Controller
               $regionName = $geoip->getregion();
               $cityName = $geoip->getcity();
               
-                                                                                // Store the Razorpay subscription detials
+                                     // Store the Razorpay subscription detials
               $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
               $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
               $plan_id      = $api->plan->fetch($subscription['plan_id']);
@@ -231,8 +231,7 @@ class ApiAuthController extends Controller
                   Subscription::create([
                   'user_id'        =>  $userid,
                   'name'           =>  $plan_id['item']->name,
-                  // 'days'        =>  $fileName_zip,
-                  'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
+                  'price'          =>  $plan_id['item']->amount / 100,   
                   'stripe_id'      =>  $subscription['id'],
                   'stripe_status'  =>  $subscription['status'],
                   'stripe_plan'    =>  $subscription['plan_id'],
