@@ -25,7 +25,9 @@ $system_settings = App\SystemSetting::find(1);
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+        
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -242,7 +244,10 @@ i.fa.fa-google-plus {
     })
 </script>
 </body>
-     @include('footer')
+
+@php
+    include(public_path('themes\theme1\views\footer.blade.php'));
+@endphp
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
       <script src="assets/js/popper.min.js"></script>
