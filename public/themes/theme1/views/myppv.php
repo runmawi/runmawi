@@ -1,6 +1,7 @@
 <?php include ('header.php'); ?>
 
-<section id="iq-favorites">
+<section id="iq-favorites" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
+    padding: 15px 60px 40px;!important;">
         <div class="fluid">
            <div class="row">
 <?php if (count($ppv) > 0 ||  count($ppvlive) > 0): ?>
@@ -165,9 +166,10 @@
     endif; 
    else:
    ?>
-   <p><h2>No Rented in Video</h2></p>
+   
                  <div class="col-md-12 text-center mt-4">
              <img class="w-50" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+                     <p class="text-center med">No Rented in Video</p>
          </div>
                     </ul>
                  </div>
