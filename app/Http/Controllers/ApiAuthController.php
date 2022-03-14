@@ -227,11 +227,11 @@ class ApiAuthController extends Controller
           
               $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
               $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
-          
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+
                   Subscription::create([
                   'user_id'        =>  $userid,
                   'name'           =>  $plan_id['item']->name,
-                  // 'days'        =>  $fileName_zip,
                   'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
                   'stripe_id'      =>  $subscription['id'],
                   'stripe_status'  =>  $subscription['status'],
@@ -241,6 +241,8 @@ class ApiAuthController extends Controller
                   'regionname'     =>  $regionName,
                   'cityname'       =>  $cityName,
                   'PaymentGateway' =>  'Razorpay',
+                  'trial_ends_at'  =>  $trial_ends_at,
+                  'ends_at'        =>  $trial_ends_at,
               ]);
           
               User::where('id',$userid)->update([
@@ -5704,15 +5706,22 @@ public function LocationCheck(Request $request){
     
     $options  = array('cancel_at_cycle_end'  => 0);
 
-    $api->subscription->fetch($subscriptionId)->cancel($options);
+    try{
+        $api->subscription->fetch($subscriptionId)->cancel($options);
+        
+        Subscription::where('stripe_id',$subscriptionId)->update([
+            'stripe_status' =>  'Cancelled',
+        ]);
 
-    Subscription::where('stripe_id',$subscriptionId)->update([
-        'stripe_status' =>  'Cancelled',
-    ]);
-
-    return response()->json([
-      'status'  => 'true',
-      'Message' => 'Subscription Cancel Successfully'], 200);
+        return response()->json([
+          'status'  => 'true',
+          'Message' => 'Subscription Cancel Successfully'], 200);
+      }
+      catch (\Exception $e){
+        return response()->json([
+          'status'  => 'false',
+          'Message' => 'Subscription cannot be cancel'], 200);
+    }
   }
 
   public function RazorpaySubscriptionUpdate(Request $request){
@@ -5731,13 +5740,20 @@ public function LocationCheck(Request $request){
     $subscription = $api->subscription->fetch($subscriptionId);
     $remaining_count  =  $subscription['remaining_count'] ;
 
+
     if($subscription->payment_method != "upi"){
-        
+      
+      try{
         $options  = array('plan_id'  =>$plan_Id['id'], 'remaining_count' => $remaining_count );
         $api->subscription->fetch($subscriptionId)->update($options);
 
         $UpdatedSubscription = $api->subscription->fetch($subscriptionId);
         $updatedPlan         = $api->plan->fetch($UpdatedSubscription['plan_id']);
+
+        $Sub_Startday = date('d/m/Y H:i:s', $UpdatedSubscription['current_start']); 
+        $Sub_Endday = date('d/m/Y H:i:s', $UpdatedSubscription['current_end']); 
+        $trial_ends_at = Carbon::createFromTimestamp($UpdatedSubscription['current_end'])->toDateTimeString(); 
+
         if (is_null($subscriptionId)) {
             return false;
         }
@@ -5751,12 +5767,26 @@ public function LocationCheck(Request $request){
                 'countryname'   =>  $countryName,
                 'regionname'    =>  $regionName,
                 'cityname'      =>  $cityName,
+                'trial_ends_at' => $trial_ends_at,
+                'ends_at'       => $trial_ends_at,
         ]);
+
+            User::where('id',$user_id)->update([
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+          ]);
         }
         return response()->json([
           'status'  => 'true',
-          'Message' => 'Subscription Updated Successfully'], 200);    }
+          'Message' => 'Subscription Updated Successfully'], 200);    
 
+        }
+          catch (\Exception $e){
+            return response()->json([
+              'status'  => 'false',
+              'Message' => 'upgrade Subscription is fails'], 200);
+        }
+    }
     else{
       return response()->json([
         'status'  => 'fails',
