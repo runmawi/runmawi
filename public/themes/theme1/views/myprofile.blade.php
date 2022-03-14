@@ -55,6 +55,9 @@ $uppercase =  ucfirst($request_url);
    .col-md-12.profile_image {
     display: flex;
    }
+        .showSingle{
+            cursor: pointer;
+        }
         .red{
             color: #be0b14;
         }
@@ -782,10 +785,10 @@ border-radius: 20px;
                         <div class="container ">
                           
                         <p></p>
-                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>
+                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>-->
                         
-                    </div> -->
-                <!-- </div> -->
+                    </div>
+                </div> 
                  <div class="col-md-8 targetDiv" id="div3">
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
@@ -861,6 +864,8 @@ border-radius: 20px;
             </div>
        
             </div></div>
+         
+       
     </section>
     <!--<section  class="m-profile setting-wrapper pt-0  mt-4">
         <div class="container">

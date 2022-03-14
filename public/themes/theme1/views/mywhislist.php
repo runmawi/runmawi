@@ -14,7 +14,7 @@
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="Continue Watching">Media in My WishLists</h4>
+           
         </div>
      </div>
      <section class="movie-detail ">
@@ -73,21 +73,23 @@
                                 </span>
                             </div>
                        </div>
-                    </div>
+                   
                 </li>
                 </a>
             </div>
+         </div>
     <?php endforeach; 
             else:
             ?>
-            <h2>No Media in My WishLists</h2>
-                <div class="col-md-12 text-center mt-4">
-            <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" height="400" width="400">
-                     <p class="text-white text-center">We are having a temporary playback issue,we are working on it and <br>will be back very soon!</p>
-                     <a class="mb-5 text-white">Please refresh your page to retry</a>
+           
+                <div class="col-md-12 text-center mt-4" style="margin-left:30%;">
+            <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" >
+                      <p class="med">No Media in My WishLists</p>
+                     <a class="mb-5 text-white pag">Please refresh your page to retry</a>
         </div>
         <?php endif; ?>
-         </div>
+        
+        
       </section>
          </div>
      </div>
