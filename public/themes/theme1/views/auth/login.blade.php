@@ -246,7 +246,7 @@ i.fa.fa-google-plus {
 </body>
 
 @php
-    include(public_path('themes\theme1\views\footer.blade.php'));
+    @include(public_path('themes\theme1\views\footer.blade.php'));
 @endphp
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
