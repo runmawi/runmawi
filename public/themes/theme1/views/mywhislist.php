@@ -61,7 +61,7 @@
                    foreach($livevideos as $video): ?>
                    
             <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
-                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
                    <div class="block-images position-relative">
