@@ -602,7 +602,7 @@ $data = Session::all();
             left: <?php echo $playerui_settings->watermark_left; ?>;
             z-index: 10;
             content: '';
-            height: 300px;
+            height: 40px;
             width: <?php echo $playerui_settings->watermar_width; ?>;
             background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
             background-size: 100px auto, auto;
