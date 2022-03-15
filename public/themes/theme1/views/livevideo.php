@@ -14,6 +14,9 @@
     padding: 150px 0;
     text-align: center;
 }
+    .text-detail{
+        margin-left: -50px;
+    }
 #video_bg_dim{
     background: rgb(0 0 0 / 45%);
     position: absolute;
@@ -52,7 +55,7 @@ if(!Auth::guest()){
  if(!empty($password_hash)){
 if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
-        <div class="container">
+        <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
             <?php if(!empty($video->mp4_url && $request_url != "m3u8")){  
             ?>
@@ -171,14 +174,14 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 
             <div class="container video-details">
                 <div class="row">
-                    <div class="col-sm-9 col-md-9 col-xs-12">
+                    <div class="col-sm-6 col-md-6 col-xs-12">
                         <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                             <!-- Category -->
                         <ul class="p-0 list-inline d-flex align-items-center movie-content">
                          <li class="text-white"><?//= $videocategory ;?></li>
                         </ul>
                     </div>
-                    <div class="col-sm-3 col-md-3 col-xs-12">
+                    <div class="col-sm-2 col-md-3 col-xs-12">
                         <div class=" d-flex mt-4 pull-right"> 
                             <div class="btn btn-default views">
                                 <span class="view-count"><i class="fa fa-eye"></i> 
@@ -186,7 +189,12 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                                 </span>
                             </div>
                         </div>
-                    </div>        
+                    </div>
+                        <div class="col-sm-4 col-md-3 col-xs-12">
+                             <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
+                        </div>
+                        </div>
+                        
                 </div>
                 <!-- Year, Running time, Age -->
                <?php 
@@ -198,6 +206,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 $publishdate = date('d F Y', strtotime($originalDate));
                }
              ?>
+                
                 <div class="d-flex align-items-center text-white text-detail">
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -284,6 +293,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 <?php   }?>
                 <div class="text-white">
                     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-xs-12">
