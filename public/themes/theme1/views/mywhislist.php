@@ -8,17 +8,17 @@
  <!-- loader END -->
 
  <!-- MainContent -->
- <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
-    padding: 15px 60px 40px;!important;">
+ <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%); padding: 15px 60px 40px;!important;">
      <div class="container-fluid">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
-        <div class="iq-main-header d-flex align-items-center justify-content-between">
-           
-        </div>
+        <div class="iq-main-header d-flex align-items-center justify-content-between"> </div>
      </div>
      <section class="movie-detail ">
+        <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
+
          <div class="row">
+            
              <?php if(count($channelwatchlater) > 0):
                    foreach($channelwatchlater as $video): ?>
             <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
@@ -30,37 +30,14 @@
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
                     </div>
-<!--
-                    <div class="corner-text-wrapper">
-                        <div class="corner-text">
-                            <p class="p-tag1">
-                                <?php /*if(!empty($video->ppv_price)) {
-                                    echo $video->ppv_price.' '.$currency->symbol ; 
-                                    } elseif(!empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo $video->global_ppv .' '.$currency->symbol;
-                                    } elseif(empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo "Free"; 
-                                }*/
-                                ?>
-                            </p>
-                        </div>
-                    </div>
--->
+
                         <div class="block-description">
-                           
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white"
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                   <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
                                 </a>
                                 <div >
-                                    <!--<a style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
-                                        <i style="" <?php if(isset($video->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
-                                    <div style="color:white;" id="<?= $video->id ?>">
-                                        <?php if(@$video->mywishlisted->user_id == Auth::user()->id && @$video->mywishlisted->video_id == $video->id  ) { echo "Remove From Wishlist"; } 
-                                        else { echo "Add To Wishlist" ; } ?>
-                                    </div> 
-                                    </a>-->
                                 </div>
                             </div>
                         </div>
@@ -73,14 +50,52 @@
                                 </span>
                             </div>
                        </div>
-                   
                 </li>
                 </a>
             </div>
          </div>
-    <?php endforeach; 
-            else:
-            ?>
+                <?php endforeach; 
+            endif; ?>
+
+            <?php if(count($livevideos) > 0):
+                   foreach($livevideos as $video): ?>
+                   
+            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                <li class="slide-item position-relative">
+                <!-- block-images -->
+                   <div class="block-images position-relative">
+                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
+                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
+                        </video>
+                    </div>
+
+                        <div class="block-description">
+                            <div class="hover-buttons d-flex">
+                                <a type="button" class="text-white"
+                                href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                </a>
+                                <div >
+                                </div>
+                            </div>
+                        </div>
+                       <div>
+                            <h3><?php echo __($video->title); ?></h3>
+                            <div class="movie-time d-flex align-items-center my-2">
+                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                                <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $video->duration); ?>
+                                </span>
+                            </div>
+                       </div>
+                </li>
+                </a>
+            </div>
+         </div>
+                <?php endforeach; 
+                        endif; ?>
+            <?php else: ?>
            
                 <div class="col-md-12 text-center mt-4" style="margin-left:30%;">
             <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" >

@@ -179,6 +179,7 @@ Route::get('form', 'SignupController@form');
 Route::get('/roles', 'PermissionController@Permission');
 Route::post('mywishlist', 'WishlistController@mywishlist');
 Route::get('mywishlists', 'WishlistController@show_mywishlists');
+Route::post('LiveWishlist', 'WishlistController@LiveWishlist');
 Route::get('wishlist_video/{id}', 'WishlistController@wishlist_video');
 Route::get('file-upload', 'FileUploadController@index');
 Route::post('file-upload/upload', 'FileUploadController@fileStore')->name('upload');

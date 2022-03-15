@@ -10,6 +10,8 @@ use Auth;
 use View;
 use Session;
 use Theme;
+use App\LiveStream;
+
 class WishlistController extends Controller
 {
     public function mywishlist(Request $request)
@@ -41,7 +43,7 @@ class WishlistController extends Controller
                 $response = "Added To Wishlist";
 
                 return $response;
-                //echo $watchlater;
+             
                 
             }
 
@@ -91,7 +93,13 @@ class WishlistController extends Controller
             ->where('type', '=', 'ppv')
             ->get();
 
+        $live_videos = Wishlist::where('user_id', '=', Auth::user()->id)
+            ->where('type', '=', 'live')
+            ->get();
+
+
         $channel_watchlater_array = array();
+
         foreach ($channelwatchlater as $key => $cfave)
         {
             array_push($channel_watchlater_array, $cfave->video_id);
@@ -103,15 +111,60 @@ class WishlistController extends Controller
             array_push($ppv_watchlater_array, $ccfave->video_id);
         }
 
+        $live_watchlater_array = array();
+
+        foreach ($live_videos as $key => $ccfave)
+        {
+            array_push($live_watchlater_array, $ccfave->livestream_id);
+        }
+
         $videos = Video::where('active', '=', '1')->whereIn('id', $channel_watchlater_array)->paginate(12);
         $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_watchlater_array)->paginate(12);
-
+        $livevideos = LiveStream::where('active', '=', '1')->whereIn('id', $live_watchlater_array)->paginate(12);
+        
         $data = array(
-            'ppvwatchlater' => $ppvvideos,
-            'channelwatchlater' => $videos
+            'ppvwatchlater'     =>  $ppvvideos,
+            'channelwatchlater' =>  $videos,
+            'livevideos'        =>  $livevideos,
         );
 
         return Theme::view('mywhislist', $data);
+
+    }
+
+    public function LiveWishlist(Request $request){
+
+        $livestream_id = $request['livestream_id'];
+        Session::flash('success', __('Password change successfully. Please Login again'));
+
+        if ($livestream_id)
+        {
+            $watchlater = Wishlist::where('user_id', '=', Auth::user()->id)
+                ->where('livestream_id', '=', $livestream_id)->where('type', '=', 'live')
+                ->first();
+            if (isset($watchlater->id))
+            {
+                $watchlater->delete();
+                $response = "Removed From Wishlist";
+                return $response;
+            }
+            else
+            {
+                $watchlater = new Wishlist;
+                $watchlater->user_id = Auth::user()->id;
+                $watchlater->livestream_id = $livestream_id;
+                $watchlater->type = 'live';
+                $watchlater->save();
+                Session::flash('success', 'Product Suucess!');
+                // Session::flash('success','Product Suucess!');
+                $response = "Added To Wishlist";
+
+                return $response;
+             
+                
+            }
+
+        }
 
     }
 
