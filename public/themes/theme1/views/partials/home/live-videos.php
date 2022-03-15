@@ -19,12 +19,12 @@
                                  </div></div>
                                 <div class="block-description" style="top:40px !important;">
                                                                                       
-                                  
+                                   <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                               <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">        
+                             </a>    
                                                     </div>
                            <div class="mt-2">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                <i class="ri-play-fill"></i>
-                             </a>    
+                               
                               
                              </div>
                             <div class="hover-buttons">
