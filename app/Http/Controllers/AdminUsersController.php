@@ -245,7 +245,11 @@ class AdminUsersController extends Controller
           $file = $logo;
           $input['avatar']  = $file->getClientOriginalName();
           $file->move($path, $input['avatar']);
+         $avatar = $file->getClientOriginalName();
+
          
+     }else{
+         $avatar = "default.png";
      }
      $string = Str::random(60); 
 
@@ -261,7 +265,7 @@ class AdminUsersController extends Controller
      $user->activation_code = $string;
 
     //  $user->terms = $request['terms'];
-     $user->avatar = $file->getClientOriginalName();
+     $user->avatar = $avatar;
      $user->password = $password;
     $user->save();
     $settings = Setting::first();
