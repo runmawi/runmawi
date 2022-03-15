@@ -55,6 +55,9 @@ $uppercase =  ucfirst($request_url);
    .col-md-12.profile_image {
     display: flex;
    }
+        .showSingle{
+            cursor: pointer;
+        }
         .red{
             color: #be0b14;
         }
@@ -628,6 +631,18 @@ border-radius: 20px;
                                 </a>
 </div>
                             </li>
+                        <li><div class="d-flex showSingle" target="3">
+                                <a>
+                            <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
+                                    Kids zone
+                                </a>
+                        </div></li>
+                        <li><div class="d-flex showSingle" target="4">
+                                <a>
+                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
+                                   Video preferences
+                                </a>
+                     </div></li>
                         <li><div class="d-flex " target="#">
                         <?php if(Auth::User()->role == "registered"){ ?>
                            <a href="<?=URL::to('/becomesubscriber');?>">
@@ -642,18 +657,6 @@ border-radius: 20px;
                             Plan
                                 <!-- </a> -->
                                 <?php } ?></div></li>
-                        <li><div class="d-flex showSingle" target="3">
-                                <a>
-                            <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
-                                    Kids zone
-                                </a>
-</div></li>
-                        <li><div class="d-flex showSingle" target="4">
-                                <a>
-                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
-                                   Video preferences
-                                </a>
-</div></li>
                     </ul>
                 </div>
                 
@@ -782,10 +785,10 @@ border-radius: 20px;
                         <div class="container ">
                           
                         <p></p>
-                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>
+                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>-->
                         
-                    </div> -->
-                <!-- </div> -->
+                    </div>
+                </div> 
                  <div class="col-md-8 targetDiv" id="div3">
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
@@ -861,7 +864,10 @@ border-radius: 20px;
             </div>
        
             </div></div>
+         
+       
     </section>
+    
     <!--<section  class="m-profile setting-wrapper pt-0  mt-4">
         <div class="container">
             <div class="sig1">

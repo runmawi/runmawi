@@ -21,7 +21,7 @@
          <div class="row">
              <?php if(count($lang_videos) > 0):
                    foreach($lang_videos as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+            <div class="col-1-5 col-md-12 iq-mb-30 wishlist-block">
                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
@@ -78,18 +78,21 @@
     <?php endforeach; 
             else:
             ?>
-            <p><h2>No video Available</h2></p>
-                <!-- <div class="col-md-12 text-center mt-4"> -->
-                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;"></div>
+            <p><h2 style="display"></h2></p>
+                <div class=" text-center mt-4" style="padding:15px;">
+                     <h3 class="text-white text-center">No video Available</h3>
+                    
+                 <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
+                     <a class="mb-5  text-white" style="padding:15px;">Please refresh your page to retry</a>  
                                <!-- <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2> -->
 
 
             <!-- <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>"> -->
         
         <?php endif; ?>
-       
-      </section>
          </div>
+      </section>
+        
      </div>
  </div>
  <script>
