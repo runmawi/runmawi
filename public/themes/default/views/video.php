@@ -68,7 +68,7 @@ $pack = $package->package;
 if(!Auth::guest()) {
   // dd(Auth::user()->role);
   // dd('test');
-if( !empty($ppv_video_play) || Auth::user()->role == 'registered' 
+if( !empty($ppv_video_play) 
 || $video->global_ppv == null && $video->access == 'subscriber' 
 || $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' 
 || $video->global_ppv == null && $video->ppv_price == null
