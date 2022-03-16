@@ -1,4 +1,6 @@
-<?php $settings = App\Setting::first(); ?>
+<?php $settings = App\Setting::first(); 
+       use Carbon\Carbon;
+?>
 <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
@@ -26,8 +28,19 @@
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+
+                        <?php
+                        if(1 == 2){
+                            $language = App\Language::get();
+                            foreach($language as $key => $lan){
+                              $language_href = 'language/'.$lan->id.'/'.$lan->name;
+                        ?>
+                        <li><a href="<?php echo URL::to($language_href) ?>"><?php echo $lan->name; ?> </a></li>
+
+                        <?php }}?>
+
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
                      </ul>
                   </div>                  
                   <!-- <div class="col-lg-3 col-md-4"> -->
@@ -85,7 +98,7 @@
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
          </div>
       </footer>

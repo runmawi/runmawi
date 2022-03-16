@@ -2,6 +2,7 @@
  $user = App\User::where('id','=',1)->first(); 
  $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
  $session = session()->all();
+ use Carbon\Carbon;
 
 ?>
 <footer class=" py-4 mt-auto">
@@ -21,6 +22,9 @@
                     <ul class="text-white p-0 mt-3">
                         <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
                         <li><a href="">Movies</a></li>
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
+
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
@@ -36,9 +40,8 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
                     <p>Available on Play Store</p>
-                    <img src="assets/img/gp.png" alt="gp" class="">
+                    <img src="<?php echo URL::to('assets/img/gp.png') ?> " alt="Play store" class="">
                 </div>
-
             </div>
         </div>
     </footer>
@@ -159,7 +162,7 @@
             </div>-->
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
          </div>
       </footer>
