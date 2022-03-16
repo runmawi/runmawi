@@ -103,7 +103,7 @@
                         <i class="fa fa-apple"></i>
                         </a>
                         <?php } ?>
-                        <!-- //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
+                         //  <a href="https://www.google.com/<?php //echo GoogleId();?>" target="_blank" class="s-icon">
                         // <i class="fa fa-google-plus"></i>
                         // </a> 
                      </div>
@@ -111,52 +111,16 @@
                   
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
-<<<<<<< HEAD
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                     </ul>
-                  </div>                  
-                  <div class="col-lg-3 col-md-4">
-                      <!-- <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag"> -->
-                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
-                         
-                          <!-- </ul>
-                          <ul class="f-link list-unstyled mb-0"> -->
-                        
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
-                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
-                          <!-- </ul> -->
-                      <!-- </div> -->
-                      
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>-->
-=======
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
+                         <li><a href="<?php echo URL::to('home') ?>">Movies</a></li> -->
                         <!-- <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li> -->
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
+                       <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li>
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
                         <?php }else{ }?>
                      </ul>
                   </div>
-                  <!--<div class="col-lg-3 col-md-4">
+                  <div class="col-lg-3 col-md-4">
                      <ul class="f-link list-unstyled mb-0">
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
@@ -174,12 +138,11 @@
                           </ul>
                           <ul class="f-link list-unstyled mb-0">
                         
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
+                          <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
                          <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
                          <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> 
                           </ul>
                       </div>
->>>>>>> a86b1f535e9a2215ae5b75a0986b6248239d2b03
 				</div>
                    <div class="col-lg-3 col-md-4 p-0">
                       <ul class="f-link list-unstyled mb-0">    
@@ -193,7 +156,7 @@
                   
                    </div>
                </div>
-            </div>-->
+            </div>
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
