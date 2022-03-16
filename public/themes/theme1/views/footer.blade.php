@@ -2,6 +2,7 @@
  $user = App\User::where('id','=',1)->first(); 
  $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
  $session = session()->all();
+ use Carbon\Carbon;
 
 ?>
 <footer class=" py-4 mt-auto">
@@ -10,15 +11,64 @@
                 <div class="col-sm-3">
                     <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
                     <div class="d-flex p-0 text-white icon mt-4">
-                    <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
-                    <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
-                    <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+
+                    <?php if(!empty($settings->facebook_page_id)){?>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
+                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->skype_page_id)){?>
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="">
+                        <i class="fa fa-skype"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
+                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
+                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->linkedin_page_id)){?>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
+                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+
+                    <?php if(!empty($settings->whatsapp_page_id)){?>
+                      <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-whatsapp"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->youtube_page_id)){?>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->google_page_id)){?>
+                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                    <?php } ?>
 
                 </div>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
                     <ul class="text-white p-0 mt-3">
+                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
+
                     <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
@@ -40,9 +90,8 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
                     <p>Available on Play Store</p>
-                    <img src="assets/img/gp.png" alt="gp" class="">
+                    <img src="<?php echo URL::to('assets/img/gp.png') ?> " alt="Play store" class="">
                 </div>
-
             </div>
         </div>
     </footer>
@@ -163,7 +212,7 @@
             </div>-->
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
          </div>
       </footer>
