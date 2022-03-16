@@ -1268,7 +1268,7 @@ $(document).ready(function(){
             left: 80%;
             z-index: 2;
             content: '';
-            height: 200px;
+            height: 100px;
             width: 10%;
             background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
             background-size: 100px auto, auto;

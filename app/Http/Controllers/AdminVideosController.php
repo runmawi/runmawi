@@ -280,6 +280,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
          $video->mp4_url = $storepath;
          $video->type = 'mp4_url';
          $video->draft = 0;
+         $video->image = 'default_image.jpg';
          $video->save(); 
         
          $video_id = $video->id;
@@ -315,6 +316,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              $video->title = $file_folder_name;
              $video->mp4_url = $storepath;
              $video->draft = 0;
+             $video->image = 'default_image.jpg';
              $video->user_id = Auth::user()->id;
              $video->save();
 
