@@ -189,6 +189,25 @@ function GoogleTrackingId(){
     return $settings->google_tracking_id;   
 }
 
+function InstagramId(){
+    $settings = App\Setting::first();
+    return $settings->instagram_page_id;   
+}
+
+function SkypeId(){
+    $settings = App\Setting::first();
+    return $settings->skype_page_id;   
+}
+
+function linkedinId(){
+    $settings = App\Setting::first();
+    return $settings->linkedin_page_id;   
+}
+
+function WhatsappId(){
+    $settings = App\Setting::first();
+    return $settings->whatsapp_page_id;   
+}
 
 function FreeRegistration(){
     $settings = App\Setting::first();
