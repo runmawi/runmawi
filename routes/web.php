@@ -376,6 +376,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/roles/store', 'UserRolesController@store');
     Route::post('/roles/update', 'UserRolesController@update'); 
 
+    /* Master List */
+    Route::get('/Masterlist', 'AdminDashboardController@Masterlist'); 
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');

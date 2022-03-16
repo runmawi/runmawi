@@ -565,6 +565,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
 
+                 {{-- Master List --}}
+               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Master List</p></li>
+
+               <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Master Video List</span></a></li>
 
                   <!-- Ads Menu ends -->
                   <?php }elseif($test ==1 ||  $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
@@ -785,6 +789,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
 
+                {{-- Master List --}}
+               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Master List</p></li>
+
+               <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Master Video List</span></a></li>
 
 
                   <!-- Ads Menu ends -->
@@ -1004,13 +1012,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
                
+                 {{-- Master List --}}
+               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Master List</p></li>
+
+               <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Master Video List</span></a></li>
+
                   <!-- Ads Menu ends -->
                   <?php } ?>
                  
-
-
- 
-
                </ul>
             </nav>
          </div>
