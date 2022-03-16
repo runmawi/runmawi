@@ -1161,7 +1161,9 @@ class AdminSeriesController extends Controller
          $episode = new Episode();
          $episode->title = $file_folder_name;
          $episode->mp4_url = $path;
+         $episode->image = 'default_image.jpg';
          $episode->type = 'upload';
+
          $episode->status = 0;
          $episode->save(); 
         

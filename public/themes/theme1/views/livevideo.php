@@ -191,7 +191,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                         </div>
                     </div>
                         <div class="col-sm-4 col-md-3 col-xs-12">
-                             <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
+                             <div id="" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
                         </div>
                         
@@ -600,8 +600,42 @@ settings: "unslick" // destroys slick
 
 }]
 });
+
+
+
+//My Wishlist
+$('.mywishlist').click(function(){
+       if($(this).data('authenticated')){
+         $.post('<?= URL::to('LiveWishlist') ?>', { livestream_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+         $(this).toggleClass('active');
+         $(this).html("");
+             if($(this).hasClass('active')){
+              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
+            
+              $(".add_data_test").empty();
+              $(".add_data_test").append("<div>Remove from Wishlist</div> ");
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+             }else{
+              $(this).html('+ Add to Whislist');
+              $(".add_data_test").empty();
+               $(".add_data_test").append("<div>Added to  Wishlist</div> ");
+              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+               setTimeout(function() {
+                $('.remove_watch').slideUp('fast');
+               }, 3000);
+             }
+       } else {
+         window.location = '<?= URL::to('login') ?>';
+       }
+     });
+
 </script>
 <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
+
+
 
 
 <?php include ('footer.blade.php'); ?>
