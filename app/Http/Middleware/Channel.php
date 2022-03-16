@@ -18,7 +18,7 @@ class Channel
     {
     $data = Session::all();
             // return route('login')
-        if(!empty($data['user'])){
+        if(!empty($data['channel'])){
          return $next($request);
         }else{
             // echo "<pre>";print_r('no'); print_r($data);exit();
