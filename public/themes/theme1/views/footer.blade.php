@@ -19,16 +19,23 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
                     <ul class="text-white p-0 mt-3">
-                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
-                        <li><a href="">Movies</a></li>
+                    <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
+                          <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
+
+                        <?php }else{ }?>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
                     <ul class="text-white p-0 mt-3">
-                        <li><a href="">Company</a></li>
-                        <li><a href="">Privacy Policy</a></li>
-                        <li><a href="">Terms & condition</a></li>
-                        <li><a href="">Contact us</a></li>
+                       <?php 
+                        $pages = App\Page::all();
+                            foreach($pages as $page): ?>
+                            <?php if ( $page->slug != 'promotion' ){ ?>
+                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                            <?php } ?>
+						<?php endforeach; ?>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>

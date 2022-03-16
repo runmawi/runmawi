@@ -19,6 +19,7 @@ class CreateMywishlistsTable extends Migration
             $table->integer('video_id')->nullable();
             $table->integer('episode_id')->nullable();
             $table->integer('audio_id')->nullable();
+            $table->integer('livestream_id')->nullable();
             $table->string('type')->nullable();
             $table->timestamps();
         });
