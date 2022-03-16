@@ -25,6 +25,12 @@
                         <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
                         <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
 
+                    <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
+                          <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
+
+                        <?php }else{ }?>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>

@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\cpp;
+use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -662,6 +663,7 @@ Route::get('cpp/login',  'ModeratorsLoginController@Signin')->name('CPPSignin');
 Route::post('cpp/moderatoruser/store',  'ModeratorsLoginController@Store')->name('CPPLogin');
 Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
 Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');
+
 Route::get('/emailvalidation', 'SignupController@EmailValidation');
 
 // Paypal Controllers
@@ -783,11 +785,20 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
 
 
 
+Route::get('/channel',  'ChannelLoginController@index');
+Route::get('/channel/login',  'ChannelLoginController@index');
+Route::get('/channel/register',  'ChannelLoginController@register');
+Route::post('channel/store',  'ChannelLoginController@Store');
+Route::get('/channel/verify-request', 'ChannelLoginController@VerifyRequest');
+Route::get('/channel/verify/{activation_code}', 'ChannelLoginController@Verify');
+Route::get('/channel/emailvalidation', 'SignupController@EmailValidation');
+Route::get('/channel/home',  'ChannelLoginController@Login');
 
+Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {
 
+    Route::get('/logout',  'ChannelLoginController@Logout');
 
-
-
+});
 
 
 
