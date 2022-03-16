@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cpp'      => \App\Http\Middleware\cpp::class,
+        'channel'      => \App\Http\Middleware\Channel::class,
         'RazorpayMiddleware'      => \App\Http\Middleware\RazorpayMiddleware::class,
     ];
 }
