@@ -32,7 +32,7 @@
                                     <div class="iq-user-box" style="background: #24c0d9 !important;"><p class="text-white">{{ count($Videos) }}</p></div>
                                     <div class="media-body text-white">
                                        <p class="mb-0 font-size-14 line-height"> 
-                                          Total Video
+                                          Total Videos
                                        </p>
                                     </div>
                                  </div>
@@ -42,10 +42,10 @@
                            <div class="col-md-2">
                               <div class="iq-card-body">
                                  <div class="media align-items-center col-md-3">
-                                    <div class="iq-user-box"  style="background: hsl(39deg 74% 73%) !important"><p class="text-white">{{ count($Videos) }}</p></div>
+                                    <div class="iq-user-box"  style="background: hsl(39deg 74% 73%) !important"><p class="text-white">{{ count($LiveStream) }}</p></div>
                                     <div class="media-body text-white">
                                        <p class="mb-0 font-size-14 line-height"> 
-                                          Total Video
+                                          Total Live Stream Videos
                                        </p>
                                     </div>
                                  </div>
