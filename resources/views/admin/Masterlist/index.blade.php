@@ -11,6 +11,75 @@
                    </div>
                 </div>
 
+                {{-- Title Card --}}
+                        <div class="row">
+                           <div class="col-md-2">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center col-md-3">
+                                       <div class="iq-user-box" style="background: #20c997 !important;"><p class="text-white">{{ ($master_count) }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> 
+                                             Total Master list
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="iq-card-body">
+                                 <div class="media align-items-center col-md-3">
+                                    <div class="iq-user-box" style="background: #24c0d9 !important;"><p class="text-white">{{ count($Videos) }}</p></div>
+                                    <div class="media-body text-white">
+                                       <p class="mb-0 font-size-14 line-height"> 
+                                          Total Videos
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="iq-card-body">
+                                 <div class="media align-items-center col-md-3">
+                                    <div class="iq-user-box"  style="background: hsl(39deg 74% 73%) !important"><p class="text-white">{{ count($LiveStream) }}</p></div>
+                                    <div class="media-body text-white">
+                                       <p class="mb-0 font-size-14 line-height"> 
+                                          Total Live Stream Videos
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="iq-card-body">
+                                 <div class="media align-items-center col-md-3">
+                                    <div class="iq-user-box"  style="background: #17a2b8 !important;"><p class="text-white">{{ count($Episode) }}</p></div>
+                                    <div class="media-body text-white">
+                                       <p class="mb-0 font-size-14 line-height"> 
+                                          Total Episodes
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                                    <div class="iq-card-body">
+                                       <div class="media align-items-center col-md-3">
+                                          <div class="iq-user-box" style="background: #6c757d !important"><p class="text-white">{{ count($audios) }}</p></div>
+                                          <div class="media-body text-white">
+                                             <p class="mb-0 font-size-14 line-height"> 
+                                                Total Audios
+                                             </p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>
+                     </div>
+
                   <div class="iq-card-body table-responsive">
                      <div class="table-view">
                         <table class="table table-striped table-bordered table movie_table " style="width:100%" id="master_list">
