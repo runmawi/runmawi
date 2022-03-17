@@ -792,10 +792,10 @@ Route::post('channel/store',  'ChannelLoginController@Store');
 Route::get('/channel/verify-request', 'ChannelLoginController@VerifyRequest');
 Route::get('/channel/verify/{activation_code}', 'ChannelLoginController@Verify');
 Route::get('/channel/emailvalidation', 'SignupController@EmailValidation');
-Route::get('/home',  'ChannelLoginController@Login');
+Route::get('/channel/home',  'ChannelLoginController@Login');
 
 Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {
-    
+
     Route::get('/logout',  'ChannelLoginController@Logout');
 
 });
