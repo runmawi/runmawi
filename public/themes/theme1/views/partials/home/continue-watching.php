@@ -85,23 +85,6 @@
 <?php endif; ?>
 
 
-
-
-<!-- Mywishlist -->
-  <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                                    <!-- </a> -->
-                                    
-                                            <!-- <div class="d-flex" style="color:white;" id="<?= $cont_video->id ?>">
-                                                <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $cont_video->id ?>">
-                                    <i style="" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php // endif; ?> style="" ></i>
-
-                                                </span>
-                                              <div style="color:white;" id="<?= $cont_video->id ?>"><?php // if(@$cont_video->mywishlisted->user_id == $id && @$watchlater_video->cont_video->video_id == $cont_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-
-                                            </div>  -->
-
-
-
 <script>
 $('.mywishlist').click(function(){
      var video_id = $(this).data('videoid');
