@@ -69,7 +69,7 @@ class ConvertVideoForStreaming implements ShouldQueue
                $media->addFilter('scale=960:720');
             })
              ->addFormat($highBitrateFormat, function($media) {
-               $media->addFilter('scale=1280:1200');
+               $media->addFilter('scale=1280:1080');
             })
             ->save($converted_name);
 
