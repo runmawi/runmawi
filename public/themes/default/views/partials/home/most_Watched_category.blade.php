@@ -64,8 +64,8 @@
                                     </a>
                                 <div class="corner-text-wrapper">
                                     <div class="corner-text">
-                                        <p class="p-tag1">
-                                            
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                        <p class="p-tag1">  
                                             <?php if(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
@@ -74,35 +74,72 @@
                                                     echo "Free"; 
                                                 }
                                             ?>
-                                        
                                         </p>
+                                    <?php }?>
                                     </div>
                                 </div>
                                 <div class="block-description">
-                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <h6>
-                                            <?php echo __($category_video->title); ?>
-                                        </h6>
-                                    </a>
+
+                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                            <h6> <?php echo __($category_video->title); ?> </h6>
+                                        </a>
+                                    <?php } ?>   
+
                                     <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i>
+                                        <?php if($ThumbnailSetting->age == 1) { ?>
+                                        <!-- Age -->
+                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
+                                        <?php } ?>
+  
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <!-- Duration -->
+                                        <span class="text-white">
+                                            <i class="fa fa-clock-o"></i>
                                             <?= gmdate('H:i:s', $category_video->duration); ?>
                                         </span>
+                                        <?php } ?>
                                     </div>
+
+                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                        <div class="movie-time d-flex align-items-center my-2">
+                                            <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                            <!--Rating  -->
+                                            <div class="badge badge-secondary p-1 mr-2">
+                                                <span class="text-white">
+                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                    <?php echo __($category_video->rating); ?>
+                                                </span>
+                                            </div>
+                                            <?php } ?>
+    
+                                            <?php if($ThumbnailSetting->rating == 1) { ?>
+                                            <!-- published_year -->
+                                            <div class="badge badge-secondary p-1 mr-2">
+                                              <span class="text-white">
+                                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                  <?php echo __($category_video->year); ?>
+                                              </span>
+                                            </div>
+                                            <?php } ?>
+    
+                                            <?php if($ThumbnailSetting->featured == 1 && $category_video->featured == 1) { ?>
+                                            <!-- Featured -->
+                                            <div class="badge badge-secondary p-1 mr-2">
+                                              <span class="text-white">
+                                               <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                              </span>
+                                            </div>
+                                            <?php }?>
+                                        </div>
+                                    <?php } ?>
+                                    
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Watch Now
-
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now
                                         </a>
-                                        <div>
-                                        <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
-                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
-                          </span>
-                          <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+                                    <div>
                               </div>
                                        <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                        <!-- </a> -->
