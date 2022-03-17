@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             SiteThemeTableseeder::class,
             AddPlansTableSeeder::class,
             SubtitleTableseeder::class,
-
+            ThumbnailSettingSeeder::class,
         ]);
     
     }

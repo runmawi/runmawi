@@ -95,7 +95,7 @@
                             </tbody>
 
 
-                            <tbody>
+                            {{-- <tbody>
                                 <td> {{ '6'}} </td>
                                 <td> {{ 'Category'}} </td>
                                 <td> 
@@ -106,11 +106,11 @@
                                         </label>
                                     </div>
                                 </td>
-                            </tbody>
+                            </tbody> --}}
 
 
                             <tbody>
-                                <td> {{ '7'}} </td>
+                                <td> {{ '6'}} </td>
                                 <td> {{ 'Featured'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -122,7 +122,7 @@
                                 </td>
                             </tbody>
 
-                            <tbody>
+                            {{-- <tbody>
                                 <td> {{ '8'}} </td>
                                 <td> {{ 'Play button'}} </td>
                                 <td> 
@@ -133,10 +133,10 @@
                                         </label>
                                     </div>
                                 </td>
-                            </tbody>
+                            </tbody> --}}
 
                             <tbody>
-                                <td> {{ '9'}} </td>
+                                <td> {{ '7'}} </td>
                                 <td> {{ 'Free or Cost label'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -149,8 +149,8 @@
                             </tbody>
                         </table>
 
-                        <div class="button button1">
-                            <button type="submit" class="btn btn-hover ab" >Save Changes</button>
+                        <div class="col-md-12 form-group" align="right">
+                            <input type="submit" value="Update Settings" class="btn btn-primary " />
                         </div>
                     </form>
 
@@ -170,7 +170,7 @@
 @section('javascript')
    <script>
       $(document).ready( function () {
-               $('#Thumbnail'x).DataTable();
+               $('#Thumbnails').DataTable();
       });
    </script>
 @stop

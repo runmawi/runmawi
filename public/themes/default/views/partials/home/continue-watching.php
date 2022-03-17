@@ -39,7 +39,7 @@
                                 <div class="block-description">
                                  
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                   <h6><?php echo __($cont_video->title); ?></h6>
+                                   <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
                                 <?php } ?>   
                                 
                                   <div class="movie-time d-flex align-items-center my-2">
