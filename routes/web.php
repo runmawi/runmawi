@@ -800,7 +800,7 @@ Route::get('/channel/emailvalidation', 'SignupController@EmailValidation');
 Route::get('/channel/home',  'ChannelLoginController@Login');
 
 Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {
-
+    
     Route::get('/logout',  'ChannelLoginController@Logout');
 
 });
