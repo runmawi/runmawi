@@ -14,6 +14,7 @@ use App\AppSetting as AppSetting;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use App\ThumbnailSetting;
 
 //use Illuminate\Http\Request;
 
@@ -22,28 +23,20 @@ class AdminSettingsController extends Controller
     public function index() {
         
         $setting = Setting::first();
-        //   echo "<pre>";
-        // print_r($setting);
-        // exit();
         $app_settings = AppSetting::first();          
 
         $data = array(
             'admin_user' => Auth::user(),
             'app_settings' => $app_settings ,   
-			'settings' => $setting,
-			);
-		return \View::make('admin.settings.index', $data);
-        
+			      'settings' => $setting,
+			  );
+
+	    	return \View::make('admin.settings.index', $data);
     }
     
     public function save_settings(Request $request){
 
-		//$input = Request::all();
         $input = $request->all();
-
-        // echo "<pre>";
-        // print_r($input);
-        // exit();
 
         if(!empty($request['instagram_page_id'])){
         $instagram_page_id = $request['instagram_page_id'];
@@ -503,9 +496,7 @@ if($watermark != '') {
     public function script_settings(Request $request){
 
       $input = $request->all();
-        //   echo "<pre>";
-        // print_r($input);
-        // exit();
+
         if(!empty($input)){
         // foreach($input as $key => $value){
           $script = new Script;
@@ -520,6 +511,32 @@ if($watermark != '') {
         }
         return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
     
+
+    }
+
+    public function ThumbnailSetting(Request $request)
+    {
+      $thumbnail_setting = ThumbnailSetting::first();
+
+      return view('admin.thumbnail.index',compact('thumbnail_setting',$thumbnail_setting));
+    }
+
+    public function ThumbnailSetting_Store(Request $request){
+
+      $Thumbnail = ThumbnailSetting::first();
+
+        $Thumbnail->title              =  $request->has('title') ? 1 : 0 ?? 0; 
+        $Thumbnail->age                =  $request->has('age') ? 1 : 0 ?? 0;   
+        $Thumbnail->rating             =  $request->has('rating') ? 1 : 0 ?? 0;  
+        $Thumbnail->published_year     =  $request->has('published_year') ? 1 : 0 ?? 0;  
+        $Thumbnail->duration           =  $request->has('duration') ? 1 : 0 ?? 0;  
+        $Thumbnail->category           =  $request->has('category') ? 1 : 0 ?? 0;   
+        $Thumbnail->featured           =  $request->has('featured') ? 1 : 0 ?? 0; 
+        $Thumbnail->play_button        =  $request->has('play_button') ? 1 : 0 ?? 0; 
+        $Thumbnail->free_or_cost_label =  $request->has('free_or_cost_label') ? 1 : 0 ?? 0; 
+        $Thumbnail->save();  
+
+        return redirect()->route('ThumbnailSetting');
 
     }
     
