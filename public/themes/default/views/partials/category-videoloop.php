@@ -202,7 +202,7 @@ if(isset($videos)) :
                                    
                                     <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
                                         <div class="movie-time d-flex align-items-center my-2">
-                                            <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                            <?php if($ThumbnailSetting->rating == 1) { ?>
                                             <!--Rating  -->
                                             <div class="badge badge-secondary p-1 mr-2">
                                                 <span class="text-white">
@@ -212,7 +212,7 @@ if(isset($videos)) :
                                             </div>
                                             <?php } ?>
 
-                                            <?php if($ThumbnailSetting->rating == 1) { ?>
+                                            <?php if($ThumbnailSetting->published_year == 1) { ?>
                                             <!-- published_year -->
                                             <div class="badge badge-secondary p-1 mr-2">
                                             <span class="text-white">
