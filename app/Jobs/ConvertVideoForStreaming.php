@@ -37,9 +37,11 @@ class ConvertVideoForStreaming implements ShouldQueue
     public function handle()
     {
         $video = $this->video->path;
-        $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(250);
+        $BitrateFormat250 = (new X264('aac', 'libx264'))->setKiloBitrate(250);
+        $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(300);
+        $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(600);
         $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(500);
-        // $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
+        $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);
        
@@ -53,16 +55,23 @@ class ConvertVideoForStreaming implements ShouldQueue
                 $this->video->processed_low = $percentage; 
                 $this->video->save();
             })
-              ->addFormat($lowBitrateFormat, function($media) {
+
+            ->addFormat($BitrateFormat250, function($media) {
+                $media->addFilter('scale=352:240');
+            })
+            ->addFormat($BitrateFormat360, function($media) {
+                $media->addFilter('scale=480:360');
+            })
+            ->addFormat($lowBitrateFormat, function($media) {
                 $media->addFilter('scale=640:480');
             })
              ->addFormat($midBitrateFormat, function($media) {
                $media->addFilter('scale=960:720');
-           })
-//              ->addFormat($highBitrateFormat, function($media) {
-//                $media->addFilter('scale=1920:1200');
-//            })
-              ->save($converted_name);
+            })
+             ->addFormat($highBitrateFormat, function($media) {
+               $media->addFilter('scale=1280:1200');
+            })
+            ->save($converted_name);
 
 
         $video_name = explode(".",$converted_name);
