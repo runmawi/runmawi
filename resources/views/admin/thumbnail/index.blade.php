@@ -95,20 +95,6 @@
                             </tbody>
 
 
-                            {{-- <tbody>
-                                <td> {{ '6'}} </td>
-                                <td> {{ 'Category'}} </td>
-                                <td> 
-                                    <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="category" type="checkbox" @if( $thumbnail_setting->category == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                            </tbody> --}}
-
-
                             <tbody>
                                 <td> {{ '6'}} </td>
                                 <td> {{ 'Featured'}} </td>
@@ -122,19 +108,7 @@
                                 </td>
                             </tbody>
 
-                            {{-- <tbody>
-                                <td> {{ '8'}} </td>
-                                <td> {{ 'Play button'}} </td>
-                                <td> 
-                                    <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="play_button" type="checkbox" @if( $thumbnail_setting->play_button == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                            </tbody> --}}
-
+                            
                             <tbody>
                                 <td> {{ '7'}} </td>
                                 <td> {{ 'Free or Cost label'}} </td>
@@ -147,6 +121,34 @@
                                     </div>
                                 </td>
                             </tbody>
+
+                            <tbody>
+                                <td> {{ '8'}} </td>
+                                <td> {{ 'Play button'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="play_button" type="checkbox" @if( $thumbnail_setting->play_button == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
+
+                            <tbody>
+                                <td> {{ '9' }} </td>
+                                <td> {{ 'Category'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="category" type="checkbox" @if( $thumbnail_setting->category == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
                         </table>
 
                         <div class="col-md-12 form-group" align="right">

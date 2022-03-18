@@ -70,6 +70,7 @@ class SettingTableSeeder extends Seeder
                 'watermark' => 'e-logo.png' ,
                 'watermar_link' => null ,
                 'ads_on_videos' => '1' ,
+                'default_video_image' => 'default_image.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],
