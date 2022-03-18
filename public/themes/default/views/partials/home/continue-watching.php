@@ -87,15 +87,38 @@
                                           </span>
                                         </div>
                                         <?php }?>
-                                    </div>
                                   <?php } ?>
+                                  </div>
 
-                                  
-                                    <div class="hover-buttons text-white">
+
+                                  <div class="movie-time d-flex align-items-center my-2">
+                                       <!-- Category Thumbnail  setting -->
+                                      <?php
+                                      $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                  ->where('categoryvideos.video_id',$cont_video->id)
+                                                  ->pluck('video_categories.name');        
+                                      ?>
+                                      <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                      <span class="text-white">
+                                          <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                          <?php
+                                              $Category_Thumbnail = array();
+                                                  foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                  $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                  }
+                                              echo implode(','.' ', $Category_Thumbnail);
+                                          ?>
+                                      </span>
+                                      <?php } ?>
+                                  </div>
+
+                                  <div class="hover-buttons text-white">
                                         <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now
                                         </a>
-                                        <div>
+                                  <div>
+
+                                   
                                     <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                                     <!-- </a> -->
                                     

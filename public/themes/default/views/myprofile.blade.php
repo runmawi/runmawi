@@ -323,6 +323,7 @@ $uppercase =  ucfirst($request_url);
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                           <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -333,7 +334,7 @@ $uppercase =  ucfirst($request_url);
                                                 </div>
                                              </div>
                                           </a>
-                                          <?php if(Auth::User()->role == "admin"){ ?>
+                                        
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">

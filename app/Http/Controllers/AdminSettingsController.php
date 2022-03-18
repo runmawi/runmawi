@@ -15,6 +15,8 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use App\ThumbnailSetting;
+use Illuminate\Support\Facades\Storage;
+
 
 //use Illuminate\Http\Request;
 
@@ -36,6 +38,7 @@ class AdminSettingsController extends Controller
     
     public function save_settings(Request $request){
 
+      
         $input = $request->all();
 
         if(!empty($request['instagram_page_id'])){
@@ -274,6 +277,16 @@ class AdminSettingsController extends Controller
 			$settings->access_free = 0;
 		} 
         
+
+      if(!empty($input['default_video_image'])){
+            $defaultImage_setting =  Setting::pluck('default_video_image')->first();
+            $files = $input['default_video_image'];
+            $format=$files->getClientOriginalExtension();
+            $filename ='default_image'.'.' .  $format;
+            Storage::delete($defaultImage_setting);    // Remove Image
+            Image::make($files)->save(base_path().'/public/uploads/images/'.$filename );
+            $settings->default_video_image = $filename;
+      }
         
         $settings->save();
       
