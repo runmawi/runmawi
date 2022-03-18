@@ -22,6 +22,22 @@
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
                             </video>
                         </a>
+
+                        <!-- PPV price -->
+                        <div class="corner-text-wrapper">
+                                <div class="corner-text">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <?php  if(!empty($Most_watched_countries->ppv_price)){?>
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
+                                    <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
+                                    <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
+                                    <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
+                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="block-description">

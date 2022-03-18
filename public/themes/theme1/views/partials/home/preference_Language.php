@@ -16,6 +16,22 @@
                             <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" data-play="hover">
                                 <source src="<?php echo $preference_Languages->trailer;  ?>" type="video/mp4" />
                             </video>
+
+                            <!-- PPV price -->
+                            <div class="corner-text-wrapper">
+                                <div class="corner-text">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <?php  if(!empty($preference_Languages->ppv_price)){?>
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
+                                    <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
+                                    <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
+                                    <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
+                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </div>
+                            </div>
+
                         </a>
                     </div>
                 </div>
