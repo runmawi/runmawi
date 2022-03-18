@@ -3,51 +3,45 @@
     <head>
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>
-
-
     </head>
-	<style>
-		#wrapper{
-	/* margin-top: 10%;
-	margin-left: -23%; */
 
-		}
-#sidebar-wrapper{		
-	
-	/* margin-top: -10%; */
+<style>
+#wrapper {
+    /* margin-top: 10%;
+        margin-left: -23%; */
 }
-#page-content-wrapper{		
-	
-	/* margin-top: 10%; */
+#sidebar-wrapper {
+    /* margin-top: -10%; */
 }
-	</style>
-	<style type="text/css">
-	.has-switch .switch-on label {
-		background-color: #FFF;color: #000;
-	}
-	.make-switch{
-		z-index:2;
-	}
-    .iq-card{
-        padding: 15px;
-    }
-    .p1{
-        font-size: 12px;
-    }
+#page-content-wrapper {
+    /* margin-top: 10%; */
+}
+
+.has-switch .switch-on label {
+    background-color: #fff;
+    color: #000;
+}
+.make-switch {
+    z-index: 2;
+}
+.iq-card {
+    padding: 15px;
+}
+.p1 {
+    font-size: 12px;
+}
 </style>
+
 @section('css')
 	<style type="text/css">
-	.make-switch{
-		z-index:2;
-	}
-        
-      
+        .make-switch {
+            z-index: 2;
+        }
 	</style>
-
 @stop
 
-@section('content')
 
+@section('content')
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -92,13 +86,15 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Setting</a>
+
                 </div>
             </div>
 
 
 
 	<form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-	
+
             <!-- Page content wrapper-->
            <div class="container-fluid" id="site" style="padding-left:10px;">
         <div class="col-md-8">
@@ -228,6 +224,36 @@
             </div>
         </div>
     </div>
+
+
+     <!-- Default Image Setting-->
+     <div class="container-fluid" id="Defaut_image_setting" style="">
+        <div class="panel panel-primary mt-3" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title"><label>Default Image</label></div>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 align-center">
+                        <div class="row">
+                            <div>
+                                <div class="default_video_image" style="margin: auto;">
+                                    @if(!empty($settings->default_video_image))
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $settings->default_video_image }}" style="max-height: 25%; max-width: 25%" />
+                                    @endif
+                                </div>
+                             
+                                <p class="p1">Upload Your Default Image:</p>
+                                <input type="file" multiple="true" class="form-control" name="default_video_image" id="default_video_image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
             <!-- <div class="container-fluid" id="video" style=""> -->
         <div  class="container-fluid row mt-3" id="videos_settings" style="">
@@ -611,8 +637,7 @@
                 </div>
             </div>
         </div>
-
-    </div>
+</div>
     <div class="container-fluid" id="season_setting" style="">
             <div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading">
@@ -741,229 +766,256 @@
         }, 3000);
     })
 </script>
-	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
-	<script>
 
-	$(document).ready(function(){
-		// alert('tst');
-		$('#site').show();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#videos_settings').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#advertisement').hide();
-		$('#season_setting').hide();
+<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+<script>
 
+$(document).ready(function () {
+    $("#site").show();
+    $("#ppv").hide();
+    $("#registration").hide();
+    $("#email").hide();
+    $("#videos_settings").hide();
+    $("#social").hide();
+    $("#subscription").hide();
+    $("#login").hide();
+    $("#script").hide();
+    $("#app").hide();
+    $("#advertisement").hide();
+    $("#season_setting").hide();
+    $("#Defaut_image_setting").hide();
 
-	$('#site_setting').click(function(){
-		$('#site').show();
-		$('#videos_settings').hide();
-		$('#ppv').hide();
-		// $('#videos_settings').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#season_setting').hide();
+    $("#site_setting").click(function () {
+        $("#site").show();
+        $("#videos_settings").hide();
+        $("#ppv").hide();
+        // $('#videos_settings').hide();
+        $("#registration").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#ppv_setting').click(function(){
-		// alert();
-		$('#videos_settings').hide();
-		$('#site').hide();
-		$('#ppv').show();
-		$('#registration').hide();
-		$('#videos_settings').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#season_setting').hide();
+    $("#ppv_setting").click(function () {
+        // alert();
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").show();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#video_setting').click(function(){
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#videos_settings').show();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-	});
-	$('#registration_setting').click(function(){
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').show();
-		$('#videos_settings').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#season_setting').hide();
+    $("#video_setting").click(function () {
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").show();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#email_setting').click(function(){
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#videos_settings').hide();
-		$('#email').show();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#season_setting').hide();
+    $("#registration_setting").click(function () {
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").show();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#social_setting').click(function(){
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#videos_settings').hide();
-		$('#email').hide();
-		$('#social').show();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#scriptsetting').hide();
-		$('#season_setting').hide();
+    $("#email_setting").click(function () {
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").show();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#subscription_setting').click(function(){
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#videos_settings').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').show();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#scriptsetting').hide();
-		$('#season_setting').hide();
+    $("#social_setting").click(function () {
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").show();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#scriptsetting").hide();
+        $("#Defaut_image_setting").hide();
+        $("#season_setting").hide();
+    });
 
-	});
-	$('#login_setting').click(function(){
-		$('#site').hide();
-		$('#videos_settings').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		// $('#videos_settings').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').show();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#scriptsetting').hide();
-		$('#season_setting').hide();
+    $("#subscription_setting").click(function () {
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").show();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#scriptsetting").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
-	$('#advertisement_setting').click(function(){
-		$('#videos_settings').hide();
-		$('#site').hide();
-		$('#ppv').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').show();
-        $('#script').hide();
-		$('#app').hide();
-		$('#scriptsetting').hide();
-		$('#season_setting').hide();
+    $("#login_setting").click(function () {
+        $("#site").hide();
+        $("#videos_settings").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        // $('#videos_settings').hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").show();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#scriptsetting").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
+    $("#advertisement_setting").click(function () {
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").show();
+        $("#script").hide();
+        $("#app").hide();
+        $("#scriptsetting").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
+    $("#script_setting").click(function () {
+        $("#site").hide();
+        $("#videos_settings").hide();
+        $("#ppv").hide();
+        // $('#videos_settings').hide();
+        $("#registration").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#app").hide();
+        $("#script").show();
+        $("#scriptsetting").show();
+        $("#Defaut_image_setting").hide();
 
-    $('#script_setting').click(function(){
-		$('#site').hide();
-		$('#videos_settings').hide();
-		$('#ppv').hide();
-		// $('#videos_settings').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-		$('#app').hide();
-		$('#script').show();
-		$('#scriptsetting').show();
+        $("#settingupdate").hide();
+        $("#season_setting").hide();
+    });
 
-		$('#settingupdate').hide();
-		$('#season_setting').hide();
+    $("#app_setting").click(function () {
+        $("#site").hide();
+        $("#videos_settings").hide();
+        $("#ppv").hide();
+        // $('#videos_settings').hide();
+        $("#registration").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").show();
+        $("#settingupdate").hide();
+        $("#appupdate").show();
+        $("#scriptsetting").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
+    $("#series_setting").click(function () {
+        $("#season_setting").show();
+        $("#videos_settings").hide();
+        $("#ppv").hide();
+        // $('#videos_settings').hide();
+        $("#registration").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#scriptsetting").hide();
+        $("#site").hide();
+        $("#Defaut_image_setting").hide();
+    });
 
-	});
+    $("#default_Image_setting").click(function () {
+        // alert();
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").show();
+        $("#ppv_setting").hide();
+        $("#demo_mode").hide();
+        $("#Pay_Per_view_Hours").hide();
+    });
+});
 
-	$('#app_setting').click(function(){
-		$('#site').hide();
-		$('#videos_settings').hide();
-		$('#ppv').hide();
-		// $('#videos_settings').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-		$('#script').hide();
-		$('#app').show();
-		$('#settingupdate').hide();
-		$('#appupdate').show();
-		$('#scriptsetting').hide();
-		$('#season_setting').hide();
-
-
-
-	});
-    $('#series_setting').click(function(){
-		$('#season_setting').show();
-		$('#videos_settings').hide();
-		$('#ppv').hide();
-		// $('#videos_settings').hide();
-		$('#registration').hide();
-		$('#email').hide();
-		$('#social').hide();
-		$('#subscription').hide();
-		$('#login').hide();
-		$('#advertisement').hide();
-        $('#script').hide();
-		$('#app').hide();
-		$('#scriptsetting').hide();
-		$('#site').hide();
-
-	});
-
-	});
 </script>
 	
 	<script type="text/javascript">

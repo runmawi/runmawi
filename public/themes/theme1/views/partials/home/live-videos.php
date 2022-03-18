@@ -73,9 +73,9 @@
                 <div class="movie-time my-2">
                     <!-- Category Thumbnail  setting -->
                     <?php
-                    $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                ->where('categoryvideos.video_id',$video->id)
-                                ->pluck('video_categories.name');        
+                     $CategoryThumbnail_setting =  App\LiveCategory::join('livecategories','livecategories.category_id','=','live_categories.id')
+                                    ->where('livecategories.live_id',$video->id)
+                                    ->pluck('live_categories.name');         
                     ?>
                     <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
                     <span class="text-white">
