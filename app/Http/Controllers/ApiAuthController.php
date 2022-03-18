@@ -1049,7 +1049,7 @@ public function verifyandupdatepassword(Request $request)
       });
     $response = array(
       'status' => 'true',
-      'shareurl' => URL::to('live/play').'/'.$liveid,
+      'shareurl' => URL::to('live').'/'.$liveid,
       'livedetail' => $livedetail
     );
     return response()->json($response, 200);
