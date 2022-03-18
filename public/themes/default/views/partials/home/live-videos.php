@@ -86,6 +86,27 @@
                                     </div>
                                 <?php } ?>
 
+                                <div class="movie-time d-flex align-items-center my-2">
+                                       <!-- Category Thumbnail  setting -->
+                                      <?php
+                                      $CategoryThumbnail_setting =  App\LiveCategory::join('livecategories','livecategories.category_id','=','live_categories.id')
+                                                  ->where('livecategories.live_id',$video->id)
+                                                  ->pluck('live_categories.name');        
+                                      ?>
+                                      <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                      <span class="text-white">
+                                          <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                          <?php
+                                              $Category_Thumbnail = array();
+                                                  foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                  $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                  }
+                                              echo implode(','.' ', $Category_Thumbnail);
+                                          ?>
+                                      </span>
+                                      <?php } ?>
+                                  </div>
+
                                
                             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <h6 class="epi-name text-white mb-0"><i class="fa fa-play" aria-hidden="true"></i> Live Now</h6>

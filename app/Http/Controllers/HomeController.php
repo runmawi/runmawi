@@ -1757,7 +1757,10 @@ class HomeController extends Controller
                     if ($preference_language != null)
                     {
                         $video_language = json_decode($preference_language);
-                        $preference_Lan = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')->whereIn('language_id', $video_language)->whereNotIn('videos.id', $blocking_videos)->groupBy('languagevideos.video_id');
+                        $preference_Lan = Video::Select('videos.*','languagevideos.*','videos.id as pre_video_id')->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+                                            ->whereIn('language_id', $video_language)
+                                            ->whereNotIn('videos.id', $blocking_videos)
+                                            ->groupBy('languagevideos.video_id');
                         if ($Family_Mode == 1)
                         {
                             $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
