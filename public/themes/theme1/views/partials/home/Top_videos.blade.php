@@ -17,6 +17,22 @@
                                 <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4" />
                             </video>
                         </a>
+
+                        <!-- PPV price -->
+                        <div class="corner-text-wrapper">
+                            <div class="corner-text">
+                                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                <?php  if(!empty($most_watched_video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
+                                <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
+                                <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
+                                <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <?php } ?>
+                                <?php } ?>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
