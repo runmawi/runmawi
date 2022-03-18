@@ -452,6 +452,7 @@ border-radius: 20px;
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                           <a href="<?php echo URL::to('admin/plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -472,6 +473,7 @@ border-radius: 20px;
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php } ?>
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
