@@ -54,6 +54,7 @@ use App\ApprovalMailDevice;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\RecentView;
 use App\ChooseProfileScene;
+use App\ThumbnailSetting;
 use Theme;
 
 class HomeController extends Controller
@@ -253,6 +254,7 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
+        $ThumbnailSetting = ThumbnailSetting::first();
 
         if ($settings->access_free == 1 && empty($data['password_hash']))
         {
@@ -370,6 +372,7 @@ class HomeController extends Controller
                 'preference_Language' => $preference_Language = [],
                 'Family_Mode' => $Family_Mode = 2,
                 'Kids_Mode' => $Kids_Mode = 2,
+                'ThumbnailSetting' => $ThumbnailSetting,
             );
             return View::make('home', $data);
 
@@ -1102,7 +1105,7 @@ class HomeController extends Controller
                         'Family_Mode' => $Family_Mode,
                         'Kids_Mode' => $Kids_Mode,
                         'Mode' => $Mode,
-
+                        'ThumbnailSetting' => $ThumbnailSetting,
                     );
 
                     //echo "<pre>";print_r($data['latest_videos']);exit;
@@ -1120,6 +1123,7 @@ class HomeController extends Controller
     {
 
         $data = Session::all();
+        $ThumbnailSetting = ThumbnailSetting::first();
 
         $agent = new Agent();
         $settings = Setting::first();
@@ -1941,7 +1945,7 @@ class HomeController extends Controller
                     'Family_Mode' => $Family_Mode,
                     'Kids_Mode' => $Kids_Mode,
                     'Mode' => $Mode,
-
+                    'ThumbnailSetting' => $ThumbnailSetting,
                 );
                 // dd($Mode);
                 return Theme::view('home', $data);

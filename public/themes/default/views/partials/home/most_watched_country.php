@@ -17,7 +17,10 @@
                                             <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4">
                                         </video>
                                     </a>
+
+                                <!-- PPV price -->
                                     <div class="corner-text-wrapper">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                         <div class="corner-text">
                                             <?php  if(!empty($Most_watched_countries->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
@@ -27,17 +30,64 @@
                                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                         </div>
+                                    <?php } ?>
                                     </div>
                                 </div>
 
                                 <div class="block-description">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                         <h6><?php echo __($Most_watched_countries->title); ?></h6>
-                                    </a>
+
+                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                                             <h6><?php echo __($Most_watched_countries->title); ?></h6>
+                                        </a>
+                                    <?php } ?>  
+
                                     <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $Most_watched_countries->age_restrict ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Most_watched_countries->duration); ?></span>
+                                        <?php if($ThumbnailSetting->age == 1) { ?>
+                                        <!-- Age -->
+                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $Most_watched_countries->age_restrict.' '.'+' ?></div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <!-- Duration -->
+                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Most_watched_countries->duration); ?></span>
+                                        <?php } ?>
                                     </div>
+                                    
+                                    
+                                   
+                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                    <div class="movie-time d-flex align-items-center my-2">
+                                        <?php if($ThumbnailSetting->rating == 1) { ?>
+                                        <!--Rating  -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                            <span class="text-white">
+                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                <?php echo __($Most_watched_countries->rating); ?>
+                                            </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                        <!-- published_year -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                              <i class="fa fa-calendar" aria-hidden="true"></i>
+                                              <?php echo __($Most_watched_countries->year); ?>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->featured == 1 &&  $Most_watched_countries->featured == 1) { ?>
+                                        <!-- Featured -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                          <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                <?php } ?>
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
