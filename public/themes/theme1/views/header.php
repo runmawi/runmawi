@@ -522,6 +522,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                                          <?php if(Auth::User()->role == "admin"){ ?>
                                           <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -532,7 +533,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
-                                          <?php if(Auth::User()->role == "admin"){ ?>
+                                         
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">

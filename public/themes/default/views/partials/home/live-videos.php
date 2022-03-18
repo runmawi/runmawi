@@ -1,56 +1,130 @@
 <?php  if(count($livetream) > 0) : ?>
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title">Live Videos</h4>                      
-                 </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php  if(isset($livetream)) :
+  <div class="iq-main-header d-flex align-items-center justify-content-between">
+    <h4 class="main-title">Live Videos</h4>
+</div>
+<div class="favorites-contens">
+    <ul class="favorites-slider list-inline row p-0 mb-0">
+        <?php  if(isset($livetream)) :
                          foreach($livetream as $video): ?>
-                         <!-- .@$video->categories->name. -->
-                       <li class="slide-item">
-                       <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                             <!-- block-images -->
-                             <div class="block-images position-relative">
-                                <div class="img-box">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
-                                 </a>      
-                                 <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php  if(!empty($video->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
-                                          <?php }elseif($video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>                 
-                                </div>
-                                <div class="block-description" style="top:40px !important;">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                <i class="ri-play-fill"></i>
-                             </a>                                                           
-                                   <div class="hover-buttons">
-                                   <div class="d-flex align-items-center justify-content-between">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                          <span class="text-white"><?= ucfirst($video->title); ?></span>
-                             </a>                       
-                       </div>
-                       <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
-                       </a>
-                                   </div>
-                                                    </div>
-                              
-                             </div>
-                          </a>
-                       </li>
+        <!-- .@$video->categories->name. -->
+        <li class="slide-item">
+            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                <!-- block-images -->
+                <div class="block-images position-relative">
+                    <div class="img-box">
+                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="" />
+                        </a>
 
-                        <?php endforeach; 
-                                   endif; ?>
-                    </ul>
-                 </div>
-                 <?php endif; ?>
-                 <script>
+                      <!-- PPV price -->
+                        <div class="corner-text-wrapper">
+                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                            <div class="corner-text">
+                                <?php  if(!empty($video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
+                                <?php }elseif($video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <?php } ?>
+                            </div>
+                         <?php } ?>   
+                        </div>
+                    </div>
+                    <div class="block-description" style="top: 40px !important;">
+                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <i class="ri-play-fill"></i>
+                        </a>
+                        <div class="hover-buttons">
+                            <div class="d-flex align-items-center justify-content-between">
+
+                              <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                      <span class="text-white"><?= ucfirst($video->title); ?></span>
+                                </a>
+                              <?php } ?>   
+                              </div>
+
+                                <div class="movie-time d-flex align-items-center my-2">
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <!-- Duration -->
+                                        <span class="text-white">
+                                            <i class="fa fa-clock-o"></i>
+                                            <?= gmdate('H:i:s', $video->duration); ?>
+                                        </span>
+                                        <?php } ?>
+                                </div>  
+
+                                <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                    <div class="movie-time d-flex align-items-center my-2">
+                                        <?php if($ThumbnailSetting->rating == 1) { ?>
+                                        <!--Rating  -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                            <span class="text-white">
+                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                <?php echo __($video->rating); ?>
+                                            </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                        <!-- published_year -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                              <i class="fa fa-calendar" aria-hidden="true"></i>
+                                              <?php echo __($video->year); ?>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->featured == 1 && $video->featured == 1) { ?>
+                                        <!-- Featured -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                           <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                        <?php }?>
+                                    </div>
+                                <?php } ?>
+
+                                <div class="movie-time d-flex align-items-center my-2">
+                                       <!-- Category Thumbnail  setting -->
+                                      <?php
+                                      $CategoryThumbnail_setting =  App\LiveCategory::join('livecategories','livecategories.category_id','=','live_categories.id')
+                                                  ->where('livecategories.live_id',$video->id)
+                                                  ->pluck('live_categories.name');        
+                                      ?>
+                                      <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                      <span class="text-white">
+                                          <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                          <?php
+                                              $Category_Thumbnail = array();
+                                                  foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                  $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                  }
+                                              echo implode(','.' ', $Category_Thumbnail);
+                                          ?>
+                                      </span>
+                                      <?php } ?>
+                                  </div>
+
+                               
+                            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                <h6 class="epi-name text-white mb-0"><i class="fa fa-play" aria-hidden="true"></i> Live Now</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+
+        <?php endforeach; 
+              endif; ?>
+    </ul>
+</div>
+<?php endif; ?>
+
+
+<script>
 $('.mywishlist').click(function(){
      var video_id = $(this).data('videoid');
         if($(this).data('authenticated')){

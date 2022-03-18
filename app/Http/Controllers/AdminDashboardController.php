@@ -91,11 +91,14 @@ class AdminDashboardController extends Controller
         $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
                     ->orderBy('created_at', 'DESC')->get();
 
+        $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
+
         $data = array(
             'Videos' => $Videos,
             'LiveStream' => $LiveStream,
             'audios'  => $audios,
             'Episode' => $Episode,
+            'master_count' => $master_count,
         );
 
        return View::make('admin.Masterlist.index', $data);

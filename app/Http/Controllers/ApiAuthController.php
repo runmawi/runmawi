@@ -1006,16 +1006,39 @@ public function verifyandupdatepassword(Request $request)
 
   public function livestreams()
   {
-    $livecategories = LiveCategory::select('id','image')->get()->toArray();
+    // $livecategories = LiveCategory::select('id','image')->get()->toArray();
+    
+    // $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
+    //  $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
+    //  $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
+    // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+    //   ->where('video_id',$videoid)->get('name');
+    //   foreach($main_genre as $value){
+    //     $category[] = $value['name']; 
+    //   }
+    //   if(!empty($category)){
+    //   $main_genre = implode(",",$category);
+    //   }else{
+    //     $main_genre = "";
+    //   }
+    //   $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
+    //   ->where('languagevideos.video_id',$videoid)->get('name');
+    //   foreach($languages as $value){
+    //     $language[] = $value['name']; 
+    //   }
+    //   if(!empty($language)){
+    //   $languages = implode(",",$language);
+    //   }else{
+    //     $languages = "";
+    //   }
+
+    // echo "<pre>"; print_r($livecategories);exit();
     $myData = array();
-    foreach ($livecategories as $key => $livecategory) {
-      $livecategoryid = $livecategory['id'];
-      $genre_image = $livecategory['image'];
-      $videos= LiveStream::where('video_category_id',$livecategoryid)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+
+      $videos= LiveStream::where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-      $categorydetails = LiveCategory::where('id','=',$livecategoryid)->first();
 
       if(count($videos) > 0){
         $msg = 'success';
@@ -1023,14 +1046,13 @@ public function verifyandupdatepassword(Request $request)
         $msg = 'nodata';
       }
       $myData[] = array(
-        "genre_name"   => $categorydetails->name,
-        "genre_id"   => $livecategoryid,
-        "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
-        "message" => $msg,
+        // "genre_id"   => $livecategoryid,
+        // "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
+        // "message" => $msg,
         "videos" => $videos
       );
 
-    }
+    
 
     $response = array(
       'status' => 'true',
@@ -1049,7 +1071,7 @@ public function verifyandupdatepassword(Request $request)
       });
     $response = array(
       'status' => 'true',
-      'shareurl' => URL::to('live/play').'/'.$liveid,
+      'shareurl' => URL::to('live').'/'.$liveid,
       'livedetail' => $livedetail
     );
     return response()->json($response, 200);

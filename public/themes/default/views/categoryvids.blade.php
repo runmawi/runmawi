@@ -1,6 +1,7 @@
 <!-- Header -->
-@include('header')   
+    @partial('category_header')
 <!-- Header End -->
+
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
@@ -265,8 +266,9 @@
 </div>
     <!-- Modal Starts -->
 <!-- MainContent End-->
-
-     @extends('footer')  
+@php
+    include(public_path('themes\default\views\footer.blade.php'));
+@endphp
      <script>
     //    $('.mywishlist').click(function(){
     //    if($(this).data('authenticated')){

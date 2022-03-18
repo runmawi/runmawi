@@ -1,69 +1,109 @@
-<?php  if(count($cnt_watching) > 0) : ?>
-  <?php  if(!empty($data['password_hash'])) { 
+<?php  if(count($cnt_watching) > 0) :  ?>
+<?php  if(!empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>                      
-                 </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php  if(isset($cnt_watching)) :
+    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>
+</div>
+<div class="favorites-contens">
+    <ul class="favorites-slider list-inline row p-0 mb-0">
+        <?php  if(isset($cnt_watching)) :
                          foreach($cnt_watching as $cont_video): 
                           ?>
-                       <li class="slide-item">
-                          <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                
-                                   <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt=""> -->
-                                   <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->mobile_image;  ?>"  data-play="hover" >
-                                    <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
-                                      </video>
-                                     
-                                    
-                                </div>
-                              </div>
-                                <div class="block-description">
-                                  
-                                    
-                                    
-                                    
-                                    <div class="hover-buttons text-white">
-                                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-<img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                        </a>
-                                        <div>
-                                    <!-- <a   href="<?php  // echo URL::to('category') ?><?  // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                                    <!-- </a> -->
-                                    
-                                            <!-- <div class="d-flex" style="color:white;" id="<?= $cont_video->id ?>">
-                                                <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $cont_video->id ?>">
-                                    <i style="" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php // endif; ?> style="" ></i>
+        <li class="slide-item">
+            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                <div class="block-images position-relative">
+                    <!-- block-images -->
+                    <div class="img-box">
+                        <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt=""> -->
+                        <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
+                            <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+                <div class="block-description">
+                    <div class="hover-buttons text-white">
+                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                        <div></div>
+                    </div>
+                </div>
 
-                                                </span>
-                                              <div style="color:white;" id="<?= $cont_video->id ?>"><?php // if(@$cont_video->mywishlisted->user_id == $id && @$watchlater_video->cont_video->video_id == $cont_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
+                <div class="mt-2 d-flex justify-content-between p-0">
+                    <?php if($ThumbnailSetting->title == 1) { ?>
+                    <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
+                    <?php } ?>
 
-                                            </div>  -->
-                                        </div>
-                                    </div>
-                                </div>
-                              
-                                 <div class="mt-2 d-flex justify-content-between p-0">
-                                 <h6><?php echo __($cont_video->title); ?></h6>
-                                      <div class="badge badge-secondary "><?php echo $cont_video->age_restrict.' '.'+' ?></div> </div>
-                                   <div class="movie-time my-2">
-                                     
-                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
-                                   </div>
-                                     
-                            
-                          </a>
-                       </li>
-                       <?php                     
+                    <?php if($ThumbnailSetting->age == 1) { ?>
+                    <div class="badge badge-secondary"><?php echo $cont_video->age_restrict.' '.'+' ?></div>
+                    <?php } ?>
+                </div>
+                <div class="movie-time my-2">
+                  
+
+                    <!-- Duration -->
+
+                    <?php if($ThumbnailSetting->duration == 1) { ?>
+                    <span class="text-white">
+                        <i class="fa fa-clock-o"></i>
+                        <?= gmdate('H:i:s', $cont_video->duration); ?>
+                    </span>
+                    <?php } ?>
+
+                    <!-- Rating -->
+
+                    <?php if($ThumbnailSetting->rating == 1 && $cont_video->rating != null) { ?>
+                    <span class="text-white">
+                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <?php echo __($cont_video->rating); ?>
+                    </span>
+                    <?php } ?>
+
+                    <?php if($ThumbnailSetting->featured == 1 && $cont_video->featured == 1) { ?>
+                    <!-- Featured -->
+                    <span class="text-white">
+                        <i class="fa fa-flag" aria-hidden="true"></i>
+                    </span>
+                    <?php }?>
+                </div>
+
+                <div class="movie-time my-2">
+                    <!-- published_year -->
+
+                    <?php  if ( ($ThumbnailSetting->published_year == 1) &&  ( $cont_video->year != null ) ) { ?>
+                    <span class="text-white">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <?php echo __($cont_video->year); ?>
+                    </span>
+                    <?php } ?>
+                </div>
+
+                <div class="movie-time my-2">
+                    <!-- Category Thumbnail  setting -->
+                    <?php
+                    $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                ->where('categoryvideos.video_id',$cont_video->id)
+                                ->pluck('video_categories.name');        
+                    ?>
+                    <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                    <span class="text-white">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                        <?php
+                            $Category_Thumbnail = array();
+                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                }
+                            echo implode(','.' ', $Category_Thumbnail);
+                        ?>
+                    </span>
+                    <?php } ?>
+                </div>
+            </a>
+        </li>
+        <?php                     
                         endforeach; 
                                    endif; ?>
-                    </ul>
-                 </div>
-                 <?php endif; ?>
+    </ul>
+</div>
+<?php endif; ?>
 
 
 <script>
