@@ -141,7 +141,7 @@ if(isset($videos)) :
                         <div class="block-description">
                             <div class="hover-buttons">
                                 <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" />
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                 </a>
                                 <div class="d-flex">
                                     <!-- <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php // endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
