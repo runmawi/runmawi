@@ -17,7 +17,7 @@
 <div id="content-page" class="content-page">
             <div class="container-fluid">
 	<div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
 		<div class="row">
 			<div class="col-md-6">
 				<h4><i class="entypo-archive"></i> Live Stream Categories</h4>
@@ -139,8 +139,8 @@
 				
 
 
-            <table class="table table-bordered">
-                <tr class="table-header">
+            <table class="table table-bordered iq-card text-center">
+                <tr class="table-header r1">
                     <th><label>Video Category Name</label></th>
                     <th><label>Operation</label></th>
                     @foreach($allCategories as $category)

@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="block-description">
                                    <h6><?php echo __($cont_video->title); ?></h6>
-                                   <div class="movie-time d-flex align-items-center my-2">
+                                   <div class="movie-time d-flex align-items-center">
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $cont_video->age_restrict.' '.'+' ?></div>
                                       <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $cont_video->duration); ?></span>
                                    </div>

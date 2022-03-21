@@ -13,7 +13,7 @@ $settings  = App\Setting::first();?>
 <div id="content-page" class="content-page">
     <div class="container-fluid">
 <!-- This is where -->
-	<div class="iq-card" style="padding:20px;">
+	<div class="" style="padding:20px;">
 	<div class="admin-section-title pull-right">
         @if(!empty($series->id))
         <div class="d-flex justify-content-between">

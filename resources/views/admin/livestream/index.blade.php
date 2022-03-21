@@ -31,7 +31,7 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
 		<div class="row">
 			<div class="col-md-6">
                 <h4><i class="entypo-video"></i> Live Videos</h4>
@@ -58,9 +58,9 @@
 
 	<div class="gallery-env mt-2">
 		
-			<table class="data-tables table livestream_table " style="width:100%">
+			<table class="data-tables table livestream_table iq-card text-center p-0" style="width:100%">
 				<thead>
-					<tr>
+					<tr class="r1">
 						<th><label>Image</label></th>
 						<th><label>Title</label></th>
 						<th><label>User Name</label></th>

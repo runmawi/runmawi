@@ -18,7 +18,7 @@
 ?>
 <div id="content-page" class="content-page">
             <div class="container-fluid">
-                <div class="iq-card">
+                <div class="">
 <div id="admin-container" style="padding:20px;">
     
 <!-- This is where -->
@@ -58,7 +58,7 @@
 				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'profile.png'; ?>@endif
 				<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 				<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
-				<input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
+				<input type="file" multiple="true" class="form-control mt-2" name="avatar" id="avatar" />
 			</div>
 
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
