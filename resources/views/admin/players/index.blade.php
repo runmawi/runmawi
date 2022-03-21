@@ -8,7 +8,7 @@
 
 <div id="content-page" class="content-page">
 	<div class="container-fluid">
-		<div class="iq-card">
+		<div class="">
 
 			<div id="admin-container">
 				<!-- This is where -->
@@ -343,8 +343,8 @@
 		</div> 
 		
 						<div class="bt p-3">
-							<button name="save" type="submit">Save</button>
-							<button name="">Reset Default</button>
+							<button name="save" type="submit" class="btn btn-primary">Save</button>
+							<button name="" class="btn btn-primary">Reset Default</button>
 						</div>
 						</div>
 

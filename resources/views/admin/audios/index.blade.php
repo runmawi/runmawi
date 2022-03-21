@@ -10,8 +10,8 @@
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between">
+                  <div class="">
+                     <div class="iq-card-header d-flex justify-content-between mb-3">
                         <div class="iq-header-title">
                            <h4 class="card-title">Audio Lists</h4>
                         </div>
@@ -19,11 +19,11 @@
                            <a href="{{ URL::to('admin/audios/create') }}" class="btn btn-primary">Add Audio</a>
                         </div>
                      </div>
-                     <div class="iq-card-body">
+                     <div class=" p-0">
                         <div class="table-view">
-                           <table class="data-tables table audio_table " style="width:100%">
+                           <table class="data-tables table audio_table iq-card text-center" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th><label>Title</label></th>
                                     <th><label>Rating</label></th>
                                     <th><label>Category</label></th>

@@ -35,8 +35,8 @@
                                        view
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle bg-primary">
-                                    <i class="las la-eye"></i>
+                                 <div class="icon iq-icon-box-top rounded-circle ">
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
                                  </div>
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
@@ -55,13 +55,13 @@
                                        Rated This App
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle bg-warning">
-                                    <i class="lar la-star"></i>
+                                 <div class="icon iq-icon-box-top rounded-circle ">
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/c.png';  ?>"> 
                                  </div>
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+55K</h4>
-                                 <p class="mb-0 text-warning"><span><i class="fa fa-caret-up mr-2"></i></span>50%</p>
+                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>50%</p>
                               </div>
                            </div>
                         </div>
@@ -75,13 +75,13 @@
                                        Downloaded
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle bg-info">
-                                     <i class="las la-download"></i>
+                                 <div class="icon iq-icon-box-top rounded-circle ">
+                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/download.png';  ?>"> 
                                  </div>
                               </div>
                               <div class="d-flex mt-4 align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+1M</h4>
-                                 <p class="mb-0 text-info"><span><i class="fa fa-caret-up mr-2"></i></span>80%</p>
+                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>80%</p>
                               </div>
                            </div>
                         </div>
@@ -95,23 +95,25 @@
                                        Visitors
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle bg-success">
-                                    <i class="lar la-user"></i>
+                                 <div class="icon iq-icon-box-top rounded-circle ">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
                                  </div>
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{  $visitor }} </h4>
-                                 <p class="mb-0 text-success"><span><i class="fa fa-caret-up mr-2"></i></span>100%</p>
+                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>100%</p>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div class="iq-card">
+                  <div class="mt-3">
                      <div class="iq-card-header d-flex justify-content-between align-items-center">
                         <div class="iq-header-title">
                            <h4 class="card-title">Top Rated Item </h4>
+                            
                         </div>
+                         <hr>
                         <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                      </div>
                      <div class="iq-card-body">
@@ -216,8 +218,8 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-sm-12  col-lg-4">
-                  <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+               <div class="col-sm-12  col-lg-5">
+                  <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Categories</h4>
@@ -234,8 +236,8 @@
                            <div class="media align-items-center">
                               <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
                               <div class="media-body text-white">
-                                 <h6 class="mb-0 font-size-14 line-height"><?php echo ucfirst($key);?></h6>
-                                 <small class="text-primary mb-0">+ {{ $value }} Videos</small>
+                                 <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($key);?></h6>
+                                 <small class=" mb-0 val">+ {{ $value }} Videos</small>
                               </div>
                            </div>
                         </div>
@@ -244,8 +246,8 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-8">
-                  <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+               <div class="col-lg-7">
+                  <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Top Category</h4>
@@ -261,7 +263,7 @@
                         </div> -->
                      </div>
                      <div class="iq-card-body row align-items-center">
-                        <div class="col-lg-7">
+                        <div class="col-lg-9">
                            <div class="row list-unstyled mb-0 pb-0">
                            <?php $all_category = App\VideoCategory::all();
                                     foreach($all_category as $category) { 
@@ -270,15 +272,15 @@
                                        ->Join('videos', 'videos.id', '=', 'categoryvideos.video_id')
                                        ->where("category_id","=",$category->id)->sum('videos.views');
                                        ?>                                   
-                              <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
+                              <div class="col-sm-6 col-md-5 col-lg-6 mb-3">
                                  <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                                     <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                                  </div>
                                  <div class="media align-items-center">
                                     <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
                                     <div class="media-body text-white">
-                                       <h6 class="mb-0 font-size-14 line-height"><?php echo ucfirst($category->name);?></h6>
-                                       <small class="text-primary mb-0">+ {{ $categoty_sum }} views</small>
+                                       <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($category->name);?></h6>
+                                       <small class="val mb-0">+ {{ $categoty_sum }} views</small>
                                     </div>
                                  </div>
                               </div>
@@ -291,8 +293,8 @@
                      </div>
                   </div>
                </div>
-               <div class="col-sm-12">
-                  <div class="iq-card">
+               <div class="col-sm-12 mt-4">
+                  <div class="">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Recently Viewed Items</h4>
@@ -303,9 +305,9 @@
                         <div class="table-responsive">
                            <table class="data-tables table movie_table" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th style="width:20%;">Video</th>
-                                    <th style="width:10%;">Rating</th>
+                                    <th style="width:20%;">Rating</th>
                                     <th style="width:20%;">Category</th>
                                     <th style="width:10%;">Views</th>
                                     
@@ -332,7 +334,7 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td><i class="lar la-star mr-2"></i> {{ $video_detail->rating }}</td>
+                                    <td><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i> <!--{{ $video_detail->rating }}--></td>
                                     <td>{{ @$video_detail->categories->name }}</td>
                                     <td>
                                        {{ $video_detail->views }}<i class="lar la-eye "></i>

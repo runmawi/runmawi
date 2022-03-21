@@ -27,7 +27,7 @@
 
 
 <div class="admin-section-title">
-    	<div class="iq-card">
+    	<div class="">
 
 		<div class="row">
 			<div class="col-md-6">
@@ -129,9 +129,9 @@
 			<div class="panel-body">
 		
 				<div id="nestable" class="nested-list dd with-margins">
-					<table class="table-bordered" id="categorytbl" style="width:100%;padding:10px;">
+					<table class="table-bordered iq-card text-center" id="categorytbl" style="width:100%;padding:10px;">
 						<thead>
-							<tr class="text-center">
+							<tr class="text-center r1">
 								<th>Plan Name</th>
 								<th>Action</th>
 							</tr>

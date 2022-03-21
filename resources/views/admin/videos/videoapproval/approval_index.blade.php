@@ -11,7 +11,7 @@
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="iq-card">
+                  <div class="">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Video Lists</h4>
@@ -24,9 +24,9 @@
                     </div>
                         </div>
                      </div>
-                     <div class="iq-card-body table-responsive">
+                     <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table class="table text-center table-striped table-bordered table movie_table iq-card" style="width:100%">
                               <thead>
                                  <tr>
                                      

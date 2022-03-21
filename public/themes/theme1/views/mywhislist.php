@@ -16,7 +16,7 @@
      </div>
      <section class="movie-detail ">
         <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
-
+         <h1 class="text-center"> testing</h1>
         <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
              <?php if(count($channelwatchlater) > 0):
@@ -64,7 +64,7 @@
                         <ul class="category-page list-inline  row p-0 mb-4">
             <?php if(count($livevideos) > 0):
                    foreach($livevideos as $video): ?>
-                   
+                   <h1 class="text-center"> testing</h1>
             <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <li class="slide-item position-relative">

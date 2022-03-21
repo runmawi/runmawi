@@ -136,9 +136,9 @@
                      </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table id="template" class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table id="template" class="table table-striped table-bordered table movie_table text-center " style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>ID</th>
                                     <th>Template</th>
                                     <th>Subject</th>
@@ -151,14 +151,14 @@
                                  <td> <p class="mb-0">{{ $template->id }}</p></td>
                                     <td>
                                        <div class="media align-items-center">
-                                          <div class="media-body text-white text-left ml-3">
+                                          <div class="media-body text-white  ml-3">
                                              <p class="mb-0">{{ $template->template_type }}</p>
                                           </div>
                                        </div>
                                     </td>
                                     <td>{{ $template->heading }}</td>
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('admin/template/view') . '/' . $template->id }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

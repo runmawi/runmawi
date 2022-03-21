@@ -22,7 +22,7 @@
 
 	<div class="admin-section-title"  style="margin-left: 330px;
     padding-top: 100px;">
-         <div class="iq-card">
+         <div class="">
 		<div class="row align-items-center p-2">
 			<div class="col-md-5">
 				<h4><i class="entypo-movie"></i> Series</h4>
@@ -31,7 +31,7 @@
 				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
                 
 			</div>
-            <div class="col-md-2">
+            <div class="col-md-2 mb-2">
                 <a href="{{ URL::to('admin/series/create') }}" class="btn btn-primary mt-2"><i class="fa fa-plus-circle"></i> Add New</a>
             </div>
 		</div>
@@ -42,8 +42,8 @@
 		
 		<div class="row mt-3 p-2">
 
-		<table class="table">
-		<tr class="table-header">
+		<table class="table text-center iq-card">
+		<tr class="table-header r1">
 			<th><label>S.No</label></th>
 			<th><label>Image</label></th>
 			<th><label>Series Title</label></th>
@@ -56,7 +56,7 @@
 				<td valign="bottom"><p>{{ $series_value->title }}</p></td>
 				<td valign="bottom"><p>{{ $series_value->genre_id }}</p></td>
 				<td>
-					<div class="d-flex align-items-center list-user-action">
+					<div class=" align-items-center list-user-action">
 						<a href="{{ URL::to('play_series') . '/' .$series_value->slug }}" class="iq-bg-warning" ><i class="lar la-eye"></i> <!--Visit Site--></a>
 						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><i class="ri-pencil-line"></i> <!--Edit--></a>
 						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><i

@@ -235,7 +235,10 @@ Waves Effect
 /*---------------------------------------------------------------------
                              Sidebar Menu
  -----------------------------------------------------------------------*/
-
+.num{
+    color: #4295D2;
+    font-weight: bolder;
+}
 /* Form */
 #sidebar-scrollbar { height: 100vh; }
 .iq-sidebar #sidebar-scrollbar { margin-top: 15px; }
@@ -245,7 +248,7 @@ Waves Effect
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 15px 35px; line-height: 19px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 19px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
 .iq-sidebar-menu .iq-menu li li a { font-size: 16px;height: 40px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 .iq-sidebar-menu .iq-menu li ul li a:hover{
@@ -277,6 +280,16 @@ height: 45px;
  
     
 }
+.lnk{
+    font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 30px;
+padding-left: 30px;
+
+margin-top: 30px;
+color: #4295D2;
+}
 
 /*.iq-sidebar-menu .iq-menu li:hover {background-color: #1e282c;}*/
 .iq-sidebar-menu .iq-menu li i a{
@@ -285,7 +298,12 @@ height: 45px;
 .iq-sidebar-menu .iq-menu li i a:hover{
     color: #0993D2;
 }
-.iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; color: #000000; }
+.iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 24px;
+
+color: #303030;}
 .iq-sidebar-menu .iq-menu li a .iq-arrow-right { margin-right: 0px; margin-left: auto; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; }
 .iq-sidebar-menu .iq-menu li a .badge { position: absolute; right: 15px; -webkit-transition: all 0.9s ease-out 0s; -moz-transition: all 0.9s ease-out 0s; -ms-transition: all 0.9s ease-out 0s; -o-transition: all 0.9s ease-out 0s; transition: all 0.9s ease-out 0s; }
 .iq-sidebar-menu .iq-menu li a:hover { color: var(--iq-primary); }
@@ -308,6 +326,35 @@ body.sidebar-main .iq-sidebar .iq-menu li a[aria-expanded="false"].collapsed { b
 }
 iq-submenu li{
     padding: 15px ;
+}
+.r1{
+    background: #F7F8FC;
+    height: 60px;
+    vertical-align:center;
+}
+.iq-cart-text p{
+
+font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+/* identical to box height */
+
+
+    color: #4295D2;}
+.val{
+    font-weight: 400;
+font-size: 14px;
+/* identical to box height */
+
+
+color: #161616;
+}
+.line{
+    font-weight: 500;
+font-size: 20px;
+line-height: 27px;
+
+color: #161616;
 }
 /*------------------------*/
 .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
@@ -416,8 +463,8 @@ body.sidebar-main .content-page { margin-left: 80px; }
     justify-content: center;
     align-items: center; }
 #view-chart-01 .apexcharts-canvas { margin: 0 auto; }
-.progress-bar-vertical { width: 8px; min-height: 60px; display: flex; align-items: flex-end; margin-right: 20px; float: left; border-radius: 10px; -webkit-border-radius: 10px; }
-.iq-icon-box-view { height: 60px; width: 60px; line-height: 70px; text-align: center; }
+.progress-bar-vertical { width: 8px; min-height: 60px; display: flex; align-items: flex-end; margin-right: 20px; float: left; border-radius: 10px; -webkit-border-radius: 10px;display: none; }
+.iq-icon-box-view { /*height: 60px; width: 60px; line-height: 70px; text-align: center;*/padding:10px; }
 #view-chart-02 .apexcharts-canvas { margin: 0 auto; }
 .slick-aerrow-block button.slick-arrow { position: static; background: var(--iq-primary) 0% 0% no-repeat padding-box; margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: var(--iq-white); -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .slick-aerrow-block button.slick-arrow:hover { background: var(--iq-white); color: var(--iq-primary) !important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
@@ -1097,10 +1144,7 @@ select{
 .ri-mail-line{
      color: #000000;
 }
-.num{
-    color: #000000;
-    font-weight: bolder;
-}
+
 
 /* File Upload */
 #progressbar {

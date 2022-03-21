@@ -19,7 +19,7 @@
 
 <div class="admin-section-title" style="margin-left: 340px;
     padding-top: 100px;">
-      <div class="iq-card">
+      <div class="">
 	<div class="row mt-3">
 		<div class="col-md-6">
             
@@ -49,8 +49,8 @@
 <div class="clear"></div>
 
 
-<table class="table table-striped artists-table">
-	<tr class="table-header">
+<table class="table table-striped artists-table iq-card text-center">
+	<tr class=" r1">
 		<th><label>S.No</label></th>
 		<th><label>Image</label></th>
 		<th><label>Artist Name</label></th>
@@ -61,7 +61,7 @@
 			<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
 			<td valign="bottom"><p>{{ $artist->artist_name }}</p></td>
 			<td>
-				<p class="d-flex align-items-center list-user-action">
+				<p class=" align-items-center list-user-action">
 					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="ri-pencil-line"></i> </a>
 					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
                                                 class="ri-delete-bin-line"></i></a>

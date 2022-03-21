@@ -6,8 +6,8 @@
 		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
   <div id="content-page" class="content-page">
             <div class="container-fluid">
-               <div class="row">
-               <div class="col-sm-6 col-xs-6">
+               <div class="row ">
+               <div class="col-sm-4 col-xs-6 text-center">
                    <div class="iq-card" style="height: 150px;">
 				<div class="tile-stats tile-red">
 					<div class="icon"><i class="entypo-users"></i></div>
@@ -18,7 +18,7 @@
                        </div>
 			</div><!-- column -->
 		
-			<div class="col-sm-6 col-xs-6">
+			<div class="col-sm-4 col-xs-6 text-center">
                  <div class="iq-card" style="height: 150px;">
 				<div class="tile-stats tile-green">
 					<div class="icon"><i class="entypo-user-add"></i></div>
@@ -29,7 +29,7 @@
                 </div>
 			</div><!-- column -->
 		
-			<div class="col-sm-4 col-xs-6">
+			<div class="col-sm-4 col-xs-6 text-center">
                  <div class="iq-card" style="height: 150px;">
 				<div class="tile-stats tile-aqua">
 					<div class="icon"><i class="entypo-video"></i></div>
@@ -57,7 +57,7 @@
               <div class="col-md-4" >
 			  <label>  </label>
                 <!-- <button type="button" class="btn btn-black" data-dismiss="modal">Close</button> -->
-                <input style="margin-top: 10%;" type="submit" class="btn btn-bk" id="Export" value="Export" />
+                <input style="margin-top: 12%;" type="submit" class="btn btn-primary" id="Export" value="Export" />
             </div>
                 </div>
         </form>
@@ -71,9 +71,9 @@
                         </div>
                         <div class="iq-card-body">
                            <div class="table-view">
-                              <table class="data-tables table movie_table" style="width:100%">
+                              <table class="data-tables table movie_table text-center" style="width:100%">
                                  <thead>
-                                    <tr>
+                                    <tr class="r1">
                                        <th style="width: 10%;">Profile</th>
                                        <th style="width: 10%;">Name</th>
                                        <th style="width: 20%;">Contact</th>

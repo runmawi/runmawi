@@ -34,7 +34,6 @@ if (!empty($data['password_hash'])) {
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/font-awesome/css/font-awesome.min.css'; ?>">
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
-  <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/bootstrap.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/animate.min.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/core.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/theme.css'; ?>">
@@ -140,12 +139,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span></span></a></li>
                   <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div  class="mnu" style="">
                  
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   <p class="lnk" >Video</p>
                    </div>
                    <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -196,7 +195,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     <div class="mnu">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                        <p class="lnk" >Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -224,7 +223,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     <div class="mnu">
                    
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                   <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li><a href="{{ URL::to('/client') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>File Manager</span></a></li>
@@ -373,7 +372,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <div class="bod"></div>
                    <div class="mnu" style="">
                  
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   <p class="lnk" >Video</p>
                    </div>
                    <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -392,7 +391,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div class="mnu" style=""> 
-                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 <p class="lnk" >Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -404,7 +403,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                     <div class="mnu" style="">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+                        <p class="lnk" >Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -423,7 +422,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           
                     <div class="mnu">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                        <p class="lnk" >Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -434,7 +433,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
                     <div class="mnu">
                 
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                   <p class="lnk" >Language</p>
                        </div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -450,7 +449,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     <div class="mnu">
                    
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                   <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
@@ -541,7 +540,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
                   <div class="mnu">
-                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                    <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -559,7 +558,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                 @endif
 
                     {{-- Geo Fencing --}}
-               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Geo Fencing</p></li>
+               <p class="lnk">Geo Fencing</p>
 
                <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Manage Geo Fencing</span></a></li>
 
@@ -589,12 +588,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Getting Started</span></a></li>
                   <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="mnu" style="">
                  
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   <p class="lnk" >Video</p>
                    </div>
                    <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -613,7 +612,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div class="mnu" style=""> 
-                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 <p class="lnk" >Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -625,7 +624,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                     <div class="mnu" style="">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+                        <p class="lnk" >Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -645,7 +644,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                  
                     <div class="mnu">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                        <p class="lnk" >Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -656,7 +655,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
                     <div >
                 
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                   <p class="lnk" >Language</p>
                        </div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -672,7 +671,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     <div class="mnu">
                    
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                   <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
@@ -760,7 +759,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
                   <div class="mnu">
-                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                    <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -779,7 +778,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                 
                     {{-- Geo Fencing --}}
-               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Geo Fencing</p></li>
+               <li><p class="lnk">Geo Fencing</p></li>
 
                <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Manage Geo Fencing</span></a></li>
 
@@ -815,7 +814,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <div class="bod"></div>
                    <div style="">
                  
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Video</p>
+                   <p class="lnk" >Video</p>
                    </div>
                    <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -834,7 +833,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div style=""> 
-                 <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Live Video</p>
+                 <p class="lnk" >Live Video</p>
                  </div>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -846,7 +845,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                     <div style="">
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Audio </p></div>
+                        <p class="lnk" >Audio </p></div>
           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -866,7 +865,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                  
                     <div >
                   
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Accounts</p></div>
+                        <p class="lnk" >Accounts</p></div>
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
@@ -877,7 +876,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
                     <div class="mnu">
                 
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
+                   <p class="lnk" >Language</p>
                        </div>
                   <li>
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-language"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -893,7 +892,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     <div >
                    
-                   <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Site</p>
+                   <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>Player UI</span></a></li>
                    <li>
@@ -980,7 +979,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <!-- Ads Menu starts -->
                   @if($settings->ads_on_videos == 1)
                   <div>
-                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
+                    <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -998,7 +997,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                 @endif
 
                        {{-- Geo Fencing --}}
-               <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Geo Fencing</p></li>
+               <li><p class="lnk" >Geo Fencing</p></li>
 
                <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Manage Geo Fencing</span></a></li>
 
