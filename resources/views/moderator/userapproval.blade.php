@@ -27,7 +27,7 @@
                         <div class="table-view">
                            <table class="table table-striped table-bordered table movie_table iq-card text-center" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>Id</th>                            
                                     <th>Profile</th>
                                     <th>Moderator Name</th>

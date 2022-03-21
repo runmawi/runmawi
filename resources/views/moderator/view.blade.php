@@ -77,7 +77,7 @@
                                         <?php }?> 
 
                                         <td>
-                                            <div class="flex align-items-center list-user-action">
+                                            <div class=" align-items-center list-user-action">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                                              data-original-title="Edit" href="{{ URL::to('admin/moderatorsuser/edit/') }}/{{$user->id}}" ><i class="ri-pencil-line"></i></a> 
                                             <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

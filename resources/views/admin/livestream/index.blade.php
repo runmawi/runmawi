@@ -58,7 +58,7 @@
 
 	<div class="gallery-env mt-2">
 		
-			<table class="data-tables table livestream_table iq-card text-center" style="width:100%">
+			<table class="data-tables table livestream_table iq-card text-center p-0" style="width:100%">
 				<thead>
 					<tr class="r1">
 						<th><label>Image</label></th>

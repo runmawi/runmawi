@@ -19,7 +19,7 @@
            
 
 <table class="table table-bordered table-hover">
-    <thead>
+    <thead class="r1">
         <th>Role Name</th>
         <th>Actions</th>
     </thead>

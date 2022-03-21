@@ -49,8 +49,8 @@
 <div class="clear"></div>
 
 
-<table class="table table-striped artists-table iq-card text-center">
-	<tr class=" r1">
+<table class="table  artists-table iq-card text-center p-0">
+	<tr class="r1">
 		<th><label>S.No</label></th>
 		<th><label>Image</label></th>
 		<th><label>Artist Name</label></th>

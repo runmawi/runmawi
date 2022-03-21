@@ -20,7 +20,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="iq-card">
+				<div class="">
 					<div class="iq-card-header d-flex justify-content-between">
 						<div class="iq-header-title">
 							<h4 class="card-title">Add Commission</h4>
@@ -41,8 +41,8 @@
 						<h5></h5>
 						<form method="POST" action="{{ URL::to('admin/add/commission') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
-							<div class="row mt-12">
-								<div class="col-md-12">
+							<div class="row mt-12 align-items-center">
+								<div class="col-md-6 p-0">
 									<div class="panel panel-primary " data-collapsed="0"> <div class="panel-heading"> 
 										<div class="panel-title"><label>Percentage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
@@ -51,19 +51,13 @@
 										</div> 
 									</div>
 								</div>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
+                               
 
-								<div class="col-md-6">
+								<div class="col-md-6 mt-3">
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 								<input type="submit" value="Update Percentage" class="btn btn-primary pull-right" />
                                     </div>
+                            </div>
 							</form>
 
 							<div class="clear"></div>

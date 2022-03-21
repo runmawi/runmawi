@@ -21,7 +21,7 @@
                      </div>
                      <div class=" p-0">
                         <div class="table-view">
-                           <table class="data-tables table audio_table iq-card text-center" style="width:100%">
+                           <table class="data-tables table audio_table iq-card text-center p-0" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th><label>Title</label></th>
