@@ -126,23 +126,6 @@
 <?php endif; ?>
 
 
- <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $watchlater_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-<!-- </a> -->
-<!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
-<i style="" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php // else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
-</span>
-<div style="color:white;" id="<?= $watchlater_video->id ?>"><?php // if(@$watchlater_video->mywishlisted->user_id == $id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-</div> -->
-<!--
-<div>
-<button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
-<span class="text-center thumbarrow-sec">
-<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-</span>
-</button>
-</div>
--->
-
 <style>
     .i {
         text-decoration: none;

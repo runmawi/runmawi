@@ -46,6 +46,7 @@ use App\BlockVideo;
 use App\LanguageVideo;
 use App\CategoryVideo;
 use Exception;
+use getID3;
 
 
 class AdminVideosController extends Controller
@@ -228,7 +229,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
      }
     }
 
-    public function uploadFile(Request $request){
+    public function uploadFile(Request $request)
+    {
 
         $value = array();
         $data = $request->all();
@@ -249,64 +251,77 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $package = User::where('id',1)->first();
         $pack = $package->package;
         $mp4_url = $data['file'];
+
         if($mp4_url != '' && $pack != "Pro") {
-        // $ffprobe = \FFMpeg\FFProbe::create();
-        // $disk = 'public';
-        // $data['duration'] = $ffprobe->streams($request->file)
-        // ->videos()
-        // ->first()                  
-        // ->get('duration'); 
+            // $ffprobe = \FFMpeg\FFProbe::create();
+            // $disk = 'public';
+            // $data['duration'] = $ffprobe->streams($request->file)
+            // ->videos()
+            // ->first()                  
+            // ->get('duration'); 
+            
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->file->getClientOriginalExtension();
         
-        $rand = Str::random(16);
-        $path = $rand . '.' . $request->file->getClientOriginalExtension();
-    
-        $request->file->storeAs('public', $path);
-        $thumb_path = 'public';
-        
-        
-        // $this->build_video_thumbnail($request->file,$path, $data['slug']);
-        
-         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-        //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
-        //  $str = explode(".mp4",$path);
-        //  $path =$str[0];
-         $storepath  = URL::to('/storage/app/public/'.$path);
-
-         $video = new Video();
-         $video->disk = 'public';
-         $video->title = $file_folder_name;
-         $video->original_name = 'public';
-         $video->path = $path;
-         $video->mp4_url = $storepath;
-         $video->type = 'mp4_url';
-         $video->draft = 0;
-         $video->image = 'default_image.jpg';
-         $video->save(); 
-        
-         $video_id = $video->id;
-       $video_title = Video::find($video_id);
-       $title =$video_title->title; 
+            $request->file->storeAs('public', $path);
+            $thumb_path = 'public';
+            
+            
+            // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+            
+            $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+            //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+            //  $str = explode(".mp4",$path);
+            //  $path =$str[0];
+            $storepath  = URL::to('/storage/app/public/'.$path);
 
 
-        $value['success'] = 1;
-        $value['message'] = 'Uploaded Successfully!';
-        $value['video_id'] = $video_id;
-        $value['video_title'] = $title;
+            //  Video duration 
+            $getID3 = new getID3;
+            $Video_storepath  = storage_path('app/public/'.$path);       
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo['playtime_seconds'];
 
+            $video = new Video();
+            $video->disk = 'public';
+            $video->title = $file_folder_name;
+            $video->original_name = 'public';
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = 'mp4_url';
+            $video->draft = 0;
+            $video->image = 'default_image.jpg';
+            $video->duration  = $Video_duration;
+            $video->save(); 
+            
         
-        return $value;
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title =$video_title->title; 
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+            $value['video_title'] = $title;
+
+            return $value;
         
         }elseif($mp4_url != '' && $pack == "Pro") {
-            // print_r($request->file);
-            // exit();
+
             $rand = Str::random(16);
             $path = $rand . '.' . $request->file->getClientOriginalExtension();
             $request->file->storeAs('public', $path);
-            /*dd('public', $path);*/
              
              $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
              
             $storepath  = URL::to('/storage/app/public/'.$path);
+
+
+            //  Video duration 
+            $getID3 = new getID3;
+            $Video_storepath  = storage_path('app/public/'.$path);       
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo['playtime_seconds'];
              
              $video = new Video();
              $video->disk = 'public';
@@ -317,6 +332,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              $video->mp4_url = $storepath;
              $video->draft = 0;
              $video->image = 'default_image.jpg';
+             $video->duration  = $Video_duration;
              $video->user_id = Auth::user()->id;
              $video->save();
 
@@ -333,17 +349,14 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
               return $value;
         }
         else {
-         $value['success'] = 2;
-         $value['message'] = 'File not uploaded.'; 
-            // $video = Video::create($data);
-        return response()->json($value);
-        
+             $value['success'] = 2;
+             $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
         }
 
         // return response()->json($value);
-        }
+    }
         
-  
      /**
      * Show the form for creating a new video
      *
@@ -1333,40 +1346,31 @@ if(!empty($artistsdata)){
             }
         }
     
-
-
-
-
-
         public function fileupdate(Request $request)
         {
         
-             if (!Auth::user()->role == 'admin')
-            {
+            if (!Auth::user()->role == 'admin')
+             {
                 return redirect('/home');
-            }
+             }
+
             $data = $request->all();
            
-
-            // dd($data['video_category_id']);
-
             $validatedData = $request->validate([
                 'title' => 'required|max:255',
                 // 'video_country' =>'required',
             ]);
 
-            // dd($request->all());
-            
-                $id = $data['video_id'];
-
-                $video = Video::findOrFail($id);
+            $id = $data['video_id'];
+            $video = Video::findOrFail($id);
               
 
-                if(!empty($video->embed_code)) {
-                    $embed_code = $video->embed_code;
-               }else {
-                   $embed_code = '';
-               }
+            if(!empty($video->embed_code)) {
+                $embed_code = $video->embed_code;
+            }else{
+                $embed_code = '';
+            }
+
                 // if(!empty($data['global_ppv'])){
                 //     $settings = Setting::where('ppv_status','=',1)->first();
                 //     if(!empty($settings)){
@@ -1378,96 +1382,101 @@ if(!empty($artistsdata)){
                 //     $video->global_ppv = null ;
                 //     }  
 
-                if(!empty($data['ppv_price']) && $data['ppv_price'] > 0){
-                    $video->global_ppv = 1 ;
-                    }  else {
-                    $video->global_ppv = null ;
+            if(!empty($data['ppv_price']) && $data['ppv_price'] > 0){
+                $video->global_ppv = 1 ;
+            } 
+            else{
+                 $video->global_ppv = null ;
+            }  
 
-                    }  
+            $settings = Setting::where('ppv_status','=',1)->first();
 
-                    $settings = Setting::where('ppv_status','=',1)->first();
+            if(!empty($data['global_ppv'])){
+                $data['ppv_price'] = $settings->ppv_price;
+                $video->global_ppv = $data['global_ppv'] ;
+            }else 
+            {
+                $video->global_ppv = null ;
+            }  
 
-                if(!empty($data['global_ppv'])){
-                        $data['ppv_price'] = $settings->ppv_price;
-                    $video->global_ppv = $data['global_ppv'] ;
-                    }  else {
-                    $video->global_ppv = null ;
-
-                    }  
-                if($request->slug == ''){
-                    $data['slug'] = $this->createSlug($data['title']);    
-                }
+            if($request->slug == ''){
+                $data['slug'] = $this->createSlug($data['title']);    
+            }
             
-               $image = (isset($data['image'])) ? $data['image'] : '';
-               $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
-               $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+            $image = (isset($data['image'])) ? $data['image'] : '';
+            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
+            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
             
-                if(empty($data['active'])){
+            if(empty($data['active'])){
                 $data['active'] = 0;
-                } 
+            } 
             
     
              if(empty($data['webm_url'])){
                 $data['webm_url'] = 0;
-                }  else {
-                    $data['webm_url'] =  $data['webm_url'];
-                }  
+            } else {
+                $data['webm_url'] =  $data['webm_url'];
+            }  
     
-                if(empty($data['ogg_url'])){
-                    $data['ogg_url'] = 0;
-                }  else {
-                    $data['ogg_url'] =  $data['ogg_url'];
-                }  
+            if(empty($data['ogg_url'])){
+                $data['ogg_url'] = 0;
+            } else {
+                $data['ogg_url'] =  $data['ogg_url'];
+            }  
     
-                if(empty($data['year'])){
-                    $data['year'] = 0;
-                }  else {
-                    $data['year'] =  $data['year'];
-                }   
+            if(empty($data['year'])){
+                $data['year'] = 0;
+            } else {
+                $data['year'] =  $data['year'];
+            }   
             
-                if(empty($data['language'])){
-                    $data['language'] = 0;
-                }  else {
-                    $data['language'] = $data['language'];
-                } 
+            if(empty($data['language'])){
+                $data['language'] = 0;
+            }  else {
+                $data['language'] = $data['language'];
+            } 
             
-        
-           if(empty($data['featured'])){
+            if(empty($data['featured'])){
                $featured = 0;
-           }  else{
-            $featured = 1;
-           }
-                if(empty($data['featured'])){
-                    $data['featured'] = 0;
-                } 
-                 if(!empty($data['embed_code'])){
-                    $data['embed_code'] = $data['embed_code'];
-                } 
+            }  else{
+               $featured = 1;
+            }
+
+            if(empty($data['featured'])){
+                $data['featured'] = 0;
+            } 
+
+            if(!empty($data['embed_code'])){
+                $data['embed_code'] = $data['embed_code'];
+            } 
     
-    
-                if(empty($data['active'])){
-                    $data['active'] = 0;
-                } 
-                  if(empty($data['video_gif'])){
-                    $data['video_gif'] = '';
-                }
+            if(empty($data['active'])){
+                $data['active'] = 0;
+            } 
+                  
+            if(empty($data['video_gif'])){
+                $data['video_gif'] = '';
+            }
                
-                // if(empty($data['type'])){
-                //     $data['type'] = '';
-                // }
+            // if(empty($data['type'])){
+            //     $data['type'] = '';
+            // }
+
+            // if(empty($data['path'])){
+            //     $data['path'] = 0;
+            // } 
     
-                 if(empty($data['status'])){
-                    $data['status'] = 0;
-                }   
+            if(empty($data['status'])){
+                $data['status'] = 0;
+            }   
     
-    //            if(empty($data['path'])){
-    //                $data['path'] = 0;
-    //            }  
-    $package = User::where('id',1)->first();
-    $pack = $package->package;
-    if(Auth::user()->role =='admin' ){
-        $data['status'] = 1;    
-    }
+            $package = User::where('id',1)->first();
+            $pack = $package->package;
+
+            if(Auth::user()->role =='admin' ){
+                $data['status'] = 1;    
+            }
+
                 if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro"  ){
                         $data['status'] = 1;    
                     }elseif(Auth::user()->role =='admin' ){
@@ -1531,7 +1540,6 @@ if(!empty($artistsdata)){
                     $data['duration'] = $time_seconds;
             }
     
-
           
            
               if(!empty($data['embed_code'])) {
