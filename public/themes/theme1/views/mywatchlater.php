@@ -81,7 +81,8 @@
           <!--  <h2>No Media in My Watchlater</h2>-->
                  <div class="col-md-12 text-center mt-4">
              <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
-                     <p class="text-white text-center med">We are having a temporary playback issue,we are <br>working on it and will be back very soon!</p>
+                     <p class="text-white text-center med">We are having a temporary playback issue,we are <br>working on it and 
+                                         will be back very soon!</p>
                      <a class="mb-5 text-white pag">Please refresh your page to retry</a>
          </div>
         <?php endif; ?>

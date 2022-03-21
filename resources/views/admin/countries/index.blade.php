@@ -17,7 +17,7 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
-          <div class="iq-card">
+          <div class="">
 		<div class="row">
 			<div class="col-md-4">
 				<h4><i class="entypo-archive"></i> Blocked Countries </h4>
@@ -82,10 +82,10 @@
 			
 			<div class="panel-body">
 		
-				<div id="nestable" class="nested-list dd with-margins">
+				<div id="nestable" class="nested-list dd with-margins p-0">
 
-				     <table class="table table-bordered">
-                        <tr class="table-header">
+				     <table class="table table-bordered iq-card">
+                        <tr class="table-header r1">
                             <th class="text-center"><label>#ID</label></th>
                             <th class="text-center"><label>Country Name</label></th>
                             <th class="text-center"><label>Action</label></th>

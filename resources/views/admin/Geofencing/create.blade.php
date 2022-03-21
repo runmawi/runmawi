@@ -20,7 +20,7 @@
          <div class="container-fluid">
 
         <div class="admin-section-title">
-            <div class="iq-card">
+            <div class="">
             <div class="row">
                 <div class="col-md-4">
                     <h4><i class="entypo-archive"></i>Geofencing Setting </h4>
@@ -30,7 +30,7 @@
                 @csrf 
             <input type="hidden" name="id" value="{{ ($Geofencing !='') ? $Geofencing->id  : '' }}">
 
-            <div class="container">
+            <div class="container iq-card">
                 <div class="col-md-3" style="
                 margin-left: 30%;">
               

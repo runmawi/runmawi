@@ -19,7 +19,7 @@
                 <a href="<?php if($free_episode->series_id == $free_serie->id){ echo URL::to('/episode'.'/'.$free_serie->title.'/'.$free_episode->slug) ; }?> ">
                     <h6><?php echo __($free_episode->title); ?></h6>
                   </a>
-                  <div class="movie-time d-flex align-items-center my-2">
+                  <div class="movie-time d-flex align-items-center pt-1">
                     <div class="badge badge-secondary p-1 mr-2"><?php echo $free_episode->age_restrict.' '.'+' ?></div>
                     <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_episode->duration); ?></span>
                   </div>

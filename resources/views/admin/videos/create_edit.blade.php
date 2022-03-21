@@ -89,10 +89,10 @@
 </div>
 @endforeach
 @endif
-<div class="iq-card-body">
+<div id="content-page" class="content-page">
 <h5>Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<div id="" class="content-page1">
+<div >
 <div class="container-fluid">
    <div class="row ">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">

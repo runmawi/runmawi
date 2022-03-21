@@ -19,7 +19,7 @@
                
 
 	<div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
 		<div class="row">
 			<div class="col-md-3">
 				<h4><i class="entypo-archive"></i> Languages </h4>
@@ -93,8 +93,8 @@
 				
 
 
-            <table class="table table-bordered">
-                <tr class="table-header">
+            <table class="table table-bordered iq-card text-center">
+                <tr class="table-header r1">
                     <th class=""><label>Language</label></th>
                     <th class=""><label>Action</label></th>
                     

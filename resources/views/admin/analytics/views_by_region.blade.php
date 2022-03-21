@@ -97,7 +97,7 @@ input[type="number"] {
                         <div class="table-view">
                            <table class="table table-striped table-bordered table movie_table " id="page" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>ID</th>
                                     <th>Video Name</th>
                                     <th>Country Name</th>
@@ -119,7 +119,7 @@ input[type="number"] {
                   </div>
                </div>
          </div>
-
+    </div>
 @stop
 <input type="hidden" id="url" name="url" value="{{ URL::to('admin/Allregionvideos') }}">
 <script>

@@ -18,7 +18,7 @@
 <div id="content-page" class="content-page">
     <div class="container-fluid">
 	   <div class="admin-section-title">
-            <div class="iq-card">
+            <div class="">
                 <div class="row">
                     <div class="col-md-6">
                         <h4><i class="entypo-archive"></i> Video Categories</h4>
@@ -142,8 +142,8 @@
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
-                            <table class="table table-bordered" id="categorytbl">
-                                <tr class="table-header">
+                            <table class="table table-bordered iq-card text-center" id="categorytbl">
+                                <tr class="table-header r1">
                                     <th><label>Category Image</label></th>
                                     <th><label>Video Category Name</label></th>
                                     <th><label>Operation</label></th>
