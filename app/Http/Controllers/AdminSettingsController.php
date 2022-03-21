@@ -282,9 +282,9 @@ class AdminSettingsController extends Controller
             $defaultImage_setting =  Setting::pluck('default_video_image')->first();
             $files = $input['default_video_image'];
             $format=$files->getClientOriginalExtension();
-            $filename ='default_image'.'.' .  $format;
-            Storage::delete($defaultImage_setting);    // Remove Image
-            Image::make($files)->save(base_path().'/public/uploads/images/'.$filename );
+            $filename ='default_image'.'.' . 'jpg';
+            unlink( public_path().'/uploads/images/'.$defaultImage_setting); // Remove Image
+            Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
             $settings->default_video_image = $filename;
       }
         
