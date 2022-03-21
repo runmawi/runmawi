@@ -42,10 +42,10 @@
                                    <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
                                 <?php } ?>   
                                 
-                                  <div class="movie-time d-flex align-items-center my-2">
+                                  <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
-                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $cont_video->age_restrict.' '.'+' ?></div>
+                                      <div class="badge badge-secondary  mr-2"><?php echo $cont_video->age_restrict.' '.'+' ?></div>
                                       <?php } ?>
 
                                       <?php if($ThumbnailSetting->duration == 1) { ?>
@@ -58,7 +58,7 @@
                                   </div>
 
                                   <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                         <?php if($ThumbnailSetting->rating == 1) { ?>
                                         <!--Rating  -->
                                         <div class="badge badge-secondary p-1 mr-2">
@@ -91,7 +91,7 @@
                                   </div>
 
 
-                                  <div class="movie-time d-flex align-items-center my-2">
+                                  <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')

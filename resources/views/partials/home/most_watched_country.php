@@ -34,7 +34,7 @@
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
                                          <h6><?php echo __($Most_watched_countries->title); ?></h6>
                                     </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center">
                                         <div class="badge badge-secondary p-1 mr-2"><?php echo $Most_watched_countries->age_restrict ?></div>
                                         <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Most_watched_countries->duration); ?></span>
                                     </div>

@@ -42,7 +42,7 @@
                                         </a>
                                     <?php } ?>  
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                         <?php if($ThumbnailSetting->age == 1) { ?>
                                         <!-- Age -->
                                             <div class="badge badge-secondary p-1 mr-2"><?php echo $Most_watched_countries->age_restrict.' '.'+' ?></div>
@@ -57,7 +57,7 @@
                                     
                                    
                                     <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                         <?php if($ThumbnailSetting->rating == 1) { ?>
                                         <!--Rating  -->
                                         <div class="badge badge-secondary p-1 mr-2">
@@ -89,7 +89,7 @@
                                     </div>
                                 <?php } ?>
 
-                                <div class="movie-time d-flex align-items-center my-2">
+                                <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
