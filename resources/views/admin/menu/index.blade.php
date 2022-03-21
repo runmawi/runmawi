@@ -19,13 +19,14 @@
 <div id="content-page" class="content-page">
          <div class="container-fluid">
 	<div class="admin-section-title">
-        <div class="iq-card">
-		<div class="row">
-			<div class="col-md-4">
+        <div class="">
+		<div class="row justify-content-start">
+			<div class="col-md-8 d-flex justify-content-between">
 				<h4><i class="entypo-list"></i> Menu Items</h4>
+                <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
             <div class="col-md-8" align="right">
-                <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+                
             </div>
             
 		</div>
@@ -74,7 +75,7 @@
 
 	<div class="clear"></div>
 		
-		
+		<div class="col-md-8 p-0">
 		<div class="panel panel-primary menu-panel" data-collapsed="0">
 					
 			<div class="panel-heading">
@@ -88,11 +89,11 @@
 			</div>
 			
 			
-			<div class="panel-body">
+			<div class="">
 		
-            <table id="table" class="table table-bordered">
+            <table id="table " class="table table-bordered iq-card text-center">
               <thead>
-                <tr>
+                <tr class="r1 ">
                   <th width="30px">#</th>
                   <th>Name</th>
                   <th>Action</th>
@@ -104,7 +105,7 @@
     	              <td class="pl-3"><i class="fa fa-sort"></i>{{ $menu_item->id }}</td>
     	              <td>{{ $menu_item->name }}</td>
                       <td><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                    data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                    data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger ml-5" data-toggle="tooltip" data-placement="top" title=""
                     data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
 <!-- </div> -->
     	            </tr>
@@ -116,7 +117,7 @@
 		
 			</div>
 		
-		</div>
+		</div></div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />

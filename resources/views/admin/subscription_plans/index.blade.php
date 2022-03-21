@@ -27,7 +27,7 @@
             <div class="container-fluid">
 
 <div class="admin-section-title">
-     <div class="iq-card">
+     <div class="">
 		<div class="row">
 			<div class="col-md-6">
 				<h3><i class="entypo-archive"></i> Subscription Plans </h3>
@@ -146,13 +146,13 @@
 	</div>
 			<div class="panel panel-primary category-panel" data-collapsed="0">
 		</div>
-			<div class="panel-body mt-3">
+			<div class="panel-body mt-3 p-0">
 		
 				<div id="nestable" class="nested-list dd with-margins">
 
-					 <table class="table plan_table">
+					 <table class="table plan_table iq-card text-center">
 						<thead>
-							<tr>
+							<tr class="r1">
 								<th>S.No</th>
 								<th>Plan Name</th>
 								<th>Action</th>

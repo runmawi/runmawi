@@ -6,8 +6,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="iq-card">
-					<div class="iq-card-header d-flex justify-content-between">
+				<div class="">
+					<div class="iq-card-header d-flex justify-content-between align-items-baseline mb-4">
 						<div class="iq-header-title">
 							<h4 class="card-title">Audio Album</h4>
 						</div>
@@ -26,12 +26,12 @@
 							<a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio Album</a>
 						</div>
 					</div>
-					<div class="iq-card-body">
+					<div class="iq-card-body p-0">
 
-						<div id="nestable" class="nested-list dd with-margins">
-							<table class="data-tables table audio_table " style="width:100%">
+						<div id="nestable" class="nested-list dd with-margins p-0">
+							<table class="data-tables table audio_table iq-card text-center p-0" style="width:100%">
                      		<thead>
-                     			<tr>
+                     			<tr class="r1">
                      				<th><label>Name</label></th>
                      				<th><label>Image</label></th>
                      				<th><label>Action</label></th>

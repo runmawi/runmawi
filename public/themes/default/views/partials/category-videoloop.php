@@ -96,7 +96,7 @@ if(isset($videos)) :
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                                         <h6> <?php echo __($top_category_video->title); ?> </h6>
                                     </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                         <div class="badge badge-secondary p-1 mr-2"><?php echo $top_category_video->age_restrict.' '.'+' ?></div>
                                         <span class="text-white"><i class="fa fa-clock-o"></i>
                                             <?= gmdate('H:i:s', $top_category_video->duration); ?>
@@ -185,7 +185,7 @@ if(isset($videos)) :
                                         </a>
                                     <?php } ?>  
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
@@ -201,7 +201,7 @@ if(isset($videos)) :
                                     </div>
                                    
                                     <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                        <div class="movie-time d-flex align-items-center my-2">
+                                        <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->rating == 1) { ?>
                                             <!--Rating  -->
                                             <div class="badge badge-secondary p-1 mr-2">
@@ -233,7 +233,7 @@ if(isset($videos)) :
                                         </div>
                                     <?php } ?>
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')

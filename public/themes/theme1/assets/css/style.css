@@ -2309,3 +2309,11 @@ text-align: center;
     cursor: pointer;
 
 }
+.sig{
+color: #007bff!important;
+     font-family: Chivo!important;
+   /* font-weight: bold;*/
+}
+.sig:hover{
+    text-decoration: underline!important;
+}
