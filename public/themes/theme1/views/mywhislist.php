@@ -16,7 +16,7 @@
      </div>
      <section class="movie-detail ">
         <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
-         <h1 class="text-center"> testing</h1>
+            <h4 class="main-title">Videos</h4>       
         <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
              <?php if(count($channelwatchlater) > 0):
@@ -44,7 +44,7 @@
                        <div>
                            
                             <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                 <h3><?php echo __($video->title); ?></h3>
+                                 <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                
                             </div>
@@ -59,12 +59,15 @@
             endif; ?>
             </ul>
          </div>
-              
+
+         <h4 class="main-title">Live Videos</h4>  
          <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
-            <?php if(count($livevideos) > 0):
+            <?php if(count($livevideos) > 0): ?>
+
+            <?php
                    foreach($livevideos as $video): ?>
-                   <h1 class="text-center"> testing</h1>
+                             
             <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <li class="slide-item position-relative">
@@ -88,7 +91,7 @@
                        <div>
                             
                             <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                <h3><?php echo __($video->title); ?></h3>
+                                <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                 
                             </div>

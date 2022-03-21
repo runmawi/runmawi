@@ -23,6 +23,48 @@
 
       <div id="content-page" class="content-page">
          <div class="container-fluid">
+             <div class="row">
+                <div class="col-lg-8">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Get Started </h4>
+                                <p class="p1">You are 3 steps away from completion</p>
+                            </div>
+                            <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
+                        </div>
+                        <div class="iq-card-body">
+                            <p></p>
+                             <div class="row">
+                                <div class="col-sm-6">
+                                   <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>
+                                      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Go to OTT platform Settings</a>
+                                      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Payment Plans</a>
+                                   </div>
+                                </div>
+                                <div class="col-sm-6">
+                                   <div class="tab-content mt-0" id="v-pills-tabContent">
+                                      <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                         <label class="m-0">First things firt, you need Video.</label>
+                                         <p class="p1">Upload a video to get started.</p>
+                                         <a href="/admin/videos/create">Upload Videos Now</a>
+                                      </div>
+                                      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                          <p class="p1">Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                          <a href="/admin/settings">Go to Storefront Settings</a>
+                                      </div>
+                                      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                          <p class="p1">Setup subscription Plans</p>
+                                          <a href="/admin/subscription-plans">Add Subscription Plans</a>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                        </div>
+                    </div> 
+                </div>
+             </div>
             <div class="row">
                <div class="col-lg-8">
                   <div class="row">

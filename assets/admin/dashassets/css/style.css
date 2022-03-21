@@ -1197,3 +1197,46 @@ select{
     font-size: 16px;
     font-weight: 500;
 }
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background: rgb(255 255 255 / 20%);
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+}
+
+.nav-pills .nav-link {
+    border-radius: 5px;
+    background: #e1e1e1;
+    border-bottom: 1px solid #e9e6e6;
+    border-radius: 0;
+    color: #000;
+    font-weight: 500;
+}
+
+.dropzone .dz-preview.dz-file-preview .dz-image {
+    border-radius: 20px;
+    background: #999;
+    background: #fff;
+    border: 1px dotted #6e6e6e;
+}
+
+.dropzone .dz-preview .dz-details .dz-filename span, .dropzone .dz-preview .dz-details .dz-size span {
+    background-color: rgb(255 255 255 / 0%);
+    padding: 0 0.4em;
+    border-radius: 3px;
+}
+
+.dropzone .dz-preview .dz-progress {
+    opacity: 1;
+    z-index: 1000;
+    pointer-events: none;
+    position: absolute;
+    height: 5px;
+}
+
+.dropzone .dz-preview .dz-progress .dz-upload {
+    background: #333;
+    background: #0993d2;
+}

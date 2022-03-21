@@ -193,7 +193,7 @@
 							</div>
 						</div>
 						</div>
-
+<!-- 
 						<div class="p-3">
 							<h4 class="card-title">Subtitle apperance</h4>
 							<p>Customize the appearance of subtitle</p>
@@ -227,9 +227,9 @@
 							</div>
 						</div>
 					
-						</div>
+						</div> -->
 
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 						<div class="flex1">
 							<div>
 								<label>Font color *</label>
@@ -257,7 +257,7 @@
 
 							</div>
 						</div>
-						</div>
+						</div> -->
 
 
 

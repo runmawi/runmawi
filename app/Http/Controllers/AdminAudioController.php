@@ -634,14 +634,15 @@ class AdminAudioController extends Controller
                
           
                 $file = $request->file->getClientOriginalName();
-                // print_r($file);exit();
-        
+    
                 $newfile = explode(".mp4",$file);
                 $mp3titile = $newfile[0];
 
                 $audio = new Audio();
                 // $audio->disk = 'public';
                 $audio->title = $mp3titile;
+                $audio->image = 'default_image.jpg';
+
                 $audio->save(); 
                 $audio_id = $audio->id;
 

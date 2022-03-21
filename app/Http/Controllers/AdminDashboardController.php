@@ -20,6 +20,9 @@ use Image;
 use View;
 use App\CategoryVideo as CategoryVideo;
 use App\LanguageVideo;
+use App\Episode;
+use App\LiveStream;
+use App\Audio;
 
 
 class AdminDashboardController extends Controller
@@ -76,6 +79,28 @@ class AdminDashboardController extends Controller
         
 		return View::make('admin.dashboard', $data);
     }
-    
-    
+
+    public function Masterlist()
+    {
+        $Videos =  Video::orderBy('created_at', 'DESC')->get();
+
+        $LiveStream = LiveStream::orderBy('created_at', 'DESC')->get();
+
+        $audios = Audio::orderBy('created_at', 'DESC')->get();
+
+        $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
+                    ->orderBy('created_at', 'DESC')->get();
+
+        $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
+
+        $data = array(
+            'Videos' => $Videos,
+            'LiveStream' => $LiveStream,
+            'audios'  => $audios,
+            'Episode' => $Episode,
+            'master_count' => $master_count,
+        );
+
+       return View::make('admin.Masterlist.index', $data);
+    }
 }
