@@ -482,7 +482,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
 
-    /*Ads Management starts*/
+     /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
     Route::get('/advertiser/edit/{id}', 'AdminAdvertiserController@advertisersEdit');
     Route::get('/advertiser/delete/{id}', 'AdminAdvertiserController@advertisersDelete');
@@ -496,6 +496,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/ads_plans', 'AdminAdvertiserController@ads_plans');   
     Route::get('/ads_revenue', 'AdminAdvertiserController@ads_revenue');   
+    Route::get('/calendar-event', 'AdminAdvertiserController@calendarEvent');
+    Route::post('/calendar-crud-ajax', 'AdminAdvertiserController@calendarEventsAjax');
+    Route::get('/ad_campaign', 'AdminAdvertiserController@adCampaign');
+    Route::post('/ad_campaign_ajax', 'AdminAdvertiserController@adCampaignAjax');
     Route::get('/adscategoryedit/{id}', 'AdminAdvertiserController@adscategoryedit');    
     Route::get('/ads_category_delete/{id}', 'AdminAdvertiserController@ads_category_delete');    
     Route::post('/add_ads_category', 'AdminAdvertiserController@add_ads_category');    
@@ -506,7 +510,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/edit_ads_plan', 'AdminAdvertiserController@edit_ads_plan');    
     Route::post('/save_ads_status', 'AdminAdvertiserController@save_ads_status');  
     Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
-    // Route::post('advertiser/logout', 'AdminAdvertiserController@Logout'); 
+    Route::get('/list_total_cpc', 'AdminAdvertiserController@list_total_cpc'); 
+    Route::get('/list_total_cpv', 'AdminAdvertiserController@list_total_cpv'); 
     
     /*Ads Management ends*/
 

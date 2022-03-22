@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Advertiser as Advertiser;
+use App\Adsurge as Adsurge;
 use App\Adscategory as Adscategory;
 use App\Setting as Setting;
 use App\Adsplan as Adsplan;
@@ -12,6 +13,9 @@ use App\Advertiserplanhistory as Advertiserplanhistory;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use DB;
+use App\Adviews;
+use App\Adrevenue;
+use App\Adcampaign;
 
 
 class AdminAdvertiserController extends Controller
@@ -293,5 +297,122 @@ class AdminAdvertiserController extends Controller
     
     return response()->json([ 'success' => true ]);
   }
+
+  public function calendarEvent(Request $request)
+    {
+        if($request->ajax()) {  
+            $data = Adsurge::whereDate('start', '>=', $request->start)
+                ->whereDate('end',   '<=', $request->end)
+                ->get(['id', 'title', 'start', 'end']);
+            return response()->json($data);
+        }
+        return view('admin.ads_management.ad_surge');
+    }
+ 
+    public function calendarEventsAjax(Request $request)
+    {
+ 
+        switch ($request->type) {
+           case 'create':
+              $event = Adsurge::create([
+                  'title' => $request->title,
+                  'start' => $request->start,
+                  'end' => $request->end,
+              ]);
+ 
+              return response()->json($event);
+             break;
+  
+           case 'edit':
+              $event = Adsurge::find($request->id)->update([
+                  'title' => $request->title,
+                  'start' => $request->start,
+                  'end' => $request->end,
+              ]);
+ 
+              return response()->json($event);
+             break;
+  
+           case 'delete':
+              $event = Adsurge::find($request->id)->delete();
+  
+              return response()->json($event);
+             break;
+             
+           default:
+             # ...
+             break;
+        }
+    }
+
+    public function list_total_cpc() {
+      $data = [];
+      $data['settings'] = Setting::first();
+      
+      $data['cpc_lists'] = Adrevenue::orderBy('created_at', 'desc')->paginate(9);
+      return view('admin.ads_management.total_cpc',$data);
+        
+    }
+
+    public function list_total_cpv() {
+      $data = [];
+      $data['settings'] = Setting::first();
+      
+      $data['cpv_lists'] = Adviews::orderBy('created_at', 'desc')->paginate(9);
+      return view('admin.ads_management.total_cpv',$data);
+        
+    }
+
+    public function adCampaign(Request $request)
+    {
+        if($request->ajax()) {  
+            $data = Adcampaign::whereDate('start', '>=', $request->start)
+                ->whereDate('end',   '<=', $request->end)
+                ->get(['id','title','cost','no_of_ads','cpv_advertiser','cpv_admin','start','end']);
+            return response()->json($data);
+        }
+        return view('admin.ads_management.ad_campaign');
+    }
+ 
+    public function adCampaignAjax(Request $request)
+    {
+ 
+        switch ($request->type) {
+           case 'create':
+              $event = Adcampaign::create([
+                  'title' => $request->title,
+                  'cost' => $request->cost,
+                  'no_of_ads' => $request->no_of_ads,
+                  'cpv_advertiser' => $request->cpv_advertiser,
+                  'cpv_admin' => $request->cpv_admin,
+                  'start' => $request->start,
+                  'end' => $request->end,
+              ]);
+ 
+              return response()->json($event);
+             break;
+  
+           case 'edit':
+              $event = Adcampaign::find($request->id)->update([
+                  'title' => $request->title,
+                  'cost' => $request->cost,
+                  'start' => $request->start,
+                  'end' => $request->end,
+              ]);
+ 
+              return response()->json($event);
+             break;
+  
+           case 'delete':
+              $event = Adcampaign::find($request->id)->delete();
+  
+              return response()->json($event);
+             break;
+             
+           default:
+             # ...
+             break;
+        }
+    }
 
 }
