@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             AddPlansTableSeeder::class,
             SubtitleTableseeder::class,
             ThumbnailSettingSeeder::class,
-            AdSurgeSeeder::class,
+            AddSurgeTableSeeder::class,
             AdsCampaignSeeder::class,
             AdvertisementSeeder::class,
             AdvertiserPlanHistorySeeder::class,

@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use App\Adsurge;
 
-class AdSurgeSeeder extends Seeder
+class AddSurgeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -31,5 +32,5 @@ class AdSurgeSeeder extends Seeder
         ];
 
         DB::table('ads_surge')->insert($Adsurge);
-        }
+    }
 }
