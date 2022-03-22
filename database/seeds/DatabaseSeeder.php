@@ -43,6 +43,12 @@ class DatabaseSeeder extends Seeder
             AddPlansTableSeeder::class,
             SubtitleTableseeder::class,
             ThumbnailSettingSeeder::class,
+            AdSurgeSeeder::class,
+            AdsCampaignSeeder::class,
+            AdvertisementSeeder::class,
+            AdvertiserPlanHistorySeeder::class,
+            AdvertiserWalletSeeder::class,
+            FeaturedAddHistorySeeder::class,
         ]);
     
     }

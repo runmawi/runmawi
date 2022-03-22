@@ -24,7 +24,7 @@ class AddPlansTableSeeder extends Seeder
            ],
 
            [ 'plan_name' => 'Premium', 
-             'plan_amount'  => '120.00',
+             'plan_amount'  => '20.00',
              'no_of_ads'    =>  '3',
              'created_at' => Carbon::now(),
              'updated_at' => null,
