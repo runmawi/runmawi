@@ -25,7 +25,7 @@
                                  <th>Status</th>
                               </tr>
                            </thead>
-                        <form method="POST" action="{{url('admin/ThumbnailSetting_Store')}}" accept-charset="UTF-8">
+                        <form method="POST" action="{{url('admin/ThumbnailSetting_Store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
                         @csrf 
                            <tbody>
                                 <td> {{ '1'}} </td>
@@ -127,10 +127,10 @@
                                 <td> {{ 'Play button'}} </td>
                                 <td> 
                                     <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="play_button" type="checkbox" @if( $thumbnail_setting->play_button == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
+                                        @if(!empty($thumbnail_setting->play_button))
+                                            <img src="{{ URL::to('/') . '/assets/img/' . $thumbnail_setting->play_button }}" style="max-height: 10%; max-width: 10%" />
+                                        @endif
+                                        <input name="play_button" type="file"  id="play_button" class="form-control">
                                     </div>
                                 </td>
                             </tbody>

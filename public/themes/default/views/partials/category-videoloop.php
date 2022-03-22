@@ -96,7 +96,7 @@ if(isset($videos)) :
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                                         <h6> <?php echo __($top_category_video->title); ?> </h6>
                                     </a>
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                         <div class="badge badge-secondary p-1 mr-2"><?php echo $top_category_video->age_restrict.' '.'+' ?></div>
                                         <span class="text-white"><i class="fa fa-clock-o"></i>
                                             <?= gmdate('H:i:s', $top_category_video->duration); ?>
@@ -185,7 +185,7 @@ if(isset($videos)) :
                                         </a>
                                     <?php } ?>  
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
@@ -201,7 +201,7 @@ if(isset($videos)) :
                                     </div>
                                    
                                     <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                        <div class="movie-time d-flex align-items-center my-2">
+                                        <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->rating == 1) { ?>
                                             <!--Rating  -->
                                             <div class="badge badge-secondary p-1 mr-2">
@@ -233,7 +233,7 @@ if(isset($videos)) :
                                         </div>
                                     <?php } ?>
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
@@ -255,12 +255,9 @@ if(isset($videos)) :
                                   </div>
 
                                     <div class="hover-buttons">
-                                        <a type="button" class="text-white"
+                                        <a type="button" class="text-white d-flex"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                            Watch Now
-
+                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                         </a>
                                         <div class="d-flex">
                                         <!-- <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php // endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">

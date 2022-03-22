@@ -21,11 +21,27 @@
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>
                         </a>
+
+                        <!-- PPV price -->
+                        <div class="corner-text-wrapper">
+                                <div class="corner-text">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <?php  if(!empty($watchlater_video->ppv_price)){?>
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                    <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                    <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                    <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
                         <div class="hover-buttons d-flex">
 
                         </div>
@@ -109,23 +125,6 @@
 
 <?php endif; ?>
 
-
- <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $watchlater_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-<!-- </a> -->
-<!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
-<i style="" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php // else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
-</span>
-<div style="color:white;" id="<?= $watchlater_video->id ?>"><?php // if(@$watchlater_video->mywishlisted->user_id == $id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-</div> -->
-<!--
-<div>
-<button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
-<span class="text-center thumbarrow-sec">
-<img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-</span>
-</button>
-</div>
--->
 
 <style>
     .i {

@@ -282,9 +282,9 @@ class AdminSettingsController extends Controller
             $defaultImage_setting =  Setting::pluck('default_video_image')->first();
             $files = $input['default_video_image'];
             $format=$files->getClientOriginalExtension();
-            $filename ='default_image'.'.' .  $format;
-            Storage::delete($defaultImage_setting);    // Remove Image
-            Image::make($files)->save(base_path().'/public/uploads/images/'.$filename );
+            $filename ='default_image'.'.' . 'jpg';
+            unlink( public_path().'/uploads/images/'.$defaultImage_setting); // Remove Image
+            Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
             $settings->default_video_image = $filename;
       }
         
@@ -538,6 +538,20 @@ if($watermark != '') {
 
       $Thumbnail = ThumbnailSetting::first();
 
+      if( !empty($request->play_button )){
+          $files = $request->play_button;
+          $format=$files->getClientOriginalExtension();
+          $filename ='default_play_buttons.svg';
+          $file_Exist = base_path('assets/img/default_play_buttons.svg') ;
+          
+          if (file_exists($file_Exist) ){
+            unlink( base_path('assets/img/default_play_buttons.svg'));
+          }
+
+          $request->play_button->move(base_path('assets/img'), $filename);
+          $Thumbnail->play_button = $filename;
+      }
+       
         $Thumbnail->title              =  $request->has('title') ? 1 : 0 ?? 0; 
         $Thumbnail->age                =  $request->has('age') ? 1 : 0 ?? 0;   
         $Thumbnail->rating             =  $request->has('rating') ? 1 : 0 ?? 0;  
@@ -545,13 +559,10 @@ if($watermark != '') {
         $Thumbnail->duration           =  $request->has('duration') ? 1 : 0 ?? 0;  
         $Thumbnail->category           =  $request->has('category') ? 1 : 0 ?? 0;   
         $Thumbnail->featured           =  $request->has('featured') ? 1 : 0 ?? 0; 
-        $Thumbnail->play_button        =  $request->has('play_button') ? 1 : 0 ?? 0; 
         $Thumbnail->free_or_cost_label =  $request->has('free_or_cost_label') ? 1 : 0 ?? 0; 
         $Thumbnail->save();  
 
         return redirect()->route('ThumbnailSetting');
 
     }
-    
-
 }

@@ -30,18 +30,33 @@
                             <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4" />
                             </video>
+
+                            <!-- PPV price -->
+                            <div class="corner-text-wrapper">
+                                <div class="corner-text">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <?php  if(!empty($category_video->ppv_price)){?>
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
+                                    <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                    <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
+                                    <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
+                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </div>
+                            </div>
                         </a>
                     </div>
                     <div class="block-description">
                         <div class="hover-buttons">
-                            <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                            <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
                             <!--   <div class="">
                                         <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
                             <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                           </span>
                           <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
                               </div>
-                                       <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
+                                       <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
                             <!-- </a> -->
                         </div>
 

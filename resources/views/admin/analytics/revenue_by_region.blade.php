@@ -128,7 +128,7 @@ input[type="number"] {
                         <div class="table-view">
                            <table class="table table-striped table-bordered table movie_table " id="page" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>ID</th>
                                     <th>User Name</th>
                                      <th>Plan Name</th>

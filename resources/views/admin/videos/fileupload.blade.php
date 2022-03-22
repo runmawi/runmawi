@@ -393,11 +393,11 @@
                               </div>
                            </div>
                            <div class="row">
-                              <div class="col-sm-6 form-group">
+                              {{-- <div class="col-sm-6 form-group">
                                  <label class="m-0">Video Duration:</label>
                                  <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-                              </div>
-                              <div class="col-sm-6 form-group">
+                              </div> --}}
+                              <div class="col-sm-4 form-group">
                                  <label class="m-0">Year:</label>
                                  <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
                               </div>

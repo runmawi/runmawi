@@ -17,11 +17,27 @@
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>
                         </a>
+
+                        <!-- PPV price -->
+                        <div class="corner-text-wrapper">
+                            <div class="corner-text">
+                                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                <?php  if(!empty($watchlater_video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <?php } ?>
+                                <?php } ?>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
                     </div>
                 </div>
 

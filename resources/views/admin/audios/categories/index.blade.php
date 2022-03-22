@@ -10,8 +10,8 @@
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between">
+                  <div class="">
+                     <div class="iq-card-header d-flex justify-content-between mb-4 align-items-baseline">
                         <div class="iq-header-title">
                            <h4 class="card-title">Audio Category</h4>
                         </div>
@@ -30,12 +30,12 @@
                            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
                         </div>
                      </div>
-                     <div class="iq-card-body">
-                        <div class="table-view">
+                     <div class="">
+                        <div class="table-view p-0">
 
-                     	<table class="table-bordered" id="categorytbl" style="width:100%">
+                     	<table class="table-bordered iq-card" id="categorytbl" style="width:100%">
                      		<thead>
-                     			<tr class="text-center">
+                     			<tr class="text-center r1">
                      				<th><label>Image</label></th>
                      				<th><label>Name</label></th>
                      				<th><label>Action</label></th>

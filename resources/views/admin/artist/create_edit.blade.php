@@ -21,7 +21,7 @@
 
 <div id="content-page" class="content-page">
     <!-- This is where -->
-    <div class="iq-card">
+    <div class="">
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
         @if (Session::has('message'))
         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>

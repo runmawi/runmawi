@@ -11,7 +11,7 @@
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="iq-card">
+                  <div class="">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Moderators Users Lists</h4>
@@ -23,11 +23,11 @@
                     </div>
                         </div>
                      </div>
-                     <div class="iq-card-body table-responsive">
+                     <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table iq-card text-center" style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>Id</th>                            
                                     <th>Profile</th>
                                     <th>Moderator Name</th>
@@ -62,11 +62,11 @@
                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>                              
                                     <td colspan="2">
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Moderator ?')"  href="{{ URL::to('/admin/CPPModeratorsApproval') . '/' . $user->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
+                                          onclick="return confirm('Do you want to approve this Moderator ?')"  href="{{ URL::to('/admin/CPPModeratorsApproval') . '/' . $user->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Moderator  ?')" href="{{ URL::to('/admin/CPPModeratorsReject') . '/' . $user->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
+                                              onclick="return confirm('Do you want to reject this Moderator  ?')" href="{{ URL::to('/admin/CPPModeratorsReject') . '/' . $user->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
                                        </div>
                                     </td>
                                  </tr>
