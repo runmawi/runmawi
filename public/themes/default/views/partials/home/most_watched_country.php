@@ -111,8 +111,8 @@
                                   </div>
                                     
                                    <div class="hover-buttons">
-                                       <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
+                                       <a class="text-white d-flex" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
+                                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                     <div>
                                        <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->

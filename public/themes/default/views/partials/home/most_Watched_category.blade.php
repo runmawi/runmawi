@@ -156,9 +156,9 @@
                                    </div>
 
                                     <div class="hover-buttons">
-                                        <a type="button" class="text-white"
+                                        <a type="button" class="text-white d-flex"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                         </a>
                                     <div>
                               </div>
