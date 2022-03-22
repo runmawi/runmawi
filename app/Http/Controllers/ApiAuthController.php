@@ -1056,7 +1056,7 @@ public function verifyandupdatepassword(Request $request)
 
     $response = array(
       'status' => 'true',
-      'genre_movies' => $myData
+      'live_streams' => $myData
     );
     return response()->json($response, 200);
   
