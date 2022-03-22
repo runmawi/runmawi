@@ -1,7 +1,6 @@
 @extends('admin.master')
 
 @section('css')
-	<link rel="stylesheet" href="{{ Url::to('/application/assets/admin/css/sweetalert.css') }}">
 @endsection
 
 @section('content')
@@ -9,7 +8,6 @@
 	<div class="admin-section-title">
 		<div class="row">
 			<div class="col-md-8">
-				<!-- <h3><i class="entypo-newspaper"></i> Manage Genre</h3><a href="{{ URL::to('admin/genre-create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Genre</a> -->
 			</div>
 		</div>
 	</div>
@@ -32,7 +30,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Laravel File Manager Tutorial Example - ItSolutionStuff.Com</h2>
+        <!-- <h2>Laravel File Manager Tutorial Example - ItSolutionStuff.Com</h2> -->
         <div class="row">
             <div class="col-md-12" id="fm-main-block">
                 <div id="fm"></div>
