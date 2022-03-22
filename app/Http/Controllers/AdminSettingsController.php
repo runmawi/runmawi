@@ -80,6 +80,13 @@ class AdminSettingsController extends Controller
 		$settings->free_registration = $request['free_registration'];
 		$settings->activation_email = $request->get('activation_email');
     $settings->ads_on_videos = $request['ads_on_videos'];
+    $settings->featured_pre_ad = $request['featured_pre_ad'];
+    $settings->featured_mid_ad = $request['featured_mid_ad'];
+    $settings->featured_post_ad = $request['featured_post_ad'];
+    $settings->cpc_advertiser = $request['cpc_advertiser'];
+    $settings->cpc_admin = $request['cpc_admin'];
+    $settings->cpv_advertiser = $request['cpv_advertiser'];
+    $settings->cpv_admin = $request['cpv_admin'];
 		$settings->premium_upgrade = $request['premium_upgrade'];
 		$settings->access_free = $request['access_free'];
 		$settings->facebook_page_id = $request['facebook_page_id'];
