@@ -1322,6 +1322,9 @@ class AdminUsersController extends Controller
     $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
 
         $registered = User::where('role','registered')->get();
+        $subscription = User::where('role','subscriber')->get();
+        $admin = User::where('role','admin')->get();
+
         // dd($registered);
     $data = array(
         'today_log' => $today_log,
