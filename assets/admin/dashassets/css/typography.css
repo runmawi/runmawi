@@ -134,8 +134,8 @@ border-radius: 5px;
 .page-link { color: /*var(--iq-primary)*/#000000; border-color: /*var(--iq-primary)*/#000000; }
 .page-link:hover { color: var(--iq-primary-hover); border-color: var(--iq-primary-hover); }
 .page-item.disabled .page-link { border-color: var(--iq-primary); }
-.form-control { /*background-color:#F2F5FA; /*var(--iq-body-bg);*/ border: 1px solid transparent; height: 45px; position: relative; color:#000000!important; font-size: 16px;width: 100%; -webkit-border-radius: 6px; 
-height: 45px; border-radius: 4px; margin-bottom: 20px;}
+.form-control { /*background-color:#F2F5FA; /*var(--iq-body-bg);*/ border: 1px solid transparent; height: 45px; position: relative; color:#000000!important; font-size: 14px;width: 100%; -webkit-border-radius: 6px; 
+height: 45px; border-radius: 4px; margin-bottom: 20px;padding-left: 10px;}
 .form-control:focus { color: var(--iq-dark1); border-color: transparent; box-shadow: none;background-color:#F2F5FA;}
 .progress-bar { background-color: var(--iq-primary); }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle { background-color: var(--iq-primary-hover); border-color: var(--iq-primary-hover); }
