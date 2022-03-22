@@ -12,13 +12,26 @@
     .p1{
         font-size: 12px;
     }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
+   
 </style>
 @section('css')
 	<style type="text/css">
 	.make-switch{
 		z-index:2;
 	}
-        
+         
       
 	</style>
 
@@ -35,7 +48,19 @@
 <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+    <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
+    <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
+    <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
+    <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
+   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+    <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+    <div class="mt-4">
+    <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
+     <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
+    <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
+    <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
+    </div>
+         <div class="container-fluid mt-5">
               <div class="iq-card">
 
 <div id="admin-container">
@@ -136,9 +161,9 @@
                      </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table id="template" class="table table-striped table-bordered table movie_table text-center " style="width:100%">
+                           <table id="template" class="table table-striped table-bordered table movie_table " style="width:100%">
                               <thead>
-                                 <tr class="r1">
+                                 <tr>
                                     <th>ID</th>
                                     <th>Template</th>
                                     <th>Subject</th>
@@ -151,14 +176,14 @@
                                  <td> <p class="mb-0">{{ $template->id }}</p></td>
                                     <td>
                                        <div class="media align-items-center">
-                                          <div class="media-body text-white  ml-3">
+                                          <div class="media-body text-white text-left ml-3">
                                              <p class="mb-0">{{ $template->template_type }}</p>
                                           </div>
                                        </div>
                                     </td>
                                     <td>{{ $template->heading }}</td>
                                     <td>
-                                       <div class=" align-items-center list-user-action">
+                                       <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('admin/template/view') . '/' . $template->id }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

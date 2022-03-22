@@ -104,9 +104,12 @@
                     </span>
                     <?php } ?>
                     
-                    <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                        <h6 class="epi-name text-white mb-0"><i class="fa fa-play" aria-hidden="true"></i> Live Now</h6>
-                    </a>
+                    <div class="hover-buttons">
+                        <a class="text-white d-flex" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <img class="ply" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                Live Now
+                        </a>
+                    </div>
                 </div>
             </a>
         </li>

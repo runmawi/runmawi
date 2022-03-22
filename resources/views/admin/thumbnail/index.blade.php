@@ -8,24 +8,24 @@
     <div class="container-fluid">
        <div class="row">
           <div class="col-sm-12">
-             <div class="iq-card">
+             <div class="">
                 <div class="iq-card-header d-flex justify-content-between">
                    <div class="iq-header-title">
                       <h4 class="card-title">Thumbnail Setting</h4>
                    </div>
                 </div>
 
-                  <div class="iq-card-body table-responsive">
+                  <div class="iq-card-body table-responsive p-0">
                      <div class="table-view">
-                        <table class="table table-striped table-bordered table movie_table " style="width:100%" id="Thumbnail">
+                        <table class="table table-striped table-bordered table movie_table iq-card" style="width:100%" id="Thumbnail">
                            <thead>
-                              <tr>
+                              <tr class="r1">
                                  <th>S.No</th>
                                  <th>Name</th>
                                  <th>Status</th>
                               </tr>
                            </thead>
-                        <form method="POST" action="{{url('admin/ThumbnailSetting_Store')}}" accept-charset="UTF-8">
+                        <form method="POST" action="{{url('admin/ThumbnailSetting_Store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
                         @csrf 
                            <tbody>
                                 <td> {{ '1'}} </td>
@@ -126,11 +126,14 @@
                                 <td> {{ '8'}} </td>
                                 <td> {{ 'Play button'}} </td>
                                 <td> 
-                                    <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="play_button" type="checkbox" @if( $thumbnail_setting->play_button == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <div class="mt-1 d-flex justify-content-around align-items-baseline">
+                                        <div>
+                                        @if(!empty($thumbnail_setting->play_button))
+                                            <img src="{{ URL::to('/') . '/assets/img/' . $thumbnail_setting->play_button }}" style="max-height: 10%; max-width: 10%" />
+                                        @endif
+                                            </div>
+                                        <div>
+                                        <input name="play_button" type="file"  id="play_button" class="form-control"></div>
                                     </div>
                                 </td>
                             </tbody>

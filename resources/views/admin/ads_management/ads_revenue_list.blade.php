@@ -33,7 +33,7 @@
               <input type="text" name="month" id="month" class="form-control">
            </div>
         </div> -->
-        <div class=" col-md-10 col-md-offset-1 d-flex mt-2 align-items-center">
+        <div class=" col-md-10 col-md-offset-1">
              <div class="form-group col-md-3">
               <label for="month">Total Revenue</label>
            </div>
@@ -45,7 +45,7 @@
                   <div class="table-view">
                      <table class="table table-striped table-bordered table movie_table " style="width:100%">
                         <thead>
-                           <tr class="r1">
+                           <tr>
                               <th>#</th>
                               <th>Advertiser Company Name</th>
                               <th>Plan Name</th>
