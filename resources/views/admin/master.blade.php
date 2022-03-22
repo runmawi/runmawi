@@ -205,6 +205,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+
                     <div class="mnu">
                 
                    <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Language</p>
@@ -433,6 +435,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+
                     <div class="mnu">
                 
                    <p class="lnk" >Language</p>
@@ -657,6 +661,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+
                     <div >
                 
                    <p class="lnk" >Language</p>
@@ -879,6 +885,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
                     <div class="mnu">
                 
                    <p class="lnk" >Language</p>
