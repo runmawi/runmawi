@@ -126,11 +126,14 @@
                                 <td> {{ '8'}} </td>
                                 <td> {{ 'Play button'}} </td>
                                 <td> 
-                                    <div class="mt-1">
+                                    <div class="mt-1 d-flex justify-content-around align-items-baseline">
+                                        <div>
                                         @if(!empty($thumbnail_setting->play_button))
                                             <img src="{{ URL::to('/') . '/assets/img/' . $thumbnail_setting->play_button }}" style="max-height: 10%; max-width: 10%" />
                                         @endif
-                                        <input name="play_button" type="file"  id="play_button" class="form-control">
+                                            </div>
+                                        <div>
+                                        <input name="play_button" type="file"  id="play_button" class="form-control"></div>
                                     </div>
                                 </td>
                             </tbody>
