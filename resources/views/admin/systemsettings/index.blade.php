@@ -12,6 +12,18 @@
     .p1{
         font-size: 12px;
     }
+     .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 @section('css')
 	<style type="text/css">
@@ -28,7 +40,19 @@
 
 @section('content')
 <div id="content-page" class="content-page">
-            <div class="container-fluid">
+     <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
+    <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
+    <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
+    <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
+   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+    <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+    <div class="mt-4">
+    <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
+     <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
+    <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
+    <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
+    </div>
+            <div class="container-fluid mt-5 p-0">
 <div class="iq-card">
 <div id="admin-container">
 <!-- This is where -->

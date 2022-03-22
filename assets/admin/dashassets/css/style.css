@@ -1240,3 +1240,6 @@ select{
     background: #333;
     background: #0993d2;
 }
+..custom-select{
+    margin-top: 13px;
+}
