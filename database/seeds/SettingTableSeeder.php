@@ -59,7 +59,7 @@ class SettingTableSeeder extends Seeder
                 'notification_key' => 'AAAAHmXXpDg:APA91bEBdjXcOG9V8ukY_If7zH9k4OlU4f5A-b...' ,
                 'videos_per_page' => '3' ,
                 'posts_per_page' => '12' ,
-                'free_registration' => '0' ,
+                'free_registration' => '1' ,
                 'activation_email' => '1' ,
                 'premium_upgrade' => '1' ,
                 'access_free' => '0' ,
