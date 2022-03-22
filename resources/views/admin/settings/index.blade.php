@@ -623,15 +623,59 @@
                 <div class="row">
                     <div class="col-md-4 align-center">
                         <div class="row">
+                            
                             <p class="col-md-8 p1">Enable Advertisement on Videos:</p>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-12">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
                             </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Pre Roll:</label>
+                                <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"
+                                placeholder="Featured Ad Pre Roll"
+                                value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Mid Roll:</label>
+                                <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
+                                placeholder="Featured Ad Mid Roll"
+                                value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Post Roll:</label>
+                                <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control"
+                                placeholder="Featured Ad Post Roll"
+                                value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per Click Advertiser:</label>
+                                <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
+                                placeholder="Cost Per Click Advertiser"
+                                value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per Click Admin:</label>
+                                <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
+                                placeholder="Cost Per Click Admin"
+                                value="@if(!empty($settings->cpc_admin)){{ $settings->cpc_admin }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per View Advertiser:</label>
+                                <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control"
+                                placeholder="Cost Per View Advertiser"
+                                value="@if(!empty($settings->cpv_advertiser)){{ $settings->cpv_advertiser }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per View Admin:</label>
+                                <input id="cpv_admin" type="text" name="cpv_admin" class="form-control"
+                                placeholder="Cost Per View Admin"
+                                value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
