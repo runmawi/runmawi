@@ -434,7 +434,34 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
     return true;
 }
 
-function get_adurl($ad_id){
-    $adsurl = App\Advertisement::where('id',$ad_id)->first()->ads_path;
-    return  $adsurl; 
+function get_ad($ad_id,$field){
+    $ads = App\Advertisement::where('id',$ad_id)->first()->$field;
+    return  $ads; 
+}
+
+function get_advertiser($advertiser_id,$field){
+    $ads = App\Advertiser::where('id',$advertiser_id)->first()->$field;
+    return  $ads; 
+}
+
+
+function get_revenue($ad_id){
+    $revenue_total = App\Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
+    return  $revenue_total; 
+}
+
+function get_cpv($ad_id){
+    $get_cpv = App\Adviews::where('ad_id',$ad_id)->sum('advertiser_share');
+    return  $get_cpv; 
+}
+
+function get_views($ad_id){
+    $total_views = App\Adviews::where('ad_id',$ad_id)->sum('views_count');
+    return  $total_views; 
+}
+
+
+function get_video($vid,$field){
+    $getdata = App\Video::where('id',$vid)->first()->$field;
+    return  $getdata; 
 }

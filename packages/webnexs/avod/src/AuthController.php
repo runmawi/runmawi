@@ -12,6 +12,11 @@ Use App\Advertisement;
 Use App\Advertiserplanhistory;
 Use App\Adscategory;
 Use App\Setting;
+use App\FeaturedadHistory;
+use App\Advertiserwallet;
+use App\Adcampaign;
+use App\Adviews;
+use App\Adrevenue;
 Use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -109,7 +114,22 @@ class AuthController extends Controller
             return view('avod::chooseplan',$data);
 
         }elseif(!empty(session('advertiser_id')) && $activeplan > 0){
-            return view('avod::dashboard',$data);
+            $adslist = Advertisement::where('advertiser_id',session('advertiser_id'))->pluck('id')->toArray();
+
+            $cpc = [];
+            foreach ($adslist as $key => $ad_id) {
+                $cpc[] = Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
+                $ads[] = Advertisement::where('id',$ad_id)->first()->ads_name;
+            }
+
+            $ads1 = $cpv = [];
+            foreach ($adslist as $key => $ad_id) {
+                $cpv[] = Adviews::where('ad_id',$ad_id)->sum('advertiser_share');
+                $ads1[] = Advertisement::where('id',$ad_id)->first()->ads_name;
+            }
+
+            return view('avod::dashboard')->with('ads',json_encode($ads,JSON_NUMERIC_CHECK))->with('cpc',json_encode($cpc,JSON_NUMERIC_CHECK))->with('ads1',json_encode($ads1,JSON_NUMERIC_CHECK))->with('cpv',json_encode($cpv,JSON_NUMERIC_CHECK));
+
         }
         return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
@@ -235,6 +255,10 @@ class AuthController extends Controller
         $Ads->ads_category = $request->ads_category;
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
+        $Ads->age = $request->age;
+        $Ads->gender = $request->gender;
+        $Ads->household_income = $request->household_income;
+        $Ads->location = $request->location;
         $Ads->save();
         $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
         $getdata->no_of_uploads += 1;
@@ -403,7 +427,228 @@ class AuthController extends Controller
           return redirect('advertiser/login')->with('success', 'Your password has been changed!');
       }
 
+      public function FeaturedAds()
+      {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['advertisements'] = Advertisement::where('advertiser_id',session('advertiser_id'))->where('featured',1)->get();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
 
+        return view('avod::featured_ads',$data);
+      }
+
+      public function UploadFeaturedAd() {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['ads_category'] = Adscategory::all();
+        $user_id = session('advertiser_id');
+        $user = Advertiser::find($user_id);
+        $data['intent'] = $user->createSetupIntent();
+        $data['user'] = $user;
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+
+        return view('avod::upload_featured_ad',$data);
+    }
+
+    public function buyfeaturedad_stripe(Request $request) {
+        $data = [];
+        $data['settings'] = Setting::first();
+        if(!empty(session('advertiser_id'))){
+            
+                $user_id = session('advertiser_id');
+                $user = Advertiser::find($user_id);
+                $paymentMethod = $request->get('py_id');
+                $plan_amount = $request->get('price');
+                try {
+
+                    $user->createOrGetStripeCustomer();
+                    $user->updateDefaultPaymentMethod($paymentMethod);
+                    $charge = $user->charge($plan_amount * 100, $paymentMethod);  
+                    
+                    $planhistory = new FeaturedadHistory();
+                    $planhistory->advertiser_id = session('advertiser_id');
+                    $planhistory->payment_mode = 'stripe';
+                    $planhistory->transaction_id = $charge->id;
+                    $planhistory->cost = $plan_amount;
+                    $planhistory->save();
+
+                    $Ads = new Advertisement;
+                    $Ads->advertiser_id = session('advertiser_id');
+                    $Ads->ads_name = $request->ads_name;
+                    $Ads->ads_category = $request->ads_category;
+                    $Ads->featured = 1;
+                    $Ads->ads_position = $request->ads_position;
+                    $Ads->ads_path = $request->ads_path;
+                    $Ads->age = $request->age;
+                    $Ads->gender = $request->gender;
+                    $Ads->household_income = $request->household_income;
+                    $Ads->location = $request->location;
+                    $Ads->save();
+
+                    echo "success";  exit;    
+                } catch (IncompletePayment $exception) {
+                    return redirect()->route(
+                        'cashier.payment',
+                        [$exception->payment->id, 'redirect' => route('advertiser')]
+                    );
+                }
+            
+        }
+        echo "error";exit; 
+    }
+
+
+    public function featured_ad_history() {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        $data['list'] = FeaturedadHistory::where('advertiser_id',session('advertiser_id'))->get();
+        return view('avod::featured_ad_history',$data);
+    }
+
+
+    public function list_total_cpc() {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        if(!empty(session('advertiser_id')) ){
+            $data['cpc_lists'] = Adrevenue::where('advertiser_id',session('advertiser_id'))->get();
+            return view('avod::total_cpc',$data);
+        }
+        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+    }
+
+    public function list_total_cpv() {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        if(!empty(session('advertiser_id')) ){
+            $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
+            return view('avod::total_cpv',$data);
+        }
+        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+    }
+
+    public function ads_campaign() {
+        $data = [];
+        $data['settings'] = Setting::first();
+        $data['campaigns'] = Adcampaign::all();
+        $user_id = session('advertiser_id');
+        $user = Advertiser::find($user_id);
+        $data['intent'] = $user->createSetupIntent();
+        $data['user'] = $user;
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+
+        return view('avod::advertiser_wallet',$data);
+    }
+
+    public function buycampaign_stripe(Request $request) {
+        $data = [];
+        $data['settings'] = Setting::first();
+        if(!empty(session('advertiser_id'))){
+            
+                $user_id = session('advertiser_id');
+                $user = Advertiser::find($user_id);
+                $paymentMethod = $request->get('py_id');
+                $amount = $request->get('amount');
+                $campaign_id = $request->get('campaign_id');
+                try {
+
+                    $user->createOrGetStripeCustomer();
+                    $user->updateDefaultPaymentMethod($paymentMethod);
+                    $charge = $user->charge($amount * 100, $paymentMethod);  
+                    
+                    $walletdata = new Advertiserwallet();
+                    $walletdata->advertiser_id = session('advertiser_id');
+                    $walletdata->payment_mode = 'stripe';
+                    $walletdata->status = 1;
+                    $walletdata->transaction_id = $charge->id;
+                    $walletdata->amount = $amount;
+                    $walletdata->campaign_id = $campaign_id;
+                    $walletdata->save();
+
+                    echo "success";  exit;    
+                } catch (IncompletePayment $exception) {
+                    return redirect()->route(
+                        'cashier.payment',
+                        [$exception->payment->id, 'redirect' => route('ads_campaign')]
+                    );
+                }
+            
+        }
+        echo "error";exit; 
+    }
+
+
+    public function buyrz_adcampaign(Request $request) {
+        $input = $request->all();
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $payment = $api->payment->fetch($input['razorpay_payment_id']);
+  
+        if(count($input)  && !empty($input['razorpay_payment_id'])) {
+            try {
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
+                $walletdata = new Advertiserwallet();
+                $walletdata->advertiser_id = session('advertiser_id');
+                $walletdata->payment_mode = 'razorpay';
+                $walletdata->status = 1;
+                $walletdata->transaction_id = $input['razorpay_payment_id'];
+                $walletdata->amount = $payment['amount'];
+                $walletdata->campaign_id = $campaign_id;
+                $walletdata->save();
+
+                return Redirect::to("advertiser/ads_campaign/")->withSuccess('success','Payment Successful');
+                
+            } catch (Exception $e) {
+                return  $e->getMessage();
+                return redirect()->back()->withError('error',$e->getMessage());
+            }
+        }
+          
+        return Redirect::to("advertiser/ads_campaign/")->withError('error','Please try again');
+
+    }
+
+    public function buyrz_ad(Request $request) {
+        $input = $request->all();
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $payment = $api->payment->fetch($input['razorpay_payment_id']);
+
+        if(count($input)  && !empty($input['razorpay_payment_id'])) {
+            try {
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
+                
+                $planhistory = new FeaturedadHistory();
+                $planhistory->advertiser_id = session('advertiser_id');
+                $planhistory->payment_mode = 'razorpay';
+                $planhistory->transaction_id = $input['razorpay_payment_id'];
+                $planhistory->cost = $payment['amount']/100;
+                $planhistory->save();
+
+                $Ads = new Advertisement;
+                $Ads->advertiser_id = session('advertiser_id');
+                $Ads->ads_name = $request->ads_name;
+                $Ads->ads_category = $request->ads_category;
+                $Ads->featured = 1;
+                $Ads->ads_position = $request->ads_position;
+                $Ads->ads_path = $request->ads_path;
+                $Ads->age = $request->age;
+                $Ads->gender = $request->gender;
+                $Ads->household_income = $request->household_income;
+                $Ads->location = $request->location;
+                $Ads->save();
+                return Redirect::to("advertiser/featured_ads/")->withSuccess('success','Payment Successful'); 
+                
+            } catch (Exception $e) {
+               return redirect()->route(
+                'cashier.payment',
+                [$e->payment->id, 'redirect' => route('advertiser')]
+            );
+           }
+       }
+
+       echo "error";exit; 
+   }
 
 }
 ?>

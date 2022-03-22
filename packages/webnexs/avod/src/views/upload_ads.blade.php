@@ -1,201 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flicknexs Advertiser Panel</title>
-  <meta name="description" content= "" />
-  <meta name="author" content="webnexs" />
-
-   <!-- Favicon -->
-    <link rel="shortcut icon" href="" />
-   <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
-    
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-
-   <!--datatable CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
-   <!-- Typography CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/typography.css';?>" />
-   <!-- Style CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/style.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/vod.css';?>" />
-   <!-- Responsive CSS -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
-
-  <!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
-
-  <!-- HTML5 shim and Respond.js') }} IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
-  <![endif]-->
-<style>
-
-    .top-left-logo img {
-        opacity: 0.9;
-        overflow: hidden;
-    }
-    span{
-        font-weight: normal!important;
-    }
-    .header-logo
-
-    {
-       padding-left: 25px;
-        
-    }
-    hr {
-        border-top: 1px solid #e2e2e22e!important;
-    }
-    
-</style>
-
-</head>
-<body >
-
-
-
-                     <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-  <!-- Sidebar-->
-      <div class="iq-sidebar">
-         <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
-            <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
-               <div class="logo-title">
-                  <span class="text-primary text-uppercase"></span>
-               </div>
-            </a>
-            <div class="iq-menu-bt-sidebar">
-               <div class="iq-menu-bt align-self-center">
-                  <div class="wrapper-menu">
-                     <div class="main-circle"><i class="las la-bars"></i></div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div id="sidebar-scrollbar">
-            <nav class="iq-sidebar-menu">
-               <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                   <div class="bod"></div>
-                   
-                    <div>
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
-                    </div>
-                    <li><a href="<?php echo URL::to('advertiser') ?>/ads-list" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Advertisements</span></a></li>
-
-                    <li><a href="<?php echo URL::to('advertiser') ?>/upload_ads" class="iq-waves-effect"><i class="la la-sliders"></i><span> Upload Ads</span></a></li>
-
-                    <li><a href="<?php echo URL::to('advertiser') ?>/plan_history" class="iq-waves-effect"><i class="la la-sliders"></i><span> Plans History</span></a></li>
-
-                    <li><a href="<?php echo URL::to('advertiser') ?>/logout" class="iq-waves-effect"><i class="la la-sliders"></i><span> Logout</span></a></li>
-
-                    <div >
-                 
-               </ul>
-            </nav>
-         </div>
-      </div>
-
-      <div class="main-content">
-        
-        <div class="row">
-        
-          <!-- TOP Nav Bar -->
-          <div class="iq-top-navbar">
-             <div class="iq-navbar-custom">
-                <nav class="navbar navbar-expand-lg navbar-light p-0">
-                   <div class="iq-menu-bt d-flex align-items-center">
-                      <div class="wrapper-menu">
-                         <div class="main-circle"><i class="las la-bars"></i></div>
-                      </div>
-                      <div class="iq-navbar-logo d-flex justify-content-between">
-                         <a href="<?php echo URL::to('home') ?>" class="header-logo">
-                            <div class="logo-title">
-                               <span class="text-primary text-uppercase"></span>
-                            </div>
-                         </a>
-                      </div>
-                   </div>
-                   <div class="iq-search-bar ml-auto">
-                      <form action="#" class="searchbox">
-                        <!-- <input type="text" class="text search-input" placeholder="Search Here...">
-                         <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
-                      </form>
-                   </div>
-                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                      <i class="ri-menu-3-line"></i>
-                   </button>
-                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav ml-auto navbar-list">
-                         <li class="nav-item nav-icon search-content">
-                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                               <i class="ri-search-line"></i>
-                            </a>
-                            <form action="#" class="search-box p-0">
-                               <input type="text" class="text search-input" placeholder="Type here to search...">
-                               <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                            </form>
-                         </li>
-                         <li class="line-height pt-3">
-                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                                <?php if(Auth::guest()): ?>
-                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                          <?php else: ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                          <?php endif; ?>
-                            </a>
-                            <div class="iq-sub-dropdown iq-user-dropdown">
-                               <div class="iq-card shadow-none m-0">
-                                  <div class="iq-card-body p-0 ">
-                                     <div class="bg-primary p-3">
-                                        <h5 class="mb-0 text-white line-height">Hello  </h5>
-                                        <span class="text-white font-size-12">Available</span>
-                                     </div>
-                                     <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
-                                        <div class="media align-items-center">
-                                           <div class="rounded iq-card-icon iq-bg-primary">
-                                              <i class="ri-file-user-line"></i>
-                                           </div>
-                                           <div class="media-body ml-3">
-                                              <h6 class="mb-0 ">My Profile</h6>
-                                              <p class="mb-0 font-size-12">View personal profile details.</p>
-                                           </div>
-                                        </div>
-                                     </a>
-                                     <a href="{{ URL::to('/myprofile') }}" class="iq-sub-card iq-bg-primary-hover">
-                                        <div class="media align-items-center">
-                                           <div class="rounded iq-card-icon iq-bg-primary">
-                                              <i class="ri-profile-line"></i>
-                                           </div>
-                                           <div class="media-body ml-3">
-                                              <h6 class="mb-0 ">Edit Profile</h6>
-                                              <p class="mb-0 font-size-12">Modify your personal details.</p>
-                                           </div>
-                                        </div>
-                                     </a>
-                                     <div class="d-inline-block w-100 text-center p-3">
-                                        <a class="bg-primary iq-sign-btn" href="{{ URL::to('advertiser/logout') }}" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </li>
-                      </ul>
-                   </div>
-                </nav>
-             </div>
-          </div>
-          <!-- TOP Nav Bar END -->
-        
-        </div>
-        
-        <!--<hr />-->
+@include('avod::ads_header')
     
         <div id="main-admin-content">
 
@@ -206,11 +9,45 @@
                   <div class="iq-card-body">
                      <h2 class="text-center">Upload Advertisement</h2>
                      <div id="nestable" class="nested-list dd with-margins">
-                        <div class="panel panel-default ">
-
-                           <form  accept-charset="UTF-8" action="{{ URL::to('advertiser/store_ads') }}" method="post" enctype="multipart/form-data">
-                            <div class="row">
-                              <div class="col-md-6">
+                       
+                     <!-- MultiStep Form -->
+        
+                <div class="row">
+                    <div class="col-md-12 mx-0">
+                        <form id="msform" accept-charset="UTF-8" action="{{ URL::to('advertiser/store_ads') }}" method="post" enctype="multipart/form-data">
+                            <!-- progressbar -->
+                            <ul id="progressbar">
+                                <li class="active" id="account"><strong>General</strong></li>
+                                <li id="personal"><strong>Ads</strong></li>
+                                <li id="payment"><strong>Location</strong></li>
+                               
+                            </ul> <!-- fieldsets -->
+                            <fieldset>
+                                <div class="form-card">
+                                    <h2 class="fs-title">General Information</h2> 
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label>Age:</label>
+                                    <input type="text" id="age" name="age" required class="form-control">
+                                </div>
+                                <div class="form-group">
+                                   <label>Gender:</label>
+                                    <select class="form-control" name="gender">
+                                      <option value="male">Male</option>
+                                      <option value="female">Female</option>
+                                      <option value="kids">Kids</option>
+                                   </select>
+                                </div>
+                                <div class="form-group">
+                                   <label>Household Income:</label>
+                                    <input type="text" id="household_income" name="household_income" required class="form-control">
+                                </div>
+                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-card">
+                                    <h2 class="fs-title">Ads Details</h2> 
+                                    <div class="col-md-6">
                                  <div class="form-group">
                                    <label>Ads Name:</label>
                                     <input type="text" id="ads_name" name="ads_name" required class="form-control">
@@ -237,15 +74,24 @@
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
 
                               </div>
-                              <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                          <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Save" />
-                       </div>
-                    </form>
-                 </div>
-                     </div>
+                                </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> <input type="button" name="next" class="next action-button" value="Next Step" />
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-card">
+                                    <h2 class="fs-title">Location Details</h2>
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label>Location:</label>
+                                    <input type="text" id="location" name="location" required class="form-control">
+                                </div>
+                                </div>
+                                </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> <input  type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" />
+                            </fieldset>
+                           
+                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        </form>
+                    </div>
+    </div>
                   </div>
                </div>
                </div>
@@ -323,7 +169,74 @@
     toastr.info("<?php echo session('info'); ?>");
 
 <?php } ?>
+$(document).ready(function(){
 
+var current_fs, next_fs, previous_fs; //fieldsets
+var opacity;
+
+$(".next").click(function(){
+
+current_fs = $(this).parent();
+next_fs = $(this).parent().next();
+
+//Add Class Active
+$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+//show the next fieldset
+next_fs.show();
+//hide the current fieldset with style
+current_fs.animate({opacity: 0}, {
+step: function(now) {
+// for making fielset appear animation
+opacity = 1 - now;
+
+current_fs.css({
+'display': 'none',
+'position': 'relative'
+});
+next_fs.css({'opacity': opacity});
+},
+duration: 600
+});
+});
+
+$(".previous").click(function(){
+
+current_fs = $(this).parent();
+previous_fs = $(this).parent().prev();
+
+//Remove class active
+$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+//show the previous fieldset
+previous_fs.show();
+
+//hide the current fieldset with style
+current_fs.animate({opacity: 0}, {
+step: function(now) {
+// for making fielset appear animation
+opacity = 1 - now;
+
+current_fs.css({
+'display': 'none',
+'position': 'relative'
+});
+previous_fs.css({'opacity': opacity});
+},
+duration: 600
+});
+});
+
+$('.radio-group .radio').click(function(){
+$(this).parent().find('.radio').removeClass('selected');
+$(this).addClass('selected');
+});
+
+$(".submit").click(function(){
+return false;
+})
+
+});
 </script>
   
 </body>

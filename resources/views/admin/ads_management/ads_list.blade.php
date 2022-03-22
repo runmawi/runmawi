@@ -10,21 +10,21 @@
    <div class="container-fluid">
       <div class="row">
          <div class="col-sm-12">
-            <div class="">
-               <div class="iq-card-header d-flex justify-content-between mb-4">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
                      <h4 class="card-title">Advertisement List</h4>
                   </div>
                  
                </div>
-               <div class="iq-card-body table-responsive p-0">
+               <div class="iq-card-body table-responsive">
                   <input type="hidden" id="save_url" value="{{URL::to('/')}}/admin/save_ads_status">
                   <input type="hidden" id="token" value="{{csrf_token()}}">
 
-                  <div class="table-view ">
-                     <table class="table table-striped table-bordered table movie_table iq-card" style="width:100%">
+                  <div class="table-view">
+                     <table class="table table-striped table-bordered table movie_table " style="width:100%">
                         <thead>
-                           <tr class="r1">
+                           <tr>
                               <th><label>#</label></th>
                               <th><label>Ads Name</label></th>
                               <th><label>Ads Category</label></th>
@@ -50,7 +50,7 @@
                                    <button class="btn btn-danger status_change" value="2" data-id="{{$advertisement->id}}">DisApprove</button>
                                 @endif</td>
                                  <td>{!! date('d/M/y', strtotime($advertisement->created_at)) !!}</td>
-                                 <td class=" align-items-center list-user-action">								
+                                 <td class="d-flex align-items-center list-user-action">								
 							            <a href="{{ URL::to('admin/advertisement/edit') . '/' . $advertisement->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
                                  <a href="{{ URL::to('admin/advertisement/delete') . '/' . $advertisement->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i class="ri-delete-bin-line"></i></a>
                                  </td>

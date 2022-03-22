@@ -10,8 +10,8 @@
    <div class="container-fluid">
       <div class="row">
          <div class="col-sm-12">
-            <div class="">
-               <div class="iq-card-header d-flex justify-content-between align-items-center mb-4">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
                      <h4 class="card-title">Ads Plans List</h4>
                   </div>
@@ -19,11 +19,11 @@
                      <a data-toggle="modal" data-target='#edit_modal' class="btn btn-primary create_category">Create Ads Plan</a>
                   </div>
                </div>
-               <div class="iq-card-body table-responsive p-0">
+               <div class="iq-card-body table-responsive">
                   <div class="table-view">
-                     <table class="table table-striped table-bordered table movie_table iq-card" style="width:100%">
+                     <table class="table table-striped table-bordered table movie_table " style="width:100%">
                         <thead>
-                           <tr class="r1">
+                           <tr>
                               <th>#</th>
                               <th>Plan Name</th>
                               <th>Plan Amount</th>
