@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Adsurge;
 
-class AddSurgeTableSeeder extends Seeder
+class AdSurgeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,6 @@ class AddSurgeTableSeeder extends Seeder
     {
         DB::table('ads_surge')->truncate();
 
-        
         $Adsurge = [
             [  'title'      => '9', 
                'start'      => '2022-03-03 00:00:00',
