@@ -42,7 +42,7 @@
                                         </a>
                                     <?php } ?> 
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
                                       <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_genre->age_restrict.' '.'+' ?></div>
@@ -58,7 +58,7 @@
                                     </div>
 
                                     <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                        <div class="movie-time d-flex align-items-center my-2">
+                                        <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->rating == 1) { ?>
                                             <!--Rating  -->
                                             <div class="badge badge-secondary p-1 mr-2">
@@ -90,7 +90,7 @@
                                         </div>
                                     <?php } ?>
 
-                                    <div class="movie-time d-flex align-items-center my-2">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
@@ -112,8 +112,8 @@
                                     </div>
 
                                    <div class="hover-buttons">
-                                       <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>" >
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
+                                       <a class="text-white d-flex" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>" >
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                     <!-- <div>
                                        <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_genre->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>

@@ -19,7 +19,7 @@
          <div class="container-fluid">
 
 	<div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
 		<div class="row">
 			<div class="col-md-4">
 				<h4><i class="entypo-archive"></i> Sliders </h4>
@@ -120,8 +120,8 @@
 				
 
 
-            <table class="table table-bordered" id="slidertbl">
-                <tr class="table-header">
+            <table class="table table-bordered iq-card" id="slidertbl">
+                <tr class="table-header r1">
                     <th class="text-center">Slider Title</th>
                     <th class="text-center">Slider Image</th>
                     <th class="text-center">Status</th>

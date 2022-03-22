@@ -15,7 +15,7 @@
          <div class="container-fluid">
 
 	<div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
 		<div class="row">
 			<div class="col-md-4">
 				<h3><i class="entypo-newspaper"></i> Page</h3>
@@ -44,8 +44,8 @@
 
 	<div class="gallery-env" style="padding:15px;">
         <div class="row">
-	<table class="table table-bordered genres-table">
-		<tr class="table-header">
+	<table class="table table-bordered genres-table text-center iq-card">
+		<tr class="table-header r1">
 			<th>Page</th>
 			<th>URL</th>
 			<th>Active</th>

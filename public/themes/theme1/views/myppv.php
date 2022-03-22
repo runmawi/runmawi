@@ -26,45 +26,20 @@
                                     <source src="<?php echo $watchlater_video->trailer; ?>" type="video/mp4">
                                       </video>
                                      </a>
-                                     <div class="corner-text-wrapper">
-                                        <div class="corner-text">
-                                          <?php if (!empty($watchlater_video->ppv_price))
-            { ?>
-                                          <p class="p-tag1"><?php echo $currency->symbol . ' ' . $watchlater_video->ppv_price; ?></p>
-                                          <?php
-            }
-            elseif (!empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null))
-            { ?>
-                                            <p class="p-tag1"><?php echo $watchlater_video->global_ppv . ' ' . $currency->symbol; ?></p>
-                                            <?php
-            }
-            elseif ($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
-            { ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php
-            } ?>
-                                        </div>
-                                    </div>
-                                </div>
+                                    
+                                 </div></div>
                                 <div class="block-description">
-                                    <a  href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>">
-                                   <h6><?php echo __($watchlater_video->title); ?></h6>
-                                    </a>
-                                   <div class="movie-time d-flex align-items-center my-2">
-                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict ?></div>
-                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?=gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                   </div>
                                     
-                                    
+                                  
                                     
                                    <div class="hover-buttons d-flex">
                                        <a class="text-white" href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>" >
                                     
-                                      <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                      Watch Now
+                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">   
                                       
                                        </a>
-                                       <div >
+                                    </div>
+                                      
                                     <!-- <a style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
                                         <i style="" <?php //if(isset($watchlater_video->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
                                     <div style="color:white;" id="<?= $watchlater_video->id ?>">
@@ -74,7 +49,17 @@
                                     </a> -->
                                     </div>
                               
-                             </div>
+                              <div >
+                                  <div class="movie-time d-flex align-items-center my-2">
+                                       <a  href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>">
+                                   <h6><?php echo __($watchlater_video->title); ?></h6>
+                                    </a>
+                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict ?></div>
+                                     
+                                   </div>
+                                     <span class="text-white"><i class="fa fa-clock-o"></i> <?=gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                    
+                              </div>
                           </a>
                        </li>
                        <?php

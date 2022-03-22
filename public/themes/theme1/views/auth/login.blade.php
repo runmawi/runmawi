@@ -190,9 +190,9 @@ i.fa.fa-google-plus {
                            
                             								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
                         </div> </div>
-                         <div class="d-flex justify-content-around links">
+                         <div class="links text-right">
                       @if (Route::has('password.request'))
-                   
+                     <a href="{{ route('password.request') }}" class="f-link">Can't Login?</a>
                       @endif
 							
                   </div>
@@ -224,7 +224,7 @@ i.fa.fa-google-plus {
             </div>
              <div class="mt-3">
                   <div class="d-flex justify-content-center  links">
-                     <a href="{{ route('signup') }}" class="text-primary text-white ml-2">Can't Login?</a>
+                     <p class="text-primary text-white ml-2">Not having an Account ? Click <a class="sig" href="{{ route('signup') }}" >Here</a> to Sign Up! </p>
                   </div>
                   
                </div>

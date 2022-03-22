@@ -39,7 +39,7 @@
                 
                 <div class="block-description">
                     <div class="hover-buttons text-white">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
                         <div></div>
                     </div>
                 </div>
