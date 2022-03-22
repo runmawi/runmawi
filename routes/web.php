@@ -10,6 +10,7 @@ Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
+Route::get('/admin/filemanager', 'FileManagerController@index');
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
