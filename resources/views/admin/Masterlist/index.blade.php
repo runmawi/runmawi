@@ -13,9 +13,9 @@
 
                 {{-- Title Card --}}
                         <div class="row">
-                           <div class="col-md-2">
+                           <div class="col-md-3">
                                  <div class="iq-card-body">
-                                    <div class="media align-items-center col-md-3">
+                                    <div class="media align-items-center">
                                        <div class="iq-user-box" style="background: #20c997 !important;"><p class="text-white">{{ ($master_count) }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> 
@@ -26,9 +26,9 @@
                                  </div>
                            </div>
 
-                           <div class="col-md-2">
+                           <div class="col-md-3">
                               <div class="iq-card-body">
-                                 <div class="media align-items-center col-md-3">
+                                 <div class="media align-items-center">
                                     <div class="iq-user-box" style="background: #24c0d9 !important;"><p class="text-white">{{ count($Videos) }}</p></div>
                                     <div class="media-body text-white">
                                        <p class="mb-0 font-size-14 line-height"> 
@@ -39,9 +39,9 @@
                               </div>
                            </div>
 
-                           <div class="col-md-2">
+                           <div class="col-md-3">
                               <div class="iq-card-body">
-                                 <div class="media align-items-center col-md-3">
+                                 <div class="media align-items-center">
                                     <div class="iq-user-box"  style="background: hsl(39deg 74% 73%) !important"><p class="text-white">{{ count($LiveStream) }}</p></div>
                                     <div class="media-body text-white">
                                        <p class="mb-0 font-size-14 line-height"> 
@@ -52,9 +52,9 @@
                               </div>
                            </div>
 
-                           <div class="col-md-2">
+                           <div class="col-md-3">
                               <div class="iq-card-body">
-                                 <div class="media align-items-center col-md-3">
+                                 <div class="media align-items-center">
                                     <div class="iq-user-box"  style="background: #17a2b8 !important;"><p class="text-white">{{ count($Episode) }}</p></div>
                                     <div class="media-body text-white">
                                        <p class="mb-0 font-size-14 line-height"> 
@@ -65,9 +65,9 @@
                               </div>
                            </div>
 
-                           <div class="col-md-2">
+                           <div class="col-md-3">
                                     <div class="iq-card-body">
-                                       <div class="media align-items-center col-md-3">
+                                       <div class="media align-items-center">
                                           <div class="iq-user-box" style="background: #6c757d !important"><p class="text-white">{{ count($audios) }}</p></div>
                                           <div class="media-body text-white">
                                              <p class="mb-0 font-size-14 line-height"> 
@@ -82,9 +82,9 @@
 
                   <div class="iq-card-body table-responsive">
                      <div class="table-view">
-                        <table class="table table-striped table-bordered table movie_table " style="width:100%" id="master_list">
+                        <table class="table table-striped table-bordered table movie_table text-center" style="width:100%" id="master_list">
                            <thead>
-                              <tr>
+                              <tr class="r1">
                                  <th>Title</th>
                                  <th>Rating</th>
                                  <th>Uploaded by</th>
@@ -136,7 +136,7 @@
 
                                     <td>
                                        <div class="flex align-items-center list-user-action">
-                                          <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
+                                          <a class="iq-bg-warning mt-" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
 
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

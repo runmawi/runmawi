@@ -3,51 +3,81 @@
     <head>
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>
+
+
     </head>
+	<style>
+		#wrapper{
+	/* margin-top: 10%;
+	margin-left: -23%; */
 
-<style>
-#wrapper {
-    /* margin-top: 10%;
-        margin-left: -23%; */
+		}
+#sidebar-wrapper{		
+	
+	/* margin-top: -10%; */
 }
-#sidebar-wrapper {
-    /* margin-top: -10%; */
+#page-content-wrapper{		
+	
+	/* margin-top: 10%; */
 }
-#page-content-wrapper {
-    /* margin-top: 10%; */
-}
+	</style>
+	<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
+    .p1{
+        font-size: 12px;
+    }
+        .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
 
-.has-switch .switch-on label {
-    background-color: #fff;
-    color: #000;
-}
-.make-switch {
-    z-index: 2;
-}
-.iq-card {
-    padding: 15px;
-}
-.p1 {
-    font-size: 12px;
-}
+    }
 </style>
-
 @section('css')
 	<style type="text/css">
-        .make-switch {
-            z-index: 2;
-        }
+	.make-switch{
+		z-index:2;
+	}
+        
+      
 	</style>
+
 @stop
 
-
 @section('content')
+
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 				
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+    <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
+    <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
+    <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
+    <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
+   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+    <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+    <div class="mt-4">
+    <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
+     <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
+    <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
+    <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
+    </div>
+         <div class="container-fluid mt-5">
               <div class="iq-card">
 
 <div id="admin-container">
@@ -83,10 +113,8 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Setting</a>
 
                 </div>
             </div>
@@ -94,7 +122,7 @@
 
 
 	<form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-
+	
             <!-- Page content wrapper-->
            <div class="container-fluid" id="site" style="padding-left:10px;">
         <div class="col-md-8">
@@ -141,7 +169,7 @@
                     <p class="p1">Upload Your Site Logo:</p>
                     <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
                 </div>
-                <div class="panel panel-primary mt-3 col-md-12 p-0" data-collapsed="0">
+                <div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Favicon</label></div>
                         <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -157,7 +185,8 @@
                     </div>
                 </div>
             </div>
-        </div>   
+        </div>
+   
 	</div>
 
         <!-- <div class="container-fluid" id="ppv" > -->
@@ -224,36 +253,6 @@
             </div>
         </div>
     </div>
-
-
-     <!-- Default Image Setting-->
-     <div class="container-fluid" id="Defaut_image_setting" style="">
-        <div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading">
-                <div class="panel-title"><label>Default Image</label></div>
-                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12 align-center">
-                        <div class="row">
-                            <div>
-                                <div class="default_video_image" style="margin: auto;">
-                                    @if(!empty($settings->default_video_image))
-                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $settings->default_video_image }}" style="max-height: 25%; max-width: 25%" />
-                                    @endif
-                                </div>
-                             
-                                <p class="p1">Upload Your Default Image:</p>
-                                <input type="file" multiple="true" class="form-control" name="default_video_image" id="default_video_image" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
             <!-- <div class="container-fluid" id="video" style=""> -->
         <div  class="container-fluid row mt-3" id="videos_settings" style="">
@@ -376,7 +375,7 @@
     </div>
 
         <!-- <div class="container-fluid" id="email"> -->
-        <div lass="container-fluid row mt-3 " style="margin-left: 0%;" id="email" class="row mt-3">
+        <div lass="container-fluid row mt-3 " id="email" class="row mt-3">
             <div class="col-md-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -623,62 +622,72 @@
                 <div class="row">
                     <div class="col-md-4 align-center">
                         <div class="row">
+                            
                             <p class="col-md-8 p1">Enable Advertisement on Videos:</p>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-12">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
                             </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Pre Roll:</label>
+                                <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"
+                                placeholder="Featured Ad Pre Roll"
+                                value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Mid Roll:</label>
+                                <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
+                                placeholder="Featured Ad Mid Roll"
+                                value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Featured Ad Post Roll:</label>
+                                <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control"
+                                placeholder="Featured Ad Post Roll"
+                                value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per Click Advertiser:</label>
+                                <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
+                                placeholder="Cost Per Click Advertiser"
+                                value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per Click Admin:</label>
+                                <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
+                                placeholder="Cost Per Click Admin"
+                                value="@if(!empty($settings->cpc_admin)){{ $settings->cpc_admin }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per View Advertiser:</label>
+                                <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control"
+                                placeholder="Cost Per View Advertiser"
+                                value="@if(!empty($settings->cpv_advertiser)){{ $settings->cpv_advertiser }}@endif" />
+                            </div>
+                            <div class="form-group add-profile-pic">
+                                <label>Cost Per View Admin:</label>
+                                <input id="cpv_admin" type="text" name="cpv_admin" class="form-control"
+                                placeholder="Cost Per View Admin"
+                                value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
-    <div class="container-fluid" id="season_setting" style="">
-            <div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading">
-                <div class="panel-title"><label>Series Setting</label></div>
-                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
-                            style="width: ;">
-                            <div><label class="mt-1">Enable PPV Season</label></div>
-                            <div class="d-flex justify-content-between">
-
-                                <div>ON</div>
-
-                                <div class="mt-1">
-                                    <label class="switch">
-                                    <input type="checkbox" @if(!isset($settings->series_season) ||
-                                    (isset($settings->series_season) && $settings->series_season))checked="checked"
-                                    value="1"@else value="0"@endif name="series_season" id="series_season" />
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div>OFF</div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-        </div>
-
 
     </div>
-    </div>
-
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-    <input type="submit" id ="settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
+    <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
             </form>
 </div>
 
-<div class="container-fluid" id="script" style="margin-top: -62%;margin-left: 22%;">
+<div class="container-fluid" id="script" style="margin-top: -52%;margin-left: 22%;">
 <h5>APP Script:</h5>
     <div class="row">
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
@@ -700,7 +709,7 @@
     </div>
 <!-- </div> -->
 
-<div class="container-fluid" id="app" style="margin-top: -62%;margin-left: 22%;">
+<div class="container-fluid" id="app" style="margin-top: -52%;margin-left: 22%;">
 <h5>APP Setting:</h5>
     <div class="row">
 	<form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
@@ -766,256 +775,199 @@
         }, 3000);
     })
 </script>
+	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+	<script>
 
-<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
-<script>
+	$(document).ready(function(){
+		// alert('tst');
+		$('#site').show();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#videos_settings').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#advertisement').hide();
 
-$(document).ready(function () {
-    $("#site").show();
-    $("#ppv").hide();
-    $("#registration").hide();
-    $("#email").hide();
-    $("#videos_settings").hide();
-    $("#social").hide();
-    $("#subscription").hide();
-    $("#login").hide();
-    $("#script").hide();
-    $("#app").hide();
-    $("#advertisement").hide();
-    $("#season_setting").hide();
-    $("#Defaut_image_setting").hide();
+    
 
-    $("#site_setting").click(function () {
-        $("#site").show();
-        $("#videos_settings").hide();
-        $("#ppv").hide();
-        // $('#videos_settings').hide();
-        $("#registration").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
 
-    $("#ppv_setting").click(function () {
-        // alert();
-        $("#videos_settings").hide();
-        $("#site").hide();
-        $("#ppv").show();
-        $("#registration").hide();
-        $("#videos_settings").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+	$('#site_setting').click(function(){
+		$('#site').show();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+	});
+	$('#ppv_setting').click(function(){
+		// alert();
+		$('#videos_settings').hide();
+		$('#site').hide();
+		$('#ppv').show();
+		$('#registration').hide();
+		$('#videos_settings').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+	});
+	$('#video_setting').click(function(){
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#videos_settings').show();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+	});
+	$('#registration_setting').click(function(){
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').show();
+		$('#videos_settings').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+	});
+	$('#email_setting').click(function(){
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#videos_settings').hide();
+		$('#email').show();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+	});
+	$('#social_setting').click(function(){
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#videos_settings').hide();
+		$('#email').hide();
+		$('#social').show();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
 
-    $("#video_setting").click(function () {
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#videos_settings").show();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#Defaut_image_setting").hide();
-    });
+	});
+	$('#subscription_setting').click(function(){
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#videos_settings').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').show();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
 
-    $("#registration_setting").click(function () {
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").show();
-        $("#videos_settings").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+	});
+	$('#login_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		// $('#videos_settings').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').show();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
 
-    $("#email_setting").click(function () {
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#videos_settings").hide();
-        $("#email").show();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+	});
+	$('#advertisement_setting').click(function(){
+		$('#videos_settings').hide();
+		$('#site').hide();
+		$('#ppv').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').show();
+        $('#script').hide();
+		$('#app').hide();
+		$('#scriptsetting').hide();
 
-    $("#social_setting").click(function () {
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#videos_settings").hide();
-        $("#email").hide();
-        $("#social").show();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#scriptsetting").hide();
-        $("#Defaut_image_setting").hide();
-        $("#season_setting").hide();
-    });
+	});
 
-    $("#subscription_setting").click(function () {
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#videos_settings").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").show();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#scriptsetting").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
 
-    $("#login_setting").click(function () {
-        $("#site").hide();
-        $("#videos_settings").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        // $('#videos_settings').hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").show();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#scriptsetting").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+    $('#script_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+		$('#app').hide();
+		$('#script').show();
+		$('#scriptsetting').show();
 
-    $("#advertisement_setting").click(function () {
-        $("#videos_settings").hide();
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").show();
-        $("#script").hide();
-        $("#app").hide();
-        $("#scriptsetting").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+		$('#settingupdate').hide();
 
-    $("#script_setting").click(function () {
-        $("#site").hide();
-        $("#videos_settings").hide();
-        $("#ppv").hide();
-        // $('#videos_settings').hide();
-        $("#registration").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#app").hide();
-        $("#script").show();
-        $("#scriptsetting").show();
-        $("#Defaut_image_setting").hide();
 
-        $("#settingupdate").hide();
-        $("#season_setting").hide();
-    });
+	});
 
-    $("#app_setting").click(function () {
-        $("#site").hide();
-        $("#videos_settings").hide();
-        $("#ppv").hide();
-        // $('#videos_settings').hide();
-        $("#registration").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").show();
-        $("#settingupdate").hide();
-        $("#appupdate").show();
-        $("#scriptsetting").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").hide();
-    });
+	$('#app_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+		$('#script').hide();
+		$('#app').show();
+		$('#settingupdate').hide();
+		$('#appupdate').show();
+		$('#scriptsetting').hide();
 
-    $("#series_setting").click(function () {
-        $("#season_setting").show();
-        $("#videos_settings").hide();
-        $("#ppv").hide();
-        // $('#videos_settings').hide();
-        $("#registration").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#scriptsetting").hide();
-        $("#site").hide();
-        $("#Defaut_image_setting").hide();
-    });
 
-    $("#default_Image_setting").click(function () {
-        // alert();
-        $("#videos_settings").hide();
-        $("#site").hide();
-        $("#ppv").hide();
-        $("#registration").hide();
-        $("#videos_settings").hide();
-        $("#email").hide();
-        $("#social").hide();
-        $("#subscription").hide();
-        $("#login").hide();
-        $("#advertisement").hide();
-        $("#script").hide();
-        $("#app").hide();
-        $("#season_setting").hide();
-        $("#Defaut_image_setting").show();
-        $("#ppv_setting").hide();
-        $("#demo_mode").hide();
-        $("#Pay_Per_view_Hours").hide();
-    });
-});
 
+	});
+
+	});
 </script>
 	
 	<script type="text/javascript">
