@@ -15,7 +15,7 @@
 
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-              <div class="">
+              <div class="iq-card">
 
 <div id="moderator-container">
 <!-- This is where -->

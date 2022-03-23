@@ -1,4 +1,10 @@
 @extends('admin.master')
+<style>
+    .form-control {
+    background: #fff!important; */
+   
+}
+</style>
 @section('content')
 	<!--[hook_admin_dashboard_widgets_start]-->
 		

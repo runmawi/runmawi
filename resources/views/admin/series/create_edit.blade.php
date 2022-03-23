@@ -13,7 +13,7 @@ $settings  = App\Setting::first();?>
 <div id="content-page" class="content-page">
     <div class="container-fluid">
 <!-- This is where -->
-	<div class="" style="padding:20px;">
+	<div class="iq-card" style="padding:20px;">
 	<div class="admin-section-title pull-right">
         @if(!empty($series->id))
         <div class="d-flex justify-content-between">
@@ -236,14 +236,15 @@ $settings  = App\Setting::first();?>
                 </div>
 				@if($settings->series_season == 0)
                 <div class="row align-items-center mt-3 p-3"> 
-                    <div class="col-sm-4"> 
-                        <label class="m-0">Apply Global PPV Price:</label>
+                    <div class="col-sm-3 p-0"> 
+                       
                             <div class="panel-body"> 
-                                <div class="d-flex align-items-baseline">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                     <label class="m-0">Apply Global PPV Price:</label>
                                 <?php if($settings->ppv_status == 1){ ?>
                                   <input type="checkbox" name="ppv_status" value="1" id="ppv_status" {{  !empty($series->ppv_status) && $series->ppv_status == "1" ? "checked" : "" }} />
                                   <?php } else{ ?>
-                                    <div class="global_ppv_status">
+                                    <div class="global_ppv_status ml-2">
                                         <input type="checkbox" name="ppv_status" value="1" id="ppv_status" {{  !empty($series->ppv_status) && $series->ppv_status == "1" ? "checked" : "" }} />
                                     </div>
                                    <?php } ?>
@@ -258,7 +259,7 @@ $settings  = App\Setting::first();?>
 				@endif
             </div>
             <div class="row mt-3">
-                <div class="col-sm-12"> 
+                <div class="col-sm-12 ml-1"> 
                     @if(!isset($series->user_id))
                         <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
                     @endif
@@ -268,7 +269,7 @@ $settings  = App\Setting::first();?>
                     @endif
 
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary " />
                 </div>
 			</div><!-- row -->
         </div>

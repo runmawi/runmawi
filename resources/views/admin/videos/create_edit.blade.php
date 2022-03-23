@@ -280,7 +280,7 @@
                     </div>
                     <div class="col-sm-6 form-group mt-3" id="publishlater">
                         <label class="">Publish Time</label>
-                        <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
+                        <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
                 </div>
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -643,6 +643,7 @@
       </div>
    </div>
 </div>
+    </div>
 <style>
    #heading {
    text-transform: uppercase;
@@ -659,7 +660,7 @@
    content: "\f030"
    }
    #msform fieldset {
-   background: white;
+  
    border: 0 none;
    border-radius: 0.5rem;
    box-sizing: border-box;
@@ -683,7 +684,7 @@
    margin-top: 2px;
    box-sizing: border-box;
    color: #000;
-   background-color: #f2f5fa;
+  
    font-size: 16px;
    }
    #msform input:focus,

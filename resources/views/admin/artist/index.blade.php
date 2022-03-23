@@ -19,7 +19,7 @@
 
 <div class="admin-section-title" style="margin-left: 340px;
     padding-top: 100px;">
-      <div class="">
+      <div class=" container-fluid">
 	<div class="row mt-3">
 		<div class="col-md-6">
             
@@ -37,10 +37,10 @@
                         </div>
                         @endforeach
                         @endif
-		<div class="col-md-4">	
+		<div class="col-md-3">	
 			<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" name="s" id="search-input" value="<?= Request::get('s'); ?>" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 		</div>
-        <div class="col-md-2">
+        <div class="col-md-3 text-right">
              <a href="{{ URL::to('admin/artists/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create Artist</a>
         </div>
 	</div>

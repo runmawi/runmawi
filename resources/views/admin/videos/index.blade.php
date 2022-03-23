@@ -101,11 +101,11 @@
                                     <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
-                                        {{ $video->views }}<i class="lar la-eye "></i>
+                                        {{ $video->views }} <i class="lar la-eye "></i>
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
-                                          <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
+                                          <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>

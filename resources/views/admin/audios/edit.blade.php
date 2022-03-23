@@ -142,8 +142,8 @@
 							</div>
 
 							
-							<div class="col-sm-6">
-								<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+							<div class="col-sm-6 p-0 mt-3">
+								<div class="panel panel-primary p-0" data-collapsed="0"> <div class="panel-heading"> 
 									<div class="panel-title"><label>Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 									<div class="panel-body" style="display: block;"> 
 										<p class="p1">Block the Audio for Selected Country:</p> 
@@ -204,7 +204,7 @@
 										<textarea class="form-control" name="description" id="description">@if(!empty($audio->description)){{ htmlspecialchars($audio->description) }}@endif</textarea>
 									</div> 
 								</div>
-								<div class="row mt-3"> 
+								<div class="row mt-3 align-items-center"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title"><label>Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -223,7 +223,7 @@
 											</div> 
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-6 mt-2">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title"><label>Album</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
@@ -362,12 +362,12 @@
 										</div>
 									</div>
 
-									<div class="row mt-3 align-items-center"> 
+									<div class="row mt-3 p-0 align-items-center"> 
 									<div class="col-sm-6" id="ppv_price"> 
                                     <label class="">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
 									</div>
-									<div class="col-sm-6" > 
+									<div class="col-sm-12 ml-3" > 
                                 <?php if($settings->ppv_status == 1){ ?>
                                     <label for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
@@ -392,11 +392,10 @@
                                    
 								</div><!-- row -->
 
-								 <div class="mt-2 p-2"  style="display: flex;
-    justify-content: flex-end;">
+								 <div class="mt-2 p-2"  style="display: flex;">
                                     
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-								<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+								<input type="submit" value="{{ $button_text }}" class="btn btn-primary " />
                                     </div>
 							</form>
 
