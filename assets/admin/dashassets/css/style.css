@@ -1250,10 +1250,13 @@ line-height: 30px;
 
 color: #161616;
 }
-.p1,p{
+.p1{
     font-weight: 400;
 font-size: 12px;
 line-height: 25px;
 
 color: #646464;
+}
+h6{
+    font-size: 18px;
 }
