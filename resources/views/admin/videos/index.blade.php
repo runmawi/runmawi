@@ -1,5 +1,10 @@
 @extends('admin.master')
-
+<style>
+     .form-control {
+    background: #fff!important; */
+   
+}
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection

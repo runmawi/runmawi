@@ -14,6 +14,10 @@
     font-weight: 400;
     margin: 4px;
 }
+     .form-control {
+    background: #fff!important; */
+   
+}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">

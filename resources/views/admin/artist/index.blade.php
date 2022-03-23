@@ -9,6 +9,10 @@
     .iq-card{
         padding: 15px;
     }
+     .form-control {
+    background: #fff!important; */
+   
+}
 </style>
 
 @section('css')
