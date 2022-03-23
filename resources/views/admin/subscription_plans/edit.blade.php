@@ -52,6 +52,7 @@
                         	@endforeach
                         <div class="form-group">
                         <label>Video Quality:</label>
+                        <label>Video Quality:</label>
                             <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
                         </div> 
                             

@@ -1325,7 +1325,11 @@ class AdminUsersController extends Controller
     $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
     $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
 
+        $registered = User::where('role','registered')->get();
+        $subscription = User::where('role','subscriber')->get();
+        $admin = User::where('role','admin')->get();
 
+        // dd($registered);
     $data = array(
         'today_log' => $today_log,
         'lastweek_log' => $lastweek_log,
