@@ -75,6 +75,7 @@ use App\EmailTemplate;
 use App\SubscriptionPlan;
 use App\Multiprofile;
 use App\LanguageVideo;
+use App\CategoryAudio;
 use Session;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Geofencing;
@@ -3458,22 +3459,67 @@ public function upnextAudio(Request $request){
         
          
         $audio_id = $request->audio_id;
-        
-        $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
+        $album_id  = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->first();
+        $upnext_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+        ->select('audio.*')
+        ->where('category_id', $album_id)
+        ->count();
+        // $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
         
         //$album_id = $request->album_id;
-    $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
+    // $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
         
-    $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
-
+    // $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
+if($upnext_audios > 0){
+  $album_all_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+  ->select('audio.*')
+  ->where('category_id', $album_id)
+  ->get();
     $response = array(
       'status'=>'true',
       'message'=>'success',
       'audio_albums' =>$album_all_audios
     );
+  }else{
+    $response = array(
+      'status'=>'false',
+      'message'=>'success',
+      'audio_albums' =>'No Upnext Audios Added'
+    );
+  }
     return response()->json($response, 200);
   }   
 
+
+  public function similarAudio(Request $request){
+        
+         
+    $audio_id = $request->audio_id;
+    $album_id  = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->first();
+    $similarAudio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id','!=', $album_id)
+    ->count();
+
+if($similarAudio > 0){
+$similar_Audio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+->select('audio.*')
+->where('category_id','!=', $album_id)
+->get();
+$response = array(
+  'status'=>'true',
+  'message'=>'success',
+  'similar_audio' =>$similar_Audio
+);
+}else{
+$response = array(
+  'status'=>'false',
+  'message'=>'success',
+  'similar_audio' =>'No Similar Audios Added'
+);
+}
+return response()->json($response, 200);
+}   
   //Login with Mobile number
   public function MobileLogin(Request $request)
   {
