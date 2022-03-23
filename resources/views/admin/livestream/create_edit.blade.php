@@ -260,7 +260,7 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-4">
-                            <label class="m-0">Publish Type</label>
+                            <label class="m-0 p2">Publish Type</label>
                             <div class="panel-body" style="color: black;">
                                 <input type="radio" id="publish_now" name="publish_type" value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                                 <input type="radio" id="publish_later" name="publish_type" value="publish_later" /> Publish Later
@@ -269,7 +269,7 @@
 
                         <div class="col-sm-4">
                             <div id="publishlater">
-                                <label class="m-0">Publish Time</label>
+                                <label class="m-0 p2">Publish Time</label>
                                 <div class="panel-body">
                                     <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
                                 </div>
@@ -280,17 +280,17 @@
                             <label class="m-0">Status Settings</label>
                             <div class="panel-body">
                                 <div>
-                                    <label for="featured">Is this video Featured:</label>
+                                    <label class="p2" for="featured">Is this video Featured:</label>
                                     <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
-                                    <label for="active">Is this video Active:</label>
+                                    <label class="p2" for="active">Is this video Active:</label>
                                     <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
-                                    <label for="banner">Is this video display in Banner:</label>
+                                    <label class="p2" for="banner">Is this video display in Banner:</label>
                                     <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                 </div>
                                 <div>

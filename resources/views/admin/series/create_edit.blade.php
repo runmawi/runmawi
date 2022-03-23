@@ -222,12 +222,12 @@ $settings  = App\Setting::first();?>
 						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
 							<div class="d-flex align-items-baseline">
-								<label for="featured" style="float:left; display:block; margin-right:10px;">Is this series Featured:</label>
+								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this series Featured:</label>
 								<input type="checkbox" @if(!empty($series->featured) && $series->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
 							<div class="d-flex align-items-baseline">
-								<label for="active" style="float:left; display:block; margin-right:10px;">Is this series Active:</label>
+								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this series Active:</label>
 								<input type="checkbox" @if(!empty($series->active) && $series->active == 1){{ 'checked="checked"' }}@elseif(!isset($series->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
 						</div> 
@@ -240,7 +240,7 @@ $settings  = App\Setting::first();?>
                        
                             <div class="panel-body"> 
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                     <label class="m-0">Apply Global PPV Price:</label>
+                                     <label class="m-0 p2">Apply Global PPV Price:</label>
                                 <?php if($settings->ppv_status == 1){ ?>
                                   <input type="checkbox" name="ppv_status" value="1" id="ppv_status" {{  !empty($series->ppv_status) && $series->ppv_status == "1" ? "checked" : "" }} />
                                   <?php } else{ ?>

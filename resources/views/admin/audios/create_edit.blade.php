@@ -447,17 +447,17 @@ data: {
 											<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
 												<div class="d-flex align-items-baseline">
-													<label for="featured" style="float:left; display:block; margin-right:10px;">Is this audio Featured:</label>
+													<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this audio Featured:</label>
 													<input type="checkbox" @if(!empty($audio->featured) && $audio->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 												</div>
 												<div class="clear"></div>
 												<div class="d-flex align-items-baseline">
-													<label for="banner" style="float:left; display:block; margin-right:10px;">Is this Audio display in Banner:</label>
+													<label class="p2" for="banner" style="float:left; display:block; margin-right:10px;">Is this Audio display in Banner:</label>
 													<input type="checkbox" @if(!empty($audio->banner) && $audio->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 												</div>
 												<div class="clear"></div>
 												<div class="d-flex align-items-baseline">
-													<label for="active" style="float:left; display:block; margin-right:10px;">Is this audio Active:</label>
+													<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this audio Active:</label>
 													<input type="checkbox" @if(!empty($audio->active) && $audio->active == 1){{ 'checked="checked"' }}@elseif(!isset($audio->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 												</div>
 											</div> 
@@ -466,16 +466,16 @@ data: {
 									<div class="row">
 									<div class="row mt-3 align-items-center"> 
 									<div class="col-sm-4" id="ppv_price"> 
-                                    <label class="">PPV Price:</label>
+                                    <label class="p2">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                                 </div>
 								<div class="col-sm-4" > 
                                 <?php if($settings->ppv_status == 1){ ?>
-                                    <label for="global_ppv">Is this video Is Global PPV:</label>
+                                    <label class="p2" for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
                                     <?php } else{ ?>
                                         <div class="global_ppv_status">
-                                        <label for="global_ppv">Is this video Is PPV:</label>
+                                        <label class="p2" for="global_ppv">Is this video Is PPV:</label>
                                     <input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
                                         </div>
                                         <?php } ?>
