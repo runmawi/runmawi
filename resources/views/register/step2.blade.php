@@ -123,7 +123,7 @@
     
   </script>
 
-<div class="container">
+<div class="">
     
 <?php 
     $ref = Request::get('ref');
