@@ -60,7 +60,28 @@ border-radius: 0px 4px 4px 0px;
             </div>
             
 		</div>
-    
+    <div class="col-md-12" style="padding:30px;">
+                <div class="sign-in-from  m-auto" >
+
+                <div class="row data">
+                        @foreach ($Themes as $theme_integration)
+                            <div class="theme_image col-md-4">
+                                <div class="zoom themes">
+                                    <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
+                                </div>
+                                <div class="theme_name">
+                                    {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}
+                                    @if( $theme_integration->theme_name == $active_Status->theme_choosen)
+                                       <span class="active" >
+                                        <i class="far fa-check-circle"></i>  {{'Active'}}
+                                      </span>                                
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach  
+                </div>
+            </div>
+    </div>
 
 
     <!-- Add New Modal -->
@@ -112,28 +133,7 @@ border-radius: 0px 4px 4px 0px;
 		</div>
 	</div>
 
-    <div class="col-md-12">
-                <div class="sign-in-from  m-auto" >
-
-                <div class="row data">
-                        @foreach ($Themes as $theme_integration)
-                            <div class="theme_image col-md-4">
-                                <div class="zoom themes">
-                                    <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
-                                </div>
-                                <div class="theme_name">
-                                    {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}
-                                    @if( $theme_integration->theme_name == $active_Status->theme_choosen)
-                                       <span class="active" >
-                                        <i class="far fa-check-circle"></i>  {{'Active'}}
-                                      </span>                                
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach  
-                </div>
-            </div>
-    </div>
+    
 </div>
 </div>
 </div>
