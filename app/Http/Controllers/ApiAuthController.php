@@ -1392,6 +1392,33 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
 
   }
+  public function addwishlistaudio(Request $request) {
+
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $audio_id = $request->audio_id;
+    if($request->audio_id != ''){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->count();
+      if ( $count > 0 ) {
+        Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Wishlist List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
+        Wishlist::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Wishlist List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
 
   public function addfavoriteaudio(Request $request) {
 
@@ -4195,13 +4222,14 @@ public function upnextAudio(Request $request){
 
       $date = date('Y-m-d', strtotime('-10 days'));
 
-      $allaudios =  Audio::All();
 
       // $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
-      $recent_audios_count = Audio::All()->count();
+      $recent_audios_count = Audio::get()->count();
 
 
       if ( $recent_audios_count > 0) {
+
+        $allaudios =  Audio::get();
 
           $response = array(
               'status'=>'true',
@@ -4505,11 +4533,19 @@ public function upnextAudio(Request $request){
 
     public function albumlist(Request $request)
     {
+        $audiocategories_count = AudioCategory::get()->count();
+        if($audiocategories_count > 0){
         $audiocategories = AudioCategory::all();
         $response = array(
             'status'=>'true',
             'audiocategories'=>$audiocategories
         );
+      }else{
+        $response = array(
+          'status'=>'false',
+          'audiocategories'=> 'No Categories Added'
+      );
+      }
         return response()->json($response, 200);
     }
 
