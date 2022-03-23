@@ -4620,10 +4620,24 @@ return response()->json($response, 200);
             $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
             return $item;
         });
+    $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id', $album_id)
+    ->count();
+    
+    if($categoryauido > 0){
+    $albumcategoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id', $album_id)
+    ->get();
+    }else{
+      $albumcategoryauido =  'No Audio Found';
+    }
         $response = array(
             'status'=>'true',
             // 'albumname'=>AudioCategory::where('id',$album_id)->first()->name,
-            'audioalbum'=>$audioalbum
+            'audioalbum'=>$audioalbum,
+            'albumcategoryauido' => $albumcategoryauido , 
         );
         return response()->json($response, 200);
     }
