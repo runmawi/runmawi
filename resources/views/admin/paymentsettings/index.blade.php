@@ -137,7 +137,7 @@ border-radius: 0px 4px 4px 0px;
 			</div>
 
             <div class="col-md-6 mt-3">
-            <label>Stripe Lable:</label> 
+            <label>Stripe Label:</label> 
 			<input type="text" class="form-control" name="stripe_lable" id="stripe_lable" placeholder="Stripe Lable" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
 			</div>
 
@@ -218,7 +218,7 @@ border-radius: 0px 4px 4px 0px;
 		
             </div>
             <div class="col-md-6 mt-3">
-            <label>PayPal Lable:</label> 
+            <label>PayPal Label:</label> 
 				<input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Lable" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
 		
             </div>
