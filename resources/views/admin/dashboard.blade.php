@@ -89,7 +89,7 @@
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{ $view }}</h4>
-                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-down mr-2"></i></span>35%</p>
+                                 <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-down mr-2"></i></span>35%</h6>
                               </div>
                            </div>
                         </div>
@@ -109,7 +109,7 @@
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+55K</h4>
-                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>50%</p>
+                                 <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>50%</h6>
                               </div>
                            </div>
                         </div>
@@ -129,7 +129,7 @@
                               </div>
                               <div class="d-flex mt-4 align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+1M</h4>
-                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>80%</p>
+                                 <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>80%</h6>
                               </div>
                            </div>
                         </div>
@@ -149,7 +149,7 @@
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{  $visitor }} </h4>
-                                 <p class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>100%</p>
+                                 <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>100%</h6>
                               </div>
                            </div>
                         </div>
