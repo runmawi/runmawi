@@ -56,6 +56,12 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+ 
 <div id="content-page" class="content-page">
             <div class="row">
                      <div class="iq-card-header  justify-content-between">
@@ -64,14 +70,30 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+                          <div class="row"> 
+                          <div class="col-md-3">
+                          <label for="start_time">  Strat time: </label>
+                          <input type="date" id="start_time" name="start_time" >
+                          <p>Date of Birth: <input type="text" id="datepicker"></p>
+
+                          </div>
+                          <div class="col-md-3">
+                          <label for="start_time">  End time: </label>
+                          <input type="date" id="end_time" name="end_time">
+                          </div>
+                          <div class="col-md-6">
+                          <!-- <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" /> -->
+                          </div>
+                          </div>
+                          <div class="clear"></div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <!-- <input type="text" class="daterange" /> -->
-                                    <label for="">Registration:</label> <br>
-                                    <label for="">Free Registration:</label><br>
-                                    <label for="">Free Users:</label><br>
-                                    <label for="">PPV Users:</label><br>
-                                    <label for="">Pre-Order:</label>
+                                    <label for="">Registered User : <?php if(!empty($registered)){ echo $registered ; }else{ echo $registered ; } ?></label> <br>
+                                    <label for="">Subscribed User : <?php if(!empty($subscription)){ echo $subscription ; }else{ echo $subscription ; }?></label><br>
+                                    <label for="">Admin Users : <?php if(!empty($admin)){ echo $admin ; }else{ echo $admin; } ?></label><br>
+                                    <!-- <label for="">PPV Users:</label><br>
+                                    <label for="">Pre-Order:</label> -->
                                 </div>
                                  <div class="col-md-8">
                                     <figure class="highcharts-figure">
@@ -83,8 +105,24 @@
 
             </div>
         </div>
+        
+<link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="doctor.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 <script>
+    var jqOld = jQuery.noConflict();
+    jqOld(function() {
+        jqOld("#datepicker" ).datepicker();
+    })
+</script>
+
+<script>
+            var registered = <?php echo $registered ?>;
+          var subscription = <?php echo $subscription ?>;
+          var admin = <?php echo $admin ?>;
     Highcharts.chart('container', {
 
 title: {
@@ -124,12 +162,16 @@ plotOptions: {
 },
 
 series: [{
-  name: 'Registration',
-  data: [112]
+  name: 'Registered',
+  data: [0,registered]
 },
  {
-  name: 'Manufacturing',
-  data: [202]
+  name: 'Subscriber',
+  data: [0,subscription]
+},
+ {
+  name: 'Admin',
+  data: [0,admin]
 }
 // {
 //   name: 'Sales & Distribution',
