@@ -69,8 +69,9 @@ border-radius: 0px 4px 4px 0px;
     <div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
-                        <div class="row align-items-center">
+                        <div class="row align-items-center p-2">
                         <!-- <div class="row"> -->
+                            
                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Featured Video </label></div>

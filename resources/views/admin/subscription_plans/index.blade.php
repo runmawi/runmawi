@@ -30,7 +30,7 @@
      <div class="">
 		<div class="row">
 			<div class="col-md-6">
-				<h3><i class="entypo-archive"></i> Subscription Plans </h3>
+				<h4><i class="entypo-archive"></i> Subscription Plans </h4>
 			</div>
             <div class="col-md-6" align="right"><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
 		</div>
