@@ -193,10 +193,13 @@ Route::group([
     Route::post('artistaddremovefav', 'ApiAuthController@artistaddremovefav');
     Route::post('artistaddremovefollow', 'ApiAuthController@artistaddremovefollow');
     Route::post('artistdetail', 'ApiAuthController@artistdetail');
+    Route::post('upnextAudio', 'ApiAuthController@upnextAudio');
+    Route::post('similarAudio', 'ApiAuthController@similarAudio');
     Route::get('trendingaudio', 'ApiAuthController@trendingaudio');
     Route::get('albumlist', 'ApiAuthController@albumlist');
     Route::post('albumaudios', 'ApiAuthController@albumaudios');
     Route::post('addwatchlateraudio', 'ApiAuthController@addwatchlateraudio');
+    Route::post('addwishlistaudio', 'ApiAuthController@addwishlistaudio');
     Route::post('addfavoriteaudio', 'ApiAuthController@addfavoriteaudio');
     Route::post('/dislikeaudio', 'ApiAuthController@DisLikeAudio');
     Route::post('/likeaudio', 'ApiAuthController@LikeAudio');

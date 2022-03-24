@@ -199,8 +199,8 @@ color: #d9d5d5 !important; opacity: 1; /* Firefox */ }
 color: #d9d5d5 !important; }
 ::-ms-input-placeholder { /* Microsoft Edge */
 color: #d9d5d5 !important; }
-.f-link:hover { color: var(--iq-primary); }
-.card-title {font-size: 1.125rem;font-weight: 500;}
+.f-link:hover { color: var(--iqprimary); }
+.card-title {font-size:25px;font-weight: 500;}
 .card-title.upload-ui {padding: 30px; background: #f9f9f9;font-size: 1.25rem;border-top-left-radius: 10px;border-top-right-radius: 10px;}
 .dropzone .dz-message .dz-button {font-size: 1.25rem; color: #000;font-family: 'Roboto';}
 .dropzone .dz-message .dz-button i{font-size: 60px;display: block;}
