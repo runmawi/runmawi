@@ -205,7 +205,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <!-- <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li> -->
 
                     <div class="mnu">
                 
@@ -435,7 +435,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <!-- <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li> -->
 
                     <div class="mnu">
                 
@@ -661,7 +661,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <!-- <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li> -->
 
                     <div >
                 
@@ -885,7 +885,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <!-- <li><a href="{{ URL::to('admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li> -->
                     <div class="mnu">
                 
                    <p class="lnk" >Language</p>
