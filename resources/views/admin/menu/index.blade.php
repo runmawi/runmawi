@@ -35,9 +35,10 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
-				<div class="modal-header">
+				<div class="modal-header d-flex ">
+                    <h4 class="modal-title">New Menu Item</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Menu Item</h4>
+					
 				</div>
 				
 				<div class="modal-body">
@@ -57,8 +58,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-black" id="submit-new-menu">Save changes</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-menu">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -80,7 +81,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Menu Items below: (max of 3 levels)
+					<p class="p1">Organize the Menu Items below: (max of 3 levels)</p>
 				</div>
 				
 				<div class="panel-options">
@@ -117,7 +118,7 @@
 		
 			</div>
 		
-		</div></div>
+            </div></div></div></div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />

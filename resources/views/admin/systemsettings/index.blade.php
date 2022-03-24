@@ -146,8 +146,7 @@ border-radius: 0px 4px 4px 0px;
 		</div>
 
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<div class="panel-body mt-3" style="display: flex;
-    justify-content: flex-end;">
+		<div class="panel-body mt-3" >
 <input type="submit" value="Update Settings" class="btn btn-primary " />
             </div>
 	</form>

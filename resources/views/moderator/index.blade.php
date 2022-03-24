@@ -11,7 +11,7 @@
 
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-              <div class="">
+              <div class="iq-card">
 
 <div id="moderator-container">
 <!-- This is where -->
@@ -138,7 +138,7 @@
 <br>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-12 d-flex justify-content-end">
+                            <div class="col-md-12 ">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>

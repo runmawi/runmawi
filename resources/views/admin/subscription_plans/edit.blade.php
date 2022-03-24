@@ -82,7 +82,7 @@
                     <label> Devices :</label>
                     </div>
                     @foreach($devices as $val)
-                    <div class="col-md-4 d-flex" style="width: 33%; float:left;">                                           
+                    <div class="col-md-4 d-flex justify-content-between align-items-center" style="width: 33%; float:left;">                                           
                     <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
                         <label class="switch">
                     <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
@@ -105,7 +105,7 @@
                 @endforeach
 
 
-              <div class="modal-footer">
+              <div class="mt-3 ml-3">
                 <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/paypalplans') }}">Close</a>
                 <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>

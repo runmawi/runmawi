@@ -14,6 +14,10 @@
     font-weight: 400;
     margin: 4px;
 }
+     .form-control {
+    background: #fff!important; */
+   
+}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -61,14 +65,14 @@
 			<table class="data-tables table livestream_table iq-card text-center p-0" style="width:100%">
 				<thead>
 					<tr class="r1">
-						<th><label>Image</label></th>
-						<th><label>Title</label></th>
-						<th><label>User Name</label></th>
-						<th><label>Video Type</label></th>
-						<th><label>Video Access</label></th>
-						<th><label>Status</label></th>
-						<th><label>Description</label></th>
-						<th><label>Action</label></th>
+						<th>Image</th>
+						<th>Title</th>
+						<th>User Name</th>
+						<th>Video Type</th>
+						<th>Video Access</th>
+						<th>Status</th>
+						<th>Description</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>

@@ -1,5 +1,10 @@
 @extends('admin.master')
-
+<style>
+     .form-control {
+    background: #fff!important; */
+   
+}
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
@@ -24,11 +29,11 @@
                            <table class="data-tables table audio_table iq-card text-center p-0" style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th><label>Title</label></th>
-                                    <th><label>Rating</label></th>
-                                    <th><label>Category</label></th>
-                                     <th><label>Views</label></th>
-                                    <th><label>Action</label></th>
+                                    <th>Title</th>
+                                    <th>Rating</th>
+                                    <th>Category</th>
+                                     <th>Views</th>
+                                    <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
