@@ -18,7 +18,7 @@
 ?>
 <div id="content-page" class="content-page">
             <div class="container-fluid">
-                <div class="">
+                <div class="iq-card">
 <div id="admin-container" style="padding:20px;">
     
 <!-- This is where -->
