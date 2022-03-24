@@ -1,5 +1,9 @@
 @extends('admin.master')
-
+<style>
+    .form-control{
+        background: #fff!important;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
@@ -23,7 +27,7 @@
                     </div>
                         </div>
                      </div>
-                     <div class="iq-card-body table-responsive">
+                     <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
                            <table class="table table-striped table-bordered table movie_table  text-center iq-card" style="width:100%">
                               <thead>

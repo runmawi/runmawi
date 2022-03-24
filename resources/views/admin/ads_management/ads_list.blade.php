@@ -25,13 +25,13 @@
                      <table class="table table-striped table-bordered table movie_table iq-card" style="width:100%">
                         <thead>
                            <tr class="r1">
-                              <th><label>#</label></th>
-                              <th><label>Ads Name</label></th>
-                              <th><label>Ads Category</label></th>
-                              <th><label>Ads Play</label></th>
-                              <th><label>Status</label></th>
-                              <th><label>Created At</label></th>
-                              <th><label>Action</label></th>
+                              <th>#</th>
+                              <th>Ads Name</th>
+                              <th>Ads Category</th>
+                              <th>Ads Play</th>
+                              <th>Status</th>
+                              <th>Created At</th>
+                              <th>Action</th>
                            </tr>
                         </thead>
                         <tbody>
