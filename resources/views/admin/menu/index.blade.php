@@ -80,7 +80,7 @@
 					
 			<div class="panel-heading">
 				<div class="panel-title">
-					Organize the Menu Items below: (max of 3 levels)
+					<p class="p1">Organize the Menu Items below: (max of 3 levels)</p>
 				</div>
 				
 				<div class="panel-options">
