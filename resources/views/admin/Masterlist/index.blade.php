@@ -1,5 +1,10 @@
 @extends('admin.master')
-
+<style>
+       .form-control {
+    background: #fff!important; */
+   
+}
+</style>
 <div id="content-page" class="content-page">
     <div class="container-fluid">
        <div class="row">

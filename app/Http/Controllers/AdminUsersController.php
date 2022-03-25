@@ -1321,15 +1321,19 @@ class AdminUsersController extends Controller
     $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
     $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
 
-        $registered = User::where('role','registered')->get();
-        $subscription = User::where('role','subscriber')->get();
-        $admin = User::where('role','admin')->get();
+        $registered = User::where('role','registered')->count();
+        $subscription = User::where('role','subscriber')->count();
+        $admin = User::where('role','admin')->count();
 
         // dd($registered);
     $data = array(
         'today_log' => $today_log,
         'lastweek_log' => $lastweek_log,
         'month_log' => $month_log,
+        'registered' => $registered,
+        'subscription' => $subscription,
+        'admin' => $admin,
+
         );
            return \View::make('admin.analytics.revenue',$data);
     } 
