@@ -3724,7 +3724,7 @@ return response()->json($response, 200);
     return response()->json($response, 200);
   }
 
-  public function nextfavoritevideo(Request $request)
+  public function nextfavouritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
@@ -4046,7 +4046,7 @@ return response()->json($response, 200);
 
   }
 
-  public function remove_continue_watchingepisode(Request$request)
+  public function remove_continue_watchingepisode(Request $request)
   {
       $user_id = $request->user_id;
       if($request->episode_id){
