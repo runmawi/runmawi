@@ -18,7 +18,7 @@
          <div class="">
 		<div class="row">
 			<div class="col-md-4">
-				<h3><i class="entypo-newspaper"></i> Page</h3>
+				<h4><i class="entypo-newspaper"></i> Page</h4>
 			</div>
             <div class="col-md-8" align="right">
                 <a href="{{ URL::to('admin/pages/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
