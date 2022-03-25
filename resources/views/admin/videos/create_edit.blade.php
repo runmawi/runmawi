@@ -91,7 +91,7 @@
 @endforeach
 @endif
 
-<h5 class="p-0 mt-3 ml-3">Video Info Details</h5>
+<h5 class="p-1 mt-3 ml-3">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
@@ -776,7 +776,7 @@
    #progressbar li {
    list-style-type: none;
    font-size: 15px;
-   width: 20%;
+   width: 16%;
    float: left;
    position: relative;
    font-weight: 400;
