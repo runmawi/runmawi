@@ -115,7 +115,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
-
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Setting</a>
                 </div>
             </div>
 
@@ -188,6 +188,35 @@ border-radius: 0px 4px 4px 0px;
         </div>
    
 	</div>
+
+    <!-- Default Image Setting-->
+     <div class="container-fluid" id="Defaut_image_setting" style="">
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Default Image</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 align-center">
+                            <div class="row">
+                                <div>
+                                    <div class="default_video_image" style="margin: auto;">
+                                        @if(!empty($settings->default_video_image))
+                                            <img src="{{ URL::to('/') . '/public/uploads/images/' . $settings->default_video_image }}" style="max-height: 25%; max-width: 25%" />
+                                        @endif
+                                    </div>
+                                 
+                                    <p class="p1">Upload Your Default Image:</p>
+                                    <input type="file" multiple="true" class="form-control" name="default_video_image" id="default_video_image" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
 
         <!-- <div class="container-fluid" id="ppv" > -->
         <div class="row">
@@ -792,7 +821,7 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
 		$('#advertisement').hide();
-
+        $("#Defaut_image_setting").hide();
     
 
 
@@ -809,6 +838,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+        $("#Defaut_image_setting").hide();
 	});
 	$('#ppv_setting').click(function(){
 		// alert();
@@ -824,6 +854,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+        $("#Defaut_image_setting").hide();
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -837,6 +868,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+        $("#Defaut_image_setting").hide();
 	});
 	$('#registration_setting').click(function(){
 		$('#site').hide();
@@ -850,6 +882,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+        $("#Defaut_image_setting").hide();
 	});
 	$('#email_setting').click(function(){
 		$('#site').hide();
@@ -863,6 +896,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#advertisement').hide();
         $('#script').hide();
 		$('#app').hide();
+        $("#Defaut_image_setting").hide();
 	});
 	$('#social_setting').click(function(){
 		$('#site').hide();
@@ -877,7 +911,7 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
-
+        $("#Defaut_image_setting").hide();
 	});
 	$('#subscription_setting').click(function(){
 		$('#site').hide();
@@ -892,7 +926,7 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
-
+        $("#Defaut_image_setting").hide();
 	});
 	$('#login_setting').click(function(){
 		$('#site').hide();
@@ -908,7 +942,7 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
-
+        $("#Defaut_image_setting").hide();
 	});
 	$('#advertisement_setting').click(function(){
 		$('#videos_settings').hide();
@@ -923,7 +957,7 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
 		$('#scriptsetting').hide();
-
+        $("#Defaut_image_setting").hide();
 	});
 
 
@@ -941,10 +975,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#script').show();
 		$('#scriptsetting').show();
-
+        $("#Defaut_image_setting").hide();
 		$('#settingupdate').hide();
-
-
 	});
 
 	$('#app_setting').click(function(){
@@ -963,10 +995,29 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').hide();
 		$('#appupdate').show();
 		$('#scriptsetting').hide();
-
-
-
+        $("#Defaut_image_setting").hide();
 	});
+
+    $("#default_Image_setting").click(function () {
+        // alert();
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#season_setting").hide();
+        $("#Defaut_image_setting").show();
+        $("#ppv_setting").hide();
+        $("#demo_mode").hide();
+        $("#Pay_Per_view_Hours").hide();
+    });
 
 	});
 </script>
