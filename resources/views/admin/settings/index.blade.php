@@ -375,8 +375,8 @@ border-radius: 0px 4px 4px 0px;
     </div>
 
         <!-- <div class="container-fluid" id="email"> -->
-        <div lass="container-fluid row mt-3 " id="email" class="row mt-3">
-            <div class="col-md-6">
+        <div class="container-fluid row mt-3 " id="email">
+            <div class="col-md-10">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>System Email</label></div>
@@ -530,7 +530,7 @@ border-radius: 0px 4px 4px 0px;
      
         <!-- <div class="container-fluid" id="login" style=""> -->
         <div class="container-fluid" id="login" style="">
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Login Page Content Image</label></div>
@@ -572,7 +572,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel panel-primary" data-collapsed="0">
@@ -685,31 +685,32 @@ border-radius: 0px 4px 4px 0px;
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
             </form>
-</div>
 
-<div class="container-fluid" id="script" style="margin-top: -52%;margin-left: 22%;">
+
+<div class="container-fluid" id="script" >
 <h5>APP Script:</h5>
     <div class="row">
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h5>Header Script CDN:</h5>
                 <textarea  rows="5" class="form-control" name="header_script" id="summaryheader"
                     placeholder="Header Script"></textarea>
-            </div>
-                <h5>Footer Script CDN:</h5>
+            
+                <h5 class="mt-3">Footer Script CDN:</h5>
                 <textarea  rows="5" class="form-control" name="footer_script" id="summaryfooter"
                     placeholder="Footer Script"></textarea>
-                    </div>
-                    <div class="col-md-6">
+                   </div>
+                    <div class="col-md-12 mt-3">
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                 <input type="submit" id="scriptsetting" value="Update Settings" class="btn btn-primary pull-right" />
+                         </div>
             </form>
             </div>
 
     </div>
 <!-- </div> -->
 
-<div class="container-fluid" id="app" style="margin-top: -52%;margin-left: 22%;">
+<div class="container-fluid" id="app" >
 <h5>APP Setting:</h5>
     <div class="row">
 	<form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
@@ -739,13 +740,13 @@ border-radius: 0px 4px 4px 0px;
             ">
         <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary " />
        </div>
-
+        </div>
 	</form>
     
             </div>
 
     </div>
-</div>
+    </div></div></div></div>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     
     <script>
