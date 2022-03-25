@@ -211,6 +211,7 @@ Route::group([
     Route::get('FeaturedVideo ','ApiAuthController@FeaturedVideo');
     Route::post('RecentViews ','ApiAuthController@RecentViews');
     Route::get('RecentlyViewed ','ApiAuthController@RecentlyViewed');
+    Route::get('RecentlyViewedVideos ','ApiAuthController@RecentlyViewedVideos');
     Route::post('AddRecentAudio ','ApiAuthController@AddRecentAudio');
     Route::get('SubscriptionEndNotification ','ApiAuthController@SubscriptionEndNotification');
     Route::post('SubscriptionPayment','ApiAuthController@SubscriptionPayment');
