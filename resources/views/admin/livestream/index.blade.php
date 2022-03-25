@@ -110,7 +110,7 @@
 
 		<div class="clear"></div>
 
-		<div class="pagination-outter mt-3 pull-right"><?= $videos->appends(Request::only('s'))->render(); ?></div>
+		<div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right"><?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
 		
 	</div>
@@ -125,6 +125,7 @@
 
 		$(document).ready(function(){
 			var delete_link = '';
+			$('#DataTables_Table_0_paginate').hide();
 
 			$('.delete').click(function(e){
 				e.preventDefault();
