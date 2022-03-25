@@ -68,6 +68,7 @@
 <script src="https://malsup.github.io/jquery.form.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+<div id="content-page" class="content-page">
 <div id="content-page" class="">
 <div class="container-fluid">
 <div class="row">
@@ -89,8 +90,8 @@
 </div>
 @endforeach
 @endif
-<div id="content-page" class="content-page">
-<h5>Video Info Details</h5>
+
+<h5 class="p-0 mt-3 ml-3">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
@@ -644,6 +645,11 @@
    </div>
 </div>
     </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 <style>
    #heading {
    text-transform: uppercase;
@@ -770,7 +776,7 @@
    #progressbar li {
    list-style-type: none;
    font-size: 15px;
-   width: 16%;
+   width: 20%;
    float: left;
    position: relative;
    font-weight: 400;
