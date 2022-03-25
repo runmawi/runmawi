@@ -20,7 +20,7 @@
     }
    #video_upload .file form i {display: block; font-size: 50px;}
 </style>
-<div id="content-page content_videopage" class="content-page">
+<div id=" content_videopage" class="content-page">
    <div class="container-fluid" id="content_videopage">
       <div class="admin-section-title">
          <div class="iq-card">
@@ -274,8 +274,10 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
    <script src="https://malsup.github.io/jquery.form.js"></script>
-   <div id="content-page" class="content-page1">
+   <div id="content-page" class="content-page1" style="padding:0px!important;">
       <div class="container-fluid">
+          
+           <div class="iq-card " style="padding:40px;">
          <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
                <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
@@ -701,6 +703,7 @@
    </div>
 </div>
 </div>
+</div>
 <style>
 #heading {
     text-transform: uppercase;
@@ -745,7 +748,7 @@
     margin-top: 2px;
     box-sizing: border-box;
     color: #000;
-    background-color: #f2f5fa;
+   
     font-size: 16px;
 }
 

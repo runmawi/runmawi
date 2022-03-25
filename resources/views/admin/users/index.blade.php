@@ -1,5 +1,9 @@
 @extends('admin.master')
-
+<style>
+    .form-control{
+        background: #fff!important;
+    }
+</style>
 @section('content')
 <?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
 <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
