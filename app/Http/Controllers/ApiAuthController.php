@@ -4271,12 +4271,16 @@ return response()->json($response, 200);
 
       // $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
       $recent_audios_count = Audio::get()->count();
+      // $image_path = public_path().'/uploads/images/';
 
 
       if ( $recent_audios_count > 0) {
 
-        $allaudios =  Audio::get();
-
+        // $allaudios =  Audio::get();
+        $allaudios = Audio::get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+      });
           $response = array(
               'status'=>'true',
               'message'=>'success',
