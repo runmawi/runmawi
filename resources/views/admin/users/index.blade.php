@@ -1,5 +1,9 @@
 @extends('admin.master')
-
+<style>
+    .form-control{
+        background: #fff!important;
+    }
+</style>
 @section('content')
 <style>
 .pagination{
