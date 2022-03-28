@@ -160,8 +160,10 @@ class AdminLiveStreamController extends Controller
         }  
         
         if(empty($data['status'])){
-            $data['status'] = 0;
-        }  
+            $status = 0;
+        } else{
+            $status = 1;
+        } 
         if(empty($data['banner'])){
             $data['banner'] = 0;
         }  
@@ -250,6 +252,7 @@ class AdminLiveStreamController extends Controller
         $movie->publish_time =$data['publish_time'];
         $movie->image = $image;
         $movie->mp4_url =$mp4_url;
+        $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = 1 ;
         $movie->user_id =Auth::User()->id;

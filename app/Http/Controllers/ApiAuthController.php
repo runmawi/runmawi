@@ -75,6 +75,7 @@ use App\EmailTemplate;
 use App\SubscriptionPlan;
 use App\Multiprofile;
 use App\LanguageVideo;
+use App\CategoryAudio;
 use Session;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Geofencing;
@@ -1006,16 +1007,39 @@ public function verifyandupdatepassword(Request $request)
 
   public function livestreams()
   {
-    $livecategories = LiveCategory::select('id','image')->get()->toArray();
+    // $livecategories = LiveCategory::select('id','image')->get()->toArray();
+    
+    // $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
+    //  $videos_cat = VideoCategory::where('id','=',$videos_cat_id)->get();
+    //  $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
+    // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+    //   ->where('video_id',$videoid)->get('name');
+    //   foreach($main_genre as $value){
+    //     $category[] = $value['name']; 
+    //   }
+    //   if(!empty($category)){
+    //   $main_genre = implode(",",$category);
+    //   }else{
+    //     $main_genre = "";
+    //   }
+    //   $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
+    //   ->where('languagevideos.video_id',$videoid)->get('name');
+    //   foreach($languages as $value){
+    //     $language[] = $value['name']; 
+    //   }
+    //   if(!empty($language)){
+    //   $languages = implode(",",$language);
+    //   }else{
+    //     $languages = "";
+    //   }
+
+    // echo "<pre>"; print_r($livecategories);exit();
     $myData = array();
-    foreach ($livecategories as $key => $livecategory) {
-      $livecategoryid = $livecategory['id'];
-      $genre_image = $livecategory['image'];
-      $videos= LiveStream::where('video_category_id',$livecategoryid)->where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+
+      $videos= LiveStream::where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-      $categorydetails = LiveCategory::where('id','=',$livecategoryid)->first();
 
       if(count($videos) > 0){
         $msg = 'success';
@@ -1023,18 +1047,17 @@ public function verifyandupdatepassword(Request $request)
         $msg = 'nodata';
       }
       $myData[] = array(
-        "genre_name"   => $categorydetails->name,
-        "genre_id"   => $livecategoryid,
-        "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
-        "message" => $msg,
+        // "genre_id"   => $livecategoryid,
+        // "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
+        // "message" => $msg,
         "videos" => $videos
       );
 
-    }
+    
 
     $response = array(
       'status' => 'true',
-      'genre_movies' => $myData
+      'live_streams' => $myData
     );
     return response()->json($response, 200);
   
@@ -1278,6 +1301,7 @@ public function verifyandupdatepassword(Request $request)
         $path = URL::to('/').'/public/uploads/avatars/';
         $logo = $request->file('avatar');
         if($logo != '' && $logo != null) {
+
             $file_old = $path.$logo;
             if (file_exists($file_old)){
               unlink($file_old);
@@ -1286,8 +1310,16 @@ public function verifyandupdatepassword(Request $request)
           $avatar = $file->getClientOriginalName();
           $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
+        }elseif(!empty($user->avatar)){
+          $avatar = $user->avatar;
         } else {
           $avatar = 'default.png';
+        }
+        if(!empty($request->user_password)){
+          $user_password = Hash::make($request->user_password); 
+          // print_r($user_password);exit;
+        }else{
+          $user_password = $user->password;
         }
         $user = User::find($id);
         $user->email = $request->user_email;
@@ -1295,13 +1327,14 @@ public function verifyandupdatepassword(Request $request)
         $user->name = $request->user_name;
         $user->ccode = $request->user_ccode;
         $user->mobile = $request->user_mobile;
+        $user->password = $user_password;
         $user->avatar = $avatar;
         $user->save();
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
       );
-    send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
+    // send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
         return response()->json($response, 200);
    }
 
@@ -1352,6 +1385,33 @@ public function verifyandupdatepassword(Request $request)
         $response = array(
           'status'=>'true',
           'message'=>'Added  to  Your Favorite List'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+  public function addwishlistaudio(Request $request) {
+
+    $user_id = $request->user_id;
+    //$type = $request->type;//channel,ppv
+    $audio_id = $request->audio_id;
+    if($request->audio_id != ''){
+      $count = Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->count();
+      if ( $count > 0 ) {
+        Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Wishlist List'
+        );
+      } else {
+        $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
+        Wishlist::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added  to  Your Wishlist List'
         );
 
       }
@@ -3399,22 +3459,67 @@ public function upnextAudio(Request $request){
         
          
         $audio_id = $request->audio_id;
-        
-        $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
+        $album_id  = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->first();
+        $upnext_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+        ->select('audio.*')
+        ->where('category_id', $album_id)
+        ->count();
+        // $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
         
         //$album_id = $request->album_id;
-    $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
+    // $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
         
-    $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
-
+    // $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
+if($upnext_audios > 0){
+  $album_all_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+  ->select('audio.*')
+  ->where('category_id', $album_id)
+  ->get();
     $response = array(
       'status'=>'true',
       'message'=>'success',
       'audio_albums' =>$album_all_audios
     );
+  }else{
+    $response = array(
+      'status'=>'false',
+      'message'=>'success',
+      'audio_albums' =>'No Upnext Audios Added'
+    );
+  }
     return response()->json($response, 200);
   }   
 
+
+  public function similarAudio(Request $request){
+        
+         
+    $audio_id = $request->audio_id;
+    $album_id  = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->first();
+    $similarAudio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id','!=', $album_id)
+    ->count();
+
+if($similarAudio > 0){
+$similar_Audio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+->select('audio.*')
+->where('category_id','!=', $album_id)
+->get();
+$response = array(
+  'status'=>'true',
+  'message'=>'success',
+  'similar_audio' =>$similar_Audio
+);
+}else{
+$response = array(
+  'status'=>'false',
+  'message'=>'success',
+  'similar_audio' =>'No Similar Audios Added'
+);
+}
+return response()->json($response, 200);
+}   
   //Login with Mobile number
   public function MobileLogin(Request $request)
   {
@@ -3619,7 +3724,7 @@ public function upnextAudio(Request $request){
     return response()->json($response, 200);
   }
 
-  public function nextfavoritevideo(Request $request)
+  public function nextfavouritevideo(Request $request)
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
@@ -3941,7 +4046,7 @@ public function upnextAudio(Request $request){
 
   }
 
-  public function remove_continue_watchingepisode(Request$request)
+  public function remove_continue_watchingepisode(Request $request)
   {
       $user_id = $request->user_id;
       if($request->episode_id){
@@ -4163,13 +4268,14 @@ public function upnextAudio(Request $request){
 
       $date = date('Y-m-d', strtotime('-10 days'));
 
-      $allaudios =  Audio::All();
 
       // $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
-      $recent_audios_count = Audio::All()->count();
+      $recent_audios_count = Audio::get()->count();
 
 
       if ( $recent_audios_count > 0) {
+
+        $allaudios =  Audio::get();
 
           $response = array(
               'status'=>'true',
@@ -4473,11 +4579,19 @@ public function upnextAudio(Request $request){
 
     public function albumlist(Request $request)
     {
+        $audiocategories_count = AudioCategory::get()->count();
+        if($audiocategories_count > 0){
         $audiocategories = AudioCategory::all();
         $response = array(
             'status'=>'true',
             'audiocategories'=>$audiocategories
         );
+      }else{
+        $response = array(
+          'status'=>'false',
+          'audiocategories'=> 'No Categories Added'
+      );
+      }
         return response()->json($response, 200);
     }
 
@@ -4506,10 +4620,24 @@ public function upnextAudio(Request $request){
             $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
             return $item;
         });
+    $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id', $album_id)
+    ->count();
+    
+    if($categoryauido > 0){
+    $albumcategoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+    ->select('audio.*')
+    ->where('category_id', $album_id)
+    ->get();
+    }else{
+      $albumcategoryauido =  'No Audio Found';
+    }
         $response = array(
             'status'=>'true',
             // 'albumname'=>AudioCategory::where('id',$album_id)->first()->name,
-            'audioalbum'=>$audioalbum
+            'audioalbum'=>$audioalbum,
+            'albumcategoryauido' => $albumcategoryauido , 
         );
         return response()->json($response, 200);
     }

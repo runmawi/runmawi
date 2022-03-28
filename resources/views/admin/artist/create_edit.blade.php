@@ -21,7 +21,7 @@
 
 <div id="content-page" class="content-page">
     <!-- This is where -->
-    <div class="">
+    <div class="iq-card">
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
         @if (Session::has('message'))
         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -35,7 +35,7 @@
             @if(!empty($artist->id))
             <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
             @else
-            <h3 class="fs-title">Manage Artist</h3>
+            <h3 class="fs-title">Create Artist</h3>
             @endif
         </div>
         <hr />
@@ -82,10 +82,11 @@
                 @endif
 
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-            </div>
-            <div class="rk">
+                <div class=" p-0 mt-4">
                 <input type="submit" value="{{ $button_text }}" class="btn btn-primary mr-2" />
             </div>
+            </div>
+            
             <div class="clear"></div>
         </form>
 

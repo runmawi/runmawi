@@ -132,8 +132,7 @@ border-radius: 0px 4px 4px 0px;
 			
 		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<div class="panel-body mt-3" style="display: flex;
-    justify-content: flex-end;">
+		<div class="panel-body mt-3 ml-2" >
 <input type="submit" value="Update Email Settings" class="btn btn-primary " />
             </div>
 	</form>
@@ -161,9 +160,9 @@ border-radius: 0px 4px 4px 0px;
                      </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table id="template" class="table table-striped table-bordered table movie_table " style="width:100%">
+                           <table id="template" class="table table-striped table-bordered text-center table movie_table " style="width:100%">
                               <thead>
-                                 <tr>
+                                 <tr class="r1">
                                     <th>ID</th>
                                     <th>Template</th>
                                     <th>Subject</th>
@@ -176,14 +175,14 @@ border-radius: 0px 4px 4px 0px;
                                  <td> <p class="mb-0">{{ $template->id }}</p></td>
                                     <td>
                                        <div class="media align-items-center">
-                                          <div class="media-body text-white text-left ml-3">
+                                          <div class="media-body text-white  ml-3">
                                              <p class="mb-0">{{ $template->template_type }}</p>
                                           </div>
                                        </div>
                                     </td>
                                     <td>{{ $template->heading }}</td>
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class="align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('admin/template/view') . '/' . $template->id }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""

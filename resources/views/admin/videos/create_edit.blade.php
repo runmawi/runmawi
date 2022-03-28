@@ -68,6 +68,7 @@
 <script src="https://malsup.github.io/jquery.form.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+<div id="content-page" class="content-page">
 <div id="content-page" class="">
 <div class="container-fluid">
 <div class="row">
@@ -89,8 +90,8 @@
 </div>
 @endforeach
 @endif
-<div id="content-page" class="content-page">
-<h5>Video Info Details</h5>
+
+<h5 class="p-1 mt-3 ml-3">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
@@ -280,7 +281,7 @@
                     </div>
                     <div class="col-sm-6 form-group mt-3" id="publishlater">
                         <label class="">Publish Time</label>
-                        <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
+                        <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
                 </div>
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -497,17 +498,17 @@
                                </div> 
                                <div class="panel-body"> 
                                    <div>
-                                        <label for="featured">Is this video Featured:</label>
+                                        <label class="p2" for="featured">Is this video Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
                                    <div class="clear"></div>
                                    <div>
-                                       <label for="active">Is this video Active:</label>
+                                       <label class="p2" for="active">Is this video Active:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
                                     <div class="clear"></div>
                                    <div>
-                                       <label for="banner">Is this video Banner:</label>
+                                       <label class="p2" for="banner">Is this video Banner:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
                                     <div class="clear"></div>
@@ -643,6 +644,12 @@
       </div>
    </div>
 </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 <style>
    #heading {
    text-transform: uppercase;
@@ -659,7 +666,7 @@
    content: "\f030"
    }
    #msform fieldset {
-   background: white;
+  
    border: 0 none;
    border-radius: 0.5rem;
    box-sizing: border-box;
@@ -683,7 +690,7 @@
    margin-top: 2px;
    box-sizing: border-box;
    color: #000;
-   background-color: #f2f5fa;
+  
    font-size: 16px;
    }
    #msform input:focus,

@@ -8,7 +8,7 @@
 
 <div id="content-page" class="content-page">
 	<div class="container-fluid">
-		<div class="">
+		<div class="iq-card">
 
 			<div id="admin-container">
 				<!-- This is where -->

@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class AdSurgeSeeder extends Seeder
+class AdSurgeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +15,6 @@ class AdSurgeSeeder extends Seeder
     {
         DB::table('ads_surge')->truncate();
 
-        
         $Adsurge = [
             [  'title'      => '9', 
                'start'      => '2022-03-03 00:00:00',
@@ -31,5 +31,5 @@ class AdSurgeSeeder extends Seeder
         ];
 
         DB::table('ads_surge')->insert($Adsurge);
-        }
+    }
 }

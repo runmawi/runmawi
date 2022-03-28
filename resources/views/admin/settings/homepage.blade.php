@@ -69,97 +69,112 @@ border-radius: 0px 4px 4px 0px;
     <div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
-                        <div class="row align-items-center">
+                        <div class="row align-items-center p-2">
                         <!-- <div class="row"> -->
+                            
                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Featured Video </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                              
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                          <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input name="featured_videos" type="checkbox"  @if ($settings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
                                         <span class="slider round"></span>
                                         </label>
+                                         <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                   
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Latest Video </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                    
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Category Video </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input  type="checkbox"  name="category_videos"   @if ($settings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
                                         <span class="slider round"></span>
                                         </label>
+                                           <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                 
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Live Video </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->live_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_videos" id="live_videos">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                    
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Audios </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->audios == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="audios" id="audios">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                    
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Albums </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->albums == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="albums" id="albums">
                                         <span class="slider round"></span>
                                         </label>
+                                         <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                   
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Series </label></div>
-                                <div>ON</div>
-                                    <div class="mt-1">
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">ON</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->series == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="series" id="series">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">OFF</div>
                                     </div>
-                                    <div>OFF</div>
+                                    
                                 </div>
                             </div>
                         <!-- </div> -->
@@ -168,28 +183,32 @@ border-radius: 0px 4px 4px 0px;
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Recommendation  </label></div>
-                                <div>OFF</div>
-                                    <div class="mt-1">
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                           <div class="mr-2">OFF</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->Recommendation  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="Recommendation" id="Recommendation">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">ON</div>
                                     </div>
-                                    <div>NO</div>
+                                   
                                 </div>
                             </div>
 
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Auto Intro Skip  </label></div>
-                                <div>OFF</div>
-                                    <div class="mt-1">
+                              
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
                                         <label class="switch">
                                         <input type="checkbox"  @if ($settings->AutoIntro_skip  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="AutoIntro_skip" id="AutoIntro_skip">
                                         <span class="slider round"></span>
                                         </label>
+                                        <div class="ml-2">ON</div>
                                     </div>
-                                    <div>NO</div>
+                                   
                                 </div>
                             </div>
 

@@ -12,6 +12,10 @@
     .lar{
         margin: 4px;
     }
+     .form-control {
+    background: #fff!important; */
+   
+}
 </style>
 
 @section('css')
