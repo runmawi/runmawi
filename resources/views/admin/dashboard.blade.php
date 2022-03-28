@@ -30,6 +30,78 @@
       <div id="content-page" class="content-page">
          <div class="container-fluid">
              <div class="row">
+                 <div class="col-lg-4">
+                  <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
+                     <div class="iq-card-header">
+                        <div class="iq-header-title">
+                           <h4 class="card-title text-center">User's Of {{ GetWebsiteName() }}</h4>
+                        </div>
+                     </div>
+                     <div class="iq-card-body pb-0">
+                        <div id="view-chart-01">
+                        </div>
+                        <div class="row mt-1">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="iq-card1">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total  
+                                          Subscriber's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="iq-card1">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height">
+                                           New Subscriber's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="iq-card1">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                                Video's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="iq-card1">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height">  Total
+                                          Visitor's
+                                          </p>
+                                       <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
                 <div class="col-lg-8">
                     <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
@@ -52,7 +124,7 @@
                                 <div class="col-sm-6">
                                    <div class="tab-content mt-0" id="v-pills-tabContent">
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                         <label class="m-0">First things firt, you need Video.</label>
+                                         <label class="m-0">First things first, you need Video.</label>
                                          <p class="p1">Upload a video to get started.</p>
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
@@ -70,8 +142,10 @@
                         </div>
                     </div> 
                 </div>
+                 
              </div>
             <div class="row">
+                
                <div class="col-lg-8">
                   <div class="row">
                      <div class="col-sm-6 col-lg-6 col-xl-3">
@@ -192,78 +266,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-4">
-                  <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
-                     <div class="iq-card-header">
-                        <div class="iq-header-title">
-                           <h4 class="card-title text-center">User's Of {{ GetWebsiteName() }}</h4>
-                        </div>
-                     </div>
-                     <div class="iq-card-body pb-0">
-                        <div id="view-chart-01">
-                        </div>
-                        <div class="row mt-1">
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total  
-                                          Subscriber's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">
-                                           New Subscriber's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total 
-                                                Video's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">  Total
-                                          Visitor's
-                                          </p>
-                                       <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+               
             </div>
             <div class="row">
                <div class="col-sm-12  col-lg-5">
