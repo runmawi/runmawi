@@ -52,7 +52,7 @@
                                 <div class="col-sm-6">
                                    <div class="tab-content mt-0" id="v-pills-tabContent">
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                         <label class="m-0">First things firt, you need Video.</label>
+                                         <label class="m-0">First things first, you need Video.</label>
                                          <p class="p1">Upload a video to get started.</p>
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
