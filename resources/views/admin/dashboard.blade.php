@@ -113,7 +113,7 @@
                         </div>
                         <div class="iq-card-body">
                             <p></p>
-                             <div class="row">
+                             <div class="row align-items-center">
                                 <div class="col-sm-6">
                                    <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>

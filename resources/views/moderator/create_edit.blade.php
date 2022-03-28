@@ -21,7 +21,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i>Update Moderator Users</h3> 
+		<h4><i class="entypo-globe"></i>Update Moderator Users</h4> 
 	</div>
 	<div class="clear"></div>
 	@if (Session::has('message'))
