@@ -290,7 +290,7 @@ class AdminSettingsController extends Controller
             $files = $input['default_video_image'];
             $format=$files->getClientOriginalExtension();
             $filename ='default_image'.'.' . 'jpg';
-            if(!file_exists(public_path().'/uploads/images/'.$defaultImage_setting)){
+            if(file_exists(public_path().'/uploads/images/'.$defaultImage_setting)){
                 unlink( public_path().'/uploads/images/'.$defaultImage_setting); // Remove Image
             }
             Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
