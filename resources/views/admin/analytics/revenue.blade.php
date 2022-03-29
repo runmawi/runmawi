@@ -119,6 +119,8 @@
                                     </figure>
                                 </div> 
                             </div> 
+                            <br>
+                            <br>
                             <div class="row">
                                 <div class="col-md-4">
                                 <select class="form-control"  id="role" name="role">
@@ -128,13 +130,15 @@
                                 <option value="admin" >Admin</option>
                               </select>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                  <h5> User Count : <span id="user_tables"> </span></h5>
                                 </div> 
                                  <div class="col-md-6">
-                                   
                                 </div> 
                             </div> 
+                            <br>
+                            <br>
+
                             <div class="row">
                                 <div class="col-md-12">
                                 <table class="table" id="user_table" style="width:100%">
