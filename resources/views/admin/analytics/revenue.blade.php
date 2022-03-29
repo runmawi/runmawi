@@ -129,11 +129,9 @@
        var end_time =  $('#end_time').val();
        var url =  $('#start_date_url').val();
       if(start_time == "" && end_time == ""){
-        var registered = <?php echo $data['registered']; ?>;
-        var subscription = <?php echo $data['subscription']; ?>;
-        var admin = <?php echo $data['admin']; ?>;
+        var total_user = <?php echo $data['total_user']; ?>;
 
-        google.charts.load('current', {'packages':['corechart']});
+            google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
  
         function drawChart() {
@@ -142,7 +140,7 @@
             ['Month Name', 'Register Users Count'],
  
                 @php
-                foreach($data['subscription'] as $d) {
+                foreach($data['total_user'] as $d) {
                     echo "['".$d->month_name."', ".$d->count."],";
                 }
                 @endphp
@@ -177,25 +175,30 @@
                 },      
                 success: function(data){
                   google.charts.load('current', {'packages':['corechart']});
+                  google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+
                   var data = google.visualization.arrayToDataTable([
-                    ['Month Name', 'Register Users Count'],
-        
-                        @php
-                        foreach($data['registered'] as $d) {
-                            echo "['".$d->month_name."', ".$d->count."],";
-                        }
-                        @endphp
-                ]);
-        
-                var options = {
+                  ['Month Name', 'Register Users Count'],
+
+                      @php
+                      foreach($data['total_user'] as $d) {
+                          echo "['".$d->month_name."', ".$d->count."],";
+                      }
+                      @endphp
+                  ]);
+
+                  var options = {
                   title: 'Register Users Month Wise',
                   curveType: 'function',
                   legend: { position: 'bottom' }
-                };
-        
+                  };
+
                   var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-        
+
                   chart.draw(data, options);
+                  }
 
                }
            });

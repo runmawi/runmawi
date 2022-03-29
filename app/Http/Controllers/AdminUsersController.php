@@ -1329,22 +1329,12 @@ class AdminUsersController extends Controller
         $registered_count = User::where('role','registered')->count();
         $subscription_count = User::where('role','subscriber')->count();
         $admin_count = User::where('role','admin')->count();
-        $data['registered'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
+        $data['total_user'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
         ->whereYear('created_at', date('Y'))
         ->groupBy('month_name')
         ->orderBy('createdAt')
         ->get();
-        
-        $data['subscription'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
-        ->whereYear('created_at', date('Y'))
-        ->groupBy('month_name')
-        ->orderBy('createdAt')
-        ->get();
-        $data['admin'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
-        ->whereYear('created_at', date('Y'))
-        ->groupBy('month_name')
-        ->orderBy('createdAt')
-        ->get();
+
         // dd($data['registered'] );
         $data1 = array(
         // 'today_log' => $today_log,
@@ -1355,7 +1345,6 @@ class AdminUsersController extends Controller
         // 'registered' => $registered,
         // 'subscription' => $subscription,
         // 'admin' => $admin,
-
 
         );
             return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data]);
@@ -1479,30 +1468,11 @@ class AdminUsersController extends Controller
         $start_time = $data['start_time'] ;
         $end_time = $data['end_time'] ;
         if(!empty($start_time) && empty($end_time) ){
-            $registered = User::select(\DB::raw("COUNT(*) as count"), 
+            $total_users = User::select(\DB::raw("COUNT(*) as count"), 
             \DB::raw("MONTHNAME(created_at) as month_name"),
             \DB::raw('max(created_at) as createdAt'))
             ->whereYear('created_at', date('Y'))
             ->whereDate('created_at', '>=' , $start_time )
-            // ->whereBetween('created_at',[$start_time,$end_time])
-            ->groupBy('month_name')
-            ->orderBy('createdAt')
-            ->get();
-            $subscription = User::select(\DB::raw("COUNT(*) as count"), 
-            \DB::raw("MONTHNAME(created_at) as month_name"),
-            \DB::raw('max(created_at) as createdAt'))
-            ->whereYear('created_at', date('Y'))
-            ->whereDate('created_at', '>=' , $start_time )
-            // ->whereBetween('created_at',[$start_time,$end_time])
-            ->groupBy('month_name')
-            ->orderBy('createdAt')
-            ->get();
-            $admin = User::select(\DB::raw("COUNT(*) as count"), 
-            \DB::raw("MONTHNAME(created_at) as month_name"),
-            \DB::raw('max(created_at) as createdAt'))
-            ->whereYear('created_at', date('Y'))
-            ->whereDate('created_at', '>=' , $start_time )
-            // ->whereBetween('created_at',[$start_time,$end_time])
             ->groupBy('month_name')
             ->orderBy('createdAt')
             ->get();
@@ -1512,12 +1482,13 @@ class AdminUsersController extends Controller
 
         }
 
-        $data = array(
+        $value = array(
             'registered' => $registered,
             'subscription' => $subscription,
             'admin' => $admin,
+            'total_users' => $total_users,
             );
-        return  $data;
+        return  $value;
 
     } 
 
