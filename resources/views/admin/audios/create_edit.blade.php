@@ -87,7 +87,7 @@
             </div>
         </div>
 
-
+    </div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -163,9 +163,7 @@ data: {
 
 <style>
 
-    .p1{
-        font-size: 12px;
-    }
+    
     .select2-selection__rendered{
         background-color: #f7f7f7!important;
         border: none!important;
@@ -462,14 +460,14 @@ data: {
 												</div>
 											</div> 
 										</div>
-								
+                                    </div>
 									<div class="row">
-									<div class="row mt-3 align-items-center"> 
-									<div class="col-sm-4" id="ppv_price"> 
+									<div class="row mt-3 align-items-center ml-3"> 
+									<div class="col-sm-12" id="ppv_price"> 
                                     <label class="p2">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                                 </div>
-								<div class="col-sm-4" > 
+								<div class="col-sm-12" > 
                                 <?php if($settings->ppv_status == 1){ ?>
                                     <label class="p2" for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
