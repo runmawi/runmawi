@@ -1320,12 +1320,6 @@ class AdminUsersController extends Controller
 
     public function AnalyticsRevenue(){
 
-   
-    $start_time = "2022-02-01";
-    $end_time = "2022-03-11";
-
-    // dd($lineChart);
-
         $registered_count = User::where('role','registered')->count();
         $subscription_count = User::where('role','subscriber')->count();
         $admin_count = User::where('role','admin')->count();
@@ -1349,8 +1343,6 @@ class AdminUsersController extends Controller
         );
             return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data]);
 
-
-           return \View::make('admin.analytics.revenue',$data);
     } 
 
     public function exportCsv(Request $request){
@@ -1360,24 +1352,31 @@ class AdminUsersController extends Controller
         $end_time = $data['end_time'] ;
         if(!empty($start_time) && empty($end_time) ){
 
-            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
-            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
-            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+            $registered_count = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription_count = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->get();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->get();
+
 
         }elseif(!empty($start_time) && !empty($end_time)){
 
-            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
-            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
-            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
-    // $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
+            $registered_count = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription_count = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->get();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->get();
 
         }else{
+            $registered_count = User::where('role','registered')->count();
+            $subscription_count = User::where('role','subscriber')->count();
 
             $registered = User::where('role','registered')->get();
             $subscription = User::where('role','subscriber')->get();
-            $admin = User::where('role','admin')->get();
 
         } 
+
+        $file = 'users_'.rand(10,100000).'.csv' ;
         $headers = array(
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
@@ -1385,78 +1384,35 @@ class AdminUsersController extends Controller
             'Expires' => '0',
             'Pragma' => 'public',
         );
-        if (!File::exists(public_path()."/files")) {
-            File::makeDirectory(public_path() . "/files");
+         if (!File::exists(public_path()."/uploads/csv")) {
+            File::makeDirectory(public_path() . "/uploads/csv");
         }
-        $filename =  public_path("files/download.csv");
+        $filename =  public_path("/uploads/csv/".$file);
         $handle = fopen($filename, 'w');
         fputcsv($handle, [
             "Name",
             "Email",
         ]);
-        foreach ($registered as $each_user) {
-            fputcsv($handle, [
-                $each_user->username,
-                $each_user->email,
-            ]);
+        if($registered_count > 0){  
+            foreach ($registered as $each_user) {
+                fputcsv($handle, [
+                    $each_user->username,
+                    $each_user->email,
+                ]);
+            }
+        }
+        if($subscription_count > 0){  
+            foreach ($subscription as $each_user) {
+                fputcsv($handle, [
+                    $each_user->username,
+                    $each_user->email,
+                ]);
 
+            }
         }
         fclose($handle);
+
         return Response::download($filename, "download.csv", $headers);
-
-        //  $file_name = 'User.xlsx';
-
-//         $spreadsheet = new Spreadsheet();
-
-//         $sheet = $spreadsheet->getActiveSheet();
-
-//         $sheet->setCellValue('A1', 'Username');
-
-//         $sheet->setCellValue('B1', 'Email');
-
-//         $sheet->setCellValue('C1', 'Contact Number');
-
-//         $sheet->setCellValue('D1', 'Role');
-
-//         $count = 2;
-
-//         foreach($registered as $row)
-//         {
-//             $sheet->setCellValue('A' . $count, $row['username']);
-
-//             $sheet->setCellValue('B' . $count, $row['email']);
-
-//             $sheet->setCellValue('C' . $count, $row['mobile']);
-
-//             $sheet->setCellValue('D' . $count, $row['role']);
-
-//             $count++;
-//         }
-
-//         $writer = new Xlsx($spreadsheet);
-
-//         $writer->save($file_name);
-
-//         header("Content-Type: application/vnd.ms-excel");
-
-//         header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
-
-//         header('Expires: 0');
-
-//         header('Cache-Control: must-revalidate');
-
-//         header('Pragma: public');
-
-//         header('Content-Length:' . filesize($file_name));
-
-//         flush();
-
-//         readfile($file_name);
-
-//        //  exit;
-//    return \Redirect::back();
-//       
-
     } 
 
     public function StartDateRecord(Request $request){
