@@ -42,7 +42,7 @@
                         </div>
                         <div class="row mt-1">
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
+                              <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
@@ -56,7 +56,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
+                              <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
@@ -70,7 +70,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
+                              <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
@@ -84,7 +84,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
+                              <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
