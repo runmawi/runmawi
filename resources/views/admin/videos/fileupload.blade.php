@@ -749,7 +749,7 @@
     box-sizing: border-box;
     color: #000;
    
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #msform input:focus,
