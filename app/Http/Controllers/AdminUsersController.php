@@ -49,6 +49,8 @@ use App\WelcomeScreen;
 use App\SubscriptionPlan;
 use App\Devices;
 use Theme;
+use Response;
+use File;
 
 class AdminUsersController extends Controller
 {
@@ -1290,6 +1292,7 @@ class AdminUsersController extends Controller
              flush();
      
              readfile($file_name);
+
              return \Redirect::back();
 
         }
@@ -1317,26 +1320,233 @@ class AdminUsersController extends Controller
 
     public function AnalyticsRevenue(){
 
-    $today_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
-    $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
-    $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
+   
+    $start_time = "2022-02-01";
+    $end_time = "2022-03-11";
 
-        $registered = User::where('role','registered')->count();
-        $subscription = User::where('role','subscriber')->count();
-        $admin = User::where('role','admin')->count();
+    // dd($lineChart);
 
-        // dd($registered);
-    $data = array(
-        'today_log' => $today_log,
-        'lastweek_log' => $lastweek_log,
-        'month_log' => $month_log,
-        'registered' => $registered,
-        'subscription' => $subscription,
-        'admin' => $admin,
+        $registered_count = User::where('role','registered')->count();
+        $subscription_count = User::where('role','subscriber')->count();
+        $admin_count = User::where('role','admin')->count();
+        $data['registered'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->orderBy('createdAt')
+        ->get();
+        
+        $data['subscription'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->orderBy('createdAt')
+        ->get();
+        $data['admin'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->orderBy('createdAt')
+        ->get();
+        // dd($data['registered'] );
+        $data1 = array(
+        // 'today_log' => $today_log,
+        // 'lastweek_log' => $lastweek_log,
+        'admin_count' => $admin_count,
+        'subscription_count' => $subscription_count,
+        'registered_count' => $registered_count,
+        // 'registered' => $registered,
+        // 'subscription' => $subscription,
+        // 'admin' => $admin,
+
 
         );
+            return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data]);
+
+
            return \View::make('admin.analytics.revenue',$data);
     } 
+
+    public function exportCsv(Request $request){
+
+        $data = $request->all();
+        $start_time = $data['start_time'] ;
+        $end_time = $data['end_time'] ;
+        if(!empty($start_time) && empty($end_time) ){
+
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+
+        }elseif(!empty($start_time) && !empty($end_time)){
+
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+    // $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
+
+        }else{
+
+            $registered = User::where('role','registered')->get();
+            $subscription = User::where('role','subscriber')->get();
+            $admin = User::where('role','admin')->get();
+
+        } 
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path()."/files")) {
+            File::makeDirectory(public_path() . "/files");
+        }
+        $filename =  public_path("files/download.csv");
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, [
+            "Name",
+            "Email",
+        ]);
+        foreach ($registered as $each_user) {
+            fputcsv($handle, [
+                $each_user->username,
+                $each_user->email,
+            ]);
+
+        }
+        fclose($handle);
+        return Response::download($filename, "download.csv", $headers);
+
+        //  $file_name = 'User.xlsx';
+
+//         $spreadsheet = new Spreadsheet();
+
+//         $sheet = $spreadsheet->getActiveSheet();
+
+//         $sheet->setCellValue('A1', 'Username');
+
+//         $sheet->setCellValue('B1', 'Email');
+
+//         $sheet->setCellValue('C1', 'Contact Number');
+
+//         $sheet->setCellValue('D1', 'Role');
+
+//         $count = 2;
+
+//         foreach($registered as $row)
+//         {
+//             $sheet->setCellValue('A' . $count, $row['username']);
+
+//             $sheet->setCellValue('B' . $count, $row['email']);
+
+//             $sheet->setCellValue('C' . $count, $row['mobile']);
+
+//             $sheet->setCellValue('D' . $count, $row['role']);
+
+//             $count++;
+//         }
+
+//         $writer = new Xlsx($spreadsheet);
+
+//         $writer->save($file_name);
+
+//         header("Content-Type: application/vnd.ms-excel");
+
+//         header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+//         header('Expires: 0');
+
+//         header('Cache-Control: must-revalidate');
+
+//         header('Pragma: public');
+
+//         header('Content-Length:' . filesize($file_name));
+
+//         flush();
+
+//         readfile($file_name);
+
+//        //  exit;
+//    return \Redirect::back();
+//       
+
+    } 
+
+    public function StartDateRecord(Request $request){
+
+        $data = $request->all();
+        // echo "<pre>";
+        // print_r($data);exit;
+        // echo "<pre>";
+        $start_time = $data['start_time'] ;
+        $end_time = $data['end_time'] ;
+        if(!empty($start_time) && empty($end_time) ){
+            $registered = User::select(\DB::raw("COUNT(*) as count"), 
+            \DB::raw("MONTHNAME(created_at) as month_name"),
+            \DB::raw('max(created_at) as createdAt'))
+            ->whereYear('created_at', date('Y'))
+            ->whereDate('created_at', '>=' , $start_time )
+            // ->whereBetween('created_at',[$start_time,$end_time])
+            ->groupBy('month_name')
+            ->orderBy('createdAt')
+            ->get();
+            $subscription = User::select(\DB::raw("COUNT(*) as count"), 
+            \DB::raw("MONTHNAME(created_at) as month_name"),
+            \DB::raw('max(created_at) as createdAt'))
+            ->whereYear('created_at', date('Y'))
+            ->whereDate('created_at', '>=' , $start_time )
+            // ->whereBetween('created_at',[$start_time,$end_time])
+            ->groupBy('month_name')
+            ->orderBy('createdAt')
+            ->get();
+            $admin = User::select(\DB::raw("COUNT(*) as count"), 
+            \DB::raw("MONTHNAME(created_at) as month_name"),
+            \DB::raw('max(created_at) as createdAt'))
+            ->whereYear('created_at', date('Y'))
+            ->whereDate('created_at', '>=' , $start_time )
+            // ->whereBetween('created_at',[$start_time,$end_time])
+            ->groupBy('month_name')
+            ->orderBy('createdAt')
+            ->get();
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+
+        }
+
+        $data = array(
+            'registered' => $registered,
+            'subscription' => $subscription,
+            'admin' => $admin,
+            );
+        return  $data;
+
+    } 
+
+
+
+    public function StartEndDateRecord(Request $request){
+
+        $today_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
+        $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
+        $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
+    
+            $registered = User::where('role','registered')->count();
+            $subscription = User::where('role','subscriber')->count();
+            $admin = User::where('role','admin')->count();
+    
+            // dd($registered);
+        $data = array(
+            'today_log' => $today_log,
+            'lastweek_log' => $lastweek_log,
+            'month_log' => $month_log,
+            'registered' => $registered,
+            'subscription' => $subscription,
+            'admin' => $admin,
+    
+            );
+                return \View::make('admin.analytics.revenue',$data);
+        } 
+        
+
 
     public function ViewsRegion(){
 

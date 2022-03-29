@@ -206,7 +206,8 @@ return [
         App\Providers\SettingsServiceProvider::class,
         App\Providers\SocialServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
-        Zusamarehan\Tourify\TourifyServiceProvider::class
+        Zusamarehan\Tourify\TourifyServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         
     ],
@@ -272,6 +273,7 @@ return [
         'Agent' => 'Jenssegers\Agent\Facades\Agent::class',
         'Theme' => Facuz\Theme\Facades\Theme::class,
         'Zip' => ZanySoft\Zip\ZipFacade::class,
+  'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
