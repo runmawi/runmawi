@@ -27,7 +27,9 @@
         <div class="admin-section-title">
             <div class="iq-card">
                 <div class="row">
-                    <div class="col-md-4">
+					<div id="heading_option">
+						
+                    <div class="col-md-4" id="heading_option">
                         <h4><i class="entypo-archive"></i> Add Audio </h4>
                     </div>
 					@if (Session::has('message'))
@@ -41,6 +43,8 @@
                         </div>
                         @endforeach
                         @endif
+					</div>
+
                     <div class="col-md-8" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
@@ -621,6 +625,7 @@ $('#duration').mask('00:00:00');
     $('#Next').click(function(){
   $('#video_upload').hide();
   $('#optionradio').hide();
+  $('#heading_option').hide();
   $('#audio_file').hide();
   $('#Next').hide();
   $('#video_details').show();
