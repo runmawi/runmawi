@@ -9,7 +9,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-                <h5>Roles</h5></div>
+                <h4>Roles</h4></div>
 <div class="col-md-6" align="right">
 <p>
     <a class="btn btn-primary" href="{{ URL::to('admin/moderator/role') }}"><span class="glyphicon glyphicon-plus"></span> Add Role</a>

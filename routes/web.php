@@ -19,6 +19,8 @@ Route::get('/admin/filemanager', 'FileManagerController@index');
 Route::post('/admin/exportCsv', 'AdminUsersController@exportCsv');
 Route::post('/admin/start_date_url', 'AdminUsersController@StartDateRecord');
 Route::post('/admin/end_date_url', 'AdminUsersController@StartEndDateRecord');
+Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
+
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
