@@ -75,10 +75,11 @@
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
-<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
 
 $jsondata = json_decode($jsonString, true);
 // dd($jsondata);
+
 ?>
 <div id="content-page" class="content-page">
             <div class="row">
@@ -110,10 +111,38 @@ $jsondata = json_decode($jsonString, true);
                             <div class="row">
                                 <div class="col-md-4">
                                     <!-- <input type="text" class="daterange" /> -->
-                                    <label for="">Registered User : <?php if(!empty($data1['registered_count'])){ echo $data1['registered_count'] ; }else{ echo $data1['registered_count'] ; } ?></label> <br>
-                                    <label for="">Subscribed User : <?php if(!empty($data1['subscription_count'])){ echo $data1['subscription_count'] ; }else{ echo $data1['subscription_count'] ; }?></label><br>
-                                    <label for="">Admin Users : <?php if(!empty($data1['admin_count'])){ echo $data1['admin_count'] ; }else{ echo $data1['admin_count']; } ?></label><br>
-                                    <label for="">PPV Users : <?php if(!empty($data1['ppvuser_count'])){ echo $data1['ppvuser_count'] ; }else{ echo $data1['ppvuser_count']; } ?></label><br>
+                                    <label for="">Registered User : <?php if (!empty($data1['registered_count']))
+                                      {
+                                          echo $data1['registered_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['registered_count'];
+                                      } ?></label> <br>
+                                    <label for="">Subscribed User : <?php if (!empty($data1['subscription_count']))
+                                      {
+                                          echo $data1['subscription_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['subscription_count'];
+                                      } ?></label><br>
+                                    <label for="">Admin Users : <?php if (!empty($data1['admin_count']))
+                                      {
+                                          echo $data1['admin_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['admin_count'];
+                                      } ?></label><br>
+                                    <label for="">PPV Users : <?php if (!empty($data1['ppvuser_count']))
+                                      {
+                                          echo $data1['ppvuser_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['ppvuser_count'];
+                                      } ?></label><br>
 
                                     <!-- <label for="">PPV Users:</label><br>
                                     <label for="">Pre-Order:</label> -->
@@ -168,11 +197,15 @@ $jsondata = json_decode($jsonString, true);
                              <td>@if($user->phoneccode->phonecode == $user->ccode)  {{ $user->phoneccode->country_name }} @else No Country Added @endif</td>
                              <td>{{ $user->created_at }}</td> 
                              <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
-                              <?php if($user->active == 0){ ?>
+                            <?php if ($user->active == 0)
+                            { ?>
                               <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
-                            <?php }elseif($user->active == 1){ ?>
-                              <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
-                            <?php }?> 
+                            <?php
+                            }
+                            elseif ($user->active == 1)
+                            { ?>
+                              <td > <p class = "bg-success user_active"><?php echo "Active"; ?></p></td>
+                            <?php   } ?> 
 
                              </tr>
                              @endforeach
@@ -187,10 +220,10 @@ $jsondata = json_decode($jsonString, true);
             </div>
         </div>
         <input type="hidden" value="" id="chart_users">
-        <input type="hidden" id="exportCsv_url" value="<?php echo URL::to('/admin/exportCsv');?>">
-        <input type="hidden" id="start_date_url" value="<?php echo URL::to('/admin/start_date_url');?>">
-        <input type="hidden" id="end_date_url" value="<?php echo URL::to('/admin/end_date_url');?>">
-        <input type="hidden" id="listusers_url" value="<?php echo URL::to('/admin/list_users_url');?>">
+        <input type="hidden" id="exportCsv_url" value="<?php echo URL::to('/admin/exportCsv'); ?>">
+        <input type="hidden" id="start_date_url" value="<?php echo URL::to('/admin/start_date_url'); ?>">
+        <input type="hidden" id="end_date_url" value="<?php echo URL::to('/admin/end_date_url'); ?>">
+        <input type="hidden" id="listusers_url" value="<?php echo URL::to('/admin/list_users_url'); ?>">
 <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -418,5 +451,3 @@ $.ajaxSetup({
 
 
 </script>
-
-
