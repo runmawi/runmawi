@@ -129,12 +129,13 @@
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                          <p class="p1">Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                         
+                                          <p class="" >Setup website logo, Name, Social Links, Payment Types, etc.</p>
                                           <a href="/admin/settings">Go to Storefront Settings</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                           <p class="p1">Setup subscription Plans</p>
-                                          <a href="/admin/subscription-plans">Add Subscription Plans</a>
+                                          <a  href="/admin/subscription-plans">Add Subscription Plans</a>
                                       </div>
                                    </div>
                                 </div>
