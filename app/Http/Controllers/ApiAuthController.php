@@ -4425,7 +4425,9 @@ return response()->json($response, 200);
     {
         $user_id = $request->user_id;
         $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('artist_favourites.user_id',$user_id)->where('artist_favourites.favourites',1)->get(['artists.*']);
-        if($favoriteslist){
+        $favoriteslist_count = $favoriteslist->count(); 
+
+        if($favoriteslist_count > 0){
             $response = array(
                 'status' => 'true',
                 'favoriteslist' => $favoriteslist
@@ -4443,7 +4445,8 @@ return response()->json($response, 200);
     {
         $user_id = $request->user_id;
         $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('artist_favourites.user_id',$user_id)->where('artist_favourites.following',1)->get(['artists.*']);
-        if($followinglist){
+        $followinglist_count = $followinglist->count(); 
+        if($followinglist_count > 0){
             $response = array(
                 'status' => 'true',
                 'followinglist' => $followinglist
