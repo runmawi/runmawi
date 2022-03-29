@@ -68,10 +68,12 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
 <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
 <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
 
 <div id="content-page" class="content-page">
@@ -190,7 +192,7 @@
        });
    
     $(document).ready(function(){
-     
+    $('#user_table').DataTable();
       // var data['registered'] = 2;
       $('#start_time').change(function(){
        var start_time =  $('#start_time').val();
@@ -208,48 +210,47 @@
 
                 },      
                 success: function(value){
-                  $('#chart_users').val(value.total_users);  
-                  // alert($('#chart_users').val());
-                // value.total_users.forEach(function(element, index) { 
-                //   console.log(element.count);
+                  
 
-                // })
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
         
                 function drawChart() {
                   var linechart = value.total_users;
-                  // alert(value.total_users);
-                  // console.log(linechart);
-                  var data = google.visualization.arrayToDataTable(
-                        linechart.forEach(function(element, index) { 
-                    [element.month_name, element.count]
-                  })  
-                    // linechart
-                    );
-
-
+                  var data = new google.visualization.DataTable(linechart);
+                //   console.log(linechart);
+                //     var data = google.visualization.arrayToDataTable(
+                //         linechart.forEach(function(element, index) { 
+                //     [element.month_name, element.count]
+                //   })  
+                //     linechart
+                //     );
                 // var data = google.visualization.arrayToDataTable([
 
-                //   //   ['Month Name', 'Register Users Count'],
-                //   //     //   console.log(element.count);
-                //   // linechart.forEach(function(element, index) { 
-                //   //   [element.month_name, element.count]
-                //   // })         
+                //     ['Month Name', 'Register Users Count'],
+                //       //   console.log(element.count);
+                //   linechart.forEach(function(element, index) { 
+                //     [element.month_name, element.count]
+                //   })         
                 //   value.total_users
                 // ]);
-        
-                var options = {
-                  title: 'Register Users Month Wise',
-                  curveType: 'function',
-                  legend: { position: 'bottom' }
-                };
-        
+
+                  var data = new google.visualization.DataTable();
+                  data.addColumn('string', 'Month');
+                  data.addColumn('number', 'User Count');
+
+                  linechart.forEach(function (row) {
+                    data.addRow([
+                      row.month_name,
+                      row.count,
+                    ]);
+                  });
                   var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-        
-                  chart.draw(data, options);
+                  chart.draw(data, {
+                    // width: 400,
+                    // height: 240
+                  });
                 }
-                  // console.log(value);
                }
            });
       }
@@ -270,9 +271,27 @@
 
                 },      
                 success: function(value){
-                console.log(value);
-                   $('#Next').show();
-                  $('#video_id').val(value.video_id);
+                  
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+                  var linechart = value.total_users;
+                  var data = new google.visualization.DataTable(linechart);
+                  var data = new google.visualization.DataTable();
+                  data.addColumn('string', 'Month');
+                  data.addColumn('number', 'User Count');
+
+                  linechart.forEach(function (row) {
+                    data.addRow([
+                      row.month_name,
+                      row.count,
+                    ]);
+                  });
+                  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                  chart.draw(data, {
+                  });
+                }
 
                }
            });
@@ -385,6 +404,8 @@ $.ajaxSetup({
           success: function(data){
         $('tbody').html(data.table_data);
          $('#user_tables').text(data.total_data);  
+    $('#user_table').DataTable();
+
         }
           });
     });

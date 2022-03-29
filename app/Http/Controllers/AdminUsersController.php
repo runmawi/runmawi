@@ -1330,7 +1330,6 @@ class AdminUsersController extends Controller
         ->get();
         $total_user = User::where('role','!=','admin')->get();
        
-        // dd($data['registered'] );
         $data1 = array(
         // 'today_log' => $today_log,
         // 'lastweek_log' => $lastweek_log,
@@ -1496,6 +1495,7 @@ class AdminUsersController extends Controller
             'total_users' => $total_users,
             );
         return  $value;
+        
 
     } 
 
@@ -1503,25 +1503,39 @@ class AdminUsersController extends Controller
 
     public function StartEndDateRecord(Request $request){
 
-        $today_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
-        $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
-        $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
-    
+
+        $data = $request->all();
+        // echo "<pre>";
+        // print_r($data);exit;
+        // echo "<pre>";
+        $start_time = $data['start_time'] ;
+        $end_time = $data['end_time'] ;
+
+        if(!empty($start_time) && !empty($end_time) ){
+            $total_users = User::select(\DB::raw("COUNT(*) as count"), 
+                \DB::raw("MONTHNAME(created_at) as month_name"),
+                \DB::raw('max(created_at) as createdAt'))
+                ->whereYear('created_at', date('Y'))
+                ->whereBetween('created_at',[$start_time,$end_time])
+                ->groupBy('month_name')
+                ->orderBy('createdAt')
+                ->get();
+            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
+            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+        }
             $registered = User::where('role','registered')->count();
             $subscription = User::where('role','subscriber')->count();
             $admin = User::where('role','admin')->count();
     
             // dd($registered);
-        $data = array(
-            'today_log' => $today_log,
-            'lastweek_log' => $lastweek_log,
-            'month_log' => $month_log,
-            'registered' => $registered,
-            'subscription' => $subscription,
-            'admin' => $admin,
-    
-            );
-                return \View::make('admin.analytics.revenue',$data);
+            $value = array(
+                'registered' => $registered,
+                'subscription' => $subscription,
+                'admin' => $admin,
+                'total_users' => $total_users,
+                );
+            return  $value;
         } 
         
 
