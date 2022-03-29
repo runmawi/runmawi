@@ -282,11 +282,11 @@ height: 45px;
 }
 .lnk{
     font-style: normal;
-font-weight: 500;
+font-weight: 600;
 font-size: 20px;
 line-height: 30px;
 padding-left: 30px;
-
+height: 35px;
 margin-top: 30px;
     color: #161616;
 /*color: #4295D2;*/
@@ -302,7 +302,8 @@ margin-top: 30px;
 .iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; font-style: normal;
 font-weight: 400;
 font-size: 16px;
-line-height: 24px;
+line-height: 24px;padding-left: 15px;
+    
 
 color: #303030;}
 .iq-sidebar-menu .iq-menu li a .iq-arrow-right { margin-right: 0px; margin-left: auto; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; }
@@ -351,11 +352,17 @@ font-size: 14px;
 color: #161616;
 }
 .line{
-    font-weight: 500;
+   
 font-size: 16px;
 line-height: 27px;
 
 color: #161616;
+    
+    font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+
+
 }
 /*------------------------*/
 .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
@@ -700,7 +707,13 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination { margin: 15px 0 0;
 div.dataTables_wrapper div.dataTables_info { padding-top: 20px;color: #000000; }
 .movie_table tbody tr { border-bottom: 1px solid var(--iq-light-card); background-color: var(--iq-body-bg); }
 .movie_table tbody td { background-color: /*transparent*/#fff; text-align: center;box-shadow: 2px 2px 2px 2px #f1f1f1; }
-.movie_table thead th { font-size: 14px; /*color: rgba(255, 255, 255, 0.5);*/ font-weight: 500; padding: 15px 15px; line-height: 100%; margin-bottom: 0; border: none; text-transform: uppercase; text-align: center; }
+.movie_table thead th { font-size: 14px; /*color: rgba(255, 255, 255, 0.5);*/  padding: 15px; line-height: 100%; margin-bottom: 0; border: none; text-transform: uppercase; text-align: center; font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+
+line-height: 22px;
+
+color: #161616; }
 table.dataTable { /*border-collapse: collapse !important; */}
 .select2-container--default .select2-selection--multiple { background-color: #F2F5FA; border: 1px solid #121b26; }
 .select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #F2F5FA; }

@@ -18,7 +18,7 @@
 	<div class="user_roles-section-title">
 
            
-		<h3><i class="entypo-globe"></i> Roles & Permission</h3> 
+		<h4><i class="entypo-globe"></i> Roles & Permission</h4> 
                 @if(session()->has('message'))
             <div class="alert alert-success " id="successMessage">
                 {{ session()->get('message') }}
