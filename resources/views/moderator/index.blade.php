@@ -17,7 +17,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i> Users</h3> 
+		<h4><i class="entypo-globe"></i> Users</h4> 
 	</div>
 	<div class="clear"></div>
 

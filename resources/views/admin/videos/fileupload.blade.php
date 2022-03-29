@@ -406,8 +406,8 @@
                            </div>
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                                 <label class="m-0" style="display:block;"><h3 class="fs-title">Publish Type</h3></label>
-                                 <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" > Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                 <label class="mb-2" style="display:block;">Publish Type</label>
+                                 <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" > Publish Now <br>
                                  <input type="radio" id="publish_later" name="publish_type" value = "publish_later" > Publish Later
                               </div>
                               <div class="col-sm-6 form-group" id="publishlater">
@@ -744,7 +744,7 @@
     padding: 8px 15px 8px 15px;
     /*border: 1px solid #e6e8eb;*/
     border-radius: 0px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     margin-top: 2px;
     box-sizing: border-box;
     color: #000;
