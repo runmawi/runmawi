@@ -34,7 +34,7 @@
                   <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header">
                         <div class="iq-header-title">
-                           <h4 class="card-title text-center">User's Of {{ GetWebsiteName() }}</h4>
+                           <h4 class="card-title text-center" style="color: #4295D2;">User's Of {{ GetWebsiteName() }}</h4>
                         </div>
                      </div>
                      <div class="iq-card-body pb-0">
@@ -151,15 +151,14 @@
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1" >
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        view
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{ $view }}</h4>
@@ -172,14 +171,13 @@
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex  justify-content-between align-items-center">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0 font-size-14">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/c.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Rated This App
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/c.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+55K</h4>
@@ -191,15 +189,14 @@
                      {{-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0 font-size-14">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/download.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Downloaded
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/download.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex mt-4 align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+1M</h4>
@@ -211,15 +208,14 @@
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-uppercase">
-                                    <p class="mb-0 font-size-14">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-uppercase">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Visitors
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{  $visitor }} </h4>
