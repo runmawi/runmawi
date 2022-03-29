@@ -125,16 +125,17 @@
                                    <div class="tab-content mt-0" id="v-pills-tabContent">
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                          <label class="m-0">First things first, you need Video.</label>
-                                         <p class="p1">Upload a video to get started.</p>
+                                         <p class="">Upload a video to get started.</p>
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                          <p class="p1">Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                         
+                                          <p class="" >Setup website logo, Name, Social Links, Payment Types, etc.</p>
                                           <a href="/admin/settings">Go to Storefront Settings</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                          <p class="p1">Setup subscription Plans</p>
-                                          <a href="/admin/subscription-plans">Add Subscription Plans</a>
+                                          <p class="">Setup subscription Plans</p>
+                                          <a  href="/admin/subscription-plans">Add Subscription Plans</a>
                                       </div>
                                    </div>
                                 </div>
