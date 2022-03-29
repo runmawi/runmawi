@@ -21,28 +21,32 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i>Update Audio Category</h3> 
+		<h4><i class="entypo-globe"></i>Update Audio Category</h4> 
 	</div>
 	<div class="clear"></div>
 
 
                     <form method="POST" action="{{ URL::to('admin/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                         @csrf
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="container mt-4">
+                        <div class="row justify-content-between">
+                        <div class="col-md-5" >
 
                         <div class="form-group row">
                         <label>Name:</label>
                             <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                         <label>Slug:</label>
                         <input type="text" id="slug" name="slug" value="{{ $categories[0]->slug }}" class="form-control" placeholder="Enter Slug">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        </div>
+                            <div class="row">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                         <label>Image:</label>
@@ -55,7 +59,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
 
                         <div class="form-group row">
@@ -70,14 +74,14 @@
                             @endforeach
                         </select>
 
-                        </select>         
+                              
                         </div>
                         </div>
-                    
+                            </div>
                     </div>
                     <br>
                     <div class="form-group row mb-0">
-                        <div class="col-md-12 offset-md-4">
+                        <div class="col-md-12 ">
                         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                     <button type="submit" id ="submit" class="btn btn-primary">
@@ -89,7 +93,9 @@
             
                 </div> 
         </div>
+
         </div>
+
     </div>
                     @endsection
                     <!-- //    display: flex; -->

@@ -1,5 +1,9 @@
 @extends('admin.master')
-
+<style>
+    .form-control{
+        background-color: #fff!important;
+    }
+</style>
 @section('content')
 
 <div id="content-page" class="content-page">

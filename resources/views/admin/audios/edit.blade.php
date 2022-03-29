@@ -6,9 +6,7 @@
 
 <style>
    
-    .p1{
-        font-size: 12px!important;
-    }
+   
 
 	span{
 		color: gray;

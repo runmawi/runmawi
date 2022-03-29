@@ -15,7 +15,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h3><i class="entypo-globe"></i>Update Roles</h3> 
+		<h4><i class="entypo-globe"></i>Update Roles</h4> 
 	</div>
     @if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
