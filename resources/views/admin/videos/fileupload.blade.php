@@ -742,7 +742,7 @@
 #msform input,
 #msform textarea {
     padding: 8px 15px 8px 15px;
-    border: 1px solid #e6e8eb;
+    /*border: 1px solid #e6e8eb;*/
     border-radius: 0px;
     margin-bottom: 25px;
     margin-top: 2px;
