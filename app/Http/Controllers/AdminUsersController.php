@@ -1323,25 +1323,25 @@ class AdminUsersController extends Controller
         $registered_count = User::where('role','registered')->count();
         $subscription_count = User::where('role','subscriber')->count();
         $admin_count = User::where('role','admin')->count();
-        $data['total_user'] = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("MONTHNAME(created_at) as month_name"),\DB::raw('max(created_at) as createdAt'))
+        $ppvuser_count =  User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->count();
+
+        $data['total_user'] = User::select(\DB::raw("COUNT(*) as count"), 
+        \DB::raw("MONTHNAME(created_at) as month_name"),
+        \DB::raw('max(created_at) as createdAt'))
         ->whereYear('created_at', date('Y'))
         ->groupBy('month_name')
         ->orderBy('createdAt')
         ->get();
         $total_user = User::where('role','!=','admin')->get();
-       
         $data1 = array(
-        // 'today_log' => $today_log,
-        // 'lastweek_log' => $lastweek_log,
         'admin_count' => $admin_count,
         'subscription_count' => $subscription_count,
         'registered_count' => $registered_count,
         'total_user' => $total_user,
-        // 'subscription' => $subscription,
-        // 'admin' => $admin,
+        'ppvuser_count' => $ppvuser_count,
 
         );
-            return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data,'total_user' => $total_user]);
+return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data,'total_user' => $total_user]);
 
     } 
     
@@ -1349,28 +1349,35 @@ class AdminUsersController extends Controller
 
         $data = $request->all();
         $output = '';
-
         $role = $data['role'] ;
         if($role == "registered"){
             $Users = User::where('role','registered')->get();
         }elseif($role == "subscriber"){
             $Users = User::where('role','subscriber')->get();
-        }else{
+        }elseif($role == "ppv_users"){
+        $Users =  User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->get();
+        }
+        else{
             $Users = User::where('role','admin')->get();
         }
         $total_row = $Users->count();
-
         if(!empty($Users))
         {
          foreach($Users as $row)
          {
         if($row->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Active" ;$class="bg-success"; }
+       if($row->role == "registered"){ $role = 'Registered User' ;} elseif($row->role == "subscriber"){ $role = 'Subscribed User'; }else{ { $role = 'Admin User'; } }
+       if(@$row->phoneccode->phonecode == $row->ccode){ $phoneccode = @$row->phoneccode->country_name ;} else{ $phoneccode = 'No Country Added'; }
+       if($row->provider == "google"){ $provider = "Google User" ;}elseif($row->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
           $output .= '
           <tr>
           <td>'.$row->name.'</td>
-          <td>'.$row->role.'</td>
+          <td>'.$role.'</td>
+          <td>'.$phoneccode.'</td>
+          <td>'.$provider.'</td>
+          <td>'.$row->created_at.'</td>
           <td>'.$active.'</td>
-          <td>'.$row->stripe_id.'</td>
+
           </tr>
           ';
          }
@@ -1403,28 +1410,35 @@ class AdminUsersController extends Controller
 
             $registered_count = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
             $subscription_count = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $admin_count = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
 
             $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->get();
             $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->get();
+            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->get();
 
 
         }elseif(!empty($start_time) && !empty($end_time)){
 
-            $registered_count = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
-            $subscription_count = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
+            $registered_count = User::where('role','registered')->whereBetween('created_at',[$start_time,$end_time])->count();
+            $subscription_count = User::where('role','subscriber')->whereBetween('created_at',[$start_time,$end_time])->count();
+            $admin_count = User::where('role','subscriber')->whereBetween('created_at',[$start_time,$end_time])->count();
 
-            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->get();
-            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->get();
+            $registered = User::where('role','registered')->whereBetween('created_at',[$start_time,$end_time])->get();
+            $subscription = User::where('role','subscriber')->whereBetween('created_at',[$start_time,$end_time])->get();
+            $admin = User::where('role','admin')->whereBetween('created_at',[$start_time,$end_time])->get();
+
 
         }else{
             $registered_count = User::where('role','registered')->count();
             $subscription_count = User::where('role','subscriber')->count();
+            $admin_count = User::where('role','admin')->count();
 
             $registered = User::where('role','registered')->get();
             $subscription = User::where('role','subscriber')->get();
+            $admin = User::where('role','admin')->get();
+
 
         } 
-
         $file = 'users_'.rand(10,100000).'.csv' ;
         $headers = array(
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
@@ -1439,22 +1453,62 @@ class AdminUsersController extends Controller
         $filename =  public_path("/uploads/csv/".$file);
         $handle = fopen($filename, 'w');
         fputcsv($handle, [
-            "Name",
-            "Email",
+            "User Name",
+            "ACC Type",
+            "Country",
+            "Registered ON ",
+            "Source",
+            "Status",
+
         ]);
         if($registered_count > 0){  
             foreach ($registered as $each_user) {
+                if($each_user->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($each_user->active == 1){ $active = "Active" ;$class="bg-success"; }
+                if($each_user->role == "registered"){ $role = 'Registered User' ;} elseif($each_user->role == "subscriber"){ $role = 'Subscribed User'; }else{ $role = 'Admin User';}
+                if(@$each_user->phoneccode->phonecode == $each_user->ccode){ $phoneccode = @$each_user->phoneccode->country_name ;} else{ $phoneccode = 'No Country Added'; }
+                if($each_user->provider == "google"){ $provider = "Google User" ;}elseif($each_user->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
                 fputcsv($handle, [
                     $each_user->username,
-                    $each_user->email,
+                    $role,
+                    $phoneccode,
+                    $each_user->created_at,
+                    $provider,
+                    $active,
+
                 ]);
             }
         }
         if($subscription_count > 0){  
             foreach ($subscription as $each_user) {
+                if($each_user->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($each_user->active == 1){ $active = "Active" ;$class="bg-success"; }
+                if($each_user->role == "registered"){ $role = 'Registered User' ;} elseif($each_user->role == "subscriber"){ $role = 'Subscribed User'; }else{ $role = 'Admin User'; }
+                if(@$each_user->phoneccode->phonecode == $each_user->ccode){ $phoneccode = @$each_user->phoneccode->country_name ;} else{ $phoneccode = 'No Country Added'; }
+                if($each_user->provider == "google"){ $provider = "Google User" ;}elseif($each_user->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
                 fputcsv($handle, [
                     $each_user->username,
-                    $each_user->email,
+                    $role,
+                    $phoneccode,
+                    $each_user->created_at,
+                    $provider,
+                    $active,
+                ]);
+
+            }
+        }
+        if($admin_count > 0){  
+            foreach ($admin as $each_user) {
+                if($each_user->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($each_user->active == 1){ $active = "Active" ;$class="bg-success"; }
+                if($each_user->role == "registered"){ $role = 'Registered User' ;} elseif($each_user->role == "subscriber"){ $role = 'Subscribed User'; }else{ $role = 'Admin User'; }
+                if(@$each_user->phoneccode->phonecode == @$each_user->ccode){ $phoneccode = @$each_user->phoneccode->country_name ;} else{ $phoneccode = 'No Country Added'; }
+                if($each_user->provider == "google"){ $provider = "Google User" ;}elseif($each_user->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
+                fputcsv($handle, [
+                    $each_user->username,
+                    $role,
+                    $phoneccode,
+                    $each_user->created_at,
+                    $provider,
+                    $active,
+
                 ]);
 
             }
@@ -1467,9 +1521,7 @@ class AdminUsersController extends Controller
     public function StartDateRecord(Request $request){
 
         $data = $request->all();
-        // echo "<pre>";
-        // print_r($data);exit;
-        // echo "<pre>";
+
         $start_time = $data['start_time'] ;
         $end_time = $data['end_time'] ;
         if(!empty($start_time) && empty($end_time) ){
@@ -1486,14 +1538,48 @@ class AdminUsersController extends Controller
             $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
 
         }
-        // echo "<pre>";
-        // print_r($total_users);exit;
+
+        $output = '';
+        $Users = User::whereDate('created_at', '>=' , $start_time )->get();
+        $total_row = $Users->count();
+        if(!empty($Users))
+        {
+         foreach($Users as $row)
+         {
+        if($row->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Active" ;$class="bg-success"; }
+       if($row->role == "registered"){ $role = 'Registered User' ;} elseif($row->role == "subscriber"){ $role = 'Subscribed User'; }else{ $role = 'Admin User';}
+       if(@$row->phoneccode->phonecode == $row->ccode){ $phone_ccode = @$row->phoneccode->country_name ;} else{ $phone_ccode = 'No Country Added'; }
+       if($row->provider == "google"){ $provider = "Google User" ;}elseif($row->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
+          $output .= '
+          <tr>
+          <td>'.$row->name.'</td>
+          <td>'.$role.'</td>
+          <td>'.$phone_ccode.'</td>
+          <td>'.$provider.'</td>
+          <td>'.$row->created_at.'</td>
+          <td>'.$active.'</td>
+
+          </tr>
+          ';
+         }
+        }
+        else
+        {
+         $output = '
+         <tr>
+          <td align="center" colspan="5">No Data Found</td>
+         </tr>
+         ';
+        }
         $value = array(
+            'table_data'  => $output,
+            'total_data'  => $total_row,
             'registered' => $registered,
             'subscription' => $subscription,
             'admin' => $admin,
             'total_users' => $total_users,
             );
+  
         return  $value;
         
 
@@ -1505,9 +1591,7 @@ class AdminUsersController extends Controller
 
 
         $data = $request->all();
-        // echo "<pre>";
-        // print_r($data);exit;
-        // echo "<pre>";
+
         $start_time = $data['start_time'] ;
         $end_time = $data['end_time'] ;
 
@@ -1520,21 +1604,57 @@ class AdminUsersController extends Controller
                 ->groupBy('month_name')
                 ->orderBy('createdAt')
                 ->get();
-            $registered = User::where('role','registered')->whereDate('created_at', '>=' , $start_time )->count();
-            $subscription = User::where('role','subscriber')->whereDate('created_at', '>=' , $start_time )->count();
-            $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
+            $registered = User::where('role','registered')->whereBetween('created_at',[$start_time,$end_time])->count();
+            $subscription = User::where('role','subscriber')->whereBetween('created_at',[$start_time,$end_time])->count();
+            $admin = User::where('role','admin')->whereBetween('created_at',[$start_time,$end_time])->count();
         }
             $registered = User::where('role','registered')->count();
             $subscription = User::where('role','subscriber')->count();
             $admin = User::where('role','admin')->count();
     
-            // dd($registered);
+
+
+            $output = '';
+            $Users = User::whereBetween('created_at',[$start_time,$end_time])->get();
+            $total_row = $Users->count();
+            if(!empty($Users))
+            {
+             foreach($Users as $row)
+             {
+            if($row->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Active" ;$class="bg-success"; }
+           if($row->role == "registered"){ $role = 'Registered User' ;} elseif($row->role == "subscriber"){ $role = 'Subscribed User'; }else{ $role = 'Admin User';}
+           if(@$row->phoneccode->phonecode == $row->ccode){ $phone_ccode = @$row->phoneccode->country_name ;} else{ $phone_ccode = 'No Country Added'; }
+           if($row->provider == "google"){ $provider = "Google User" ;}elseif($row->provider == "facebook"){ $provider = "Facebook User";} else{ $provider = 'Web User'; }
+              $output .= '
+              <tr>
+              <td>'.$row->name.'</td>
+              <td>'.$role.'</td>
+              <td>'.$phone_ccode.'</td>
+              <td>'.$provider.'</td>
+              <td>'.$row->created_at.'</td>
+              <td>'.$active.'</td>
+    
+              </tr>
+              ';
+             }
+            }
+            else
+            {
+             $output = '
+             <tr>
+              <td align="center" colspan="5">No Data Found</td>
+             </tr>
+             ';
+            }
             $value = array(
+                'table_data'  => $output,
+                'total_data'  => $total_row,
                 'registered' => $registered,
                 'subscription' => $subscription,
                 'admin' => $admin,
                 'total_users' => $total_users,
                 );
+      
             return  $value;
         } 
         

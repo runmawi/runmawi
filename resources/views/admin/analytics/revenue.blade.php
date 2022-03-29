@@ -75,7 +75,11 @@
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
+$jsondata = json_decode($jsonString, true);
+// dd($jsondata);
+?>
 <div id="content-page" class="content-page">
             <div class="row">
             <span  id="export" class="btn btn-success btn-sm" >Export</span>
@@ -109,6 +113,8 @@
                                     <label for="">Registered User : <?php if(!empty($data1['registered_count'])){ echo $data1['registered_count'] ; }else{ echo $data1['registered_count'] ; } ?></label> <br>
                                     <label for="">Subscribed User : <?php if(!empty($data1['subscription_count'])){ echo $data1['subscription_count'] ; }else{ echo $data1['subscription_count'] ; }?></label><br>
                                     <label for="">Admin Users : <?php if(!empty($data1['admin_count'])){ echo $data1['admin_count'] ; }else{ echo $data1['admin_count']; } ?></label><br>
+                                    <label for="">PPV Users : <?php if(!empty($data1['ppvuser_count'])){ echo $data1['ppvuser_count'] ; }else{ echo $data1['ppvuser_count']; } ?></label><br>
+
                                     <!-- <label for="">PPV Users:</label><br>
                                     <label for="">Pre-Order:</label> -->
                                 </div>
@@ -128,6 +134,7 @@
                                 <option value="registered" >Registered Users </option>
                                 <option value="subscriber">Subscriber</option>     
                                 <option value="admin" >Admin</option>
+                                <option value="ppv_users" >PPV Users</option>
                               </select>
                                 </div>
                                 <div class="col-md-4">
@@ -145,24 +152,31 @@
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
-                                    <th>Type</th>
                                     <th>ACC Type</th>
-                                    <th>Transaction Customer Id</th>
+                                    <th>Country</th>
+                                    <th>Registered ON </th>
+                                    <th>Source</th>
+                                    <th>Status</th>
                                  </tr>
                               </thead>
                               <tbody>
                               @foreach($total_user as $key => $user)
+
                              <tr>
-                             <td>{{ $user->name }}</td>                                   
-                             <td>{{ $user->role }}</td>                                   
-                             <?php if($user->active == 0){ ?>
+                             <td>{{ $user->name }}</td>   
+                             <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
+                             <td>@if($user->phoneccode->phonecode == $user->ccode)  {{ $user->phoneccode->country_name }} @else No Country Added @endif</td>
+                             <td>{{ $user->created_at }}</td> 
+                             <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
+                              <?php if($user->active == 0){ ?>
                               <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
                             <?php }elseif($user->active == 1){ ?>
                               <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
-                            <?php }?>     
-                              <td>{{ $user->stripe_id }}</td>                                   
+                            <?php }?> 
+
                              </tr>
-                              @endforeach
+                             @endforeach
+
                               </tbody>
                            </table>
                                 </div>
@@ -213,32 +227,16 @@
                       end_time: end_time,
 
                 },      
-                success: function(value){
-                  
-
+                success: function(value){               
+                  $('tbody').html(value.table_data);
+                  $('#user_tables').text(value.total_data);  
+                  $('#user_table').DataTable();
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
         
                 function drawChart() {
                   var linechart = value.total_users;
                   var data = new google.visualization.DataTable(linechart);
-                //   console.log(linechart);
-                //     var data = google.visualization.arrayToDataTable(
-                //         linechart.forEach(function(element, index) { 
-                //     [element.month_name, element.count]
-                //   })  
-                //     linechart
-                //     );
-                // var data = google.visualization.arrayToDataTable([
-
-                //     ['Month Name', 'Register Users Count'],
-                //       //   console.log(element.count);
-                //   linechart.forEach(function(element, index) { 
-                //     [element.month_name, element.count]
-                //   })         
-                //   value.total_users
-                // ]);
-
                   var data = new google.visualization.DataTable();
                   data.addColumn('string', 'Month');
                   data.addColumn('number', 'User Count');
@@ -275,7 +273,9 @@
 
                 },      
                 success: function(value){
-                  
+                  $('tbody').html(value.table_data);
+                  $('#user_tables').text(value.total_data);  
+                  $('#user_table').DataTable();
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
 
