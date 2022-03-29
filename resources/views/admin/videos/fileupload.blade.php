@@ -749,7 +749,7 @@
     box-sizing: border-box;
     color: #000;
    
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #msform input:focus,
@@ -845,7 +845,7 @@
 #progressbar li {
     list-style-type: none;
     font-size: 15px;
-    width: 20%;
+    width: 16%;
     float: left;
     position: relative;
     font-weight: 400;
