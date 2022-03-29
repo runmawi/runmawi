@@ -101,6 +101,61 @@
                                     </figure>
                                 </div> 
                             </div> 
+                            <div class="row">
+                                <div class="col-md-4">
+                                <select class="form-control"  id="role" name="role">
+                                <option value="registered" >Registered Users </option>
+                                <option value="subscriber">Subscriber</option>     
+                                <option value="admin" >Admin</option>
+                              </select>
+                                </div>
+                                 <div class="col-md-8">
+                                   
+                                </div> 
+                            </div> 
+                            <div class="row">
+                                <div class="col-md-12">
+                                <div class="iq-card-body table-responsive p-0">
+                        <div class="table-view">
+                           <table class="table text-center table-striped table-bordered table movie_table iq-card" style="width:100%">
+                              <thead>
+                                 <tr class="r1">
+                                    <th>User</th>
+                                    <th>Type</th>
+                                    <th>ACC Type</th>
+                                    <th>Transaction Customer Id</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              @foreach($data['total_user'] as $key => $user)
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">{{ $user->name }}</p>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>{{ $user->role }}</td>                                   
+                                    <?php if($user->active == 0){ ?>
+                                     <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
+                                    <?php }elseif($user->active == 1){ ?>
+                                     <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
+                                    <?php }?>
+                                      <td>
+                                        {{ $user->stripe_id  }} <i class="lar la-eye "></i>
+                                    </td>
+                                 </tr>
+                                 @endforeach
+
+                              </tbody>
+                           </table>
+                           <div class="clear"></div>
+                             
+                                </div>
+                                </div>
+                                </div>
+                            </div> 
                         </div> 
 
             </div>
@@ -129,11 +184,9 @@
        var end_time =  $('#end_time').val();
        var url =  $('#start_date_url').val();
       if(start_time == "" && end_time == ""){
-        var registered = <?php echo $data['registered']; ?>;
-        var subscription = <?php echo $data['subscription']; ?>;
-        var admin = <?php echo $data['admin']; ?>;
+        var total_user = <?php echo $data['total_user']; ?>;
 
-        google.charts.load('current', {'packages':['corechart']});
+            google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
  
         function drawChart() {
@@ -142,7 +195,7 @@
             ['Month Name', 'Register Users Count'],
  
                 @php
-                foreach($data['subscription'] as $d) {
+                foreach($data['total_user'] as $d) {
                     echo "['".$d->month_name."', ".$d->count."],";
                 }
                 @endphp
@@ -176,26 +229,6 @@
 
                 },      
                 success: function(data){
-                  google.charts.load('current', {'packages':['corechart']});
-                  var data = google.visualization.arrayToDataTable([
-                    ['Month Name', 'Register Users Count'],
-        
-                        @php
-                        foreach($data['registered'] as $d) {
-                            echo "['".$d->month_name."', ".$d->count."],";
-                        }
-                        @endphp
-                ]);
-        
-                var options = {
-                  title: 'Register Users Month Wise',
-                  curveType: 'function',
-                  legend: { position: 'bottom' }
-                };
-        
-                  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-        
-                  chart.draw(data, options);
 
                }
            });
@@ -256,6 +289,7 @@ headers: {
 
           },      
           success: function(data){
+            console.log('test');
           }
           });
     });
