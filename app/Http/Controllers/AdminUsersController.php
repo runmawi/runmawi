@@ -1328,7 +1328,8 @@ class AdminUsersController extends Controller
         ->groupBy('month_name')
         ->orderBy('createdAt')
         ->get();
-
+        $total_user = User::where('role','!=','admin')->get();
+       
         // dd($data['registered'] );
         $data1 = array(
         // 'today_log' => $today_log,
@@ -1336,14 +1337,63 @@ class AdminUsersController extends Controller
         'admin_count' => $admin_count,
         'subscription_count' => $subscription_count,
         'registered_count' => $registered_count,
-        // 'registered' => $registered,
+        'total_user' => $total_user,
         // 'subscription' => $subscription,
         // 'admin' => $admin,
 
         );
-            return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data]);
+            return \View::make('admin.analytics.revenue',['data1' => $data1,'data' => $data,'total_user' => $total_user]);
 
     } 
+    
+    public function ListUsers(Request $request){
+
+        $data = $request->all();
+        $output = '';
+
+        $role = $data['role'] ;
+        if($role == "registered"){
+            $Users = User::where('role','registered')->get();
+        }elseif($role == "subscriber"){
+            $Users = User::where('role','subscriber')->get();
+        }else{
+            $Users = User::where('role','admin')->get();
+        }
+        $total_row = $Users->count();
+
+        if(!empty($Users))
+        {
+         foreach($Users as $row)
+         {
+        if($row->active == 0){ $active = "InActive" ;$class="bg-warning"; }elseif($row->active == 1){ $active = "Active" ;$class="bg-success"; }
+          $output .= '
+          <tr>
+          <td>'.$row->name.'</td>
+          <td>'.$row->role.'</td>
+          <td>'.$active.'</td>
+          <td>'.$row->stripe_id.'</td>
+          </tr>
+          ';
+         }
+        }
+        else
+        {
+         $output = '
+         <tr>
+          <td align="center" colspan="5">No Data Found</td>
+         </tr>
+         ';
+        }
+        $data = array(
+         'table_data'  => $output,
+         'total_data'  => $total_row,
+         
+        );
+  
+        echo json_encode($data);
+
+    } 
+
 
     public function exportCsv(Request $request){
 
@@ -1437,7 +1487,8 @@ class AdminUsersController extends Controller
             $admin = User::where('role','admin')->whereDate('created_at', '>=' , $start_time )->count();
 
         }
-
+        // echo "<pre>";
+        // print_r($total_users);exit;
         $value = array(
             'registered' => $registered,
             'subscription' => $subscription,

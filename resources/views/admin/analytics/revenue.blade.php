@@ -47,6 +47,22 @@
 .highcharts-data-table tr:hover {
   background: #f1f7ff;
 }
+.has-switch .switch-on label {
+			background-color: #FFF;
+			color: #000;
+			}
+	.make-switch{
+		z-index:2;
+	}
+        .admin-container{
+            padding: 10px;
+        }
+        .iq-card{
+            padding: 15px!important; 
+        }
+     .p1{
+        font-size: 12px!important;
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -71,13 +87,13 @@
                         <div class="col-md-12">
                           <div class="row"> 
                           <div class="col-md-3">
-                          <label for="start_time">  Strat time: </label>
+                          <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" >
                           <!-- <p>Date of Birth: <input type="text" id="datepicker"></p> -->
 
                           </div>
                           <div class="col-md-3">
-                          <label for="start_time">  End time: </label>
+                          <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time">
                           </div>
                           <div class="col-md-6">
@@ -104,20 +120,22 @@
                             <div class="row">
                                 <div class="col-md-4">
                                 <select class="form-control"  id="role" name="role">
+                                <option value="" >Choose Users</option>
                                 <option value="registered" >Registered Users </option>
                                 <option value="subscriber">Subscriber</option>     
                                 <option value="admin" >Admin</option>
                               </select>
                                 </div>
-                                 <div class="col-md-8">
+                                <div class="col-md-2">
+                                 <h5> User Count : <span id="user_tables"> </span></h5>
+                                </div> 
+                                 <div class="col-md-6">
                                    
                                 </div> 
                             </div> 
                             <div class="row">
                                 <div class="col-md-12">
-                                <div class="iq-card-body table-responsive p-0">
-                        <div class="table-view">
-                           <table class="table text-center table-striped table-bordered table movie_table iq-card" style="width:100%">
+                                <table class="table" id="user_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
@@ -127,32 +145,20 @@
                                  </tr>
                               </thead>
                               <tbody>
-                              @foreach($data['total_user'] as $key => $user)
-                                 <tr>
-                                    <td>
-                                       <div class="media align-items-center">
-                                          <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $user->name }}</p>
-                                          </div>
-                                       </div>
-                                    </td>
-                                    <td>{{ $user->role }}</td>                                   
-                                    <?php if($user->active == 0){ ?>
-                                     <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
-                                    <?php }elseif($user->active == 1){ ?>
-                                     <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
-                                    <?php }?>
-                                      <td>
-                                        {{ $user->stripe_id  }} <i class="lar la-eye "></i>
-                                    </td>
-                                 </tr>
-                                 @endforeach
-
+                              @foreach($total_user as $key => $user)
+                             <tr>
+                             <td>{{ $user->name }}</td>                                   
+                             <td>{{ $user->role }}</td>                                   
+                             <?php if($user->active == 0){ ?>
+                              <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
+                            <?php }elseif($user->active == 1){ ?>
+                              <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
+                            <?php }?>     
+                              <td>{{ $user->stripe_id }}</td>                                   
+                             </tr>
+                              @endforeach
                               </tbody>
                            </table>
-                           <div class="clear"></div>
-                             
-                                </div>
                                 </div>
                                 </div>
                             </div> 
@@ -160,9 +166,11 @@
 
             </div>
         </div>
+        <input type="hidden" value="" id="chart_users">
         <input type="hidden" id="exportCsv_url" value="<?php echo URL::to('/admin/exportCsv');?>">
         <input type="hidden" id="start_date_url" value="<?php echo URL::to('/admin/start_date_url');?>">
         <input type="hidden" id="end_date_url" value="<?php echo URL::to('/admin/end_date_url');?>">
+        <input type="hidden" id="listusers_url" value="<?php echo URL::to('/admin/list_users_url');?>">
 <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -173,6 +181,8 @@
 
 
 <script>
+   
+
   $.ajaxSetup({
               headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -180,38 +190,7 @@
        });
    
     $(document).ready(function(){
-      var start_time =  $('#start_time').val();
-       var end_time =  $('#end_time').val();
-       var url =  $('#start_date_url').val();
-      if(start_time == "" && end_time == ""){
-        var total_user = <?php echo $data['total_user']; ?>;
-
-            google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
- 
-        function drawChart() {
- 
-        var data = google.visualization.arrayToDataTable([
-            ['Month Name', 'Register Users Count'],
- 
-                @php
-                foreach($data['total_user'] as $d) {
-                    echo "['".$d->month_name."', ".$d->count."],";
-                }
-                @endphp
-        ]);
- 
-        var options = {
-          title: 'Register Users Month Wise',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
- 
-          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
- 
-          chart.draw(data, options);
-        }
-      }
+     
       // var data['registered'] = 2;
       $('#start_time').change(function(){
        var start_time =  $('#start_time').val();
@@ -228,8 +207,49 @@
                       end_time: end_time,
 
                 },      
-                success: function(data){
+                success: function(value){
+                  $('#chart_users').val(value.total_users);  
+                  // alert($('#chart_users').val());
+                // value.total_users.forEach(function(element, index) { 
+                //   console.log(element.count);
 
+                // })
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+        
+                function drawChart() {
+                  var linechart = value.total_users;
+                  // alert(value.total_users);
+                  // console.log(linechart);
+                  var data = google.visualization.arrayToDataTable(
+                        linechart.forEach(function(element, index) { 
+                    [element.month_name, element.count]
+                  })  
+                    // linechart
+                    );
+
+
+                // var data = google.visualization.arrayToDataTable([
+
+                //   //   ['Month Name', 'Register Users Count'],
+                //   //     //   console.log(element.count);
+                //   // linechart.forEach(function(element, index) { 
+                //   //   [element.month_name, element.count]
+                //   // })         
+                //   value.total_users
+                // ]);
+        
+                var options = {
+                  title: 'Register Users Month Wise',
+                  curveType: 'function',
+                  legend: { position: 'bottom' }
+                };
+        
+                  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+        
+                  chart.draw(data, options);
+                }
+                  // console.log(value);
                }
            });
       }
@@ -263,7 +283,43 @@
     })
 
 
-    
+    //////////Chart Before Choosing date////////////
+
+    var start_time =  $('#start_time').val();
+       var end_time =  $('#end_time').val();
+       var url =  $('#start_date_url').val();
+      if(start_time == "" && end_time == ""){
+        var total_user = <?php echo $data['total_user']; ?>;
+
+            google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+ 
+        function drawChart() {
+ 
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'Register Users Count'],
+ 
+                @php
+                foreach($data['total_user'] as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+ 
+        var options = {
+          title: 'Register Users Month Wise',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+ 
+          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+ 
+          chart.draw(data, options);
+        }
+      }
+
+
+
 /////////  Export ///////////////
 
 $.ajaxSetup({
@@ -289,11 +345,52 @@ headers: {
 
           },      
           success: function(data){
-            console.log('test');
+            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
+                          setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                          }, 3000);
           }
           });
     });
 });
+
+
+
+
+
+//////// Choose Role User /////
+
+
+
+
+$.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+       });
+   
+    $(document).ready(function(){
+          $('#role').change(function(){
+          var url =  $('#listusers_url').val();
+          var role = $('#role').val();
+            // alert($('#role').val());
+          $.ajax({
+          url: url,
+          type: "post",
+          data: {
+          _token: '{{ csrf_token() }}',
+          role: role,
+          },  
+          dataType:'json',
+          success: function(data){
+        $('tbody').html(data.table_data);
+         $('#user_tables').text(data.total_data);  
+        }
+          });
+    });
+});
+
+
 
 </script>
 
