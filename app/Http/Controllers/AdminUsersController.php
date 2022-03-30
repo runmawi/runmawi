@@ -1804,7 +1804,9 @@ class AdminUsersController extends Controller
         }
         fclose($handle);
 
-        return Response::download($filename, "download.csv", $headers);
+         Response::download($filename, "download.csv", $headers);
+
+         return $file;
     }
 
     public function StartDateRecord(Request $request)
