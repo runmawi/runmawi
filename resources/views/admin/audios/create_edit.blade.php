@@ -12,14 +12,15 @@
     #optionradio {color: #000;}
     #video_upload {margin-top: 5%;}
    .file {
-        padding: 30;
-        background: rgba(56, 87, 127, 0.34);
+       
+        /*background: rgba(56, 87, 127, 0.34);*/
         border-radius: 10px;
         text-align: center;
         margin: 0 auto;
-        width: 75%;
+       border: 2px dashed;
+      
     }
-    #video_upload .file form{border: 2px dashed;}
+    #video_upload .file form{/*border: 2px dashed;*/}
     #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id="content-page" class="content-page">
@@ -45,18 +46,7 @@
                         @endif
 					
 
-                    <div class="col-md-4" align="right">
-                        <div id="optionradio"  >
-                            <div style="" id="optionradio">
-                                <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
-
-                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
-                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
-
-                                </form>
-                                </div>
-                        </div>
-                    </div>
+                    
                 </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -72,7 +62,7 @@
                             <!-- Audio upload -->        
                             <div id="video_upload" style="">
                                 <div class='content file'>
-                                    <h4 class="card-title">Upload Audio</h4>
+                                    <h4 class="card-title upload-ui font-weight-bold">Upload Audio</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('admin/uploadAudio')}}" method= "post" class='dropzone' id="audio_source" ></form> 
                                 </div> 
@@ -88,7 +78,20 @@
                         </div>
                     <hr />
                 </div>
+                <div class="col-md-12" align="center">
+                        <div id="optionradio"  >
+                            <div style="" id="optionradio">
+                                <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
+
+                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
+                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
+
+                                </form>
+                                </div>
+                        </div>
+                    </div>
             </div>
+            
         </div>
 
     </div>
