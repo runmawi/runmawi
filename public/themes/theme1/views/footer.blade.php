@@ -328,7 +328,8 @@ function myFunction() {
     // var live = $('live').val();
     var video_video = $('video_video').val();
 
-
+    var user_logged_out =  $('#user_logged_out').val();
+    var hls =  $('#hls').val();
 
     // alert(video_video)
 
@@ -363,6 +364,32 @@ function myFunction() {
    }else if(type != "" && request_url != 'm3u8'){
     // alert('m3u8')
 
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }else if(hls == "hls"){
         const player = new Plyr('#videoPlayer',{
           controls: [
 

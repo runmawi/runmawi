@@ -110,6 +110,10 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="registration_setting" href="#!">Registration Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Setting</a>
+                    <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Pro"){  ?>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Setting</a>
+                    <?php } ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
@@ -217,6 +221,8 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     
+                            <!-- PPV  -->
+
 
         <!-- <div class="container-fluid" id="ppv" > -->
         <div class="row">
@@ -282,6 +288,8 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     </div>
+                                <!-- video setting -->
+
 
             <!-- <div class="container-fluid" id="video" style=""> -->
         <div  class="container-fluid row mt-3" id="videos_settings" style="">
@@ -317,6 +325,10 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     <!-- </div> -->
+    <!-- Registration -->
+
+
+
     <div class="container-fluid" id="registration">
         <div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading">
@@ -403,7 +415,12 @@ border-radius: 0px 4px 4px 0px;
         </div>
     </div>
 
-        <!-- <div class="container-fluid" id="email"> -->
+
+
+    <!-- Email Setting  -->
+
+
+    <!-- <div class="container-fluid" id="email"> -->
         <div class="container-fluid row mt-3 " id="email">
             <div class="col-md-10">
                 <div class="panel panel-primary" data-collapsed="0">
@@ -464,6 +481,9 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     <!-- </div> -->
+
+
+    <!-- Social Login Settings  -->
         
         <!-- <div class="container-fluid" id="social" style=""> -->
         <div class="container-fluid" id="social" style="" style="padding:15px;">
@@ -517,6 +537,82 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     <!-- </div> -->
+
+
+
+
+    <!-- Series  Setting-->
+    <div class="container-fluid" id="seasonsetting" style="">
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Series Setting</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 align-center">
+                            <div class="row">
+                                <div>
+                                 <div><label class="mt-1">Enable PPV Season</label></div>
+                                 <div class="d-flex justify-content-between">
+
+                        <div>OFF</div>
+
+                                <div class="mt-1">
+                                    <label class="switch">
+                                    <input type="checkbox" @if(!isset($settings->series_season) ||
+                                    (isset($settings->series_season) && $settings->series_season))checked="checked"
+                                    value="1"@else value="0"@endif name="series_season" id="series_season" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div>On</div>
+                            </div>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+
+
+
+    <!-- Transcoding  Setting-->
+    <div class="container-fluid" id="transcodingsetting" style="">
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Transcoding Setting</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 align-center">
+                            <div class="row">
+                                <div>
+                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch">
+                                        <input type="checkbox" @if(!isset($settings->transcoding_access) ||
+                                    (isset($settings->transcoding_access) && $settings->transcoding_access))checked="checked"
+                                    value="1"@else value="0"@endif name="transcoding_access" id="transcoding_access" />
+                                        <!-- <input  type="checkbox"  name="transcoding_access" id="transcoding_access"  @if($settings->transcoding_access == 1) {{ "checked='checked'" }} @else {{ "" }} @endif> -->
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+    <!-- Subscription Settings  -->
 
     <div class="container-fluid" id="subscription" style="">
         <div style="padding:15px;">
@@ -822,6 +918,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#advertisement').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
     
 
 
@@ -839,6 +937,8 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#ppv_setting').click(function(){
 		// alert();
@@ -855,6 +955,8 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -869,6 +971,8 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#registration_setting').click(function(){
 		$('#site').hide();
@@ -883,6 +987,8 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#email_setting').click(function(){
 		$('#site').hide();
@@ -897,6 +1003,8 @@ border-radius: 0px 4px 4px 0px;
         $('#script').hide();
 		$('#app').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#social_setting').click(function(){
 		$('#site').hide();
@@ -912,6 +1020,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#scriptsetting').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#subscription_setting').click(function(){
 		$('#site').hide();
@@ -927,6 +1037,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#scriptsetting').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#login_setting').click(function(){
 		$('#site').hide();
@@ -943,6 +1055,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#scriptsetting').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 	$('#advertisement_setting').click(function(){
 		$('#videos_settings').hide();
@@ -958,6 +1072,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#app').hide();
 		$('#scriptsetting').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 
 
@@ -977,6 +1093,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#scriptsetting').show();
         $("#Defaut_image_setting").hide();
 		$('#settingupdate').hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -996,6 +1114,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#appupdate').show();
 		$('#scriptsetting').hide();
         $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1012,11 +1132,52 @@ border-radius: 0px 4px 4px 0px;
         $("#advertisement").hide();
         $("#script").hide();
         $("#app").hide();
-        $("#season_setting").hide();
+        // $("#season_setting").hide();
         $("#Defaut_image_setting").show();
         $("#ppv_setting").hide();
         $("#demo_mode").hide();
         $("#Pay_Per_view_Hours").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+    });
+     
+    $("#transcoding_setting").click(function () {
+        // alert();
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        // $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").show();
+        $("#seasonsetting").hide();
+    });
+    $("#series_setting").click(function () {
+        // alert();
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        // $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").show();
     });
 
 	});

@@ -93,18 +93,15 @@ $jsondata = json_decode($jsonString, true);
                         </div>
                         <div class="col-md-12">
                           <div class="row"> 
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                           <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" >
-                          <!-- <p>Date of Birth: <input type="text" id="datepicker"></p> -->
-
                           </div>
                           <div class="col-md-3">
                           <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time">
                           </div>
-                          <div class="col-md-6">
-                          <!-- <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" /> -->
+                          <div class="col-md-5">
                           </div>
                           </div>
                           <div class="clear"></div>
@@ -192,7 +189,7 @@ $jsondata = json_decode($jsonString, true);
                               @foreach($total_user as $key => $user)
 
                              <tr>
-                             <td>{{ $user->name }}</td>   
+                             <td>{{ $user->username  }}</td>   
                              <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
                              <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
                              <td>{{ $user->created_at }}</td> 
