@@ -1,4 +1,5 @@
 @extends('admin.master')
+
 <style>
     
     .select2-selection__rendered {
@@ -119,6 +120,7 @@
                                     <option value="">Choose URL Format</option>
                                     <option value="mp4">MP4 URL</option>
                                     <option value="embed">Embed URL</option>
+                                    <option value="live_stream_video">Live Stream Video</option>
                                 </select>
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
@@ -129,6 +131,11 @@
                                 <div class="new-video-upload mt-2" id="embed_code">
                                     <label for="embed_code"><label>Live Embed URL</label></label>
                                     <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                                </div>
+
+                                <div class="new-video-upload mt-2" id="live_stream_video">
+                                    <label for=""><label>Live Stream Video</label></label>
+                                    <input type="file" multiple="true" class="form-group" name="live_stream_video"  />
                                 </div>
                             </div>
                         </div>
@@ -337,6 +344,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
    $ = jQuery;
@@ -388,18 +396,54 @@
 </script>
 <!-- {{-- end validate --}} -->
 
+
+{{-- Sweet alert --}}
+
+@php
+    $liveStreamVideo_errors = $liveStreamVideo_error;
+@endphp
+
+<script type="text/javascript">
+
+    let Stream_error = '{{ $liveStreamVideo_errors }}';
+
+    $( document ).ready(function() {
+        if( Stream_error == 1){
+            Swal.fire({
+            allowOutsideClick:false,
+            icon: 'error',
+            title: 'Oops...',
+            text: 'While Converting the Live Stream video, Something went wrong!',
+            }).then(function (result) {
+            if (result.value) {
+                location.href = '{{ URL::to('admin/livestream/create') }}';
+            }
+            })
+        }
+    });
+</script>
+
+{{-- Sweet alert --}}
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#mp4_code").hide();
         $("#embed_code").hide();
+        $("#live_stream_video").hide();
 
         $("#url_type").change(function () {
             if ($("#url_type").val() == "mp4") {
                 $("#mp4_code").show();
                 $("#embed_code").hide();
+                $("#live_stream_video").hide();
             } else if ($("#url_type").val() == "embed") {
                 $("#embed_code").show();
                 $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+            }else if ($("#url_type").val() == "live_stream_video") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").show();
             }
         });
     });
@@ -499,12 +543,12 @@
         }
     }
 </script>
-<script>
-    $(document).ready(function () {
-        // $('#message').fadeOut(120);
-        setTimeout(function () {
-            $("#successMessage").fadeOut("fast");
-        }, 3000);
-    });
-</script>
+    <script>
+        $(document).ready(function () {
+            // $('#message').fadeOut(120);
+            setTimeout(function () {
+                $("#successMessage").fadeOut("fast");
+            }, 3000);
+        });
+    </script>
 @stop @stop

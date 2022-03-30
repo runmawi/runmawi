@@ -1,4 +1,7 @@
-<?php $settings = App\Setting::first(); ?>
+<?php $settings = App\Setting::first(); 
+       use Carbon\Carbon;
+
+?>
 <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
@@ -6,21 +9,56 @@
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
+
+                      <?php if(!empty($settings->facebook_page_id)){?>
                         <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
+                          <i class="ri-facebook-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->skype_page_id)){?>
+                        <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-skype-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->twitter_page_id)){?>
+                        <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-twitter-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->instagram_page_id)){?>
+                        <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-instagram-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->linkedin_page_id)){?>
+                        <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-linkedin-fill"></i>
+                          </a>
+                      <?php } ?>
+
+
+                      <?php if(!empty($settings->whatsapp_page_id)){?>
+                        <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-whatsapp-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->youtube_page_id)){?>
+                        <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
+                          <i class="ri-youtube-fill"></i>
+                          </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->google_page_id)){?>
+                        <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                          <i class="fa fa-google-plus"></i>
+                          </a>
+                      <?php } ?>
+
                      </div>
                   </div>
                   <div class="col-lg-3 col-md-4 col-sm-12 p-0">
@@ -28,6 +66,19 @@
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
+
+                        <?php
+                        if(1 == 2){
+                            $language = App\Language::get();
+                            foreach($language as $key => $lan){
+                              $language_href = 'language/'.$lan->id.'/'.$lan->name;
+                        ?>
+                        <li><a href="<?php echo URL::to($language_href) ?>"><?php echo $lan->name; ?> </a></li>
+
+                        <?php }}?>
+
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
                      </ul>
                   </div>                  
                   <div class="col-lg-3 col-md-4">
@@ -85,7 +136,7 @@
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
          </div>
       </footer>
@@ -199,10 +250,83 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
- <script>
+      <script>
     var type = $('#video_type').val();
+    // var type = $('#hls_m3u8').val();
+    var request_url = $('#request_url').val();
+    var live = $('live').val();
+    // var live = $('live').val();
+    var video_video = $('video_video').val();
+    var user_logged_out =  $('#user_logged_out').val();
+    var hls =  $('#hls').val();
 
-   if(type != ""){
+
+
+
+
+    alert(hls)
+    alert(user_logged_out)
+
+
+   if(type != "" &&  && video_video == 'video'){
+    // alert('video_video')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }else if(type != "" && request_url != 'm3u8'){
+    // alert('m3u8')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }else if(type == "" &&  hls == "hls" && video_video == 'video'){
+    alert('video_video')
+
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -230,6 +354,8 @@ function myFunction() {
         });
    }
 else{
+  // alert('else')
+
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;
@@ -265,9 +391,36 @@ else{
     });
     hls.attachMedia(video);
     window.hls = hls;
+
+    
   } else {
     // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
+    // const player = new Plyr(video, defaultOptions);
+    const player = new Plyr('#video',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
   }
 
   function updateQuality(newQuality) {
@@ -281,6 +434,8 @@ else{
 });
 
 }
+
+
          
       </script>
 </body>

@@ -66,6 +66,11 @@ class AdminSettingsController extends Controller
         }else{
         $series_season = 0;
         }
+        if(!empty($request['transcoding_access'])){
+          $transcoding_access = $request['transcoding_access'];
+          }else{
+          $transcoding_access = 0;
+          }
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
 		$settings->ppv_hours = $request['ppv_hours'];
@@ -96,6 +101,7 @@ class AdminSettingsController extends Controller
 		$settings->linkedin_page_id = $linkedin_page_id;
 		$settings->whatsapp_page_id = $whatsapp_page_id;
 		$settings->series_season = $series_season;
+		$settings->transcoding_access = $transcoding_access;
 		$settings->skype_page_id = $skype_page_id;
 		$settings->youtube_page_id = $request['youtube_page_id'];
 		$settings->google_tracking_id = $request['google_tracking_id'];

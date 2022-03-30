@@ -15,7 +15,7 @@
         border-radius: 10px;
         text-align: center;
         margin: 0 auto;
-        width: 75%;
+        /*width: 75%;*/
         border: 2px dashed;
     }
    #video_upload .file form i {display: block; font-size: 50px;}
@@ -39,14 +39,7 @@
                </div>
                @endforeach
                @endif
-               <div class="col-md-8" align="right">
-                  <div id="optionradio"  >
-                     <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
-                  </div>
-               </div>
+             
             </div>
             <div class="row">
                <div class="col-md-12">
@@ -74,10 +67,10 @@
                   <!-- Video upload -->   
                   <div id="video_upload" style="">
                      <div class='content file'>
-                        <h3 class="card-title upload-ui">Upload Full Video Here</h4>
+                        <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
                         <!-- Dropzone -->
                         <form action="{{URL::to('admin/uploadFile')}}" method= "post" class='dropzone' ></form>
-                        <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                        <p class="c1">Trailers Can Be Uploaded From Video Edit Screen</p>
                      </div>
                      
                   </div>
@@ -90,7 +83,16 @@
                </div>
                <hr />
             </div>
+               <div class="col-md-12 text-right">
+                  <div id="optionradio"  >
+                     <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
+                     <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
+                     <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
+                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                  </div>
+               </div>
          </div>
+          
       </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>

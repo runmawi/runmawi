@@ -251,8 +251,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $package = User::where('id',1)->first();
         $pack = $package->package;
         $mp4_url = $data['file'];
-
-        if($mp4_url != '' && $pack != "Pro") {
+        $settings = Setting::first();
+        if($mp4_url != '' && $pack != "Pro" ) {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
             // $data['duration'] = $ffprobe->streams($request->file)
@@ -306,7 +306,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
             return $value;
         
-        }elseif($mp4_url != '' && $pack == "Pro") {
+        }elseif($mp4_url != '' && $pack == "Pro" && $settings->transcoding_access  == 1) {
 
             $rand = Str::random(16);
             $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -347,6 +347,49 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
               $value['video_title'] = $title;
               
               return $value;
+        }elseif($mp4_url != '' && $pack == "Pro"  && $settings->transcoding_access  == 0 ) {
+
+            $rand = Str::random(16);
+            $path = $rand . '.' . $request->file->getClientOriginalExtension();
+        
+            $request->file->storeAs('public', $path);
+            $thumb_path = 'public';
+                        
+            $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+
+            $storepath  = URL::to('/storage/app/public/'.$path);
+
+
+            //  Video duration 
+            $getID3 = new getID3;
+            $Video_storepath  = storage_path('app/public/'.$path);       
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo['playtime_seconds'];
+
+            $video = new Video();
+            $video->disk = 'public';
+            $video->title = $file_folder_name;
+            $video->original_name = 'public';
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = 'mp4_url';
+            $video->draft = 0;
+            $video->image = 'default_image.jpg';
+            $video->duration  = $Video_duration;
+            $video->save(); 
+            
+        
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title =$video_title->title; 
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+            $value['video_title'] = $title;
+
+            return $value;
+        
         }
         else {
              $value['success'] = 2;
@@ -1353,7 +1396,7 @@ if(!empty($artistsdata)){
              {
                 return redirect('/home');
              }
-
+             $user_package = User::where('id',1)->first();
             $data = $request->all();
            
             $validatedData = $request->validate([
@@ -1479,7 +1522,9 @@ if(!empty($artistsdata)){
 
                 if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro"  ){
                         $data['status'] = 1;    
-                    }elseif(Auth::user()->role =='admin' ){
+                    }elseif(Auth::user()->role =='admin' &&  $pack == "Pro" ){
+                        $data['status'] = 0;    
+                    }elseif(Auth::user()->role =='admin'){
                         $data['status'] = 1;    
                     }
     

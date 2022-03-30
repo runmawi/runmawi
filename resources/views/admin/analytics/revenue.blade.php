@@ -93,18 +93,15 @@ $jsondata = json_decode($jsonString, true);
                         </div>
                         <div class="col-md-12">
                           <div class="row"> 
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                           <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" >
-                          <!-- <p>Date of Birth: <input type="text" id="datepicker"></p> -->
-
                           </div>
                           <div class="col-md-3">
                           <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time">
                           </div>
-                          <div class="col-md-6">
-                          <!-- <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" /> -->
+                          <div class="col-md-5">
                           </div>
                           </div>
                           <div class="clear"></div>
@@ -192,7 +189,7 @@ $jsondata = json_decode($jsonString, true);
                               @foreach($total_user as $key => $user)
 
                              <tr>
-                             <td>{{ $user->name }}</td>   
+                             <td>{{ $user->username  }}</td>   
                              <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
                              <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
                              <td>{{ $user->created_at }}</td> 
@@ -401,10 +398,18 @@ headers: {
 
           },      
           success: function(data){
+            var Excel = data ;
+            var Excel_url =  "{{ URL::to('public/uploads/csv/')  }}";
+            var link_url = Excel_url+'/'+Excel;
+
+            // console.log(link_url);
+
             $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
                           setTimeout(function() {
                             $('.add_watch').slideUp('fast');
                           }, 3000);
+
+            location.href = link_url;
           }
           });
     });
