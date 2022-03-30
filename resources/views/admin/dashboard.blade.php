@@ -30,6 +30,78 @@
       <div id="content-page" class="content-page">
          <div class="container-fluid">
              <div class="row">
+                 <div class="col-lg-4">
+                  <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
+                     <div class="iq-card-header">
+                        <div class="iq-header-title">
+                           <h4 class="card-title text-center" style="color: #4295D2;">User's Of {{ GetWebsiteName() }}</h4>
+                        </div>
+                     </div>
+                     <div class="iq-card-body pb-0">
+                        <div id="view-chart-01">
+                        </div>
+                        <div class="row mt-1">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total  
+                                          Subscriber's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height">
+                                           New Subscriber's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                                Video's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height">  Total
+                                          Visitor's
+                                          </p>
+                                       <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
                 <div class="col-lg-8">
                     <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
@@ -41,7 +113,7 @@
                         </div>
                         <div class="iq-card-body">
                             <p></p>
-                             <div class="row">
+                             <div class="row align-items-center">
                                 <div class="col-sm-6">
                                    <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>
@@ -52,17 +124,18 @@
                                 <div class="col-sm-6">
                                    <div class="tab-content mt-0" id="v-pills-tabContent">
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                         <label class="m-0">First things firt, you need Video.</label>
-                                         <p class="p1">Upload a video to get started.</p>
+                                         <label class="m-0">First things first, you need Video.</label>
+                                         <p class="">Upload a video to get started.</p>
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                          <p class="p1">Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                         
+                                          <p class="" >Setup website logo, Name, Social Links, Payment Types, etc.</p>
                                           <a href="/admin/settings">Go to Storefront Settings</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                          <p class="p1">Setup subscription Plans</p>
-                                          <a href="/admin/subscription-plans">Add Subscription Plans</a>
+                                          <p class="">Setup subscription Plans</p>
+                                          <a  href="/admin/subscription-plans">Add Subscription Plans</a>
                                       </div>
                                    </div>
                                 </div>
@@ -70,22 +143,23 @@
                         </div>
                     </div> 
                 </div>
+                 
              </div>
             <div class="row">
+                
                <div class="col-lg-8">
                   <div class="row">
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1" >
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        view
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{ $view }}</h4>
@@ -98,14 +172,13 @@
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex  justify-content-between align-items-center">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0 font-size-14">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/c.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Rated This App
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/c.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+55K</h4>
@@ -117,15 +190,14 @@
                      {{-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-capitalize">
-                                    <p class="mb-0 font-size-14">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-capitalize">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/download.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Downloaded
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/download.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex mt-4 align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">+1M</h4>
@@ -137,15 +209,14 @@
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
-                              <div class="d-flex align-items-center justify-content-between">
-                                 <div class="iq-cart-text text-uppercase">
-                                    <p class="mb-0 font-size-14">
+                              <div class="d-flex align-items-center justify-content-center">
+                                 <div class="iq-cart-text text-center text-uppercase">
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
+                                    <p class="mb-0 mt-3">
                                        Visitors
                                     </p>
                                  </div>
-                                 <div class="icon iq-icon-box-top rounded-circle ">
-                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
-                                 </div>
+                                 
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
                                  <h4 class=" mb-0">{{  $visitor }} </h4>
@@ -192,78 +263,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-4">
-                  <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
-                     <div class="iq-card-header">
-                        <div class="iq-header-title">
-                           <h4 class="card-title text-center">User's Of {{ GetWebsiteName() }}</h4>
-                        </div>
-                     </div>
-                     <div class="iq-card-body pb-0">
-                        <div id="view-chart-01">
-                        </div>
-                        <div class="row mt-1">
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total  
-                                          Subscriber's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">
-                                           New Subscriber's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height"> Total 
-                                                Video's
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
-                              <div class="iq-card1">
-                                 <div class="iq-card-body">
-                                    <div class="media align-items-center">
-                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
-                                       <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">  Total
-                                          Visitor's
-                                          </p>
-                                       <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+               
             </div>
             <div class="row">
                <div class="col-sm-12  col-lg-5">

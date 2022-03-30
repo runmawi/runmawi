@@ -30,12 +30,11 @@
                 @csrf 
             <input type="hidden" name="id" value="{{ ($Geofencing !='') ? $Geofencing->id  : '' }}">
 
-            <div class="container iq-card">
-                <div class="col-md-3" style="
-                margin-left: 30%;">
+            <div class=" iq-card col-md-10 p-4">
+                <div class="d-flex justify-content-center align-items-center p-3" >
               
-                    <span style="float:left">Disable</span>
-                    <span style="float:right">Enable</span>
+                    <span class="mr-3">Disable</span>
+                   
 
                     <label class="toggle">
                         <div class="form-group">
@@ -43,9 +42,10 @@
                               <span class="slide round"></span>
                         </div>
                     </label>
+                     <span class="ml-3">Enable</span>
                 </div>
 
-                <div class="button button1">
+                <div class=" button1 col-md-3 text-center">
                     <button type="submit" class="btn btn-hover ab" >Save Changes</button>
                 </div>
             </div>
@@ -74,11 +74,13 @@
   display: inline-block;
   width: 78px;
   height: 40px;
-  margin-left: 38px;
-  margin-bottom: 31px !important;
+ 
+ 
 
 }
-
+    .button1{
+        margin: 0 auto;
+    }
 .toggle input { 
   opacity: 0;
   width: 0;

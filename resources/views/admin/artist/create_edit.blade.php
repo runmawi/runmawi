@@ -35,7 +35,7 @@
             @if(!empty($artist->id))
             <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
             @else
-            <h3 class="fs-title">Create Artist</h3>
+            <h4 class="fs-title">Create Artist</h4>
             @endif
         </div>
         <hr />

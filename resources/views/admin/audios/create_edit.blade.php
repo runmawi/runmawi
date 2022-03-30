@@ -27,8 +27,10 @@
         <div class="admin-section-title">
             <div class="iq-card">
                 <div class="row">
-                    <div class="col-md-4">
-                        <h4><i class="entypo-archive"></i> Add Audio </h4>
+					
+						
+                    <div class="col-md-8" id="heading_option">
+                        <h4> Add Audio </h4>
                     </div>
 					@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -41,7 +43,9 @@
                         </div>
                         @endforeach
                         @endif
-                    <div class="col-md-8" align="right">
+					
+
+                    <div class="col-md-4" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
                                 <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
@@ -87,7 +91,7 @@
             </div>
         </div>
 
-
+    </div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -122,7 +126,8 @@ $('#audiofile').click(function(){
 </script>
  
     </div> 
-</div> 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    
 <script>
@@ -163,9 +168,7 @@ data: {
 
 <style>
 
-    .p1{
-        font-size: 12px;
-    }
+    
     .select2-selection__rendered{
         background-color: #f7f7f7!important;
         border: none!important;
@@ -462,14 +465,14 @@ data: {
 												</div>
 											</div> 
 										</div>
-								
+                                    </div>
 									<div class="row">
-									<div class="row mt-3 align-items-center"> 
-									<div class="col-sm-4" id="ppv_price"> 
+									<div class="row mt-3 align-items-center ml-3"> 
+									<div class="col-sm-12" id="ppv_price"> 
                                     <label class="p2">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                                 </div>
-								<div class="col-sm-4" > 
+								<div class="col-sm-12" > 
                                 <?php if($settings->ppv_status == 1){ ?>
                                     <label class="p2" for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="ppv_status" value="1" id="ppv_status" />
@@ -621,6 +624,7 @@ $('#duration').mask('00:00:00');
     $('#Next').click(function(){
   $('#video_upload').hide();
   $('#optionradio').hide();
+  $('#heading_option').hide();
   $('#audio_file').hide();
   $('#Next').hide();
   $('#video_details').show();

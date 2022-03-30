@@ -49,689 +49,765 @@ use App\WelcomeScreen;
 use App\SubscriptionPlan;
 use App\Devices;
 use Theme;
+use Response;
+use File;
 
 class AdminUsersController extends Controller
 {
 
-   public function index(Request $request)
-	{
-       
+    public function index(Request $request)
+    {
+
         $user = $request->user();
         //dd($user->hasRole('admin','editor')); // and so on
-       
-      // dd($user->can('permission-slug'));
-       
-       //dd($user->hasRole('developer')); //will return true, if user has role
-       //dd($user->givePermissionsTo('create-tasks'));// will return permission, if not null
-       //dd($user->can('create-tasks')); // will return true, if user has permission
-
+        // dd($user->can('permission-slug'));
+        //dd($user->hasRole('developer')); //will return true, if user has role
+        //dd($user->givePermissionsTo('create-tasks'));// will return permission, if not null
+        //dd($user->can('create-tasks')); // will return true, if user has permission
         //exit;
-        $total_subscription = Subscription::where('stripe_status','=','active')->count();
-        
-        $total_videos = Video::where('active','=',1)->count();
-       
-        $total_ppvvideos = PpvVideo::where('active','=',1)->count();
+        $total_subscription = Subscription::where('stripe_status', '=', 'active')->count();
 
-        $total_user_subscription = User::where('role','=','subscriber')->count();
-        
-        
-       $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
-       $top_rated_videos = Video::where("rating",">",7)->get();
-      
-    //    $total_revenew = Subscription::all();
-       $total_revenew = Subscription::sum('price');
+        $total_videos = Video::where('active', '=', 1)->count();
 
-      
+        $total_ppvvideos = PpvVideo::where('active', '=', 1)->count();
+
+        $total_user_subscription = User::where('role', '=', 'subscriber')->count();
+
+        $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
+            ->today())
+            ->count();
+        $top_rated_videos = Video::where("rating", ">", 7)->get();
+
+        //    $total_revenew = Subscription::all();
+        $total_revenew = Subscription::sum('price');
+
         $search_value = '';
-        
-        if(!empty($search_value)):
-            $users = User::where('username', 'LIKE', '%'.$search_value.'%')->orWhere('email', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->take(9000)->get();
+
+        if (!empty($search_value)):
+            $users = User::where('username', 'LIKE', '%' . $search_value . '%')->orWhere('email', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+                ->take(9000)
+                ->get();
         else:
             // $users = User::orderBy('created_at', 'desc')->take(9000)->get();
             $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
         endif;
-// print_r($total_revenew);
-// exit();
-		$data = array(
-			'users' => $allUsers,
+        // print_r($total_revenew);
+        // exit();
+        $data = array(
+            'users' => $allUsers,
             'total_subscription' => $total_subscription,
             'total_revenew' => $total_revenew,
             'total_recent_subscription' => $total_recent_subscription,
             'total_videos' => $total_videos,
             'top_rated_videos' => $top_rated_videos,
-			);
-		return \View::make('admin.users.index', $data);
-	}
-    
-
-
+        );
+        return \View::make('admin.users.index', $data);
+    }
 
     public function Usersearch(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
-         $slug = URL::to('admin/user/view');
-         $edit = URL::to('admin/user/edit');
-         $delete = URL::to('admin/user/delete');
-      if($query != '')
-      {
-        $data = User::where('username', 'LIKE', '%'.$query.'%')
-        ->orWhere('mobile','LIKE', '%'.$query.'%')
-        ->orWhere('email','LIKE', '%'.$query.'%')
-        ->orderBy('created_at', 'desc')->paginate(10);
-      }
-      else
-      {
-        return Redirect::to('admin/users');
-      }
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        if(!empty($row->username)){ $username = $row->username ; }else{ $username = $row->name ;}
-        if(!empty($row->avatar)){ $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar ; }
-        else{ $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar ;}
-        if($row->active == 1){ $active = "Active" ;$class="bg-success"; }elseif($row->active == 0){ $active = "Deactive" ;$class="bg-danger"; }
-        $output .= '
+            $slug = URL::to('admin/user/view');
+            $edit = URL::to('admin/user/edit');
+            $delete = URL::to('admin/user/delete');
+            if ($query != '')
+            {
+                $data = User::where('username', 'LIKE', '%' . $query . '%')->orWhere('mobile', 'LIKE', '%' . $query . '%')->orWhere('email', 'LIKE', '%' . $query . '%')->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            }
+            else
+            {
+                return Redirect::to('admin/users');
+            }
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    if (!empty($row->username))
+                    {
+                        $username = $row->username;
+                    }
+                    else
+                    {
+                        $username = $row->name;
+                    }
+                    if (!empty($row->avatar))
+                    {
+                        $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar;
+                    }
+                    else
+                    {
+                        $image_url = URL::to('/') . '/public/uploads/avatars/' . $row->avatar;
+                    }
+                    if ($row->active == 1)
+                    {
+                        $active = "Active";
+                        $class = "bg-success";
+                    }
+                    elseif ($row->active == 0)
+                    {
+                        $active = "Deactive";
+                        $class = "bg-danger";
+                    }
+                    $output .= '
         <tr>
-        <td><img class="img-fluid avatar-50" alt="author-profile" src="'.$image_url.'" alt="" /></td>
-        <td>'.$username.'</td>
-        <td>'.$row->mobile.'</td>
-        <td>'.$username.'</td>
-        <td>'.$row->email.'</td>
-         <td>'.$row->role.'</td>
-        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
-         <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->id'><i class='lar la-eye'></i>
-        </a>".'
-        '."<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
-        </a>".'
-        '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
-        </a>".'
+        <td><img class="img-fluid avatar-50" alt="author-profile" src="' . $image_url . '" alt="" /></td>
+        <td>' . $username . '</td>
+        <td>' . $row->mobile . '</td>
+        <td>' . $username . '</td>
+        <td>' . $row->email . '</td>
+         <td>' . $row->role . '</td>
+        <td class="' . $class . '" style="font-weight:bold;">' . $active . '</td>
+         <td> ' . "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->id'><i class='lar la-eye'></i>
+        </a>" . '
+        ' . "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+        </a>" . '
+        ' . "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+        </a>" . '
         </td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
 
+    public function create()
+    {
 
-    public function create(){
-        
         $data = array(
-            'post_route' => URL::to('admin/user/store'),
-            'admin_user' => Auth::user(),
+            'post_route' => URL::to('admin/user/store') ,
+            'admin_user' => Auth::user() ,
             'button_text' => 'Create User',
-            );
-        
+        );
+
         return \View::make('admin.users.create_edit', $data);
     }
-    public function view($id){
-        
-    	$user = User::find($id);
-  
-   
-       $current_plan = [];
-     
-        $current_plan = User::select(['subscriptions.*','plans.plans_name','plans.billing_interval','plans.days'])
-        ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
-        ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
-        ->where('role', '=', 'subscriber' )
-        ->where('users.id', '=', $user->id )
-        ->get();
-               $country_name = CountryCode::where('phonecode','=',$user->ccode)->get();
+    public function view($id)
+    {
+
+        $user = User::find($id);
+
+        $current_plan = [];
+
+        $current_plan = User::select(['subscriptions.*', 'plans.plans_name', 'plans.billing_interval', 'plans.days'])->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
+            ->where('role', '=', 'subscriber')
+            ->where('users.id', '=', $user->id)
+            ->get();
+        $country_name = CountryCode::where('phonecode', '=', $user->ccode)
+            ->get();
         //    echo "<pre>";
         // print_r($current_plan);
         // exit();
-           $data = array(
-   
-               'current_plan' => $current_plan,
-               'country_name' => $country_name,
-               'users' => $user
-               );
-           return \View::make('admin.users.view', $data);
-    } 
-    public function store(Request $request){
-        
-       
-         $validatedData = $request->validate([
-                'email' => 'required|max:255',
-                'username' => 'required|max:255',
-            ]);
-        
+        $data = array(
+
+            'current_plan' => $current_plan,
+            'country_name' => $country_name,
+            'users' => $user
+        );
+        return \View::make('admin.users.view', $data);
+    }
+    public function store(Request $request)
+    {
+
+        $validatedData = $request->validate(['email' => 'required|max:255', 'username' => 'required|max:255', ]);
+
         $input = $request->all();
         // echo "<pre>";
         // print_r($input);
         // exit();
         $user = Auth::user();
-        
-        
-        $path = public_path().'/uploads/avatars/'; 
-        
+
+        $path = public_path() . '/uploads/avatars/';
+
         $input['email'] = $request['email'];
-        
-        $path = public_path().'/uploads/avatars/';
-        
+
+        $path = public_path() . '/uploads/avatars/';
+
         $logo = $request['avatar'];
-        
-        if($logo != '') {   
-          //code for remove old file
-          if($logo != ''  && $logo != null){
-               $file_old = $path.$logo;
-              if (file_exists($file_old)){
-               unlink($file_old);
-              }
-          }
-          //upload new file
-          $file = $logo;
-          $input['avatar']  = $file->getClientOriginalName();
-          $file->move($path, $input['avatar']);
-         
-     }
-     $string = Str::random(60); 
 
-     $password = Hash::make($request['passwords']);
+        if ($logo != '')
+        {
+            //code for remove old file
+            if ($logo != '' && $logo != null)
+            {
+                $file_old = $path . $logo;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $logo;
+            $input['avatar'] = $file->getClientOriginalName();
+            $file->move($path, $input['avatar']);
 
-     $user = new User;
-     $user->username = $request['username'];
-     $user->email = $request['email'];
-     $user->mobile = $request['mobile'];
-     $password = Hash::make($request['passwords']);
-     $user->ccode = $request['ccode'];
-     $user->role = $request['role'];
-     $user->activation_code = $string;
-
-    //  $user->terms = $request['terms'];
-     $user->avatar = $file->getClientOriginalName();
-     $user->password = $password;
-    $user->save();
-    $settings = Setting::first();
-
-    if($input['role'] == "subscriber"){
-        \Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name), function($message)  use ($request,$input) {
-            $message->to($request->email,$request->name)->subject('Verify your email address');
-         });
-    }else{
-
-    }
-
-    //  $moderatorsuser->description = $request->description;
-    //     if ( $input['role'] =='subadmin' ){
-            
-    //             $request['role'] ='admin';
-    //             $request['sub_admin'] = 1;
-    //             $request['stripe_active'] = 1;
-            
-    //     } else {
-            
-    //          $request['role'] = $request['role'];
-    //     }
-        
-        if ( empty($request['email'])){
-            return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
-            
-        } else {
-            
-            //  $request['email'] = $request['email'];
         }
-        
+        $string = Str::random(60);
+
+        $password = Hash::make($request['passwords']);
+
+        $user = new User;
+        $user->username = $request['username'];
+        $user->email = $request['email'];
+        $user->mobile = $request['mobile'];
+        $password = Hash::make($request['passwords']);
+        $user->ccode = $request['ccode'];
+        $user->role = $request['role'];
+        $user->activation_code = $string;
+
+        //  $user->terms = $request['terms'];
+        $user->avatar = $file->getClientOriginalName();
+        $user->password = $password;
+        $user->save();
+        $settings = Setting::first();
+
+        if ($input['role'] == "subscriber")
+        {
+            \Mail::send('emails.verify', array(
+                'activation_code' => $string,
+                'website_name' => $settings->website_name
+            ) , function ($message) use ($request, $input)
+            {
+                $message->to($request->email, $request->name)
+                    ->subject('Verify your email address');
+            });
+        }
+        else
+        {
+
+        }
+
+        //  $moderatorsuser->description = $request->description;
+        //     if ( $input['role'] =='subadmin' ){
+        //             $request['role'] ='admin';
+        //             $request['sub_admin'] = 1;
+        //             $request['stripe_active'] = 1;
+        //     } else {
+        //          $request['role'] = $request['role'];
+        //     }
+        if (empty($request['email']))
+        {
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Successfully Created New User',
+                'note_type' => 'failed'
+            ));
+
+        }
+        else
+        {
+
+            //  $request['email'] = $request['email'];
+            
+        }
+
         $input['terms'] = 0;
+
+        //           if($request['passwords'] == ''){
         
-//           if($request['passwords'] == ''){
 
-         
-//             // echo "<pre>";
-//             // print_r($password);
-//             // exit();
-//             $request['password'] = $password;
-//         } else{
-//             // echo "<pre>";
-//             // print_r('$input');
-//             // exit();
-//             $password = Hash::make($request['passwords']);
+        //             // echo "<pre>";
+        //             // print_r($password);
+        //             // exit();
+        //             $request['password'] = $password;
+        //         } else{
+        //             // echo "<pre>";
+        //             // print_r('$input');
+        //             // exit();
+        //             $password = Hash::make($request['passwords']);
+        //             $request['password'] = $password; }
+        // //
+        //         $user = User::create($input);
+        // Welcome on sub-user registration
+        $template = EmailTemplate::where('id', '=', 10)->first();
+        $heading = $template->heading;
+        //   echo "<pre>";
+        // print_r($heading);
+        // exit();
+        $settings = Setting::find(1);
 
-//             $request['password'] = $password; }
-// //        
-//         $user = User::create($input);
-// Welcome on sub-user registration
-            $template = EmailTemplate::where('id','=',10)->first();
-            $heading =$template->heading; 
-            //   echo "<pre>";
-            // print_r($heading);
-            // exit();
-    $settings = Setting::find(1);
-
-            if($input['role'] == "subscriber"){
+        if ($input['role'] == "subscriber")
+        {
 
             Mail::send('emails.sub_user', array(
                 /* 'activation_code', $user->activation_code,*/
-                'name'=>$request['username'], 
-                'email' => $request['email'], 
-                'password' => $request['passwords'], 
+                'name' => $request['username'],
+                'email' => $request['email'],
+                'password' => $request['passwords'],
 
-                ), function($message) use ($request,$user,$heading,$settings) {
-                $message->from(AdminMail(),$settings->website_name);
-                $message->to($request['email'], $request['username'])->subject($heading.$request['username']);
-                });
+            ) , function ($message) use ($request, $user, $heading, $settings)
+            {
+                $message->from(AdminMail() , $settings->website_name);
+                $message->to($request['email'], $request['username'])->subject($heading . $request['username']);
+            });
 
-            }else{
+        }
+        else
+        {
 
-            }
+        }
 
-
-
-        return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );
+        return Redirect::to('admin/users')->with(array(
+            'message' => 'Successfully Created New User',
+            'note_type' => 'success'
+        ));
     }
-    
-    
-    public function update(Request $request){
-        
-       
+
+    public function update(Request $request)
+    {
+
         $input = $request->all();
-        
-         $validatedData = $request->validate([
-                'email' => 'required|max:255',
-                'id' => 'required|max:255',
-                'username' => 'required|max:255',
-         ]);
-        
+
+        $validatedData = $request->validate(['email' => 'required|max:255', 'id' => 'required|max:255', 'username' => 'required|max:255', ]);
+
         $id = $request['id'];
-		$user = User::find($id);        
-        $input = $request->all();             
-        
-        $path = public_path().'/uploads/avatars/';             
-        $input['email'] = $request['email'];  
-        $logo = $request['avatar'];        
-        
-        if($logo != '') {   
-          //code for remove old file
-          if($logo != ''  && $logo != null){
-               $file_old = $path.$logo;
-              if (file_exists($file_old)){
-               unlink($file_old);
-              }
-          }
-          //upload new file
-          $file = $logo;
-          $input['avatar']  = $file->getClientOriginalName();
-          $file->move($path, $input['avatar']);
-         
-     }
-      
-        if ( $input['role'] =='subadmin' ){
-                $request['role'] ='admin';
-                $request['sub_admin'] = 1;
-                $request['stripe_active'] = 1;
-        } else {
-             $request['role'] = $request['role'];
+        $user = User::find($id);
+        $input = $request->all();
+
+        $path = public_path() . '/uploads/avatars/';
+        $input['email'] = $request['email'];
+        $logo = $request['avatar'];
+
+        if ($logo != '')
+        {
+            //code for remove old file
+            if ($logo != '' && $logo != null)
+            {
+                $file_old = $path . $logo;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $logo;
+            $input['avatar'] = $file->getClientOriginalName();
+            $file->move($path, $input['avatar']);
+
         }
-        
-        if ( empty($request['email'])){
-            return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
-        } else {
-             $request['email'] = $request['email'];
+
+        if ($input['role'] == 'subadmin')
+        {
+            $request['role'] = 'admin';
+            $request['sub_admin'] = 1;
+            $request['stripe_active'] = 1;
         }
-        
+        else
+        {
+            $request['role'] = $request['role'];
+        }
+
+        if (empty($request['email']))
+        {
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Successfully Created New User',
+                'note_type' => 'failed'
+            ));
+        }
+        else
+        {
+            $request['email'] = $request['email'];
+        }
+
         $input['terms'] = 1;
         $input['stripe_active'] = 0;
 
-        if(empty($request['passwords'])) {
-        	$input['passwords'] = $user->password;
-        } 
-        else { 
-                $input['passwords'] = $request['passwords']; 
-            }
+        if (empty($request['passwords']))
+        {
+            $input['passwords'] = $user->password;
+        }
+        else
+        {
+            $input['passwords'] = $request['passwords'];
+        }
 
-        if(empty($input['active'])){
+        if (empty($input['active']))
+        {
             $active_status = '0';
-        }else{
+        }
+        else
+        {
             $active_status = '1';
         }
 
-        if(empty($input['avatar'])){
-            $avatar_image  = null;
-        }else{
-            $avatar_image  = $input['avatar'];;
+        if (empty($input['avatar']))
+        {
+            $avatar_image = null;
+        }
+        else
+        {
+            $avatar_image = $input['avatar'];;
         }
         $user_update = User::find($id);
-        $user_update->username  = $input['username'];
+        $user_update->username = $input['username'];
         $user_update->email = $input['email'];
-        $user_update->ccode  = $input['ccode'];
-        $user_update->mobile  = $input['mobile'];
+        $user_update->ccode = $input['ccode'];
+        $user_update->mobile = $input['mobile'];
         $user_update->password = Hash::make($input['passwords']);
         $user_update->role = $input['role'];
-        $user_update->active =  $active_status ;
+        $user_update->active = $active_status;
         $user_update->terms = $input['terms'];
         $user_update->avatar = $avatar_image;
         $user_update->stripe_active = $input['stripe_active'];
         $user_update->save();
-        
-        return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User', 'note_type' => 'success') );
-    }
-    
-    
-    public function edit($id){
-        
-    	$user = User::find($id);
-    	$data = array(
-    		'user' => $user,
-    		'post_route' => URL::to('admin/user/update'),
-    		'admin_user' => Auth::user(),
-    		'button_text' => 'Update User',
-    		);
-    	return View::make('admin.users.create_edit', $data);
-    } 
-    
-    public function myprofile(){
 
+        return Redirect::to('admin/users')
+            ->with(array(
+            'message' => 'Successfully Created New User',
+            'note_type' => 'success'
+        ));
+    }
+
+    public function edit($id)
+    {
+
+        $user = User::find($id);
+        $data = array(
+            'user' => $user,
+            'post_route' => URL::to('admin/user/update') ,
+            'admin_user' => Auth::user() ,
+            'button_text' => 'Update User',
+        );
+        return View::make('admin.users.create_edit', $data);
+    }
+
+    public function myprofile()
+    {
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
-        if(Auth::guest()){
+        if (Auth::guest())
+        {
             return redirect('/login');
         }
         $data = Session::all();
-      
+
         // $session_password = $data['password_hash'];
-        if (empty($data['password_hash'])) {
+        if (empty($data['password_hash']))
+        {
             $system_settings = SystemSetting::first();
 
-            return Theme::view('auth.login',compact('system_settings'));
+            return Theme::view('auth.login', compact('system_settings'));
 
             // return View::make('auth.login', $data);
+            
+        }
+        else
+        {
 
-          }else{
-          
-    	$user_id = Auth::user()->id;
-    	$user_role = Auth::user()->role;
-        $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-        ->get();
- 
-        if($user_role == 'registered' || $user_role == 'admin' ){
-            $role_plan  = $user_role;
-            $plans = "";
-            $devices_name = "";
+            $user_id = Auth::user()->id;
+            $user_role = Auth::user()->role;
+            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                ->get();
 
-        }elseif($user_role == 'subscriber'){
-   
-    $user_role = Subscription::select('subscription_plans.*')
-    ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
-    ->where('subscriptions.user_id',$user_id)
-    ->orderBy('created_at', 'DESC')
-    ->get();
-//     SELECT 
-// subscription_plans.* FROM subscriptions INNER JOIN subscription_plans ON 
-// subscriptions.stripe_plan = subscription_plans.plan_id 
-// WHERE subscriptions.user_id = 601
+            if ($user_role == 'registered' || $user_role == 'admin')
+            {
+                $role_plan = $user_role;
+                $plans = "";
+                $devices_name = "";
 
-
-
-       if(!empty($user_role[0])){
-       $role_plan = $user_role[0]->plans_name;
-       $plans = SubscriptionPlan::where('plans_name',$role_plan)->first();
-       $devices = Devices::all();
-       $permission = $plans->devices;
-       $user_devices = explode(",",$permission);
-       }else{
-        $role_plan = "No Plan";
-        $plans = "";
-       }
-
-       if(!empty($plans->devices)){
-        foreach($devices as $key => $value){
-            if(in_array($value->id, $user_devices)){
-                $devices_name[] = $value->devices_name;
             }
+            elseif ($user_role == 'subscriber')
+            {
+
+                $user_role = Subscription::select('subscription_plans.*')->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')
+                    ->get();
+                //     SELECT
+                // subscription_plans.* FROM subscriptions INNER JOIN subscription_plans ON
+                // subscriptions.stripe_plan = subscription_plans.plan_id
+                // WHERE subscriptions.user_id = 601
+                
+
+                if (!empty($user_role[0]))
+                {
+                    $role_plan = $user_role[0]->plans_name;
+                    $plans = SubscriptionPlan::where('plans_name', $role_plan)->first();
+                    $devices = Devices::all();
+                    $permission = $plans->devices;
+                    $user_devices = explode(",", $permission);
+                }
+                else
+                {
+                    $role_plan = "No Plan";
+                    $plans = "";
+                }
+
+                if (!empty($plans->devices))
+                {
+                    foreach ($devices as $key => $value)
+                    {
+                        if (in_array($value->id, $user_devices))
+                        {
+                            $devices_name[] = $value->devices_name;
+                        }
+                    }
+                    $plan_devices = implode(",", $devices_name);
+                    if (!empty($plan_devices))
+                    {
+                        $devices_name = $plan_devices;
+                    }
+                    else
+                    {
+                        $devices_name = "";
+                    }
+                }
+                else
+                {
+                    $devices_name = "";
+                }
+
+            }
+            $user_role = Auth::user()->role;
+
+            $user_details = User::find($user_id);
+            $recent_videos = RecentView::orderBy('id', 'desc')->take(10)
+                ->get();
+            $recent_view = $recent_videos->unique('video_id');
+
+            foreach ($recent_view as $key => $value)
+            {
+                $videos[] = Video::Where('id', '=', $value->video_id)
+                    ->take(10)
+                    ->get();
+            }
+            // dd($videos);
+            // $recent_view = $videos->unique('slug');
+            $videocategory = VideoCategory::all();
+            $language = Language::all();
+
+            // Multiuser profile details
+            $Multiuser = Session::get('subuser_id');
+
+            if ($Multiuser != null)
+            {
+                $users = Multiprofile::where('id', $Multiuser)->pluck('id')
+                    ->first();
+                $profile_details = Multiprofile::where('id', $users)->get();
+            }
+            else
+            {
+                $users = User::where('id', Auth::user()->id)
+                    ->pluck('id')
+                    ->first();
+                $profile_details = Multiprofile::where('parent_id', $users)->get();
+            }
+            // $video = "";
+            if (!empty($video))
+            {
+                $video = array_unique($videos);
+            }
+            else
+            {
+                $video = [];
+            }
+            // $video = array_unique($videos);
+            $data = array(
+                'videos' => $video,
+                'videocategory' => $videocategory,
+                'plans' => $plans,
+                'devices_name' => $devices_name,
+                'user' => $user_details,
+                'role_plan' => $role_plan,
+                'user_role' => $user_role,
+                'post_route' => URL::to('/profile/update') ,
+                'language' => $language,
+                'profile_details' => $profile_details,
+                'Multiuser' => $Multiuser,
+                'alldevices' => $alldevices,
+            );
+            return Theme::view('myprofile', $data);
         }
-       $plan_devices = implode(",",$devices_name);
-       if(!empty($plan_devices)){
-       $devices_name = $plan_devices;
-       }else{
-       $devices_name = "";
-       }
-       }else{
-       $devices_name = "";
-       }
-
-        }
-    	$user_role = Auth::user()->role;
-
-    	$user_details = User::find($user_id);
-        $recent_videos = RecentView::orderBy('id', 'desc')->take(10)->get();
-        $recent_view = $recent_videos->unique('video_id');
-
-        foreach($recent_view as $key => $value){
-        $videos[] = Video::Where('id', '=',$value->video_id)->take(10)->get();
-        }
-        // dd($videos);
-        // $recent_view = $videos->unique('slug');
-
-        $videocategory = VideoCategory::all();
-        $language = Language::all();
-
-// Multiuser profile details
-        $Multiuser = Session::get('subuser_id');
-      
-        if($Multiuser != null){
-              $users = Multiprofile::where('id',$Multiuser)->pluck('id')->first();
-              $profile_details = Multiprofile::where('id', $users)->get();
-        } else{  
-            $users =User::where('id',Auth::user()->id)->pluck('id')->first();   
-            $profile_details = Multiprofile::where('parent_id', $users)->get();
-        }
-        // $video = "";
-        if(!empty($video)){
-        $video = array_unique($videos);
-        }else{
-            $video = [];
-        }
-        // $video = array_unique($videos);
-
-    	$data = array(
-    		'videos' => $video,
-    		'videocategory' => $videocategory,
-    		'plans' => $plans,
-    		'devices_name' => $devices_name,
-    		'user' => $user_details,
-    		'role_plan' => $role_plan,
-    		'user_role' => $user_role,
-    		'post_route' => URL::to('/profile/update'),
-            'language' => $language,
-            'profile_details' => $profile_details,
-            'Multiuser' => $Multiuser,
-            'alldevices' => $alldevices,
-    		);
-    	return Theme::view('myprofile', $data);
-          }
     }
-    public function ProfileImage(Request $request){
-      
-    $input = $request->all();
-// dd($input);  
-   $id = $request['user_id'];
-
-   $path = public_path().'/uploads/avatars/';         
-   $input['email'] = $request['email'];  
-   
-   $path = public_path().'/uploads/avatars/';        
-   $logo = $request['avatar'];        
-   
-   if($logo != '') {   
-     //code for remove old file
-     if($logo != ''  && $logo != null){
-          $file_old = $path.$logo;
-         if (file_exists($file_old)){
-          unlink($file_old);
-         }
-     }
-     //upload new file
-     $file = $logo;
-     $input['avatar']  = $file->getClientOriginalName();
-     $file->move($path, $input['avatar']);
-    
-}
- 
-   $user_update = User::find($id);
-   $user_update->avatar = $file->getClientOriginalName();
-   $user_update->save();
-   
-   return Redirect::back();
-
-}
-    public function myprofileupdate(Request $request){
-            // echo "<pre>";
-      
-        $input = $request->all();
-        
-        // print_r($input);
-        // exit();
-       $id = $request['user_id'];
-       
-       $user = User::find($id);        
-
-       
-    //    if ( empty($request['email'])){
-    //        return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
-           
-    //    } else {
-           
-    //         $request['email'] = $request['email'];
-    //    }
-
-
-
-       if(empty($request['password'])) {
-           $input['password'] = $user->password;
-       } 
-       else { 
-               $input['password'] = $request['password']; 
-           }
-      
-       $user_update = User::find($id);
-       $user_update->email = $input['email'];
-       $user_update->password = Hash::make($input['password']);
-       $user_update->mobile = $input['mobile'];
-       $user_update->username = $input['username'];
-       $user_update->save();
-       
-       return Redirect::back();
- 
-    }
-    
-    public function refferal() {
-    	return View::make('refferal');
-    }
-    
-    
-    
-    public function profileUpdate(User $user,Request $request)
+    public function ProfileImage(Request $request)
     {
 
+        $input = $request->all();
+        // dd($input);
+        $id = $request['user_id'];
 
-//         $data = $request->validate([
-//            'name' => 'required',
-//             'email' => 'required|email|unique:users',
-//         ]);
+        $path = public_path() . '/uploads/avatars/';
+        $input['email'] = $request['email'];
 
-//        $user->fill($data);
-//        $user->save();
-      
-         $user = User::find(Auth::user()->id);
-         $user->username = $request->get('name');
-         $user->mobile = $request->get('mobile');
-         $user->email = $request->get('email');
-         $user->ccode = $request->get('ccode');
-            if (!empty($request->get('password'))) {
-               $user->password = $request->get('password');
+        $path = public_path() . '/uploads/avatars/';
+        $logo = $request['avatar'];
+
+        if ($logo != '')
+        {
+            //code for remove old file
+            if ($logo != '' && $logo != null)
+            {
+                $file_old = $path . $logo;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
             }
-             $path = public_path().'/uploads/avatars/';
-            $image_path = public_path().'/uploads/avatars/';
-        
-            $image_req = $request['avatar'];
-      
-           $image = (isset($image_req)) ? $image_req : '';
-          
-             if($image != '') {   
-                  //code for remove old file
-                  if($image != ''  && $image != null){
-                       $file_old = $image_path.$image;
-                      if (file_exists($file_old)){
-                       unlink($file_old);
-                      }
-                  }
-                  //upload new file
-                  $file = $image;
-                  $user->avatar  = $file->getClientOriginalName();
-                  $file->move($image_path, $user->avatar);
+            //upload new file
+            $file = $logo;
+            $input['avatar'] = $file->getClientOriginalName();
+            $file->move($path, $input['avatar']);
 
-             }
+        }
+
+        $user_update = User::find($id);
+        $user_update->avatar = $file->getClientOriginalName();
+        $user_update->save();
+
+        return Redirect::back();
+
+    }
+    public function myprofileupdate(Request $request)
+    {
+        // echo "<pre>";
+        $input = $request->all();
+
+        // print_r($input);
+        // exit();
+        $id = $request['user_id'];
+
+        $user = User::find($id);
+
+        //    if ( empty($request['email'])){
+        //        return Redirect::to('admin/user/create')->with(array('note' => 'Successfully Created New User', 'note_type' => 'failed') );
+        //    } else {
+        //         $request['email'] = $request['email'];
+        //    }
         
-        
-        
-         $user->save();
-        
-        
+
+        if (empty($request['password']))
+        {
+            $input['password'] = $user->password;
+        }
+        else
+        {
+            $input['password'] = $request['password'];
+        }
+
+        $user_update = User::find($id);
+        $user_update->email = $input['email'];
+        $user_update->password = Hash::make($input['password']);
+        $user_update->mobile = $input['mobile'];
+        $user_update->username = $input['username'];
+        $user_update->save();
+
+        return Redirect::back();
+
+    }
+
+    public function refferal()
+    {
+        return View::make('refferal');
+    }
+
+    public function profileUpdate(User $user, Request $request)
+    {
+
+        //         $data = $request->validate([
+        //            'name' => 'required',
+        //             'email' => 'required|email|unique:users',
+        //         ]);
+        //        $user->fill($data);
+        //        $user->save();
+        $user = User::find(Auth::user()->id);
+        $user->username = $request->get('name');
+        $user->mobile = $request->get('mobile');
+        $user->email = $request->get('email');
+        $user->ccode = $request->get('ccode');
+        if (!empty($request->get('password')))
+        {
+            $user->password = $request->get('password');
+        }
+        $path = public_path() . '/uploads/avatars/';
+        $image_path = public_path() . '/uploads/avatars/';
+
+        $image_req = $request['avatar'];
+
+        $image = (isset($image_req)) ? $image_req : '';
+
+        if ($image != '')
+        {
+            //code for remove old file
+            if ($image != '' && $image != null)
+            {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $user->avatar = $file->getClientOriginalName();
+            $file->move($image_path, $user->avatar);
+
+        }
+
+        $user->save();
+
         //Flash::message('Your account has been updated!');
         return back();
     }
-    
-    
-    public function mobileapp() {
-          $mobile_settings = MobileApp::get();
-          $allCategories = MobileSlider::all();
-          $welcome_screen =  WelcomeScreen::all();
-          $data = array(
-            'admin_user' => Auth::user(),
+
+    public function mobileapp()
+    {
+        $mobile_settings = MobileApp::get();
+        $allCategories = MobileSlider::all();
+        $welcome_screen = WelcomeScreen::all();
+        $data = array(
+            'admin_user' => Auth::user() ,
             'mobile_settings' => $mobile_settings,
-            'allCategories'=>$allCategories,
-            'welcome_screen'=> $welcome_screen,
-          );
-          return View::make('admin.mobile.index', $data);
+            'allCategories' => $allCategories,
+            'welcome_screen' => $welcome_screen,
+        );
+        return View::make('admin.mobile.index', $data);
 
     }
 
-
-    public function mobileappupdate(Request $request) {
+    public function mobileappupdate(Request $request)
+    {
 
         $input = $request->all();
 
-        $path = public_path().'/uploads/settings/';
+        $path = public_path() . '/uploads/settings/';
         $splash_image = $request['splash_image'];
         $file = $splash_image;
-        $input['splash_image']  = $file->getClientOriginalName();
+        $input['splash_image'] = $file->getClientOriginalName();
         $file->move($path, $input['splash_image']);
 
-        MobileApp::create([
-            'splash_image'  => $input['splash_image'] ,
-          ]);
+        MobileApp::create(['splash_image' => $input['splash_image'], ]);
 
-        return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
+        return Redirect::to('admin/mobileapp')->with(array(
+            'message' => 'Successfully Updated  Settings!',
+            'note_type' => 'success'
+        ));
 
         //   $settings = MobileApp::first();
         //   $path = public_path().'/uploads/settings/';
         //   $splash_image = $request['splash_image'];
-
-        //   if($splash_image != '') {   
+        //   if($splash_image != '') {
         //     //code for remove old file
         //     if($splash_image != ''  && $splash_image != null){
         //       $file_old = $path.$splash_image;
@@ -745,116 +821,140 @@ class AdminUsersController extends Controller
         //     $file->move($path, $input['splash_image']);
         //   }
         //   $settings->update($input);
-    }  
+        
+    }
 
     public function logout()
     {
         $data = \Session::all();
         // dd($data);
-            $agent = new Agent();
+        $agent = new Agent();
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();   
+        $userIp = $geoip->getip();
         $device_name = '';
-        if($agent->isDesktop()) {
+        if ($agent->isDesktop())
+        {
             $device_name = 'desktop';
-        }elseif ($agent->isTablet()) {
+        }
+        elseif ($agent->isTablet())
+        {
             $device_name = 'tablet';
-        }elseif ($agent->isMobile()) {
+        }
+        elseif ($agent->isMobile())
+        {
             $device_name = 'mobile';
-        }elseif ($agent->isMobile()) {
+        }
+        elseif ($agent->isMobile())
+        {
             $device_name = 'mobile';
-        }else {
+        }
+        else
+        {
             $device_name = 'tv';
         }
-        if(!empty($device_name)){
-            $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->first();
-            if(!empty($devices_check)){
-            $devices_check = LoggedDevice::where('user_ip','=', $userIp)->where('user_id','=', Auth::User()->id)->where('device_name','=', $device_name)->delete();
+        if (!empty($device_name))
+        {
+            $devices_check = LoggedDevice::where('user_ip', '=', $userIp)->where('user_id', '=', Auth::User()
+                ->id)
+                ->where('device_name', '=', $device_name)->first();
+            if (!empty($devices_check))
+            {
+                $devices_check = LoggedDevice::where('user_ip', '=', $userIp)->where('user_id', '=', Auth::User()
+                    ->id)
+                    ->where('device_name', '=', $device_name)->delete();
             }
         }
         Auth::logout();
         unset($data['password_hash']);
 
         \Session::flush();
-        
-        
-        return Redirect::to('/')->with(array('message' => 'You are logged out done', 'note_type' => 'success') );
+
+        return Redirect::to('/')->with(array(
+            'message' => 'You are logged out done',
+            'note_type' => 'success'
+        ));
     }
-    
+
     public function destroy($id)
+    {
+
+        User::destroy($id);
+        return Redirect::to('admin/users')->with(array(
+            'message' => 'Successfully Deleted User',
+            'note_type' => 'success'
+        ));
+    }
+
+    public function VerifyDevice($userIp, $id)
+    {
+        // dd($id);
+        $device = LoggedDevice::find($id);
+        $username = @$device
+            ->user_name->username;
+        $email = @$device
+            ->user_name->email;
+        $user_ip = @$device->user_ip;
+        $device_name = @$device->device_name;
+        $user_id = @$device->user_id;
+
+        $settings = Setting::find(1);
+
+        // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
+        // if(empty($mail_check)){
+        // dd($device->user_name->username);
+        Mail::send('emails.device_logout', array(
+            /* 'activation_code', $user->activation_code,*/
+            'name' => $username,
+            'email' => $email,
+            'user_ip' => $user_ip,
+            'device_name' => $device_name,
+            'id' => $id,
+        ) , function ($message) use ($email, $username, $settings)
         {
+            $message->from(AdminMail() , $settings->website_name);
+            $message->to($email, $username)->subject('Request to Logout Device');
+        });
+        $maildevice = new ApprovalMailDevice;
+        $maildevice->user_ip = $userIp;
+        $maildevice->device_name = $device_name;
+        $maildevice->device_name = $user_id;
+        $maildevice->status = 0;
+        $maildevice->save();
+        $message = 'Mail Sent to the' . ' ' . $username;
+        return Redirect::back()->with('message', $message);
+        // }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
+        // return Redirect::back();
+        // }
+        
+    }
+    public function LogoutDevice($id)
+    {
+        $device = LoggedDevice::find($id);
+        $username = @$device
+            ->user_name->username;
+        $email = @$device
+            ->user_name->email;
+        $device_name = @$device->device_name;
+        $user_ip = @$device->user_ip;
 
-            User::destroy($id);
-            return Redirect::to('admin/users')->with(array('message' => 'Successfully Deleted User', 'note_type' => 'success') );
-        }
-
-        public function VerifyDevice($userIp,$id)
+        $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
+        $LoggedDevice = LoggedDevice::get();
+        if (!empty($LoggedDevice))
         {
-            // dd($id);
-
-            $device = LoggedDevice::find($id);
-            $username = @$device->user_name->username;
-            $email = @$device->user_name->email;
-            $user_ip = @$device->user_ip;
-            $device_name = @$device->device_name;
-            $user_id = @$device->user_id;
-
-            $settings = Setting::find(1);
-
-            // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
-
-            // if(empty($mail_check)){
-            // dd($device->user_name->username);
-
-            Mail::send('emails.device_logout', array(
-                /* 'activation_code', $user->activation_code,*/
-                'name'=>$username, 
-                'email' => $email, 
-                'user_ip' => $user_ip, 
-                'device_name' => $device_name, 
-                'id' => $id, 
-                ), function($message) use ($email,$username,$settings) {
-                $message->from(AdminMail(),$settings->website_name);
-                $message->to($email, $username)->subject('Request to Logout Device');
-                });
-                $maildevice = new ApprovalMailDevice;
-                $maildevice->user_ip = $userIp;
-                $maildevice->device_name = $device_name;
-                $maildevice->device_name = $user_id;
-                $maildevice->status = 0;
-                $maildevice->save();
-            $message = 'Mail Sent to the'.' '.$username;
-            return Redirect::back()->with('message', $message);
-            // }elseif(!empty($mail_check) && $mail_check->status == 2 || $mail_check->status == 0){
-            // return Redirect::back();
-            // }
-        }
-        public function LogoutDevice($id)
-        {
-            $device = LoggedDevice::find($id);
-            $username = @$device->user_name->username;
-            $email = @$device->user_name->email;
-            $device_name = @$device->device_name;
-            $user_ip = @$device->user_ip;
-
-
-            $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
-            $LoggedDevice = LoggedDevice::get();
-            if(!empty($LoggedDevice)){
             $user_id = $LoggedDevice[0]->user_id;
-            $user = User::where('id',$user_id)->first();
+            $user = User::where('id', $user_id)->first();
             $username = $user->username;
-            }
-            // dd($user);
+        }
+        // dd($user);
+        $maildevice->status = 1;
+        $maildevice->save();
 
-            $maildevice->status = 1;
-            $maildevice->save();
+        LoggedDevice::destroy($id);
+        $settings = Setting::find(1);
 
-            LoggedDevice::destroy($id);
-            $settings = Setting::find(1);
-
-            if(!empty($user_id)){
+        if (!empty($user_id))
+        {
             Mail::send('emails.register_device_login', array(
                 'id' => $user_id,
                 'name' => $username,
@@ -865,490 +965,1052 @@ class AdminUsersController extends Controller
                 $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
             });
         }
-            return Redirect::to('home');
-            // return Redirect::to('/home');
+        return Redirect::to('home');
+        // return Redirect::to('/home');
+        // return Redirect::back();
+        
+    }
+    public function ApporeDevice($ip, $id, $device_name)
+    {
+        // $adddevice = new LoggedDevice;
+        // $adddevice->user_id = $id;
+        // $adddevice->user_ip = $ip;
+        // $adddevice->device_name = $device_name;
+        // $adddevice->save();
+        $data = array(
+            'user_ip' => $ip,
+            'device_name' => $device_name,
+            'id' => $id
+        );
+        return View::make('device_accept', $data);
+        // $message = 'Approved User For Login';
+        // return View::make('auth.login')->with('alert', $message);
+        
+    }
+    public function AcceptDevice($user_ip, $device_name, $id)
+    {
+        // dd($device_name);
+        $adddevice = new LoggedDevice;
+        $adddevice->user_id = $id;
+        $adddevice->user_ip = $user_ip;
+        $adddevice->device_name = $device_name;
+        $adddevice->save();
+        $maildevice = ApprovalMailDevice::where('user_ip', '=', $user_ip)->where('device_name', '=', $device_name)->first();
+        $maildevice->status = 1;
+        $maildevice->save();
+        $system_settings = SystemSetting::first();
+        $user = User::where('id', '=', 1)->first();
+        $message = 'Approved User to Login';
+        return Redirect::to('/')->with('message', $message);
 
-            // return Redirect::back();
-        }
-        public function ApporeDevice($ip,$id,$device_name)
+        // return View::make('auth.login')->with('alert', $message);
+        
+    }
+    public function RejectDevice($userIp, $device_name)
+    {
+        $maildevice = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
+        $maildevice->status = 2;
+        $maildevice->save();
+        $system_settings = SystemSetting::first();
+        $user = User::where('id', '=', 1)->first();
+        $message = 'Approved User For Login';
+        return Redirect::back('/')->with('message', $message);
+
+    }
+    public function export(Request $request)
+    {
+
+        $input = $request->all();
+        $start_date = $input['start_date'];
+        $end_date = $input['end_date'];
+        $users = User::all();
+        // $start_Date=$input['start_date'];
+        // $end_Date=$input['end_date'];
+        $country_name = CountryCode::get();
+
+        foreach ($country_name as $key => $values)
         {
-            // $adddevice = new LoggedDevice;
-            // $adddevice->user_id = $id;
-            // $adddevice->user_ip = $ip;
-            // $adddevice->device_name = $device_name;
-            // $adddevice->save();
-          
-            $data = array(
-                'user_ip' => $ip,
-                'device_name' => $device_name,
-                'id'=>$id
-              );
-              return View::make('device_accept', $data);
-            // $message = 'Approved User For Login';
-            // return View::make('auth.login')->with('alert', $message);
+
+            $phonecode[] = $values->phonecode;
+            $country_names[] = $values->name;
         }
-        public function AcceptDevice($user_ip,$device_name,$id)
+        foreach ($users as $user_ccode)
         {
-            // dd($device_name);
-            $adddevice = new LoggedDevice;
-            $adddevice->user_id = $id;
-            $adddevice->user_ip = $user_ip;
-            $adddevice->device_name = $device_name;
-            $adddevice->save();
-            $maildevice = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
-            $maildevice->status = 1;
-            $maildevice->save();
-            $system_settings = SystemSetting::first();
-            $user = User::where('id','=',1)->first();
-            $message = 'Approved User to Login';
-            return Redirect::to('/')->with('message', $message);
+            $ccode[] = $user_ccode->ccode;
 
-            // return View::make('auth.login')->with('alert', $message);
         }
-        public function RejectDevice($userIp,$device_name)
+        $current_plan = User::select(['subscriptions.*', 'users.*', 'plans.plans_name', 'plans.billing_interval', 'plans.days'])->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
+            ->where('role', '=', 'subscriber')
+            ->get();
+        // $current_plan = \DB::table('users')
+        // ->select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
+        // ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        // ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
+        // ->where('role', '=', 'subscriber' )
+        // ->get();
+        if ($start_date == "" && $end_date == "")
         {
-            $maildevice = ApprovalMailDevice::where('user_ip','=', $userIp)->where('device_name','=', $device_name)->first();
-            $maildevice->status = 2;
-            $maildevice->save();
-            $system_settings = SystemSetting::first();
-            $user = User::where('id','=',1)->first();
-            $message = 'Approved User For Login';
-            return Redirect::back('/')->with('message', $message);
 
-          
-        }
-        public function export(Request $request) {
-
-            $input = $request->all();
-            $start_date = $input['start_date'];
-            $end_date = $input['end_date'] ;
-                $users = User::all();
-                // $start_Date=$input['start_date'];
-                // $end_Date=$input['end_date'];
-                $country_name = CountryCode::get();
-
-                foreach($country_name as $key => $values ){
-
-                    $phonecode[] = $values->phonecode;
-                    $country_names[] = $values->name;
-                    }
-                    foreach($users as $user_ccode){
-                        $ccode[] =$user_ccode->ccode;
-                      
-                       } 
-                            $current_plan = User::select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
-                ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
-                ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
-                ->where('role', '=', 'subscriber' )
-                ->get();
-                // $current_plan = \DB::table('users')
-                // ->select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
-                // ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
-                // ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
-                // ->where('role', '=', 'subscriber' )
-                // ->get();
-            if($start_date =="" &&  $end_date == ""){
-
-                foreach($users as $user) {
-                 $user_array[] = array(
-                   'Username' => $user->username,
-                   'User ID' =>$user->id,
-                   'Email' =>$user->email,
-                   'Contact Number' =>$user->mobile,
-                   'Country Name' =>$user->ccode,
-                    'ccode' => array(),
-                    'options' => array(),
-                   'User Type' =>$user->role,
-                   'Active' =>$user->active,
+            foreach ($users as $user)
+            {
+                $user_array[] = array(
+                    'Username' => $user->username,
+                    'User ID' => $user->id,
+                    'Email' => $user->email,
+                    'Contact Number' => $user->mobile,
+                    'Country Name' => $user->ccode,
+                    'ccode' => array() ,
+                    'options' => array() ,
+                    'User Type' => $user->role,
+                    'Active' => $user->active,
                 );
-                    foreach($current_plan as $plans){
-                        if($plans->user_id == $user->id){                                
-                    $subscription_date = $current_plan[0]->created_at;
-                    $days = $current_plan[0]->days.'days';
-                    $date = date_create($subscription_date);
-                    $subscription_date = date_format($date, 'Y-m-d');
-                    $end_date= date('Y-m-d', strtotime($subscription_date. ' + ' .$days)); 
-                    // echo $end_date; 
-                    $user_array['options'][$user->id] =  array(
-                        'Current Package' => $plans->billing_interval,  
-                        'Start Date' => $plans->created_at,
-                        'End Date' =>$end_date,
-                    );
-                }   
-                 }
-                 foreach($country_name as $name){
-                    if(in_array($name->phonecode,$ccode)){
-                        $coun[$name->phonecode] = $name->country_name;
-                        foreach($coun as $key => $coun_name){
-        
-                            if($key == $user->ccode){ 
-                               $user_array['ccode'][$user->id] =  array(
-                                'Country Name' =>  $coun_name ,
-                            );
-        
-                       }
-                         }
-                       
-                 }
-                 }
-             
-            }
-            foreach($users as $k => $value){
-            $package = "";
-            $startdate = "";
-            $enddate = "";
-            foreach($user_array['options'] as $keys => $plans){
-                $plankeys[]= $keys;
-                if($value->id == $keys){
-                    $package = $plans['Current Package'];
-                    // print_r($plans['Start Date']);
-                    $startdate = $plans['Start Date'];
-                    $enddate = $plans['End Date'];
+                foreach ($current_plan as $plans)
+                {
+                    if ($plans->user_id == $user->id)
+                    {
+                        $subscription_date = $current_plan[0]->created_at;
+                        $days = $current_plan[0]->days . 'days';
+                        $date = date_create($subscription_date);
+                        $subscription_date = date_format($date, 'Y-m-d');
+                        $end_date = date('Y-m-d', strtotime($subscription_date . ' + ' . $days));
+                        // echo $end_date;
+                        $user_array['options'][$user->id] = array(
+                            'Current Package' => $plans->billing_interval,
+                            'Start Date' => $plans->created_at,
+                            'End Date' => $end_date,
+                        );
+                    }
                 }
+                foreach ($country_name as $name)
+                {
+                    if (in_array($name->phonecode, $ccode))
+                    {
+                        $coun[$name
+                            ->phonecode] = $name->country_name;
+                        foreach ($coun as $key => $coun_name)
+                        {
+
+                            if ($key == $user->ccode)
+                            {
+                                $user_array['ccode'][$user->id] = array(
+                                    'Country Name' => $coun_name,
+                                );
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            foreach ($users as $k => $value)
+            {
+                $package = "";
+                $startdate = "";
+                $enddate = "";
+                foreach ($user_array['options'] as $keys => $plans)
+                {
+                    $plankeys[] = $keys;
+                    if ($value->id == $keys)
+                    {
+                        $package = $plans['Current Package'];
+                        // print_r($plans['Start Date']);
+                        $startdate = $plans['Start Date'];
+                        $enddate = $plans['End Date'];
+                    }
                 }
                 // exit();
-
                 $countryname = "";
-            foreach($user_array['ccode'] as $key => $ccode){
-                $ccodekey[] = $key;
-                if($value->id == $key){
-                $countryname = $ccode['Country Name'];
-            }
-
-            }               
-            $data[] = array(
-                'Username' => $value->username,
-                'User ID' =>$value->id,
-                'Email' =>$value->email,
-                'Contact Number' =>$value['mobile'],
-                'Country Name' => $countryname ? $countryname :  NULL,
-                'Current Package' => $package ? $package :  NULL,
-                'Start Date' =>$startdate ? $startdate :  NULL,
-                'End Date' =>$enddate ? $enddate :  NULL,
-                'User Type' => $value->role,
-                'Active' =>$value->active,
-             );
-            }
-
-             $file_name = 'User.xlsx';
-
-             $spreadsheet = new Spreadsheet();
-     
-             $sheet = $spreadsheet->getActiveSheet();
-     
-             $sheet->setCellValue('A1', 'Username');
-     
-             $sheet->setCellValue('B1', 'User ID');
-     
-             $sheet->setCellValue('C1', 'Email');
-     
-             $sheet->setCellValue('D1', 'Contact Number');
-
-             $sheet->setCellValue('E1', 'Country Name');
-
-             $sheet->setCellValue('F1', 'Current Package');
-
-             $sheet->setCellValue('G1', 'Start Date');
-
-             $sheet->setCellValue('H1', 'End Date');
-
-             $sheet->setCellValue('I1', 'User Type');
-
-             $sheet->setCellValue('J1', 'Active');
-
-
-     
-             $count = 2;
-     
-             foreach($data as $row)
-             {
-                 $sheet->setCellValue('A' . $count, $row['Username']);
-     
-                 $sheet->setCellValue('B' . $count, $row['User ID']);
-     
-                 $sheet->setCellValue('C' . $count, $row['Email']);
-     
-                 $sheet->setCellValue('D' . $count, $row['Contact Number']);
-
-                 $sheet->setCellValue('E' . $count, $row['Country Name']);
-     
-                 $sheet->setCellValue('F' . $count, $row['Current Package']);
-
-                 $sheet->setCellValue('G' . $count, $row['Start Date']);
-     
-                 $sheet->setCellValue('H' . $count, $row['End Date']);
-
-                 $sheet->setCellValue('I' . $count, $row['User Type']);
-
-                 $sheet->setCellValue('J' . $count, $row['Active']);
-
-
-                 $count++;
-             }
-     
-             $writer = new Xlsx($spreadsheet);
-     
-             $writer->save($file_name);
-     
-             header("Content-Type: application/vnd.ms-excel");
-     
-             header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
-     
-             header('Expires: 0');
-     
-             header('Cache-Control: must-revalidate');
-     
-             header('Pragma: public');
-     
-             header('Content-Length:' . filesize($file_name));
-     
-             flush();
-     
-             readfile($file_name);
-     
-            //  exit;
-        return \Redirect::back();
-    //    return Excel::download($data, 'users.xlsx');
-
-            }else{ 
-                foreach($users as $user) {
-                    $user_array[] = array(
-                      'Username' => $user->username,
-                      'User ID' =>$user->id,
-                      'Email' =>$user->email,
-                      'Contact Number' =>$user->mobile,
-                      'Country Name' =>$user->ccode,
-                       'ccode' => array(),
-                       'options' => array(),
-                      'User Type' =>$user->role,
-                      'Active' =>$user->active,
-                   );
-                       foreach($current_plan as $plans){
-                           if($plans->user_id == $user->id){                                
-                       $subscription_date = $current_plan[0]->created_at;
-                       $days = $current_plan[0]->days.'days';
-                       $date = date_create($subscription_date);
-                       $subscription_date = date_format($date, 'Y-m-d');
-                       $end_date= date('Y-m-d', strtotime($subscription_date. ' + ' .$days)); 
-                       // echo $end_date; 
-                       $user_array['options'][$user->id] =  array(
-                           'Current Package' => $plans->billing_interval,  
-                           'Start Date' => $plans->created_at,
-                           'End Date' =>$end_date,
-                       );
-                   }   
+                foreach ($user_array['ccode'] as $key => $ccode)
+                {
+                    $ccodekey[] = $key;
+                    if ($value->id == $key)
+                    {
+                        $countryname = $ccode['Country Name'];
                     }
-                    foreach($country_name as $name){
-                       if(in_array($name->phonecode,$ccode)){
-                           $coun[$name->phonecode] = $name->country_name;
-                           foreach($coun as $key => $coun_name){
-           
-                               if($key == $user->ccode){ 
-                                  $user_array['ccode'][$user->id] =  array(
-                                   'Country Name' =>  $coun_name ,
-                               );
-           
-                          }
-                            }
-                          
-                    }
-                    }
-                
-               }
-               foreach($users as $k => $value){
-               $package = "";
-               $startdate = "";
-               $enddate = "";
-               foreach($user_array['options'] as $keys => $plans){
-                   $plankeys[]= $keys;
-                   if($value->id == $keys){
-                       $package = $plans['Current Package'];
-                       // print_r($plans['Start Date']);
-                       $startdate = $plans['Start Date'];
-                       $enddate = $plans['End Date'];
-                   }
-                   }
-                   // exit();
 
-                   $countryname = "";
-               foreach($user_array['ccode'] as $key => $ccode){
-                   $ccodekey[] = $key;
-                   if($value->id == $key){
-                   $countryname = $ccode['Country Name'];
-               }
-
-               }               
-               $data_filter[] = array(
-                   'Username' => $value->username,
-                   'User ID' =>$value->id,
-                   'Email' =>$value->email,
-                   'Contact Number' =>$value['mobile'],
-                   'Country Name' => $countryname ? $countryname :  NULL,
-                   'Current Package' => $package ? $package :  NULL,
-                   'Start Date' =>$startdate ? $startdate :  NULL,
-                   'End Date' =>$enddate ? $enddate :  NULL,
-                   'User Type' => $value->role,
-                   'Active' =>$value->active,
+                }
+                $data[] = array(
+                    'Username' => $value->username,
+                    'User ID' => $value->id,
+                    'Email' => $value->email,
+                    'Contact Number' => $value['mobile'],
+                    'Country Name' => $countryname ? $countryname : NULL,
+                    'Current Package' => $package ? $package : NULL,
+                    'Start Date' => $startdate ? $startdate : NULL,
+                    'End Date' => $enddate ? $enddate : NULL,
+                    'User Type' => $value->role,
+                    'Active' => $value->active,
                 );
-               }
-   
-                $start_date = $input['start_date'];
-                $end_date = $input['end_date'] ;
-                // echo "<pre>";
-                // print_r($input);
-                foreach($data_filter as $key => $value){
-                    $subscription_date = $value['Start Date'];
-                    $date = date_create($subscription_date);
-                    $subscription_date = date_format($date, 'Y-m-d');
-                    $subscription_date = date('Y-m-d', strtotime($subscription_date));
-                    if($subscription_date >= $input['start_date'] && $value['Start Date'] != null &&
-                    $value['End Date'] <= $input['end_date'] && $value['End Date'] != null
-                    ){
-                        
-                        $data[] = $value;
-                    } else {
+            }
+
+            $file_name = 'User.xlsx';
+
+            $spreadsheet = new Spreadsheet();
+
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('A1', 'Username');
+
+            $sheet->setCellValue('B1', 'User ID');
+
+            $sheet->setCellValue('C1', 'Email');
+
+            $sheet->setCellValue('D1', 'Contact Number');
+
+            $sheet->setCellValue('E1', 'Country Name');
+
+            $sheet->setCellValue('F1', 'Current Package');
+
+            $sheet->setCellValue('G1', 'Start Date');
+
+            $sheet->setCellValue('H1', 'End Date');
+
+            $sheet->setCellValue('I1', 'User Type');
+
+            $sheet->setCellValue('J1', 'Active');
+
+            $count = 2;
+
+            foreach ($data as $row)
+            {
+                $sheet->setCellValue('A' . $count, $row['Username']);
+
+                $sheet->setCellValue('B' . $count, $row['User ID']);
+
+                $sheet->setCellValue('C' . $count, $row['Email']);
+
+                $sheet->setCellValue('D' . $count, $row['Contact Number']);
+
+                $sheet->setCellValue('E' . $count, $row['Country Name']);
+
+                $sheet->setCellValue('F' . $count, $row['Current Package']);
+
+                $sheet->setCellValue('G' . $count, $row['Start Date']);
+
+                $sheet->setCellValue('H' . $count, $row['End Date']);
+
+                $sheet->setCellValue('I' . $count, $row['User Type']);
+
+                $sheet->setCellValue('J' . $count, $row['Active']);
+
+                $count++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+
+            $writer->save($file_name);
+
+            header("Content-Type: application/vnd.ms-excel");
+
+            header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+            header('Expires: 0');
+
+            header('Cache-Control: must-revalidate');
+
+            header('Pragma: public');
+
+            header('Content-Length:' . filesize($file_name));
+
+            flush();
+
+            readfile($file_name);
+
+            //  exit;
+            return \Redirect::back();
+            //    return Excel::download($data, 'users.xlsx');
+            
+        }
+        else
+        {
+            foreach ($users as $user)
+            {
+                $user_array[] = array(
+                    'Username' => $user->username,
+                    'User ID' => $user->id,
+                    'Email' => $user->email,
+                    'Contact Number' => $user->mobile,
+                    'Country Name' => $user->ccode,
+                    'ccode' => array() ,
+                    'options' => array() ,
+                    'User Type' => $user->role,
+                    'Active' => $user->active,
+                );
+                foreach ($current_plan as $plans)
+                {
+                    if ($plans->user_id == $user->id)
+                    {
+                        $subscription_date = $current_plan[0]->created_at;
+                        $days = $current_plan[0]->days . 'days';
+                        $date = date_create($subscription_date);
+                        $subscription_date = date_format($date, 'Y-m-d');
+                        $end_date = date('Y-m-d', strtotime($subscription_date . ' + ' . $days));
+                        // echo $end_date;
+                        $user_array['options'][$user->id] = array(
+                            'Current Package' => $plans->billing_interval,
+                            'Start Date' => $plans->created_at,
+                            'End Date' => $end_date,
+                        );
                     }
                 }
-               
-        
-                $file_name = 'User.xlsx';
+                foreach ($country_name as $name)
+                {
+                    if (in_array($name->phonecode, $ccode))
+                    {
+                        $coun[$name
+                            ->phonecode] = $name->country_name;
+                        foreach ($coun as $key => $coun_name)
+                        {
 
-             $spreadsheet = new Spreadsheet();
-     
-             $sheet = $spreadsheet->getActiveSheet();
-     
-             $sheet->setCellValue('A1', 'Username');
-     
-             $sheet->setCellValue('B1', 'User ID');
-     
-             $sheet->setCellValue('C1', 'Email');
-     
-             $sheet->setCellValue('D1', 'Contact Number');
+                            if ($key == $user->ccode)
+                            {
+                                $user_array['ccode'][$user->id] = array(
+                                    'Country Name' => $coun_name,
+                                );
 
-             $sheet->setCellValue('E1', 'Country Name');
+                            }
+                        }
 
-             $sheet->setCellValue('F1', 'Current Package');
+                    }
+                }
 
-             $sheet->setCellValue('G1', 'Start Date');
+            }
+            foreach ($users as $k => $value)
+            {
+                $package = "";
+                $startdate = "";
+                $enddate = "";
+                foreach ($user_array['options'] as $keys => $plans)
+                {
+                    $plankeys[] = $keys;
+                    if ($value->id == $keys)
+                    {
+                        $package = $plans['Current Package'];
+                        // print_r($plans['Start Date']);
+                        $startdate = $plans['Start Date'];
+                        $enddate = $plans['End Date'];
+                    }
+                }
+                // exit();
+                $countryname = "";
+                foreach ($user_array['ccode'] as $key => $ccode)
+                {
+                    $ccodekey[] = $key;
+                    if ($value->id == $key)
+                    {
+                        $countryname = $ccode['Country Name'];
+                    }
 
-             $sheet->setCellValue('H1', 'End Date');
+                }
+                $data_filter[] = array(
+                    'Username' => $value->username,
+                    'User ID' => $value->id,
+                    'Email' => $value->email,
+                    'Contact Number' => $value['mobile'],
+                    'Country Name' => $countryname ? $countryname : NULL,
+                    'Current Package' => $package ? $package : NULL,
+                    'Start Date' => $startdate ? $startdate : NULL,
+                    'End Date' => $enddate ? $enddate : NULL,
+                    'User Type' => $value->role,
+                    'Active' => $value->active,
+                );
+            }
 
-             $sheet->setCellValue('I1', 'User Type');
+            $start_date = $input['start_date'];
+            $end_date = $input['end_date'];
+            // echo "<pre>";
+            // print_r($input);
+            foreach ($data_filter as $key => $value)
+            {
+                $subscription_date = $value['Start Date'];
+                $date = date_create($subscription_date);
+                $subscription_date = date_format($date, 'Y-m-d');
+                $subscription_date = date('Y-m-d', strtotime($subscription_date));
+                if ($subscription_date >= $input['start_date'] && $value['Start Date'] != null && $value['End Date'] <= $input['end_date'] && $value['End Date'] != null)
+                {
 
-             $sheet->setCellValue('J1', 'Active');
+                    $data[] = $value;
+                }
+                else
+                {
+                }
+            }
 
+            $file_name = 'User.xlsx';
 
-     
-             $count = 2;
-     
-             foreach($data as $row)
-             {
+            $spreadsheet = new Spreadsheet();
+
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('A1', 'Username');
+
+            $sheet->setCellValue('B1', 'User ID');
+
+            $sheet->setCellValue('C1', 'Email');
+
+            $sheet->setCellValue('D1', 'Contact Number');
+
+            $sheet->setCellValue('E1', 'Country Name');
+
+            $sheet->setCellValue('F1', 'Current Package');
+
+            $sheet->setCellValue('G1', 'Start Date');
+
+            $sheet->setCellValue('H1', 'End Date');
+
+            $sheet->setCellValue('I1', 'User Type');
+
+            $sheet->setCellValue('J1', 'Active');
+
+            $count = 2;
+
+            foreach ($data as $row)
+            {
                 // echo "<pre>";
                 // print_r($row['Username']);
-                
-                 $sheet->setCellValue('A' . $count, $row['Username']);
-     
-                 $sheet->setCellValue('B' . $count, $row['User ID']);
-     
-                 $sheet->setCellValue('C' . $count, $row['Email']);
-     
-                 $sheet->setCellValue('D' . $count, $row['Contact Number']);
+                $sheet->setCellValue('A' . $count, $row['Username']);
 
-                 $sheet->setCellValue('E' . $count, $row['Country Name']);
-     
-                 $sheet->setCellValue('F' . $count, $row['Current Package']);
+                $sheet->setCellValue('B' . $count, $row['User ID']);
 
-                 $sheet->setCellValue('G' . $count, $row['Start Date']);
-     
-                 $sheet->setCellValue('H' . $count, $row['End Date']);
+                $sheet->setCellValue('C' . $count, $row['Email']);
 
-                 $sheet->setCellValue('I' . $count, $row['User Type']);
+                $sheet->setCellValue('D' . $count, $row['Contact Number']);
 
-                 $sheet->setCellValue('J' . $count, $row['Active']);
+                $sheet->setCellValue('E' . $count, $row['Country Name']);
 
+                $sheet->setCellValue('F' . $count, $row['Current Package']);
 
-                 $count++;
-             }
+                $sheet->setCellValue('G' . $count, $row['Start Date']);
+
+                $sheet->setCellValue('H' . $count, $row['End Date']);
+
+                $sheet->setCellValue('I' . $count, $row['User Type']);
+
+                $sheet->setCellValue('J' . $count, $row['Active']);
+
+                $count++;
+            }
             //  exit();
-     
-             $writer = new Xlsx($spreadsheet);
-     
-             $writer->save($file_name);
-     
-             header("Content-Type: application/vnd.ms-excel");
-     
-             header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
-     
-             header('Expires: 0');
-     
-             header('Cache-Control: must-revalidate');
-     
-             header('Pragma: public');
-     
-             header('Content-Length:' . filesize($file_name));
-     
-             flush();
-     
-             readfile($file_name);
-             return \Redirect::back();
+            $writer = new Xlsx($spreadsheet);
+
+            $writer->save($file_name);
+
+            header("Content-Type: application/vnd.ms-excel");
+
+            header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+            header('Expires: 0');
+
+            header('Cache-Control: must-revalidate');
+
+            header('Pragma: public');
+
+            header('Content-Length:' . filesize($file_name));
+
+            flush();
+
+            readfile($file_name);
+
+            return \Redirect::back();
 
         }
-            
-        
-    //    return Excel::download(new UsersExport, 'users.xlsx');
-      
-    return \Redirect::back();
 
-    
+        //    return Excel::download(new UsersExport, 'users.xlsx');
+        return \Redirect::back();
+
     }
 
     public function GetState(Request $request)
     {
-        $data['states'] = State::where("country_id",$request->country_id)
-                    ->get(["name","id"]);
-        return response()->json($data);
+        $data['states'] = State::where("country_id", $request->country_id)
+            ->get(["name", "id"]);
+        return response()
+            ->json($data);
     }
     public function GetCity(Request $request)
     {
-        $data['cities'] = City::where("state_id",$request->state_id)
-                    ->get(["name","id"]);
-        return response()->json($data);
+        $data['cities'] = City::where("state_id", $request->state_id)
+            ->get(["name", "id"]);
+        return response()
+            ->json($data);
     }
 
-    public function AnalyticsRevenue(){
+    public function AnalyticsRevenue()
+    {
 
-    $today_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
-    $lastweek_log = UserLogs::select('*')->whereBetween('created_at',[Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->count();
-    $month_log = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->month())->count();
+        $registered_count = User::where('role', 'registered')->count();
+        $subscription_count = User::where('role', 'subscriber')->count();
+        $admin_count = User::where('role', 'admin')->count();
+        $ppvuser_count = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->count();
 
-        $registered = User::where('role','registered')->count();
-        $subscription = User::where('role','subscriber')->count();
-        $admin = User::where('role','admin')->count();
-
-        // dd($registered);
-    $data = array(
-        'today_log' => $today_log,
-        'lastweek_log' => $lastweek_log,
-        'month_log' => $month_log,
-        'registered' => $registered,
-        'subscription' => $subscription,
-        'admin' => $admin,
+        $data['total_user'] = User::select(\DB::raw("COUNT(*) as count") , \DB::raw("MONTHNAME(created_at) as month_name") , \DB::raw('max(created_at) as createdAt'))->whereYear('created_at', date('Y'))
+            ->groupBy('month_name')
+            ->orderBy('createdAt')
+            ->get();
+        $total_user = User::where('role', '!=', 'admin')->get();
+        $data1 = array(
+            'admin_count' => $admin_count,
+            'subscription_count' => $subscription_count,
+            'registered_count' => $registered_count,
+            'total_user' => $total_user,
+            'ppvuser_count' => $ppvuser_count,
 
         );
-           return \View::make('admin.analytics.revenue',$data);
-    } 
+        return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
 
-    public function ViewsRegion(){
-
-    $Country = Region::get();
-
-    $data = array(
-        'Country' => $Country,
-        );
-           return \View::make('admin.analytics.views_by_region',$data);
     }
+
+    public function ListUsers(Request $request)
+    {
+
+        $data = $request->all();
+        $output = '';
+        $role = $data['role'];
+        if ($role == "registered")
+        {
+            $Users = User::where('role', 'registered')->get();
+        }
+        elseif ($role == "subscriber")
+        {
+            $Users = User::where('role', 'subscriber')->get();
+        }
+        elseif ($role == "ppv_users")
+        {
+            $Users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->get();
+        }
+        else
+        {
+            $Users = User::where('role', 'admin')->get();
+        }
+        $total_row = $Users->count();
+        if (!empty($Users))
+        {
+            foreach ($Users as $row)
+            {
+                if ($row->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($row->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($row->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($row->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    {
+                        $role = 'Admin User';
+                    }
+                }
+                if (@$row
+                    ->phoneccode->phonecode == $row->ccode)
+                {
+                    $phoneccode = @$row
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phoneccode = 'No Country Added';
+                }
+                if ($row->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($row->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                $output .= '
+          <tr>
+          <td>' . $row->name . '</td>
+          <td>' . $role . '</td>
+          <td>' . $phoneccode . '</td>
+          <td>' . $provider . '</td>
+          <td>' . $row->created_at . '</td>
+          <td>' . $active . '</td>
+
+          </tr>
+          ';
+            }
+        }
+        else
+        {
+            $output = '
+         <tr>
+          <td align="center" colspan="5">No Data Found</td>
+         </tr>
+         ';
+        }
+        $data = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+
+        );
+
+        echo json_encode($data);
+
+    }
+
+    public function exportCsv(Request $request)
+    {
+
+        $data = $request->all();
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+
+            $registered_count = User::where('role', 'registered')->whereDate('created_at', '>=', $start_time)->count();
+            $subscription_count = User::where('role', 'subscriber')->whereDate('created_at', '>=', $start_time)->count();
+            $admin_count = User::where('role', 'admin')->whereDate('created_at', '>=', $start_time)->count();
+
+            $registered = User::where('role', 'registered')->whereDate('created_at', '>=', $start_time)->get();
+            $subscription = User::where('role', 'subscriber')->whereDate('created_at', '>=', $start_time)->get();
+            $admin = User::where('role', 'admin')->whereDate('created_at', '>=', $start_time)->get();
+
+        }
+        elseif (!empty($start_time) && !empty($end_time))
+        {
+
+            $registered_count = User::where('role', 'registered')->whereBetween('created_at', [$start_time, $end_time])->count();
+            $subscription_count = User::where('role', 'subscriber')->whereBetween('created_at', [$start_time, $end_time])->count();
+            $admin_count = User::where('role', 'subscriber')->whereBetween('created_at', [$start_time, $end_time])->count();
+
+            $registered = User::where('role', 'registered')->whereBetween('created_at', [$start_time, $end_time])->get();
+            $subscription = User::where('role', 'subscriber')->whereBetween('created_at', [$start_time, $end_time])->get();
+            $admin = User::where('role', 'admin')->whereBetween('created_at', [$start_time, $end_time])->get();
+
+        }
+        else
+        {
+            $registered_count = User::where('role', 'registered')->count();
+            $subscription_count = User::where('role', 'subscriber')->count();
+            $admin_count = User::where('role', 'admin')->count();
+
+            $registered = User::where('role', 'registered')->get();
+            $subscription = User::where('role', 'subscriber')->get();
+            $admin = User::where('role', 'admin')->get();
+
+        }
+        $file = 'users_' . rand(10, 100000) . '.csv';
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["User Name", "ACC Type", "Country", "Registered ON ", "Source", "Status",
+
+        ]);
+        if ($registered_count > 0)
+        {
+            foreach ($registered as $each_user)
+            {
+                if ($each_user->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($each_user->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($each_user->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($each_user->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    $role = 'Admin User';
+                }
+                if (@$each_user
+                    ->phoneccode->phonecode == $each_user->ccode)
+                {
+                    $phoneccode = @$each_user
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phoneccode = 'No Country Added';
+                }
+                if ($each_user->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($each_user->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active,
+
+                ]);
+            }
+        }
+        if ($subscription_count > 0)
+        {
+            foreach ($subscription as $each_user)
+            {
+                if ($each_user->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($each_user->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($each_user->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($each_user->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    $role = 'Admin User';
+                }
+                if (@$each_user
+                    ->phoneccode->phonecode == $each_user->ccode)
+                {
+                    $phoneccode = @$each_user
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phoneccode = 'No Country Added';
+                }
+                if ($each_user->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($each_user->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active, ]);
+
+            }
+        }
+        if ($admin_count > 0)
+        {
+            foreach ($admin as $each_user)
+            {
+                if ($each_user->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($each_user->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($each_user->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($each_user->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    $role = 'Admin User';
+                }
+                if (@$each_user
+                    ->phoneccode->phonecode == @$each_user->ccode)
+                {
+                    $phoneccode = @$each_user
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phoneccode = 'No Country Added';
+                }
+                if ($each_user->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($each_user->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active,
+
+                ]);
+
+            }
+        }
+        fclose($handle);
+
+        return Response::download($filename, "download.csv", $headers);
+    }
+
+    public function StartDateRecord(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $total_users = User::select(\DB::raw("COUNT(*) as count") , \DB::raw("MONTHNAME(created_at) as month_name") , \DB::raw('max(created_at) as createdAt'))->whereYear('created_at', date('Y'))
+                ->whereDate('created_at', '>=', $start_time)->groupBy('month_name')
+                ->orderBy('createdAt')
+                ->get();
+            $registered = User::where('role', 'registered')->whereDate('created_at', '>=', $start_time)->count();
+            $subscription = User::where('role', 'subscriber')->whereDate('created_at', '>=', $start_time)->count();
+            $admin = User::where('role', 'admin')->whereDate('created_at', '>=', $start_time)->count();
+
+        }
+
+        $output = '';
+        $Users = User::whereDate('created_at', '>=', $start_time)->get();
+        $total_row = $Users->count();
+        if (!empty($Users))
+        {
+            foreach ($Users as $row)
+            {
+                if ($row->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($row->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($row->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($row->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    $role = 'Admin User';
+                }
+                if (@$row
+                    ->phoneccode->phonecode == $row->ccode)
+                {
+                    $phone_ccode = @$row
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phone_ccode = 'No Country Added';
+                }
+                if ($row->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($row->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                $output .= '
+          <tr>
+          <td>' . $row->name . '</td>
+          <td>' . $role . '</td>
+          <td>' . $phone_ccode . '</td>
+          <td>' . $provider . '</td>
+          <td>' . $row->created_at . '</td>
+          <td>' . $active . '</td>
+
+          </tr>
+          ';
+            }
+        }
+        else
+        {
+            $output = '
+         <tr>
+          <td align="center" colspan="5">No Data Found</td>
+         </tr>
+         ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'registered' => $registered,
+            'subscription' => $subscription,
+            'admin' => $admin,
+            'total_users' => $total_users,
+        );
+
+        return $value;
+
+    }
+
+    public function StartEndDateRecord(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+        if (!empty($start_time) && !empty($end_time))
+        {
+            $total_users = User::select(\DB::raw("COUNT(*) as count") , \DB::raw("MONTHNAME(created_at) as month_name") , \DB::raw('max(created_at) as createdAt'))->whereYear('created_at', date('Y'))
+                ->whereBetween('created_at', [$start_time, $end_time])->groupBy('month_name')
+                ->orderBy('createdAt')
+                ->get();
+            $registered = User::where('role', 'registered')->whereBetween('created_at', [$start_time, $end_time])->count();
+            $subscription = User::where('role', 'subscriber')->whereBetween('created_at', [$start_time, $end_time])->count();
+            $admin = User::where('role', 'admin')->whereBetween('created_at', [$start_time, $end_time])->count();
+        }
+        $registered = User::where('role', 'registered')->count();
+        $subscription = User::where('role', 'subscriber')->count();
+        $admin = User::where('role', 'admin')->count();
+
+        $output = '';
+        $Users = User::whereBetween('created_at', [$start_time, $end_time])->get();
+        $total_row = $Users->count();
+        if (!empty($Users))
+        {
+            foreach ($Users as $row)
+            {
+                if ($row->active == 0)
+                {
+                    $active = "InActive";
+                    $class = "bg-warning";
+                }
+                elseif ($row->active == 1)
+                {
+                    $active = "Active";
+                    $class = "bg-success";
+                }
+                if ($row->role == "registered")
+                {
+                    $role = 'Registered User';
+                }
+                elseif ($row->role == "subscriber")
+                {
+                    $role = 'Subscribed User';
+                }
+                else
+                {
+                    $role = 'Admin User';
+                }
+                if (@$row
+                    ->phoneccode->phonecode == $row->ccode)
+                {
+                    $phone_ccode = @$row
+                        ->phoneccode->country_name;
+                }
+                else
+                {
+                    $phone_ccode = 'No Country Added';
+                }
+                if ($row->provider == "google")
+                {
+                    $provider = "Google User";
+                }
+                elseif ($row->provider == "facebook")
+                {
+                    $provider = "Facebook User";
+                }
+                else
+                {
+                    $provider = 'Web User';
+                }
+                $output .= '
+              <tr>
+              <td>' . $row->name . '</td>
+              <td>' . $role . '</td>
+              <td>' . $phone_ccode . '</td>
+              <td>' . $provider . '</td>
+              <td>' . $row->created_at . '</td>
+              <td>' . $active . '</td>
     
-    public function RevenueRegion (){
+              </tr>
+              ';
+            }
+        }
+        else
+        {
+            $output = '
+             <tr>
+              <td align="center" colspan="5">No Data Found</td>
+             </tr>
+             ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'registered' => $registered,
+            'subscription' => $subscription,
+            'admin' => $admin,
+            'total_users' => $total_users,
+        );
+
+        return $value;
+    }
+
+    public function ViewsRegion()
+    {
+
+        $Country = Region::get();
+
+        $data = array(
+            'Country' => $Country,
+        );
+        return \View::make('admin.analytics.views_by_region', $data);
+    }
+
+    public function RevenueRegion()
+    {
 
         $Country = Region::get();
         $State = State::get();
@@ -1359,80 +2021,78 @@ class AdminUsersController extends Controller
             'State' => $State,
             'City' => $City,
 
-    
-            );
-               return \View::make('admin.analytics.revenue_by_region',$data);
-        }
+        );
+        return \View::make('admin.analytics.revenue_by_region', $data);
+    }
 
     public function RegionVideos(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
- 
-      if($query != '')
-      {
-        // $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
-        $regions =  Region::where('id','=',$query)->first();
+            if ($query != '')
+            {
+                // $regions =  DB::table('regions')->where('regions.id','=',$query)->first();
+                $regions = Region::where('id', '=', $query)->first();
 
-        $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->where('region_views.countryname','=',$regions->name)->get();
-        // echo "<pre>";
-        // print_r($region_views);
-        // exit();
-        $data = $region_views->groupBy('countryname');
-        // $data1 = DB::table('videos')
-        // ->select('videos.*','region_views.countryname')
-        // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
-        // ->orderBy('created_at', 'desc')
-        // ->where('region_views.countryname','=',$regions->name)
-        // ->paginate(19);
-        $data1 = Video::select('videos.*','region_views.countryname')
-        ->join('region_views', 'region_views.video_id', '=', 'videos.id')
-        ->orderBy('created_at', 'desc')
-        ->where('region_views.countryname','=',$regions->name)
-        ->paginate(19);
-        // echo "<pre>"; print_r($data);exit();
+                $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->where('region_views.countryname', '=', $regions->name)
+                    ->get();
+                // echo "<pre>";
+                // print_r($region_views);
+                // exit();
+                $data = $region_views->groupBy('countryname');
+                // $data1 = DB::table('videos')
+                // ->select('videos.*','region_views.countryname')
+                // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
+                // ->orderBy('created_at', 'desc')
+                // ->where('region_views.countryname','=',$regions->name)
+                // ->paginate(19);
+                $data1 = Video::select('videos.*', 'region_views.countryname')->join('region_views', 'region_views.video_id', '=', 'videos.id')
+                    ->orderBy('created_at', 'desc')
+                    ->where('region_views.countryname', '=', $regions->name)
+                    ->paginate(19);
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
 
-      }
-      else
-      {
-
-      }
-        $i = 1 ; 
-      $total_row = $data1->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data1->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-         <td>'.$row[0]->title.'</td>
-         <td>'.$row[0]->countryname.'</td>
-         <td>'.$row[0]->user_ip.'</td>
-         <td>'.count($row).'</td>
+        <td>' . $i++ . '</td>
+         <td>' . $row[0]->title . '</td>
+         <td>' . $row[0]->countryname . '</td>
+         <td>' . $row[0]->user_ip . '</td>
+         <td>' . count($row) . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
 
     // <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
@@ -1442,420 +2102,419 @@ class AdminUsersController extends Controller
     // '."<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
     // </a>".'
     // </td>
-
     public function AllRegionVideos(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
- 
-      if($query != '')
-      {
-        // foreach($region_views as $video){
-        //     $data[$video->countryname] = RegionView::();
-        // }
+            if ($query != '')
+            {
+                // foreach($region_views as $video){
+                //     $data[$video->countryname] = RegionView::();
+                // }
+                $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->get();
+                $data = $region_views->groupBy('countryname');
 
-        $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->get();
-        $data = $region_views->groupBy('countryname');
+                // echo "<pre>";
+                // print_r($grouped);
+                // exit();
+                // $data1 = DB::table('videos')
+                // ->select('videos.*','region_views.countryname')
+                // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
+                // ->orderBy('created_at', 'desc')
+                // ->paginate(9);
+                $data1 = Video::select('videos.*', 'region_views.countryname')->join('region_views', 'region_views.video_id', '=', 'videos.id')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(9);
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
 
-        
-        // echo "<pre>";
-        // print_r($grouped);
-        // exit();
-
-        // $data1 = DB::table('videos')
-        // ->select('videos.*','region_views.countryname')
-        // ->join('region_views', 'region_views.video_id', '=', 'videos.id')
-        // ->orderBy('created_at', 'desc')
-        // ->paginate(9);
-        $data1 = Video::select('videos.*','region_views.countryname')
-        ->join('region_views', 'region_views.video_id', '=', 'videos.id')
-        ->orderBy('created_at', 'desc')
-        ->paginate(9);
-        // echo "<pre>"; print_r($data);exit();
-
-      }
-      else
-      {
-
-      }
-        $i = 1 ; 
-      $total_row = $data1->count();
-      if($total_row > 0)
-      {
-       foreach($data as $key => $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data1->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $key => $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-         <td>'.$row[0]->title.'</td>
-         <td>'.$row[0]->countryname.'</td>
-         <td>'.$row[0]->user_ip.'</td>
-         <td>'.count($row).'</td>
+        <td>' . $i++ . '</td>
+         <td>' . $row[0]->title . '</td>
+         <td>' . $row[0]->countryname . '</td>
+         <td>' . $row[0]->user_ip . '</td>
+         <td>' . count($row) . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
     public function PlanCountry(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
-      if($query != '')
-      {
-      
-        // $data = DB::table('subscriptions')
-        // ->select('users.username','plans.plans_name')
-        // ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        // ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        // ->where('subscriptions.countryname','=',$query)
-        // ->paginate(9);
+            if ($query != '')
+            {
 
-        $data = Subscription::select('users.username','plans.plans_name')
-        ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        ->where('subscriptions.countryname','=',$query)
-        ->paginate(9);
+                // $data = DB::table('subscriptions')
+                // ->select('users.username','plans.plans_name')
+                // ->join('users', 'users.id', '=', 'subscriptions.user_id')
+                // ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                // ->where('subscriptions.countryname','=',$query)
+                // ->paginate(9);
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->where('subscriptions.countryname', '=', $query)->paginate(9);
 
-        // echo "<pre>"; print_r($data);exit();
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
 
-      }
-      else
-      {
-
-      }
-        $i = 1 ; 
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-        <td>'.$row->username.'</td>
-         <td>'.$row->plans_name.'</td>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
 
     public function PlanAllCity(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
-      if($query != '')
-      {
+            if ($query != '')
+            {
 
-        $data =Subscription::select('users.username','plans.plans_name')
-        ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        ->paginate(9);
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->paginate(9);
 
-      }
-      else
-      {
+            }
+            else
+            {
 
-      }
-        $i = 1 ; 
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-        <td>'.$row->username.'</td>
-         <td>'.$row->plans_name.'</td>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
-
 
     public function PlanAllCountry(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
-      if($query != '')
-      {
+            if ($query != '')
+            {
 
-        $data = Subscription::select('users.username','plans.plans_name')
-        ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        ->paginate(9);
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->paginate(9);
 
-      }
-      else
-      {
+            }
+            else
+            {
 
-      }
-        $i = 1 ; 
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-        <td>'.$row->username.'</td>
-         <td>'.$row->plans_name.'</td>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
 
     public function PlanState(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
- 
-      if($query != '')
-      {
-        $data = Subscription::select('users.username','plans.plans_name')
-        ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        // ->where('subscriptions.regionname','=',$query)
-        ->paginate(9);
-        // echo "<pre>"; print_r($data);exit();
+            if ($query != '')
+            {
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                // ->where('subscriptions.regionname','=',$query)
+                
+                    ->paginate(9);
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
 
-      }
-      else
-      {
-
-      }
-        $i = 1 ; 
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-        <td>'.$row->username.'</td>
-         <td>'.$row->plans_name.'</td>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
 
     public function PlanCity(Request $request)
     {
-        if($request->ajax())
-     {
+        if ($request->ajax())
+        {
 
-      $output = '';
-      $query = $request->get('query');
+            $output = '';
+            $query = $request->get('query');
 
- 
-      if($query != '')
-      {
-        $data = Subscription::select('users.username','plans.plans_name')
-        ->join('users', 'users.id', '=', 'subscriptions.user_id')
-        ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-        ->where('subscriptions.cityname','=',$query)
-        ->paginate(9);
-        // echo "<pre>"; print_r($data);exit();
+            if ($query != '')
+            {
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->where('subscriptions.cityname', '=', $query)->paginate(9);
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
 
-      }
-      else
-      {
-
-      }
-        $i = 1 ; 
-      $total_row = $data->count();
-      if($total_row > 0)
-      {
-       foreach($data as $row)
-       {
-        $output .= '
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
         <tr>
-        <td>'.$i++.'</td>
-        <td>'.$row->username.'</td>
-         <td>'.$row->plans_name.'</td>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
         </tr>
         ';
-       }
-      }
-      else
-      {
-       $output = '
+                }
+            }
+            else
+            {
+                $output = '
        <tr>
         <td align="center" colspan="5">No Data Found</td>
        </tr>
        ';
-      }
-      $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
 
-      echo json_encode($data);
-     }
+            echo json_encode($data);
+        }
     }
-    
+
     public function profilePreference(Request $request)
     {
-       $data = $request->all();
-       $id = $data['user_id'];
-       $preference = User::find($id);  
-       
-       if(!empty($data['preference_language'])){
-            $preference_language =json_encode($data['preference_language']);
-            $preference->preference_language =   $preference_language;  
-       }
-       if(!empty($data['preference_genres'])){
-            $preference_genres = json_encode($data['preference_genres']);
-            $preference->preference_genres = $preference_genres; 
-       }
-       $preference->save();  
+        $data = $request->all();
+        $id = $data['user_id'];
+        $preference = User::find($id);
 
-       return Redirect::to('/myprofile')->with(array('message' => 'Successfully Created Preference', 'note_type' => 'success') );
+        if (!empty($data['preference_language']))
+        {
+            $preference_language = json_encode($data['preference_language']);
+            $preference->preference_language = $preference_language;
+        }
+        if (!empty($data['preference_genres']))
+        {
+            $preference_genres = json_encode($data['preference_genres']);
+            $preference->preference_genres = $preference_genres;
+        }
+        $preference->save();
+
+        return Redirect::to('/myprofile')
+            ->with(array(
+            'message' => 'Successfully Created Preference',
+            'note_type' => 'success'
+        ));
 
     }
 
-     public function Splash_edit(Request $request,$id)
+    public function Splash_edit(Request $request, $id)
     {
 
-        $Splash=MobileApp::where('id',$id)->first();
+        $Splash = MobileApp::where('id', $id)->first();
         $allCategories = MobileSlider::all();
 
         $data = array(
-            'admin_user' => Auth::user(),
+            'admin_user' => Auth::user() ,
             'Splash' => $Splash,
-            'allCategories'=>$allCategories
-          );
+            'allCategories' => $allCategories
+        );
 
         return View::make('admin.mobile.splashEdit', $data);
 
     }
 
-    public function Splash_update(Request $request,$id)
+    public function Splash_update(Request $request, $id)
     {
         $input = $request->all();
-        $Splash = MobileApp::find($id);  
+        $Splash = MobileApp::find($id);
 
-         if($request->file('splash_image') )
-         {
-            $path = public_path().'/uploads/settings/';
+        if ($request->file('splash_image'))
+        {
+            $path = public_path() . '/uploads/settings/';
             $splash_image = $request['splash_image'];
             $file = $splash_image;
-            $input['splash_image']  = $file->getClientOriginalName();
+            $input['splash_image'] = $file->getClientOriginalName();
             $file->move($path, $input['splash_image']);
 
-            $Splash->splash_image =  $input['splash_image'];  
-         }
-         $Splash->save();  
+            $Splash->splash_image = $input['splash_image'];
+        }
+        $Splash->save();
 
-       return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully updated!', 'note_type' => 'success') );
+        return Redirect::to('admin/mobileapp')
+            ->with(array(
+            'message' => 'Successfully updated!',
+            'note_type' => 'success'
+        ));
     }
 
     public function Splash_destroy($id)
     {
-       $Splash=MobileApp::find($id);
-       $Splash->delete();
-       return Redirect::to('admin/mobileapp')->with(array('message' => 'Successfully deleted!', 'note_type' => 'success') );
+        $Splash = MobileApp::find($id);
+        $Splash->delete();
+        return Redirect::to('admin/mobileapp')
+            ->with(array(
+            'message' => 'Successfully deleted!',
+            'note_type' => 'success'
+        ));
     }
 
 }
+

@@ -275,7 +275,7 @@
                </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mt-3" >
-                        <label class="m-0" style="display:block;"><h3 class="fs-title">Publish Type</h3></label>
+                        <label class="mb-2" style="display:block;">Publish Type</label>
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
                         <input type="radio" id="publish_later" name="publish_type" value = "publish_later"{{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }} > Publish Later
                     </div>
@@ -498,17 +498,17 @@
                                </div> 
                                <div class="panel-body"> 
                                    <div>
-                                        <label class="p2" for="featured">Is this video Featured:</label>
+                                        <label class="" for="featured">Is this video Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
                                    <div class="clear"></div>
                                    <div>
-                                       <label class="p2" for="active">Is this video Active:</label>
+                                       <label class="" for="active">Is this video Active:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
                                     <div class="clear"></div>
                                    <div>
-                                       <label class="p2" for="banner">Is this video Banner:</label>
+                                       <label class="" for="banner">Is this video Banner:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
                                     <div class="clear"></div>
@@ -691,7 +691,7 @@
    box-sizing: border-box;
    color: #000;
   
-   font-size: 16px;
+   font-size: 14px;
    }
    #msform input:focus,
    #msform textarea:focus {
