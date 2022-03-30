@@ -133,7 +133,10 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Subscription');
     }
-    
+    public function phoneccode(){
+		return $this->belongsTo('App\CountryCode','ccode','phonecode');
+	}
+
     
 }
 
