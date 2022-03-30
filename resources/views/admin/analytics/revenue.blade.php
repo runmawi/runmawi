@@ -194,7 +194,7 @@ $jsondata = json_decode($jsonString, true);
                              <tr>
                              <td>{{ $user->name }}</td>   
                              <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
-                             <td>@if($user->phoneccode->phonecode == $user->ccode)  {{ $user->phoneccode->country_name }} @else No Country Added @endif</td>
+                             <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
                              <td>{{ $user->created_at }}</td> 
                              <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
                             <?php if ($user->active == 0)
