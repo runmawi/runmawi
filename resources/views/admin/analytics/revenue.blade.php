@@ -398,14 +398,10 @@ headers: {
 
           },      
           success: function(data){
-            var Excel = data ;
-            
             $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
                           setTimeout(function() {
                             $('.add_watch').slideUp('fast');
                           }, 3000);
-
-            location.href = "{{ URL::to('public/uploads/csv') . '/' . Excel }}";
           }
           });
     });
