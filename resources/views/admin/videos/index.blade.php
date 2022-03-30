@@ -92,12 +92,12 @@
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->access }}</td>
                                    
-                                    <?php if($video->active == 0){ ?>
-                                     <td > <p class = "bg-warning video_active"><?php echo "Pending"; ?></p></td>
-                                    <?php }elseif($video->active == 1){ ?>
+                                    <?php if($video->draft == null){ ?>
+                                     <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
+                                    <?php }elseif($video->draft == 1){ ?>
                                      <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
-                                    <?php }elseif($video->active == 2){ ?>
-                                     <td> <p class = "bg-danger video_active"><?php  echo "Rejected"; ?></p></td>
+                                    <?php }elseif($video->draft == 0){ ?>
+                                     <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
                                     <?php }?>
 
                                     
@@ -110,7 +110,7 @@
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
-                                          <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
+                                          <a class="iq-bg-warning mt-2 View" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
@@ -140,6 +140,12 @@
          </div>
       
          <script>
+      $(document).ready(function () {
+         var draft = $('#draft').val();
+         if(draft != 1){
+         parent.find('.View').addClass('disabled');
+         }
+      })
 $(document).ready(function(){
 
  fetch_customer_data();
