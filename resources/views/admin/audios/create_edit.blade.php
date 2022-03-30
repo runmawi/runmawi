@@ -27,10 +27,10 @@
         <div class="admin-section-title">
             <div class="iq-card">
                 <div class="row">
-					<div id="heading_option">
+					
 						
-                    <div class="col-md-4" id="heading_option">
-                        <h4><i class="entypo-archive"></i> Add Audio </h4>
+                    <div class="col-md-8" id="heading_option">
+                        <h4> Add Audio </h4>
                     </div>
 					@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -43,9 +43,9 @@
                         </div>
                         @endforeach
                         @endif
-					</div>
+					
 
-                    <div class="col-md-8" align="right">
+                    <div class="col-md-4" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
                                 <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
@@ -126,7 +126,8 @@ $('#audiofile').click(function(){
 </script>
  
     </div> 
-</div> 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    
 <script>

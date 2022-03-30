@@ -68,12 +68,19 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
 <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
 <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
 
+$jsondata = json_decode($jsonString, true);
+// dd($jsondata);
+
+?>
 <div id="content-page" class="content-page">
             <div class="row">
             <span  id="export" class="btn btn-success btn-sm" >Export</span>
@@ -104,9 +111,39 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <!-- <input type="text" class="daterange" /> -->
-                                    <label for="">Registered User : <?php if(!empty($data1['registered_count'])){ echo $data1['registered_count'] ; }else{ echo $data1['registered_count'] ; } ?></label> <br>
-                                    <label for="">Subscribed User : <?php if(!empty($data1['subscription_count'])){ echo $data1['subscription_count'] ; }else{ echo $data1['subscription_count'] ; }?></label><br>
-                                    <label for="">Admin Users : <?php if(!empty($data1['admin_count'])){ echo $data1['admin_count'] ; }else{ echo $data1['admin_count']; } ?></label><br>
+                                    <label for="">Registered User : <?php if (!empty($data1['registered_count']))
+                                      {
+                                          echo $data1['registered_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['registered_count'];
+                                      } ?></label> <br>
+                                    <label for="">Subscribed User : <?php if (!empty($data1['subscription_count']))
+                                      {
+                                          echo $data1['subscription_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['subscription_count'];
+                                      } ?></label><br>
+                                    <label for="">Admin Users : <?php if (!empty($data1['admin_count']))
+                                      {
+                                          echo $data1['admin_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['admin_count'];
+                                      } ?></label><br>
+                                    <label for="">PPV Users : <?php if (!empty($data1['ppvuser_count']))
+                                      {
+                                          echo $data1['ppvuser_count'];
+                                      }
+                                      else
+                                      {
+                                          echo $data1['ppvuser_count'];
+                                      } ?></label><br>
+
                                     <!-- <label for="">PPV Users:</label><br>
                                     <label for="">Pre-Order:</label> -->
                                 </div>
@@ -117,6 +154,8 @@
                                     </figure>
                                 </div> 
                             </div> 
+                            <br>
+                            <br>
                             <div class="row">
                                 <div class="col-md-4">
                                 <select class="form-control"  id="role" name="role">
@@ -124,39 +163,53 @@
                                 <option value="registered" >Registered Users </option>
                                 <option value="subscriber">Subscriber</option>     
                                 <option value="admin" >Admin</option>
+                                <option value="ppv_users" >PPV Users</option>
                               </select>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                  <h5> User Count : <span id="user_tables"> </span></h5>
                                 </div> 
                                  <div class="col-md-6">
-                                   
                                 </div> 
                             </div> 
+                            <br>
+                            <br>
+
                             <div class="row">
                                 <div class="col-md-12">
                                 <table class="table" id="user_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
-                                    <th>Type</th>
                                     <th>ACC Type</th>
-                                    <th>Transaction Customer Id</th>
+                                    <th>Country</th>
+                                    <th>Registered ON </th>
+                                    <th>Source</th>
+                                    <th>Status</th>
                                  </tr>
                               </thead>
                               <tbody>
                               @foreach($total_user as $key => $user)
+
                              <tr>
-                             <td>{{ $user->name }}</td>                                   
-                             <td>{{ $user->role }}</td>                                   
-                             <?php if($user->active == 0){ ?>
+                             <td>{{ $user->name }}</td>   
+                             <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
+                             <td>@if($user->phoneccode->phonecode == $user->ccode)  {{ $user->phoneccode->country_name }} @else No Country Added @endif</td>
+                             <td>{{ $user->created_at }}</td> 
+                             <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
+                            <?php if ($user->active == 0)
+                            { ?>
                               <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
-                            <?php }elseif($user->active == 1){ ?>
-                              <td > <p class = "bg-success user_active"><?php  echo "Active"; ?></p></td>
-                            <?php }?>     
-                              <td>{{ $user->stripe_id }}</td>                                   
+                            <?php
+                            }
+                            elseif ($user->active == 1)
+                            { ?>
+                              <td > <p class = "bg-success user_active"><?php echo "Active"; ?></p></td>
+                            <?php   } ?> 
+
                              </tr>
-                              @endforeach
+                             @endforeach
+
                               </tbody>
                            </table>
                                 </div>
@@ -167,10 +220,10 @@
             </div>
         </div>
         <input type="hidden" value="" id="chart_users">
-        <input type="hidden" id="exportCsv_url" value="<?php echo URL::to('/admin/exportCsv');?>">
-        <input type="hidden" id="start_date_url" value="<?php echo URL::to('/admin/start_date_url');?>">
-        <input type="hidden" id="end_date_url" value="<?php echo URL::to('/admin/end_date_url');?>">
-        <input type="hidden" id="listusers_url" value="<?php echo URL::to('/admin/list_users_url');?>">
+        <input type="hidden" id="exportCsv_url" value="<?php echo URL::to('/admin/exportCsv'); ?>">
+        <input type="hidden" id="start_date_url" value="<?php echo URL::to('/admin/start_date_url'); ?>">
+        <input type="hidden" id="end_date_url" value="<?php echo URL::to('/admin/end_date_url'); ?>">
+        <input type="hidden" id="listusers_url" value="<?php echo URL::to('/admin/list_users_url'); ?>">
 <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -190,7 +243,7 @@
        });
    
     $(document).ready(function(){
-     
+    $('#user_table').DataTable();
       // var data['registered'] = 2;
       $('#start_time').change(function(){
        var start_time =  $('#start_time').val();
@@ -207,49 +260,32 @@
                       end_time: end_time,
 
                 },      
-                success: function(value){
-                  $('#chart_users').val(value.total_users);  
-                  // alert($('#chart_users').val());
-                // value.total_users.forEach(function(element, index) { 
-                //   console.log(element.count);
-
-                // })
+                success: function(value){               
+                  $('tbody').html(value.table_data);
+                  $('#user_tables').text(value.total_data);  
+                  $('#user_table').DataTable();
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
         
                 function drawChart() {
                   var linechart = value.total_users;
-                  // alert(value.total_users);
-                  // console.log(linechart);
-                  var data = google.visualization.arrayToDataTable(
-                        linechart.forEach(function(element, index) { 
-                    [element.month_name, element.count]
-                  })  
-                    // linechart
-                    );
+                  var data = new google.visualization.DataTable(linechart);
+                  var data = new google.visualization.DataTable();
+                  data.addColumn('string', 'Month');
+                  data.addColumn('number', 'User Count');
 
-
-                // var data = google.visualization.arrayToDataTable([
-
-                //   //   ['Month Name', 'Register Users Count'],
-                //   //     //   console.log(element.count);
-                //   // linechart.forEach(function(element, index) { 
-                //   //   [element.month_name, element.count]
-                //   // })         
-                //   value.total_users
-                // ]);
-        
-                var options = {
-                  title: 'Register Users Month Wise',
-                  curveType: 'function',
-                  legend: { position: 'bottom' }
-                };
-        
+                  linechart.forEach(function (row) {
+                    data.addRow([
+                      row.month_name,
+                      row.count,
+                    ]);
+                  });
                   var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-        
-                  chart.draw(data, options);
+                  chart.draw(data, {
+                    // width: 400,
+                    // height: 240
+                  });
                 }
-                  // console.log(value);
                }
            });
       }
@@ -270,9 +306,29 @@
 
                 },      
                 success: function(value){
-                console.log(value);
-                   $('#Next').show();
-                  $('#video_id').val(value.video_id);
+                  $('tbody').html(value.table_data);
+                  $('#user_tables').text(value.total_data);  
+                  $('#user_table').DataTable();
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+                  var linechart = value.total_users;
+                  var data = new google.visualization.DataTable(linechart);
+                  var data = new google.visualization.DataTable();
+                  data.addColumn('string', 'Month');
+                  data.addColumn('number', 'User Count');
+
+                  linechart.forEach(function (row) {
+                    data.addRow([
+                      row.month_name,
+                      row.count,
+                    ]);
+                  });
+                  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                  chart.draw(data, {
+                  });
+                }
 
                }
            });
@@ -385,6 +441,8 @@ $.ajaxSetup({
           success: function(data){
         $('tbody').html(data.table_data);
          $('#user_tables').text(data.total_data);  
+    $('#user_table').DataTable();
+
         }
           });
     });
@@ -393,5 +451,3 @@ $.ajaxSetup({
 
 
 </script>
-
-
