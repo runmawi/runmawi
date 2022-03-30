@@ -169,6 +169,16 @@
             </div>
 
             <div class="row mt-3">
+                <div class="col-sm-12">
+                    <label class="m-0">Live Stream Video</label>
+
+                    <div class="panel-body">
+                        <input type="file" multiple="true" class="form-group" name="live_stream_video" id="live_stream_video" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Category</label>
                     <p class="p1">Select a Video Category Below:</p>
