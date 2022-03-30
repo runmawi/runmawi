@@ -70,6 +70,18 @@
 	.select2{
 		visibility: visible !important;
 	}
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 
 @section('content')
@@ -79,7 +91,12 @@
 <script src="http://malsup.github.com/jquery.form.js"></script>
 
 <div id="content-page" class="content-page">
-	<div class="container-fluid">
+     <div class="mb-5">
+         <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
+        <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
+        <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
+             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+	<div class="container-fluid p-0">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="iq-card">
@@ -95,7 +112,7 @@
 							<div class="row mt-3">
 								<div class="col-md-6">
 									<div class="panel panel-primary " data-collapsed="0"> <div class="panel-heading"> 
-										<div class="panel-title"><label>Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-title"><label class="mb-1">Title</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Add the audio title in the textbox below:</p> 
 											<input type="text" class="form-control" name="title" id="title" placeholder="Audio Title" value="@if(!empty($audio->title)){{ $audio->title }}@endif" />
@@ -104,7 +121,7 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-										<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-title"><label class="mb-1">Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Add the Audio slug:</p> 
 											<input type="text" class="form-control" name="slug" id="slug" placeholder="" value="@if(!empty($audio->slug)){{ $audio->slug }}@endif" />
@@ -116,7 +133,7 @@
 
 								<div class="col-sm-3">
 									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-										<div class="panel-title"><label>Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-title"><label class="mb-1">Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
 											<p class="p1">Select Date/Time Below</p> 
 											<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($audio->created_at)){{ $audio->created_at }}@endif" />
@@ -128,7 +145,7 @@
 							</div>
 
 							<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label>Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-title"><label class="mb-1">Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
@@ -142,7 +159,7 @@
 							
 							<div class="col-sm-6 p-0 mt-3">
 								<div class="panel panel-primary p-0" data-collapsed="0"> <div class="panel-heading"> 
-									<div class="panel-title"><label>Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+									<div class="panel-title"><label class="mb-1">Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 									<div class="panel-body" style="display: block;"> 
 										<p class="p1">Block the Audio for Selected Country:</p> 
 										<select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
@@ -160,7 +177,7 @@
 
 
 							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-title"><label class="mb-1">Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									<label for="type" class="mt-2" style="float:left; margin-right:10px; padding-top:1px;">Audio Format</label>
 									<select id="type" name="type" class="form-control">
@@ -170,7 +187,7 @@
 								
 
 									<div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file'){{ 'style="display:block"' }}@endif>
-										<label for="mp3_url"><label>Mp3 File URL:</label></label>
+										<label for="mp3_url"><label class="mb-1">Mp3 File URL:</label></label>
 										<input type="text" class="form-control" name="mp3_url" id="mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
 									</div>
 
@@ -189,14 +206,14 @@
 
 
 								<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-									<div class="panel-title"><label>Audio Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+									<div class="panel-title"><label class="mb-1">Audio Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 									<div class="panel-body" style="display: block;">
 										<textarea class="form-control" name="details" id="details">@if(!empty($audio->details)){{ htmlspecialchars($audio->details) }}@endif</textarea>
 									</div> 
 								</div>
 
 								<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-									<div class="panel-title"><label>Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+									<div class="panel-title"><label class="mb-1">Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 									<div class="panel-body" style="display: block;"> 
 										<p class="p1">Add a short description of the audio below:</p> 
 										<textarea class="form-control" name="description" id="description">@if(!empty($audio->description)){{ htmlspecialchars($audio->description) }}@endif</textarea>
@@ -205,7 +222,7 @@
 								<div class="row mt-3 align-items-center"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p>Add artists for the audio below:</p> 
 												<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
@@ -223,7 +240,7 @@
 									</div>
 									<div class="col-sm-6 mt-2">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Album</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Album</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Album Below:</p>
 												<select id="album_id" name="album_id" class="form-control">
@@ -238,7 +255,7 @@
 								<div class="row p-0 mt-3 align-items-center"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Category Below:</p>
 												<!-- <select id="audio_category_id" name="audio_category_id" class="form-control">
@@ -260,7 +277,7 @@
 									</div>
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1"> IMDB Ratings 10 out of 10</p>
 												<input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
@@ -272,7 +289,7 @@
 								<div class="row mt-3"> 
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Language Below:</p>
 												<!-- <select class="form-control" id="language" name="language">
@@ -294,7 +311,7 @@
 									</div>
 									<div class="col-sm-6 ">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Audio Year</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-title"><label class="mb-1">Audio Year</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1">Audio Released Year</p>
 												<input class="form-control" name="year" id="year" value="@if(!empty($audio->year)){{ $audio->year }}@endif">
@@ -310,7 +327,7 @@
 
 									<div class="col-sm-4"> 
 										<div class="panel panel-primary" data-collapsed="0"> 
-											<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-heading"> <div class="panel-title"><label class="mb-1"> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
 												<p class="p1">Enter the audio duration in the following format (Hours : Minutes : Seconds)</p> 
 												<input class="form-control" name="duration" id="duration" value="@if(!empty($audio->duration)){{ gmdate('H:i:s', $audio->duration) }}@endif">
@@ -320,7 +337,7 @@
 
 									<div class="col-sm-4"> 
 										<div class="panel panel-primary" data-collapsed="0"> 
-											<div class="panel-heading"> <div class="panel-title"> <label>User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-heading"> <div class="panel-title"> <label class="mb-1">User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
 												<p class="p1">Who is allowed to view this audio?</p>
 												<select id="access" name="access" class="form-control">
@@ -340,10 +357,10 @@
 
 									<div class="col-sm-4"> 
 										<div class="panel panel-primary" data-collapsed="0"> 
-											<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-heading"> <div class="panel-title"><label class="mb-1"> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
 												<div class="d-flex align-items-baseline">
-													<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this audio Featured:</label>
+													<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this Audio Featured:</label>
 													<input type="checkbox" @if(!empty($audio->featured) && $audio->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 												</div>
 												<div class="clear"></div>
@@ -353,7 +370,7 @@
 												</div>
 												<div class="clear"></div>
 												<div class="d-flex align-items-baseline">
-													<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this audio Active:</label>
+													<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this Audio Active:</label>
 													<input type="checkbox" @if(!empty($audio->active) && $audio->active == 1){{ 'checked="checked"' }}@elseif(!isset($audio->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 												</div>
 											</div> 

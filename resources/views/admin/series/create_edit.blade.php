@@ -1,5 +1,18 @@
 @extends('admin.master')
+<style>
+      .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
 
+    }
+</style>
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -11,7 +24,10 @@ $settings  = App\Setting::first();?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 <div id="content-page" class="content-page">
-    <div class="container-fluid">
+    <div class="mb-5">
+    <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
+        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+    <div class="container-fluid p-0">
 <!-- This is where -->
 	<div class="iq-card" style="padding:20px;">
 	<div class="admin-section-title pull-right">

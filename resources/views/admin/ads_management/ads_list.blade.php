@@ -50,9 +50,9 @@
                                    <button class="btn btn-danger status_change" value="2" data-id="{{$advertisement->id}}">DisApprove</button>
                                 @endif</td>
                                  <td>{!! date('d/M/y', strtotime($advertisement->created_at)) !!}</td>
-                                 <td class="d-flex align-items-center list-user-action">								
-							            <a href="{{ URL::to('admin/advertisement/edit') . '/' . $advertisement->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
-                                 <a href="{{ URL::to('admin/advertisement/delete') . '/' . $advertisement->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i class="ri-delete-bin-line"></i></a>
+                                 <td class="align-items-center list-inline">								
+							            <a href="{{ URL::to('admin/advertisement/edit') . '/' . $advertisement->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                 <a href="{{ URL::to('admin/advertisement/delete') . '/' . $advertisement->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                  </td>
                               </tr>
                               @endforeach

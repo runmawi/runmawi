@@ -707,7 +707,7 @@ FAQ
 /*---------------------------------------------------------------------
 Table
 -----------------------------------------------------------------------*/
-table tr th img { width: 35px; height: 35px; border-radius: 90px; }
+table tr th img { /*width: 35px; height: 35px; border-radius: 90px;*/ padding-right: 10px; }
 .progress-animate { animation: progress-bar-stripes 1s linear infinite; }
 img.summary-image-top { width: 35px; }
 .iq-subject-info img { width: 80px; }
@@ -1237,10 +1237,13 @@ select{
     font-size: 16px;
     font-weight: 500;
 }
-
+.iq-user-box p{
+    font-weight: 500;
+    color: #000;
+}
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background: rgb(255 255 255 / 20%);
-    text-align: left;
+   
     font-size: 16px;
     font-weight: 500;
     color: #000;
@@ -1275,7 +1278,10 @@ select{
     position: absolute;
     height: 5px;
 }
-
+.video_active{
+    padding: 10px 10px;
+    border-radius: 4px;
+}
 .dropzone .dz-preview .dz-progress .dz-upload {
     background: #333;
     background: #0993d2;
@@ -1284,7 +1290,7 @@ select{
     margin-top: 13px;
 }
 label{
-    font-weight: 400;
+    font-weight: 500;
 font-size: 18px;
 line-height: 30px;
 font-family: 'Inter';
@@ -1293,7 +1299,7 @@ color: #161616;
     height: 30px;
 }
 .p1{
-font-size: 14px;
+font-size: 12px;
 font-family: 'Lato', sans-serif;font-style: normal;
 font-weight: 400;
 height: 25px;
