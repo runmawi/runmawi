@@ -21,7 +21,13 @@
    #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id=" content_videopage" class="content-page">
-   <div class="container-fluid" id="content_videopage">
+    <div class="mt-5 mb-5">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+   <div class="container-fluid p-0" id="content_videopage">
       <div class="admin-section-title">
          <div class="iq-card">
             <div class="row">
@@ -268,6 +274,18 @@
       #video{
       background-color: #f7f7f7!important;
       }
+       .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
    </style>
    @section('css')
    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -277,6 +295,12 @@
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
    <script src="https://malsup.github.io/jquery.form.js"></script>
    <div id="content-page" class="content-page1" style="padding:0px!important;">
+       <div class="mt-5 mb-5">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
       <div class="container-fluid">
           
            <div class="iq-card " style="padding:40px;">

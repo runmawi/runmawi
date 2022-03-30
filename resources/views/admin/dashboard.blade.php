@@ -45,7 +45,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-primary"><p class="text-white">{{ TotalSubscribercount() }}</p></div>
+                                       <div class="iq-user-box "><p class="">{{ TotalSubscribercount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total  
                                           Subscriber's
@@ -59,7 +59,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-warning"><p class="bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
+                                       <div class="iq-user-box "><p class="">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">
                                            New Subscriber's
@@ -73,7 +73,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-info"><p class="text-white">{{ TotalVideocount() }}</p></div>
+                                       <div class="iq-user-box "><p class="">{{ TotalVideocount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
                                                 Video's
@@ -87,7 +87,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-success"><p class="bg-success">{{  $visitor }}</p></div>
+                                       <div class="iq-user-box"><p class="">{{  $visitor }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">  Total
                                           Visitor's
@@ -117,20 +117,20 @@
                                 <div class="col-sm-6">
                                    <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>
-                                      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Go to OTT platform Settings</a>
+                                      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Setup Website Logo, Name, Social Links, Payment Types, Etc</a>
                                       <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Payment Plans</a>
                                    </div>
                                 </div>
                                 <div class="col-sm-6">
                                    <div class="tab-content mt-0" id="v-pills-tabContent">
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                         <label class="m-0">First things first, you need Video.</label>
+                                         <h6 class="m-0">First things first, you need Video.</h6>
                                          <p class="">Upload a video to get started.</p>
                                          <a href="/admin/videos/create">Upload Videos Now</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                          
-                                          <p class="" >Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                          <p class="">Setup website logo, Name, Social Links, Payment Types, etc.</p>
                                           <a href="/admin/settings">Go to Storefront Settings</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
@@ -147,7 +147,7 @@
              </div>
             <div class="row">
                 
-               <div class="col-lg-8">
+               <div class="col-lg-12">
                   <div class="row">
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
@@ -277,12 +277,12 @@
                         <!-- <div id="view-chart-03"></div> -->
                         <?php
                         foreach(@ $video_category as $key => $value){ ?>
-                           <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
+                           <div class="col-sm-6 col-md-4 col-lg-8 mb-3">
                            <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                            </div>
                            <div class="media align-items-center">
-                              <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
+                              <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>"> </div>
                               <div class="media-body text-white">
                                  <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($key);?></h6>
                                  <small class=" mb-0 val">+ {{ $value }} Videos</small>
@@ -311,7 +311,7 @@
                         </div> -->
                      </div>
                      <div class="iq-card-body row align-items-center">
-                        <div class="col-lg-9">
+                        <div class="col-lg-12">
                            <div class="row list-unstyled mb-0 pb-0">
                            <?php $all_category = App\VideoCategory::all();
                                     foreach($all_category as $category) { 
@@ -325,7 +325,7 @@
                                     <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                                  </div>
                                  <div class="media align-items-center">
-                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
+                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>"></div>
                                     <div class="media-body text-white">
                                        <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($category->name);?></h6>
                                        <small class="val mb-0">+ {{ $categoty_sum }} views</small>
@@ -354,13 +354,13 @@
                            <table class="data-tables table movie_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th style="width:20%;">Video</th>
-                                    <th style="width:20%;">Rating</th>
-                                    <th style="width:20%;">Category</th>
-                                    <th style="width:10%;">Views</th>
+                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/vi.svg';  ?>">Video</th>
+                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
+                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
+                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
                                     
                                     <!-- <th style="width:20%;">Date</th> -->
-                                    <th style="width:10%;"><i class="lar la-heart"></i></th>
+                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -382,10 +382,14 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i><i class="lar la-star mr-2"></i> <!--{{ $video_detail->rating }}--></td>
+                                    <td><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"><!--{{ $video_detail->rating }}--></td>
                                     <td>{{ @$video_detail->categories->name }}</td>
                                     <td>
-                                       {{ $video_detail->views }}<i class="lar la-eye "></i>
+                                       {{ $video_detail->views }}
                                     </td>
                                     
                                     <!-- <td>21 July,2020</td> -->

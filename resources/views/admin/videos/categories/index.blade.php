@@ -9,6 +9,18 @@
     .iq-card{
         padding: 15px;
     }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -16,7 +28,13 @@
 @endsection
 @section('content')
 <div id="content-page" class="content-page">
-    <div class="container-fluid">
+    <div class="mt-5 mb-5">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+    <div class="container-fluid p-0">
 	   <div class="admin-section-title">
             <div class="">
                 <div class="row">
@@ -155,10 +173,9 @@
                                         <td>
                                             <div class=" align-items-center list-user-action">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
+                                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
                                             <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-											onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><i
-                                                                class="ri-delete-bin-line"></i></a></div>
+											onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
 
                                         </td>
                                     </tr>
