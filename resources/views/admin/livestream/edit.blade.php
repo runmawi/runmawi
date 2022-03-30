@@ -339,7 +339,9 @@
     </div></div>
 </div>
 	
-	
+@php
+    $liveStreamVideo_errors = $liveStreamVideo_error;
+@endphp	
 	
 	@section('javascript')
 
@@ -353,12 +355,32 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
    $ = jQuery;
    $(document).ready(function($){
     $("#duration").mask("00:00:00");
    });
+
+  
+var Stream_error = '{{ $liveStreamVideo_errors }}';
+
+$( document ).ready(function() {
+    if( Stream_error == 1){
+        Swal.fire({
+        allowOutsideClick:false,
+        icon: 'error',
+        title: 'Oops...',
+        text: 'While Converting the Live Stream video, Something went wrong!',
+        }).then(function (result) {
+        if (result.value) {
+            location.href = "{{ URL::to('admin/livestream/edit') . '/' . $video->id }}";
+        }
+        })
+    }
+});
+
 
 $(document).ready(function(){
 

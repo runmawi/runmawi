@@ -247,7 +247,7 @@ class AdminLiveStreamController extends Controller
                 $command = exec($FFmeg_command);
 
                 if(strpos($command, "Qavg") !== false){
-                    $movie->live_stream_video = $live_stream_videopath.'/'.$LiveStream_Video;
+                    $movie->live_stream_video = $live_stream_videopath;
                     $movie->Stream_key = $Stream_key;
                 } else{
                     $data = array(
@@ -384,6 +384,7 @@ class AdminLiveStreamController extends Controller
             'languages' => Language::all(),
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+            'liveStreamVideo_error' => '0'
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -437,14 +438,38 @@ class AdminLiveStreamController extends Controller
                 $command = exec($FFmeg_command);
 
                 if(strpos($command, "Qavg") !== false){
-                    $video->live_stream_video =$live_stream_videopath.'/'.$LiveStream_Video;
+                    $video->live_stream_video =$live_stream_videopath;
                     $video->Stream_key = $Stream_key;
                 } else{
-                    return View::make('admin.livestream.edit');
+                    $data = array(
+                        'headline' => '<i class="fa fa-edit"></i> Edit Video',
+                        'video' => $video,
+                        'post_route' => URL::to('admin/livestream/update'),
+                        'button_text' => 'Update Video',
+                        'admin_user' => Auth::user(),
+                        'video_categories' => LiveCategory::all(),
+                        'languages' => Language::all(),
+                        'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+                        'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+                        'liveStreamVideo_error' => '1'
+                        );
+                    return View::make('admin.livestream.edit', $data); 
                 }
             } 
             catch (\Exception $e) {
-                return View::make('admin.livestream.edit');
+                $data = array(
+                    'headline' => '<i class="fa fa-edit"></i> Edit Video',
+                    'video' => $video,
+                    'post_route' => URL::to('admin/livestream/update'),
+                    'button_text' => 'Update Video',
+                    'admin_user' => Auth::user(),
+                    'video_categories' => LiveCategory::all(),
+                    'languages' => Language::all(),
+                    'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+                    'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+                    'liveStreamVideo_error' => '1'
+                    );
+                return View::make('admin.livestream.edit', $data); 
             }
         }
         
