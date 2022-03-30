@@ -79,11 +79,9 @@ class AdminLiveStreamController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
-        
-        $data = $request->all();
-        
+
+      $data = $request->all();
+
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // // 'slug' => 'required|max:255',
@@ -230,7 +228,38 @@ class AdminLiveStreamController extends Controller
         }else{
             $mp4_url = $data['mp4_url'];
         }    
+
         $movie = new LiveStream;
+
+        if(!empty($data['live_stream_video'])){
+            $live_stream_video = $data['live_stream_video'];
+            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+            $LiveStream_Video = $live_stream_video->getClientOriginalName();  
+            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+
+
+            // converting to RTMP URL
+              try {
+                $Stream_key = random_int(1000000000, 9999999999);
+
+                $video_name = $LiveStream_Video;
+                $live_stream_videopath  = URL::to('public/uploads/LiveStream/'.$video_name);
+                $rtmp_url = "rtmp://176.223.138.157:1935/hls/".$Stream_key;
+
+                $FFmeg_command = "ffmpeg -re -i ".$live_stream_videopath." -c:v libx264 -c:a aac -f flv ".$rtmp_url." 2>&1";
+                $command = exec($FFmeg_command);
+
+                if(strpos($command, "Qavg") !== false){
+                    $movie->live_stream_video = $live_stream_videopath.'/'.$LiveStream_Video;
+                    $movie->Stream_key = $Stream_key;
+                } else{
+                    return false;
+                }
+            } 
+            catch (\Exception $e) {
+                    return false;
+            }
+        }
 
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
@@ -322,11 +351,9 @@ class AdminLiveStreamController extends Controller
                 ->get();
         }  
 
-            public function edit($id)
+    public function edit($id)
     {
-       $video = LiveStream::find($id);
-        
-        
+        $video = LiveStream::find($id);
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -350,7 +377,8 @@ class AdminLiveStreamController extends Controller
 
         return Redirect::back(); 
     }
-     public function update(Request $request)
+    
+    public function update(Request $request)
     {
         $data = $request->all();       
         $id = $data['id'];
@@ -362,7 +390,7 @@ class AdminLiveStreamController extends Controller
             $ppv_price = null;
         }
         $video = LiveStream::findOrFail($id);  
-        
+
          $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'slug' => 'required|max:255',
@@ -370,6 +398,15 @@ class AdminLiveStreamController extends Controller
             'details' => 'required|max:255',
             'year' => 'required'
         ]);
+// Live Stream Video
+        if(!empty($data['live_stream_video'])){
+            $live_stream_video = $data['live_stream_video'];
+            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+            $LiveStream_Video = $live_stream_video->getClientOriginalName();  
+            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+            $video->live_stream_video =$live_stream_videopath.'/'.$LiveStream_Video;
+
+        }
         
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';

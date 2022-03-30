@@ -119,6 +119,7 @@
                                     <option value="">Choose URL Format</option>
                                     <option value="mp4">MP4 URL</option>
                                     <option value="embed">Embed URL</option>
+                                    <option value="live_stream_video">Live Stream Video</option>
                                 </select>
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
@@ -129,6 +130,11 @@
                                 <div class="new-video-upload mt-2" id="embed_code">
                                     <label for="embed_code"><label>Live Embed URL</label></label>
                                     <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                                </div>
+
+                                <div class="new-video-upload mt-2" id="live_stream_video">
+                                    <label for="embed_code"><label>Live Stream Video</label></label>
+                                    <input type="file" multiple="true" class="form-group" name="live_stream_video" id="live_stream_video" />
                                 </div>
                             </div>
                         </div>
@@ -160,6 +166,15 @@
 
                             <div class="panel-body">
                                 <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" id="live_stream_video">
+                        <div class="col-sm-12">
+                            <label class="m-0">Live Stream Video</label>
+                            <div class="panel-body">
+                                <input type="file" multiple="true" class="form-group" name="live_stream_video" id="live_stream_video" />
                             </div>
                         </div>
                     </div>
@@ -392,14 +407,21 @@
     $(document).ready(function () {
         $("#mp4_code").hide();
         $("#embed_code").hide();
+        $("#live_stream_video").hide();
 
         $("#url_type").change(function () {
             if ($("#url_type").val() == "mp4") {
                 $("#mp4_code").show();
                 $("#embed_code").hide();
+                $("#live_stream_video").hide();
             } else if ($("#url_type").val() == "embed") {
                 $("#embed_code").show();
                 $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+            }else if ($("#url_type").val() == "live_stream_video") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").show();
             }
         });
     });
