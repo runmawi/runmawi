@@ -4,6 +4,18 @@
     background: #fff!important; */
    
 }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -13,8 +25,14 @@
 @section('content')
 <?php //dd($cppuser); ?>
      <div id="content-page" class="content-page">
-         <div class="container-fluid">
-            <div class="row">
+         <div class="mt-5 mb-5">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+         <div class="container-fluid p-0">
+            <div class="row ">
                <div class="col-sm-12">
                   <div class="">
                      <div class="iq-card-header d-flex justify-content-between">
@@ -106,7 +124,7 @@
                                     <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
-                                        {{ $video->views }} <i class="lar la-eye "></i>
+                                        {{ $video->views }} </i>
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
@@ -120,10 +138,9 @@
                                        <?php }?>
 
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>

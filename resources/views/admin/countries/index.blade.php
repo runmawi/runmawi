@@ -97,7 +97,7 @@
                                 <td class="text-center">
                                     <div class="align-items-center list-user-action">
                                         <a href="{{ URL::to('admin/countries/delete/') }}/{{$country->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
+                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
 
                                 </td>
                             </tr>

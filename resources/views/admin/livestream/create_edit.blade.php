@@ -12,6 +12,18 @@
     #video {
         background-color: #f7f7f7 !important;
     }
+     .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 
 @section('css')
@@ -24,7 +36,12 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('content')
 <div id="content-page" class="content-page">
-    <div class="container-fluid">
+     <div class="mb-5">
+                        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
+    <div class="container-fluid p-0">
         <div class="iq-card">
             <div id="admin-container" style="padding: 15px;">
                 <!-- This is where -->
@@ -124,12 +141,12 @@
                                 </select>
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
-                                    <label for="embed_code"><label>Live Stream URL</label></label>
+                                    <label for="embed_code"><label class="mb-1">Live Stream URL</label></label>
                                     <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
                                 </div>
 
                                 <div class="new-video-upload mt-2" id="embed_code">
-                                    <label for="embed_code"><label>Live Embed URL</label></label>
+                                    <label for="embed_code"><label class="mb-1">Live Embed URL</label></label>
                                     <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
                                 </div>
 
@@ -266,7 +283,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-4">
                             <label class="m-0">Publish Type</label>
-                            <div class="panel-body" style="color: black;">
+                            <div class="panel-body p2" style="color: black;">
                                 <input type="radio" id="publish_now" name="publish_type" value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                                 <input type="radio" id="publish_later" name="publish_type" value="publish_later" /> Publish Later
                             </div>
@@ -274,7 +291,7 @@
 
                         <div class="col-sm-4">
                             <div id="publishlater">
-                                <label class="m-0 p2">Publish Time</label>
+                                <label class="m-0">Publish Time</label>
                                 <div class="panel-body">
                                     <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
                                 </div>

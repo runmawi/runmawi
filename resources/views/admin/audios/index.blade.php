@@ -4,6 +4,18 @@
     background: #fff!important; */
    
 }
+     .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -12,7 +24,12 @@
 @section('content')
 
      <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="mb-5">
+         <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
+        <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
+        <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
+             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+         <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
                   <div class="">
@@ -56,17 +73,16 @@
                                     <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
                                   
                                     <td>
-                                        {{ $audio->views }}<i class="lar la-eye "></i>
+                                        {{ $audio->views }}</i>
                                     </td>
                                     <td>
                                        <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
-                                             data-original-title="Delete" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
