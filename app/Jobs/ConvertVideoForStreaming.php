@@ -39,8 +39,8 @@ class ConvertVideoForStreaming implements ShouldQueue
         $video = $this->video->path;
         $BitrateFormat250 = (new X264('aac', 'libx264'))->setKiloBitrate(250);
         $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(300);
-        $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(600);
-        $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(500);
+        $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
+        $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(600);
         $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
 
         $converted_name = ConvertVideoForStreaming::getCleanFileName($video);

@@ -120,7 +120,7 @@ class AdminUsersController extends Controller
                 $data = User::where('username', 'LIKE', '%' . $query . '%')->orWhere('mobile', 'LIKE', '%' . $query . '%')->orWhere('email', 'LIKE', '%' . $query . '%')->orderBy('created_at', 'desc')
                     ->paginate(10);
             }
-            else
+            else 
             {
                 return Redirect::to('admin/users');
             }
@@ -135,7 +135,7 @@ class AdminUsersController extends Controller
                     }
                     else
                     {
-                        $username = $row->name;
+                        $username = $row->username ;
                     }
                     if (!empty($row->avatar))
                     {
@@ -1039,10 +1039,12 @@ class AdminUsersController extends Controller
             $ccode[] = $user_ccode->ccode;
 
         }
-        $current_plan = User::select(['subscriptions.*', 'users.*', 'plans.plans_name', 'plans.billing_interval', 'plans.days'])->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
-            ->join('plans', 'subscriptions.stripe_plan', '=', 'plans.plan_id')
+        $current_plan = User::select(['subscriptions.*', 'users.*', 'subscription_plans.plans_name', 'subscription_plans.billing_interval', 'subscription_plans.days'])
+        ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
             ->where('role', '=', 'subscriber')
             ->get();
+            // dd($current_plan);
         // $current_plan = \DB::table('users')
         // ->select(['subscriptions.*','users.*','plans.plans_name','plans.billing_interval','plans.days'])
         // ->join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
@@ -1080,6 +1082,8 @@ class AdminUsersController extends Controller
                             'Start Date' => $plans->created_at,
                             'End Date' => $end_date,
                         );
+                    }else{
+                        $user_array['options'] = [];
                     }
                 }
                 foreach ($country_name as $name)
@@ -1109,6 +1113,7 @@ class AdminUsersController extends Controller
                 $package = "";
                 $startdate = "";
                 $enddate = "";
+                if(!empty($user_array['options'])){
                 foreach ($user_array['options'] as $keys => $plans)
                 {
                     $plankeys[] = $keys;
@@ -1120,6 +1125,12 @@ class AdminUsersController extends Controller
                         $enddate = $plans['End Date'];
                     }
                 }
+            }else{
+                $package ="";
+                        // print_r($plans['Start Date']);
+                        $startdate = "";
+                        $enddate = "";
+            }
                 // exit();
                 $countryname = "";
                 foreach ($user_array['ccode'] as $key => $ccode)
@@ -1277,11 +1288,14 @@ class AdminUsersController extends Controller
                 }
 
             }
+            
             foreach ($users as $k => $value)
             {
                 $package = "";
                 $startdate = "";
                 $enddate = "";
+                if (!empty($user_array['options']))
+                {
                 foreach ($user_array['options'] as $keys => $plans)
                 {
                     $plankeys[] = $keys;
@@ -1293,6 +1307,12 @@ class AdminUsersController extends Controller
                         $enddate = $plans['End Date'];
                     }
                 }
+            }else{
+                $package ="";
+                        // print_r($plans['Start Date']);
+                        $startdate = "";
+                        $enddate = "";
+            }
                 // exit();
                 $countryname = "";
                 foreach ($user_array['ccode'] as $key => $ccode)
@@ -1335,9 +1355,10 @@ class AdminUsersController extends Controller
                 }
                 else
                 {
+                    $data = [];
+
                 }
             }
-
             $file_name = 'User.xlsx';
 
             $spreadsheet = new Spreadsheet();
@@ -1537,7 +1558,7 @@ class AdminUsersController extends Controller
                 }
                 $output .= '
           <tr>
-          <td>' . $row->name . '</td>
+          <td>' . $row->username  . '</td>
           <td>' . $role . '</td>
           <td>' . $phoneccode . '</td>
           <td>' . $provider . '</td>
@@ -1621,9 +1642,7 @@ class AdminUsersController extends Controller
         }
         $filename = public_path("/uploads/csv/" . $file);
         $handle = fopen($filename, 'w');
-        fputcsv($handle, ["User Name", "ACC Type", "Country", "Registered ON ", "Source", "Status",
-
-        ]);
+        fputcsv($handle, ["User Name", "ACC Type", "Country", "Registered ON ", "Source", "Status",]);
         if ($registered_count > 0)
         {
             foreach ($registered as $each_user)
@@ -1862,7 +1881,7 @@ class AdminUsersController extends Controller
                 }
                 $output .= '
           <tr>
-          <td>' . $row->name . '</td>
+          <td>' . $row->username  . '</td>
           <td>' . $role . '</td>
           <td>' . $phone_ccode . '</td>
           <td>' . $provider . '</td>
@@ -1969,7 +1988,7 @@ class AdminUsersController extends Controller
                 }
                 $output .= '
               <tr>
-              <td>' . $row->name . '</td>
+              <td>' . $row->username  . '</td>
               <td>' . $role . '</td>
               <td>' . $phone_ccode . '</td>
               <td>' . $provider . '</td>
