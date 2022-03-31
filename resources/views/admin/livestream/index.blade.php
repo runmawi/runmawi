@@ -89,7 +89,7 @@ border-radius: 0px 4px 4px 0px;
 						<th>Video Type</th>
 						<th>Video Access</th>
 						<th>Status</th>
-						<th>Description</th>
+						<th>Stream Type</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -99,21 +99,28 @@ border-radius: 0px 4px 4px 0px;
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
 						<td> <?php if(!empty(@$video->cppuser->username)){ echo @$video->cppuser->username; }else{ @$video->usernames->username; }?></td>
+						
 						<?php if($video->access == "ppv" ){ ?>
-						<td> <?php echo "Paid"; ?></td>
-					<?php }else{ ?>
-						<td> <?php  echo "Free"; ?></td>
-					<?php }?>  
+							<td> <?php echo "Paid"; ?></td>
+						<?php }else{ ?>
+							<td> <?php  echo "Free"; ?></td>
+						<?php }?>  
 						<td>{{ $video->access }}</td>
-						<?php if($video->active == 0){ ?>
-                        <td> <p class = "bg-warning video_active"><?php echo "Pending"; ?></p></td>
-					<?php }elseif($video->active == 1){ ?>
-                        <td> <p class = "bg-primary video_active"> <?php  echo "Approved"; ?></p></td>
-					<?php }elseif($video->active == 2){ ?>
-                        <td>  <p class = "bg-danger video_active"><?php  echo "Rejected"; ?></p></td>
-					<?php }?>  
 
-						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
+						<?php if($video->active == 0){ ?>
+                        	<td> <p class = "bg-warning video_active"><?php echo "Pending"; ?></p></td>
+						<?php }elseif($video->active == 1){ ?>
+                        	<td> <p class = "bg-primary video_active"> <?php  echo "Approved"; ?></p></td>
+						<?php }elseif($video->active == 2){ ?>
+                        	<td>  <p class = "bg-danger video_active"><?php  echo "Rejected"; ?></p></td>
+						<?php }?>  
+
+						<td>{{ ucwords($video->url_type) }} 
+							@if( $video->url_type != null && $video->url_type == "Encode_video")
+								<i class="fa fa-info-circle" aria-hidden="true" id="encode_video_alert"></i>
+							@endif
+ 						</td>
+
 						<td class=" align-items-center list-inline">								
                             <a href="{{ URL::to('live') .'/'.$video->slug }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
 							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
@@ -137,7 +144,8 @@ border-radius: 0px 4px 4px 0px;
     </div></div>
 
 	@section('javascript')
-	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
 
 		$(document).ready(function(){
@@ -150,9 +158,24 @@ border-radius: 0px 4px 4px 0px;
 				swal({   title: "Are you sure?",   text: "Do you want to permanantly delete this video?",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){    window.location = delete_link });
 			    return false;
 			});
-		});
+
+			var stream_key = "{{ !empty($video) ?  $video->Stream_key : " " }}";
+        	var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+
+			$("#encode_video_alert").click(function(){
+				Swal.fire({
+					allowOutsideClick:false,
+					icon:'success',
+					title: 'RTMP Streaming Details',
+					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
+					})
+				});
+			});
 
 	</script>
+
+
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
