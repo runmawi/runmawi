@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ModeratorsPermission;
 use App\ModeratorsRole;
 use App\ModeratorsUser;
+use App\PpvPurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use URL;
@@ -4830,27 +4831,74 @@ if(!empty($artistsdata)){
     }
     public function Revenue(){
  
-          $settings =  Setting::first();
-      
-
-          $data = array(
-             'settings' => $settings, 
-
-          );
-          return view('admin.analytics.cpp_revenue', $data);
-    }
- 
-    public function Analytics(){
- 
       $settings =  Setting::first();
-  
-
+     
+     $total_revenue =  DB::table('users')
+     ->join('ppv_purchases','users.id','=','ppv_purchases.user_id')
+     ->join('videos','videos.id','=','ppv_purchases.video_id')
+     ->join('moderators_users','videos.user_id','=','moderators_users.id')
+     // ->where('videos.id','=',DB::raw('ppv_purchases.video_id'))
+     ->groupBy('ppv_purchases.user_id')
+     ->get([
+     'ppv_purchases.user_id',
+     DB::raw('sum(ppv_purchases.moderator_commssion) as total'),
+     \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") 
+     
+     ]);
+     
+    //  dd($total_users);
+     
+     
+     
+     // SELECT videos.*
+         // FROM users
+         // INNER JOIN ppv_purchases
+         // ON users.id = ppv_purchases.user_id
+         // INNER JOIN videos
+         // ON videos.id = ppv_purchases.video_id
+         // INNER JOIN moderators_users
+         // ON videos.user_id = moderators_users.id
+         // where videos.id = ppv_purchases.video_id;
+     
+           // SELECT videos.*
+           // FROM users
+           // INNER JOIN ppv_purchases
+           // ON users.id = ppv_purchases.user_id
+           // INNER JOIN videos
+           // ON videos.id = ppv_purchases.video_id
+           // INNER JOIN moderators_users
+           // ON videos.user_id = moderators_users.id
+           // where videos.id = ppv_purchases.video_id;
+     
       $data = array(
          'settings' => $settings, 
-
+     
       );
-      return view('admin.analytics.cpp_analytics', $data);
-}
-
-
+      return view('admin.analytics.cpp_revenue', $data);
+     }
+     
+     public function Analytics(){
+     
+     $settings =  Setting::first();
+     
+     $total_revenue =  DB::table('users')
+     ->join('ppv_purchases','users.id','=','ppv_purchases.user_id')
+     ->join('videos','videos.id','=','ppv_purchases.video_id')
+     ->join('moderators_users','videos.user_id','=','moderators_users.id')
+     // ->where('videos.id','=',DB::raw('ppv_purchases.video_id'))
+     ->groupBy('ppv_purchases.user_id')
+     ->get([
+     'ppv_purchases.user_id',
+     DB::raw('sum(ppv_purchases.moderator_commssion) as total'),
+     \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") 
+     
+     ]);
+     
+     $data = array(
+     'settings' => $settings, 
+     
+     );
+     return view('admin.analytics.cpp_analytics', $data);
+     }
+     
 }
