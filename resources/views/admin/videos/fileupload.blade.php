@@ -305,12 +305,12 @@ border-radius: 0px 4px 4px 0px;
                   <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                      <!-- progressbar -->
                      <ul id="progressbar">
-                        <li class="active" id="account">Video Details</li>
-                        <li id="personal">Category</li>
-                        <li id="useraccess_ppvprice">User Video Access</li>
+                        <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                        <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                        <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
                         <!-- <li id="payment"><strong>Upload Image & Trailer</strong></li> -->
-                        <li id="payment">Upload Image &amp; Trailer</li>
-                        <li id="confirm">Ads Management</li>
+                        <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                        <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management</li>
                      </ul>
                      <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -902,7 +902,8 @@ border-radius: 0px 4px 4px 0px;
     background: lightgray;
     border-radius: 50%;
     margin: 0 auto 10px auto;
-    padding: 2px
+    padding: 2px;
+        display:none;
 }
 
 #progressbar li:after {
