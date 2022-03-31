@@ -44,6 +44,9 @@ use App\LanguageVideo;
 use App\CategoryVideo;
 use App\CountryCode;
 use App\Advertisement;
+use App\BlockVideo;
+use Exception;
+use getID3;
 
 
 
@@ -229,82 +232,172 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $value = array();
-        $data = $request->all();
-
-        $validator = Validator::make($request->all(), [
-           'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
-           
-        ]);
-        $mp4_url = (isset($data['file'])) ? $data['file'] : '';
-        
-        $path = public_path().'/uploads/videos/';
-        
-        
-        $file = $request->file->getClientOriginalName();
-        $newfile = explode(".mp4",$file);
-        $file_folder_name = $newfile[0];
-   
-        
-        
-        $mp4_url = $data['file'];
-        
-        if($mp4_url != '') {
-        // $ffprobe = \FFMpeg\FFProbe::create();
-        // $disk = 'public';
-        // $data['duration'] = $ffprobe->streams($request->file)
-        // ->videos()
-        // ->first()                  
-        // ->get('duration'); 
-        
-        $rand = Str::random(16);
-        $path = $rand . '.' . $request->file->getClientOriginalExtension();
+            $value = array();
+            $data = $request->all();
     
-        $request->file->storeAs('public', $path);
-        $thumb_path = 'public';
-        
-        
-        // $this->build_video_thumbnail($request->file,$path, $data['slug']);
-        
-         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-        //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
-        //  $str = explode(".mp4",$path);
-        //  $path =$str[0];
-         $storepath  = URL::to('/storage/app/public/'.$path);
-
-         $video = new Video();
-         $video->disk = 'public';
-         $video->title = $file_folder_name;
-         $video->original_name = 'public';
-         $video->path = $path;
-         $video->mp4_url = $storepath;
-         $video->type = 'mp4_url';
-         $video->image = 'default_image.jpg';
-         $video->draft = 0;
-         $video->save(); 
-        
-         $video_id = $video->id;
-       $video_title = Video::find($video_id);
-       $title =$video_title->title; 
-
-
-        $value['success'] = 1;
-        $value['message'] = 'Uploaded Successfully!';
-        $value['video_id'] = $video_id;
-        $value['video_title'] = $title;
-
-        
-        return $value;
-        
-        }
-        
-        else {
-         $value['success'] = 2;
-         $value['message'] = 'File not uploaded.'; 
-            // $video = Video::create($data);
-        return response()->json($value);
-        
-        }
+            $validator = Validator::make($request->all(), [
+               'file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
+               
+            ]);
+            $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+            
+            $path = public_path().'/uploads/videos/';
+            
+            
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];
+       
+            $package = User::where('id',1)->first();
+            $pack = $package->package;
+            $mp4_url = $data['file'];
+            $settings = Setting::first();
+            if($mp4_url != '' && $pack != "Pro" ) {
+                // $ffprobe = \FFMpeg\FFProbe::create();
+                // $disk = 'public';
+                // $data['duration'] = $ffprobe->streams($request->file)
+                // ->videos()
+                // ->first()                  
+                // ->get('duration'); 
+                
+                $rand = Str::random(16);
+                $path = $rand . '.' . $request->file->getClientOriginalExtension();
+            
+                $request->file->storeAs('public', $path);
+                $thumb_path = 'public';
+                
+                
+                // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+                
+                $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+                //  $str = explode(".mp4",$path);
+                //  $path =$str[0];
+                $storepath  = URL::to('/storage/app/public/'.$path);
+    
+    
+                //  Video duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
+    
+                $video = new Video();
+                $video->disk = 'public';
+                $video->title = $file_folder_name;
+                $video->original_name = 'public';
+                $video->path = $path;
+                $video->mp4_url = $storepath;
+                $video->type = 'mp4_url';
+                $video->draft = 0;
+                $video->image = 'default_image.jpg';
+                $video->duration  = $Video_duration;
+                $video->save(); 
+                
+            
+                $video_id = $video->id;
+                $video_title = Video::find($video_id);
+                $title =$video_title->title; 
+    
+                $value['success'] = 1;
+                $value['message'] = 'Uploaded Successfully!';
+                $value['video_id'] = $video_id;
+                $value['video_title'] = $title;
+    
+                return $value;
+            
+            }elseif($mp4_url != '' && $pack == "Pro" && $settings->transcoding_access  == 1) {
+    
+                $rand = Str::random(16);
+                $path = $rand . '.' . $request->file->getClientOriginalExtension();
+                $request->file->storeAs('public', $path);
+                 
+                 $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                 
+                $storepath  = URL::to('/storage/app/public/'.$path);
+    
+    
+                //  Video duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
+                $user = Session::get('user'); 
+                 
+                 $video = new Video();
+                 $video->disk = 'public';
+                 $video->status = 0;
+                 $video->original_name = 'public';
+                 $video->path = $path;
+                 $video->title = $file_folder_name;
+                 $video->mp4_url = $storepath;
+                 $video->draft = 0;
+                 $video->image = 'default_image.jpg';
+                 $video->duration  = $Video_duration;
+                 $video->user_id = $user->id;
+                 $video->save();
+    
+                 ConvertVideoForStreaming::dispatch($video);
+                 $video_id = $video->id;
+                 $video_title = Video::find($video_id);
+                 $title =$video_title->title; 
+          
+                  $value['success'] = 1;
+                  $value['message'] = 'Uploaded Successfully!';
+                  $value['video_id'] = $video_id;
+                  $value['video_title'] = $title;
+                  
+                  return $value;
+            }elseif($mp4_url != '' && $pack == "Pro"  && $settings->transcoding_access  == 0 ) {
+    
+                $rand = Str::random(16);
+                $path = $rand . '.' . $request->file->getClientOriginalExtension();
+            
+                $request->file->storeAs('public', $path);
+                $thumb_path = 'public';
+                            
+                $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+    
+                $storepath  = URL::to('/storage/app/public/'.$path);
+    
+    
+                //  Video duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
+    
+                $video = new Video();
+                $video->disk = 'public';
+                $video->title = $file_folder_name;
+                $video->original_name = 'public';
+                $video->path = $path;
+                $video->mp4_url = $storepath;
+                $video->type = 'mp4_url';
+                $video->draft = 0;
+                $video->image = 'default_image.jpg';
+                $video->duration  = $Video_duration;
+                $video->save(); 
+                
+            
+                $video_id = $video->id;
+                $video_title = Video::find($video_id);
+                $title =$video_title->title; 
+    
+                $value['success'] = 1;
+                $value['message'] = 'Uploaded Successfully!';
+                $value['video_id'] = $video_id;
+                $value['video_title'] = $title;
+    
+                return $value;
+            
+            }
+            else {
+                 $value['success'] = 2;
+                 $value['message'] = 'File not uploaded.'; 
+                return response()->json($value);
+            }
+    
     }else{
         return Redirect::to('/blocked');
       }
@@ -1351,15 +1444,15 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             //            if(empty($data['path'])){
             //                $data['path'] = 0;
             //            }  
-            
-                        // if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-                        //         $data['status'] = 1;    
-                        //     }
-            
-                        // if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-                        //         $data['status'] = 0;    
-                        // }
-            
+            if($package != "Pro"  ){
+                $data['status'] = 1;    
+            }elseif(  $pack == "Pro" && $settings->transcoding_access == 1 ){
+                $data['status'] = 0;    
+            }elseif($pack == "Pro" && $settings->transcoding_access == 0 ){
+                $data['status'] = 1;    
+            }else{
+                $data['status'] = 1;    
+            }
             
                     $path = public_path().'/uploads/videos/';
                     $image_path = public_path().'/uploads/images/';
@@ -1593,7 +1686,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
-            $video->user_id = Auth::user()->id;
+            $video->user_id = $user->id;
             $video->save();
             
             $video_id = $video->id;
@@ -1629,7 +1722,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
-            $video->user_id = Auth::user()->id;
+            $video->user_id = $user->id;
             $video->save();;
             
             $video_id = $video->id;
@@ -1669,7 +1762,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
-            $video->user_id = Auth::user()->id;
+            $video->user_id = $user->id;
             $video->save();
             
             $video_id = $video->id;

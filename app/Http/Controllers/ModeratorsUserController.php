@@ -4828,7 +4828,29 @@ if(!empty($artistsdata)){
           );
             return $data ;      
     }
+    public function Revenue(){
  
+          $settings =  Setting::first();
+      
+
+          $data = array(
+             'settings' => $settings, 
+
+          );
+          return view('admin.analytics.cpp_revenue', $data);
+    }
+ 
+    public function Analytics(){
+ 
+      $settings =  Setting::first();
+  
+
+      $data = array(
+         'settings' => $settings, 
+
+      );
+      return view('admin.analytics.cpp_analytics', $data);
+}
 
 
 }

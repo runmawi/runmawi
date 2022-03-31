@@ -18,7 +18,7 @@ border-radius: 0px 4px 4px 0px;
     }
 </style>
 <div id="content-page" class="content-page">
-    <div class="mt-5 mb-5">
+    <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
@@ -281,12 +281,11 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -339,14 +338,13 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/episode'.'/'.$Episodes->series_title.'/'.$Episodes->slug) }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/episode'.'/'.$Episodes->series_title.'/'.$Episodes->slug) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
       
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/episode/edit') . '/' . $Episodes->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/episode/edit') . '/' . $Episodes->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
       
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/episode/delete') . '/' . $Episodes->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/episode/delete') . '/' . $Episodes->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
