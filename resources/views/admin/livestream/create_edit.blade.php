@@ -36,7 +36,7 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('content')
 <div id="content-page" class="content-page">
-     <div class="mb-5">
+     <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
@@ -79,7 +79,7 @@ border-radius: 0px 4px 4px 0px;
                 @endforeach @endif
                 <div class="clear"></div>
 
-                <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="live_video">
+                <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="" id="live_video">
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Title</label>

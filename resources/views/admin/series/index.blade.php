@@ -13,7 +13,7 @@
         margin: 4px;
     }
      .form-control {
-    background: #fff!important; */
+   /* background: #fff!important; */
    
 }
      .black{
@@ -38,9 +38,10 @@ border-radius: 0px 4px 4px 0px;
 
 	<div class="admin-section-title"  style="margin-left: 330px;
     padding-top: 100px;">
+        <div class="d-flex">
         <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-         <div class="">
+        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+         <div class="iq-card">
 		<div class="row align-items-center p-2">
 			<div class="col-md-5">
 				<h4><i class="entypo-movie"></i> Series</h4>
