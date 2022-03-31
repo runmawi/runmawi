@@ -16,10 +16,19 @@ Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
 Route::get('/admin/filemanager', 'FileManagerController@index');
+
+//////////// User analytics
 Route::post('/admin/exportCsv', 'AdminUsersController@exportCsv');
 Route::post('/admin/start_date_url', 'AdminUsersController@StartDateRecord');
 Route::post('/admin/end_date_url', 'AdminUsersController@StartEndDateRecord');
 Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
+
+
+////// CPP revenue
+
+Route::post('admin/cpp/analytics', 'AdminUsersController@Analytics');
+Route::post('admin/cpp/revenue', 'AdminUsersController@Revenue');
+
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
