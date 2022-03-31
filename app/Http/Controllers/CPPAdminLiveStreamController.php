@@ -76,6 +76,7 @@ class CPPAdminLiveStreamController extends Controller
                 'languages' => Language::all(),
                 'category_id' => [],
                 'languages_id' => [],
+                'liveStreamVideo_error' => '0',
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
         }else{
@@ -227,6 +228,59 @@ class CPPAdminLiveStreamController extends Controller
             } 
         $movie = new LiveStream;
 
+    // live stream video
+        if(!empty($data['live_stream_video'])){
+            $live_stream_video = $data['live_stream_video'];
+            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+            $LiveStream_Video = $live_stream_video->getClientOriginalName();  
+            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+
+
+            // converting to RTMP URL
+              try {
+                $Stream_key = random_int(1000000000, 9999999999);
+
+                $video_name = $LiveStream_Video;
+                $live_stream_videopath  = URL::to('public/uploads/LiveStream/'.$video_name);
+                $rtmp_url = "rtmp://176.223.138.157:1935/hls/".$Stream_key;
+
+                $FFmeg_command = "ffmpeg -re -i ".$live_stream_videopath." -c:v libx264 -c:a aac -f flv ".$rtmp_url." 2>&1";
+                $command = exec($FFmeg_command);
+
+                if(strpos($command, "Qavg") !== false){
+                    $movie->live_stream_video = $live_stream_videopath;
+                    $movie->Stream_key = $Stream_key;
+                } else{
+                    $data = array(
+                        'headline' => '<i class="fa fa-plus-circle"></i> New Video',
+                        'post_route' => URL::to('cpp/livestream/store'),
+                        'button_text' => 'Add New Video',
+                        // 'admin_user' => Auth::user(),
+                        'video_categories' => LiveCategory::all(),
+                        'languages' => Language::all(),
+                        'category_id' => [],
+                        'languages_id' => [],
+                        'liveStreamVideo_error' => '1',
+                        );
+                    return View::make('moderator.cpp.livestream.create_edit', $data);
+                }
+            } 
+            catch (\Exception $e) {
+                $data = array(
+                    'headline' => '<i class="fa fa-plus-circle"></i> New Video',
+                    'post_route' => URL::to('cpp/livestream/store'),
+                    'button_text' => 'Add New Video',
+                    // 'admin_user' => Auth::user(),
+                    'video_categories' => LiveCategory::all(),
+                    'languages' => Language::all(),
+                    'category_id' => [],
+                    'languages_id' => [],
+                    'liveStreamVideo_error' => '1',
+                    );
+                return View::make('moderator.cpp.livestream.create_edit', $data);
+            }
+        }
+
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
         $movie->url_type =$url_type;
@@ -336,6 +390,7 @@ class CPPAdminLiveStreamController extends Controller
             'languages' => Language::all(),
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+            'liveStreamVideo_error' => '0',
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
@@ -467,6 +522,61 @@ class CPPAdminLiveStreamController extends Controller
         //  $data['ppv_price'] = $request['ppv_price'];
          $data['access'] = $request['access'];
          $data['active'] = 1 ;
+
+    // Live Stream Video
+        if(!empty($data['live_stream_video'])){
+            $live_stream_video = $data['live_stream_video'];
+            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+            $LiveStream_Video = $live_stream_video->getClientOriginalName();  
+            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+
+            // converting to RTMP URL
+            try {
+                $Stream_key = random_int(1000000000, 9999999999);
+
+                $video_name = $LiveStream_Video;
+                $live_stream_videopath  = URL::to('public/uploads/LiveStream/'.$video_name);
+                $rtmp_url = "rtmp://176.223.138.157:1935/hls/".$Stream_key;
+
+                $FFmeg_command = "ffmpeg -re -i ".$live_stream_videopath." -c:v libx264 -c:a aac -f flv ".$rtmp_url." 2>&1";
+                $command = exec($FFmeg_command);
+
+                if(strpos($command, "Qavg") !== false){
+                    $video->live_stream_video =$live_stream_videopath;
+                    $video->Stream_key = $Stream_key;
+                } else{
+                    $data = array(
+                        'headline' => '<i class="fa fa-edit"></i> Edit Video',
+                        'video' => $video,
+                        'post_route' => URL::to('cpp/livestream/update'),
+                        'button_text' => 'Update Video',
+                        'video_categories' => LiveCategory::all(),
+                        'languages' => Language::all(),
+                        'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+                        'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+                        'liveStreamVideo_error' => '1',
+                        );
+            
+                    return View::make('moderator.cpp.livestream.edit', $data); 
+                }
+            } 
+            catch (\Exception $e) {
+                $data = array(
+                    'headline' => '<i class="fa fa-edit"></i> Edit Video',
+                    'video' => $video,
+                    'post_route' => URL::to('cpp/livestream/update'),
+                    'button_text' => 'Update Video',
+                    'video_categories' => LiveCategory::all(),
+                    'languages' => Language::all(),
+                    'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
+                    'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+                    'liveStreamVideo_error' => '1',
+                    );
+        
+                return View::make('moderator.cpp.livestream.edit', $data);  
+            }
+        }
+
 
         $video->update($data);
         $video->embed_url =     $embed_url;

@@ -23,7 +23,7 @@
 <div id=" content_videopage" class="content-page">
     <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
-                        <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
@@ -305,12 +305,12 @@ border-radius: 0px 4px 4px 0px;
                   <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                      <!-- progressbar -->
                      <ul id="progressbar">
-                        <li class="active" id="account">Video Details</li>
-                        <li id="personal">Category</li>
-                        <li id="useraccess_ppvprice">User Video Access</li>
+                        <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                        <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                        <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
                         <!-- <li id="payment"><strong>Upload Image & Trailer</strong></li> -->
-                        <li id="payment">Upload Image &amp; Trailer</li>
-                        <li id="confirm">Ads Management</li>
+                        <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                        <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management</li>
                      </ul>
                      <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -485,10 +485,12 @@ border-radius: 0px 4px 4px 0px;
                                     @endforeach
                                  </select>
                               </div>
+                              
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">E-Paper: <small>(Upload your PDF file)</small></label>
                                  <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
                               </div>
+
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
                                  <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
@@ -902,7 +904,8 @@ border-radius: 0px 4px 4px 0px;
     background: lightgray;
     border-radius: 50%;
     margin: 0 auto 10px auto;
-    padding: 2px
+    padding: 2px;
+        display:none;
 }
 
 #progressbar li:after {
