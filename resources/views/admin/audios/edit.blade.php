@@ -91,7 +91,7 @@ border-radius: 0px 4px 4px 0px;
 <script src="http://malsup.github.com/jquery.form.js"></script>
 
 <div id="content-page" class="content-page">
-     <div class="mb-5">
+     <div class="d-flex">
          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
@@ -425,6 +425,7 @@ border-radius: 0px 4px 4px 0px;
 
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
+
 	<script type="text/javascript">
 
 		$ = jQuery;

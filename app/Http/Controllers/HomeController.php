@@ -1176,10 +1176,12 @@ class HomeController extends Controller
 
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
                     ->count();
-                $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                $alldevices_register = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                    ->where('device_name', '!=', $device_name)
+                    ->where('user_ip', '!=', $userIp)
                     ->get();
                 $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                    ->get();
+                ->get();
                 $subscription_device_limit = Subscription::select('subscription_plans.devices')->join('subscription_plans', 'subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
                     ->where('subscriptions.user_id', Auth::User()
                     ->id)
@@ -1205,10 +1207,11 @@ class HomeController extends Controller
                     ->count();
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)
                     ->count();
+                    // dd(count($alldevices_register));
 
-                if (count($alldevices) > 0  && $user_role == "registered" && Auth::User()->id != 1)
+                if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
-
+                    // dd('test');
                     LoggedDevice::where('user_ip','=', $userIp)
                     ->where('user_id','=', Auth::User()->id)
                     ->where('device_name','=', $device_name)
