@@ -164,8 +164,8 @@
 							<tr>
                                <td>{{ $i++ }}</td>
                                <td>{{ $plan[0]->plans_name }}</td>
-                               <td class="list-user-action"><a href="{{ URL::to('/') }}/admin/subscription-plans/edit/{{ $plan[0]->plans_name }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="ri-pencil-line"></i></a>
-							    <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/')}}/admin/subscription-plans/delete/{{ $plan[0]->plans_name }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                               <td class="list-user-action"><a href="{{ URL::to('/') }}/admin/subscription-plans/edit/{{ $plan[0]->plans_name }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+							    <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/')}}/admin/subscription-plans/delete/{{ $plan[0]->plans_name }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></td>
                            </tr>
 
 							@endforeach

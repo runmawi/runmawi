@@ -67,7 +67,7 @@ if (!empty($data['password_hash'])) {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/tourguide.css';?>"   />
     <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/font-awesome.min.css';?>" />
 
@@ -140,13 +140,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span></span></a></li>
-                  <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.png')?>"><span>Dashboard</span></a></li>
+                  <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div  class="men" style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.png')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
@@ -197,14 +197,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div class="men">
                   
                         <p class="lnk" >Accounts</p></div>
-                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.png')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -220,7 +220,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                     -->
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.png')?>"><span> Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.svg')?>"><span> Sliders</span></a></li>
 
                    <!-- <li><a href="{{ URL::to('admin/restrict') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li> -->
 
@@ -228,7 +228,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    
                    <p class="lnk" >Site</p>
                        </div>
-                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.png')?>"><span>Player UI</span></a></li>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
                    <li><a href="{{ URL::to('/client') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>File Manager</span></a></li>
                    <!-- <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
@@ -246,7 +246,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li> -->
                   <li>
-                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.png')?>"><span>Pages</span><i
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -255,7 +255,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                    
                     <li>
-                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.png')?>"><span>Plans</span><i
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.svg')?>"><span>Plans</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -267,7 +267,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
-                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.png')?>">Payment Management</span><i
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.svg')?>">Payment Management</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -296,7 +296,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
 
                     <li>
-                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.png')?>"><span>Settings</span><i
+                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.svg')?>"><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                          <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -368,7 +368,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.png')?>"><span>Dashboard</span></a></li>
+                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="men" style="">
                  
@@ -383,7 +383,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.png')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
@@ -394,7 +394,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           <div class="men" style=""> 
                  <p class="lnk" >Live Video</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.png')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
@@ -405,7 +405,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
-          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.png')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
@@ -413,7 +413,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
               <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>
           </li>
-          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.png')?>">
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.svg')?>">
 <span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
@@ -432,7 +432,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.png')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -440,7 +440,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Language</p>
                        </div>
                   <li>
-                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.png')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
@@ -448,16 +448,16 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.png')?>"><span> Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.svg')?>"><span> Sliders</span></a></li>
                    <!-- <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li> -->
 
                     <div class="men">
                    
                    <p class="lnk" >Site</p>
                        </div>
-                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.png')?>"><span>Player UI</span></a></li>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
                    <li>
-                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.png')?>"><span>Content Partners</span><i
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -471,7 +471,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
-                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.png')?>"><span>Pages</span><i
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -480,7 +480,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                    
                     <li>
-                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.png')?>"><span>Plans</span><i
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.svg')?>"><span>Plans</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -494,7 +494,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                   
                   <li>
-                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.png')?>"><span>Payment Management</span><i
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.svg')?>"><span>Payment Management</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -506,7 +506,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <div >
                   <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span>Analytics</span><i
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -517,7 +517,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                   <div >
                     <li>
-                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.png')?>"><span>Settings</span><i
+                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.svg')?>"><span>Settings</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -543,26 +543,26 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.png')?>"><span>Ads Categories</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.png')?>"><span>Ads List</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.png')?>"><span> Ads Plans</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span> Ads Revenue</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
                 @endif
 
                     {{-- Geo Fencing --}}
                <p class="lnk">Geo Fencing</p>
 
-               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.png')?>"><span> Manage Geo Fencing</span></a></li>
+               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>"><span> Manage Geo Fencing</span></a></li>
 
-               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.png')?>"><span>Manage Countries</span></a></li>
+               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
                
                   <!-- Ads Menu ends -->
@@ -588,14 +588,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><img class="" src="<?php echo  URL::to('/assets/img/icon/gro.png')?>"><span>Getting Started</span></a></li>
-                  <li class="" ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img class="" src="<?php echo  URL::to('/assets/img/icon/home.png')?>"> <span class="mt-2"> Dashboard</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><img class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"><span>Getting Started</span></a></li>
+                  <li class="" ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"> Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="men" style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.png')?>"> <span class="">Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.svg')?>"> <span class="">Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
@@ -604,7 +604,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.png')?>"><span class="">Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
@@ -615,7 +615,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           <div class="men" style=""> 
                  <p class="lnk" >Live Video</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.png')?>"><span class="">Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span class="">Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
@@ -626,7 +626,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
-          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.png')?>"><span class="">Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>"><span class="">Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
@@ -634,7 +634,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
               <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>
           </li>
-          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.png')?>"><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.svg')?>"><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
               <li><a href="{{ URL::to('admin/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
@@ -646,14 +646,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div class="men">
                   
                         <p class="lnk" >Accounts</p></div>
-                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.png')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div >
@@ -661,7 +661,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Language</p>
                        </div>
                   <li>
-                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.png')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
@@ -669,16 +669,16 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.png')?>"><span>Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.svg')?>"><span>Sliders</span></a></li>
                    <!-- <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li> -->
 
                     <div class="men">
                    
                    <p class="lnk" >Site</p>
                        </div>
-                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.png')?>"><span>Player UI</span></a></li>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
                    <li>
-                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.png')?>"><span>Content Partners</span><i
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -692,7 +692,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
-                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.png')?>"><span>Pages</span><i
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -701,7 +701,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                    
                     <li>
-                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.png')?>"><span>Plans</span><i
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.svg')?>"><span>Plans</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -714,7 +714,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
 
                   <li>
-                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.png')?>"><span>Payment Management</span><i
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.svg')?>"><span>Payment Management</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -726,7 +726,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <div >
                   <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span>Analytics</span><i
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -737,7 +737,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                   <div >
                     <li>
-                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.png')?>"><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
+                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.svg')?>"><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
                         <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
@@ -761,27 +761,27 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.png')?>"><span>Ads Categories</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.png')?>"><span>Ads List</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.png')?>"><span> Ads Plans</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span> Ads Revenue</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
                 @endif
 
                 
                     {{-- Geo Fencing --}}
                <li><p class="lnk">Geo Fencing</p></li>
 
-               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.png')?>"><span> Manage Geo Fencing</span></a></li>
+               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>"><span> Manage Geo Fencing</span></a></li>
 
-               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.png')?>"><span>Manage Countries</span></a></li>
+               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
 
                   <!-- Ads Menu ends -->
@@ -808,13 +808,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect">  <img class="" src="<?php echo  URL::to('/assets/img/icon/home.png')?>"><span>Dashboard</span></a></li>
+                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect">  <img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.png')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                          <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
                         <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
@@ -823,7 +823,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.png')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
@@ -834,7 +834,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           <div style=""> 
                  <p class="lnk" >Live Video</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.png')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
@@ -845,7 +845,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div style="">
                   
                         <p class="lnk" >Audio </p></div>
-          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.png')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
@@ -853,7 +853,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
               <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>
           </li>
-          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.png')?>">
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/art.svg')?>">
 <span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
@@ -866,21 +866,21 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <div >
                   
                         <p class="lnk" >Accounts</p></div>
-                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.png')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
                     <div class="men">
                 
                    <p class="lnk" >Language</p>
                        </div>
                   <li>
-                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.png')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
@@ -888,16 +888,16 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                    
-                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.png')?>"><span>Sliders</span></a></li>
+                   <li><a href="{{ URL::to('admin/sliders') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/slider.svg')?>"><span>Sliders</span></a></li>
                    <!-- <li><a href="{{ URL::to('admin/payment_test') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Test Payment Setting</span></a></li> -->
 
                     <div >
                    
                    <p class="lnk" >Site</p>
                        </div>
-                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.png')?>"><span>Player UI</span></a></li>
+                   <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
                    <li>
-                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.png')?>"><span>Content Partners</span><i
+                     <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -911,7 +911,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
-                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.png')?>"><span>Pages</span><i
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -920,7 +920,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                    
                     <li>
-                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.png')?>"><span>Plans</span><i
+                     <a href="#plans" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/plan.svg')?>"><span>Plans</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="plans" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -933,7 +933,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
 
                   <li>
-                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.png')?>"><span>Payment Management</span><i
+                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/pay.svg')?>"><span>Payment Management</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -945,7 +945,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <div >
                   <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span>Analytics</span><i
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -956,7 +956,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
                   <div >
                     <li>
-                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.png')?>"><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
+                        <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/setting.svg')?>"><span>Settings</span><i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
                         <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
@@ -979,26 +979,26 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                     <p class="lnk" >Ads Management</p>
                 </div>
                 <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.png')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.png')?>"><span>Ads Categories</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.png')?>"><span>Ads List</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.png')?>"><span> Ads Plans</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.png')?>"><span> Ads Revenue</span></a></li>
+                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
                 @endif
 
                        {{-- Geo Fencing --}}
                <li><p class="lnk" >Geo Fencing</p></li>
 
-               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.png')?>"><span> Manage Geo Fencing</span></a></li>
+               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>"><span> Manage Geo Fencing</span></a></li>
 
-               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.png')?>"><span>Manage Countries</span></a></li>
+               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
                   <!-- Ads Menu ends -->
                   <?php } ?>
@@ -1185,7 +1185,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li class="line-height pt-3">
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                                 <?php if(Auth::guest()): ?>
-                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.svg' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                           <?php else: ?>
                                      <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                           <?php endif; ?>

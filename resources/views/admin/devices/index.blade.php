@@ -78,7 +78,7 @@
                                 <div class="d-flex justify-content-between" style="width:30%;">
                                <div class="dd-handle"> <label>{{ $val->devices_name }}</label> </div>
                                <div class="align-items-center list-user-action"><a href="{{ URL::to('/') }}/admin/devices/edit/{{ $val->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('/')}}/admin/devices/delete/{{ $val->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div></div>
+                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('/')}}/admin/devices/delete/{{ $val->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div></div>
                             </li>
 
                         @endforeach

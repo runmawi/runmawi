@@ -3,6 +3,18 @@
     .p1{
         font-size: 15px !important;
     }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -15,7 +27,12 @@
 
 @section('content')
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+     <div class="mb-5">
+                        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
+         <div class="container-fluid p-0">
              <div class="iq-card">
 <div id="admin-container" style="padding: 15px;">
 <!-- This is where -->
@@ -123,17 +140,24 @@
                             <option value="">Choose URL Format</option>
                             <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
                             <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
+                            <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
                         </select>
 
-                        <div class="new-video-upload mt-2" id="mp4_code">
-                            <label for="embed_code"><label>Live Stream URL</label></label>
-                            <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
-                        </div>
+                            <div class="new-video-upload mt-2" id="mp4_code">
+                                <label for="embed_code"><label>Live Stream URL</label></label>
+                                <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
+                            </div>
 
-                        <div class="new-video-upload mt-2" id="embed_code">
-                            <label for="embed_code"><label>Live Embed URL</label></label>
-                            <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
-                        </div>
+                            <div class="new-video-upload mt-2" id="embed_code">
+                                <label for="embed_code"><label>Live Embed URL</label></label>
+                                <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                            </div>
+
+                            <div class="new-video-upload mt-2" id="live_stream_video">
+                                <label for="live_stream_video"><label>Live Stream Video</label></label>
+                                <input type="file" multiple="true" class="form-group" name="live_stream_video" id="" />                        
+                            </div>
+
                     </div>
                 </div>
 
@@ -167,6 +191,8 @@
                     </div>
                 </div>
             </div>
+
+            
 
             <div class="row mt-3">
                 <div class="col-sm-6">
@@ -329,7 +355,9 @@
     </div></div>
 </div>
 	
-	
+@php
+    $liveStreamVideo_errors = $liveStreamVideo_error;
+@endphp	
 	
 	@section('javascript')
 
@@ -343,12 +371,32 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
    $ = jQuery;
    $(document).ready(function($){
     $("#duration").mask("00:00:00");
    });
+
+  
+var Stream_error = '{{ $liveStreamVideo_errors }}';
+
+$( document ).ready(function() {
+    if( Stream_error == 1){
+        Swal.fire({
+        allowOutsideClick:false,
+        icon: 'error',
+        title: 'Oops...',
+        text: 'While Converting the Live Stream video, Something went wrong!',
+        }).then(function (result) {
+        if (result.value) {
+            location.href = "{{ URL::to('admin/livestream/edit') . '/' . $video->id }}";
+        }
+        })
+    }
+});
+
 
 $(document).ready(function(){
 
@@ -397,15 +445,30 @@ $(document).ready(function(){
 
 //  End validate
 
+            $('#mp4_code').hide();
+            $('#embed_code').hide();
+            $('#live_stream_video').hide();	
+ 
 
-	if($("#url_type").val() == 'mp4'){
-	$('#mp4_code').show();
-	$('#embed_code').hide();	
+    $("#url_type").change(function(){
 
-	}else if($("#url_type").val() == 'embed'){
-		$('#embed_code').show();	
-		$('#mp4_code').hide();
-	}
+        if($("#url_type").val() == 'mp4'){
+            $('#mp4_code').show();
+            $('#embed_code').hide();
+            $('#live_stream_video').hide();	
+
+        }else if($("#url_type").val() == 'embed'){
+            $('#embed_code').show();	
+            $('#mp4_code').hide();
+            $('#live_stream_video').hide();	
+
+        }else if($("#url_type").val() == 'live_stream_video'){
+            $('#embed_code').hide();	
+            $('#mp4_code').hide();
+            $('#live_stream_video').show();	
+        }
+    });
+
 
 	$('.js-example-basic-multiple').select2();
 
@@ -425,7 +488,6 @@ $(document).ready(function(){
 		$('#publishlater').show();		
 	}
 });
-
 
 
 	$(document).ready(function(){

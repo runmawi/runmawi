@@ -213,7 +213,7 @@ a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important
 Background Color Opacity
 ------------------------------------------------*/
 .iq-bg-primary { background: var(--iq-light-primary) !important; color: var(--iq-primary) !important; }
-.iq-bg-secondary { background: var(--iq-light-secondary) !important; color: var(--iq-secondary) !important; }
+.iq-bg-secondary { background: /*var(--iq-light-secondary) !important*/#fff; color: var(--iq-secondary) !important; }
 .iq-bg-success { background: var(--iq-white) !important; color: var(--iq-bk) !important; font-weight: bolder;}
 .iq-bg-danger { background: var(--iq-white) !important; color: var(--iq-bk) !important;font-weight: bolder;}
 .iq-bg-warning { background: var(--iq-white) !important; color: var(--iq-bk) !important; font-weight: bolder;}

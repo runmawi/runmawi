@@ -202,10 +202,23 @@ color: #d9d5d5 !important; }
 .f-link:hover { color: var(--iqprimary); }
 .card-title {font-size:20px;font-weight: 500;}
 .card-title.upload-ui {padding: 30px; background: #f9f9f9;font-size: 1.25rem;border-top-left-radius: 10px;border-top-right-radius: 10px;}
-.dropzone .dz-message .dz-button {font-size: 1.25rem; color: #000;font-family: 'Roboto';}
+.dropzone .dz-message .dz-button {/*font-size: 1.25rem;*/ color: #000;font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 30px;
+}
 .dropzone .dz-message .dz-button i{font-size: 60px;display: block;}
 .dropzone .dz-message .dz-button span.upload-span {color: #4895d1; cursor: pointer;}
+.c1{
+    font-family: 'Lato',sans-serif;
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
 
+color: #4295D2;
+}
 /*---------------------------------------------------------------------
 Dash Hover
 -----------------------------------------------------------------------*/
@@ -248,7 +261,7 @@ Waves Effect
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 19px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 24px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
 .iq-sidebar-menu .iq-menu li li a { font-size: 16px;height: 40px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 .iq-sidebar-menu .iq-menu li ul li a:hover{
@@ -694,7 +707,7 @@ FAQ
 /*---------------------------------------------------------------------
 Table
 -----------------------------------------------------------------------*/
-table tr th img { width: 35px; height: 35px; border-radius: 90px; }
+table tr th img { /*width: 35px; height: 35px; border-radius: 90px;*/ padding-right: 10px; }
 .progress-animate { animation: progress-bar-stripes 1s linear infinite; }
 img.summary-image-top { width: 35px; }
 .iq-subject-info img { width: 80px; }
@@ -1224,10 +1237,13 @@ select{
     font-size: 16px;
     font-weight: 500;
 }
-
+.iq-user-box p{
+    font-weight: 500;
+    color: #000;
+}
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background: rgb(255 255 255 / 20%);
-    text-align: left;
+   
     font-size: 16px;
     font-weight: 500;
     color: #000;
@@ -1262,7 +1278,10 @@ select{
     position: absolute;
     height: 5px;
 }
-
+.video_active{
+    padding: 10px 10px;
+    border-radius: 4px;
+}
 .dropzone .dz-preview .dz-progress .dz-upload {
     background: #333;
     background: #0993d2;
@@ -1271,7 +1290,7 @@ select{
     margin-top: 13px;
 }
 label{
-    font-weight: 400;
+    font-weight: 500;
 font-size: 18px;
 line-height: 30px;
 font-family: 'Inter';
@@ -1280,7 +1299,7 @@ color: #161616;
     height: 30px;
 }
 .p1{
-font-size: 14px;
+font-size: 12px;
 font-family: 'Lato', sans-serif;font-style: normal;
 font-weight: 400;
 height: 25px;

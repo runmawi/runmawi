@@ -52,9 +52,11 @@
 						</div>
 						<div class="flex">
 							<div>
-								<label>Allow Embed player on specfic domians <br><span class="span1">
-									(Note: Saving without a domain name will restrict <br>your embed player for all the domains.)
-								</span></label>
+								<label class="mb-0">Allow Embed player on specfic domians 
+									</label>
+                                <p class="p1 " style="line-height:16px!important;">
+                                (Note: Saving without a domain name will restrict <br>your embed player for all the domains.)
+								</p>
 							</div>
 							<div>
 								<label class="switch">
@@ -98,7 +100,8 @@
 					 <div class="col-md-6 Section2" style="margin-top: -4%;">
 						<div class="flex">
 							<div>
-								<label>Skip intro <br><span class="span1">(Allows end users to skip some <br>portion of thr video opening credits)</span></label>
+								<label class="mb-0">Skip intro</label>
+                                <p class="p1 col-md-8 p-0" style="line-height:16px!important;">(Allows end users to skip some portion of thr video opening credits)</p>
 							</div>
 							<div>
 								<label class="switch">
