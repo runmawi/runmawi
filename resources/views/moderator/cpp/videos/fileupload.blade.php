@@ -1118,6 +1118,13 @@ $ = jQuery;
 $(document).ready(function($){
     
     $('#duration').mask("00:00:00");
+     $('#intro_start_time').mask("00:00:00");
+      $('#intro_end_time').mask("00:00:00");
+      $('#recap_start_time').mask("00:00:00");
+      $('#recap_end_time').mask("00:00:00");
+      $('#skip_intro').mask("00:00:00");
+      $('#skip_recap').mask("00:00:00");
+      $('#url_linktym').mask("00:00:00");
 
 });
 

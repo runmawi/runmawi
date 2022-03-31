@@ -122,11 +122,12 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-				<select class="form-control" id="url_type" name="url_type">
-				<option value="" >Choose URL Format</option>
-				<option value="mp4" >MP4 URL</option>
-				<option value="embed" >Embed URL</option>
-			</select>
+					<select class="form-control" id="url_type" name="url_type">
+						<option value="" >Choose URL Format</option>
+						<option value="mp4" >MP4 URL</option>
+						<option value="embed" >Embed URL</option>
+						<option value="live_stream_video">Live Stream Video</option>
+					</select>
 					
                     <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
@@ -136,6 +137,11 @@
 					<div class="new-video-upload mt-2" id="embed_code">
 						<label for="embed_code"><label>Live Embed URL</label></label>
 						<input type="text" name="embed_url"  class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif">
+					</div>
+
+					<div class="new-video-upload mt-2" id="live_stream_video">
+						<label for=""><label>Live Stream Video</label></label>
+						<input type="file" multiple="true" class="form-group" name="live_stream_video"  />
 					</div>
 
 					@if(!empty($video->mp4_url) )
@@ -374,8 +380,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
 	<!-- {{-- validate --}} -->
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	{{-- Sweet alert --}}
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 	$('form[id="cpp_live_video"]').validate({				
@@ -386,7 +394,7 @@
 		  details: 'required',
 		  year: 'required',
 		  description : 'required',
-		  'video_category_id[]' :'required',
+		//   'video_category_id[]' :'required',
 		  'language[]' :'required',
 	
 			mp4_url: {
@@ -424,24 +432,59 @@
 	</script>
 <!-- {{-- End validate --}} -->
 
+{{-- Sweet alert --}}
+
+@php
+    $liveStreamVideo_errors = $liveStreamVideo_error;
+@endphp
+
+<script type="text/javascript">
+
+    let Stream_error = '{{ $liveStreamVideo_errors }}';
+
+    $( document ).ready(function() {
+        if( Stream_error == 1){
+            Swal.fire({
+            allowOutsideClick:false,
+            icon: 'error',
+            title: 'Oops...',
+            text: 'While Converting the Live Stream video, Something went wrong!',
+            }).then(function (result) {
+            if (result.value) {
+                location.href = '{{ URL::to('cpp/livestream/create') }}';
+            }
+            })
+        }
+    });
+</script>
+
+{{-- Sweet alert --}}
+
 
 	<script type="text/javascript">
 
 $(document).ready(function(){
 	$('#mp4_code').hide();
 	$('#embed_code').hide();		
+	$("#live_stream_video").hide();
 
 	$('#url_type').change(function(){
-	if($("#url_type").val() == 'mp4'){
-	$('#mp4_code').show();
-	$('#embed_code').hide();	
+		if($("#url_type").val() == 'mp4'){
+			$('#mp4_code').show();
+			$('#embed_code').hide();	
+			$("#live_stream_video").hide();
 
-	}else if($("#url_type").val() == 'embed'){
-		$('#embed_code').show();	
-	$('#mp4_code').hide();
-
-	}
-});
+		}else if($("#url_type").val() == 'embed'){
+			$('#embed_code').show();	
+			$('#mp4_code').hide();
+			$("#live_stream_video").hide();
+		}
+		else if ($("#url_type").val() == "live_stream_video") {
+			$("#embed_code").hide();
+			$("#mp4_code").hide();
+			$("#live_stream_video").show();
+		}
+	});
 });
 $(document).ready(function(){
 	$('.js-example-basic-multiple').select2();
