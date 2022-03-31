@@ -26,7 +26,7 @@ $settings  = App\Setting::first();?>
 <div id="content-page" class="content-page">
     <div class="d-flex">
     <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-        <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
     <div class="container-fluid p-0">
 <!-- This is where -->
 	<div class="iq-card" style="padding:20px;">

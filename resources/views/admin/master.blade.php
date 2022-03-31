@@ -733,6 +733,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
+                        <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
+                        <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>
@@ -952,6 +954,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
+                        <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
+                        <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
                      </ul>
