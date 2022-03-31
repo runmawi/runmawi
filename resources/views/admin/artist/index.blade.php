@@ -36,7 +36,7 @@ border-radius: 0px 4px 4px 0px;
 <div class="admin-section-title" style="margin-left: 340px;
     padding-top: 100px;">
     <div class="d-flex">
-    <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/artists') }}">All Artists</a>
+    <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists') }}">All Artists</a>
     <a class="black" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
       <div class=" container-fluid p-0">
           <div class="iq-card">
