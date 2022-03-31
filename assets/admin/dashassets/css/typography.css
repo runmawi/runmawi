@@ -160,6 +160,19 @@ font-weight: 400;
 line-height: 19px;
 
 color: #646464!important;}
+.black{
+    color: #C6C6C6!important;
+    font-weight: 500;
+    font-family: 'Inter';
+font-style: normal;
+
+font-size: 18px;
+line-height: 28px;
+
+background: #FFF!important;
+border-radius: 4px 4px 4px 0px;
+}
+
 .form-control:focus { color: var(--iq-dark1); border-color: transparent; box-shadow: none;background-color:#F2F5FA;}
 .progress-bar { background-color: var(--iq-primary); }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle { background-color: var(--iq-primary-hover); border-color: var(--iq-primary-hover); }
