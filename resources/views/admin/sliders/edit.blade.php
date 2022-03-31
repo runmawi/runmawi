@@ -19,32 +19,48 @@
 
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/sliders/update') }}" method="post" enctype="multipart/form-data">
-       
+       <div class="col-md-12">
+       		<div class="row">
+      			<div class="col-md-6">
+
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label>Image:</label>
-                        @if(!empty($categories[0]->slider))
+                        <!-- @if(!empty($categories[0]->slider))
                         <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->slider }}" class="movie-img" width="200"/>
-                        @endif
+                        @endif -->
                         <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />                        
 
                     </div>
-        
+                </div>
+				<div class="col-md-6">
+				<!-- <label>Image:</label> -->
+                        @if(!empty($categories[0]->slider))
+                        <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->slider }}" class="movie-img" width="200"/>
+                        @endif
+               	 </div>
+			</div>
+
                        <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Target Link:</label>
                         <input type="text" multiple="true" class="form-control" name="link" id="link" value="<?php if( isset($categories[0]->link)) { echo $categories[0]->link;} ?>" />
 
                     </div>
+
+			<div class="row	">
+
+
 					<div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Trailer Link:</label>
                         <input type="text" multiple="true" class="form-control" name="trailer_link" id="trailer_link" value="<?php if( isset($categories[0]->trailer_link)) { echo $categories[0]->trailer_link;} ?>" />
                     </div>
+				
 
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Title:</label>
                         <input type="text" multiple="true" class="form-control" name="title" id="title" value="<?php if( isset($categories[0]->title)) { echo $categories[0]->title;} ?>" />
                     </div>
-        
+					</div>
                     <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
                         <label>Status:</label>
                         <input type="radio" id="in_home" name="active" value="1" <?php if( $categories[0]->active == 1) { echo "checked";} ?>>Yes
@@ -56,7 +72,7 @@
         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
         
-        
+    </div>
         <div class="modal-footer form-group">
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/sliders') }}">Close</a>

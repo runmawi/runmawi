@@ -26,8 +26,8 @@ Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
 ////// CPP revenue
 
-Route::post('admin/cpp/analytics', 'AdminUsersController@Analytics');
-Route::post('admin/cpp/revenue', 'AdminUsersController@Revenue');
+Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
+Route::get('admin/cpp/revenue', 'ModeratorsUserController@Revenue');
 
 
 
