@@ -9,9 +9,7 @@
     .iq-card{
         padding: 15px;
     }
-    .p1{
-        font-size: 12px;
-    }
+    
    .black{
         color: #000;
         background: #f2f5fa;
@@ -77,7 +75,7 @@ border-radius: 0px 4px 4px 0px;
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 					<div class="panel-title"><label>Site Name</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
-						<p class="p1">Enter Your Website Name Below:</p> 
+						<label>Enter Your Website Name Below:</label> 
 						<input type="text" class="form-control" name="website_name" id="website_name" placeholder="Site Title" value="@if(!empty($settings->website_name)){{ $settings->website_name }}@endif" />
 					</div> 
 				</div>
@@ -85,9 +83,9 @@ border-radius: 0px 4px 4px 0px;
 
 			<div class="col-md-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Site Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+					<div class="panel-title"><h5>Site Description</h5></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 					<div class="panel-body" style="display: block;"> 
-						<p class="p1">Enter Your Website Description Below:</p> 
+						<label>Enter Your Website Description Below:</p> 
 						<input type="text" class="form-control" name="website_description" id="website_description" placeholder="Site Description" value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
 					</div> 
 				</div>

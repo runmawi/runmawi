@@ -81,14 +81,14 @@ border-radius: 0px 4px 4px 0px;
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
 <div id="content-page" class="content-page">
-    <div class="mt-5 mb-5">
+    <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
 <div id="content-page" class="">
-<div class="container-fluid">
+<div class="container-fluid p-0">
 <div class="row">
 <div class="col-sm-12">
 <div class="iq-card">
@@ -120,13 +120,13 @@ border-radius: 0px 4px 4px 0px;
                <!-- progressbar -->
                <ul id="progressbar">
                   @if($video->status == 1)
-                  <li class="active" id="videot">Video</li>
+                  <li class="active" id="videot"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video</li>
                   @endif
-                  <li class="" id="account">Video Details</li>
-                  <li id="personal">Category</li>
-                  <li id="useraccess_ppvprice">User Video Access</li>
-                  <li id="payment">Upload Image &amp; Trailer</li>
-                  <li id="confirm">Ads Management &amp; Transcoding</li>
+                  <li class="" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                  <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                  <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
+                  <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                  <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management &amp; Transcoding</li>
                </ul>
                <div class="progress">
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -825,8 +825,13 @@ border-radius: 0px 4px 4px 0px;
    background: lightgray;
    border-radius: 50%;
    margin: 0 auto 10px auto;
-   padding: 2px
+   padding: 2px;
+       display: none;
+       
    }
+    #progressbar li img{
+        width: 125px;
+    }
    #progressbar li:after {
    content: '';
    width: 100%;

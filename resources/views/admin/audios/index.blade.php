@@ -1,7 +1,7 @@
 @extends('admin.master')
 <style>
      .form-control {
-    background: #fff!important; */
+   /* background: #fff!important; */
    
 }
      .black{
@@ -24,7 +24,7 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 
      <div id="content-page" class="content-page">
-         <div class="mb-5">
+         <div class="d-flex">
          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
@@ -32,7 +32,7 @@ border-radius: 0px 4px 4px 0px;
          <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="">
+                  <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between mb-3">
                         <div class="iq-header-title">
                            <h4 class="card-title">Audio Lists</h4>
@@ -73,7 +73,7 @@ border-radius: 0px 4px 4px 0px;
                                     <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
                                   
                                     <td>
-                                        {{ $audio->views }}</i>
+                                        {{ $audio->views }}
                                     </td>
                                     <td>
                                        <div class=" align-items-center list-user-action">

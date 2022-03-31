@@ -24,7 +24,7 @@ $settings  = App\Setting::first();?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 <div id="content-page" class="content-page">
-    <div class="mb-5">
+    <div class="d-flex">
     <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
         <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
     <div class="container-fluid p-0">

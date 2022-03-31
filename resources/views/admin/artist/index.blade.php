@@ -10,7 +10,7 @@
         padding: 15px;
     }
      .form-control {
-    background: #fff!important; */
+   /* background: #fff!important; */
    
 }
     .black{
@@ -35,10 +35,11 @@ border-radius: 0px 4px 4px 0px;
 
 <div class="admin-section-title" style="margin-left: 340px;
     padding-top: 100px;">
-    <div class="mb-5">
+    <div class="d-flex">
     <a class="black" href="{{ URL::to('admin/artists') }}">All Artists</a>
     <a class="black" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
       <div class=" container-fluid p-0">
+          <div class="iq-card">
 	<div class="row mt-3">
 		<div class="col-md-6">
             
@@ -89,7 +90,7 @@ border-radius: 0px 4px 4px 0px;
 		@endforeach
 	</table>
 </div>
-	<div class="clear"></div>
+	<div class="clear"></div></div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 	<div class="pagination-outter"><?= $artists->appends(Request::only('s'))->render(); ?></div>
