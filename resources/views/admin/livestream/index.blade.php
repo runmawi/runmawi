@@ -15,7 +15,7 @@
     margin: 4px;
 }
      .form-control {
-    background: #fff!important; */
+/*background: #fff!important; */
    
 }
     .black{
@@ -46,14 +46,14 @@ border-radius: 0px 4px 4px 0px;
 ?>
 <div id="content-page" class="content-page">
    
-                    <div class="mb-5">
+                    <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
          <div class="container-fluid p-0">
 	<div class="admin-section-title">
-         <div class="">
+         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
                 <h4><i class="entypo-video"></i> Live Videos</h4>

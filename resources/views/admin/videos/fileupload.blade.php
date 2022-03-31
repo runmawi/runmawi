@@ -21,7 +21,7 @@
    #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id=" content_videopage" class="content-page">
-    <div class="mt-5 mb-5">
+    <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
@@ -31,9 +31,7 @@
       <div class="admin-section-title">
          <div class="iq-card">
             <div class="row">
-               <div class="col-md-4">
-                  <h4><i class="entypo-archive"></i> Add Video </h4>
-               </div>
+               
                @if (Session::has('message'))
                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                @endif
@@ -295,12 +293,7 @@ border-radius: 0px 4px 4px 0px;
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
    <script src="https://malsup.github.io/jquery.form.js"></script>
    <div id="content-page" class="content-page1" style="padding:0px!important;">
-       <div class="mt-5 mb-5">
-                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
-                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+      
       <div class="container-fluid">
           
            <div class="iq-card " style="padding:40px;">
