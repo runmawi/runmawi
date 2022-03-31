@@ -275,6 +275,44 @@
                                 </div>
 
                             </div>
+
+                        <div class="row mt-3">    
+                            <div class="col-sm-6">
+                                <label class="m-0">E-Paper: <small>(Upload your PDF file)</small> </label>
+                                <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" >
+                               @if(!empty($video->pdf_files))
+                                    <span class='pdf_file' >
+                                        <a href="{{ URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files }}" style="font-size:48px;" class="fa fa-file-pdf-o" width="" height="" download></a>
+                                        {{'Download file'}}
+                                    </span>
+                               @endif
+                           </div>
+                           
+                           <div class="col-sm-6">
+                               <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
+                               <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" >
+                               @if(!empty($video->reelvideo) && $video->reelvideo != null )
+                                    <video width="200" height="200" controls>
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $video->reelvideo }}" type="video/mp4">
+                               </video>
+                               @endif
+                           </div>
+                        </div>   
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label class="m-0">URL Link <small>( Please Enter Link with https )</small></label>
+                                <input type="text" class="form-control" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" />
+                            </div>
+                        
+                            <div class="col-sm-6 form-group">
+                                <label class="m-0">URL Start Time <small>( HH:MM:SS )</small></label>
+                                <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" />
+                            </div>
+                        </div>
+
+
+
                             <div class="row mt-3">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
@@ -301,6 +339,9 @@
                                     </div> 
                                 </div>
                             </div>
+
+
+                            
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">

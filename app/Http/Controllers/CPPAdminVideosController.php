@@ -279,6 +279,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
          $video->path = $path;
          $video->mp4_url = $storepath;
          $video->type = 'mp4_url';
+         $video->image = 'default_image.jpg';
          $video->draft = 0;
          $video->save(); 
         
@@ -319,37 +320,38 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
     public function CPPcreate()
     {
         $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        //  if (!Auth::user()->role == 'admin')
-        //     {
-        //         return redirect('/home');
-        //     }
-            $settings = Setting::first();
-        $data = array(
-            'headline' => '<i class="fa fa-plus-circle"></i> New Video',
-            'post_route' => URL::to('cpp/videos/fileupdate'),
-            'button_text' => 'Add New Video',
-            // 'admin_user' => Auth::user(),
-            'video_categories' => VideoCategory::all(),
-            'video_subtitle' => VideosSubtitle::all(),
-            'languages' => Language::all(),
-            'subtitles' => Subtitle::all(),
-            'artists' => Artist::all(),
-            'age_categories' => AgeCategory::all(),
-            'settings' => $settings,
-            'countries' => CountryCode::all(),
-            'video_artist' => [],
-            'ads' => Advertisement::where('status','=',1)->get(),
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+                //  if (!Auth::user()->role == 'admin')
+                //     {
+                //         return redirect('/home');
+                //     }
+                $settings = Setting::first();
+                $data = array(
+                    'headline' => '<i class="fa fa-plus-circle"></i> New Video',
+                    'post_route' => URL::to('cpp/videos/fileupdate'),
+                    'button_text' => 'Add New Video',
+                    // 'admin_user' => Auth::user(),
+                    'video_categories' => VideoCategory::all(),
+                    'video_subtitle' => VideosSubtitle::all(),
+                    'languages' => Language::all(),
+                    'subtitles' => Subtitle::all(),
+                    'artists' => Artist::all(),
+                    'age_categories' => AgeCategory::all(),
+                    'settings' => $settings,
+                    'countries' => CountryCode::all(),
+                    'video_artist' => [],
+                    'ads' => Advertisement::where('status','=',1)->get(),
+        
+                    );
 
-            );
-        return View::make('moderator.cpp.videos.fileupload', $data);
-                    // 'post_route' => URL::to('admin/videos/store'),
-
-                }else{
-                    return Redirect::to('/blocked');
-                  }
-        // return View::make('moderator.cpp.videos.create_edit', $data);
+                return View::make('moderator.cpp.videos.fileupload', $data);
+                            // 'post_route' => URL::to('admin/videos/store'),
+        
+        }else{
+                return Redirect::to('/blocked');
+        }
+            // return View::make('moderator.cpp.videos.create_edit', $data);
     }
 
      /**
@@ -673,40 +675,43 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
     
     public function CPPedit($id)
     {
+
         // if (!Auth::user()->role == 'admin')
         // {
         //     return redirect('/home');
         // }
-        $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $settings = Setting::first();
-        
-       $video = Video::find($id);
-        $data = array(
-            'headline' => '<i class="fa fa-edit"></i> Edit Video',
-            'video' => $video,
-            'post_route' => URL::to('/cpp/videos/update'),
-            'button_text' => 'Update Video',
-            // 'admin_user' => Auth::user(),
-            'video_categories' => VideoCategory::all(),
-            'video_subtitle' => VideosSubtitle::all(),
-            'ads' => Advertisement::where('status','=',1)->get(),
-            'subtitles' => Subtitle::all(),
-            'languages' => Language::all(),
-            'artists' => Artist::all(),
-            'settings' => $settings,
-            'countries' => CountryCode::all(),
-            'age_categories' => AgeCategory::all(),
-            'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
-            'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
-            'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
-            );
 
-        return View::make('moderator.cpp.videos.create_edit', $data); 
-    }else{
-        return Redirect::to('/blocked');
-      }
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+            $settings = Setting::first();
+            
+            $video = Video::find($id);
+            $data = array(
+                'headline' => '<i class="fa fa-edit"></i> Edit Video',
+                'video' => $video,
+                'post_route' => URL::to('/cpp/videos/update'),
+                'button_text' => 'Update Video',
+                // 'admin_user' => Auth::user(),
+                'video_categories' => VideoCategory::all(),
+                'video_subtitle' => VideosSubtitle::all(),
+                'ads' => Advertisement::where('status','=',1)->get(),
+                'subtitles' => Subtitle::all(),
+                'languages' => Language::all(),
+                'artists' => Artist::all(),
+                'settings' => $settings,
+                'countries' => CountryCode::all(),
+                'age_categories' => AgeCategory::all(),
+                'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
+                'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
+                'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
+                );
+
+            return View::make('moderator.cpp.videos.create_edit', $data); 
+        }else{
+            return Redirect::to('/blocked');
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -716,15 +721,16 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
      */
     public function CPPupdate(Request $request)
     {
+
         $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
    
-        $data = $request->all();
+            $data = $request->all();
         
-        $validatedData = $request->validate([
-            'title' => 'required|max:255'
-        ]);
+            $validatedData = $request->validate([
+                'title' => 'required|max:255'
+            ]);
        
             $id = $data['id'];
             
@@ -738,7 +744,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
            $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
 
-        $path = public_path().'/uploads/videos/';
+            $path = public_path().'/uploads/videos/';
 
            if(!empty($trailer)) {   
             //code for remove old file
@@ -758,7 +764,6 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             } else {
                 $data['trailer'] = $video->trailer;
             }  
-    //    dd($trailer);
         
            $update_mp4 = $request->get('video');
             if(empty($data['active'])){
@@ -986,6 +991,44 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 $video->mp4_url =  $data['mp4_url'];
 
             }
+
+        // E-Paper 
+            if($request->pdf_file != null){
+                $pdf_files = time().'.'.$request->pdf_file->extension();  
+                $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+                $video->pdf_files =  $pdf_files;
+            }
+        // Reels videos
+            $reels_videos= $request->reels_videos;
+                
+            if($reels_videos != null){
+                $reelvideo_name = time().'.'.$request->reels_videos->extension();  
+                $reelvideo_names = 'reels'.$reelvideo_name;
+                $reelvideo = $request->reels_videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+                $video->reelvideo =  $reelvideo_names;
+            }
+        //URL Link
+              $url_link = $request->url_link;
+    
+              if($url_link != null){
+                  $video->url_link =  $url_link;
+              }
+    
+              $url_linktym = $request->url_linktym;
+    
+              if($url_linktym != null){
+                  $StartParse = date_parse($request->url_linktym);
+                  $startSec = $StartParse['hour'] * 60 *60 + $StartParse['minute'] * 60 + $StartParse['second'];
+                  $video->url_linktym =  $url_linktym;
+                  $video->url_linksec =  $startSec ;
+                  $video->urlEnd_linksec =  $startSec + 60 ;
+              }
+
             $user = Session::get('user'); 
             $user_id = $user->id;
             $video->user_id =  $user_id;
@@ -1382,6 +1425,46 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->age_restrict =  $data['age_restrict'];
                    }
 
+
+    // E -Paper File
+                if($request->pdf_file != null){
+                    $pdf_files = time().'.'.$request->pdf_file->extension();  
+                    $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+                    $video->pdf_files =  $pdf_files;
+                }
+
+    //Reels videos
+            $reels_videos= $request->reels_videos;
+            
+            if($reels_videos != null){
+                $reelvideo_name = time().'.'.$request->file('reels_videos')->extension();  
+                $reelvideo_names = 'reels'.$reelvideo_name;
+                $reelvideo =$request->file('reels_videos')->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+                $video->reelvideo =  $reelvideo_names;
+            }
+
+    //URL Link
+            $url_link = $request->url_link;
+
+            if($url_link != null){
+                $video->url_link =  $url_link;
+            }
+
+            $url_linktym = $request->url_linktym;
+
+            if($url_linktym != null){
+                $StartParse = date_parse($request->url_linktym);
+                $startSec = $StartParse['hour'] * 60 *60 + $StartParse['minute'] * 60 + $StartParse['second'];
+                $video->url_linktym =  $url_linktym;
+                $video->url_linksec =  $startSec ;
+                $video->urlEnd_linksec =  $startSec + 60 ;
+            }
+
                    $user = Session::get('user'); 
                    $user_id = $user->id;
                      $shortcodes = $request['short_code'];        
@@ -1507,6 +1590,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->title = $data['mp4_url'];
             $video->mp4_url = $data['mp4_url'];
             $video->type = 'mp4_url';
+            $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = Auth::user()->id;
@@ -1542,6 +1626,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->title = $data['m3u8_url'];
             $video->m3u8_url = $data['m3u8_url'];
             $video->type = 'm3u8_url';
+            $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = Auth::user()->id;
@@ -1581,6 +1666,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->title = $data['embed'];
             $video->embed_code = $data['embed'];
             $video->type = 'embed';
+            $video->image = 'default_image.jpg';
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = Auth::user()->id;

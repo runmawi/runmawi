@@ -775,6 +775,7 @@ if(!empty($artistsdata)){
     
     public function edit($id)
     {
+
         if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -823,7 +824,6 @@ if(!empty($artistsdata)){
         }
         
         $data = $request->all();
-        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'video_country' => 'required'        
@@ -881,7 +881,6 @@ if(!empty($artistsdata)){
             } else {
                 $data['trailer'] = $video->trailer;
             }  
-    //    dd($trailer);
         
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
