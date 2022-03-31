@@ -485,10 +485,12 @@ border-radius: 0px 4px 4px 0px;
                                     @endforeach
                                  </select>
                               </div>
+                              
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">E-Paper: <small>(Upload your PDF file)</small></label>
                                  <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
                               </div>
+
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
                                  <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
