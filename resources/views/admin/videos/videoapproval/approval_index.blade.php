@@ -24,7 +24,7 @@ border-radius: 0px 4px 4px 0px;
          <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
          <div class="container-fluid p-0">

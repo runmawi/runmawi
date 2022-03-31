@@ -22,7 +22,7 @@ border-radius: 0px 4px 4px 0px;
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                        <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
     <div class="container-fluid p-0">
        <div class="row">
@@ -220,14 +220,13 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('live') .'/'.$video->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('live') .'/'.$video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
       
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
       
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>

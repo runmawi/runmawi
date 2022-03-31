@@ -24,7 +24,7 @@ border-radius: 0px 4px 4px 0px;
           <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
-                        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
+                        <a class="black" style="background:#fff!important;" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
          <div class="container-fluid p-0">
             <div class="row">
