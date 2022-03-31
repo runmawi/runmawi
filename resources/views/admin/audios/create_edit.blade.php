@@ -36,7 +36,7 @@ border-radius: 0px 4px 4px 0px;
     #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id="content-page" class="content-page">
-    <div class="mb-5">
+    <div class="d-flex">
          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
