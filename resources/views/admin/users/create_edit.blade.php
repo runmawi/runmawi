@@ -3,6 +3,9 @@
     .p1{
         font-size: 12px!important;
     }
+    .form-contro{
+        margin-bottom: 25px!important;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.css' }}"/>
@@ -58,15 +61,15 @@
 				@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'profile.png'; ?>@endif
 				<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 				<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
-				<input type="file" multiple="true" class="form-control mt-2" name="avatar" id="avatar" />
+				<input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" />
 			</div>
 
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<!--<div class="panel-title">Username</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('username')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('username'); ?></div><?php endif; ?>
-                    <label>User's Username</label>
-					<input type="text" class="form-control" name="username" id="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
+                    <label class="mb-1"> Username</label>
+					<input type="text" class="form-control mb-3" name="username" id="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
 				</div>
 			</div>
 
@@ -74,49 +77,49 @@
 				<!--<div class="panel-title">Email</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
-					<label>User's Email Address</label>
-					<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
+					<label class="mb-1">User Email Address</label>
+					<input type="text" class="form-control mb-3" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 				</div>
 			</div>
              </div>
-             <div class="col-md-6">
-                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+             <div class="col-md-6 mt-2">
+                 <div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<!--<div class="panel-title">Mobile</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                       
 					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
-					<label>User's Mobile</label>
+					<label class="mb-1">User's Mobile</label>
                     <div class="row">
                        <div class="col-sm-4">
-                        <select name="ccode" class="form-control" >
+                        <select name="ccode" class="form-control mb-3" >
                             @foreach($jsondata as $code)
                             <option value="{{ $code['dial_code'] }}" <?php if(isset($user) && $code['dial_code'] == $user->ccode ) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                             @endforeach
                           </select>
                         </div>
                       <div class="col-sm-8">
-					       <input type="text" class="form-control" name="mobile" id="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
+					       <input type="text" class="form-control mb-3" name="mobile" id="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
                     </div></div>
 				</div>
 			</div>
 
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Password</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title"><label class="mb-1">Password</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;">
 					@if(isset($user->password))
 						<p class="p1">(leave empty to keep your original password)</p>
 					@else
 						<p class="p1">Enter users password:</p>
 					@endif
-					<input type="password" class="form-control" name="passwords" id="password" value="" />
+					<input type="password" class="form-control mb-3" name="passwords" id="password" value="" />
 				</div>
 			</div>
-                 <div class="col-sm-6"> 
+                 <div class="col-sm-12 mt-2 p-0"> 
 					<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title"><label>User Role</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-title"><label class="mb-1">User Role</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
 						<p class="p1">Select the user's role below</p>
-							<select class="form-control"  id="role" name="role">
+							<select class="form-control mb-3"  id="role" name="role">
 								<option value="admin" @if(isset($user->role) && $user->role == 'admin' && $user->sub_admin == 0)selected="selected"@endif>Admin</option>
 								<option value="registered" @if(isset($user->role) && $user->role == 'registered')selected="selected"@endif>Registered Users (free registration must be enabled)</option>
 								<option value="subscriber" @if(isset($user->role) && $user->role == 'subscriber')selected="selected"@endif>Subscriber</option>
@@ -124,12 +127,12 @@
 							</select>
 						</div>
 					</div>
-				</div>
-                 <div class="col-sm-6"> 
+                 </div></div>
+                 <div class="col-sm-12 mt-2"> 
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<!--<div class="panel-title">User Active Status</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<label>User Active Status </label>
+							<label class="mb-1">User Active Status </label>
 							<input type="checkbox" id="active" name="active" @if(isset($user->active) && $user->active == 1)checked="checked" value="1" @else value="0" @endif />
 						</div>
 					</div>

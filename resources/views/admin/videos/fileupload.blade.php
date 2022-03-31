@@ -21,13 +21,17 @@
    #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id=" content_videopage" class="content-page">
-   <div class="container-fluid" id="content_videopage">
+    <div class="mt-5 d-flex">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+   <div class="container-fluid p-0" id="content_videopage">
       <div class="admin-section-title">
          <div class="iq-card">
             <div class="row">
-               <div class="col-md-4">
-                  <h4><i class="entypo-archive"></i> Add Video </h4>
-               </div>
+               
                @if (Session::has('message'))
                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                @endif
@@ -268,6 +272,18 @@
       #video{
       background-color: #f7f7f7!important;
       }
+       .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
    </style>
    @section('css')
    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -277,6 +293,7 @@
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
    <script src="https://malsup.github.io/jquery.form.js"></script>
    <div id="content-page" class="content-page1" style="padding:0px!important;">
+      
       <div class="container-fluid">
           
            <div class="iq-card " style="padding:40px;">
@@ -288,12 +305,12 @@
                   <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                      <!-- progressbar -->
                      <ul id="progressbar">
-                        <li class="active" id="account">Video Details</li>
-                        <li id="personal">Category</li>
-                        <li id="useraccess_ppvprice">User Video Access</li>
+                        <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                        <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                        <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
                         <!-- <li id="payment"><strong>Upload Image & Trailer</strong></li> -->
-                        <li id="payment">Upload Image &amp; Trailer</li>
-                        <li id="confirm">Ads Management</li>
+                        <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                        <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management</li>
                      </ul>
                      <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -468,10 +485,12 @@
                                     @endforeach
                                  </select>
                               </div>
+                              
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">E-Paper: <small>(Upload your PDF file)</small></label>
                                  <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
                               </div>
+
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
                                  <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
@@ -885,7 +904,8 @@
     background: lightgray;
     border-radius: 50%;
     margin: 0 auto 10px auto;
-    padding: 2px
+    padding: 2px;
+        display:none;
 }
 
 #progressbar li:after {

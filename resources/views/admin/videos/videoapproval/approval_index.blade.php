@@ -1,5 +1,18 @@
 @extends('admin.master')
+<style>
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
 
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
@@ -8,14 +21,18 @@
 @section('content')
 
      <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="mt-5 d-flex">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+         <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="">
+                  <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Video Lists</h4>
-                        </div>
+                       
                         
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">

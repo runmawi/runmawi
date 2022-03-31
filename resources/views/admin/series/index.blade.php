@@ -13,9 +13,21 @@
         margin: 4px;
     }
      .form-control {
-    background: #fff!important; */
+   /* background: #fff!important; */
    
 }
+     .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 
 @section('css')
@@ -26,7 +38,10 @@
 
 	<div class="admin-section-title"  style="margin-left: 330px;
     padding-top: 100px;">
-         <div class="">
+        <div class="d-flex">
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series-list') }}"> Series List</a>
+        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+         <div class="iq-card">
 		<div class="row align-items-center p-2">
 			<div class="col-md-5">
 				<h4><i class="entypo-movie"></i> Series</h4>
@@ -61,10 +76,10 @@
 				<td valign="bottom"><p>{{ $series_value->genre_id }}</p></td>
 				<td>
 					<div class=" align-items-center list-user-action">
-						<a href="{{ URL::to('play_series') . '/' .$series_value->slug }}" class="iq-bg-warning" ><i class="lar la-eye"></i> <!--Visit Site--></a>
-						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><i class="ri-pencil-line"></i> <!--Edit--></a>
-						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><i
-						onclick="return confirm('Are you sure?')" class="ri-delete-bin-line"></i> <!--Delete--></a>
+						<a href="{{ URL::to('play_series') . '/' .$series_value->slug }}" class="iq-bg-warning" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"> <!--Visit Site--></a>
+						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> <!--Edit--></a>
+						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"><i
+						onclick="return confirm('Are you sure?')" class=""></i> <!--Delete--></a>
 					</div>
 				</td>
 			</tr>

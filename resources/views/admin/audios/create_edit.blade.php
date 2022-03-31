@@ -20,11 +20,28 @@
        border: 2px dashed;
       
     }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
     #video_upload .file form{/*border: 2px dashed;*/}
     #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id="content-page" class="content-page">
-    <div class="container-fluid">
+    <div class="d-flex">
+         <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
+        <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
+             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+    <div class="container-fluid p-0">
         <div class="admin-section-title">
             <div class="iq-card">
                 <div class="row">

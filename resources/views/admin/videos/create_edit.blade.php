@@ -59,6 +59,18 @@
    display:block;
    }
     .plyr--video {height: 350px;}
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -69,8 +81,14 @@
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
 <div id="content-page" class="content-page">
+    <div class="mt-5 d-flex">
+                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
 <div id="content-page" class="">
-<div class="container-fluid">
+<div class="container-fluid p-0">
 <div class="row">
 <div class="col-sm-12">
 <div class="iq-card">
@@ -102,13 +120,13 @@
                <!-- progressbar -->
                <ul id="progressbar">
                   @if($video->status == 1)
-                  <li class="active" id="videot">Video</li>
+                  <li class="active" id="videot"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video</li>
                   @endif
-                  <li class="" id="account">Video Details</li>
-                  <li id="personal">Category</li>
-                  <li id="useraccess_ppvprice">User Video Access</li>
-                  <li id="payment">Upload Image &amp; Trailer</li>
-                  <li id="confirm">Ads Management &amp; Transcoding</li>
+                  <li class="" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                  <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                  <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
+                  <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                  <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management &amp; Transcoding</li>
                </ul>
                <div class="progress">
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -169,13 +187,7 @@
                @endif
                <fieldset>
                <div class="form-card">
-               <div class="row">
-                   <div class="col-7">
-                    <h2 class="fs-title">Video Information:</h2>
-                   </div>
-                   <div class="col-5">
-                   </div>
-                </div>
+              
                <div class="row">
                    <div class="col-sm-6 form-group" >
                         <label class="m-0">Title :</label>
@@ -534,7 +546,7 @@
                </div> 
                <div class="row">
                <div class="col-sm-6 form-group">
-               <label>Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+               <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                <input type="file" name="image" id="image" >
                @if(!empty($video->image))
                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
@@ -813,8 +825,13 @@
    background: lightgray;
    border-radius: 50%;
    margin: 0 auto 10px auto;
-   padding: 2px
+   padding: 2px;
+       display: none;
+       
    }
+    #progressbar li img{
+        width: 125px;
+    }
    #progressbar li:after {
    content: '';
    width: 100%;

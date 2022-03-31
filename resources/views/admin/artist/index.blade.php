@@ -10,9 +10,21 @@
         padding: 15px;
     }
      .form-control {
-    background: #fff!important; */
+   /* background: #fff!important; */
    
 }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 
 @section('css')
@@ -23,7 +35,11 @@
 
 <div class="admin-section-title" style="margin-left: 340px;
     padding-top: 100px;">
-      <div class=" container-fluid">
+    <div class="d-flex">
+    <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists') }}">All Artists</a>
+    <a class="black" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
+      <div class=" container-fluid p-0">
+          <div class="iq-card">
 	<div class="row mt-3">
 		<div class="col-md-6">
             
@@ -66,16 +82,15 @@
 			<td valign="bottom"><p>{{ $artist->artist_name }}</p></td>
 			<td>
 				<p class=" align-items-center list-user-action">
-					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><i class="ri-pencil-line"></i> </a>
-					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
-                                                class="ri-delete-bin-line"></i></a>
+					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> </a>
+					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 				</p>
 			</td>
 		</tr>
 		@endforeach
 	</table>
 </div>
-	<div class="clear"></div>
+	<div class="clear"></div></div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 	<div class="pagination-outter"><?= $artists->appends(Request::only('s'))->render(); ?></div>

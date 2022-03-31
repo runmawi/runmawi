@@ -13,6 +13,18 @@
     .p1 {
         font-size: 12px;
     }
+    .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
+
+    }
 </style>
 
 @section('css')
@@ -20,6 +32,9 @@
 @stop @section('content')
 
 <div id="content-page" class="content-page">
+    <div class="d-flex">
+    <a class="black" href="{{ URL::to('admin/artists') }}">All Artists</a>
+    <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
     <!-- This is where -->
     <div class="iq-card">
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->

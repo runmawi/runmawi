@@ -775,6 +775,7 @@ if(!empty($artistsdata)){
     
     public function edit($id)
     {
+
         if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -823,7 +824,6 @@ if(!empty($artistsdata)){
         }
         
         $data = $request->all();
-        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'video_country' => 'required'        
@@ -881,7 +881,6 @@ if(!empty($artistsdata)){
             } else {
                 $data['trailer'] = $video->trailer;
             }  
-    //    dd($trailer);
         
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
@@ -1520,11 +1519,13 @@ if(!empty($artistsdata)){
                 $data['status'] = 1;    
             }
 
-                if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 &&  $pack != "Pro"  ){
+                if(Auth::user()->role =='admin' &&  $pack != "Pro"  ){
                         $data['status'] = 1;    
-                    }elseif(Auth::user()->role =='admin' &&  $pack == "Pro" ){
+                    }elseif(Auth::user()->role =='admin' &&  $pack == "Pro" && $settings->transcoding_access == 1 ){
                         $data['status'] = 0;    
-                    }elseif(Auth::user()->role =='admin'){
+                    }elseif(Auth::user()->role =='admin'&&  $pack == "Pro" && $settings->transcoding_access == 0 ){
+                        $data['status'] = 1;    
+                    }else{
                         $data['status'] = 1;    
                     }
     

@@ -229,7 +229,9 @@ Dash Hover
 Waves Effect
 -----------------------------------------------------------------------*/
 .iq-waves-effect { position: relative; }
-
+.iq-waves-effect span{
+    font-weight: 500;
+}
 /*  Ripple */
 .ripple { width: 0; height: 0; border-radius: 50%; background: rgb(30, 61, 115, 0.1); transform: scale(0); position: absolute; opacity: 1; }
 .rippleEffect { animation: rippleDrop .6s linear; }
@@ -261,7 +263,7 @@ Waves Effect
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 24px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 24px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize;font-weight: 400; }
 .iq-sidebar-menu .iq-menu li li a { font-size: 16px;height: 40px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 .iq-sidebar-menu .iq-menu li ul li a:hover{
@@ -314,7 +316,7 @@ margin-top: 30px;
     color: #0993D2;
 }
 .iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; font-style: normal;
-font-weight: 400;
+font-weight: 500!important;
 font-size: 16px;
 line-height: 24px;padding-left: 15px;
     
@@ -380,7 +382,7 @@ font-weight: 600;
 .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
 .sidebar-main .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
 .iq-sidebar-menu .iq-menu li ul a:hover { color: var(--iq-primary); text-decoration: none; background: transparent; }
-.iq-sidebar-menu .iq-menu li ul li a { padding: 15px 20px 10px 35px; }
+.iq-sidebar-menu .iq-menu li ul li a { padding: 20px 20px 10px 35px; }
 .iq-sidebar-menu .iq-menu li ul ul li > a { padding-left: 65px; }
 .iq-sidebar-menu .iq-menu li ul ul ul li > a { padding-left: 80px; }
 .iq-sidebar-menu .iq-menu li.active .iq-submenu li a[aria-expanded="true"], .iq-sidebar-menu .iq-menu li .iq-submenu li a[aria-expanded="true"] { box-shadow: none; }
@@ -707,7 +709,7 @@ FAQ
 /*---------------------------------------------------------------------
 Table
 -----------------------------------------------------------------------*/
-table tr th img { width: 35px; height: 35px; border-radius: 90px; }
+table tr th img { /*width: 35px; height: 35px; border-radius: 90px;*/ padding-right: 10px; }
 .progress-animate { animation: progress-bar-stripes 1s linear infinite; }
 img.summary-image-top { width: 35px; }
 .iq-subject-info img { width: 80px; }
@@ -1237,10 +1239,13 @@ select{
     font-size: 16px;
     font-weight: 500;
 }
-
+.iq-user-box p{
+    font-weight: 500;
+    color: #000;
+}
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background: rgb(255 255 255 / 20%);
-    text-align: left;
+   
     font-size: 16px;
     font-weight: 500;
     color: #000;
@@ -1275,7 +1280,10 @@ select{
     position: absolute;
     height: 5px;
 }
-
+.video_active{
+    padding: 10px 10px;
+    border-radius: 4px;
+}
 .dropzone .dz-preview .dz-progress .dz-upload {
     background: #333;
     background: #0993d2;
@@ -1284,16 +1292,16 @@ select{
     margin-top: 13px;
 }
 label{
-    font-weight: 400;
+    font-weight: 500;
 font-size: 18px;
 line-height: 30px;
 font-family: 'Inter';
 font-style: normal;
 color: #161616;
-    height: 30px;
+    
 }
 .p1{
-font-size: 14px;
+font-size: 12px;
 font-family: 'Lato', sans-serif;font-style: normal;
 font-weight: 400;
 height: 25px;
@@ -1307,4 +1315,13 @@ h6{
 }
 .p2{
    font-size: 14px; 
+}
+.from-control{
+    font-family: 'Lato';
+font-style: normal;
+font-weight: 400;
+
+line-height: 24px;
+
+color: #8C8C8C;
 }

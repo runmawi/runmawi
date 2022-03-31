@@ -37,9 +37,9 @@
                                  <td>{{ $ads_category->name }}</td>
                                  <td>{{ $ads_category->created_at }}</td>
                                  <td><a class="iq-bg-success editcategory" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_category->id }}"><i class="ri-pencil-line"></i></a>
+                                    data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_category->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                     <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/admin/ads_category_delete').'/'. $ads_category->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
-                                    <i class="ri-delete-bin-line"></i></a>
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                      <!-- <i class="ri-delete-bin-line delete" data-id="{{ $ads_category->id }}" ></i> -->
                                     </td>
                               </tr>
