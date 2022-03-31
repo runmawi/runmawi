@@ -102,64 +102,45 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           </div>
              <?php } ?>
            </div>
-         <?php  elseif($video->type == 'file'): ?>
+           <?php  elseif($video->type == ''): ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-           <div id="video sda" class="fitvid" style="margin: 0 auto;">
+          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+      <source 
+        type="application/x-mpegURL" 
+        src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
+      >
+    </video>
+               <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
+  <!-- Captions are optional -->
+  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "German"){ ?>
+           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Spanish"){ ?>
+           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Hindi"){ ?>
+           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+           <?php } } } else { }  ?>  
+</video>
+<div class="playertextbox hide">
+                   <!--<h2>Up Next</h2>-->
+                   <p><?php if(isset($videonext)){ ?>
+                   <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                   <?php }elseif(isset($videoprev)){ ?>
+                   <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                   <?php } ?>
 
-           
-             <video id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
-             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type="application/x-mpegURL" >
-              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
-             <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
-               <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                 <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-
-
-
-                   <?php
-                   if($playerui_settings['subtitle'] == 1 ){
-
-                     foreach($subtitles as $key => $value){
-
-
-                       if($value['sub_language'] == "English"){
-                         ?>
-                         <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-                         <?php } 
-                         if($value['sub_language'] == "German"){
-                           ?>
-                           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-                           <?php }
-                           if($value['sub_language'] == "Spanish"){
-                             ?>
-                             <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-                             <?php }
-                             if($value['sub_language'] == "Hindi"){
-                               ?>
-                               <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-                               <?php }
-                             }
-                           }else{
-
-                           } 
-                           ?>  
-                         </video>
-
-
-           <div class="playertextbox hide">
-               <!--<h2>Up Next</h2>-->
-               <p><?php if(isset($videonext)){ ?>
-               <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-               <?php }elseif(isset($videoprev)){ ?>
-               <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-               <?php } ?>
-
-               <?php if(isset($videos_category_next)){ ?>
-               <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-               <?php }elseif(isset($videos_category_prev)){ ?>
-               <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-               <?php } ?></p>
+                   <?php if(isset($videos_category_next)){ ?>
+                   <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                   <?php }elseif(isset($videos_category_prev)){ ?>
+                   <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                   <?php } ?></p>
            </div>
+  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+
+</div>
+  
            </div>
            <?php  elseif($video->type == 'mp4_url'):  ?>
            
@@ -305,7 +286,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div class="clear"></div>
   <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
   <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-  <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'){ ?>
+    <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
       <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
     </form>
@@ -782,7 +763,10 @@ $artists = [];
              </div>                    
          </div>
          <div class="modal-footer">
-           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+         <a onclick="pay(<?php echo PvvPrice();?>)">
+                <button type="button" class="btn btn-primary" >Continue</button>
+                    </a>
+           <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button> -->
          </div>
        </div>
      </div>

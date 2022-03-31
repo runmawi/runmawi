@@ -237,8 +237,11 @@ class ChannelController extends Controller
             $watchtime = 0;
           }
 
-           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+           $ppv_exist = PpvPurchase::where('video_id',$vid)
+           ->where('user_id',$user_id)
+           ->where('to_time','<',$current_date)->count();
            $user_id = Auth::user()->id;
+                // dd($ppv_exist);
 
            $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
            $category_name = CategoryVideo::select('video_categories.name as categories_name')
