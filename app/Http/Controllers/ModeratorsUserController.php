@@ -4837,7 +4837,9 @@ if(!empty($artistsdata)){
      ->join('ppv_purchases','users.id','=','ppv_purchases.user_id')
      ->join('videos','videos.id','=','ppv_purchases.video_id')
      ->join('moderators_users','videos.user_id','=','moderators_users.id')
-     // ->where('videos.id','=',DB::raw('ppv_purchases.video_id'))
+    //  ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
+    //  ->where('videos.id','=',DB::raw('ppv_purchases.video_id'))
+    //  ->ORwhere('audio.id','=',DB::raw('ppv_purchases.audio_id'))
      ->groupBy('ppv_purchases.user_id')
      ->get([
      'ppv_purchases.user_id',
@@ -4846,7 +4848,11 @@ if(!empty($artistsdata)){
      
      ]);
      
-    //  dd($total_users);
+    //  dd($total_revenue);
+
+   
+
+
      
      
      
