@@ -138,6 +138,7 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="mp4">MP4 URL</option>
                                     <option value="embed">Embed URL</option>
                                     <option value="live_stream_video">Live Stream Video</option>
+                                    <option value="Encode_video">Encode video </option>
                                 </select>
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
@@ -461,9 +462,15 @@ border-radius: 0px 4px 4px 0px;
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").show();
+            }else if ($("#url_type").val() == "Encode_video") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
             }
         });
     });
+
+    
 
     $(document).ready(function () {
         $("#publishlater").hide();
