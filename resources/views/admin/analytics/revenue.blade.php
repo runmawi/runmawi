@@ -308,8 +308,8 @@ $jsondata = json_decode($jsonString, true);
                   $('#user_table').DataTable();
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
-
-                  function drawChart() {
+        
+                function drawChart() {
                   var linechart = value.total_users;
                   var data = new google.visualization.DataTable(linechart);
                   var data = new google.visualization.DataTable();
@@ -324,6 +324,8 @@ $jsondata = json_decode($jsonString, true);
                   });
                   var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
                   chart.draw(data, {
+                    // width: 400,
+                    // height: 240
                   });
                 }
 
