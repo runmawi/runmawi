@@ -73,7 +73,7 @@ border-radius: 0px 4px 4px 0px;
 
 	
 
-	<form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+	<form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Email_setting_form">
 		
 		<div class="row mt-4">
 			
@@ -203,7 +203,25 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
-		 <script>
+
+
+   <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+ <script>
+
+
+$('form[id="Email_setting_form"]').validate({
+        rules: {
+            email_user: "required",
+            admin_email: "required",
+            email_host: "required",
+            email_port: "required",
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+
 $(document).ready(function(){
 
    $('#template').DataTable();

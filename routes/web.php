@@ -28,6 +28,10 @@ Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
 Route::get('admin/cpp/revenue', 'ModeratorsUserController@Revenue');
+Route::post('/admin/cpp_startdate_revenue', 'ModeratorsUserController@CPPStartDateRevenue');
+Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRevenue');
+Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
+
 
 
 

@@ -97,11 +97,24 @@ use Razorpay\Api\Api;
 class ApiAuthController extends Controller
 {
 
-  private $razorpaykeyId = 'rzp_live_JGOJJF4AqOoWdO';
-  private $razorpaykeysecret = 'YkDxuEbnx7EJ8lYqMFQmaT6C';
+  public function __construct()
+  {
+      $PaymentSetting = PaymentSetting::where('payment_type','Razorpay')->first();
+
+      if($PaymentSetting != null){
+          if($PaymentSetting->live_mode == 0){
+              $this->razorpaykeyId = $PaymentSetting->test_publishable_key;
+              $this->razorpaykeysecret = $PaymentSetting->test_secret_key;
+          }else{
+              $this->razorpaykeyId = $PaymentSetting->live_publishable_key;
+              $this->razorpaykeysecret = $PaymentSetting->live_secret_key;
+          }
+      }
+  }
 
   public function signup(Request $request)
   {
+   
     $input = $request->all();
     $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
 
