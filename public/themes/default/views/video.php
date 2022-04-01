@@ -827,7 +827,7 @@ $artists = [];
              </div>                    
          </div>
          <div class="modal-footer">
-         <a onclick="pay(<?php echo PvvPrice();?>)">
+         <a onclick="pay(<?php echo $video->ppv_price;?>)">
                 <button type="button" class="btn btn-primary" >Continue</button>
                     </a>
            <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button> -->

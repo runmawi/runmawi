@@ -4833,7 +4833,7 @@ if(!empty($artistsdata)){
  
       $settings =  Setting::first();
      
-     $total_revenue =  DB::table('users')
+     $total_video =  DB::table('users')
      ->join('ppv_purchases','users.id','=','ppv_purchases.user_id')
      ->join('videos','videos.id','=','ppv_purchases.video_id')
      ->join('moderators_users','videos.user_id','=','moderators_users.id')
@@ -4845,10 +4845,22 @@ if(!empty($artistsdata)){
      'ppv_purchases.user_id',
      DB::raw('sum(ppv_purchases.moderator_commssion) as total'),
      \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") 
-     
      ]);
-     
-    //  dd($total_revenue);
+
+
+     $total_audio =   DB::table('users')
+->join('ppv_purchases','users.id','=','ppv_purchases.user_id')
+->join('audio','audio.id','=','ppv_purchases.audio_id')
+->join('moderators_users','audio.user_id','=','moderators_users.id')
+->where('audio.id','=',DB::raw('ppv_purchases.audio_id'))
+->get([
+  'ppv_purchases.user_id',
+  DB::raw('sum(ppv_purchases.moderator_commssion) as total'),
+  \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") 
+  
+  ]);
+
+
 
    
 

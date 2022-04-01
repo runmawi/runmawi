@@ -33,6 +33,8 @@ use App\Series;
 use App\SeriesSeason;
 use App\Devices;
 use App\HomeSetting;
+use App\ModeratorsUser;
+use App\LiveStream;
 use Theme;
 use Laravel\Cashier\Cashier;
 
@@ -132,6 +134,34 @@ public function RentPaypal(Request $request)
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
     $date = date('YYYY-MM-DD');
+
+
+
+    $video = LiveStream::where('id','=',$video_id)->first();
+    if(!empty($video)){
+      $moderators_id = $video->user_id;
+     }
+    if(!empty($moderators_id)){
+      $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+      $total_amount = $video->ppv_price;
+      $title =  $video->title;
+      $commssion = VideoCommission::first();
+      $percentage = $commssion->percentage; 
+      $ppv_price = $video->ppv_price;
+      $admin_commssion = ($percentage/100) * $ppv_price ;
+      $moderator_commssion = $ppv_price - $percentage;
+      $moderator_id = $moderators_id;
+    }else{
+      $total_amount = $video->ppv_price;
+      $title =  $video->title;
+      $commssion = VideoCommission::first();
+      $percentage = null; 
+      $ppv_price = $video->ppv_price;
+      $admin_commssion =  null;
+      $moderator_commssion = null;
+      $moderator_id = null;
+
+    }
     $payment_settings = PaymentSetting::first();  
     $mode = $payment_settings->live_mode ;
       if($mode == 0){
@@ -145,12 +175,28 @@ public function RentPaypal(Request $request)
           $publishable_key= null;
       } 
 
-    $stripe = Stripe::make($secret_key, '2020-03-02');
-    $charge = $stripe->charges()->create([
-      'source' => $request->get('tokenId'),
-      'currency' => 'USD',
-      'amount' => $request->get('amount')
-    ]);
+   
+      $stripe = Stripe::make($secret_key, '2020-03-02');
+      $charge = $stripe->charges()->create([
+        'source' => $request->get('tokenId'),
+        'currency' => 'USD',
+        'amount' => $request->get('amount')
+      ]);
+
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->live_id = $video_id;
+    $purchase->to_time = $to_time;
+    $purchase->expired_date = $to_time;
+    $purchase->total_amount = $total_amount;
+    $purchase->admin_commssion = $admin_commssion;
+    $purchase->moderator_commssion = $moderator_commssion;
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
+    $purchase->moderator_id = $moderator_id;
+
+    $purchase->save();
+
     $livepurchase = new LivePurchase;
     $livepurchase->user_id = $user_id;
     $livepurchase->video_id = $video_id;
@@ -340,15 +386,34 @@ public function RentPaypal(Request $request)
 
     // $video_id = $request->get('video_id');
     // print_r($video_id);exit();
-    $video = Video::where('id','=',$video_id)->first();  
+    $video = Video::where('id','=',$video_id)->first();
+    if(!empty($video)){
+      $moderators_id = $video->user_id;
+     }
+    if(!empty($moderators_id)){
+      $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+      $total_amount = $video->ppv_price;
+      $title =  $video->title;
+      $commssion = VideoCommission::first();
+      $percentage = $commssion->percentage; 
+      $ppv_price = $video->ppv_price;
+      $admin_commssion = ($percentage/100) * $ppv_price ;
+      $moderator_commssion = $ppv_price - $percentage;
+      $moderator_id = $moderators_id;
+    }else{
+      $total_amount = $video->ppv_price;
+      $title =  $video->title;
+      $commssion = VideoCommission::first();
+      $percentage = null; 
+      $ppv_price = $video->ppv_price;
+      $admin_commssion =  null;
+      $moderator_commssion = null;
+      $moderator_id = null;
+
+    }
+    
     // $video = Video::where('id','=',103)->first();  
-    $total_amount = $video->ppv_price;
-    $title =  $video->title;
-    $commssion = VideoCommission::first();
-    $percentage = $commssion->percentage; 
-    $ppv_price = $video->ppv_price;
-    $admin_commssion = ($percentage/100) * $ppv_price ;
-    $moderator_commssion = $ppv_price - $percentage;
+
     $payment_settings = PaymentSetting::first();  
     $mode = $payment_settings->live_mode ;
       if($mode == 0){
@@ -375,6 +440,7 @@ public function RentPaypal(Request $request)
     $purchase->moderator_commssion = $moderator_commssion;
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
+    $purchase->moderator_id = $moderator_id;
 
     $purchase->save();
     // DB::table('ppv_purchases')->insert([

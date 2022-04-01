@@ -150,13 +150,18 @@ class HomeController extends Controller
                 $genre_video_display = VideoCategory::all();
 
                 $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                     ->where('views', '>', '5')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $latest_videos = Video::where('status', '=', '1')->take(10)
+                ->where('active', '=', '1')
+                ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')
+                ->where('status', '=', '1')
+                ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')
@@ -186,6 +191,8 @@ class HomeController extends Controller
                 $trendings = $trendings->merge($trending_movies);
                 $trendings = $trendings->merge($trending_episodes);
                 $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')
+                ->where('status', '=', '1')
+                ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')
@@ -208,9 +215,11 @@ class HomeController extends Controller
                 $data = array(
                     'currency' => $currency,
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->simplePaginate($this->videos_per_page) ,
                     'video_banners' => Video::where('active', '=', '1')
+                    ->where('draft', '=', '1')
                         ->where('status', '=', '1')
                         ->where('banner', '=', '1')
                         ->orderBy('created_at', 'DESC')
@@ -264,13 +273,18 @@ class HomeController extends Controller
             $genre_video_display = VideoCategory::all();
 
             $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+            ->where('draft', '=', '1')
                 ->where('views', '>', '5')
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $latest_videos = Video::where('status', '=', '1')->take(10)
+            ->where('active', '=', '1')
+            ->where('draft', '=', '1')
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')
+            ->where('status', '=', '1')
+            ->where('draft', '=', '1')
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')
@@ -300,6 +314,8 @@ class HomeController extends Controller
             $trendings = $trendings->merge($trending_movies);
             $trendings = $trendings->merge($trending_episodes);
             $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')
+            ->where('status', '=', '1')
+            ->where('draft', '=', '1')
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')
@@ -328,9 +344,11 @@ class HomeController extends Controller
             $data = array(
                 'currency' => $currency,
                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
+                ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->simplePaginate($this->videos_per_page) ,
                 'video_banners' => Video::where('active', '=', '1')
+                ->where('draft', '=', '1')
                     ->where('status', '=', '1')
                     ->where('banner', '=', '1')
                     ->orderBy('created_at', 'DESC')
@@ -599,12 +617,14 @@ class HomeController extends Controller
                         if ($Multiuser->user_type == 'Normal')
                         {
                             $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC')
                                 ->count();
                             if ($latest_videos_count > 0)
                             {
                                 $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                                ->where('draft', '=', '1')
                                     ->take(10)
                                     ->orderBy('created_at', 'DESC');
                                 if ($Family_Mode == 1)
@@ -631,6 +651,7 @@ class HomeController extends Controller
                         else
                         {
                             $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->where('age_restrict', '<', 18)
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC')
@@ -638,6 +659,7 @@ class HomeController extends Controller
                             if ($latest_videos_count > 0)
                             {
                                 $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                                ->where('draft', '=', '1')
                                     ->take(10)
                                     ->orderBy('created_at', 'DESC');
                                 if ($Family_Mode == 1)
@@ -663,12 +685,14 @@ class HomeController extends Controller
                     else
                     {
                         $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->take(10)
                             ->orderBy('created_at', 'DESC')
                             ->count();
                         if ($latest_videos_count > 0)
                         {
                             $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
@@ -699,11 +723,16 @@ class HomeController extends Controller
                         {
 
                             $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->orderBy('created_at', 'DESC')
                                 ->count();
                             if ($featured_videos_count > 0)
                             {
-                                $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                                $featured_videos = Video::where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->where('draft', '=', '1')
+                                ->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                                     ->orderBy('created_at', 'DESC');
                                 if ($Family_Mode == 1)
                                 {
@@ -727,12 +756,17 @@ class HomeController extends Controller
                         else
                         {
                             $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->where('age_restrict', '<', 18)
                                 ->orderBy('created_at', 'DESC')
                                 ->count();
                             if ($featured_videos_count > 0)
                             {
-                                $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                                $featured_videos = Video::where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->where('draft', '=', '1')
+                                ->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                                     ->where('age_restrict', '<', 18)
                                     ->orderBy('created_at', 'DESC');
                                 if ($Family_Mode == 1)
@@ -759,11 +793,16 @@ class HomeController extends Controller
                     else
                     {
                         $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                        ->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->orderBy('created_at', 'DESC')
                             ->count();
                         if ($featured_videos_count > 0)
                         {
-                            $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                            $featured_videos = Video::where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
                             {
@@ -899,7 +938,12 @@ class HomeController extends Controller
                         if ($preference_genres != null)
                         {
                             $video_genres = json_decode($preference_genres);
-                            $preference_gen = Video::whereIn('video_category_id', $video_genres)->whereNotIn('videos.id', $blocking_videos);
+                            $preference_gen = Video::whereIn('video_category_id', $video_genres)
+                            ->whereNotIn('videos.id', $blocking_videos) 
+                            ->where('active', '=', '1')
+                             ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ;
                             if ($Family_Mode == 1)
                             {
                                 $preference_gen = $preference_gen->where('age_restrict', '<', 18);
@@ -917,7 +961,11 @@ class HomeController extends Controller
                         if ($preference_language != null)
                         {
                             $video_language = json_decode($preference_language);
-                            $preference_Lan = Video::whereIn('language', $video_language)->whereNotIn('videos.id', $blocking_videos);
+                            $preference_Lan = Video::whereIn('language', $video_language)
+                            ->whereNotIn('videos.id', $blocking_videos)
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->where('active', '=', '1');
                             if ($Family_Mode == 1)
                             {
                                 $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
@@ -952,14 +1000,18 @@ class HomeController extends Controller
                     }
 
                     $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->where('views', '>', '5')
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
                     $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')
+                    ->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->where('views', '>', '5')
                         ->orderBy('created_at', 'DESC')
                         ->get();
@@ -1055,10 +1107,12 @@ class HomeController extends Controller
                     $data = array(
                         'currency' => $currency,
                         'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->orderBy('created_at', 'DESC')
                             ->simplePaginate($this->videos_per_page) ,
                         //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
                         'video_banners' => Video::where('active', '=', '1')
+                        ->where('draft', '=', '1')
                             ->where('status', '=', '1')
                             ->where('banner', '=', '1')
                             ->orderBy('created_at', 'DESC')
@@ -1442,12 +1496,14 @@ class HomeController extends Controller
                     if ($Multiuser->user_type == 'Normal')
                     {
                         $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->take(10)
                             ->orderBy('created_at', 'DESC')
                             ->count();
                         if ($latest_videos_count > 0)
                         {
                             $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
@@ -1474,6 +1530,7 @@ class HomeController extends Controller
                     else
                     {
                         $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->where('age_restrict', '<', 18)
                             ->take(10)
                             ->orderBy('created_at', 'DESC')
@@ -1481,6 +1538,7 @@ class HomeController extends Controller
                         if ($latest_videos_count > 0)
                         {
                             $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
@@ -1506,12 +1564,14 @@ class HomeController extends Controller
                 else
                 {
                     $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->take(10)
                         ->orderBy('created_at', 'DESC')
                         ->count();
                     if ($latest_videos_count > 0)
                     {
                         $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->take(10)
                             ->orderBy('created_at', 'DESC');
                         if ($Family_Mode == 1)
@@ -1542,11 +1602,16 @@ class HomeController extends Controller
                     {
 
                         $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                        ->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                             ->orderBy('created_at', 'DESC')
                             ->count();
                         if ($featured_videos_count > 0)
                         {
-                            $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                            $featured_videos = Video::where('active', '=', '1')
+                            ->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
                             {
@@ -1570,6 +1635,8 @@ class HomeController extends Controller
                     else
                     {
                         $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                             ->where('age_restrict', '<', 18)
                             ->orderBy('created_at', 'DESC')
                             ->count();
@@ -1577,6 +1644,8 @@ class HomeController extends Controller
                         {
                             $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                                 ->where('age_restrict', '<', 18)
+                                ->where('status', '=', '1')
+                                ->where('draft', '=', '1')
                                 ->orderBy('created_at', 'DESC');
                             if ($Family_Mode == 1)
                             {
@@ -1602,11 +1671,15 @@ class HomeController extends Controller
                 else
                 {
                     $featured_videos_count = Video::where('active', '=', '1')->where('featured', '=', '1')
+                        ->where('status', '=', '1')
+                        ->where('draft', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->count();
                     if ($featured_videos_count > 0)
                     {
                         $featured_videos = Video::where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
                             ->orderBy('created_at', 'DESC');
                         if ($Family_Mode == 1)
                         {
@@ -1763,6 +1836,8 @@ class HomeController extends Controller
                         $preference_Lan = Video::Select('videos.*','languagevideos.*','videos.id as pre_video_id')->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
                                             ->whereIn('language_id', $video_language)
                                             ->whereNotIn('videos.id', $blocking_videos)
+                                            ->where('status', '=', '1')
+                                            ->where('draft', '=', '1')
                                             ->groupBy('languagevideos.video_id');
                         if ($Family_Mode == 1)
                         {
@@ -1798,11 +1873,14 @@ class HomeController extends Controller
                 }
 
                 $trending_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                ->where('draft', '=', '1')
                     ->where('views', '>', '5')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
                 $suggested_videos = Video::where('active', '=', '1')->where('views', '>', '5')
+                    ->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')
@@ -1901,10 +1979,12 @@ class HomeController extends Controller
                 $data = array(
                     'currency' => $currency,
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->simplePaginate($this->videos_per_page) ,
                     //  'video_banners' => Video::where('banner', '=', '1')->where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
                     'video_banners' => Video::where('active', '=', '1')
+                    ->where('draft', '=', '1')
                         ->where('status', '=', '1')
                         ->where('banner', '=', '1')
                         ->orderBy('created_at', 'DESC')
@@ -2362,7 +2442,10 @@ class HomeController extends Controller
             ->count();
         if ($latest_videos_count > 0)
         {
-            $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC');
+            $latest_videos = Video::where('active', '=', '1')
+            ->where('status', '=', '1')
+            ->where('draft', '=', '1')
+            ->orderBy('created_at', 'DESC');
 
             if ($getfeching != null && $getfeching->geofencing == 'ON')
             {
@@ -2426,7 +2509,9 @@ class HomeController extends Controller
             $blockvideos[] = '';
         }
 
-        $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')->where('language_id', '=', $lanid)->where('active', '=', '1');
+        $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+        ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
+        ->where('draft', '=', '1');
 
         if ($getfeching != null && $getfeching->geofencing == 'ON')
         {
@@ -2999,6 +3084,8 @@ class HomeController extends Controller
         $home_settings = HomeSetting::first();
 
         $latest_videos = Video::where('status', '=', '1')->take(10)
+        ->where('active', '=', '1')
+        ->where('draft', '=', '1')
             ->orderBy('created_at', 'DESC')
             ->get();
 
