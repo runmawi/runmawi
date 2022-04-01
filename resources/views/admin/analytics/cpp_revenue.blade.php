@@ -26,6 +26,8 @@
                     <h4 class="card-title">Content Partners Revenue :</h4>
                 </div>
 
+                <br>
+                <br>
 
                 <div class="clear"></div>
 
@@ -47,24 +49,242 @@
                 </div>
 
                 <div class="clear"></div>
-
+                <br>
+                <br>
                 <!-- Graph Currency   (SET BY Sanjai Kumar) -->
                 <div class="row">
-                    <div class="col-md-6">
-                            <!-- <input type="date" id="end_time" name="end_time">      -->
-                        </div>
-
-                        <div class="col-md-6">
-                            <!-- <span  id="export" class="btn btn-success btn-sm" >Download CSV</span> -->
-                        </div>
+                    <div class="col-md-9">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
+                 </div>
+                 <div class="col-md-3" >
+                    <p > <h5 style="margin-left: 15%;">Currency Used : {{ $currency->symbol .' '.$currency->country}}</h5> </p>
+                    <h5 style="margin-left: 15%;"> Total Views : <span id="total_views"> </span></h5>
                 </div>
+                </div>
+            
 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table" id="cpp_revenue_table" style="width:100%">
+                                    <thead>
+                                        <tr class="r1">
+                                            <th>#</th>
+                                            <th>Content Partner</th>
+                                            <th>Total Views</th>
+                                            <th> % Shared Commission</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    @foreach($moderators_users as $key => $user)
+                                        <tr>
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $user->username  }}</td>   
+                                        <?php if (!empty($user->videos_views) && !empty($user->audio_count))
+                                        { ?>
+                                        <td ><?php echo $user->videos_views + $user->audio_count; ?></td>
+                                        <?php
+                                        }
+                                        elseif (!empty($user->videos_views) && empty($user->audio_count))
+                                        { ?>
+                                        <td > <?php echo $user->videos_views; ?></td>
 
-
-
-
-
+                                        <?php   }  elseif (empty($user->videos_views) && !empty($user->audio_count))
+                                        { ?>
+                                        <td > <?php echo $user->audio_count; ?></td>
+                                        <?php   } ?> 
+                                        <td>{{ $user->count }}</td> 
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                           </table>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
+
+                 <input type="hidden" name="view_count" id="view_count" value="{{ $views_count }}">                   
+    
 @stop
+<script>
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+     $(document).ready(function(){
+        $('#cpp_revenue_table').DataTable();
+        var view_count = $('#view_count').val();
+        $('#total_views').text(view_count);  
+        $('#start_time').change(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/cpp_startdate_revenue/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.table_data);
+                    $('#total_views').text(value.views_count);  
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+        $('#end_time').change(function(){
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
+        var url = "{{ URL::to('admin/cpp_enddate_revenue/')  }}";
+
+       if(start_time != "" && end_time != ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                      _token: '{{ csrf_token() }}',
+                      start_time: start_time,
+                      end_time: end_time,
+
+                },      
+                success: function(value){
+                    console.log(value);
+                    $('tbody').html(value.table_data);
+                    $('#total_views').text(value.views_count);  
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                }
+
+               }
+            });
+        }
+      });
+
+     });
+
+
+     
+    /////////  Export ///////////////
+
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $(document).ready(function(){
+          $('#export').click(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url =  $('#exportCsv_url').val();
+        var url = "{{ URL::to('admin/cpp_exportCsv/')  }}";
+
+            $.ajax({
+            url: url,
+            type: "post",
+                data: {
+                _token: '{{ csrf_token() }}',
+                start_time: start_time,
+                end_time: end_time,
+
+                },      
+                success: function(data){
+                var Excel = data ;
+                var Excel_url =  "{{ URL::to('public/uploads/csv/')  }}";
+                var link_url = Excel_url+'/'+Excel;
+                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+
+                location.href = link_url;
+            }
+            });
+        });
+    });
+
+</script>
+
+
+
+<script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'Moderator Users Commssion'],
+
+                @php
+                foreach($total_Revenue as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+
+        var options = {
+          title: 'Total Moderator Users Commssion',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+          chart.draw(data, options);
+        }
+    </script>
+
+    
