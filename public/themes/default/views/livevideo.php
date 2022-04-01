@@ -330,7 +330,7 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
                   </div>
                   
                   <div class="col-sm-4">
-                    <a onclick="pay(<?php echo PvvPrice();?>)">
+                    <a onclick="pay(<?php echo $video->ppv_price;?>)">
                         <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
                     </a>
                   </div>
