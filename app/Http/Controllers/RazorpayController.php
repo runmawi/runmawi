@@ -17,6 +17,8 @@ use App\Subscription;
 use Razorpay\Api\Api;
 use App\User;
 use App\ThemeIntegration;
+use App\PaymentSetting;
+use URL;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
@@ -24,8 +26,25 @@ use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 class RazorpayController extends Controller
 {
-    private $razorpaykeyId = 'rzp_test_008H40SUs59YLK';
-    private $razorpaykeysecret = '32tTF7snfEyXZj0z5tEiGdzm';
+
+    public function __construct()
+    {
+        $PaymentSetting = PaymentSetting::where('payment_type','Razorpay')->first();
+
+        if($PaymentSetting != null){
+            if($PaymentSetting->live_mode == 0){
+                $this->razorpaykeyId = $PaymentSetting->test_publishable_key;
+                $this->razorpaykeysecret = $PaymentSetting->test_secret_key;
+            }else{
+                $this->razorpaykeyId = $PaymentSetting->live_publishable_key;
+                $this->razorpaykeysecret = $PaymentSetting->live_secret_key;
+            }
+        }else{
+            $Error_msg = "Razorpay Key is Missing";
+            $url = URL::to('/home');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
 
     public function Razorpay(Request $request)
     {
@@ -34,6 +53,7 @@ class RazorpayController extends Controller
 
     public function RazorpayIntegration(Request $request,$Plan_Id)
     {
+
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();

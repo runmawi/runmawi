@@ -249,7 +249,6 @@ class CPPAdminLiveStreamController extends Controller
 
                 if(strpos($command, "Qavg") !== false){
                     $movie->live_stream_video = $live_stream_videopath;
-                    $movie->Stream_key = $Stream_key;
                 } else{
                     $data = array(
                         'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -279,6 +278,11 @@ class CPPAdminLiveStreamController extends Controller
                     );
                 return View::make('moderator.cpp.livestream.create_edit', $data);
             }
+        }
+
+        if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
+            $Stream_key = random_int(1000000000, 9999999999);
+            $movie->Stream_key = $Stream_key;
         }
 
         $movie->title =$data['title'];
@@ -575,6 +579,11 @@ class CPPAdminLiveStreamController extends Controller
         
                 return View::make('moderator.cpp.livestream.edit', $data);  
             }
+        }
+
+        if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
+            $Stream_key = random_int(1000000000, 9999999999);
+            $video->Stream_key = $Stream_key;
         }
 
 
