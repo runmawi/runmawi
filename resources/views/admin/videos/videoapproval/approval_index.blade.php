@@ -21,20 +21,18 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 
      <div id="content-page" class="content-page">
-         <div class="mt-5 mb-5">
+         <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
-         <div class="container-fluid">
+         <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="">
+                  <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Video Lists</h4>
-                        </div>
+                       
                         
                         
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">

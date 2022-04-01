@@ -58,8 +58,12 @@ class AdminEmailSettingsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-      
-        $email_settings = EmailSetting::find(1);
+
+        $email_settings = EmailSetting::first();
+
+        if($email_settings == null){
+            $email_settings = new EmailSetting;  
+        }
 
         $email_settings->admin_email = $request->admin_email;
         $email_settings->host_email = $request->email_host;
@@ -70,8 +74,70 @@ class AdminEmailSettingsController extends Controller
 
         $email_settings->save();
 
-        return Redirect::back();
+        // Replacing the Env file
 
+        try {
+            $Env_path = realpath(('.env'));
+
+            $Replace_data =array(
+                'MAIL_HOST'         =>  $request->email_host,
+                'MAIL_PORT'         =>  $request->email_port,
+                'MAIL_USERNAME'     =>  $request->email_user,
+                'MAIL_PASSWORD'     =>  $request->password,
+                'MAIL_ENCRYPTION'   =>  $request->secure,
+                'MAIL_FROM_ADDRESS' =>  $request->admin_email,
+            );
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_HOST') ? "MAIL_HOST=".$Replace_data['MAIL_HOST']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_PORT') ? "MAIL_PORT=".$Replace_data['MAIL_PORT']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_USERNAME') ? "MAIL_USERNAME=".$Replace_data['MAIL_USERNAME']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_PASSWORD') ? "MAIL_PASSWORD=".$Replace_data['MAIL_PASSWORD']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_ENCRYPTION') ? "MAIL_ENCRYPTION=".$Replace_data['MAIL_ENCRYPTION']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_HOST') ? "MAIL_HOST=".$Replace_data['MAIL_HOST']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MAIL_FROM_ADDRESS') ? "MAIL_FROM_ADDRESS=".$Replace_data['MAIL_FROM_ADDRESS']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            return Redirect::back();
+
+        }catch (\Exception $e) {
+            $Error_msg = "While ! Changing Email Configuration Some Erro Occurs";
+            $url = URL::to('/admin/email_settings');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+       
     }
 
 }   

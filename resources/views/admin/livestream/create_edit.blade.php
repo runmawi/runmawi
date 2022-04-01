@@ -36,9 +36,9 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('content')
 <div id="content-page" class="content-page">
-     <div class="mb-5">
+     <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
     <div class="container-fluid p-0">
@@ -79,7 +79,7 @@ border-radius: 0px 4px 4px 0px;
                 @endforeach @endif
                 <div class="clear"></div>
 
-                <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="live_video">
+                <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="" id="live_video">
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Title</label>
@@ -138,6 +138,7 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="mp4">MP4 URL</option>
                                     <option value="embed">Embed URL</option>
                                     <option value="live_stream_video">Live Stream Video</option>
+                                    <option value="Encode_video">Video Encoder </option>
                                 </select>
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
@@ -461,9 +462,15 @@ border-radius: 0px 4px 4px 0px;
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").show();
+            }else if ($("#url_type").val() == "Encode_video") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
             }
         });
     });
+
+    
 
     $(document).ready(function () {
         $("#publishlater").hide();

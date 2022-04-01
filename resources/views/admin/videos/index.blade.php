@@ -1,7 +1,7 @@
 @extends('admin.master')
 <style>
      .form-control {
-    background: #fff!important; */
+    /*background: #fff!important; */
    
 }
     .black{
@@ -25,8 +25,8 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 <?php //dd($cppuser); ?>
      <div id="content-page" class="content-page">
-         <div class="mt-5 mb-5">
-                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+         <div class="mt-5 d-flex">
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
@@ -34,14 +34,12 @@ border-radius: 0px 4px 4px 0px;
          <div class="container-fluid p-0">
             <div class="row ">
                <div class="col-sm-12">
-                  <div class="">
-                     <div class="iq-card-header d-flex justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Video Lists</h4>
-                        </div>
+                  <div class="iq-card">
+                     <div class="iq-card-header ">
                         
                         
-                         <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                        
+                         <div class="iq-card-header-toolbar d-flex justify-content-between d-flex align-items-baseline">
                     <!-- <label class="p-2">Videos By CPP Users:</label> -->
                          <div class="form-group mr-2">                  
                                     <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
@@ -105,7 +103,7 @@ border-radius: 0px 4px 4px 0px;
                                     <!-- <td>
                                    
                                     </td> -->
-                                    <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else Uploaded by Admin @endif</td>
+                                    <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td>
 
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->access }}</td>

@@ -23,7 +23,7 @@ if(!empty($request_url)){
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
 
 <!-- For Guest users -->      
-  <?php if(Auth::guest() && $video->access == "guest" && empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path == "public") { ?>
+  <?php if(Auth::guest() && $video->access == "guest" && empty($video->path) && empty($video->ppv_price ) || Auth::guest() && $video->access == "guest" && $video->path == "public" && empty($video->ppv_price )) { ?>
     <div id="video_bg">
    <div class=" page-height">
      <?php 
@@ -130,7 +130,7 @@ if(!empty($request_url)){
         </div>
  
  
-  <?php }elseif( Auth::guest() && $video->access == "guest" && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public"){  ?>
+  <?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
                <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >

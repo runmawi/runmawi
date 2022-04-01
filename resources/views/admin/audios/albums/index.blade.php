@@ -1,7 +1,7 @@
 @extends('admin.master')
 <style>
     .form-control{
-        background-color: #fff!important;
+        /*background-color: #fff!important;*/
     }
     .black{
         color: #000;
@@ -20,15 +20,15 @@ border-radius: 0px 4px 4px 0px;
 
 <div id="content-page" class="content-page">
     
-     <div class="mb-5">
+     <div class="d-flex">
          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
-             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+             <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
 	<div class="container-fluid p-0">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="">
+				<div class="iq-card">
 					<div class="iq-card-header d-flex justify-content-between align-items-baseline mb-4">
 						<div class="iq-header-title">
 							<h4 class="card-title">Audio Album</h4>

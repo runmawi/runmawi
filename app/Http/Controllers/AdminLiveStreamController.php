@@ -280,6 +280,11 @@ class AdminLiveStreamController extends Controller
             }
         }
 
+        if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
+            $Stream_key = random_int(1000000000, 9999999999);
+            $movie->Stream_key = $Stream_key;
+        }
+
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
         $movie->url_type =$url_type;
@@ -428,7 +433,7 @@ class AdminLiveStreamController extends Controller
 
             // converting to RTMP URL
             try {
-                $Stream_key = random_int(1000000000, 9999999999);
+               
 
                 $video_name = $LiveStream_Video;
                 $live_stream_videopath  = URL::to('public/uploads/LiveStream/'.$video_name);
@@ -439,7 +444,6 @@ class AdminLiveStreamController extends Controller
 
                 if(strpos($command, "Qavg") !== false){
                     $video->live_stream_video =$live_stream_videopath;
-                    $video->Stream_key = $Stream_key;
                 } else{
                     $data = array(
                         'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -472,6 +476,11 @@ class AdminLiveStreamController extends Controller
                 return View::make('admin.livestream.edit', $data); 
             }
         }
+
+            if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
+                $Stream_key = random_int(1000000000, 9999999999);
+                $video->Stream_key = $Stream_key;
+            }
         
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';

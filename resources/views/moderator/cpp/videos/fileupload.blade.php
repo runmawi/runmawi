@@ -475,7 +475,7 @@ data: {
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
                                         <div class="panel-title">
-                                            <labe>Cast and Crew</labe> 
+                                            <label>Cast and Crew</label> 
                                         </div> 
                                         <div class="panel-options"> 
                                             <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
@@ -497,17 +497,40 @@ data: {
                                 </div>
                                 </div>
 
-                            <div class="row">
-                                <div class="col-sm-6 form-group">
-                                                <label class="p-2">Choose Language:</label>
-                                                <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
-                                                    <!-- <option selected disabled="">Choose Language</option> -->
-                                                    @foreach($languages as $language)
-                                                        <option value="{{ $language->id }}" >{{ $language->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>   
-                                            </div>   
+                                <div class="row">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="p-2">Choose Language:</label>
+                                        <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                                            <!-- <option selected disabled="">Choose Language</option> -->
+                                            @foreach($languages as $language)
+                                            <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-6 form-group">
+                                        <label class="m-0" style="display:block;">E-Paper: <small>(Upload your PDF file)</small></label>
+                                        <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" multiple>
+                                    </div>
+
+                                    <div class="col-sm-6 form-group">
+                                        <label class="m-0" style="display:block;">Reels Videos: </label>
+                                        <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
+                                    </div>
+
+
+                                    <div class="col-sm-6 form-group">
+                                        <label class="m-0" style="display:block;">URL Link </label>
+                                        <input type="text" class="form-group" name="url_link" accept="" id="url_link" >
+                                    </div>
+    
+                                    <div class="col-sm-6 form-group">
+                                        <label class="m-0">URL Start Time <small>Format (HH:MM:SS)</small></label>
+                                        <input type="text" class="form-group" name="url_linktym" accept="" id="url_linktym" >
+                                    </div>
+                                </div>
+
+                                
                                             <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
@@ -1095,6 +1118,13 @@ $ = jQuery;
 $(document).ready(function($){
     
     $('#duration').mask("00:00:00");
+     $('#intro_start_time').mask("00:00:00");
+      $('#intro_end_time').mask("00:00:00");
+      $('#recap_start_time').mask("00:00:00");
+      $('#recap_end_time').mask("00:00:00");
+      $('#skip_intro').mask("00:00:00");
+      $('#skip_recap').mask("00:00:00");
+      $('#url_linktym').mask("00:00:00");
 
 });
 

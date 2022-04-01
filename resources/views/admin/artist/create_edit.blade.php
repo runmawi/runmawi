@@ -32,9 +32,9 @@ border-radius: 0px 4px 4px 0px;
 @stop @section('content')
 
 <div id="content-page" class="content-page">
-    <div class="mb-5">
+    <div class="d-flex">
     <a class="black" href="{{ URL::to('admin/artists') }}">All Artists</a>
-    <a class="black" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
+    <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
     <!-- This is where -->
     <div class="iq-card">
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->

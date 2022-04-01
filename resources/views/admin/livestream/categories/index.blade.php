@@ -27,14 +27,14 @@ border-radius: 0px 4px 4px 0px;
 </style>
 @section('content')
 <div id="content-page" class="content-page">
-     <div class="mb-5">
+     <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
             <div class="container-fluid p-0">
 	<div class="admin-section-title">
-         <div class="">
+         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
 				<h4><i class="entypo-archive"></i> Live Stream Categories</h4>
@@ -165,8 +165,8 @@ border-radius: 0px 4px 4px 0px;
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                         <td>
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
+                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
                            
                         </td>
                     </tr>

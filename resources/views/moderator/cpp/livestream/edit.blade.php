@@ -120,10 +120,13 @@
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
 				<select class="form-control" id="url_type" name="url_type">
-				<option value="" >Choose URL Format</option>
-				<option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
-				<option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
-			</select>
+					<option value="choose_url_format" >Choose URL Format</option>
+					<option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
+					<option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
+					<option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
+					<option value="Encode_video" @if(!empty($video->url_type) && $video->url_type == 'Encode_video'){{ 'selected' }}@endif>Video Encoder</option>
+
+				</select>
 			
 				<div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
@@ -133,6 +136,11 @@
 					<div class="new-video-upload mt-2" id="embed_code">
 						<label for="embed_code"><label>Live Embed URL</label></label>
 						<input type="text" name="embed_url"  class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif">
+					</div>
+
+					<div class="new-video-upload mt-2" id="live_stream_video">
+						<label for="live_stream_video"><label>Live Stream Video</label></label>
+						<input type="file" multiple="true" class="form-group" name="live_stream_video" id="" />                        
 					</div>
 
                     <!-- <div class="new-video-upload mt-2">
@@ -366,7 +374,9 @@
     </div></div>
 </div>
 	
-	
+@php
+	$liveStreamVideo_errors = $liveStreamVideo_error;
+@endphp	
 	
 	@section('javascript')
 
@@ -380,6 +390,10 @@
 		{{-- validate --}}
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	
+		{{-- Sweet alert --}}
+
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
 		$('form[id="cpp_live_edit"]').validate({
@@ -389,7 +403,7 @@
 			  details: 'required',
 			  year: 'required',
 			  description : 'required',
-			  'video_category_id[]' :'required',
+			//   'video_category_id[]' :'required',
 			  'language[]' :'required',
 		
 				mp4_url: {
@@ -424,22 +438,57 @@
 			  form.submit();
 			}
 		  });
-		</script>
-	{{-- End validate --}}
+	// {{-- End validate --}}
+
+	var Stream_error = '{{ $liveStreamVideo_errors }}';
+
+	$( document ).ready(function() {
+		if( Stream_error == 1){
+			Swal.fire({
+			allowOutsideClick:false,
+			icon: 'error',
+			title: 'Oops...',
+			text: 'While Converting the Live Stream video, Something went wrong!',
+			}).then(function (result) {
+			if (result.value) {
+				location.href = "{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}";
+			}
+			})
+		}
+	});
+</script>
 
 	<script type="text/javascript">
 
 $(document).ready(function(){
+		$('#mp4_code').hide();
+		$('#embed_code').hide();	
+		$('#live_stream_video').hide();	
 
+    $("#url_type").change(function(){
 
 	if($("#url_type").val() == 'mp4'){
-	$('#mp4_code').show();
-	$('#embed_code').hide();	
+		$('#mp4_code').show();
+		$('#embed_code').hide();	
+		$('#live_stream_video').hide();	
 
 	}else if($("#url_type").val() == 'embed'){
 		$('#embed_code').show();	
 		$('#mp4_code').hide();
+		$('#live_stream_video').hide();	
+
+	}else if($("#url_type").val() == 'live_stream_video'){
+        $('#embed_code').hide();	
+        $('#mp4_code').hide();
+        $('#live_stream_video').show();	
 	}
+	else if($("#url_type").val() == 'Encode_video'){
+        $('#embed_code').hide();	
+        $('#mp4_code').hide();
+        $('#live_stream_video').hide();	
+	}
+});
+
 	
 	$('.js-example-basic-multiple').select2();
 

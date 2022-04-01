@@ -28,15 +28,15 @@ border-radius: 0px 4px 4px 0px;
 @endsection
 @section('content')
 <div id="content-page" class="content-page">
-    <div class="mt-5 mb-5">
+    <div class="mt-5 d-flex">
                         <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+                       <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
     <div class="container-fluid p-0">
 	   <div class="admin-section-title">
-            <div class="">
+            <div class="iq-card">
                 <div class="row">
                     <div class="col-md-6">
                         <h4><i class="entypo-archive"></i> Video Categories</h4>
