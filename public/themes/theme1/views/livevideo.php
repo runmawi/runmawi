@@ -57,40 +57,45 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-            <?php if(!empty($video->mp4_url && $request_url != "m3u8")){  
+            <?php if(!empty($video->mp4_url && $request_url != "m3u8" && $video->url_type == "mp4" )){  
             ?>
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-
                     <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                    
                     <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                     <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
-                   
                 </video>
-            <?php }elseif(!empty($video->embed_url)){ ?> 
+
+            <?php }elseif(!empty($video->embed_url) && $video->url_type == "embed" ){ ?> 
                 <div class="plyr__video-embed" id="player">
-            <iframe
-              src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-              allowfullscreen
-              allowtransparency
-              allow="autoplay"
-            ></iframe>
-          </div>
-                <?php  }elseif(!empty($request_url == "m3u8")){  ?> 
+                    <iframe
+                    src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                    allowfullscreen
+                    allowtransparency
+                    allow="autoplay">
+                    </iframe>
+                </div>
+
+            <?php  }elseif(!empty($request_url == "m3u8" && $video->url_type == "mp4" )){  ?> 
                 <!-- <div class="plyr__video-embed" id="player"> -->
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo $video->mp4_url; ?>">
+                        </video>
+                <!-- </div>  -->
+            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo "http://176.223.138.157/hls/".$video->Stream_key.".m3u8"; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
-              <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-      <source 
-        type="application/x-mpegURL" 
-        src="<?php echo $video->mp4_url; ?>"
-      >
-    </video>
-          <!-- </div>  -->
-                <?php } ?>
+                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo"http://176.223.138.157/hls/".$video->Stream_key.".m3u8"; ?>">
+                    </video>
 
+            <?php } ?>
                 <div class="playertextbox hide">
                     <p> <?php if (isset($videonext)) { ?>
                         <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>

@@ -67,7 +67,7 @@
 						<th><label>Video Type</label></th>
 						<th><label>Video Access</label></th>
 						<th><label>Status</label></th>
-						<th><label>Description</label></th>
+						<th><label>Stream Type</label></th>
 						<th><label>Action</label></th>
 					</tr>
 				</thead>
@@ -77,21 +77,30 @@
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
 						<td> <?php if(!empty(@$video->cppuser->username)){ echo @$video->cppuser->username; }else{ @$video->usernames->username; }?></td>
+						
 						<?php if($video->access == "ppv" ){ ?>
-						<td> <?php echo "Paid"; ?></td>
-					<?php }else{ ?>
-						<td> <?php  echo "Free"; ?></td>
-					<?php }?>  
-						<td>{{ $video->access }}</td>
-						<?php if($video->active == 0){ ?>
-						<td class="bg-warning"> <?php echo "Pending"; ?></td>
-					<?php }elseif($video->active == 1){ ?>
-						<td class="bg-success"> <?php  echo "Approved"; ?></td>
-					<?php }elseif($video->active == 2){ ?>
-						<td class="bg-danger"> <?php  echo "Rejected"; ?></td>
-					<?php }?>  
+							<td> <?php echo "Paid"; ?></td>
+						<?php }else{ ?>
+							<td> <?php  echo "Free"; ?></td>
+						<?php }?>  
 
-						<td><?php if(strlen($video->description) > 25){ echo substr($video->description, 0, 25) . '...'; } else { echo $video->description; } ?></td>
+						<td>{{ $video->access }}</td>
+							<?php if($video->active == 0){ ?>
+						<td class="bg-warning"> <?php echo "Pending"; ?></td>
+							<?php }elseif($video->active == 1){ ?>
+						<td class="bg-success"> <?php  echo "Approved"; ?></td>
+							<?php }elseif($video->active == 2){ ?>
+						<td class="bg-danger"> <?php  echo "Rejected"; ?></td>
+							<?php }?>  
+
+							<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @else {{  ucwords($video->url_type)  }} @endif
+							
+								@if( $video->url_type != null && $video->url_type == "Encode_video")
+									<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" id="" data-name="{{$video->Stream_key}}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
+								@endif
+	
+							</td>
+
 						<td class="d-flex align-items-center list-user-action">
                             <!-- <a href="{{ URL::to('live/play/') . '/' . $video->id }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a> -->
 							<a href="{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
@@ -116,8 +125,23 @@
     </div></div>
 
 	@section('javascript')
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
+
+		function addRow(ele) 
+		{
+			var stream_key= $(ele).attr('data-name');
+			var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+
+			Swal.fire({
+					allowOutsideClick:false,
+					icon:'success',
+					title: 'RTMP Streaming Details',
+					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
+			})
+		}
 
 		$(document).ready(function(){
 			var delete_link = '';

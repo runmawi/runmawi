@@ -124,6 +124,8 @@
 					<option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
 					<option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
 					<option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
+					<option value="Encode_video" @if(!empty($video->url_type) && $video->url_type == 'Encode_video'){{ 'selected' }}@endif>Video Encoder</option>
+
 				</select>
 			
 				<div class="new-video-upload mt-2" id ="mp4_code">
@@ -479,6 +481,11 @@ $(document).ready(function(){
         $('#embed_code').hide();	
         $('#mp4_code').hide();
         $('#live_stream_video').show();	
+	}
+	else if($("#url_type").val() == 'Encode_video'){
+        $('#embed_code').hide();	
+        $('#mp4_code').hide();
+        $('#live_stream_video').hide();	
 	}
 });
 
