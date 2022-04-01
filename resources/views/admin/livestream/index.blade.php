@@ -115,10 +115,12 @@ border-radius: 0px 4px 4px 0px;
                         	<td>  <p class = "bg-danger video_active"><?php  echo "Rejected"; ?></p></td>
 						<?php }?>  
 
-						<td>{{ ucwords($video->url_type) }} 
+						<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @else {{  ucwords($video->url_type)  }} @endif
+							
 							@if( $video->url_type != null && $video->url_type == "Encode_video")
-								<i class="fa fa-info-circle" aria-hidden="true" id="encode_video_alert"></i>
+								<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" id="" data-name="{{$video->Stream_key}}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
 							@endif
+
  						</td>
 
 						<td class=" align-items-center list-inline">								
@@ -148,6 +150,20 @@ border-radius: 0px 4px 4px 0px;
 		<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
 
+		function addRow(ele) 
+		{
+			var stream_key= $(ele).attr('data-name');
+			var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+
+			Swal.fire({
+					allowOutsideClick:false,
+					icon:'success',
+					title: 'RTMP Streaming Details',
+					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
+			})
+		}
+
 		$(document).ready(function(){
 			var delete_link = '';
 			$('#DataTables_Table_0_paginate').hide();
@@ -159,19 +175,7 @@ border-radius: 0px 4px 4px 0px;
 			    return false;
 			});
 
-			var stream_key = "{{ !empty($video) ?  $video->Stream_key : " " }}";
-        	var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
-
-			$("#encode_video_alert").click(function(){
-				Swal.fire({
-					allowOutsideClick:false,
-					icon:'success',
-					title: 'RTMP Streaming Details',
-					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
-						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
-					})
-				});
-			});
+		});
 
 	</script>
 

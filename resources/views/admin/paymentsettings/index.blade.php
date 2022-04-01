@@ -75,19 +75,18 @@ border-radius: 0px 4px 4px 0px;
 		<!-- <div class="row mt-4"> -->
 			
 			<div class="col-md-6">
-            <label for="">Payment Mode</label>
-            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-            <div style="color:red;">Disable</div>
-            <div class="mt-1">
-            <label class="switch">
-            <input type="checkbox"  @if ($payment_settings->stripe_status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="stripe_status" id="stripe_status">
-            <span class="slider round"></span>
-            </label>
-            </div>
-            <div style="color:green;">Enable</div>
-            </div>
-            <div class="make-switch" data-on="success" data-off="warning">                
-            </div>
+                <label for="">Payment Mode</label>
+                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                    <div style="color:red;">Disable</div>
+                        <div class="mt-1">
+                            <label class="switch">
+                                <input type="checkbox"  @if ($payment_settings->stripe_status == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="stripe_status" id="stripe_status">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    <div style="color:green;">Enable</div>
+                </div>
+                <div class="make-switch" data-on="success" data-off="warning"></div>
             </div>
 
 
@@ -109,11 +108,11 @@ border-radius: 0px 4px 4px 0px;
             </div>
 
 			<div class="col-md-6">
-            <div class="panel-title">Stripe Plan (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
-            <div class="panel-body" style="display: block;"> 
-                <label>Name:</label> 
-                <input type="text" class="form-control" name="plan_name" id="plan_name" placeholder="Test Secret Key" value="@if(!empty($payment_settings->plan_name)){{ $payment_settings->plan_name }}@endif" />
-            </div> 
+                <div class="panel-title">Stripe Plan (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
+                <div class="panel-body" style="display: block;"> 
+                    <label>Name:</label> 
+                    <input type="text" class="form-control" name="plan_name" id="plan_name" placeholder="Test Secret Key" value="@if(!empty($payment_settings->plan_name)){{ $payment_settings->plan_name }}@endif" />
+                </div> 
 			</div>
             <div class="col-md-6 mt-3">
             <label>Test Secret Key:</label> 
@@ -144,6 +143,81 @@ border-radius: 0px 4px 4px 0px;
 			</div>
             <br>
             <br>
+
+
+{{-- Razorpay --}}
+
+        @if(!empty($Razorpay_payment_setting))
+            <p><h3>Razorpay Payment</h3></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="">Payment Mode</label>
+                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                        <div style="color:red;">Disable</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox"  @if ($Razorpay_payment_setting->status == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="Razorpay_status" id="Razorpay_status">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        <div style="color:green;">Enable</div>
+                    </div>
+                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                </div>
+    
+                <div class="col-md-6">
+                    <label for="">Razorpay Mode</label>
+                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                        <div style="color:red;">OFF</div>
+                        <div class="mt-1">
+                            <label class="switch">
+                                <input type="checkbox"  @if ($Razorpay_payment_setting->live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="Razorpay_live_mode" id="Razorpay_live_mode">
+                                <span class="slider round"></span>
+                             </label>
+                        </div>
+                         <div style="color:green;">ON</div>
+                    </div>
+                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="panel-title">Razorpay Plan (<a href="https://razorpay.com/" target="_blank"> https://razorpay.com/ </a>)</div>
+                    <div class="panel-body" style="display: block;"> 
+                        <label>Name:</label> 
+                        <input type="text" class="form-control" name="Razorpay_plan_name" id="plan_name" placeholder="Razorpay Test Secret Key" value="@if(!empty($Razorpay_payment_setting->plan_name)){{ $Razorpay_payment_setting->plan_name }}@endif" />
+                    </div> 
+                </div>
+
+                <div class="col-md-6 mt-3">
+                    <label>Razorpay Test Secret Key:</label> 
+                    <input type="text" class="form-control" name="Razorpay_test_secret_key" id="Razorpay_test_secret_key" placeholder="Razorpay Test Secret Key" value="@if(!empty($Razorpay_payment_setting->test_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->test_secret_key }}@endif" />
+                </div>
+
+                <div class="col-md-6 mt-3">
+                    <label>Razorpay Test Publishable Key:</label> 
+                    <input type="text" class="form-control" name="Razorpay_test_publishable_key" id="Razorpay_test_publishable_key" placeholder="Razorpay Test Publishable Key" value="@if(!empty($Razorpay_payment_setting->test_publishable_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->test_publishable_key }}@endif" />
+                </div>
+    
+                <div class="col-md-6 mt-3">
+                    <label>Razorpay Live Secret Key:</label> 
+                    <input type="text" class="form-control" name="Razorpay_live_secret_key" id="Razorpay_live_secret_key" placeholder="Razorpay Live Secret Key" value="@if(!empty($Razorpay_payment_setting->live_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->live_secret_key }}@endif" />
+                </div>
+                
+                <div class="col-md-6 mt-3">
+                    <label>Razorpay Live Publishable Key:</label> 
+                    <input type="text" class="form-control" name="Razorpay_live_publishable_key" id="Razorpay_live_publishable_key" placeholder="Razorpay Live Publishable Key" value="@if(!empty($Razorpay_payment_setting->live_publishable_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->live_publishable_key }}@endif" />
+                </div>
+    
+                {{-- <div class="col-md-6 mt-3">
+                    <label>Razorpay Label:</label> 
+                    <input type="text" class="form-control" name="Razorpay_label" id="Razorpay_label" placeholder="Razorpay Label" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
+                </div> --}}
+    
+            </div> <br><br>
+        @endif
+
+{{-- paypal_payment_settings --}}
+
             @if(!empty($paypal_payment_settings))
             <p><h3>PayPal Payment</h3></p>
             <div class="row">
@@ -219,14 +293,15 @@ border-radius: 0px 4px 4px 0px;
             </div>
             <div class="col-md-6 mt-3">
             <label>PayPal Label:</label> 
-				<input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Lable" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
+				<input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Label" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
 		
             </div>
 		</div>
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+        
 		<div class="panel-body mt-3" >
-<input type="submit" value="Update Payment Settings" class="btn btn-primary " />
-            </div>
+            <input type="submit" value="Update Payment Settings" class="btn btn-primary " />
+        </div>
 
 
             
