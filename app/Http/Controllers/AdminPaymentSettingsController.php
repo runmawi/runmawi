@@ -29,14 +29,15 @@ class AdminPaymentSettingsController extends Controller
 			'settings' => Setting::first(),
 			'payment_settings' => PaymentSetting::first(),
 			'paypal_payment_settings' => PaymentSetting::where('id','=',2)->first(),
+			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
 			);
+
 		return View::make('admin.paymentsettings.index', $data);
 	}
     
     public function save_payment_settings(Request $request){
 
 		$input = $request->all();
-			// dd($input);
         
         $payment_settings = PaymentSetting::first();
 		if(empty($input['stripe_status'])){
@@ -185,11 +186,37 @@ class AdminPaymentSettingsController extends Controller
 	   
         $payment_settings->save();
 
-        
+// Razorpay 
+
+
+	$Razorpay_payment_setting =  PaymentSetting::where('payment_type','=','Razorpay')->first();
+
+
+	if($Razorpay_payment_setting != null){
+
+		if(empty($request['Razorpay_live_mode'])){
+			$Razorpay_live_mode = 0;
+		}else{
+			$Razorpay_live_mode = 1;
+		}
+
+		if(empty($request['Razorpay_status'])){
+			$Razorpay_status = 0;
+		}else{
+			$Razorpay_status = 1;
+		}
+
+		$Razorpay_payment_setting->live_mode         =    $Razorpay_live_mode;
+		$Razorpay_payment_setting->status            =    $Razorpay_status;
+		$Razorpay_payment_setting->test_secret_key   =    $request['Razorpay_test_secret_key'] ?  $request['Razorpay_test_secret_key'] : null;
+		$Razorpay_payment_setting->test_publishable_key = $request['Razorpay_test_publishable_key'] ?  $request['Razorpay_test_publishable_key'] : null;
+		$Razorpay_payment_setting->live_secret_key 		= $request['Razorpay_live_secret_key'] ?  $request['Razorpay_live_secret_key'] : null;
+		$Razorpay_payment_setting->live_publishable_key = $request['Razorpay_live_publishable_key'] ?  $request['Razorpay_live_publishable_key'] :null;
+		$Razorpay_payment_setting->plan_name 			= $request['Razorpay_plan_name'] ?  $request['Razorpay_plan_name'] : null;
+		$Razorpay_payment_setting->payment_type 		= "Razorpay";
+        $Razorpay_payment_setting->save();
+	}
+
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );
-
 	}	
-	
-
-
 }
