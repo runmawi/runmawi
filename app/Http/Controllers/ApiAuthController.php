@@ -4439,7 +4439,19 @@ return response()->json($response, 200);
     public function artistfavorites(Request $request)
     {
         $user_id = $request->user_id;
-        $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('artist_favourites.user_id',$user_id)->where('artist_favourites.favourites',1)->get(['artists.*']);
+
+
+
+        // $favoriteslist = 
+        // Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')
+        // ->where('artist_favourites.user_id',$user_id)
+        // ->where('artist_favourites.favourites',1)
+        // ->get(['artists.*']);
+        $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->get()
+          ->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+          return $item;
+        });
         if($favoriteslist){
             $response = array(
                 'status' => 'true',

@@ -44,9 +44,11 @@ if(!empty($str)){
 $uri_parts = explode('.', $video->mp4_url);
 $request_url = end($uri_parts);
 }
-// dd($request_url);
-// print_r ($request_url);
-// exit();
+
+
+$rtmp_url = $settings->rtmp_url;
+
+$Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 
 if(!Auth::guest()){
     
@@ -86,13 +88,13 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <!-- </div>  -->
             <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo "http://176.223.138.157/hls/".$video->Stream_key.".m3u8"; ?>">
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $Rtmp_url.$video->Stream_key.".m3u8"; ?>">
                         <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                         <input type="hidden" id="live" name="live" value="live">
                         <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
                          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo 'http://176.223.138.157/hls/'.$video->Stream_key.'.m3u8' ; ?>" >
+                            <source  type="application/x-mpegURL"  src="<?php echo $Rtmp_url.$video->Stream_key.'.m3u8' ; ?>" >
                         </video>
 
             <?php } ?>

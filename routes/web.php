@@ -28,6 +28,10 @@ Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
 Route::get('admin/cpp/revenue', 'ModeratorsUserController@Revenue');
+Route::post('/admin/cpp_startdate_revenue', 'ModeratorsUserController@CPPStartDateRevenue');
+Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRevenue');
+Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
+
 
 
 
@@ -603,6 +607,8 @@ Route::get('/app_settings/edit/{id}', 'AdminAppSettings@Edit');
 Route::get('/app_settings/delete/{id}', 'AdminAppSettings@Delete');
 Route::post('/app_settings/update', 'AdminAppSettings@Update');
 
+// RTMP Settings  
+Route::post('/rtmp_setting/update', 'AdminAppSettings@rtmpUpdate');
 
 Route::get('/allmoderator', 'ModeratorsUserController@view');
 Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');

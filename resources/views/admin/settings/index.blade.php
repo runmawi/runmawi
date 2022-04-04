@@ -4,7 +4,6 @@
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>
 
-
     </head>
 	<style>
 		#wrapper{
@@ -70,8 +69,9 @@ border-radius: 0px 4px 4px 0px;
     <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
     <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
    <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
-    <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+    
     <div class="mt-4">
+        <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
     <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
      <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
     <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
@@ -120,6 +120,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="rtmp_url_setting" href="#!">RTMP Streaming URL </a>  
                 </div>
             </div>
 
@@ -220,6 +221,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
+
     
                             <!-- PPV  -->
 
@@ -365,10 +367,9 @@ border-radius: 0px 4px 4px 0px;
                             <div>ON</div>
                             <div class="mt-1">
                                 <label class="switch">
-                                    <input type="checkbox" @if(!isset($settings->activation_email) ||
-                                    (isset($settings->activation_email) &&
-                                    $settings->activation_email))checked="checked" value="1"@else value="0"@endif
-                                    name="activation_email" id="activation_email" />
+                                <input type="checkbox" @if(!isset($settings->activation_email) ||
+                                    (isset($settings->activation_email) && $settings->activation_email))checked="checked"
+                                    value="1"@else value="0"@endif name="activation_email" id="activation_email" />
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -835,42 +836,74 @@ border-radius: 0px 4px 4px 0px;
     </div>
 <!-- </div> -->
 
-<div class="container-fluid" id="app" >
-<h5>APP Setting:</h5>
-    <div class="row">
-	<form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-		
-		<div class="row mt-4">
-			
-			<div class="col-md-12">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Android URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="android_url" id="android_url" value="@if(!empty($app_settings->android_url)){{ $app_settings->android_url }}@endif"  />
-					</div> 
-				</div>
-			</div>
+    <div class="container-fluid" id="app" >
+        <h5>APP Setting:</h5>
+        <div class="row">
+            <form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                
+                <div class="row mt-4">
+                    
+                    <div class="col-md-12">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Android URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="android_url" id="android_url" value="@if(!empty($app_settings->android_url)){{ $app_settings->android_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
 
-			<div class="col-md-12">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>IOS URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="ios_url" id="ios_url" value="@if(!empty($app_settings->ios_url)){{ $app_settings->ios_url }}@endif"  />
-					</div> 
-				</div>
-				</div>
+                    <div class="col-md-12">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>IOS URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="ios_url" id="ios_url" value="@if(!empty($app_settings->ios_url)){{ $app_settings->ios_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
 
-		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<div class="col-md-12" style="display: flex;
-            ">
-        <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary " />
-       </div>
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+                    <div class="col-md-12" style="display: flex; ">
+                        <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary " />
+                    </div>
+
+                </div>
+            </form>
         </div>
-	</form>
-    
-            </div>
-
     </div>
+
+    {{-- RTMP streaming --}}
+
+    <div class="container-fluid" id="rtmp_url" >
+        <h5>RTMP Video Streaming</h5>
+        <div class="row">
+            <form method="POST" action="{{ URL::to('admin/rtmp_setting/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Setting_rtmpURL">
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title" > 
+                                <label>RTMP URL</label> 
+                            </div> 
+                            
+                             <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="panel-body" style="display: block;"> 
+                                    <input type="text" class="form-control" name="rtmp_url" placeholder="rtmp://123.456.789.123/hls/"   value="@if(!empty($settings->rtmp_url)){{ $settings->rtmp_url }}@endif"  />
+                                </div> 
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                <div class="row mt-4">
+                    <div class="col-md-6" style="">
+                        <input type="submit" id="appupdate" value="Update RTMP URL Settings" class="btn btn-primary " />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     </div></div></div></div>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     
@@ -892,6 +925,8 @@ border-radius: 0px 4px 4px 0px;
 		
 @section('javascript')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
                     <script src="jquery-3.5.1.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -920,8 +955,7 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
-    
-
+        $("#rtmp_url").hide();
 
 	$('#site_setting').click(function(){
 		$('#site').show();
@@ -939,7 +973,9 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
 	});
+
 	$('#ppv_setting').click(function(){
 		// alert();
 		$('#videos_settings').hide();
@@ -957,6 +993,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -973,6 +1011,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#registration_setting').click(function(){
 		$('#site').hide();
@@ -989,6 +1029,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#email_setting').click(function(){
 		$('#site').hide();
@@ -1005,6 +1047,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#social_setting').click(function(){
 		$('#site').hide();
@@ -1022,6 +1066,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#subscription_setting').click(function(){
 		$('#site').hide();
@@ -1039,6 +1085,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#login_setting').click(function(){
 		$('#site').hide();
@@ -1057,6 +1105,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 	$('#advertisement_setting').click(function(){
 		$('#videos_settings').hide();
@@ -1074,6 +1124,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 
 
@@ -1095,6 +1147,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 
 	$('#app_setting').click(function(){
@@ -1116,6 +1170,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1139,6 +1195,9 @@ border-radius: 0px 4px 4px 0px;
         $("#Pay_Per_view_Hours").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+        $("#settingupdate").show();
+
     });
      
     $("#transcoding_setting").click(function () {
@@ -1159,6 +1218,8 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").show();
         $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+
     });
     $("#series_setting").click(function () {
         // alert();
@@ -1178,6 +1239,33 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").show();
+        $("#rtmp_url").hide();
+
+    });
+
+    $("#rtmp_url_setting").click(function () {
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        // $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+        $("#ppv_setting").hide();
+        $("#demo_mode").hide();
+        $("#Pay_Per_view_Hours").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").show();
+		$('#settingupdate').hide();
+
     });
 
 	});
@@ -1235,6 +1323,32 @@ border-radius: 0px 4px 4px 0px;
         filebrowserUploadMethod: 'form'
     });
     </script>
+
+{{-- validate --}}
+
+<script>
+
+
+$(document).ready(function($){
+
+$('form[id="Setting_rtmpURL"]').validate({
+   
+    rules: {
+        rtmp_url: {
+        required: true,
+        // url: true
+        }
+    },
+
+    messages: {
+        rtmp_url: "This field is required",
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});
+});
+</script>
 
 @stop
 
