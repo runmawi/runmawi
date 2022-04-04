@@ -33,6 +33,10 @@ Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRe
 Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
 
 
+Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
+Route::post('/admin/cpp_enddate_analytics', 'ModeratorsUserController@CPPEndDateAnalytic');
+Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnalyticExportCsv');
+
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');

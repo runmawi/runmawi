@@ -48,22 +48,62 @@
                 </div>
 
                 <div class="clear"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Total No. Of Video Content : 
+                        <?php 
+                            if (!empty($total_video_content))
+                            {
+                                echo $total_video_content;
+                            }
+                            else
+                            {
+                                echo $total_video_content;
+                            } 
+                        ?>
+                    </label> <br>
+                    <label for="">Total No. Of Live Video Content : 
+                        <?php 
+                            if (!empty($total_live_streams_content))
+                            {
+                                echo $total_live_streams_content;
+                            }
+                            else
+                            {
+                                echo $total_live_streams_content;
+                            } 
+                        ?>
+                    </label> <br>
+                    <label for="">Total No. Of Audio Content : 
+                        <?php 
+                            if (!empty($total_audio_content))
+                            {
+                                echo $total_audio_content;
+                            }
+                            else
+                            {
+                                echo $total_audio_content;
+                            } 
+                        ?>
+                    </label> <br>
+                </div>
+                <div class="col-md-6" >
+                </div>
+                </div>
                 <br>
                 <br>
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                     <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
                  </div>
-                 <div class="col-md-3" >
-                    <p > <h5 style="margin-left: 15%;"> </h5> </p>
-                    <h5 style="margin-left: 15%;"> Total Views : <span id="total_views"> </span></h5>
+                 <div class="col-md-6" >
                 </div>
                 </div>
             
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table" id="cpp_revenue_table" style="width:100%">
+                                <table class="table" id="cpp_analytics_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
@@ -75,7 +115,28 @@
                                         </tr>
                                     </thead>
                                 <tbody>
-                                   
+                                <tr>
+                                    @foreach($total_content as $key => $user)
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $user->email  }}</td>   
+                                        <td>{{ $user->username  }}</td>   
+                                        <td>{{ $user->count  }}</td>   
+                                        <?php if (!empty($user->videos_views) && !empty($user->audio_count))
+                                        { ?>
+                                        <td ><?php echo $user->videos_views + $user->audio_count; ?></td>
+                                        <?php
+                                        }
+                                        elseif (!empty($user->videos_views) && empty($user->audio_count))
+                                        { ?>
+                                        <td > <?php echo $user->videos_views; ?></td>
+
+                                        <?php   }  elseif (empty($user->videos_views) && !empty($user->audio_count))
+                                        { ?>
+                                        <td > <?php echo $user->audio_count; ?></td>
+                                        <?php   } ?> 
+                                        <!-- <td>{{ $user->count }}</td>  -->
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                            </table>
                         </div>
@@ -117,7 +178,7 @@
                     // console.log(value);
 
                     $('tbody').html(value.table_data);
-                    $('#total_views').text(value.views_count);  
+                    // $('#total_views').text(value.views_count);  
                     $('#cpp_analytics_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
@@ -137,8 +198,7 @@
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
                     chart.draw(data, {
-                        // width: 400,
-                        // height: 240
+
                     });
                     }
                 }
@@ -247,11 +307,11 @@
         var data = google.visualization.arrayToDataTable([
             ['Month Name', 'Moderator Users Commssion'],
 
-                // @php
-                // foreach($total_Revenue as $d) {
-                //     echo "['".$d->month_name."', ".$d->count."],";
-                // }
-                // @endphp
+                @php
+                foreach($total_content as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
         ]);
 
         var options = {
