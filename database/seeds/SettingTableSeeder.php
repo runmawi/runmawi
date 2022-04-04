@@ -71,6 +71,7 @@ class SettingTableSeeder extends Seeder
                 'watermar_link' => null ,
                 'ads_on_videos' => '1' ,
                 'default_video_image' => 'default_image.jpg',
+                'rtmp_url' => 'rtmp://176.223.138.157:1935/hls/',
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],
