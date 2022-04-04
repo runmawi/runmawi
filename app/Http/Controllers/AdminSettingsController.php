@@ -71,6 +71,12 @@ class AdminSettingsController extends Controller
           }else{
           $transcoding_access = 0;
           }
+          if(!empty($request['activation_email'])){
+            $activation_email = $request['activation_email'];
+            }else{
+            $activation_email = 0;
+            }
+            // dd($activation_email);
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
 		$settings->ppv_hours = $request['ppv_hours'];
@@ -83,7 +89,7 @@ class AdminSettingsController extends Controller
 		$settings->system_email = $request['system_email'];
 		$settings->enable_https = $request['enable_https'];
 		$settings->free_registration = $request['free_registration'];
-		$settings->activation_email = $request->get('activation_email');
+		$settings->activation_email = $activation_email;
     $settings->ads_on_videos = $request['ads_on_videos'];
     $settings->featured_pre_ad = $request['featured_pre_ad'];
     $settings->featured_mid_ad = $request['featured_mid_ad'];
@@ -272,7 +278,7 @@ class AdminSettingsController extends Controller
         //            $settings->activation_email= $request->get('activation_email');
         //        }
 
-        $settings->activation_email= $request->get('activation_email');
+        // $settings->activation_email= $request->get('activation_email');
         $settings->system_email= $request->get('system_email');
 
        
