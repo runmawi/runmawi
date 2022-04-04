@@ -145,6 +145,7 @@ border-radius: 0px 4px 4px 0px;
     
     </div></div>
 
+
 	@section('javascript')
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
@@ -153,7 +154,7 @@ border-radius: 0px 4px 4px 0px;
 		function addRow(ele) 
 		{
 			var stream_key= $(ele).attr('data-name');
-			var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+			var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
 
 			Swal.fire({
 					allowOutsideClick:false,

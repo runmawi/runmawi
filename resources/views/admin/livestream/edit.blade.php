@@ -158,9 +158,17 @@ border-radius: 0px 4px 4px 0px;
                                 <label for="live_stream_video"><label>Live Stream Video</label></label>
                                 <input type="file" multiple="true" class="form-group" name="live_stream_video" id="" />                        
                             </div>
-
                     </div>
                 </div>
+
+                @if($video->url_type == "Encode_video")
+                    <div class="col-sm-6">
+                        <label class="m-0">RTMP URL</label>
+                        <div class="panel-body">
+                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url.'/'. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="col-sm-6">
                     <div class="panel-body">
@@ -407,10 +415,7 @@ $(document).ready(function(){
 	rules: {
 	  title: 'required',
 	  url_type: 'required',
-	  details: 'required',
-	  year: 'required',
-	  description : 'required',
-
+	 
 		mp4_url: {
 		required : function(element) {
 			var action = $(".url_type").val();
