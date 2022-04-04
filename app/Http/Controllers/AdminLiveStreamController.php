@@ -42,7 +42,10 @@ class AdminLiveStreamController extends Controller
             $data = array(
                 'videos' => $videos,
                 'user' => $user,
-                'admin_user' => Auth::user()
+                'admin_user' => Auth::user(),
+                'Settings'  => Setting::first(),
+                'Video_encoder_Status' => '0',
+                'Stream_keys' => null,
                 );
 
             return View('admin.livestream.index', $data);
@@ -86,7 +89,6 @@ class AdminLiveStreamController extends Controller
             // 'year' => 'required'
         ]);
        
-        // dd($data);
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
             unset($data['video_category_id']);
@@ -341,8 +343,25 @@ class AdminLiveStreamController extends Controller
                 }
 
             }
+
+            if( $data['url_type'] == "Encode_video" ){
+
+                $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+                $data = array(
+                    'videos' => $videos,
+                    'user' => Auth::user(),
+                    'admin_user' => Auth::user(),
+                    'Settings'  => Setting::first(),
+                    'Video_encoder_Status' => '1',
+                    'Stream_keys' => $Stream_key,
+                    );
+
+             return View('admin.livestream.index', $data);
+            }
+            else{
+                return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+            }
         
-         return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
     }
     
     public function createSlug($title, $id = 0)
@@ -389,6 +408,7 @@ class AdminLiveStreamController extends Controller
             'languages' => Language::all(),
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
+            'settings' => Setting::first(),
             'liveStreamVideo_error' => '0'
             );
 
@@ -419,9 +439,9 @@ class AdminLiveStreamController extends Controller
          $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'slug' => 'required|max:255',
-            'description' => 'required',
-            'details' => 'required|max:255',
-            'year' => 'required'
+            // 'description' => 'required',
+            // 'details' => 'required|max:255',
+            // 'year' => 'required'
         ]);
 // Live Stream Video
         if(!empty($data['live_stream_video'])){
@@ -476,6 +496,8 @@ class AdminLiveStreamController extends Controller
                 return View::make('admin.livestream.edit', $data); 
             }
         }
+
+    // Video Encoder
 
             if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
                 $Stream_key = random_int(1000000000, 9999999999);

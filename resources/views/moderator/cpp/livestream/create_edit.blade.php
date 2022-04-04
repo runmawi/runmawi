@@ -392,9 +392,9 @@
 		  title: 'required',
 		  image: 'required',
 		  url_type: 'required',
-		  details: 'required',
-		  year: 'required',
-		  description : 'required',
+		//   details: 'required',
+		//   year: 'required',
+		//   description : 'required',
 		//   'video_category_id[]' :'required',
 		  'language[]' :'required',
 	
@@ -402,6 +402,17 @@
 			required : function(element) {
 				var action = $("#url_type").val();
 				if(action == "mp4") { 
+					return true;
+				} else {
+					return false;
+				}
+			 }
+			},
+
+			live_stream_video: {
+			required : function(element) {
+				var action = $("#url_type").val();
+				if(action == "live_stream_video") { 
 					return true;
 				} else {
 					return false;
