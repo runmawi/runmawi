@@ -385,10 +385,7 @@
     </div></div>
 </div>
 	
-@php
-	$liveStreamVideo_errors = $liveStreamVideo_error;
-@endphp	
-	
+
 	@section('javascript')
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -451,22 +448,30 @@
 		  });
 	// {{-- End validate --}}
 
-	var Stream_error = '{{ $liveStreamVideo_errors }}';
-
 	$( document ).ready(function() {
+		var Stream_error = '{{ $Stream_error }}';
+		var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Stream_keys = '{{ $Stream_key }}';
+	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
-			icon: 'error',
-			title: 'Oops...',
-			text: 'While Converting the Live Stream video, Something went wrong!',
+			icon: 'success',
+			title: 'RTMP Streaming Details',
+			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
 			}).then(function (result) {
 			if (result.value) {
+				@php
+						session()->forget('Stream_key');
+						session()->forget('Stream_error');
+				@endphp
 				location.href = "{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}";
 			}
 			})
 		}
 	});
+
 </script>
 
 	<script type="text/javascript">
@@ -609,6 +614,7 @@ $(document).ready(function(){
 
 	</script>
 <script>
+
     $(document).ready(function(){
         // $('#message').fadeOut(120);
         setTimeout(function() {
@@ -618,6 +624,8 @@ $(document).ready(function(){
 
 
 </script>
+
+
 	@stop
 
 @stop

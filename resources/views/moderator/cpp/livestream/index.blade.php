@@ -153,7 +153,6 @@
 			    return false;
 			});
 		});
-
 	</script>
 <script>
     $(document).ready(function(){
@@ -163,6 +162,36 @@
         }, 3000);
     })
 </script>
+
+
+<script>
+	$( document ).ready(function() {
+		var Stream_error = '{{ $Stream_error }}';
+		var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Stream_keys = '{{ $Stream_key }}';
+	
+	
+		if( Stream_error == 1){
+			Swal.fire({
+			allowOutsideClick:false,
+			icon: 'success',
+			title: 'RTMP Streaming Details',
+			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
+			}).then(function (result) {
+			if (result.value) {
+				@php
+						session()->forget('Stream_key');
+						session()->forget('Stream_error');
+				@endphp
+				location.href = "{{ URL::to('cpp/livestream')}}";
+			}
+			})
+		}
+	});
+	
+	</script>
+		
 	@stop
 
 @stop

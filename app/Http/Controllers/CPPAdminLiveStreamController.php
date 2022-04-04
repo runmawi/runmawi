@@ -29,6 +29,9 @@ class CPPAdminLiveStreamController extends Controller
     
     public function CPPindex()
         {
+            $Stream_key = Session::get('Stream_key');
+            $Stream_error =Session::get('Stream_error');
+
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
@@ -49,6 +52,10 @@ class CPPAdminLiveStreamController extends Controller
                 // 'user' => $user,
                 // 'admin_user' => Auth::user()
                 'settings' => Setting::first(),
+                'Stream_key' => $Stream_key,
+                'Video_encoder_Status' => 1,
+                'Settings'  => Setting::first(),
+                'Stream_error' => $Stream_error ? $Stream_error : 0 ,
                 );
 
             return View('moderator.cpp.livestream.index', $data);
@@ -337,8 +344,12 @@ class CPPAdminLiveStreamController extends Controller
             }
 
         }
+        if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
+            return Redirect::to('cpp/livestream')->with( ['Stream_key' => $Stream_key ] )->with( ['Stream_error' => '1' ] );
+        }else{
+            return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+        }
         
-         return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
         }else{
             return Redirect::to('/blocked');
           }
@@ -382,7 +393,9 @@ class CPPAdminLiveStreamController extends Controller
         $user = Session::get('user'); 
         $user_id = $user->id;
        $video = LiveStream::find($id);
-        
+
+       $Stream_key = Session::get('Stream_key');
+       $Stream_error =Session::get('Stream_error');
         
 
         $data = array(
@@ -397,6 +410,9 @@ class CPPAdminLiveStreamController extends Controller
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
             'liveStreamVideo_error' => '0',
             'settings' =>Setting::first(),
+            'Stream_key' => $Stream_key,
+            'Stream_error' => $Stream_error ? $Stream_error : 0 ,
+            'Settings' => Setting::first(),
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
@@ -629,8 +645,15 @@ class CPPAdminLiveStreamController extends Controller
 
             }
         }
+       
+        if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
 
-        return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with( ['Stream_key' => $video['Stream_key'] ] )->with( ['Stream_error' => '1' ] );
+        }else{
+
+            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+        }
+
     }else{
         return Redirect::to('/blocked');
       }
