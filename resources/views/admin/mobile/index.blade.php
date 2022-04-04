@@ -83,9 +83,10 @@ p.welcome_p {
     <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
     <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
     <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
-   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
-    <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+   <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+   
     <div class="mt-4">
+         <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
     <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
      <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
     <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
