@@ -44,6 +44,8 @@ class AdminLiveStreamController extends Controller
                 'user' => $user,
                 'admin_user' => Auth::user(),
                 'Settings'  => Setting::first(),
+                'Video_encoder_Status' => '0',
+                'Stream_keys' => null,
                 );
 
             return View('admin.livestream.index', $data);
@@ -341,8 +343,25 @@ class AdminLiveStreamController extends Controller
                 }
 
             }
+
+            if( $data['url_type'] == "Encode_video" ){
+
+                $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+                $data = array(
+                    'videos' => $videos,
+                    'user' => Auth::user(),
+                    'admin_user' => Auth::user(),
+                    'Settings'  => Setting::first(),
+                    'Video_encoder_Status' => '1',
+                    'Stream_keys' => $Stream_key,
+                    );
+
+             return View('admin.livestream.index', $data);
+            }
+            else{
+                return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+            }
         
-         return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
     }
     
     public function createSlug($title, $id = 0)
@@ -477,6 +496,8 @@ class AdminLiveStreamController extends Controller
                 return View::make('admin.livestream.edit', $data); 
             }
         }
+
+    // Video Encoder
 
             if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
                 $Stream_key = random_int(1000000000, 9999999999);
