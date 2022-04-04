@@ -365,10 +365,9 @@ border-radius: 0px 4px 4px 0px;
                             <div>ON</div>
                             <div class="mt-1">
                                 <label class="switch">
-                                    <input type="checkbox" @if(!isset($settings->activation_email) ||
-                                    (isset($settings->activation_email) &&
-                                    $settings->activation_email))checked="checked" value="1"@else value="0"@endif
-                                    name="activation_email" id="activation_email" />
+                                <input type="checkbox" @if(!isset($settings->activation_email) ||
+                                    (isset($settings->activation_email) && $settings->activation_email))checked="checked"
+                                    value="1"@else value="0"@endif name="activation_email" id="activation_email" />
                                     <span class="slider round"></span>
                                 </label>
                             </div>
