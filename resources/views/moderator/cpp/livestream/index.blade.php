@@ -132,7 +132,7 @@
 		function addRow(ele) 
 		{
 			var stream_key= $(ele).attr('data-name');
-			var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+			var Rtmp_url   = "{{ $settings->rtmp_url }}";	
 
 			Swal.fire({
 					allowOutsideClick:false,

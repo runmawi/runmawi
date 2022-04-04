@@ -48,6 +48,7 @@ class CPPAdminLiveStreamController extends Controller
                 'videos' => $videos,
                 // 'user' => $user,
                 // 'admin_user' => Auth::user()
+                'settings' => Setting::first(),
                 );
 
             return View('moderator.cpp.livestream.index', $data);
@@ -395,6 +396,7 @@ class CPPAdminLiveStreamController extends Controller
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
             'liveStreamVideo_error' => '0',
+            'settings' =>Setting::first(),
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
