@@ -376,14 +376,22 @@ border-radius: 0px 4px 4px 0px;
             title: "required",
             image: "required",
             url_type: "required",
-            details: "required",
-            year: "required",
-            description: "required",
 
             mp4_url: {
                 required: function (element) {
                     var action = $(".url_type").val();
                     if (action == "mp4") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            },
+
+            live_stream_video: {
+                required: function (element) {
+                    var action = $(".url_type").val();
+                    if (action == "live_stream_video") {
                         return true;
                     } else {
                         return false;

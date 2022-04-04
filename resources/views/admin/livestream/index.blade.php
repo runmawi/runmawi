@@ -145,6 +145,7 @@ border-radius: 0px 4px 4px 0px;
     
     </div></div>
 
+
 	@section('javascript')
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
@@ -153,7 +154,7 @@ border-radius: 0px 4px 4px 0px;
 		function addRow(ele) 
 		{
 			var stream_key= $(ele).attr('data-name');
-			var Rtmp_url   = "rtmp://176.223.138.157:1935/hls";	
+			var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
 
 			Swal.fire({
 					allowOutsideClick:false,
@@ -175,6 +176,27 @@ border-radius: 0px 4px 4px 0px;
 			    return false;
 			});
 
+		});
+
+
+		$( document ).ready(function() {
+			var Stream_error = '{{ $Video_encoder_Status }}';
+			var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+			var Stream_keys = '{{ $Stream_keys }}';
+
+			if( Stream_error == 1){
+				Swal.fire({
+				allowOutsideClick:false,
+				icon: 'success',
+				title: 'RTMP Streaming Details',
+				html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+						  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
+				}).then(function (result) {
+				if (result.value) {
+					location.href = "{{ URL::to('admin/livestream')}}";
+				}
+				})
+			}
 		});
 
 	</script>

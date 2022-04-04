@@ -147,10 +147,21 @@
 						<label for="embed_code"><label>Live Stream URL</label></label>
 						<input type="url" name="mp4_url"  class="form-control" id="video_upload" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
 					</div> -->
+
+					
+					@if($video->url_type == "Encode_video")
+
+						<div class="panel panel-primary mt-3" data-collapsed="0" id="url_rtmp"> <div class="panel-heading"> 
+							<div class="panel-title"><label>RTMP URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+							<div class="panel-body" style="display: block; padding:0px;">
+								<input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>	</div> 
+						</div>
+                	@endif
+
 					@if(!empty($video->mp4_url) )
-					<video width="200" height="200" controls>
-					<source src="{{ $video->mp4_url }}" type="video/mp4">
-					</video>
+						<video width="200" height="200" controls>
+						<source src="{{ $video->mp4_url }}" type="video/mp4">
+						</video>
 					@endif
 					
 				</div> 
@@ -374,10 +385,7 @@
     </div></div>
 </div>
 	
-@php
-	$liveStreamVideo_errors = $liveStreamVideo_error;
-@endphp	
-	
+
 	@section('javascript')
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -400,9 +408,9 @@
 			rules: {
 			  title: 'required',
 			  url_type: 'required',
-			  details: 'required',
-			  year: 'required',
-			  description : 'required',
+			//   details: 'required',
+			//   year: 'required',
+			//   description : 'required',
 			//   'video_category_id[]' :'required',
 			  'language[]' :'required',
 		
@@ -440,22 +448,30 @@
 		  });
 	// {{-- End validate --}}
 
-	var Stream_error = '{{ $liveStreamVideo_errors }}';
-
 	$( document ).ready(function() {
+		var Stream_error = '{{ $Stream_error }}';
+		var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Stream_keys = '{{ $Stream_key }}';
+	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
-			icon: 'error',
-			title: 'Oops...',
-			text: 'While Converting the Live Stream video, Something went wrong!',
+			icon: 'success',
+			title: 'RTMP Streaming Details',
+			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
 			}).then(function (result) {
 			if (result.value) {
+				@php
+						session()->forget('Stream_key');
+						session()->forget('Stream_error');
+				@endphp
 				location.href = "{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}";
 			}
 			})
 		}
 	});
+
 </script>
 
 	<script type="text/javascript">
@@ -471,20 +487,27 @@ $(document).ready(function(){
 		$('#mp4_code').show();
 		$('#embed_code').hide();	
 		$('#live_stream_video').hide();	
+		$('#url_rtmp').hide();	
+
 
 	}else if($("#url_type").val() == 'embed'){
 		$('#embed_code').show();	
 		$('#mp4_code').hide();
 		$('#live_stream_video').hide();	
+		$('#url_rtmp').hide();	
+
 
 	}else if($("#url_type").val() == 'live_stream_video'){
         $('#embed_code').hide();	
         $('#mp4_code').hide();
         $('#live_stream_video').show();	
+		$('#url_rtmp').hide();	
+
 	}
 	else if($("#url_type").val() == 'Encode_video'){
         $('#embed_code').hide();	
         $('#mp4_code').hide();
+		$('#url_rtmp').show();	
         $('#live_stream_video').hide();	
 	}
 });
@@ -591,6 +614,7 @@ $(document).ready(function(){
 
 	</script>
 <script>
+
     $(document).ready(function(){
         // $('#message').fadeOut(120);
         setTimeout(function() {
@@ -600,6 +624,8 @@ $(document).ready(function(){
 
 
 </script>
+
+
 	@stop
 
 @stop

@@ -158,6 +158,12 @@ class AdminAppSettings extends Controller
           
            return Redirect::back();
       }
-  
 
+      public function rtmpUpdate(Request $request)
+      {
+          $RTMP_url = Setting::first();
+          $RTMP_url->rtmp_url = $request->rtmp_url ?  $request->rtmp_url : null ;
+          $RTMP_url->save();
+          return Redirect::back();
+      }
 }
