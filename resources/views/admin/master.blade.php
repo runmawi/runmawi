@@ -732,17 +732,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-<<<<<<< HEAD
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
-=======
-                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/user-ana.svg')?>">Users Analytics </a></li>
-                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/view-reg.svg')?>">Views By Region</a></li>
-                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Revenue by Region</a></li>
->>>>>>> 72854b20ee7c614b49cccfd62ad07fc3350f3b2f
                      </ul>
                   </li>
                   <div >

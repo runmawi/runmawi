@@ -5441,6 +5441,7 @@ class ModeratorsUserController extends Controller
             ->count();
         $total_live_streams_content = ModeratorsUser::join('live_streams', 'live_streams.user_id', '=', 'moderators_users.id')
             ->count();
+            
         // dd($total_content);
 
         $data = array(
@@ -5500,9 +5501,10 @@ class ModeratorsUserController extends Controller
               <td>' . $i++ . '</td>
               <td>' . $row->email . '</td>
               <td>' . $row->username . '</td>
+              <td>' . $row->count . '</td>
               <td>' . $view_count . '</td>
               <td>' . $view_count . '</td>
-              <td>' . $row->count . '</td>    
+
               </tr>
               ';
 
@@ -5519,9 +5521,7 @@ class ModeratorsUserController extends Controller
         $value = array(
             'table_data' => $output,
             'total_data' => $total_row,
-            'total_Revenue' => $total_Revenue,
-            'views_count' => $views_count,
-            'view_count' => $view_count,
+            'total_content' => $total_content,
         );
 
         return $value;
@@ -5538,42 +5538,26 @@ class ModeratorsUserController extends Controller
 
         if (!empty($start_time) && !empty($end_time))
         {
-
-            $total_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('ppv_purchases.user_id')
-                ->orderBy('ppv_purchases.created_at')
-                ->get(['ppv_purchases.user_id', DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
-
-            $view_count = DB::table('ppv_purchases')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-                ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-                ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
-                ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->get(['ppv_purchases.user_id', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count")
-            //  \DB::raw("sum(live_streams.views) as audio_count")
+            
+            $total_content = ModeratorsUser::leftjoin('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
+                ->whereBetween('moderators_users.created_at', [$start_time, $end_time])->groupBy('moderators_users.id')
+                ->get([\DB::raw("COUNT(*) as count"),\DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("moderators_users.id as UserID")
+                ,\DB::raw("moderators_users.username as username")
+                ,\DB::raw("moderators_users.email as email")
+                , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
             ]);
-            if (count($view_count) > 0)
-            {
-                foreach ($view_count as $val)
-                {
-                    $views_count = $val->videos_views + $val->audio_count;
-                }
-            }
-            $total_users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-                ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-                ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('ppv_purchases.user_id')
-                ->orderBy('ppv_purchases.created_at')
-                ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
 
         }
 
         $output = '';
         $i = 1;
 
-        $total_row = $total_users->count();
-        if (!empty($total_users))
+        $total_row = $total_content->count();
+        if (!empty($total_content))
         {
-            foreach ($total_users as $key => $row)
+            foreach ($total_content as $key => $row)
             {
                 if (!empty($row->videos_views) && !empty($row->audio_count))
                 {
@@ -5590,9 +5574,11 @@ class ModeratorsUserController extends Controller
                 $output .= '
               <tr>
               <td>' . $i++ . '</td>
+              <td>' . $row->email . '</td>
               <td>' . $row->username . '</td>
+              <td>' . $row->count . '</td>
               <td>' . $view_count . '</td>
-              <td>' . $row->count . '</td>    
+              <td>' . $view_count . '</td>
               </tr>
               ';
 
@@ -5609,9 +5595,8 @@ class ModeratorsUserController extends Controller
         $value = array(
             'table_data' => $output,
             'total_data' => $total_row,
-            'total_Revenue' => $total_Revenue,
-            'views_count' => $views_count,
-            'view_count' => $view_count,
+            'total_content' => $total_content,
+
         );
 
         return $value;
@@ -5626,38 +5611,45 @@ class ModeratorsUserController extends Controller
         if (!empty($start_time) && empty($end_time))
         {
 
-            $total_users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-                ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-                ->whereDate('ppv_purchases.created_at', '>=', $start_time)->groupBy('ppv_purchases.user_id')
-                ->orderBy('ppv_purchases.created_at')
-                ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
+            $total_content = ModeratorsUser::leftjoin('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
+                ->whereDate('moderators_users.created_at', '>=', $start_time)->groupBy('moderators_users.id')
+                ->get([\DB::raw("COUNT(*) as count"),\DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("moderators_users.id as UserID")
+                ,\DB::raw("moderators_users.username as username")
+                ,\DB::raw("moderators_users.email as email")
+                , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
+            ]);
 
         }
         elseif (!empty($start_time) && !empty($end_time))
         {
 
-            $total_users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-                ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-                ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('ppv_purchases.user_id')
-                ->orderBy('ppv_purchases.created_at')
-                ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
-
+            $total_content = ModeratorsUser::leftjoin('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
+                ->whereBetween('moderators_users.created_at', [$start_time, $end_time])->groupBy('moderators_users.id')
+                ->get([\DB::raw("COUNT(*) as count"),\DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("moderators_users.id as UserID")
+                ,\DB::raw("moderators_users.username as username")
+                ,\DB::raw("moderators_users.email as email")
+                , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
+            ]);
         }
         else
         {
-
-            $total_users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
-                ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-                ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-                ->groupBy('ppv_purchases.user_id')
-                ->orderBy('ppv_purchases.created_at')
-                ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
-
+            $total_content = ModeratorsUser::leftjoin('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
+                // ->groupBy('videos.user_id')
+                ->groupBy('moderators_users.id')
+                ->get([\DB::raw("COUNT(*) as count"),\DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("moderators_users.id as UserID")
+                ,\DB::raw("moderators_users.username as username")
+                ,\DB::raw("moderators_users.email as email")
+                , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
+            ]);
         }
         //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
-        $file = 'CPPRevenue.csv';
+        $file = 'CPPAnalytics.csv';
 
         $headers = array(
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
@@ -5672,10 +5664,10 @@ class ModeratorsUserController extends Controller
         }
         $filename = public_path("/uploads/csv/" . $file);
         $handle = fopen($filename, 'w');
-        fputcsv($handle, ["Content Partner", "Total Views", "% Shared Commission", ]);
-        if (count($total_users) > 0)
+        fputcsv($handle, ["#","Email", "Uploader Name", "No Of Uploads","Total Views","Total Comments" ]);
+        if (count($total_content) > 0)
         {
-            foreach ($total_users as $each_user)
+            foreach ($total_content as $key => $each_user)
             {
                 if (!empty($each_user->videos_views) && !empty($each_user->audio_count))
                 {
@@ -5689,7 +5681,7 @@ class ModeratorsUserController extends Controller
                 {
                     $view_count = $each_user->audio_count;
                 }
-                fputcsv($handle, [$each_user->username, $view_count, $each_user->count,
+                fputcsv($handle, [$key+1, $each_user->email, $each_user->username, $view_count, $each_user->count,
 
                 ]);
             }
@@ -5702,7 +5694,61 @@ class ModeratorsUserController extends Controller
         return $file;
     }
 
+    public function CPPAnalyticBarchart(Request $request)
+    {
 
+        $data = $request->all();
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+
+        if (!empty($start_time) && empty($end_time))
+        {
+        // print_r('$start_time');
+
+            $total_video_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->whereDate('videos.created_at', '>=', $start_time)
+            ->count();
+            $total_audio_content = ModeratorsUser::join('audio', 'audio.user_id', '=', 'moderators_users.id')
+            ->whereDate('audio.created_at', '>=', $start_time)
+            ->count();
+            $total_live_streams_content = ModeratorsUser::join('live_streams', 'live_streams.user_id', '=', 'moderators_users.id')
+            ->whereDate('live_streams.created_at', '>=', $start_time)
+            ->count();
+        }
+        elseif (!empty($start_time) && !empty($end_time))
+        {
+        // print_r('$end_time');
+
+            $total_video_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->whereBetween('videos.created_at', [$start_time, $end_time])
+            ->count();
+            $total_audio_content = ModeratorsUser::join('audio', 'audio.user_id', '=', 'moderators_users.id')
+            ->whereBetween('audio.created_at', [$start_time, $end_time])
+            ->count();
+            $total_live_streams_content = ModeratorsUser::join('live_streams', 'live_streams.user_id', '=', 'moderators_users.id')
+            ->whereBetween('live_streams.created_at', [$start_time, $end_time])
+            ->count();
+        }
+        else
+        {
+            $total_video_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->count();
+            $total_audio_content = ModeratorsUser::join('audio', 'audio.user_id', '=', 'moderators_users.id')
+                ->count();
+            $total_live_streams_content = ModeratorsUser::join('live_streams', 'live_streams.user_id', '=', 'moderators_users.id')
+                ->count();
+        }
+
+        $value = array(
+            'total_video_content' => $total_video_content,
+            'total_audio_content' => $total_audio_content,
+            'total_live_streams_content' => $total_live_streams_content,
+        );
+
+        return $value;
+
+    }
 
 }
 
