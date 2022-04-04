@@ -4,7 +4,6 @@
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>
 
-
     </head>
 	<style>
 		#wrapper{
@@ -883,10 +882,14 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title"><label>RTMP URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                            <div class="panel-body" style="display: block;"> 
-                                <input type="text" class="form-control" name="rtmp_url"   value="@if(!empty($settings->rtmp_url)){{ $settings->rtmp_url }}@endif"  />
+                            <div class="panel-title" > 
+                                <label>RTMP URL</label> 
                             </div> 
+                            
+                             <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="panel-body" style="display: block;"> 
+                                    <input type="text" class="form-control" name="rtmp_url" placeholder="rtmp://123.456.789.123/hls/"   value="@if(!empty($settings->rtmp_url)){{ $settings->rtmp_url }}@endif"  />
+                                </div> 
                         </div>
                     </div>
                 </div>
@@ -922,6 +925,8 @@ border-radius: 0px 4px 4px 0px;
 		
 @section('javascript')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
                     <script src="jquery-3.5.1.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -1318,6 +1323,32 @@ border-radius: 0px 4px 4px 0px;
         filebrowserUploadMethod: 'form'
     });
     </script>
+
+{{-- validate --}}
+
+<script>
+
+
+$(document).ready(function($){
+
+$('form[id="Setting_rtmpURL"]').validate({
+   
+    rules: {
+        rtmp_url: {
+        required: true,
+        // url: true
+        }
+    },
+
+    messages: {
+        rtmp_url: "This field is required",
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});
+});
+</script>
 
 @stop
 

@@ -162,10 +162,10 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 @if($video->url_type == "Encode_video")
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" id="url_rtmp">
                         <label class="m-0">RTMP URL</label>
                         <div class="panel-body">
-                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url.'/'. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
+                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
                         </div>
                     </div>
                 @endif
@@ -462,20 +462,25 @@ $(document).ready(function(){
             $('#mp4_code').show();
             $('#embed_code').hide();
             $('#live_stream_video').hide();	
+            $('#url_rtmp').hide();	
 
         }else if($("#url_type").val() == 'embed'){
             $('#embed_code').show();	
             $('#mp4_code').hide();
             $('#live_stream_video').hide();	
+            $('#url_rtmp').hide();	
 
         }else if($("#url_type").val() == 'live_stream_video'){
             $('#embed_code').hide();	
             $('#mp4_code').hide();
             $('#live_stream_video').show();	
+            $('#url_rtmp').hide();	
+
         }else if ($("#url_type").val() == "Encode_video") {
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").hide();
+                $('#url_rtmp').show();	
         }
     });
 
