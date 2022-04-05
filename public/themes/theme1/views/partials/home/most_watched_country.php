@@ -18,7 +18,7 @@
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
                             <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid" alt=""> -->
-                            <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" data-play="hover">
+                            <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" data-play="hover">
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
                             </video>
                         </a>
