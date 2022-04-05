@@ -174,7 +174,7 @@ $jsondata = json_decode($jsonString, true);
 
                             <div class="row">
                                 <div class="col-md-12">
-                                <table class="table" id="user_table" style="width:100%">
+                                <table class="table" id="user_tabledss" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
@@ -211,6 +211,7 @@ $jsondata = json_decode($jsonString, true);
                            </table>
                                 </div>
                                 </div>
+                                <div style="margin-left:80%"><?php echo $total_user->render(); ?></div>
                             </div> 
                         </div> 
 

@@ -129,10 +129,10 @@ border-radius: 0px 4px 4px 0px;
 
                                        <?php if($video->draft != null && $video->draft == 1){ ?>
                                           <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                        <?php } else{?>
                                           <a class="iq-bg-warning mt-2" style = "opacity: 0.6; cursor: not-allowed;" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Disable View" ><i class="lar la-eye"></i></a>
+                                             data-original-title="Disable View" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                        <?php }?>
 
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
