@@ -176,7 +176,7 @@ class AdminAppSettings extends Controller
 
       public function rtmp_remove(Request $request)
       {
-         $RTMP = RTMP::where('rtmp_url',$request->remove_Data)->delete();
+         $RTMP = RTMP::where('id',$request->remove_Data)->delete();
        
          return true;
         }

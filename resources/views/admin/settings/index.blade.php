@@ -893,7 +893,7 @@ border-radius: 0px 4px 4px 0px;
                                         <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value={{ $url->rtmp_url }} readonly/></td>  
                                         <td>
                                             <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
-                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{$url->rtmp_url}}" value="{{$url->rtmp_url}}" onclick="addRow(this)" >Remove</button>
+                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{$url->rtmp_url}}" onclick="addRow(this)" >Remove</button>
                                         </td>  
 
                                     </tr>  
