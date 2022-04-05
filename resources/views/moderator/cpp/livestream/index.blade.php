@@ -96,7 +96,7 @@
 							<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @else {{  ucwords($video->url_type)  }} @endif
 							
 								@if( $video->url_type != null && $video->url_type == "Encode_video")
-									<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" id="" data-name="{{$video->Stream_key}}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
+									<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"  data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
 								@endif
 	
 							</td>
@@ -132,12 +132,13 @@
 		function addRow(ele) 
 		{
 			var stream_key= $(ele).attr('data-name');
-			var Rtmp_url   = "{{ $settings->rtmp_url }}";	
+			var Rtmp_url   = $(ele).attr('data-rtmpURL');
+			var Rtmp_title = $(ele).attr('data-title');
 
 			Swal.fire({
 					allowOutsideClick:false,
 					icon:'success',
-					title: 'RTMP Streaming Details',
+					title: 'RTMP Streaming Details for '+ Rtmp_title ,
 					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
 						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
 			})
@@ -167,15 +168,16 @@
 <script>
 	$( document ).ready(function() {
 		var Stream_error = '{{ $Stream_error }}';
-		var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
 		var Stream_keys = '{{ $Stream_key }}';
+		var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
 	
 	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
 			icon: 'success',
-			title: 'RTMP Streaming Details',
+			title: Title,
 			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
 					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
 			}).then(function (result) {
@@ -183,6 +185,8 @@
 				@php
 						session()->forget('Stream_key');
 						session()->forget('Stream_error');
+						session()->forget('Rtmp_url');
+						session()->forget('title');
 				@endphp
 				location.href = "{{ URL::to('cpp/livestream')}}";
 			}

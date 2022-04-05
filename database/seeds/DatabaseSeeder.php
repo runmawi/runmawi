@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             AdvertiserPlanHistorySeeder::class,
             AdvertiserWalletSeeder::class,
             FeaturedAddHistorySeeder::class,
+            RTMLSeeder::class,
         ]);
     
     }

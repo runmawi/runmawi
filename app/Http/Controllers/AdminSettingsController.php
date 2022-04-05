@@ -15,6 +15,7 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use App\ThumbnailSetting;
+use App\RTMP;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -31,6 +32,7 @@ class AdminSettingsController extends Controller
             'admin_user' => Auth::user(),
             'app_settings' => $app_settings ,   
 			      'settings' => $setting,
+            'rtmp_url'  => RTMP::all(),
 			  );
 
 	    	return \View::make('admin.settings.index', $data);

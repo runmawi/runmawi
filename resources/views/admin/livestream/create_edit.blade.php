@@ -133,13 +133,19 @@ border-radius: 0px 4px 4px 0px;
                             <label class="m-0">Video Source</label>
 
                             <div class="panel-body">
-                                <select class="form-control url_type" id="url_type" name="url_type">
-                                    <option value="">Choose URL Format</option>
-                                    <option value="mp4">MP4 URL</option>
-                                    <option value="embed">Embed URL</option>
-                                    <option value="live_stream_video">Live Stream Video</option>
-                                    <option value="Encode_video">Video Encoder </option>
+                                <select class="form-control url_type" id="url_type" name="url_type" >
+                                    <option value="" >Choose URL Format</option>
+                                    <option value="mp4"   >MP4 URL</option>
+                                    <option value="embed"  >Embed URL</option>
+                                    <option value="live_stream_video"   >Live Stream Video</option>
+                                    
+                                    @foreach($Rtmp_urls as $key => $urls)
+                                      @php     $number = $key+1;  @endphp
+                                           <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "Streaming Video"." ".$number }} </option>
+                                    @endforeach 
                                 </select>
+
+                                <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
                                     <label for="embed_code"><label class="mb-1">Live Stream URL</label></label>
@@ -371,6 +377,18 @@ border-radius: 0px 4px 4px 0px;
     $("#duration").mask("00:00:00");
    });
 
+        $(document).on('change', '.url_type', function() {
+
+            if($(".url_type").val() == "Encode_video"){
+                var optionText = $(".url_type option:selected").attr("data-name") ;
+
+                $("#Rtmp_url").val(function() {
+                    $("#Rtmp_url").val(' ');
+	                return this.value + optionText;
+	            });
+            }
+        });
+
     $('form[id="live_video"]').validate({
         rules: {
             title: "required",
@@ -450,6 +468,7 @@ border-radius: 0px 4px 4px 0px;
 </script>
 
 {{-- Sweet alert --}}
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -574,6 +593,7 @@ border-radius: 0px 4px 4px 0px;
             }
         }
     }
+
 </script>
     <script>
         $(document).ready(function () {
