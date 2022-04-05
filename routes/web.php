@@ -616,6 +616,8 @@ Route::post('/app_settings/update', 'AdminAppSettings@Update');
 
 // RTMP Settings  
 Route::post('/rtmp_setting/update', 'AdminAppSettings@rtmpUpdate');
+Route::get('/rtmp_setting/rtmp_remove', 'AdminAppSettings@rtmp_remove');
+
 
 Route::get('/allmoderator', 'ModeratorsUserController@view');
 Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');

@@ -119,15 +119,23 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-				<select class="form-control" id="url_type" name="url_type">
+				<select class="form-control url_type" id="url_type" name="url_type">
 					<option value="choose_url_format" >Choose URL Format</option>
 					<option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
 					<option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
 					<option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
-					<option value="Encode_video" @if(!empty($video->url_type) && $video->url_type == 'Encode_video'){{ 'selected' }}@endif>Video Encoder</option>
+
+					@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
+							@foreach($Rtmp_urls as $key => $urls)
+								@php     $number = $key+1;  @endphp
+								<option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "Streaming Video"." ".$number }} </option>
+							@endforeach 
+					@endif
 
 				</select>
 			
+				<input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
+
 				<div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
 						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
@@ -154,7 +162,7 @@
 						<div class="panel panel-primary mt-3" data-collapsed="0" id="url_rtmp"> <div class="panel-heading"> 
 							<div class="panel-title"><label>RTMP URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 							<div class="panel-body" style="display: block; padding:0px;">
-								<input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>	</div> 
+								<input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($video->rtmp_url) ) {{ $video->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>	</div> 
 						</div>
                 	@endif
 
@@ -450,14 +458,15 @@
 
 	$( document ).ready(function() {
 		var Stream_error = '{{ $Stream_error }}';
-		var Rtmp_url   = "{{ $Settings->rtmp_url ? $Settings->rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
 		var Stream_keys = '{{ $Stream_key }}';
+		var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
 	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
 			icon: 'success',
-			title: 'RTMP Streaming Details',
+			title: Title,
 			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
 					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
 			}).then(function (result) {
@@ -613,16 +622,29 @@ $(document).ready(function(){
 	}
 
 	</script>
+	
 <script>
-
     $(document).ready(function(){
         // $('#message').fadeOut(120);
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
 
-
+<script>
+	$(document).on('change', '.url_type', function() {
+	if($(".url_type").val() == "Encode_video"){
+	
+		var optionText = $(".url_type option:selected").attr("data-name") ;
+	
+		$("#Rtmp_url").val(function() {
+			$("#Rtmp_url").val(' ');
+			return this.value + optionText;
+		});
+	}
+	});
+	
 </script>
 
 
