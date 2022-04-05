@@ -11,6 +11,7 @@ use Carbon\Carbon as Carbon;
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function (){
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+    
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
@@ -31,6 +32,12 @@ Route::get('admin/cpp/revenue', 'ModeratorsUserController@Revenue');
 Route::post('/admin/cpp_startdate_revenue', 'ModeratorsUserController@CPPStartDateRevenue');
 Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRevenue');
 Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
+
+
+Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
+Route::post('/admin/cpp_enddate_analytics', 'ModeratorsUserController@CPPEndDateAnalytic');
+Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnalyticExportCsv');
+Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyticBarchart');
 
 
 
