@@ -164,11 +164,18 @@ class AdminAppSettings extends Controller
       {
           $rtmp_url  =  $request->rtmp_url;
 
+
           foreach($rtmp_url as $url){
 
+           $checking = RTMP::where('rtmp_url',$url['url'])->first();
+
+            if($checking == null){
+              
               $RTMP_url = new RTMP;
               $RTMP_url->rtmp_url = $url['url'] ;
               $RTMP_url->save();
+
+            }
           }
           
           return Redirect::back();

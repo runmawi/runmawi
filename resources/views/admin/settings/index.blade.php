@@ -880,7 +880,7 @@ border-radius: 0px 4px 4px 0px;
             <form method="POST" action="{{ URL::to('admin/rtmp_setting/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Setting_rtmpURL">
                 
                 <div class="row mt-4">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title" > 
                                 <label>RTMP URL</label> 
@@ -890,12 +890,11 @@ border-radius: 0px 4px 4px 0px;
 
                                 @forelse($rtmp_url as $key => $url)
                                     <tr>  
-                                        <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value={{ $url->rtmp_url }} readonly/></td>  
-                                        <td>
+                                        <td class="col-md-6" ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value="{{ $url->rtmp_url }}" readonly/></td>  
+                                        <td class="col-md-4">
                                             <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
-                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{$url->rtmp_url}}" onclick="addRow(this)" >Remove</button>
+                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{ $url->rtmp_url }}" onclick="addRow(this)" >Remove</button>
                                         </td>  
-
                                     </tr>  
                                 @empty
                                     <tr>  
@@ -1348,12 +1347,14 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function($){
 
 $('form[id="Setting_rtmpURL"]').validate({
-   
+    ignore: [],
     rules: {
-       ' rtmp_url[]': {
+        'ABCD[][]': {
         required: true,
-        // url: true
-        }
+        },
+        'rtmp_url': {
+        required: true,
+        },
     },
 
     messages: {
