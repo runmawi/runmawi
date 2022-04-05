@@ -46,7 +46,7 @@ $request_url = end($uri_parts);
 }
 
 
-$rtmp_url = $settings->rtmp_url;
+$rtmp_url = $video->rtmp_url;
 
 $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 
