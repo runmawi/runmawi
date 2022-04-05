@@ -885,11 +885,27 @@ border-radius: 0px 4px 4px 0px;
                             <div class="panel-title" > 
                                 <label>RTMP URL</label> 
                             </div> 
-                            
-                             <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                                <div class="panel-body" style="display: block;"> 
-                                    <input type="text" class="form-control" name="rtmp_url" placeholder="rtmp://123.456.789.123/hls/"   value="@if(!empty($settings->rtmp_url)){{ $settings->rtmp_url }}@endif"  />
-                                </div> 
+
+                            <table class="table table-bordered" id="dynamicTable">  
+
+                                @forelse($rtmp_url as $key => $url)
+                                    <tr>  
+                                        <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value={{ $url->rtmp_url }}/></td>  
+                                        <td>
+                                            <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
+                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{$url->rtmp_url}}" value="{{$url->rtmp_url}}" onclick="addRow(this)" >Remove</button>
+                                        </td>  
+
+                                    </tr>  
+                                @empty
+                                    <tr>  
+                                        <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control" /></td>  
+                                        <td >
+                                            <button type="button" name="add" id="add" class="btn btn-success add">Add </button> 
+                                        </td>  
+                                    </tr>  
+                                @endforelse
+                            </table> 
                         </div>
                     </div>
                 </div>
@@ -1348,6 +1364,45 @@ $('form[id="Setting_rtmpURL"]').validate({
     },
 });
 });
+
+// Append 
+        var i = 0;
+       
+       $(".add").click(function(){
+           ++i;
+           $("#dynamicTable").append('<tr><td><input type="text" name="rtmp_url['+i+'][url]" placeholder="rtmp://123.456.789.123/hls/"  class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
+       });
+      
+       $(document).on('click', '.remove-tr', function(){  
+            $(this).parents('tr').remove();
+       }); 
+
+
+    function addRow(ele) 
+		{
+			var remove_Data= $(ele).attr('data-name');
+            var checkstr =  confirm('are you sure you want to delete this?');
+
+            if(checkstr == true){
+                $.ajax({
+                    url:"{{ URL::to('admin/rtmp_setting/rtmp_remove') }}",
+                    method:'GET',
+                    data:{
+                        remove_Data:remove_Data
+                    },
+                    dataType:'json',
+                    success:function(data)
+                    {
+                        window.location.href = "{{ URL::to('admin/settings') }}";
+                    }
+                })
+            }else{
+                return false;
+            }
+		}
+
+     
+       
 </script>
 
 @stop

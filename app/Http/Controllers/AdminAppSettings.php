@@ -69,6 +69,7 @@ use App\RevenueSetting;
 use Session;
 use Redirect;
 use App\AppSetting;
+use App\RTMP;
 
 class AdminAppSettings extends Controller
 {   
@@ -161,9 +162,22 @@ class AdminAppSettings extends Controller
 
       public function rtmpUpdate(Request $request)
       {
-          $RTMP_url = Setting::first();
-          $RTMP_url->rtmp_url = $request->rtmp_url ?  $request->rtmp_url : null ;
-          $RTMP_url->save();
+          $rtmp_url  =  $request->rtmp_url;
+
+          foreach($rtmp_url as $url){
+
+              $RTMP_url = new RTMP;
+              $RTMP_url->rtmp_url = $url['url'] ;
+              $RTMP_url->save();
+          }
+          
           return Redirect::back();
       }
+
+      public function rtmp_remove(Request $request)
+      {
+         $RTMP = RTMP::where('rtmp_url',$request->remove_Data)->delete();
+       
+         return true;
+        }
 }
