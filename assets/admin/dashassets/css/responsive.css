@@ -72,7 +72,7 @@ NOTE: This file contains the styling for responsive Template.
 	.animation-card .an-img .bodymovin { margin-bottom: -28px; }
 	.animation-card .an-img { margin-top: 0; }
 }
-@media(max-width:1299px) {
+@media(max-width:2561px) {
 	.iq-top-navbar .iq-navbar-custom .iq-menu-bt { display: block; }
 	.iq-circle-progressbar .percent { font-size: 1.3rem !important; }
 	.iq-circle-progressbar svg { width: 80px !important; height: 80px !important; }
