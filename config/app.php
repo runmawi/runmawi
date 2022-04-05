@@ -208,7 +208,8 @@ return [
         Stevebauman\Location\LocationServiceProvider::class,
         Zusamarehan\Tourify\TourifyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
         
     ],
 
@@ -273,7 +274,7 @@ return [
         'Agent' => 'Jenssegers\Agent\Facades\Agent::class',
         'Theme' => Facuz\Theme\Facades\Theme::class,
         'Zip' => ZanySoft\Zip\ZipFacade::class,
-  'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

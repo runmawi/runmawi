@@ -13,13 +13,16 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="#333844">
 
   <title>{{ trans('laravel-filemanager::lfm.title-page') }}</title>
-  <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/laravel-filemanager/img/72px color.png') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css">
-  <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/cropper.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/dropzone.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/mime-icons.min.css') }}">
+  <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/unisharp/laravel-filemanager/public/img/72px color.png') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.css">
+  <link rel="stylesheet" href="{{ asset('vendor/unisharp/laravel-filemanager/public/css/cropper.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('vendor/unisharp/laravel-filemanager/public/css/mime-icons.min.css') }}">
+  <!-- CSS -->
+<!-- JS -->
+<script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
   <style>{!! \File::get(base_path('vendor/unisharp/laravel-filemanager/public/css/lfm.css')) !!}</style>
   {{-- Use the line below instead of the above if you need to cache the css. --}}
   {{-- <link rel="stylesheet" href="{{ asset('/vendor/laravel-filemanager/css/lfm.css') }}"> --}}
@@ -41,7 +44,7 @@
         <span class="d-none d-lg-inline">{{ trans('laravel-filemanager::lfm.menu-multiple') }}</span>
       </a>
     </div>
-    <a class="navbar-toggler collapsed border-0 px-1 py-2 m-0" data-toggle="collapse" data-target="#nav-buttons">
+    <a class="navbar-toggler collapsed border-0 px-1 py-2 m-0" Thumbnailstoggle="collapse" data-target="#nav-buttons">
       <i class="fas fa-cog fa-fw"></i>
     </a>
     <div class="collapse navbar-collapse flex-grow-0" id="nav-buttons">
@@ -188,12 +191,12 @@
     </a>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-  <script src="{{ asset('vendor/laravel-filemanager/js/cropper.min.js') }}"></script>
-  <script src="{{ asset('vendor/laravel-filemanager/js/dropzone.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.3/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.js"></script>
+  <script src="{{ asset('vendor/unisharp/laravel-filemanager/public/js/cropper.min.js') }}"></script>
+  <!-- <script src="{{ asset('vendor/unisharp/laravel-filemanager/public/js/dropzone.min.js') }}"></script> -->
   <script>
     var lang = {!! json_encode(trans('laravel-filemanager::lfm')) !!};
     var actions = [
@@ -262,7 +265,7 @@
   </script>
   <script>{!! \File::get(base_path('vendor/unisharp/laravel-filemanager/public/js/script.js')) !!}</script>
   {{-- Use the line below instead of the above if you need to cache the script. --}}
-  {{-- <script src="{{ asset('vendor/laravel-filemanager/js/script.js') }}"></script> --}}
+  {{-- <script src="{{ asset('vendor/unisharp/laravel-filemanager/js/script.js') }}"></script> --}}
   <script>
     Dropzone.options.uploadForm = {
       paramName: "upload[]", // The name that will be used to transfer the file
@@ -284,7 +287,8 @@
       headers: {
         'Authorization': 'Bearer ' + getUrlParam('token')
       },
-      acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
+      // acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
+      acceptedFiles: "video/mp4,video/x-m4v,video/*",
       maxFilesize: ({{ $helper->maxUploadSize() }} / 1000)
     }
   </script>
