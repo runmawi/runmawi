@@ -4,7 +4,7 @@
 <?php if(isset($sliders)) :
     foreach($sliders as $key => $slider_video): ?>
 
-        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+        <div id="st" class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
@@ -35,7 +35,7 @@ endif; ?>
 <?php if(isset($live_banner)) :
     foreach($live_banner as $key => $slider_video): ?>
 
-        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+        <div id="st" class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
@@ -100,7 +100,7 @@ endif; ?>
 <?php if(isset($video_banners)) :
     foreach($video_banners as $key => $videos): ?>
 
-        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+        <div id="st" class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
@@ -213,7 +213,7 @@ endif; ?>
     foreach($banner as $key => $slider_video): 
             ?>
 
-        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+        <div id="st" class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
