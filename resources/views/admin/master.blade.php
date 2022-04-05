@@ -140,19 +140,19 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span></span></a></li>
-                  <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+                  <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div  class="men" style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
-                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="fa fa-list-ul" aria-hidden="true"><span> Master Video List</span></a></li>
-                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
+                         <li><a href="{{ URL::to('admin/videos') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/all-video.svg')?>">All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/add-new-video.svg')?>">Add New Video</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/manage-video-list.svg')?>"><span> Master Video List</span></a></li>
+                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
           </ul></li>
           <!-- <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -168,7 +168,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
-                        <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                        <li><a href="{{ URL::to('admin/restirct') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
@@ -204,7 +204,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -368,22 +368,22 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="men" style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-video"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
-                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="fa fa-list-ul" aria-hidden="true"><span> Master Video List</span></a></li>
-                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
+                         <li><a href="{{ URL::to('admin/videos') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/all-video.svg')?>">All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/add-new-video.svg')?>">Add New Video</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/manage-video-list.svg')?>"><span> Master Video List</span></a></li>
+                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
@@ -432,7 +432,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -655,7 +655,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div >
@@ -732,11 +732,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
+                        <li><a href="{{ URL::to('admin/analytics/revenue') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/user-ana.svg')?>">Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
-                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
-                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
+                        <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/view-reg.svg')?>">Views By Region</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Revenue by Region</a></li>
                      </ul>
                   </li>
                   <div >
@@ -812,22 +812,22 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect">  <img class="" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div style="">
                  
                    <p class="lnk" >Video</p>
                    </div>
-                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/video.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                   <li data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library" class=" " data-tour="step: 1; title: All Videos; content: Go to 'Video Library' to add or import content into content library"><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                    <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                         <li><a href="{{ URL::to('admin/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
-                        <li><a href="{{ URL::to('admin/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><i class="las la-eye"></i>Videos For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><i class="fa fa-list-ul" aria-hidden="true"><span> Master Video List</span></a></li>
-                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>                    
+                         <li><a href="{{ URL::to('admin/videos') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/all-video.svg')?>">All Videos</a></li>
+                        <li><a href="{{ URL::to('admin/videos/create') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/add-new-video.svg')?>">Add New Video</a></li>
+                        <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Videos For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/manage-video-list.svg')?>"><span> Master Video List</span></a></li>
+                        <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
@@ -877,7 +877,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
                     <div class="men">
                 
