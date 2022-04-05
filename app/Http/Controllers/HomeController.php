@@ -1011,7 +1011,6 @@ class HomeController extends Controller
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     $trending_movies = Movie::where('active', '=', '1')->where('status', '=', '1')
-                    ->where('draft', '=', '1')
                         ->where('views', '>', '5')
                         ->orderBy('created_at', 'DESC')
                         ->get();
