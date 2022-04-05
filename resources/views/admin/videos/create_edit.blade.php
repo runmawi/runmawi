@@ -849,6 +849,11 @@ border-radius: 0px 4px 4px 0px;
    width: 100%;
    object-fit: cover
    }
+    #progressbar li img {
+    width: 125px;
+    display: block;
+    margin: 0 auto;
+}
    #msform input[type="file"]{border: 0; width: 100%;}
 </style>
 <script>
