@@ -499,5 +499,11 @@ else{
 
          
       </script>
+      <script type="text/javascript">
+	$("video").lazyload({
+	    effect : "fadeIn"
+	});
+</script>
+
 </body>
 </html>

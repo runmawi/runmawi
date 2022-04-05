@@ -54,7 +54,12 @@
                 <!-- Graph Currency   (SET BY Sanjai Kumar) -->
                 <div class="row">
                     <div class="col-md-9">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
+                        <?php if($total_Revenue_count > 0){ ?> 
+                            <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
+                        <?php }elseif($total_Revenue_count == 0){ ?> 
+                            <div id="" style=""> <label for="">Graph :</label><h5>No Revenue Data Found</h5></div>  
+                            <br>     
+                        <?php } ?>
                  </div>
                  <div class="col-md-3" >
                     <p > <h5 style="margin-left: 15%;">Currency Used : {{ $currency->symbol .' '.$currency->country}}</h5> </p>
@@ -260,6 +265,12 @@
 
 
 <script type="text/javascript">
+
+        var total_Revenue_count   = "{{ $total_Revenue_count }}";
+        // if(total_Revenue_count == 0){
+        //     ('#google-line-chart').hide();
+        // }
+        if(total_Revenue_count > 0){
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
@@ -285,6 +296,8 @@
 
           chart.draw(data, options);
         }
+    }else{
+    }
     </script>
 
     

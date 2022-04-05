@@ -5124,6 +5124,10 @@ class ModeratorsUserController extends Controller
             ->get(['ppv_purchases.user_id', DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
         $currency = CurrencySetting::first();
         $ppv_purchases = PpvPurchase::get();
+        $total_Revenue_count = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
+        ->groupBy('ppv_purchases.user_id')
+        ->orderBy('ppv_purchases.created_at')
+        ->count();
 
         $view_count = DB::table('ppv_purchases')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
             ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
@@ -5132,6 +5136,8 @@ class ModeratorsUserController extends Controller
             ->get(['ppv_purchases.user_id', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count")
         //  \DB::raw("sum(live_streams.views) as audio_count")
         ]);
+ 
+
         if (count($view_count) > 0)
         {
             foreach ($view_count as $val)
@@ -5146,11 +5152,17 @@ class ModeratorsUserController extends Controller
             ->groupBy('ppv_purchases.user_id')
             ->orderBy('ppv_purchases.created_at')
             ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
+        if(empty($total_Revenue)){
+        $total_Revenue_count = 0;
+        
+        }else{
+        $total_Revenue_count = 1;
+        }
 
-        // dd($total_users);
         $data = array(
             'settings' => $settings,
             'total_Revenue' => $total_Revenue,
+            'total_Revenue_count' => $total_Revenue_count,
             'currency' => $currency,
             'views_count' => $views_count,
             'view_count' => $view_count,
