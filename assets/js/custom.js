@@ -120,6 +120,9 @@ Index Of Script
 		----------------------------------------------------------------------- */
 		$('#home-slider').slick({
 			autoplay: false,
+             centerMode: true,
+  centerPadding: '60px',
+  slidesToShow: 1,
 			speed: 800,
 			lazyLoad: 'progressive',
 			arrows: true,

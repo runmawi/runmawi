@@ -18,6 +18,7 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
+use Session;
 use Illuminate\Support\Str;
 use App\Users as Users;
 use App\LiveLanguage as LiveLanguage;
@@ -30,7 +31,9 @@ class AdminLiveStreamController extends Controller
     
     public function index()
         {
-           
+            $Stream_key = Session::get('Stream_key');
+            $Stream_error =Session::get('Stream_error');
+
             if(!empty($search_value)):
                 $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
             else:
@@ -45,7 +48,9 @@ class AdminLiveStreamController extends Controller
                 'admin_user' => Auth::user(),
                 'Settings'  => Setting::first(),
                 'Video_encoder_Status' => '0',
-                'Stream_keys' => null,
+                'Stream_key' => $Stream_key,
+                'Stream_error' => $Stream_error ? $Stream_error : 0 ,
+
                 );
 
             return View('admin.livestream.index', $data);
@@ -345,18 +350,7 @@ class AdminLiveStreamController extends Controller
             }
 
             if( $data['url_type'] == "Encode_video" ){
-
-                $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
-                $data = array(
-                    'videos' => $videos,
-                    'user' => Auth::user(),
-                    'admin_user' => Auth::user(),
-                    'Settings'  => Setting::first(),
-                    'Video_encoder_Status' => '1',
-                    'Stream_keys' => $Stream_key,
-                    );
-
-             return View('admin.livestream.index', $data);
+                return Redirect::to('admin/livestream')->with( ['Stream_key' => $Stream_key ] )->with( ['Stream_error' => '1' ] );
             }
             else{
                 return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );

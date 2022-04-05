@@ -42,7 +42,7 @@
                                  <td>{{@$advertisement->categories->name}}</td>
                                  <td>{{ucfirst($advertisement->ads_position)}}</td>
                                  <td>@if ($advertisement->status == 1)
-                                   <p class="font-weight-bold text-success">Approved</p>
+                                   <p class="btn btn-success status_change">Approved</p>
                                    @elseif ($advertisement->status == 2)
                                    <p class="font-weight-bold text-danger">Disapproved</p>
                                    @else
