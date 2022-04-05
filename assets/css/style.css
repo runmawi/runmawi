@@ -107,7 +107,30 @@ header .navbar ul li:last-child { margin-right: 0; }
 /*--------------------------------------------------------------
                        Main Slider
 --------------------------------------------------------------*/
-#home-slider {}
+#home-slider { 
+  max-width: 100%; 
+  transition: transform 0.5s; 
+ }
+#home-slider .slick-slide {
+
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+#home-slider .slick-center {
+    -webkit-transform: scale(1.8);
+    transform: scale(1.8);
+
+}
+.header-image{
+    padding: 10px;
+}
+
+#home-slider.slick-center img{
+  transform: scale(2.1);
+}
+ #home-slider, .item{
+    padding: 10px!important;
+}
 #home-slider ul.slick-dots { bottom: 30px; }
 #home-slider .slick-dots li { height: auto; width: auto; }
 #home-slider .slick-dots li button { height: 2px; width: 30px; background: rgba(229, 9, 20, 0.4); padding: 0; }

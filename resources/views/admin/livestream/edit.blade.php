@@ -27,7 +27,7 @@ border-radius: 0px 4px 4px 0px;
 
 @section('content')
 <div id="content-page" class="content-page">
-     <div class="mb-5">
+     <div class=" d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
