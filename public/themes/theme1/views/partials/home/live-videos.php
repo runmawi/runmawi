@@ -13,7 +13,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom lazy" alt="" />
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" />
                         </a>
                         
                       <!-- PPV price -->

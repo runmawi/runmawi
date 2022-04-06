@@ -130,6 +130,12 @@
 								@php     $number = $key+1;  @endphp
 								<option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "Streaming Video"." ".$number }} </option>
 							@endforeach 
+					@else
+							@foreach($Rtmp_urls as $key => $urls)
+								@php     $number = $key+1;  @endphp
+								<option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "Streaming Video"." ".$number }} </option>
+							@endforeach 
+
 					@endif
 
 				</select>
@@ -157,6 +163,22 @@
 					</div> -->
 
 					
+					@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
+						<div class="row mt-3">
+							<div class="col-sm-12">
+								<label class="m-0">Streaming Video</label>
+								<div class="panel-body">
+									@if(!empty($video->image))
+									<a class="text-white btn-cl"  data-toggle="modal" data-target="#Stream_video">
+										<img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="150"/>
+									</a>
+									@endif
+								</div>
+							</div>
+						</div>
+                	@endif
+
+
 					@if($video->url_type == "Encode_video")
 
 						<div class="panel panel-primary mt-3" data-collapsed="0" id="url_rtmp"> <div class="panel-heading"> 
@@ -647,7 +669,48 @@ $(document).ready(function(){
 	
 </script>
 
+{{-- live Streaming  --}}
+        @php 
+            if(!empty($video->rtmp_url && $video->Stream_key)){
+                $Stream_video = $video->rtmp_url.$video->Stream_key.".m3u8"; 
+            }else{
+                $Stream_video = null ;
+            }
+        @endphp
 
+        <script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
+
+        <script>
+            var Stream_live_videos =" {{ ($Stream_video) }}";
+
+            var player = new Playerjs({id:"Stream_live_player", file:Stream_live_videos,autoplay:1});
+
+                $("#Streamclose").click(function(){
+                    var player = new Playerjs({id:"Stream_live_player", file:Stream_live_videos,stop:1});
+                });
+
+        </script>
 	@stop
-
 @stop
+
+{{-- Live Stream Modal --}}
+<div class="modal fade" id="Stream_video" tabindex="-1" role="dialog" aria-labelledby="Stream_video" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+            <div class="modal-body" id="Stream_live_player" style="height: 200px !important; width: auto;" >  </div>
+
+            <div class="modal-footer" style="">
+                <button type="button" class="btn btn-secondary" id="Streamclose" data-dismiss="modal">Close</button>
+            </div>
+      </div>
+    </div>
+</div>
+
+<style>
+    .modal-body{
+        position: unset;
+    }
+    .modal-footer{
+        background: black;
+    }
+</style>
