@@ -14,8 +14,8 @@ class AddModeratorIdToPpvPurchases extends Migration
     public function up()
     {
         Schema::table('ppv_purchases', function (Blueprint $table) {
-            $table->integer('live_id')->nullable('');
-            $table->integer('moderator_id')->nullable('');
+            $table->integer('live_id')->nullable();
+            $table->integer('moderator_id')->nullable();
 
         });
     }

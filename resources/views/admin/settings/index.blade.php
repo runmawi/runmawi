@@ -104,23 +104,23 @@ border-radius: 0px 4px 4px 0px;
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <!-- <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div> -->
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="site_setting" href="#!">Site Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="ppv_setting" href="#!">PPV Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="video_setting" href="#!">Video Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="registration_setting" href="#!">Registration Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="rtmp_url_setting" href="#!">RTMP Streaming URL Settings </a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="site_setting" href="#!">Site Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="ppv_setting" href="#!">PPV Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="video_setting" href="#!">Video Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="registration_setting" href="#!">Registration Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Settings</a>
                     <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Pro"){  ?>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Setting</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Setting</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="rtmp_url_setting" href="#!">RTMP Streaming URL </a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
                 </div>
             </div>
 
@@ -880,16 +880,31 @@ border-radius: 0px 4px 4px 0px;
             <form method="POST" action="{{ URL::to('admin/rtmp_setting/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Setting_rtmpURL">
                 
                 <div class="row mt-4">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title" > 
                                 <label>RTMP URL</label> 
                             </div> 
-                            
-                             <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-                                <div class="panel-body" style="display: block;"> 
-                                    <input type="text" class="form-control" name="rtmp_url" placeholder="rtmp://123.456.789.123/hls/"   value="@if(!empty($settings->rtmp_url)){{ $settings->rtmp_url }}@endif"  />
-                                </div> 
+
+                            <table class="table table-bordered" id="dynamicTable">  
+
+                                @forelse($rtmp_url as $key => $url)
+                                    <tr>  
+                                        <td class="col-md-6" ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value="{{ $url->rtmp_url }}" readonly/></td>  
+                                        <td class="col-md-4">
+                                            <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
+                                            <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{ $url->rtmp_url }}" onclick="addRow(this)" >Remove</button>
+                                        </td>  
+                                    </tr>  
+                                @empty
+                                    <tr>  
+                                        <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control" /></td>  
+                                        <td >
+                                            <button type="button" name="add" id="add" class="btn btn-success add">Add </button> 
+                                        </td>  
+                                    </tr>  
+                                @endforelse
+                            </table> 
                         </div>
                     </div>
                 </div>
@@ -1332,12 +1347,14 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function($){
 
 $('form[id="Setting_rtmpURL"]').validate({
-   
+    ignore: [],
     rules: {
-        rtmp_url: {
+        'ABCD[][]': {
         required: true,
-        // url: true
-        }
+        },
+        'rtmp_url': {
+        required: true,
+        },
     },
 
     messages: {
@@ -1348,6 +1365,47 @@ $('form[id="Setting_rtmpURL"]').validate({
     },
 });
 });
+
+// Append 
+        var i = 0;
+       
+       $(".add").click(function(){
+           ++i;
+           $("#dynamicTable").append('<tr><td><input type="text" name="rtmp_url['+i+'][url]" placeholder="rtmp://123.456.789.123/hls/"  class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
+       });
+      
+       $(document).on('click', '.remove-tr', function(){  
+            $(this).parents('tr').remove();
+       }); 
+
+
+    function addRow(ele) 
+		{
+			var remove_Data= $(ele).attr('data-name');
+            var checkstr =  confirm('are you sure you want to delete this?');
+
+            if(checkstr == true){
+                $.ajax({
+                    url:"{{ URL::to('admin/rtmp_setting/rtmp_remove') }}",
+                    method:'GET',
+                    data:{
+                        remove_Data:remove_Data
+                    },
+                    dataType:'json',
+                    success:function(data)
+                    {
+                        window.location.href = "{{ URL::to('admin/settings') }}";
+                    }
+                })
+            }else{
+                return false;
+            }
+		}
+
+        $(window).on('load', function () {
+            $("#rtmp_url_setting").trigger("click");
+        });
+ 
 </script>
 
 @stop

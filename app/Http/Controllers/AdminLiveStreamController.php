@@ -18,10 +18,12 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
+use Session;
 use Illuminate\Support\Str;
 use App\Users as Users;
 use App\LiveLanguage as LiveLanguage;
 use App\CategoryLive as CategoryLive;
+use App\RTMP;
 
 
 
@@ -30,7 +32,12 @@ class AdminLiveStreamController extends Controller
     
     public function index()
         {
-           
+            $Stream_key = Session::get('Stream_key');
+            $Stream_error =Session::get('Stream_error');
+            $Rtmp_url = Session::get('Rtmp_url');
+            $title = Session::get('title');
+
+
             if(!empty($search_value)):
                 $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
             else:
@@ -45,7 +52,10 @@ class AdminLiveStreamController extends Controller
                 'admin_user' => Auth::user(),
                 'Settings'  => Setting::first(),
                 'Video_encoder_Status' => '0',
-                'Stream_keys' => null,
+                'Stream_key' => $Stream_key,
+                'Stream_error' => $Stream_error ? $Stream_error : 0 ,
+                'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
+                'title' => $title ? $title : null,
                 );
 
             return View('admin.livestream.index', $data);
@@ -67,6 +77,7 @@ class AdminLiveStreamController extends Controller
                 'category_id' => [],
                 'languages_id' => [],
                 'liveStreamVideo_error' => '0',
+                'Rtmp_urls' => RTMP::all(),
                 );
             return View::make('admin.livestream.create_edit', $data);
         }
@@ -79,7 +90,7 @@ class AdminLiveStreamController extends Controller
     public function store(Request $request)
     {
 
-      $data = $request->all();
+        $data = $request->all();
 
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
@@ -285,6 +296,7 @@ class AdminLiveStreamController extends Controller
         if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
             $Stream_key = random_int(1000000000, 9999999999);
             $movie->Stream_key = $Stream_key;
+            $movie->Rtmp_url = $data['Rtmp_url'];
         }
 
         $movie->title =$data['title'];
@@ -345,18 +357,13 @@ class AdminLiveStreamController extends Controller
             }
 
             if( $data['url_type'] == "Encode_video" ){
-
-                $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
-                $data = array(
-                    'videos' => $videos,
-                    'user' => Auth::user(),
-                    'admin_user' => Auth::user(),
-                    'Settings'  => Setting::first(),
-                    'Video_encoder_Status' => '1',
-                    'Stream_keys' => $Stream_key,
-                    );
-
-             return View('admin.livestream.index', $data);
+                return Redirect::to('admin/livestream') ->with([
+                                                            'Stream_key' => $Stream_key,
+                                                            'Stream_error' => '1' ,
+                                                            'Rtmp_url' => $data['Rtmp_url'],
+                                                            'title' => $data['title']
+                                                        ]);
+               
             }
             else{
                 return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
@@ -398,6 +405,11 @@ class AdminLiveStreamController extends Controller
     {
         $video = LiveStream::find($id);
 
+        $Stream_key = Session::get('Stream_key');
+        $Stream_error =Session::get('Stream_error');
+        $Rtmp_url = Session::get('Rtmp_url');
+        $title = Session::get('title');
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
@@ -409,7 +421,12 @@ class AdminLiveStreamController extends Controller
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
             'settings' => Setting::first(),
-            'liveStreamVideo_error' => '0'
+            'liveStreamVideo_error' => '0',
+            'Rtmp_urls' => RTMP::all(),
+            'Stream_key' => $Stream_key,
+            'Stream_error' => $Stream_error ? $Stream_error : 0 ,
+            'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
+            'title' => $title ? $title : null,
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -502,6 +519,12 @@ class AdminLiveStreamController extends Controller
             if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
                 $Stream_key = random_int(1000000000, 9999999999);
                 $video->Stream_key = $Stream_key;
+            }
+
+            if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
+                if($data['Rtmp_url'] !=null){
+                    $video->Rtmp_url =  $data['Rtmp_url'];
+                }
             }
         
            $image = ($request->file('image')) ? $request->file('image') : '';
@@ -641,7 +664,20 @@ class AdminLiveStreamController extends Controller
             }
         }
         // dd($request['publish_time']);
-        return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+
+        if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
+
+            return Redirect::to('admin/livestream/edit' . '/' . $id)->with(
+                                                    [ 'Stream_key' => $video['Stream_key'],
+                                                      'Stream_error' => '1',
+                                                      'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
+                                                      'title' => $data['title']
+                                                    ]);
+        }else{
+
+            return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+        }
+
     }
     
     public function CPPLiveVideosIndex()

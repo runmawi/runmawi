@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 use App\Users as Users;
 use App\LiveLanguage as LiveLanguage;
 use App\CategoryLive as CategoryLive;
+use App\RTMP;
 
 class CPPAdminLiveStreamController extends Controller
 {
@@ -31,6 +32,8 @@ class CPPAdminLiveStreamController extends Controller
         {
             $Stream_key = Session::get('Stream_key');
             $Stream_error =Session::get('Stream_error');
+            $Rtmp_url = Session::get('Rtmp_url');
+            $title = Session::get('title');
 
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
@@ -56,6 +59,8 @@ class CPPAdminLiveStreamController extends Controller
                 'Video_encoder_Status' => 1,
                 'Settings'  => Setting::first(),
                 'Stream_error' => $Stream_error ? $Stream_error : 0 ,
+                'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
+                'title' => $title ? $title : null,
                 );
 
             return View('moderator.cpp.livestream.index', $data);
@@ -85,6 +90,8 @@ class CPPAdminLiveStreamController extends Controller
                 'category_id' => [],
                 'languages_id' => [],
                 'liveStreamVideo_error' => '0',
+                'Rtmp_urls' => RTMP::all(),
+
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
         }else{
@@ -291,6 +298,7 @@ class CPPAdminLiveStreamController extends Controller
         if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
             $Stream_key = random_int(1000000000, 9999999999);
             $movie->Stream_key = $Stream_key;
+            $movie->Rtmp_url = $data['Rtmp_url'];
         }
 
         $movie->title =$data['title'];
@@ -345,7 +353,12 @@ class CPPAdminLiveStreamController extends Controller
 
         }
         if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
-            return Redirect::to('cpp/livestream')->with( ['Stream_key' => $Stream_key ] )->with( ['Stream_error' => '1' ] );
+            return Redirect::to('cpp/livestream')->with( [
+                                                    'Stream_key' => $Stream_key ,
+                                                    'Stream_error' => '1',
+                                                    'Rtmp_url' => $data['Rtmp_url'],
+                                                    'title' => $data['title']
+                                                ] );
         }else{
             return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
         }
@@ -396,6 +409,8 @@ class CPPAdminLiveStreamController extends Controller
 
        $Stream_key = Session::get('Stream_key');
        $Stream_error =Session::get('Stream_error');
+       $Rtmp_url = Session::get('Rtmp_url');
+       $title = Session::get('title');
         
 
         $data = array(
@@ -413,6 +428,9 @@ class CPPAdminLiveStreamController extends Controller
             'Stream_key' => $Stream_key,
             'Stream_error' => $Stream_error ? $Stream_error : 0 ,
             'Settings' => Setting::first(),
+            'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
+            'title' => $title ? $title : null,
+            'Rtmp_urls' => RTMP::all(),
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
@@ -599,9 +617,16 @@ class CPPAdminLiveStreamController extends Controller
             }
         }
 
+    // video Encoder
         if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
             $Stream_key = random_int(1000000000, 9999999999);
             $video->Stream_key = $Stream_key;
+        }
+
+        if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
+            if($data['Rtmp_url'] !=null){
+                $video->Rtmp_url =  $data['Rtmp_url'];
+            }
         }
 
 
@@ -648,7 +673,12 @@ class CPPAdminLiveStreamController extends Controller
        
         if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
 
-            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with( ['Stream_key' => $video['Stream_key'] ] )->with( ['Stream_error' => '1' ] );
+            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(
+                                                    [ 'Stream_key' => $video['Stream_key'],
+                                                      'Stream_error' => '1',
+                                                      'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
+                                                      'title' => $data['title']
+                                                    ]);
         }else{
 
             return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed6a39e70c2a371f6b4bb63a585af8bc",
+    "content-hash": "827e17baa1a064de114bb7f3d561ec6c",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -8892,6 +8892,10 @@
                 "tinymce",
                 "upload"
             ],
+            "support": {
+                "issues": "https://github.com/UniSharp/laravel-filemanager/issues",
+                "source": "https://github.com/UniSharp/laravel-filemanager/tree/v2.4.1"
+            },
             "time": "2022-03-09T16:41:44+00:00"
         },
         {

@@ -122,14 +122,20 @@
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
-					<select class="form-control" id="url_type" name="url_type">
+					<select class="form-control url_type" id="url_type" name="url_type"  >
 						<option value="" >Choose URL Format</option>
 						<option value="mp4" >MP4 URL</option>
 						<option value="embed" >Embed URL</option>
 						<option value="live_stream_video">Live Stream Video</option>
-						<option value="Encode_video">Video Encoder </option>
+
+						@foreach($Rtmp_urls as $key => $urls)
+							@php     $number = $key+1;  @endphp
+							 <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "Streaming Video"." ".$number }} </option>
+					  	@endforeach 
 					</select>
 					
+					<input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
+
                     <div class="new-video-upload mt-2" id ="mp4_code">
 						<label for="embed_code"><label>Live Stream URL</label></label>
 						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
@@ -444,6 +450,9 @@
 	</script>
 <!-- {{-- End validate --}} -->
 
+
+
+
 {{-- Sweet alert --}}
 
 @php
@@ -612,6 +621,23 @@ $(document).ready(function(){
         }, 3000);
     })
 
+</script>
+
+<script>
+
+	$(document).on('change', '.url_type', function() {
+	
+	if($(".url_type").val() == "Encode_video"){
+	
+		var optionText = $(".url_type option:selected").attr("data-name") ;
+	
+		$("#Rtmp_url").val(function() {
+			$("#Rtmp_url").val(' ');
+			return this.value + optionText;
+		});
+	}
+	});
+	
 </script>
 	@stop
 
