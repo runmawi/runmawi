@@ -268,7 +268,7 @@
 <!-- MainContent End-->
 
 @php
-    include(public_path('themes\theme1\views\footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
      <script>
     //    $('.mywishlist').click(function(){
