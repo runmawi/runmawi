@@ -4680,7 +4680,10 @@ return response()->json($response, 200);
       $next_audio_id = Audio::where('id', '>', $currentaudio_id)->where('status','=','1')->where('active','=','1')->min('id');
 
       if($next_audio_id){
-        $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get();
+        $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+           return $item;
+      });
         $response = array(
           'status' => true,
           'next_audio_id' => $next_audio_id,
@@ -4703,7 +4706,10 @@ return response()->json($response, 200);
 
     if($prev_audio_id){
         $prev_audio_id = $prev_audio_id->id;
-        $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get();
+        $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+             return $item;
+        });
         $response = array(
           'status' => "true",
           'prev_audio_id' => $prev_audio_id,
