@@ -18,7 +18,7 @@
 
 <!-- Slider End -->
 
-<!-- MainContent -->
+<!-- 
 <div class="main-content">
     <section id="iq-continue">
         <div class="fluid">
@@ -28,7 +28,7 @@
               </div>
            </div>
         </div>
-    </section>
+    </section>MainContent -->
 
 
     <?php if(count($top_most_watched) > 0){ ?>

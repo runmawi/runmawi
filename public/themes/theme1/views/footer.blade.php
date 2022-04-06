@@ -499,11 +499,10 @@ else{
 
          
       </script>
-      <script type="text/javascript">
-	$("video").lazyload({
+  <script type="text/javascript">
+	$("img").lazyload({
 	    effect : "fadeIn"
 	});
 </script>
-
 </body>
 </html>
