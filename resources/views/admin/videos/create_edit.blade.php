@@ -109,13 +109,13 @@ border-radius: 0px 4px 4px 0px;
 @endforeach
 @endif
 
-<h5 class="p-1 mt-3 ml-3">Video Info Details</h5>
+<h5 class="p-1 mt-3 ml-3" style="font-weight: normal;">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
    <div class="row ">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
-         <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
+         <div class="px-0  pb-0  mb-3 col-md-12">
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                <!-- progressbar -->
                <ul id="progressbar">
@@ -182,7 +182,7 @@ border-radius: 0px 4px 4px 0px;
 -->
 
                       </div> 
-                     <input type="button" name="next" class="next action-button" value="Next"  /> 
+                     <input type="button" name="next" class="next action-button" id="nextplayer" value="Next"  /> 
                </fieldset>
                @endif
                <fieldset>
@@ -1340,6 +1340,8 @@ $(document).ready(function($){
            $('#successMessage').fadeOut('fast');
        }, 3000);
    })
+   
+
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
 <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
@@ -1376,6 +1378,9 @@ $(document).ready(function($){
    }
    
        });
+       $("#nextplayer").click(function(){
+      player.stop();
+   });
    }
    else{
          document.addEventListener("DOMContentLoaded", () => {
@@ -1410,14 +1415,32 @@ $(document).ready(function($){
    
      // Initialize here
      const player = new Plyr(video, defaultOptions);
+     
+   $("#nextplayer").click(function(){
+      player.stop();
+   });
    });
    hls.attachMedia(video);
    window.hls = hls;
+
    } else {
    // default options with no quality update in case Hls is not supported
    const player = new Plyr(video, defaultOptions);
+
+   $("#nextplayer").click(function(){
+      alert();
+      player.stop();
+   });
    }
    
+
+   
+
+
+
+
+
+
    function updateQuality(newQuality) {
    window.hls.levels.forEach((level, levelIndex) => {
      if (level.height === newQuality) {
@@ -1429,6 +1452,7 @@ $(document).ready(function($){
    });
    
    }
+
    function EmbedCopy() {
    // var media_path = $('#media_url').val();
    var media_path = '<?= $url_path ?>';
