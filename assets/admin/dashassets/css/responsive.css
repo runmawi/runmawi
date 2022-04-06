@@ -15,7 +15,7 @@ NOTE: This file contains the styling for responsive Template.
 	.iq-search-bar .searchbox { width: 330px; }
 	.iq-search-bar.search-book .searchbox { width: 280px; }
 }
-@media(min-width:1300px) {
+@media(min-width:992px) {
 	body.sidebar-main .iq-sidebar { width: 80px; }
 	.logo-title { white-space: nowrap; }
 	body.sidebar-main .iq-menu-bt { opacity: 0; }
@@ -60,7 +60,7 @@ NOTE: This file contains the styling for responsive Template.
 	.iq-page-menu-horizontal .iq-search-bar .searchbox .search-link { color: var(--iq-search); }
 	.iq-menu-horizontal .iq-sidebar-menu .iq-menu li.menu-open .iq-arrow-right, .iq-menu-horizontal .iq-sidebar-menu .iq-menu li:hover .iq-arrow-right { transform: rotate(90deg); }
 	.iq-menu-horizontal .iq-sidebar-menu .iq-menu li li .iq-arrow-right, .iq-menu-horizontal .iq-sidebar-menu .iq-menu li:hover li .iq-arrow-right { transform: rotate(0deg); }
-	.iq-page-menu-horizontal .content-page { margin-left: 0px; background: var(--iq-body-bg); position: relative; padding: 100px 50px 0px; }
+	.iq-page-menu-horizontal .content-page { margin-left: 300px; background: var(--iq-body-bg); position: relative; padding: 100px 50px 0px; }
 	.iq-menu-horizontal .iq-sidebar-menu .iq-menu li ul { display: block; position: absolute; top: 100%; padding: 10px 0px; min-width: 200px; background: var(--iq-white); z-index: 9; transition: all 0.3s ease 0s; -webkit-transition: all 0.3s ease 0s; -moz-transition: all 0.3s ease 0s; -o-transition: all 0.3s ease 0s; transform: scale(1, 0); -webkit-transform: scale(1, 0); -moz-transform: scale(1, 0); -o-transform: scale(1, 0); -webkit-transform-origin: 0 0 0; -moz-transform-origin: 0 0 0; -o-transform-origin: 0 0 0; transform-origin: 0 0 0; }
 	.iq-menu-horizontal .iq-sidebar-menu li:hover > .iq-submenu { display: block; transition: all 0.3s ease 0s; -webkit-transition: all 0.3s ease 0s; -moz-transition: all 0.3s ease 0s; -o-transition: all 0.3s ease 0s; transform: scale(1, 1); -webkit-transform: scale(1, 1); -moz-transform: scale(1, 1); -o-transform: scale(1, 1); }
 	.iq-menu-horizontal .iq-sidebar-menu li > .iq-submenu.iq-submenu-data { opacity: 0; visibility: visible; left: 100%; top: 0; transform-origin: left center 0; }
@@ -72,16 +72,15 @@ NOTE: This file contains the styling for responsive Template.
 	.animation-card .an-img .bodymovin { margin-bottom: -28px; }
 	.animation-card .an-img { margin-top: 0; }
 }
-@media(max-width:1299px) {
+@media(max-width:991px) {
 	.iq-top-navbar .iq-navbar-custom .iq-menu-bt { display: block; }
 	.iq-circle-progressbar .percent { font-size: 1.3rem !important; }
 	.iq-circle-progressbar svg { width: 80px !important; height: 80px !important; }
 	.iq-circle-progressbar { margin: 0 auto; width: 80px !important; height: 80px !important; }
-	.content-page, body.sidebar-main .content-page { margin-left: 0; padding: 116px 15px 0; }
+	.content-page, body.sidebar-main .content-page { margin-left: 300px; padding: 116px 15px 0; }
 	.iq-top-navbar, body.sidebar-main .iq-top-navbar { width: auto; left: 0; right: 0; padding-left: 15px; }
 	.iq-top-navbar.fixed-header { width: 100%; left: 0; }
 	.iq-footer, body.sidebar-main .iq-footer { padding: 15px 10px; margin-left: 0; width: 100%; }
-	.iq-sidebar { display: inline-block; z-index: 99; left: -260px; top: 75px; padding-top: 15px; }
 	.iq-top-navbar .iq-navbar-custom .navbar-breadcrumb { display: none; }
 	.iq-sidebar-logo { width: auto; padding-top: 0; }
 	.iq-sidebar-logo .logo-title span { font-size: 18px !important; }
@@ -98,7 +97,7 @@ NOTE: This file contains the styling for responsive Template.
 	.iq-menu-horizontal .iq-sidebar-menu .iq-menu li ul { position: static; box-shadow: none; }
 	.without-right-sidebar .iq-footer { width: 100%; }
 	.iq-navbar-logo { padding: 0; }
-	.iq-sidebar { display: inline-block; z-index: 99; left: -300px; top: 0px; }
+	.iq-sidebar { display: inline-block; z-index: 99; left: -300px; top: 0px; padding-top: 15px;  }
 	body.two-sidebar.sidebar-main .iq-sidebar .iq-navbar-logo { padding-left: 15px; }
 	body.two-sidebar.sidebar-main .iq-sidebar { width: 260px; z-index: 1000; }
 	body.two-sidebar .iq-top-navbar { width: calc(100% - 85px); left: auto; }
@@ -326,7 +325,12 @@ NOTE: This file contains the styling for responsive Template.
 
 
 }
-@media(max-width:359px) {
+@media (max-width:359px) {
 	.iq-search-bar .searchbox { width: 160px; }
 	.navbar-list li.nav-item.nav-icon > a { margin-top: 20px; margin-bottom: 20px; }
+}
+@media (min-width:1024px) and (max-width: 2560px) {
+    .iq-top-navbar .iq-navbar-custom .iq-menu-bt {
+        display: none !important;
+    }
 }
