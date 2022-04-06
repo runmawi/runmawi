@@ -24,7 +24,11 @@
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
+<<<<<<< HEAD
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->mobile_image;  ?>" class="img-fluid" alt="" width="">
+=======
+                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
+>>>>>>> 99bc0a1b62007b4b397f9a64c6cb2ec348422f7a
                                                
                                         </div>
                                                  </div>

@@ -912,6 +912,16 @@ $artists = [];
 
          $(document).ready(function () { 
 
+           /*bufferedTimeRanges*/
+
+          // var video_Player = document.getElementById('videoPlayer');
+
+          // var bufferedTimeRanges = video_Player.buffered;
+          // $('#videoPlayer').click(function(){
+          //   console.log(bufferedTimeRanges);
+          // });
+
+
            /*Watch trailer*/
           //  $(".watch_trailer").click(function() {
           //    var videohtml = '<video id="videoPlayer" controls autoplay><source src="<?php echo $video->trailer;?>"></video>';

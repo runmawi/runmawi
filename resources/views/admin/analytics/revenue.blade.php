@@ -82,30 +82,35 @@ $jsondata = json_decode($jsonString, true);
 
 ?>
 <div id="content-page" class="content-page">
-            <div class="row">
-            <span  id="export" class="btn btn-success btn-sm" >Export</span>
-            </div>
-            <div class="row">
-                     <div class="iq-card-header  justify-content-between">
-                            <div class="iq-header-title">
+    <div class="iq-card">
+         <div class="iq-card-header  justify-content-between">
+                            <div class="iq-header-title p-0">
                             <h4 class="card-title">Users Analytics</h4>
+                                  
                             </div>
                         </div>
+            <div class="row">
+            
+            </div>
+            <div class="row p-3">
+                    
+                <hr>
                         <div class="col-md-12">
-                          <div class="row"> 
+                          <div class="row mt-3"> 
                           <div class="col-md-4">
                           <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" >
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                           <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time">
                           </div>
-                          <div class="col-md-5">
+                          <div class="col-md-4 ">
+                             <span  id="export" class="btn btn-success btn-sm" >Export</span>
                           </div>
                           </div>
                           <div class="clear"></div>
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <div class="col-md-4">
                                     <!-- <input type="text" class="daterange" /> -->
                                     <label for="">Registered User : <?php if (!empty($data1['registered_count']))
@@ -147,7 +152,7 @@ $jsondata = json_decode($jsonString, true);
                                  <div class="col-md-8">
                                     <figure class="highcharts-figure">
                                     <!-- <div id="container"></div> -->
-                                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                                    <div id="google-line-chart" style="width: 700px; height: 500px"></div>
                                     </figure>
                                 </div> 
                             </div> 

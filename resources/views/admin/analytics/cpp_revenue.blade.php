@@ -20,19 +20,19 @@
 
 @section('content')
     <div id="content-page" class="content-page">
+        <div class="iq-card">
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
                     <h4 class="card-title">Content Partners Revenue :</h4>
                 </div>
 
-                <br>
-                <br>
+            </div>
 
                 <div class="clear"></div>
 
                 <!-- Start Date  End Date  Download CSV    (SET BY Sanjai Kumar) -->
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-md-4">
                         <label for="start_time">  Start Date: </label>
                         <input type="date" id="start_time" name="start_time" >               
@@ -105,6 +105,7 @@
                         </div>
                     </div>
             </div>
+        </div>
         </div>
     </div>
 
