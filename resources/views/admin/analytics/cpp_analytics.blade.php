@@ -20,18 +20,18 @@
 
 @section('content')
     <div id="content-page" class="content-page">
+        <div class="iq-card">
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
                     <h4 class="card-title">Content Partners Analytics :</h4>
                 </div>
-
-                <br>
-                <br>
+            </div>
+             
 
                 <div class="clear"></div>
 
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-md-4">
                         <label for="start_time">  Start Date: </label>
                         <input type="date" id="start_time" name="start_time" >               
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
+                        <span  id="export" class="btn btn-primary" >Download CSV</span><!--btn btn-success btn-sm-->
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table" id="cpp_analytics_table" style="width:100%">
+                                <table class="table text-center" id="cpp_analytics_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
@@ -161,7 +161,7 @@
             </div>
         </div>
     </div>
-
+</div>
     
 @stop
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
