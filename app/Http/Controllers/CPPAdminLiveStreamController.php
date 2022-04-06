@@ -617,13 +617,16 @@ class CPPAdminLiveStreamController extends Controller
             }
         }
 
+    // video Encoder
         if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
             $Stream_key = random_int(1000000000, 9999999999);
             $video->Stream_key = $Stream_key;
         }
 
         if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
-            $video->Rtmp_url =  $data['Rtmp_url'];
+            if($data['Rtmp_url'] !=null){
+                $video->Rtmp_url =  $data['Rtmp_url'];
+            }
         }
 
 
@@ -673,7 +676,7 @@ class CPPAdminLiveStreamController extends Controller
             return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(
                                                     [ 'Stream_key' => $video['Stream_key'],
                                                       'Stream_error' => '1',
-                                                      'Rtmp_url' => $data['Rtmp_url'],
+                                                      'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
                                                       'title' => $data['title']
                                                     ]);
         }else{
