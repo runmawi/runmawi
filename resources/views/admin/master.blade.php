@@ -1035,7 +1035,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    </div>
                    <div class="iq-search-bar ml-auto">
                        <div class="pt-2 pull-right">
-                            <a class="btn btn-primary" href="<?php echo URL::to('home') ?>" ><span>Visit Website </span><img style="filter: invert;" height="20" width="20" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
+                            <a class="btn btn-primary" href="<?php echo URL::to('home') ?>" ><span>Visit Website </span><img style="filter: invert(1);" height="25" width="25" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
                        </div>
                       <form action="#" class="searchbox">
                         <!-- <input type="text" class="text search-input" placeholder="Search Here...">
