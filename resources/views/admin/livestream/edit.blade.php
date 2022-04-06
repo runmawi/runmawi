@@ -141,8 +141,21 @@ border-radius: 0px 4px 4px 0px;
                             <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif >MP4 URL</option>
                             <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
                             <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
-                            <option value="Encode_video" @if(!empty($video->url_type) && $video->url_type == 'Encode_video'){{ 'selected' }}@endif>Video Encoder</option>
+                        
+                        	@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
+                                @foreach($Rtmp_urls as $key => $urls)
+                                    @php     $number = $key+1;  @endphp
+                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "Streaming Video"." ".$number }} </option>
+                                @endforeach 
+					        @else
+                                 @foreach($Rtmp_urls as $key => $urls)
+                                    @php     $number = $key+1;  @endphp
+                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}">{{ "Streaming Video"." ".$number }} </option>
+                                @endforeach 
+                            @endif
                         </select>
+
+				        <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
 
                             <div class="new-video-upload mt-2" id="mp4_code">
                                 <label for="embed_code"><label>Live Stream URL</label></label>
@@ -165,7 +178,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-6" id="url_rtmp">
                         <label class="m-0">RTMP URL</label>
                         <div class="panel-body">
-                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $settings->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
+                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $video->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
                         </div>
                     </div>
                 @endif
@@ -392,19 +405,29 @@ border-radius: 0px 4px 4px 0px;
 var Stream_error = '{{ $liveStreamVideo_errors }}';
 
 $( document ).ready(function() {
-    if( Stream_error == 1){
-        Swal.fire({
-        allowOutsideClick:false,
-        icon: 'error',
-        title: 'Oops...',
-        text: 'While Converting the Live Stream video, Something went wrong!',
-        }).then(function (result) {
-        if (result.value) {
-            location.href = "{{ URL::to('admin/livestream/edit') . '/' . $video->id }}";
-        }
-        })
-    }
-});
+		var Stream_error = '{{ $Stream_error }}';
+		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
+		var Stream_keys = '{{ $Stream_key }}';
+		var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
+	
+		if( Stream_error == 1){
+			Swal.fire({
+			allowOutsideClick:false,
+			icon: 'success',
+			title: Title,
+			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
+			}).then(function (result) {
+			if (result.value) {
+				@php
+						session()->forget('Stream_key');
+						session()->forget('Stream_error');
+				@endphp
+				location.href = "{{ URL::to('admin/livestream/edit') . '/' . $video->id }}";
+			}
+			})
+		}
+	});
 
 
 $(document).ready(function(){
@@ -601,6 +624,23 @@ $(document).ready(function(){
 
 
 </script>
+
+
+<script>
+	$(document).on('change', '.url_type', function() {
+	if($(".url_type").val() == "Encode_video"){
+	
+		var optionText = $(".url_type option:selected").attr("data-name") ;
+	
+		$("#Rtmp_url").val(function() {
+			$("#Rtmp_url").val(' ');
+			return this.value + optionText;
+		});
+	}
+	});
+	
+</script>
+
 	@stop
 
 @stop

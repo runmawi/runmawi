@@ -982,6 +982,9 @@ endif; ?>
                          
                         $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                              ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                             ->where('category_id','=','data')
+                                             ->where('status', '=', '1')
+                                             ->where('draft', '=', '1')
                                              ->where('age_restrict','<',18);
 
                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
@@ -996,7 +999,9 @@ endif; ?>
                            }else{
 
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                          ->where('status', '=', '1')
+                                          ->where('draft', '=', '1');
 
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
@@ -1012,7 +1017,9 @@ endif; ?>
                     
 
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                          ->where('status', '=', '1')
+                                          ->where('draft', '=', '1');
                      
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
