@@ -21,6 +21,9 @@
 }
 	</style>
 	<style type="text/css">
+        tr{
+            border:transparent!important;
+        }
 	.has-switch .switch-on label {
 		background-color: #FFF;color: #000;
 	}
@@ -882,11 +885,11 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row mt-4">
                     <div class="col-md-10">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title" > 
+                            <div class="panel-title ml-3" > 
                                 <label>RTMP URL</label> 
                             </div> 
 
-                            <table class="table table-bordered" id="dynamicTable">  
+                            <table class="table" id="dynamicTable">  
 
                                 @forelse($rtmp_url as $key => $url)
                                     <tr>  
@@ -912,8 +915,9 @@ border-radius: 0px 4px 4px 0px;
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                 <div class="row mt-4">
                     <div class="col-md-6" style="">
-                        <input type="submit" id="appupdate" value="Update RTMP URL Settings" class="btn btn-primary " />
+                        <input type="submit" id="appupdate" value="Update RTMP URL Settings" class="btn btn-primary ml-3 " />
                     </div>
+                </div>
                 </div>
             </form>
         </div>
