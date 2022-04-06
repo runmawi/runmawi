@@ -14,7 +14,7 @@
                 <div class="block-images position-relative">
                     <!-- block-images -->
                     <div class="img-box">
-                        <img loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt="">
+                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload" alt="">
                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4" />
                         </video>

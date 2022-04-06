@@ -949,7 +949,8 @@ endif; ?>
          </section>*/ ?>
 
         <section id="iq-tvthrillers" class="s-margin">
-            <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
+            <?php if ( GetCategoryVideoStatus() == 1 ) {  
+                      ?>
             <div class="fluid">
                <?php
                      $getfeching = App\Geofencing::first();
@@ -972,13 +973,18 @@ endif; ?>
                       else{
                         $blockvideos[]='';
                       } 
-
                     foreach($parentCategories as $category) {
+                     //  dd('$null');
+
                        if( $Multiprofile != null ){
+
                            if($Multiprofile->user_type == "Kids"){
                          
                         $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                              ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                             ->where('category_id','=','data')
+                                             ->where('status', '=', '1')
+                                             ->where('draft', '=', '1')
                                              ->where('age_restrict','<',18);
 
                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
@@ -991,8 +997,11 @@ endif; ?>
                              }
                               $videos = $videos ->get();
                            }else{
+
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                          ->where('status', '=', '1')
+                                          ->where('draft', '=', '1');
 
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
@@ -1005,10 +1014,12 @@ endif; ?>
                        }
                       $videos = $videos ->get();
                        } } else {
+                    
 
-                      
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                          ->where('category_id','=',$category->id)->where('active', '=', '1');
+                                          ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                          ->where('status', '=', '1')
+                                          ->where('draft', '=', '1');
                      
                      if($getfeching !=null && $getfeching->geofencing == 'ON'){
                         $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
