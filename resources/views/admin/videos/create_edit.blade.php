@@ -794,6 +794,7 @@ border-radius: 0px 4px 4px 0px;
    font-weight: 400;
    background-color: white;
    padding: 10px;
+       line-height: 19px;
    }
    #progressbar #videot:before {
    font-family: FontAwesome;
