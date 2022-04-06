@@ -109,7 +109,7 @@ border-radius: 0px 4px 4px 0px;
 @endforeach
 @endif
 
-<h5 class="p-1 mt-3 ml-3">Video Info Details</h5>
+<h5 class="p-1 mt-3 ml-3" style="font-weight: normal;">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
