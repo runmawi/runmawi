@@ -115,7 +115,7 @@ border-radius: 0px 4px 4px 0px;
 <div class="container-fluid">
    <div class="row ">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
-         <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
+         <div class="px-0  pb-0  mb-3 col-md-12">
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                <!-- progressbar -->
                <ul id="progressbar">
