@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
-use App\RTML;
+use App\RTMP;
 
 class RTMLSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class RTMLSeeder extends Seeder
      */
     public function run()
     {
-        RTML::truncate();
+        RTMP::truncate();
 
         $rtml_url = [
             [   'rtmp_url'   => 'rtmp:://172:225:212/hls/', 
@@ -23,6 +23,6 @@ class RTMLSeeder extends Seeder
 
         ];
 
-        RTML::insert($rtml_url);
+        RTMP::insert($rtml_url);
     }
 }
