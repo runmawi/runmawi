@@ -1675,19 +1675,7 @@ if(!empty($artistsdata)){
             //  dd($video);
 
              $video = Video::findOrFail($id);
-             $users = User::all();
-             if($video['draft'] == 1){
-            //  foreach ($users as $key => $user) {
-            //     //  $userid[]= $user->id;
-            //     if(!empty($user->token)){
-            // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
-            //     }
-            //  }
-        //      foreach ($userid as $key => $user_id) {
-        //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
-        //     }
-         
-            }
+
             if(!empty($data['video_category_id'])){
                 $category_id = $data['video_category_id'];
                 unset($data['video_category_id']);
