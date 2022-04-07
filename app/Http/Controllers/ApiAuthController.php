@@ -4597,17 +4597,28 @@ return response()->json($response, 200);
         }                        
         $blockaudios[]='';
         
-        $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC');
-        $trending_audios= Audio::where('active', '=', '1')->where('status', '=', '1')
-        ->where('views', '>', '5')->orderBy('created_at', 'DESC')
-        ->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-           return $item;
-      });
+        // $trending_audios = Audio::where('active', '=', '1')
+        // ->where('status', '=', '1')->where('views', '>', '5')
+        // ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+        //       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        //        return $item;
+        //   });
+          $trending_audios = Audio::
+          where('active', '=', '1')
+          ->where('status', '=', '1')->where('views', '>', '5')
+          ->get()
+          ->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+          return $item;
+        });
+        
         if($getfeching !=null && $getfeching->geofencing == 'ON'){
           $trending_audios =   $trending_audios->whereNotIn('id',$blockaudios);
+
         }
-        $trending_audios =$trending_audios->get();
+        // print_r($trending_audios);exit;
+
+        $trending_audios =$trending_audios;
         $response = array(
             'status'=>'true',
             'trending_audios'=>$trending_audios
