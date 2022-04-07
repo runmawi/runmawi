@@ -186,7 +186,7 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1
 				}
 			}
@@ -268,7 +268,7 @@ Index Of Script
 			{
 				breakpoint: 480,
 				settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1,
 				}
 			}
