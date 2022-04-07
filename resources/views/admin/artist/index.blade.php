@@ -33,8 +33,8 @@ border-radius: 0px 4px 4px 0px;
 
 @section('content')
 
-<div class="admin-section-title" style="margin-left: 340px;
-    padding-top: 100px;">
+<div class="admin-section-title">
+    <div id="content-page" class="content-page">
     <div class="d-flex">
     <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists') }}">All Artists</a>
     <a class="black" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
@@ -118,4 +118,5 @@ border-radius: 0px 4px 4px 0px;
         }, 3000);
     })
 </script>
+    </div>
 	@stop
