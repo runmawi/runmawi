@@ -4598,7 +4598,6 @@ return response()->json($response, 200);
         $blockaudios[]='';
         
         $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC');
-
         $trending_audios= Audio::where('active', '=', '1')->where('status', '=', '1')
         ->where('views', '>', '5')->orderBy('created_at', 'DESC')
         ->get()->map(function ($item) {
