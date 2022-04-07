@@ -36,8 +36,10 @@ border-radius: 0px 4px 4px 0px;
 
 @section('content')
 
-	<div class="admin-section-title"  style="margin-left: 330px;
-    padding-top: 100px;">
+	<div class="admin-section-title">
+        <div id="content-page" class="content-page">
+    <div class="container-fluid">
+
         <div class="d-flex">
         <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series-list') }}"> Series List</a>
         <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
@@ -94,8 +96,8 @@ border-radius: 0px 4px 4px 0px;
 		
 	</div>
         </div>
-
-
+        </div>
+        </div>
 	@section('javascript')
 	<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 	<script>
