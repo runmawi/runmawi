@@ -114,7 +114,7 @@ border-radius: 0px 4px 4px 0px;
 <div >
 <div class="container-fluid">
    <div class="row ">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0  mb-2">
          <div class="px-0  pb-0  mb-3 col-md-12">
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                <!-- progressbar -->
@@ -794,6 +794,7 @@ border-radius: 0px 4px 4px 0px;
    font-weight: 400;
    background-color: white;
    padding: 10px;
+       line-height: 19px;
    }
    #progressbar #videot:before {
    font-family: FontAwesome;
