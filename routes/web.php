@@ -25,6 +25,15 @@ Route::post('/admin/end_date_url', 'AdminUsersController@StartEndDateRecord');
 Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
 
+
+//////////// User Revenue analytics
+Route::get('/admin/users/revenue', 'AdminUsersController@UserRevenue');
+Route::post('/admin/User_exportCsv', 'AdminUsersController@RevenueExportCsv');
+Route::post('/admin/User_start_date_url', 'AdminUsersController@RevenueStartDateRecord');
+Route::post('/admin/User_end_date_url', 'AdminUsersController@RevenueStartEndDateRecord');
+Route::post('/admin/User_list_users_url', 'AdminUsersController@RevenueListUsers');
+
+
 ////// CPP revenue
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
