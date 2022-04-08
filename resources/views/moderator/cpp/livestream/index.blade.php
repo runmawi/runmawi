@@ -93,7 +93,7 @@
 						<td class="bg-danger"> <?php  echo "Rejected"; ?></td>
 							<?php }?>  
 
-							<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @else {{  ucwords($video->url_type)  }} @endif
+							<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @elseif( $video->url_type != null && $video->url_type == "live_stream_video") {{ 'Live Stream Video' }} @else {{  ucwords($video->url_type)  }} @endif
 							
 								@if( $video->url_type != null && $video->url_type == "Encode_video")
 									<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"  data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
