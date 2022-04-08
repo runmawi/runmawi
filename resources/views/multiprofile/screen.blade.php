@@ -15,7 +15,7 @@
             </div>
             
 		</div>
-    </div>
+    
 
 <style>
 	.theme_name {
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 </div>
-
+        </div>
 </div>
 </div>
 </div>

@@ -40,12 +40,13 @@ border-radius: 0px 4px 4px 0px;
 
 @section('content')
 <div id="content-page" class="content-page">
+    <div class="d-flex">
      <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
     <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
     <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
     <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
-   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
-    <div class="mt-4">
+   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a></div>
+    <div class="d-flex">
             <a class="black" style="background:#fafafa!important;color: #006AFF!important;"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
 
     <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
@@ -53,7 +54,7 @@ border-radius: 0px 4px 4px 0px;
     <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
     <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
     </div>
-            <div class="container-fluid mt-5 p-0">
+            <div class="container-fluid  p-0">
 <div class="iq-card">
 <div id="admin-container">
 <!-- This is where -->
