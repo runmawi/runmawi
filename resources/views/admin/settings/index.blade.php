@@ -976,6 +976,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 
+
 	$('#site_setting').click(function(){
 		$('#site').show();
 		$('#videos_settings').hide();
@@ -993,6 +994,8 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
+
 	});
 
 	$('#ppv_setting').click(function(){
@@ -1013,6 +1016,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#video_setting').click(function(){
@@ -1031,6 +1035,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#registration_setting').click(function(){
@@ -1049,6 +1054,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#email_setting').click(function(){
@@ -1067,6 +1073,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#social_setting').click(function(){
@@ -1086,6 +1093,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#subscription_setting').click(function(){
@@ -1105,6 +1113,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#login_setting').click(function(){
@@ -1125,6 +1134,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#advertisement_setting').click(function(){
@@ -1144,6 +1154,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 
@@ -1167,6 +1178,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 
@@ -1238,6 +1250,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").show();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
     });
     $("#series_setting").click(function () {
@@ -1259,6 +1272,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").show();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
     });
 
