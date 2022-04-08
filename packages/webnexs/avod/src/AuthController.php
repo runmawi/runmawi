@@ -115,8 +115,8 @@ class AuthController extends Controller
 
         }elseif(!empty(session('advertiser_id')) && $activeplan > 0){
             $adslist = Advertisement::where('advertiser_id',session('advertiser_id'))->pluck('id')->toArray();
-
             $cpc = [];
+            $ads = [];
             foreach ($adslist as $key => $ad_id) {
                 $cpc[] = Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
                 $ads[] = Advertisement::where('id',$ad_id)->first()->ads_name;
@@ -127,7 +127,6 @@ class AuthController extends Controller
                 $cpv[] = Adviews::where('ad_id',$ad_id)->sum('advertiser_share');
                 $ads1[] = Advertisement::where('id',$ad_id)->first()->ads_name;
             }
-
             return view('avod::dashboard')->with('ads',json_encode($ads,JSON_NUMERIC_CHECK))->with('cpc',json_encode($cpc,JSON_NUMERIC_CHECK))->with('ads1',json_encode($ads1,JSON_NUMERIC_CHECK))->with('cpv',json_encode($cpv,JSON_NUMERIC_CHECK));
 
         }
