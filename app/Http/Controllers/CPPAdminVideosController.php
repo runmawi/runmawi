@@ -291,10 +291,26 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                 $video->type = 'mp4_url';
                 $video->draft = 0;
                 $video->image = 'default_image.jpg';
+            
+                $PC_image_path = public_path('/uploads/images/default_image.jpg');
+                
+                if( file_exists($PC_image_path)){
+                    $Mobile_image =  'Mobile-default_image.jpg' ;
+                    $Tablet_image =  'Tablet-default_image.jpg' ;
+                                                
+                    Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                                
+                    $video->mobile_image  = $Mobile_image;
+                    $video->tablet_image  = $Tablet_image;
+                }
+                else{
+                    $video->mobile_image  = 'default_image.jpg';
+                    $video->tablet_image  = 'default_image.jpg';
+                }
                 $video->duration  = $Video_duration;
                 $video->save(); 
                 
-            
                 $video_id = $video->id;
                 $video_title = Video::find($video_id);
                 $title =$video_title->title; 
@@ -332,9 +348,26 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                  $video->title = $file_folder_name;
                  $video->mp4_url = $storepath;
                  $video->draft = 0;
-                 $video->image = 'default_image.jpg';
                  $video->duration  = $Video_duration;
                  $video->user_id = $user->id;
+                 $video->image = 'default_image.jpg';
+            
+                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
+                 
+                 if( file_exists($PC_image_path)){
+                     $Mobile_image =  'Mobile-default_image.jpg' ;
+                     $Tablet_image =  'Tablet-default_image.jpg' ;
+                                                 
+                     Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                     Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                                 
+                     $video->mobile_image  = $Mobile_image;
+                     $video->tablet_image  = $Tablet_image;
+                 }
+                 else{
+                     $video->mobile_image  = 'default_image.jpg';
+                     $video->tablet_image  = 'default_image.jpg';
+                 }
                  $video->save();
     
                  ConvertVideoForStreaming::dispatch($video);
@@ -375,8 +408,25 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
                 $video->draft = 0;
-                $video->image = 'default_image.jpg';
                 $video->duration  = $Video_duration;
+                $video->image = 'default_image.jpg';
+            
+                $PC_image_path = public_path('/uploads/images/default_image.jpg');
+                
+                if( file_exists($PC_image_path)){
+                    $Mobile_image =  'Mobile-default_image.jpg' ;
+                    $Tablet_image =  'Tablet-default_image.jpg' ;
+                                                
+                    Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                                
+                    $video->mobile_image  = $Mobile_image;
+                    $video->tablet_image  = $Tablet_image;
+                }
+                else{
+                    $video->mobile_image  = 'default_image.jpg';
+                    $video->tablet_image  = 'default_image.jpg';
+                }
                 $video->save(); 
                 
             
@@ -1691,8 +1741,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
     public function CPPMp4url(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
         $user = Session::get('user'); 
@@ -1710,6 +1760,24 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = $user->id;
+            $video->image = 'default_image.jpg';
+            
+            $PC_image_path = public_path('/uploads/images/default_image.jpg');
+            
+            if( file_exists($PC_image_path)){
+                $Mobile_image =  'Mobile-default_image.jpg' ;
+                $Tablet_image =  'Tablet-default_image.jpg' ;
+                                            
+                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                            
+                $video->mobile_image  = $Mobile_image;
+                $video->tablet_image  = $Tablet_image;
+            }
+            else{
+                $video->mobile_image  = 'default_image.jpg';
+                $video->tablet_image  = 'default_image.jpg';
+            }
             $video->save();
             
             $video_id = $video->id;
@@ -1728,8 +1796,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
     public function CPPm3u8url(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
         $user = Session::get('user'); 
@@ -1746,7 +1814,26 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = $user->id;
-            $video->save();;
+            $video->image = 'default_image.jpg';
+            
+            $PC_image_path = public_path('/uploads/images/default_image.jpg');
+            
+            if( file_exists($PC_image_path)){
+                $Mobile_image =  'Mobile-default_image.jpg' ;
+                $Tablet_image =  'Tablet-default_image.jpg' ;
+                                            
+                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                            
+                $video->mobile_image  = $Mobile_image;
+                $video->tablet_image  = $Tablet_image;
+            }
+            else{
+                $video->mobile_image  = 'default_image.jpg';
+                $video->tablet_image  = 'default_image.jpg';
+            }
+
+            $video->save();
             
             $video_id = $video->id;
 
@@ -1764,8 +1851,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
     public function CPPEmbededcode(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $package = $user_package->package;
+
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $data = $request->all();
         $value = array();
 
@@ -1786,6 +1874,26 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             $video->draft = 0;
             $video->active = 1 ;
             $video->user_id = $user->id;
+
+            $video->image = 'default_image.jpg';
+            
+            $PC_image_path = public_path('/uploads/images/default_image.jpg');
+            
+            if( file_exists($PC_image_path)){
+                $Mobile_image =  'Mobile-default_image.jpg' ;
+                $Tablet_image =  'Tablet-default_image.jpg' ;
+                                            
+                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                            
+                $video->mobile_image  = $Mobile_image;
+                $video->tablet_image  = $Tablet_image;
+            }
+            else{
+                $video->mobile_image  = 'default_image.jpg';
+                $video->tablet_image  = 'default_image.jpg';
+            }
+
             $video->save();
             
             $video_id = $video->id;
