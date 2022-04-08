@@ -48,6 +48,8 @@ use App\HomeSetting;
 use App\WelcomeScreen;
 use App\SubscriptionPlan;
 use App\Devices;
+use App\CurrencySetting;
+use App\PpvPurchase;
 use Theme;
 use Response;
 use File;
@@ -2538,6 +2540,32 @@ class AdminUsersController extends Controller
             'note_type' => 'success'
         ));
     }
+
+
+    public function UserRevenue()
+    {
+
+        $settings = Setting::first();
+        $total_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->groupBy('ppv_purchases.user_id')
+        ->orderBy('ppv_purchases.created_at')
+        ->get(['ppv_purchases.user_id', DB::raw('sum(ppv_purchases.total_amount) as count') ,
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         DB::raw('sum(videos.views) as videos_views') , 
+         \DB::raw("sum(audio.views) as audio_count")
+        ]);
+
+       dd($total_Revenue);
+
+        $data = array(
+            'settings' => $settings,
+        );
+        return view('admin.analytics.users_revenue_analytics', $data);
+    }
+
 
 }
 

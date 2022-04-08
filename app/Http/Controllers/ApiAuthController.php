@@ -887,6 +887,9 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
         $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
+        $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
+        $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
+
         return $item;
       });
       // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();
@@ -4597,10 +4600,14 @@ return response()->json($response, 200);
         $blockaudios[]='';
         
         $trending_audios = Audio::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC');
+      
         if($getfeching !=null && $getfeching->geofencing == 'ON'){
           $trending_audios =   $trending_audios->whereNotIn('id',$blockaudios);
         }
-        $trending_audios =$trending_audios->get();
+        $trending_audios =$trending_audios->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
         $response = array(
             'status'=>'true',
             'trending_audios'=>$trending_audios

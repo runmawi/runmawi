@@ -67,20 +67,24 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 				
 <div id="content-page" class="content-page">
-    <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
-    <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
-    <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
-    <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
-   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
-    
-    <div class="mt-4">
-        <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
-    <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
-     <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
-    <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
-    <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
+    <div class="d-flex">
+        <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
+        <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
+        <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
+        <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
+        <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+        <a class="black"  href="{{ URL::to('admin/settings') }}">RTMP URL Settings</a>
     </div>
-         <div class="container-fluid mt-5">
+        
+    <div class="d-flex">
+        <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
+        <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
+        <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>  
+        <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
+        <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
+    </div>
+    
+         <div class="container-fluid p-0">
               <div class="iq-card">
 
 <div id="admin-container">
@@ -976,6 +980,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 
+
 	$('#site_setting').click(function(){
 		$('#site').show();
 		$('#videos_settings').hide();
@@ -993,6 +998,8 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
+
 	});
 
 	$('#ppv_setting').click(function(){
@@ -1013,6 +1020,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#video_setting').click(function(){
@@ -1031,6 +1039,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#registration_setting').click(function(){
@@ -1049,6 +1058,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#email_setting').click(function(){
@@ -1067,6 +1077,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#social_setting').click(function(){
@@ -1086,6 +1097,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#subscription_setting').click(function(){
@@ -1105,6 +1117,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#login_setting').click(function(){
@@ -1125,6 +1138,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 	$('#advertisement_setting').click(function(){
@@ -1144,6 +1158,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
 	});
 
@@ -1167,6 +1182,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+        $("#settingupdate").hide();
 
 	});
 
@@ -1190,7 +1206,6 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
-
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1238,6 +1253,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").show();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
     });
     $("#series_setting").click(function () {
@@ -1259,6 +1275,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").show();
         $("#rtmp_url").hide();
+		$('#settingupdate').show();
 
     });
 
