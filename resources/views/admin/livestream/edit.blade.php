@@ -210,6 +210,22 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             @endif
 
+            @if(!empty($video->url_type) && $video->url_type == 'live_stream_video')
+                <div class="row mt-3">
+                    <div class="col-sm-12">
+                        <label class="m-0">Live Streaming Video</label>
+                        <div class="panel-body">
+                            @if(!empty($video->image))
+                            <a class="text-white btn-cl"  data-toggle="modal" data-target="#Livevideo_upload">
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="150"/>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+
             <div class="row mt-3">
                 <div class="col-sm-12">
                     <label class="m-0">Short Description</label>
@@ -665,6 +681,13 @@ $(document).ready(function(){
             }else{
                 $Stream_video = null ;
             }
+
+            if(!empty($video->url_type && $video->live_stream_video) && $video->url_type == "live_stream_video" ){
+                $liveStream_upload = $video->live_stream_video; 
+            }else{
+                $liveStream_upload = null ;
+            }
+
         @endphp
 
         <script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
@@ -678,11 +701,20 @@ $(document).ready(function(){
                     var player = new Playerjs({id:"Stream_live_player", file:Stream_live_videos,stop:1});
                 });
 
+
+            var liveStream_URL =" {{ ($liveStream_upload) }}";
+
+            var player = new Playerjs({id:"LiveStream_Upload_player", file:liveStream_URL,autoplay:1});
+
+                $("#Livevideo_uploadclose").click(function(){
+                    var player = new Playerjs({id:"LiveStream_Upload_player", file:liveStream_URL,stop:1});
+                });
+
         </script>
 	@stop
 @stop
 
-{{-- Live Stream Modal --}}
+{{-- Video Encoder Live Stream Modal --}}
 <div class="modal fade" id="Stream_video" tabindex="-1" role="dialog" aria-labelledby="Stream_video" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -690,6 +722,21 @@ $(document).ready(function(){
 
             <div class="modal-footer" style="">
                 <button type="button" class="btn btn-secondary" id="Streamclose" data-dismiss="modal">Close</button>
+            </div>
+      </div>
+    </div>
+</div>
+
+
+{{-- Live Stream Video Upload Modal --}}
+
+<div class="modal fade" id="Livevideo_upload" tabindex="-1" role="dialog" aria-labelledby="Livevideo_upload" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+            <div class="modal-body" id="LiveStream_Upload_player" style="height: 200px !important; width: auto;" >  </div>
+
+            <div class="modal-footer" style="">
+                <button type="button" class="btn btn-secondary" id="Livevideo_uploadclose" data-dismiss="modal">Close</button>
             </div>
       </div>
     </div>

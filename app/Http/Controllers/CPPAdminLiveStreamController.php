@@ -542,58 +542,33 @@ class CPPAdminLiveStreamController extends Controller
          $data['active'] = 1 ;
 
     // Live Stream Video
-        if(!empty($data['live_stream_video'])){
-            $live_stream_video = $data['live_stream_video'];
-            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video = $live_stream_video->getClientOriginalName();  
-            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+    if(!empty($data['live_stream_video']  && $data['url_type']) && $data['url_type'] == "live_stream_video" ){
 
-            // converting to RTMP URL
-            try {
-                $Stream_key = random_int(1000000000, 9999999999);
+        $live_stream_video = $data['live_stream_video'];
+        $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+        $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
+        $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+        $live_video_name = strtok($LiveStream_Video, '.');
+        $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
 
-                $video_name = $LiveStream_Video;
-                $live_stream_videopath  = URL::to('public/uploads/LiveStream/'.$video_name);
-                $rtmp_url = "rtmp://176.223.138.157:1935/hls/".$Stream_key;
+        $ffmpeg = \Streaming\FFMpeg::create();
+        $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.$LiveStream_Video);
 
-                $FFmeg_command = "ffmpeg -re -i ".$live_stream_videopath." -c:v libx264 -c:a aac -f flv ".$rtmp_url." 2>&1";
-                $command = exec($FFmeg_command);
+        $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+        $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+        $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+        $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+        $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+        $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
 
-                if(strpos($command, "Qavg") !== false){
-                    $video->live_stream_video =$live_stream_videopath;
-                    $video->Stream_key = $Stream_key;
-                } else{
-                    $data = array(
-                        'headline' => '<i class="fa fa-edit"></i> Edit Video',
-                        'video' => $video,
-                        'post_route' => URL::to('cpp/livestream/update'),
-                        'button_text' => 'Update Video',
-                        'video_categories' => LiveCategory::all(),
-                        'languages' => Language::all(),
-                        'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
-                        'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
-                        'liveStreamVideo_error' => '1',
-                        );
-            
-                    return View::make('moderator.cpp.livestream.edit', $data); 
-                }
-            } 
-            catch (\Exception $e) {
-                $data = array(
-                    'headline' => '<i class="fa fa-edit"></i> Edit Video',
-                    'video' => $video,
-                    'post_route' => URL::to('cpp/livestream/update'),
-                    'button_text' => 'Update Video',
-                    'video_categories' => LiveCategory::all(),
-                    'languages' => Language::all(),
-                    'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
-                    'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
-                    'liveStreamVideo_error' => '1',
-                    );
-        
-                return View::make('moderator.cpp.livestream.edit', $data);  
-            }
-        }
+        $videos->hls()
+                ->x264()
+                ->addRepresentations([$r_144p,$r_360p,$r_720p])
+                ->save('public/uploads/LiveStream'.'/'.$live_video_name.'.m3u8');
+
+        $video->live_stream_video = $M3u8_save_path;
+       
+    }
 
     // video Encoder
         if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){

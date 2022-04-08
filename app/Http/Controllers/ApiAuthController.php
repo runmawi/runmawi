@@ -4600,7 +4600,10 @@ return response()->json($response, 200);
         if($getfeching !=null && $getfeching->geofencing == 'ON'){
           $trending_audios =   $trending_audios->whereNotIn('id',$blockaudios);
         }
-        $trending_audios =$trending_audios->get();
+        $trending_audios =$trending_audios->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
         $response = array(
             'status'=>'true',
             'trending_audios'=>$trending_audios
