@@ -6,7 +6,11 @@
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>
-@extends('moderator.header')
+
+@php
+    include(public_path('themes/theme1/views/moderator/header.blade.php'));
+@endphp
+
 
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
