@@ -71,8 +71,9 @@ border-radius: 0px 4px 4px 0px;
     <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
     <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
     <a class="black" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
-   <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
-    
+    <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
+    <a class="black"  href="{{ URL::to('admin/settings') }}">RTMP URL Settings</a>
+        
     <div class="mt-4">
         <a class="black"  href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
     <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
@@ -1178,7 +1179,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
-		$('#settingupdate').show();
+        $("#settingupdate").hide();
 
 	});
 
@@ -1202,7 +1203,6 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
-
 	});
 
     $("#default_Image_setting").click(function () {

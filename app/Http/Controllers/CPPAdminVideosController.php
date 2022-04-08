@@ -954,9 +954,20 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
-              $file->move($image_path, $data['image']);
-         $video->image  = $file->getClientOriginalName();
+
+              $filename  = time().'_'.$file->getClientOriginalName();
+
+              $PC_image     =  'PC'.$filename ;
+              $Mobile_image =  'Mobile'.$filename ;
+              $Tablet_image =  'Tablet'.$filename ;
+              
+              Image::make($file)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
+              Image::make($file)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+              Image::make($file)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+
+             $video->image  = $PC_image;
+             $video->mobile_image  = $Mobile_image;
+             $video->tablet_image  = $Tablet_image;
 
 
          } else {
@@ -1446,9 +1457,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             //            }  
             if($package != "Pro"  ){
                 $data['status'] = 1;    
-            }elseif(  $pack == "Pro" && $settings->transcoding_access == 1 ){
+            }elseif(  $package == "Pro" && $settings->transcoding_access == 1 ){
                 $data['status'] = 0;    
-            }elseif($pack == "Pro" && $settings->transcoding_access == 0 ){
+            }elseif($package == "Pro" && $settings->transcoding_access == 0 ){
                 $data['status'] = 1;    
             }else{
                 $data['status'] = 1;    
@@ -1467,8 +1478,20 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                           }
                           //upload new file
                           $file = $image;
-                          $data['image']  = $file->getClientOriginalName();
-                          $file->move($image_path, $data['image']);
+                          
+                          $filename  = time().'_'.$file->getClientOriginalName();
+
+                          $PC_image     =  'PC'.$filename ;
+                          $Mobile_image =  'Mobile'.$filename ;
+                          $Tablet_image =  'Tablet'.$filename ;
+                          
+                          Image::make($file)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
+                          Image::make($file)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                          Image::make($file)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+        
+                         $video->mobile_image  = $Mobile_image;
+                         $video->tablet_image  = $Tablet_image;
+                         $data['image']        = $PC_image;
             
                      } else {
                          $data['image'] = $video->image;

@@ -1002,19 +1002,28 @@ if(!empty($artistsdata)){
                    unlink($file_old);
                   }
               }
+              
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
-              $file->move($image_path, $data['image']);
-         $video->image  = $file->getClientOriginalName();
+              
+              $filename  = time().'_'.$file->getClientOriginalName();
+
+              $PC_image     =  'PC'.$filename ;
+              $Mobile_image =  'Mobile'.$filename ;
+              $Tablet_image =  'Tablet'.$filename ;
+              
+              Image::make($file)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
+              Image::make($file)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+              Image::make($file)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+
+             $video->image  = $PC_image;
+             $video->mobile_image  = $Mobile_image;
+             $video->tablet_image  = $Tablet_image;
 
 
          } else {
              $data['image'] = $video->image;
          }
-        
-        
-
         
          if(isset($data['duration'])){
                 //$str_time = $data
@@ -1390,7 +1399,7 @@ if(!empty($artistsdata)){
     
         public function fileupdate(Request $request)
         {
-        
+
             if (!Auth::user()->role == 'admin')
              {
                 return redirect('/home');
@@ -1551,9 +1560,22 @@ if(!empty($artistsdata)){
                   }
                   //upload new file
                   $file = $image;
-                  $data['image']  = $file->getClientOriginalName();
-                  $file->move($image_path, $data['image']);
-    
+                  $files = $data['image'];
+
+                  $filename  = time().'_'.$file->getClientOriginalName();
+
+                  $PC_image     =  'PC'.$filename ;
+                  $Mobile_image =  'Mobile'.$filename ;
+                  $Tablet_image =  'Tablet'.$filename ;
+                  
+                  Image::make($files)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
+                  Image::make($files)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                  Image::make($files)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+
+                 $video->mobile_image  = $Mobile_image;
+                 $video->tablet_image  = $Tablet_image;
+                 $data['image']        = $PC_image;
+
              } else {
                  $data['image'] = $video->image;
              }
