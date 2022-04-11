@@ -612,6 +612,20 @@ border-radius: 0px 4px 4px 0px;
                                            <div class="ml-2">ON</div>
                                     </div>                                   
                                 </div>
+                            <br>
+                            <br>
+                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                <label class="m-0">Select Transcoding Resolution :</label>
+                                 <select class="form-control js-example-basic-multiple" id="transcoding_resolution" name="transcoding_resolution[]" multiple="multiple">
+                                    <!-- if(in_array($val, $zutaten)) echo 'checked="checked"'; -->
+                                    <option value="240p" <?php if(in_array("240p",$resolution)){ echo 'selected' ;} ?>> 240 P </option>
+                                    <option value="360p"<?php if(in_array("360p",$resolution)){ echo 'selected' ;} ?>> 360 P </option>
+                                    <option value="480p"<?php if(in_array("480p",$resolution)){ echo 'selected' ;} ?>> 480 P </option>
+                                    <option value="720p"<?php if(in_array("720p",$resolution)){ echo 'selected' ;} ?>> 720 P </option>
+                                    <option value="1080p"<?php if(in_array("1080p",$resolution)){ echo 'selected' ;} ?>> 1080 P </option>
+                                 </select>    
+                            </div>
+
                             </div>
                         </div>
                     </div>
@@ -960,9 +974,17 @@ border-radius: 0px 4px 4px 0px;
     })
 </script>
 	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 	<script>
 
 	$(document).ready(function(){
+
+        $('.js-example-basic-multiple').select2();
+
 		// alert('tst');
 		$('#site').show();
 		$('#ppv').hide();

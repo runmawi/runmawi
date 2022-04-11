@@ -2546,22 +2546,40 @@ class AdminUsersController extends Controller
     {
 
         $settings = Setting::first();
-        $total_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
         ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
         ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->groupBy('ppv_purchases.user_id')
         ->orderBy('ppv_purchases.created_at')
-        ->get(['ppv_purchases.user_id', DB::raw('sum(ppv_purchases.total_amount) as count') ,
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id',
+         'subscription_plans.plans_name', 'users.role','users.card_type',
+         DB::raw('sum(ppv_purchases.total_amount) as count') ,
          \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
-         DB::raw('sum(videos.views) as videos_views') , 
-         \DB::raw("sum(audio.views) as audio_count")
+         DB::raw('COUNT(ppv_purchases.audio_id) as audio_count') , 
+         \DB::raw("COUNT(ppv_purchases.video_id) as videos_count"),
+         \DB::raw("COUNT(ppv_purchases.live_id) as live_count")
+        ]);
+        $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+        'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+        'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
         ]);
 
-       dd($total_Revenue);
-
+    //    dd($ppv_Revenue);
         $data = array(
             'settings' => $settings,
+            'user_Revenue' => $user_Revenue,
+            'ppv_Revenue' => $ppv_Revenue,
+
         );
         return view('admin.analytics.users_revenue_analytics', $data);
     }
