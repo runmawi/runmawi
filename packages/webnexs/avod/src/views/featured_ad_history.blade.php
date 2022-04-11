@@ -3,13 +3,14 @@
         <div id="main-admin-content">
 
            <div id="content-page" class="content-page">
+               <div class="iq-card">
             <div class="container-fluid">
                <div class="row">
-               <div class="col-lg-12">
+               <div class="col-lg-12 ">
                   <div class="iq-card-body">
                      <h2 class="text-center">Featured Ads Transaction History</h2>
                      <div id="nestable" class="nested-list dd with-margins">
-                        <table class="data-tables table audio_table " style="width:100%">
+                        <table class="data-tables table audio_table mt-4" style="width:100%">
                            <thead>
                               <tr>
                                  <th><label>#</label></th>
