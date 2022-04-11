@@ -86,6 +86,13 @@ body {font-family: Arial;}
                         <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
                     </div>
                 </div>
+                <div id="Subscription_content" >
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="google-line-chart" style="width: 700px; height: 500px"></div>
+                    </div>
+                </div>
 
                 <div class="clear"></div>
                 <br>
@@ -98,7 +105,6 @@ body {font-family: Arial;}
                 </div>
                 </div>
             
-                <div id="Subscription_content" >
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table" id="cpp_revenue_table" style="width:100%">
@@ -107,6 +113,7 @@ body {font-family: Arial;}
                                             <th>#</th>
                                             <th>User </th>
                                             <th>Transaction REF</th>
+                                            <th>User Type</th>
                                             <th>Plan</th>
                                             <th>Content</th>
                                             <th>Price</th>
@@ -116,13 +123,44 @@ body {font-family: Arial;}
                                         </tr>
                                     </thead>
                                 <tbody>
-                                 
+                                    @foreach($user_Revenue as $key => $user)
+                                        <tr>
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $user->username  }}</td>   
+                                        <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
+                                        <td>{{ $user->role  }}</td>                                      
+                                        <td>@if(!empty($user->plans_name))  {{ @$user->plans_name }} @else Registered @endif</td>
+                                        <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif
+                                        <td>{{ $user->total_amount  }}</td>   
+                                        <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
+                                        <td>{{ $user->created_at  }}</td> 
+                                        <td>@if(!empty($user->card_type))  {{ @$user->card_type }} @else No Transaction @endif</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                            </table>
                         </div>
                     </div>
                 </div>
                 <div id="PayPerView_content">
+                    
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="google-line-chart" style="width: 700px; height: 500px"></div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                <br>
+                <br>
+                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
+                <div class="row">
+                <div class="tab">
+                <button class="tablinks"  id="openSubscription">Subscription</button>
+                <button class="tablinks" id="openPayPerView" >PayPer View</button>
+                </div>
+                </div>
+            
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table" id="cpp_revenue_table" style="width:100%">
@@ -131,6 +169,7 @@ body {font-family: Arial;}
                                             <th>#</th>
                                             <th>User </th>
                                             <th>Transaction REF</th>
+                                            <th>User Type</th>
                                             <th>Plan</th>
                                             <th>Content</th>
                                             <th>Price</th>
@@ -140,7 +179,20 @@ body {font-family: Arial;}
                                         </tr>
                                     </thead>
                                 <tbody>
-                                 
+                                @foreach($user_Revenue as $key => $user)
+                                        <tr>
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $user->username  }}</td>   
+                                        <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
+                                        <td>{{ $user->role  }}</td>                                      
+                                        <td>@if(!empty($user->plans_name))  {{ @$user->plans_name }} @else Registered @endif</td>
+                                        <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif
+                                        <td>{{ $user->total_amount  }}</td>   
+                                        <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
+                                        <td>{{ $user->created_at  }}</td> 
+                                        <td>@if(!empty($user->card_type))  {{ @$user->card_type }} @else No Transaction @endif</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                            </table>
                         </div>
@@ -186,7 +238,7 @@ body {font-family: Arial;}
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('admin/cpp_startdate_revenue/')  }}";
+            var url = "{{ URL::to('admin/User_start_date_url/')  }}";
        
        if(start_time != "" && end_time == ""){
             $.ajax({
@@ -233,7 +285,7 @@ body {font-family: Arial;}
         $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/cpp_enddate_revenue/')  }}";
+        var url = "{{ URL::to('admin/User_end_date_url/')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -294,7 +346,7 @@ body {font-family: Arial;}
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('admin/cpp_exportCsv/')  }}";
+        var url = "{{ URL::to('admin/User_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -326,11 +378,9 @@ body {font-family: Arial;}
 
 <script type="text/javascript">
 
-        var total_Revenue_count   = 2;
         // if(total_Revenue_count == 0){
         //     ('#google-line-chart').hide();
         // }
-        if(total_Revenue_count > 0){
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
@@ -339,12 +389,12 @@ body {font-family: Arial;}
         var data = google.visualization.arrayToDataTable([
             ['Month Name', 'Moderator Users Commssion'],
 
-        //         @php
-        //         foreach($total_Revenue as $d) {
-        //             echo "['".$d->month_name."', ".$d->count."],";
-        //         }
-        //         @endphp
-        // ]);
+                @php
+                foreach($ppv_Revenue as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
 
         var options = {
           title: 'Total Moderator Users Commssion',
@@ -356,8 +406,7 @@ body {font-family: Arial;}
 
           chart.draw(data, options);
         }
-    }else{
-    }
+
     </script>
 
     
