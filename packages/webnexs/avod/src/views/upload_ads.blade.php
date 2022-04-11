@@ -3,6 +3,7 @@
         <div id="main-admin-content">
 
            <div id="content-page" class="content-page">
+               <div class="iq-card">
             <div class="container-fluid">
                <div class="row">
                <div class="col-lg-12">

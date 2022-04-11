@@ -28,7 +28,7 @@ $uppercase =  ucfirst($request_url);
       <!-- Typography CSS -->
       <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/typography.css" />
       <!-- Style -->
-      <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/style.css" />
+      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
       <!-- Responsive -->
       <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/responsive.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

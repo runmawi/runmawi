@@ -439,7 +439,7 @@ class AdminLiveStreamController extends Controller
         ]);
 
 // Live Stream Video
-        if(!empty($data['live_stream_video']  && $data['url_type']) && $data['url_type'] == "live_stream_video" ){
+        if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
 
             $live_stream_video = $data['live_stream_video'];
             $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
