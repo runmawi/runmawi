@@ -13,7 +13,7 @@
                <div class="container">
                 <div class="row justify-content-around text-center">
                   @foreach($plans as $k=>$plan)
-                  <div class="col-sm-3 bg-cl{{$k}}">
+                  <div class="col-sm-3 iq-card bg-cl{{$k}}">
                      <div class="bg-yt p-3">
                        <h3 class="mt-2">{{ $plan->plan_name }}</h3>
                        <p class="font-weight-bold mt-4 do">${{$plan->plan_amount}}/months</p>

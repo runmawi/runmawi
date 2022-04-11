@@ -2573,16 +2573,645 @@ class AdminUsersController extends Controller
         'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
          \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
         ]);
+        $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+         \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+         
+        ]);
+        $usersubscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+         \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+        \DB::raw('(subscription_plans.price) as count') ,
+        ]);
 
-    //    dd($ppv_Revenue);
+
         $data = array(
             'settings' => $settings,
             'user_Revenue' => $user_Revenue,
             'ppv_Revenue' => $ppv_Revenue,
+            'subscriber_Revenue' => $subscriber_Revenue,
+            'usersubscriber_Revenue' => $usersubscriber_Revenue,
+
 
         );
         return view('admin.analytics.users_revenue_analytics', $data);
     }
+
+
+
+
+
+    public function PayPerviewRevenue()
+    {
+
+        $settings = Setting::first();
+        $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->groupBy('ppv_purchases.user_id')
+        ->orderBy('ppv_purchases.created_at')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id',
+         'subscription_plans.plans_name', 'users.role','users.card_type',
+         DB::raw('sum(ppv_purchases.total_amount) as count') ,
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         DB::raw('COUNT(ppv_purchases.audio_id) as audio_count') , 
+         \DB::raw("COUNT(ppv_purchases.video_id) as videos_count"),
+         \DB::raw("COUNT(ppv_purchases.live_id) as live_count")
+        ]);
+        $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+        'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+        'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+        ]);
+        $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+         \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+         
+        ]);
+        $usersubscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+         \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+        \DB::raw('(subscription_plans.price) as count') ,
+        ]);
+
+
+        $data = array(
+            'settings' => $settings,
+            'user_Revenue' => $user_Revenue,
+            'ppv_Revenue' => $ppv_Revenue,
+            'subscriber_Revenue' => $subscriber_Revenue,
+            'usersubscriber_Revenue' => $usersubscriber_Revenue,
+
+
+        );
+        return view('admin.analytics.payperview', $data);
+    }
+    // Subscriber Revenue system 
+
+    public function SubscriberRevenueStartDateRecord(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+            $usersubscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+            \DB::raw('(subscription_plans.price) as count') ,
+            ]);
+
+
+        }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $subscriber_Revenue->count();
+        if (!empty($subscriber_Revenue))
+        {
+            foreach ($subscriber_Revenue as $key => $row)
+            {
+                if(!empty($row->stripe_id))  { $stripe_id = $row->stripe_id; } else { $stripe_id = 'No REF'; }
+                if(!empty($row->plans_name))  { $plans_name = $row->plans_name ; } else { $plans_name ="Registered";}
+                 if(!empty($row->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($row->video_id) ){ $Content =  'Video' ;}elseif(!empty($row->live_id) ){ $Content =  'Live' ;}else{ $Content =  'All Content';}
+                 if(@$row->phoneccode->phonecode == $row->ccode)  { $country_name = @$row->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                 if(!empty($row->card_type))  { $card_type = @$row->card_type ;} else { $card_type = "No Transaction"; }
+                 
+                 $output .= '
+               <tr>
+               <td>' . $i++ . '</td>
+               <td>' . $row->username . '</td>
+               <td>' . $stripe_id . '</td>
+               <td>' . $row->role . '</td>    
+               <td>' . $plans_name . '</td>    
+               <td>' . $Content . '</td>    
+               <td>' . $row->total_amount . '</td>  
+               <td>' . $country_name . '</td>    
+               <td>' . $row->created_at . '</td>    
+               <td>' . $card_type . '</td>    
+   
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_Revenue' => $usersubscriber_Revenue,
+
+        );
+
+        return $value;
+
+    }
+
+    public function SubscriberRevenueStartEndDateRecord(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+        if (!empty($start_time) && !empty($end_time))
+        {
+
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereBetween('subscriptions.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+           
+        $usersubscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->whereBetween('subscriptions.created_at', [$start_time, $end_time])->groupBy('month_name')
+        ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+         \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+        \DB::raw('(subscription_plans.price) as count') ,
+        ]);
+           
+        }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $subscriber_Revenue->count();
+        if (!empty($subscriber_Revenue))
+        {
+            foreach ($subscriber_Revenue as $key => $row)
+            {
+                if(!empty($row->stripe_id))  { $stripe_id = $row->stripe_id; } else { $stripe_id = 'No REF'; }
+               if(!empty($row->plans_name))  { $plans_name = $row->plans_name ; } else { $plans_name ="Registered";}
+                if(!empty($row->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($row->video_id) ){ $Content =  'Video' ;}elseif(!empty($row->live_id) ){ $Content =  'Live' ;}else{ $Content =  'All Content';}
+                if(@$row->phoneccode->phonecode == $row->ccode)  { $country_name = @$row->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                if(!empty($row->card_type))  { $card_type = @$row->card_type ;} else { $card_type = "No Transaction"; }
+                
+                $output .= '
+              <tr>
+              <td>' . $i++ . '</td>
+              <td>' . $row->username . '</td>
+              <td>' . $stripe_id . '</td>
+              <td>' . $row->role . '</td>    
+              <td>' . $plans_name . '</td>    
+              <td>' . $Content . '</td>    
+              <td>' . $row->total_amount . '</td>  
+              <td>' . $country_name . '</td>    
+              <td>' . $row->created_at . '</td>    
+              <td>' . $card_type . '</td>    
+
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_Revenue' => $usersubscriber_Revenue,
+        );
+
+        return $value;
+    }
+
+
+
+
+    public function UserSubscriberExportCsv(Request $request)
+    {
+
+        $data = $request->all();
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+           
+        }
+        elseif (!empty($start_time) && !empty($end_time))
+        {
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereBetween('subscriptions.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+
+        }
+        else
+        {
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+
+           
+        }
+        //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
+        $file = 'SubscriberRevenue.csv';
+
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["User", "Transaction REF", "User Type", "Plan", "Content", "Price", "Country", "Date Time", "Source",]);
+        if (count($subscriber_Revenue) > 0)
+        {
+            foreach ($subscriber_Revenue as $each_user)
+            {
+                if(!empty($each_user->stripe_id))  { $stripe_id = $each_user->stripe_id; } else { $stripe_id = 'No REF'; }
+                if(!empty($each_user->plans_name))  { $plans_name = $each_user->plans_name ; } else { $plans_name ="Registered";}
+                 if(!empty($each_user->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($each_user->video_id) ){ $Content =  'Video' ;}elseif(!empty($each_user->live_id) ){ $Content =  'Live' ;}else{$Content =  'All Content' ;}
+                 if(@$each_user->phoneccode->phonecode == $each_user->ccode)  { $country_name = @$each_user->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                 if(!empty($each_user->card_type))  { $card_type = @$each_user->card_type ;} else { $card_type = "No Transaction"; }
+
+                fputcsv($handle, ['#',$each_user->username, $stripe_id, $each_user->role, $plans_name
+                , $Content, $each_user->total_amount, $country_name, $each_user->created_at,$card_type,
+                ]);
+            }
+        }
+
+        fclose($handle);
+
+        \Response::download($filename, "download.csv", $headers);
+
+        return $file;
+    }
+
+
+    public function PayPerviewRevenueStartDateRecord(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->whereDate('ppv_purchases.created_at', '>=', $start_time)->groupBy('month_name')
+        ->groupBy('ppv_purchases.user_id')
+        ->orderBy('ppv_purchases.created_at')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id',
+         'subscription_plans.plans_name', 'users.role','users.card_type',
+         DB::raw('sum(ppv_purchases.total_amount) as count') ,
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         DB::raw('COUNT(ppv_purchases.audio_id) as audio_count') , 
+         \DB::raw("COUNT(ppv_purchases.video_id) as videos_count"),
+         \DB::raw("COUNT(ppv_purchases.live_id) as live_count")
+        ]);
+        $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->whereDate('ppv_purchases.created_at', '>=', $start_time)->groupBy('month_name')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+        'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+        'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         
+        ]);
+
+
+        }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $user_Revenue->count();
+        if (!empty($user_Revenue))
+        {
+            foreach ($user_Revenue as $key => $row)
+            {
+                if(!empty($row->stripe_id))  { $stripe_id = $row->stripe_id; } else { $stripe_id = 'No REF'; }
+                if(!empty($row->plans_name))  { $plans_name = $row->plans_name ; } else { $plans_name ="Registered";}
+                 if(!empty($row->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($row->video_id) ){ $Content =  'Video' ;}elseif(!empty($row->live_id) ){ $Content =  'Live' ;}else{ $Content =  'All Content';}
+                 if(@$row->phoneccode->phonecode == $row->ccode)  { $country_name = @$row->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                 if(!empty($row->card_type))  { $card_type = @$row->card_type ;} else { $card_type = "No Transaction"; }
+                 
+                 $output .= '
+               <tr>
+               <td>' . $i++ . '</td>
+               <td>' . $row->username . '</td>
+               <td>' . $stripe_id . '</td>
+               <td>' . $row->role . '</td>    
+               <td>' . $plans_name . '</td>    
+               <td>' . $Content . '</td>    
+               <td>' . $row->total_amount . '</td>  
+               <td>' . $country_name . '</td>    
+               <td>' . $row->created_at . '</td>    
+               <td>' . $card_type . '</td>    
+   
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'tabledata' => $output,
+            'totaldata' => $total_row,
+            'ppv_Revenue' => $ppv_Revenue,
+
+        );
+
+        return $value;
+
+    }
+
+    public function PayPerviewRevenueStartEndDateRecord(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+        if (!empty($start_time) && !empty($end_time))
+        {
+            $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('month_name')
+        ->groupBy('ppv_purchases.user_id')
+        ->orderBy('ppv_purchases.created_at')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id',
+         'subscription_plans.plans_name', 'users.role','users.card_type',
+         DB::raw('sum(ppv_purchases.total_amount) as count') ,
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         DB::raw('COUNT(ppv_purchases.audio_id) as audio_count') , 
+         \DB::raw("COUNT(ppv_purchases.video_id) as videos_count"),
+         \DB::raw("COUNT(ppv_purchases.live_id) as live_count")
+        ]);
+        $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('month_name')
+        ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+        'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+        'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+         \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+         
+        ]);
+        
+           
+        }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $user_Revenue->count();
+        if (!empty($user_Revenue))
+        {
+            foreach ($user_Revenue as $key => $row)
+            {
+                if(!empty($row->stripe_id))  { $stripe_id = $row->stripe_id; } else { $stripe_id = 'No REF'; }
+               if(!empty($row->plans_name))  { $plans_name = $row->plans_name ; } else { $plans_name ="Registered";}
+                if(!empty($row->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($row->video_id) ){ $Content =  'Video' ;}elseif(!empty($row->live_id) ){ $Content =  'Live' ;}else{ $Content =  'All Content';}
+                if(@$row->phoneccode->phonecode == $row->ccode)  { $country_name = @$row->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                if(!empty($row->card_type))  { $card_type = @$row->card_type ;} else { $card_type = "No Transaction"; }
+                
+                $output .= '
+              <tr>
+              <td>' . $i++ . '</td>
+              <td>' . $row->username . '</td>
+              <td>' . $stripe_id . '</td>
+              <td>' . $row->role . '</td>    
+              <td>' . $plans_name . '</td>    
+              <td>' . $Content . '</td>    
+              <td>' . $row->total_amount . '</td>  
+              <td>' . $country_name . '</td>    
+              <td>' . $row->created_at . '</td>    
+              <td>' . $card_type . '</td>    
+
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'tabledata' => $output,
+            'totaldata' => $total_row,
+            'ppv_Revenue' => $ppv_Revenue,
+        );
+
+        return $value;
+    }
+
+
+
+
+    public function PayPerviewRevenueExportCsv(Request $request)
+    {
+
+        $data = $request->all();
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+            ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+            ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+            ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereDate('ppv_purchases.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+            'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+            'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+             \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+             
+            ]);
+            
+            $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
+            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+             \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
+             
+            ]);
+           
+        }
+        elseif (!empty($start_time) && !empty($end_time))
+        {
+            $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+            ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+            ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+            ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->whereBetween('ppv_purchases.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+            'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+            'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+             \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+             
+            ]);
+            
+
+        }
+        else
+        {
+            $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+            ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
+            ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
+            ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+            ->get(['ppv_purchases.user_id','users.username','users.stripe_id','users.card_type','users.ccode',
+            'subscription_plans.plans_name', 'users.role','ppv_purchases.total_amount','ppv_purchases.created_at',
+            'ppv_purchases.audio_id','ppv_purchases.video_id','ppv_purchases.live_id',
+             \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
+             
+            ]);
+            
+
+           
+        }
+        //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
+        $file = 'PayPerViewRevenue.csv';
+
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["User", "Transaction REF", "User Type", "Plan", "Content", "Price", "Country", "Date Time", "Source",]);
+        if (count($user_Revenue) > 0)
+        {
+            foreach ($user_Revenue as $each_user)
+            {
+                if(!empty($each_user->stripe_id))  { $stripe_id = $each_user->stripe_id; } else { $stripe_id = 'No REF'; }
+                if(!empty($each_user->plans_name))  { $plans_name = $each_user->plans_name ; } else { $plans_name ="Registered";}
+                 if(!empty($each_user->audio_id) ){ $Content = 'Audio' ;}elseif(!empty($each_user->video_id) ){ $Content =  'Video' ;}elseif(!empty($each_user->live_id) ){ $Content =  'Live' ;}else{$Content =  'All Content' ;}
+                 if(@$each_user->phoneccode->phonecode == $each_user->ccode)  { $country_name = @$each_user->phoneccode->country_name ;} else { $country_name = "No Country Added" ;}
+                 if(!empty($each_user->card_type))  { $card_type = @$each_user->card_type ;} else { $card_type = "No Transaction"; }
+
+                fputcsv($handle, ['#',$each_user->username, $stripe_id, $each_user->role, $plans_name
+                , $Content, $each_user->total_amount, $country_name, $each_user->created_at,$card_type,
+                ]);
+            }
+        }
+
+        fclose($handle);
+
+        \Response::download($filename, "download.csv", $headers);
+
+        return $file;
+    }
+
+
+
 
 
 }

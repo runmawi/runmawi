@@ -100,8 +100,10 @@ body {font-family: Arial;}
                 <!-- Graph Currency   (SET BY Sanjai Kumar) -->
                 <div class="row">
                 <div class="tab">
-                <button class="tablinks"  id="openSubscription">Subscription</button>
+                <button class="tablinks"  id="openSubscription1">Subscription</button>
+                <a href="{{ URL::to('admin/users/PayPerview_Revenue/')  }}">
                 <button class="tablinks" id="openPayPerView" >PayPer View</button>
+                </a>
                 </div>
                 </div>
             
@@ -123,7 +125,7 @@ body {font-family: Arial;}
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    @foreach($user_Revenue as $key => $user)
+                                    @foreach($subscriber_Revenue as $key => $user)
                                         <tr>
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $user->username  }}</td>   
@@ -146,7 +148,7 @@ body {font-family: Arial;}
                     
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="google-line-chart" style="width: 700px; height: 500px"></div>
+                        <div id="PayPer-chart" style="width: 700px; height: 500px"></div>
                     </div>
                 </div>
 
@@ -207,6 +209,34 @@ body {font-family: Arial;}
 @stop
 
 <script>
+
+
+google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'Subscriber Users Revenue'],
+
+                @php
+                foreach($usersubscriber_Revenue as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+
+        var options = {
+          title: 'Subscriber Users Revenue',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+          chart.draw(data, options);
+        }
+
    $('#Subscription_content').show();
    $('#PayPerView_content').hide();
 
@@ -214,31 +244,47 @@ body {font-family: Arial;}
         $('#openSubscription').click(function(){
             $('#Subscription_content').show();
             $('#PayPerView_content').hide();
-        });
-        $('#openPayPerView').click(function(){
-            $('#Subscription_content').hide();
-            $('#PayPerView_content').show();
-        });
-    });
 
-</script>
-   
-<script>
+       if(start_time == "" && end_time == ""){
 
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
+            google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-     $(document).ready(function(){
+        function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'Moderator Users Commssion'],
+
+                @php
+                foreach($usersubscriber_Revenue as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+
+        var options = {
+          title: 'Total Moderator Users Commssion',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+          chart.draw(data, options);
+        }
+
+       }
+
+
+
+
+
         $('#cpp_revenue_table').DataTable();
-        var view_count = $('#view_count').val();
-        $('#total_views').text(view_count);  
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('admin/User_start_date_url/')  }}";
+            // alert(start_time);
+            var url = "{{ URL::to('admin/subscriber_start_date_url/')  }}";
        
        if(start_time != "" && end_time == ""){
             $.ajax({
@@ -254,7 +300,322 @@ body {font-family: Arial;}
                     // console.log(value);
 
                     $('tbody').html(value.table_data);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+
+
+
+        $('#end_time').change(function(){
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
+        var url = "{{ URL::to('admin/subscriber_end_date_url/')  }}";
+
+       if(start_time != "" && end_time != ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                      _token: '{{ csrf_token() }}',
+                      start_time: start_time,
+                      end_time: end_time,
+
+                },      
+                success: function(value){
+                    console.log(value);
+                    $('tbody').html(value.table_data);
                     $('#total_views').text(value.views_count);  
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                }
+
+               }
+            });
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // payper view
+
+        $('#openPayPerView').click(function(){
+            // alert('test');
+            $('#Subscription_content').hide();
+            $('#PayPerView_content').show();
+            google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'PayPer View Revenue'],
+
+                @php
+                foreach($ppv_Revenue as $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+
+        var options = {
+          title: 'PayPer View Revenue',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+          var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+
+          chart.draw(data, options);
+        }
+        });
+
+
+
+        $('#cpp_revenue_table').DataTable();
+        $('#start_time').change(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/payperview_start_date_url/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.tabledata);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var ppv_Revenue = value.ppv_Revenue;
+                    var data = new google.visualization.DataTable(ppv_Revenue);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    ppv_Revenue.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+        $('#end_time').change(function(){
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
+        var url = "{{ URL::to('admin/payperview_end_date_url/')  }}";
+
+       if(start_time != "" && end_time != ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                      _token: '{{ csrf_token() }}',
+                      start_time: start_time,
+                      end_time: end_time,
+
+                },      
+                success: function(value){
+                    console.log(value);
+                    $('tbody').html(value.tabledata);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var ppv_Revenue = value.ppv_Revenue;
+                    var data = new google.visualization.DataTable(ppv_Revenue);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    ppv_Revenue.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                }
+
+               }
+            });
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// subscriber revenue
+
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+     $(document).ready(function(){
+        $('#cpp_revenue_table').DataTable();
+        $('#start_time').change(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/subscriber_start_date_url/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+        //    alert('start_time')
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.table_data);
                     $('#cpp_revenue_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
@@ -285,7 +646,7 @@ body {font-family: Arial;}
         $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/User_end_date_url/')  }}";
+        var url = "{{ URL::to('admin/subscriber_end_date_url/')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -332,8 +693,260 @@ body {font-family: Arial;}
 
      });
 
+     $(document).ready(function(){
 
-     
+
+        $('#start_time').change(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/payperview_start_date_url/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.table_data);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+        $('#end_time').change(function(){
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
+        var url = "{{ URL::to('admin/payperview_end_date_url/')  }}";
+
+       if(start_time != "" && end_time != ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                      _token: '{{ csrf_token() }}',
+                      start_time: start_time,
+                      end_time: end_time,
+
+                },      
+                success: function(value){
+                    console.log(value);
+                    $('tbody').html(value.table_data);
+                    $('#total_views').text(value.views_count);  
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_Revenue;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                }
+
+               }
+            });
+        }
+      });
+    });
+
+
+
+
+
+// Payperview revenue
+// $('#start_time').change(function(){
+    $('#openPayPerView').click(function(){
+        // alert('start_time')
+
+            var start_time =  $('#start_time').val();
+           alert(start_time)
+
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/payperview_start_date_url/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+           alert('start_time')
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.tabledata);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var ppv_Revenue = value.ppv_Revenue;
+                    var data = new google.visualization.DataTable(ppv_Revenue);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    ppv_Revenue.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+
+$('#cpp_revenue_table').DataTable();
+        $('#start_time').change(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url = "{{ URL::to('admin/payperview_start_date_url/')  }}";
+       
+       if(start_time != "" && end_time == ""){
+        //    alert('start_time')
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_time: start_time,
+                        end_time: end_time,
+
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.tabledata);
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var ppv_Revenue = value.ppv_Revenue;
+                    var data = new google.visualization.DataTable(ppv_Revenue);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    ppv_Revenue.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+       }
+    });
+        $('#end_time').change(function(){
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
+        var url = "{{ URL::to('admin/payperview_end_date_url/')  }}";
+
+       if(start_time != "" && end_time != ""){
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                      _token: '{{ csrf_token() }}',
+                      start_time: start_time,
+                      end_time: end_time,
+
+                },      
+                success: function(value){
+                    console.log(value);
+                    $('tbody').html(value.tabledata);
+                    $('#total_views').text(value.views_count);  
+                    $('#cpp_revenue_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var ppv_Revenue = value.ppv_Revenue;
+                    var data = new google.visualization.DataTable(ppv_Revenue);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Users Count');
+
+                    ppv_Revenue.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.count),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('PayPer-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                }
+
+               }
+            });
+        }
+      });
+
+
+
     /////////  Export ///////////////
 
     $.ajaxSetup({
@@ -346,7 +959,7 @@ body {font-family: Arial;}
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('admin/User_exportCsv/')  }}";
+        var url = "{{ URL::to('admin/UserSubscriber_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -372,40 +985,14 @@ body {font-family: Arial;}
         });
     });
 
-</script>
 
 
 
-<script type="text/javascript">
 
         // if(total_Revenue_count == 0){
         //     ('#google-line-chart').hide();
         // }
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-            ['Month Name', 'Moderator Users Commssion'],
-
-                @php
-                foreach($ppv_Revenue as $d) {
-                    echo "['".$d->month_name."', ".$d->count."],";
-                }
-                @endphp
-        ]);
-
-        var options = {
-          title: 'Total Moderator Users Commssion',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
-
-          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-
-          chart.draw(data, options);
-        }
 
     </script>
 
