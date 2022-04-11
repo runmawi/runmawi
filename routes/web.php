@@ -28,10 +28,19 @@ Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
 //////////// User Revenue analytics
 Route::get('/admin/users/revenue', 'AdminUsersController@UserRevenue');
+Route::get('/admin/users/PayPerview_Revenue', 'AdminUsersController@PayPerviewRevenue');
+
 Route::post('/admin/User_exportCsv', 'AdminUsersController@RevenueExportCsv');
-Route::post('/admin/User_start_date_url', 'AdminUsersController@RevenueStartDateRecord');
-Route::post('/admin/User_end_date_url', 'AdminUsersController@RevenueStartEndDateRecord');
-Route::post('/admin/User_list_users_url', 'AdminUsersController@RevenueListUsers');
+
+Route::post('/admin/subscriber_start_date_url', 'AdminUsersController@SubscriberRevenueStartDateRecord');
+Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
+Route::post('/admin/UserSubscriber_exportCsv', 'AdminUsersController@UserSubscriberExportCsv');
+
+
+
+Route::post('/admin/payperview_start_date_url', 'AdminUsersController@PayPerviewRevenueStartDateRecord');
+Route::post('/admin/payperview_end_date_url', 'AdminUsersController@PayPerviewRevenueStartEndDateRecord');
+Route::post('/admin/payperview_exportCsv', 'AdminUsersController@PayPerviewRevenueExportCsv');
 
 
 ////// CPP revenue
