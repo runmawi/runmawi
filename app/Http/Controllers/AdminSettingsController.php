@@ -27,10 +27,15 @@ class AdminSettingsController extends Controller
         
         $setting = Setting::first();
         $app_settings = AppSetting::first();          
-
+        if(!empty($setting->transcoding_resolution)){
+        $resolution = explode(",",$setting->transcoding_resolution);
+        }else{
+          $resolution = [];
+        }
         $data = array(
             'admin_user' => Auth::user(),
             'app_settings' => $app_settings ,   
+            'resolution' => $resolution ,   
 			      'settings' => $setting,
             'rtmp_url'  => RTMP::all(),
 			  );
@@ -42,7 +47,15 @@ class AdminSettingsController extends Controller
 
       
         $input = $request->all();
-
+        // transcoding_resolution
+        // dd( $input);
+        if(!empty($request['transcoding_resolution'])){
+         $transcoding_resolution = implode(",",$request['transcoding_resolution']);
+        }else{
+        $transcoding_resolution = null;
+        }
+        // dd($transcoding_resolution);
+        
         if(!empty($request['instagram_page_id'])){
         $instagram_page_id = $request['instagram_page_id'];
         }else{
@@ -110,6 +123,7 @@ class AdminSettingsController extends Controller
 		$settings->whatsapp_page_id = $whatsapp_page_id;
 		$settings->series_season = $series_season;
 		$settings->transcoding_access = $transcoding_access;
+		$settings->transcoding_resolution = $transcoding_resolution;
 		$settings->skype_page_id = $skype_page_id;
 		$settings->youtube_page_id = $request['youtube_page_id'];
 		$settings->google_tracking_id = $request['google_tracking_id'];

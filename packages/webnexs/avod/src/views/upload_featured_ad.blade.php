@@ -3,7 +3,8 @@
         <div id="main-admin-content">
 
            <div id="content-page" class="content-page">
-            <div class="container-fluid">
+               <div class="iq-card">
+            <div class="container-fluid p-0">
                <div class="row">
                <div class="col-lg-12">
                   <div class="iq-card-body">
@@ -162,11 +163,12 @@
                 </div>
              </div>
           </div>
+            
        </footer>
       </div>
       
       
-    </div>
+   
     <input type="hidden" id="base_url" value="<?php echo URL::to('/').'/advertiser';?>">
 
   <!-- Imported styles on this page -->

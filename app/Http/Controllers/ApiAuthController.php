@@ -887,6 +887,9 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
         $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
+        $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
+        $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
+
         return $item;
       });
       // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();

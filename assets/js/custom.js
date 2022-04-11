@@ -118,15 +118,39 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
-		$('#home-slider').slick({
-			autoplay: false,
-             centerMode: true,
+        $('.center').slick({
+  
   centerPadding: '60px',
-  slidesToShow: 1,
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]
+});
+		$('#home-slider').slick({
+            centerMode: true,
+			autoplay: false,
 			speed: 800,
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: false,
+            
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			responsive: [
@@ -186,7 +210,7 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 2,
+				slidesToShow: 1,
 				slidesToScroll: 1
 				}
 			}
@@ -268,7 +292,7 @@ Index Of Script
 			{
 				breakpoint: 480,
 				settings: {
-				slidesToShow: 2,
+				slidesToShow: 1,
 				slidesToScroll: 1,
 				}
 			}
