@@ -130,7 +130,7 @@
 
 						@foreach($Rtmp_urls as $key => $urls)
 							@php     $number = $key+1;  @endphp
-							 <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "Streaming Video"." ".$number }} </option>
+							 <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "RTMP Streaming Video"." ".$number }} </option>
 					  	@endforeach 
 					</select>
 					
