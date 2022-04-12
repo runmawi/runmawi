@@ -838,6 +838,12 @@ if(!empty($artistsdata)){
         
        $video = Video::find($id);
 
+       $ads_details = AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
+            ->where('ads_videos.video_id', $id)->pluck('ads_id')->first(); 
+
+        $ads_rolls = AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
+            ->where('ads_videos.video_id', $id)->pluck('ad_roll')->first(); 
+
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -858,9 +864,10 @@ if(!empty($artistsdata)){
             'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
             'page' => 'Edit',
-
-
+            'ads_paths' => $ads_details ? $ads_details : 0 ,
+            'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
             );
+
 
         return View::make('admin.videos.create_edit', $data); 
     }
@@ -894,7 +901,12 @@ if(!empty($artistsdata)){
                     }else{
                         $roll = "Post";
                     }
-                    $ad_video = new AdsVideo;
+                    $ad_video = AdsVideo::where('video_id',$id)->first();
+
+                    if($ad_video == null){
+                        $ad_video = new AdsVideo;
+                    }
+        
                     $ad_video->video_id = $id;
                     $ad_video->ads_id = $data['ads_id'];
                     $ad_video->ad_roll = $roll;
@@ -1847,6 +1859,26 @@ if(!empty($artistsdata)){
                     }
                 }
             }
+
+
+     /*Advertisement Video update starts*/
+             if($data['ads_id'] != 0){
+                if($data['ad_roll'] != 0){
+                    if($data['ad_roll'] == 1){
+                        $roll = "Pre";
+                    }elseif($data['ad_roll'] == 2){
+                        $roll = "Mid";
+                    }else{
+                        $roll = "Post";
+                    }
+                    $ad_video = new AdsVideo;
+                    $ad_video->video_id = $video->id;
+                    $ad_video->ads_id = $data['ads_id'];
+                    $ad_video->ad_roll = $roll;
+                    $ad_video->save();
+                }
+            }
+     /*Advertisement Video update End*/
     
     
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
