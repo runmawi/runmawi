@@ -614,7 +614,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             <br>
                             <br>
-                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                            <div class="mt-1  align-items-center justify-content-around">
                                 <label class="m-0">Select Transcoding Resolution :</label>
                                  <select class="form-control js-example-basic-multiple" id="transcoding_resolution" name="transcoding_resolution[]" multiple="multiple">
                                     <!-- if(in_array($val, $zutaten)) echo 'checked="checked"'; -->
@@ -625,6 +625,8 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="1080p"<?php if(in_array("1080p",$resolution)){ echo 'selected' ;} ?>> 1080 P </option>
                                  </select>    
                             </div>
+                            <br>
+                            <br>
 
                             </div>
                         </div>
