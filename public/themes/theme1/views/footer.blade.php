@@ -330,8 +330,9 @@ function myFunction() {
 
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
-
-    // alert(video_video)
+    var ads_path =  $('#ads_path').val();
+    
+    // alert(ads_path)
 
    if(type != "" && video_video == 'video'){
     // alert('m3u8')

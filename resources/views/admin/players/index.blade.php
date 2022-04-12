@@ -346,8 +346,8 @@
 		</div> 
 		
 						<div class="bt p-3">
-							<a name="save" type="submit" class="btn btn-primary">Save</a>
-							<a name="" class="btn btn-primary">Reset Default</a>
+							<button name="save" type="submit" class="btn btn-primary">Save</button>
+							<button name="" class="btn btn-primary">Reset Default</button>
 						</div>
 						</div>
 
