@@ -591,17 +591,17 @@ border-radius: 0px 4px 4px 0px;
                            <select class="form-control" name="ads_id">
                               <option value="0">Select Ads</option>
                               @foreach($ads as $ad)
-                              <option value="{{$ad->id}}">{{$ad->ads_name}}</option>
+                                 <option value="{{$ad->id}}"  @if( $ads_paths == $ad->id ) {{ 'selected' }} @endif  >{{$ad->ads_name}}</option>
                               @endforeach
                            </select>
                         </div>
                         <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Roll</label>
                            <select class="form-control" name="ad_roll">
-                              <option value="0">Select Ad Roll</option>
-                              <option value="1">Pre</option>
-                              <option value="2">Mid</option>
-                              <option value="3">Post</option>
+                              <option value="0"  >Select Ad Roll</option>
+                              <option value="1"  @if( $ads_rolls == 'Pre' ) {{ 'selected' }} @endif   >Pre</option>
+                              <option value="2"  @if( $ads_rolls == 'Mid' ) {{ 'selected' }} @endif   >Mid</option>
+                              <option value="3"  @if( $ads_rolls == 'Post' ) {{ 'selected' }} @endif   >Post</option>
                            </select>
                         </div>
                      </div>
