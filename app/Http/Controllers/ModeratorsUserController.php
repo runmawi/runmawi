@@ -5128,7 +5128,6 @@ class ModeratorsUserController extends Controller
         ->groupBy('ppv_purchases.user_id')
         ->orderBy('ppv_purchases.created_at')
         ->count();
-
         $view_count = DB::table('ppv_purchases')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
             ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
             ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
@@ -5152,12 +5151,7 @@ class ModeratorsUserController extends Controller
             ->groupBy('ppv_purchases.user_id')
             ->orderBy('ppv_purchases.created_at')
             ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
-        if(empty($total_Revenue)){
-        $total_Revenue_count = 0;
-        
-        }else{
-        $total_Revenue_count = 1;
-        }
+  
 
         $data = array(
             'settings' => $settings,

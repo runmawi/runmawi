@@ -316,8 +316,8 @@ $('#Subscription_content').hide();
             ['Month Name', 'PayPer View Revenue'],
 
                 @php
-                foreach($ppv_Revenue as $d) {
-                    echo "['".$d->month_name."', ".$d->count."],";
+                foreach($ppv_Revenue as $key => $d) {
+                    echo "['".$key."', ".$d."],";
                 }
                 @endphp
         ]);

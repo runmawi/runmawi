@@ -2610,21 +2610,20 @@ class AdminUsersController extends Controller
 
         $settings = Setting::first();
         $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
-        ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
-        ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
-        ->leftjoin('live_streams', 'live_streams.id', '=', 'ppv_purchases.live_id')
-        ->leftjoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
-        ->leftjoin('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->groupBy('ppv_purchases.user_id')
         ->orderBy('ppv_purchases.created_at')
-        ->get(['ppv_purchases.user_id','users.username','users.stripe_id',
-         'subscription_plans.plans_name', 'users.role','users.card_type',
+        ->get([
+        'ppv_purchases.user_id',
          DB::raw('sum(ppv_purchases.total_amount) as count') ,
          \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
-         DB::raw('COUNT(ppv_purchases.audio_id) as audio_count') , 
-         \DB::raw("COUNT(ppv_purchases.video_id) as videos_count"),
-         \DB::raw("COUNT(ppv_purchases.live_id) as live_count")
         ]);
+        foreach($ppv_Revenue as $d) {
+            if($d->count != null){
+            $ppv_Revenues[$d->month_name] = $d->count;
+            }else{
+            $ppv_Revenues[$d->month_name] =  0;
+            }
+        }
         $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
         ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')
@@ -2650,12 +2649,14 @@ class AdminUsersController extends Controller
          \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
         \DB::raw('(subscription_plans.price) as count') ,
         ]);
+        // dd($usersubscriber_Revenue);
+
 
 
         $data = array(
             'settings' => $settings,
             'user_Revenue' => $user_Revenue,
-            'ppv_Revenue' => $ppv_Revenue,
+            'ppv_Revenue' => $ppv_Revenues,
             'subscriber_Revenue' => $subscriber_Revenue,
             'usersubscriber_Revenue' => $usersubscriber_Revenue,
 
