@@ -595,7 +595,7 @@ border-radius: 0px 4px 4px 0px;
                               @endforeach
                            </select>
                         </div>
-                        <div class="col-sm-6 form-group mt-3">
+                        {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Roll</label>
                            <select class="form-control" name="ad_roll">
                               <option value="0"  >Select Ad Roll</option>
@@ -603,7 +603,7 @@ border-radius: 0px 4px 4px 0px;
                               <option value="2"  @if( $ads_rolls == 'Mid' ) {{ 'selected' }} @endif   >Mid</option>
                               <option value="3"  @if( $ads_rolls == 'Post' ) {{ 'selected' }} @endif   >Post</option>
                            </select>
-                        </div>
+                        </div> --}}
                      </div>
                      <div class="row">
                         @if($page == 'Edit' && $video->status == 0)

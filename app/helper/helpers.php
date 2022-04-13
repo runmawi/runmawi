@@ -465,3 +465,7 @@ function get_video($vid,$field){
     $getdata = App\Video::where('id',$vid)->first()->$field;
     return  $getdata; 
 }
+
+function get_adurl(){
+    // 
+}
