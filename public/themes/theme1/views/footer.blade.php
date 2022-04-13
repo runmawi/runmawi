@@ -235,7 +235,9 @@
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+
+      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme1/assets/js/custom1.js'); ?>"></script>
+
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
