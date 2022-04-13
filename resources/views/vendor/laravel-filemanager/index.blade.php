@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+@extends('admin.master')
 
-  <!-- Chrome, Firefox OS and Opera -->
-  <meta name="theme-color" content="#333844">
-  <!-- Windows Phone -->
-  <meta name="msapplication-navbutton-color" content="#333844">
-  <!-- iOS Safari -->
-  <meta name="apple-mobile-web-app-status-bar-style" content="#333844">
-
-  <title>{{ trans('laravel-filemanager::lfm.title-page') }}</title>
+<style>
+  #content-page{
+  padding-left: 20%;
+  padding-top: 4%;
+}
+</style>
+  <!-- <title>{{ trans('laravel-filemanager::lfm.title-page') }}</title> -->
   <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/unisharp/laravel-filemanager/public/img/72px color.png') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.5.0/css/all.min.css">
@@ -26,7 +20,7 @@
   <style>{!! \File::get(base_path('vendor/unisharp/laravel-filemanager/public/css/lfm.css')) !!}</style>
   {{-- Use the line below instead of the above if you need to cache the css. --}}
   {{-- <link rel="stylesheet" href="{{ asset('/vendor/laravel-filemanager/css/lfm.css') }}"> --}}
-</head>
+<div id="content-page" style="padding-left: 1%;padding-top: 6%;" class="content-page">
 <body>
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="nav">
     <a class="navbar-brand invisible-lg d-none d-lg-inline" id="to-previous">
@@ -266,31 +260,45 @@
   <script>{!! \File::get(base_path('vendor/unisharp/laravel-filemanager/public/js/script.js')) !!}</script>
   {{-- Use the line below instead of the above if you need to cache the script. --}}
   {{-- <script src="{{ asset('vendor/unisharp/laravel-filemanager/js/script.js') }}"></script> --}}
+  
   <script>
-    Dropzone.options.uploadForm = {
-      paramName: "upload[]", // The name that will be used to transfer the file
-      uploadMultiple: false,
-      parallelUploads: 5,
-      timeout:0,
-      clickable: '#upload-button',
-      dictDefaultMessage: lang['message-drop'],
-      init: function() {
-        var _this = this; // For the closure
-        this.on('success', function(file, response) {
-          if (response == 'OK') {
-            loadFolders();
-          } else {
-            this.defaultOptions.error(file, response.join('\n'));
-          }
-        });
-      },
-      headers: {
-        'Authorization': 'Bearer ' + getUrlParam('token')
-      },
-      // acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
-      acceptedFiles: "video/mp4,video/x-m4v,video/*",
-      maxFilesize: ({{ $helper->maxUploadSize() }} / 1000)
-    }
+   var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+
+
+   Dropzone.autoDiscover = false;
+     var myDropzone = new Dropzone(".dropzone",{ 
+       //   maxFilesize: 900,  // 3 mb
+         maxFilesize: 150000000,
+         acceptedFiles: "video/mp4,video/x-m4v,video/*",
+     });
+ 
+    // Dropzone.options.uploadForm = {
+    //   paramName: "upload[]", // The name that will be used to transfer the file
+    //   uploadMultiple: false,
+    //   parallelUploads: 5,
+    //   timeout:0,
+    //   clickable: '#upload-button',
+    //   dictDefaultMessage: lang['message-drop'],
+    //   init: function() {
+    //     var _this = this; // For the closure
+    //     this.on('success', function(file, response) {
+    //       if (response == 'OK') {
+    //         loadFolders();
+    //       } else {
+    //         this.defaultOptions.error(file, response.join('\n'));
+    //       }
+    //     });
+    //   },
+    //   headers: {
+    //     'Authorization': 'Bearer ' + getUrlParam('token')
+    //   },
+    //      acceptedFiles: "video/mp4,video/x-m4v,video/*",
+    //     maxFilesize: 150000000,
+    //   // acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
+    //   // acceptedFiles: "video/mp4,video/x-m4v,video/*",
+    //   maxFilesize: ({{ $helper->maxUploadSize() }} / 1000)
+    // }
   </script>
 </body>
-</html>
+</div>
