@@ -366,7 +366,7 @@
                                      </select>                                
                                 </div>
                             
-                                <div class="col-sm-6 form-group">
+                                {{-- <div class="col-sm-6 form-group">
                                     <label class="">Choose Ad Roll</label>
                                     <select class="form-control" name="ad_roll">
                                        <option value="0"  >Select Ad Roll</option>
@@ -374,7 +374,7 @@
                                        <option value="2"  @if( $ads_rolls == 'Mid' ) {{ 'selected' }} @endif   >Mid</option>
                                        <option value="3"  @if( $ads_rolls == 'Post' ) {{ 'selected' }} @endif   >Post</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="row">

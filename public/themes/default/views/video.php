@@ -5,11 +5,12 @@
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
-
+            
 if($ads_details != null){ 
-  $ads_path = $ads; 
+  $ads_path = $ads_details; 
 }else{ 
-  $ads_path = null; }  ?>
+  $ads_path = null; 
+  }  ?>
 
 
 <?php
