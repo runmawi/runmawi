@@ -736,7 +736,7 @@ data: {
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6 form-group mt-3">
+                                {{-- <div class="col-sm-6 form-group mt-3">
                                     <label class="">Choose Ad Roll</label>
                                     <select class="form-control" name="ad_roll">
                                         <option value="0">Select Ad Roll</option>
@@ -744,7 +744,7 @@ data: {
                                         <option value="2">Mid</option>
                                         <option value="3">Post</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div> 
                                @if(isset($video->id))
                                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
