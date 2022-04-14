@@ -247,7 +247,7 @@ class AuthController extends Controller
 
     public function store_ads(Request $request) {
         $data = $request->all();
-        
+
         $Ads = new Advertisement;
         $Ads->advertiser_id = session('advertiser_id');
         $Ads->ads_name = $request->ads_name;
@@ -258,6 +258,15 @@ class AuthController extends Controller
         $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
         $Ads->location = $request->location;
+        if (!empty($data['gender']))
+        {
+            $Ads->age = json_encode($data['age']);
+        }
+
+        if (!empty($data['gender']))
+        {
+            $Ads->gender = json_encode($data['gender']);
+        }
         $Ads->save();
         $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
         $getdata->no_of_uploads += 1;
