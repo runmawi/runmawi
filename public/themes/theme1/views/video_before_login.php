@@ -6,7 +6,7 @@ $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_vide
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
 
     if($ads_details != null){ 
-      $ads_path = $ads; 
+      $ads_path = $ads_details; 
     }else{ 
       $ads_path = null;
 }  ?>
@@ -38,8 +38,12 @@ if(!empty($request_url)){
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
 
 <!-- For Guest users -->      
-  <?php if(Auth::guest() && $video->access == "guest" && empty($video->path) && empty($video->ppv_price ) || Auth::guest() && $video->access == "guest" && $video->path == "public" && empty($video->ppv_price )) { ?>
-    <div id="video_bg">
+<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)
+     || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
+     ) {
+    // dd(Auth::guest());
+        ?>
+  <div id="video_bg">
    <div class=" page-height">
      <?php 
 
@@ -64,7 +68,30 @@ if(!empty($request_url)){
           </div>
              <?php } ?>
            </div>
-        
+           
+           <?php  elseif($video->type == ''): ?>
+           
+             
+           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+         <!-- Current time: <div id="current_time"></div> -->
+         <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+            <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+            <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+             <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
+          
+             <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+             <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+             <?php } if($value->sub_language == "German"){?>
+             <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+             <?php } if($value->sub_language == "Spanish"){ ?>
+             <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+             <?php } if($value->sub_language == "Hindi"){ ?>
+             <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
+             <?php }
+             } } else {  } ?>  
+         </video>
+
+     </div>
            <?php  elseif($video->type == 'mp4_url'): 
     // dd($video->type );
 

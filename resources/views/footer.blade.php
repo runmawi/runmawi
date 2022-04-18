@@ -264,16 +264,13 @@ function myFunction() {
     var video_video = $('video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
+    var ads_path =  $('#ads_path').val();
+
+    // alert(ads_path);
+    // alert(user_logged_out)
 
 
-
-
-
-    alert(hls)
-    alert(user_logged_out)
-
-
-   if(type != "" &&  && video_video == 'video'){
+   if(type != "" &&  video_video == 'video'){
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
@@ -329,8 +326,9 @@ function myFunction() {
 }
 
         });
-   }else if(type == "" &&  hls == "hls" && video_video == 'video'){
-    alert('video_video')
+   }
+  else if(user_logged_out != "" && type == ''){
+    // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{
           controls: [
@@ -358,8 +356,34 @@ function myFunction() {
 
         });
    }
+   else if(hls == "hls"){
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
+   }
 else{
-  // alert('else')
 
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
@@ -440,8 +464,6 @@ else{
 
 }
 
-
-         
       </script>
 </body>
 </html>

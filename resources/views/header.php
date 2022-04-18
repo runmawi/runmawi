@@ -583,6 +583,7 @@ $data = Session::all();
             position: absolute;
             top: <?php echo $playerui_settings->watermark_top; ?>;
             left: <?php echo $playerui_settings->watermark_left; ?>;
+            opacity : <?php echo $playerui_settings->watermark_opacity; ?>;
             z-index: 2;
             content: '';
             height: 40px;
