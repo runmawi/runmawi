@@ -5,10 +5,10 @@
        $session = session()->all();
 ?>
 <footer class="mb-0">
-         <div class="container-fluid">
+         <div class="">
             <div class="block-space">
-               <div class="row justify-content-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
+               <div class="row justify-content-between">
+                   <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 

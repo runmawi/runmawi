@@ -12,7 +12,7 @@
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php echo __($slider_video->title); ?>
                     </h1>
@@ -47,7 +47,7 @@ endif; ?>
 <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
 </div>
 </a>-->
-<h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+<h1 class="text-white mb-3" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
 <?php echo __($slider_video->title); ?>
 </h1>
@@ -108,7 +108,7 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php echo __($videos->title); ?>
                     </h1>
