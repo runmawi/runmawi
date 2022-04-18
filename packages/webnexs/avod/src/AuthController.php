@@ -254,11 +254,11 @@ class AuthController extends Controller
         $Ads->ads_category = $request->ads_category;
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
-        $Ads->age = $request->age;
-        $Ads->gender = $request->gender;
+        // $Ads->age = $request->age;
+        // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
         $Ads->location = $request->location;
-        if (!empty($data['gender']))
+        if (!empty($data['age']))
         {
             $Ads->age = json_encode($data['age']);
         }
@@ -487,8 +487,8 @@ class AuthController extends Controller
                     $Ads->featured = 1;
                     $Ads->ads_position = $request->ads_position;
                     $Ads->ads_path = $request->ads_path;
-                    $Ads->age = $request->age;
-                    $Ads->gender = $request->gender;
+                    $Ads->age = json_encode($request->age);
+                    $Ads->gender = json_encode($request->gender);
                     $Ads->household_income = $request->household_income;
                     $Ads->location = $request->location;
                     $Ads->save();
@@ -640,9 +640,11 @@ class AuthController extends Controller
                 $Ads->featured = 1;
                 $Ads->ads_position = $request->ads_position;
                 $Ads->ads_path = $request->ads_path;
-                $Ads->age = $request->age;
-                $Ads->gender = $request->gender;
+                // $Ads->age = $request->age;
+                // $Ads->gender = $request->gender;
                 $Ads->household_income = $request->household_income;
+                $Ads->age = json_encode($input['age']);
+                $Ads->gender = json_encode($input['gender']);
                 $Ads->location = $request->location;
                 $Ads->save();
                 return Redirect::to("advertiser/featured_ads/")->withSuccess('success','Payment Successful'); 

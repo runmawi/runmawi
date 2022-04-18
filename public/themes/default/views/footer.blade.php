@@ -382,7 +382,7 @@ function myFunction() {
                       'pip',
                       'airplay',
                       'fullscreen',
-                      'capture'''],
+                      'capture'],
           i18n:{
                 capture: 'capture'
               },

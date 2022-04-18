@@ -12,10 +12,10 @@
                         <div class="block-images position-relative">
                                 <div class="img-box">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                        <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid" alt=""> -->
-                                        <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>"  data-play="hover" >
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid" alt=""> 
+                                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $preference_Languages->trailer;  ?>" type="video/mp4">
-                                        </video>
+                                        </video>-->
                                     </a>
 
                                 <!-- PPV price -->   
