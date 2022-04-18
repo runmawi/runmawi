@@ -392,6 +392,34 @@ function myFunction() {
 }
 
         });
+       } else if(user_logged_out != "" && type == ''){
+    // alert('user_logged_out')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+}
+
+        });
    }else if(hls == "hls"){
         const player = new Plyr('#videoPlayer',{
           controls: [
