@@ -264,12 +264,9 @@ function myFunction() {
     var video_video = $('video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
+    var ads_path =  $('#ads_path').val();
 
-
-
-
-
-    // alert(hls)
+    // alert(ads_path);
     // alert(user_logged_out)
 
 

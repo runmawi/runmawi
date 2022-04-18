@@ -618,7 +618,6 @@ class ApiAuthController extends Controller
     return response()->json($response, 200);
   }
 
-
   public function categoryvideos(Request $request)
   {
 
@@ -643,40 +642,58 @@ class ApiAuthController extends Controller
       $videocategoryid = $videocategory['id'];
       $genre_image = $videocategory['image'];
 
-      $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc');
-          if($getfeching !=null && $getfeching->geofencing == 'ON'){
-              $videos = $videos->whereNotIn('id',$blockvideos);
-            }
-      $videos = $videos->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
-          return $item;
-        });
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
+      ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        return $item;
+      });
 
-      $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
+      // $videos= Video::where('video_category_id',$videocategoryid)->where('active','=',1)->orderBy('created_at', 'desc');
+      //     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+      //         $videos = $videos->whereNotIn('id',$blockvideos);
+      //       }
+      // $videos = $videos->get()->map(function ($item) {
+      //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      //     $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->video_url;
+      //     return $item;
+      //   });
 
-      if(count($videos) > 0){
-        $msg = 'success';
-      }else{
-        $msg = 'nodata';
+      // $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
+
+      // if(count($videos) > 0){
+      //   $msg = 'success';
+      // }else{
+      //   $msg = 'nodata';
+      // }
+      // $myData[] = array(
+      //   "genre_name"   => $categorydetails->name,
+      //   "genre_id"   => $videocategoryid,
+      //   "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
+      //   "message" => $msg,
+      //   "videos" => $videos
+      // );
+      $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+      ->get('name');
+      foreach($main_genre as $value){
+        $category[] = $value['name']; 
       }
-      $myData[] = array(
-        "genre_name"   => $categorydetails->name,
-        "genre_id"   => $videocategoryid,
-        "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
-        "message" => $msg,
-        "videos" => $videos
-      );
+      if(!empty($category)){
+      $main_genre = implode(",",$category);
+      }else{
+        $main_genre = "";
+      }
 
     }
 
     $response = array(
       'status' => 'true',
-      'genre_movies' => $myData
+      'genre_movies' => $videos,
+      'main_genre' => $main_genre,
+
     );
     return response()->json($response, 200);
   }
-
 
   public function changepassword(Request $request)
   {

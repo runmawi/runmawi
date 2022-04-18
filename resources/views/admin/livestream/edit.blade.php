@@ -145,7 +145,7 @@ border-radius: 0px 4px 4px 0px;
                         	@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
                                 @foreach($Rtmp_urls as $key => $urls)
                                     @php     $number = $key+1;  @endphp
-                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "Streaming Video"." ".$number }} </option>
+                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "RTMP Streaming"." ".$number }} </option>
                                 @endforeach 
 					        @else
                                  @foreach($Rtmp_urls as $key => $urls)

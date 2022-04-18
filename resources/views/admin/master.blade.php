@@ -10,7 +10,7 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $data = Session::all();
 
-
+// dd($request_url);
 if (!empty($data['password_hash'])) {
    $id = auth()->user()->id;
    $user_package =    DB::table('users')->where('id', 1)->first();
@@ -18,9 +18,9 @@ if (!empty($data['password_hash'])) {
    $test = 1;
    ?>
 <input type="hidden" id="session" value="session">
-
+<?php if($request_url != "filemanager") { ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<?php } ?>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,6 +29,7 @@ if (!empty($data['password_hash'])) {
   <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
   <meta name="author" content="webnexs" />
   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+  <?php if($request_url != "filemanager") { ?>
 
  <!-- <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css'; ?>">
   <link rel="stylesheet" href="<?= THEME_URL .'/assets/admin/admin/css/font-icons/entypo/css/entypo.css'; ?>">
@@ -48,6 +49,8 @@ if (!empty($data['password_hash'])) {
   <script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
   
   <script>$.noConflict();</script>-->
+<?php } ?>
+
    <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
@@ -70,6 +73,7 @@ if (!empty($data['password_hash'])) {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/tourguide.css';?>"   />
     <link rel="stylesheet" type="text/css" href="<?= URL::to('/'). '/assets/admin/dashassets/css/font-awesome.min.css';?>" />
+    <?php if($request_url != "filemanager") { ?>
 
     <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery-3.3.1.slim.min.js';?>"></script>
     <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
@@ -78,6 +82,7 @@ if (!empty($data['password_hash'])) {
     <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/tourguide.js';?>"></script>
 
 
+    <?php } ?>
 
 
   <!--[if lt IE 9]><script src="<?= THEME_URL .'/assets/admin/admin/js/ie8-responsive-file-warning.js'; ?>"></script><![endif]-->
@@ -87,6 +92,7 @@ if (!empty($data['password_hash'])) {
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
+
 <style>
 
     .top-left-logo img {
@@ -205,7 +211,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -433,7 +439,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -656,7 +662,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
 
                     <div >
                 
@@ -879,7 +885,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('laravel-filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
                     <div class="men">
                 
                    <p class="lnk" >Language</p>
@@ -1394,6 +1400,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
 
 
+<?php if($request_url != "filemanager") { ?>
 
   <!-- Imported styles on this page -->
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
@@ -1427,6 +1434,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
   <!-- End Notifications -->
 
+  <?php } ?>
 
 
   @yield('javascript')

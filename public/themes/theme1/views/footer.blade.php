@@ -235,7 +235,9 @@
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+
+      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme1/assets/js/custom1.js'); ?>"></script>
+
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -330,8 +332,9 @@ function myFunction() {
 
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
-
-    // alert(video_video)
+    var ads_path =  $('#ads_path').val();
+    
+    // alert(ads_path)
 
    if(type != "" && video_video == 'video'){
     // alert('m3u8')

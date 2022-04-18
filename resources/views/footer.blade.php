@@ -272,8 +272,8 @@ function myFunction() {
 
 
 
-    alert(hls)
-    alert(user_logged_out)
+    // alert(hls)
+    // alert(user_logged_out)
 
 
    if(type != "" &&  && video_video == 'video'){

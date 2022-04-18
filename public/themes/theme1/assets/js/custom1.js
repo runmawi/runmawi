@@ -118,12 +118,39 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
+        $('.center').slick({
+  
+  centerPadding: '60px',
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]
+});
 		$('#home-slider').slick({
+            centerMode: true,
 			autoplay: false,
 			speed: 800,
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: false,
+            
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			responsive: [
@@ -156,7 +183,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 5,
+			slidesToShow: 6,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
@@ -374,45 +401,6 @@ Index Of Script
 				}
 			]
 		});
-		jQuery('.album-slider').slick({
-			dots: false,
-			arrows: true,
-			infinite: true,
-			speed: 300,
-			autoplay: false,
-			slidesToShow: 4,
-			slidesToScroll: 1,		
-			// appendArrows: $('#sm-slick-arrow'),
-			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
-			responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				slidesToShow: 3,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: true
-				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				// arrows: false,
-				slidesToShow: 1,
-				slidesToScroll: 1
-				}
-			}
-			]
-		});
 
 		/*---------------------------------------------------------------------
 			Owl Carousel
@@ -515,7 +503,7 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Video popup
 		-----------------------------------------------------------------------*/
-		jQuery('.video-open').magnificPopup({
+		/*jQuery('.video-open').magnificPopup({
 			type: 'iframe',
 			mainClass: 'mfp-fade',
 			removalDelay: 160,
@@ -529,7 +517,11 @@ Index Of Script
 
 				srcAction: 'iframe_src',
 			}
-		});
+		});*/
+        
+        jQuery('.video-open').magnificPopup({
+            type: 'inline', preloader: false, midClick: true, removalDelay: 160,fixedContentPos: false
+        });
 
 		/*---------------------------------------------------------------------
 			Flatpicker

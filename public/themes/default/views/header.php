@@ -96,6 +96,7 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
@@ -602,6 +603,7 @@ $data = Session::all();
             position: absolute;
             top: <?php echo $playerui_settings->watermark_top; ?>;
             left: <?php echo $playerui_settings->watermark_left; ?>;
+            opacity : <?php echo $playerui_settings->watermark_opacity; ?>;
             z-index: 2;
             content: '';
             height: 300px;

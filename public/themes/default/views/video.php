@@ -1,5 +1,18 @@
 
 <?php include('header.php'); ?>
+
+<?php 
+
+$ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
+            ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
+            
+if($ads_details != null){ 
+  $ads_path = $ads_details; 
+}else{ 
+  $ads_path = null; 
+  }  ?>
+
+
 <?php
 
 $str = $video->m3u8_url;
@@ -11,6 +24,9 @@ if(!empty($request_url)){
 ?>
 <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 <?php } ?>
+
+<input type="hidden" name="ads_path" id="ads_path" value="<?php echo  $ads_path;?>">
+
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
