@@ -116,7 +116,7 @@
             <div class="form-group" id="attachment">
               <div class="controls text-center">
                 <div class="input-group w-100">
-                  <a class="btn btn-primary w-100 text-white" id="upload-button">{{ trans('laravel-filemanager::lfm.message-choose') }}</a>
+                  <!-- <a class="btn btn-primary w-100 text-white" id="upload-button">{{ trans('laravel-filemanager::lfm.message-choose') }}</a> -->
                 </div>
               </div>
             </div>
