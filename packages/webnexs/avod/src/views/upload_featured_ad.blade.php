@@ -1,4 +1,14 @@
 @include('avod::ads_header')
+
+
+   <style>
+      .row.ages {
+      padding: 2%;
+      }
+   .row.household_Income {
+      padding: 2%;
+      }
+   </style>
     
         <div id="main-admin-content">
 
@@ -24,23 +34,124 @@
                             <fieldset>
                                <div class="form-card">
                                  <h2 class="fs-title">General Information</h2> 
-                                 <div class="col-md-6">
-                                    <div class="form-group">
+
+                                 <div class="row col-md-12">
+                                    <div class="form-group col-md-6">
                                      <label>Age:</label>
-                                     <input type="text" id="age" name="age" required class="form-control">
-                                  </div>
-                                  <div class="form-group">
-                                     <label>Gender:</label>
-                                     <select class="form-control" name="gender" id="gender">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="kids">Kids</option>
-                                     </select>
-                                  </div>
-                                  <div class="form-group">
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" id="" class="age" name="age[]" value="18-24">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for=""> 25-34 </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="25-34">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for=""> 35-44 </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="35-44">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for=""> 45-54 </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="45-54">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for="">55-64 </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="55-64">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4">    <label for="">65+ </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="65+">
+                                       </div>
+                                    </div>
+
+                                    <div class="row ages">
+                                       <div class="col-sm-4"> <label for="">unknown </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="checkbox" class="age" id="" name="age[]" value="unknown">
+                                       </div>
+                                    </div>
+                              </div>
+                                  
+                                  <div class="form-group col-md-6">
                                      <label>Household Income:</label>
-                                     <input type="text" id="household_income" name="household_income" required class="form-control">
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="1-10">
+                                       </div>
+                                    </div>
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" >11 - 20% </label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id=""  name="household_income" value="11-20">
+                                       </div>
+                                    </div>
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" >21 - 30%</label> </div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="21-30">
+                                       </div>
+                                    </div>
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" class="10">31 - 40%</label></div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="31-40">
+                                       </div>
+                                    </div>
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" class="10">41 - 50%</label></div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="41-50">
+                                       </div>
+                                    </div>
+ 
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" class="10">Lower 50%</label></div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="lower_50">
+                                       </div>
+                                    </div>
+
+                                    <div class="row household_Income">
+                                       <div class="col-sm-4"> <label for="household_income_label" class="10">Unknown</label></div>
+                                       <div class="col-sm-4"> 
+                                          <input type="radio" class="household_income" id="" name="household_income" value="unknown">
+                                       </div>
+                                    </div>
+
                                   </div>
+
+                                  <div class="form-group col-md-6">
+                                    <label>Gender:</label>
+                                    <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender">
+                                       <option value="male">Male</option>
+                                       <option value="female">Female</option>
+                                       <option value="kids">Kids</option>
+                                    </select>
+                                 </div>
+
                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             <fieldset>
@@ -209,6 +320,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<script>
+  $('.js-example-basic-multiple').select2();
+
+   </script>
 <script type="text/javascript">
 <?php if(session('success')){ ?>
     toastr.success("<?php echo session('success'); ?>");
@@ -289,10 +405,12 @@
                 var ads_category = $("#ads_category").find(":selected").val();
                 var ads_position = $("#ads_position").val();
                 var ads_path = $("#ads_path").val();
-                var age = $("#age").val();
+                var age = $('input[type=checkbox]:checked').map(function(_, el) {
+                     return $(el).val();
+               }).get();
                 var location = $("#location").val();
-                var household_income = $("#household_income").val();
-                var gender = $("#gender").find(":selected").val();
+                var household_income = $('input[name="household_income"]:checked').val();
+                var gender = $("#gender").val();
                 var price =  $('#ads_position').find(":selected").attr('data-val');
                
                    $.post(base_url+'/buyfeaturedad_stripe', {
@@ -412,16 +530,19 @@ return false;
 </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+    
      var base_url = $('#base_url').val();
 $('body').on('click', '.buy_now', function(e){
    var ads_name = $("#ads_name").val();
    var ads_category = $("#ads_category").find(":selected").val();
    var ads_position = $("#ads_position").val();
    var ads_path = $("#ads_path").val();
-   var age = $("#age").val();
+   var age = $('input[type=checkbox]:checked').map(function(_, el) {
+        return $(el).val();
+    }).get();
    var location = $("#location").val();
-   var household_income = $("#household_income").val();
-   var gender = $("#gender").find(":selected").val();
+   var household_income = $('input[name="household_income"]:checked').val();
+   var gender = $("#gender").val();
    var price =  $('#ads_position').find(":selected").attr('data-val');
    var rz_key = $("#rz_key").val();
 var options = {
@@ -436,7 +557,18 @@ url: base_url+'/buyrz_ad',
 type: 'post',
 dataType: 'json',
 data: {
-razorpay_payment_id: response.razorpay_payment_id , ads_path:ads_path, ads_category:ads_category,ads_name:ads_name,ads_position:ads_position,ads_position:ads_position,price:price,age:age,location:location,household_income:household_income,gender:gender, _token: '<?= csrf_token(); ?>'
+      razorpay_payment_id: response.razorpay_payment_id ,
+       ads_path:ads_path,
+        ads_category:ads_category,
+        ads_name:ads_name,
+        ads_position:ads_position,
+        ads_position:ads_position,
+        price:price,
+        age:age,
+        location:location,
+        household_income:household_income,
+        gender:gender,
+       _token: '<?= csrf_token(); ?>'
 }, 
 success: function (msg) {
 window.location.href = base_url+'/featured_ads';
