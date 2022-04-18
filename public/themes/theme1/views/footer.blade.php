@@ -400,7 +400,7 @@ ads:{
                     tagUrl: ads_path 
                   }
         });
-       } else if(user_logged_out != "" && type == ''){
+       } else if(user_logged_out == 1 && type == ''){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{

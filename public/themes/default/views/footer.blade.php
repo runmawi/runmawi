@@ -267,7 +267,7 @@ function myFunction() {
     var ads_path =  $('#ads_path').val();
 
     // alert(ads_path);
-    // alert(user_logged_out)
+    alert(user_logged_out)
 
 
    if(type != "" &&  video_video == 'video'){
@@ -333,7 +333,7 @@ function myFunction() {
                     }
         });
    }
-  else if(user_logged_out != "" && type == ''){
+  else if(user_logged_out == 1 && type == ''){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{
