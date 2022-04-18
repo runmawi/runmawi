@@ -56,11 +56,11 @@
                             <div class="block-images position-relative">
                             <!-- block-images -->
                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid" alt=""> -->
-                                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->mobile_image;  ?>"  data-play="hover" >
+                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                        class="img-fluid" alt=""> 
+                                       <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
-                                            </video>
+                                            </video>-->
                                     </a>
                                 <div class="corner-text-wrapper">
                                     <div class="corner-text">
@@ -156,9 +156,9 @@
                                    </div>
 
                                     <div class="hover-buttons">
-                                        <a type="button" class="text-white d-flex"
+                                        <a type="button" class="text-white d-flex align-items-center"
                                             href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                         </a>
                                     <div>
                               </div>

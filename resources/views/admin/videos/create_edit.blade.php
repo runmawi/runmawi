@@ -1467,6 +1467,8 @@ $(document).ready(function($){
    // console.log(media_path);
    // console.log(path);
    }
+
+
      
 </script>
 @section('javascript')

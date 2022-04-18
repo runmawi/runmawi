@@ -361,7 +361,12 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
+},
+ads:{ 
+      enabled: true, 
+      publisherId: '', 
+      tagUrl: ads_path 
+    }
 
         });
    }else if(type != "" && request_url != 'm3u8'){
@@ -369,30 +374,35 @@ function myFunction() {
 
         const player = new Plyr('#videoPlayer',{
           controls: [
+                      'play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'
+		                ],
+              i18n:{
+                    capture: 'capture'
+                  },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+              ads:{ 
+                    enabled: true, 
+                    publisherId: '', 
+                    tagUrl: ads_path 
+                  }
         });
-   }else if(hls == "hls"){
+       } else if(user_logged_out == 1 && type == ''){
+    // alert('user_logged_out')
+
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -415,8 +425,42 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
+},
+              ads:{ 
+                    enabled: true, 
+                    publisherId: '', 
+                    tagUrl: ads_path 
+                  }
 
+        });
+   }else if(hls == "hls"){
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+                  'play-large',
+                  'restart',
+                  'rewind',
+                  'play',
+                  'fast-forward',
+                  'progress',
+                  'current-time',
+                  'mute',
+                  'volume',
+                  'captions',
+                  'settings',
+                  'pip',
+                  'airplay',
+                  'fullscreen',
+                  'capture'
+		            ],
+            i18n:{
+                capture: 'capture'
+                },
+
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
    }
 else{
@@ -462,28 +506,31 @@ else{
     // const player = new Plyr(video, defaultOptions);
     const player = new Plyr('#video',{
           controls: [
+                    'play-large',
+                    'restart',
+                    'rewind',
+                    'play',
+                    'fast-forward',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'pip',
+                    'airplay',
+                    'fullscreen',
+                    'capture'
+		              ],
+            i18n:{
+                capture: 'capture'
+            },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
   }
 

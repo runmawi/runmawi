@@ -1,4 +1,13 @@
 @include('avod::ads_header')
+
+<style>
+   .row.ages {
+   padding: 2%;
+   }
+.row.household_Income {
+   padding: 2%;
+   }
+</style>
     
         <div id="main-admin-content">
 
@@ -26,23 +35,124 @@
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">General Information</h2> 
-                                    <div class="col-md-6">
-                                    <div class="form-group">
+                                    <div class="row col-md-12">
+                                    <div class="form-group col-md-4">
                                    <label>Age:</label>
-                                    <input type="text" id="age" name="age" required class="form-control">
+
+                                   <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" id="" class="age" name="age[]" value="18-24">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 25-34 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="25-34">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 35-44 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="35-44">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 45-54 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="45-54">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for="">55-64 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="55-64">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4">    <label for="">65+ </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="65+">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for="">unknown </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="unknown">
+                                    </div>
+                                 </div>
                                 </div>
-                                <div class="form-group">
-                                   <label>Gender:</label>
-                                    <select class="form-control" name="gender">
-                                      <option value="male">Male</option>
-                                      <option value="female">Female</option>
-                                      <option value="kids">Kids</option>
-                                   </select>
-                                </div>
-                                <div class="form-group">
-                                   <label>Household Income:</label>
-                                    <input type="text" id="household_income" name="household_income" required class="form-control">
-                                </div>
+
+                               
+                              
+                                <div class="form-group col-md-5">
+                                 <label>Household Income:</label>
+
+                                   <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="1-10">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" >11 - 20% </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id=""  name="household_income" value="11-20">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" >21 - 30%</label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="21-30">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">31 - 40%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="31-40">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">41 - 50%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="41-50">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Lower 50%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="lower_50">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Unknown</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="unknown">
+                                    </div>
+                                 </div>
+                              </div> 
+
+                              <div class="form-group col-md-3">
+                                 <label>Gender:</label>
+                                  <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" >
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="kids">Kids</option>
+                                 </select>
+                              </div>
+
                                 </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             <fieldset>
@@ -159,12 +269,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBROO3Md6_fZD5_fd1u8VTlRxd4VdJnAWU&libraries=places&sensor=false"></script>
-
+<script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBROO3Md6_fZD5_fd1u8VTlRxd4VdJnAWU&libraries=places&sensor=false"></script>
 
 <script>
 
- var input = document.getElementById('location');
+   var input = document.getElementById('location');
    var autocomplete = new google.maps.places.Autocomplete(input);
 
     google.maps.event.addListener(autocomplete, 'place_changed',   function () {
@@ -175,7 +284,9 @@
 
   });
 
-   </script>
+  $('.js-example-basic-multiple').select2();
+
+</script>
 
 <script type="text/javascript">
 <?php if(session('success')){ ?>

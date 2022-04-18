@@ -247,17 +247,26 @@ class AuthController extends Controller
 
     public function store_ads(Request $request) {
         $data = $request->all();
-        
+
         $Ads = new Advertisement;
         $Ads->advertiser_id = session('advertiser_id');
         $Ads->ads_name = $request->ads_name;
         $Ads->ads_category = $request->ads_category;
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
-        $Ads->age = $request->age;
-        $Ads->gender = $request->gender;
+        // $Ads->age = $request->age;
+        // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
         $Ads->location = $request->location;
+        if (!empty($data['age']))
+        {
+            $Ads->age = json_encode($data['age']);
+        }
+
+        if (!empty($data['gender']))
+        {
+            $Ads->gender = json_encode($data['gender']);
+        }
         $Ads->save();
         $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
         $getdata->no_of_uploads += 1;
@@ -478,8 +487,8 @@ class AuthController extends Controller
                     $Ads->featured = 1;
                     $Ads->ads_position = $request->ads_position;
                     $Ads->ads_path = $request->ads_path;
-                    $Ads->age = $request->age;
-                    $Ads->gender = $request->gender;
+                    $Ads->age = json_encode($request->age);
+                    $Ads->gender = json_encode($request->gender);
                     $Ads->household_income = $request->household_income;
                     $Ads->location = $request->location;
                     $Ads->save();
@@ -631,9 +640,11 @@ class AuthController extends Controller
                 $Ads->featured = 1;
                 $Ads->ads_position = $request->ads_position;
                 $Ads->ads_path = $request->ads_path;
-                $Ads->age = $request->age;
-                $Ads->gender = $request->gender;
+                // $Ads->age = $request->age;
+                // $Ads->gender = $request->gender;
                 $Ads->household_income = $request->household_income;
+                $Ads->age = json_encode($input['age']);
+                $Ads->gender = json_encode($input['gender']);
                 $Ads->location = $request->location;
                 $Ads->save();
                 return Redirect::to("advertiser/featured_ads/")->withSuccess('success','Payment Successful'); 

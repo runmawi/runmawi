@@ -5,10 +5,10 @@
        $session = session()->all();
 ?>
 <footer class="mb-0">
-         <div class="container-fluid">
+         <div class="">
             <div class="block-space">
-               <div class="row align-items-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
+               <div class="row justify-content-between">
+                   <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
@@ -274,29 +274,31 @@ function myFunction() {
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
-          controls: [
+          controls: ['play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'
+		                ],
+              i18n:{
+                   capture: 'capture'
+              },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+              ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
         });
    }else if(type != "" && request_url != 'm3u8'){
     // alert('m3u8')
@@ -323,10 +325,17 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
-
+},
+                ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
         });
-   }else if(hls == "hls"){
+   }
+  else if(user_logged_out == 1 && type == ''){
+    // alert('user_logged_out')
+
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -349,8 +358,40 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
+},
+                  ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
+        });
+   }
+   else if(hls == "hls"){
+        const player = new Plyr('#videoPlayer',{
+          controls: [  'play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'],
+          i18n:{
+                capture: 'capture'
+              },
 
+          ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
    }
 else{
@@ -397,28 +438,31 @@ else{
     // const player = new Plyr(video, defaultOptions);
     const player = new Plyr('#video',{
           controls: [
+                    'play-large',
+                    'restart',
+                    'rewind',
+                    'play',
+                    'fast-forward',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'pip',
+                    'airplay',
+                    'fullscreen',
+                    'capture'
+		              ],
+            i18n:{
+                capture: 'capture'
+              },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
   }
 
