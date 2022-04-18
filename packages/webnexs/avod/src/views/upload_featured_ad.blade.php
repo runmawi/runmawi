@@ -36,7 +36,7 @@
                                  <h2 class="fs-title">General Information</h2> 
 
                                  <div class="row col-md-12">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                      <label>Age:</label>
 
                                     <div class="row ages">
@@ -87,9 +87,9 @@
                                           <input type="checkbox" class="age" id="" name="age[]" value="unknown">
                                        </div>
                                     </div>
-                              </div>
+                                 </div>
                                   
-                                  <div class="form-group col-md-6">
+                                  <div class="form-group col-md-5">
                                      <label>Household Income:</label>
 
                                     <div class="row household_Income">
@@ -143,7 +143,7 @@
 
                                   </div>
 
-                                  <div class="form-group col-md-6">
+                                  <div class="form-group col-md-3">
                                     <label>Gender:</label>
                                     <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender">
                                        <option value="male">Male</option>
