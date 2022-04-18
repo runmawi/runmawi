@@ -135,9 +135,9 @@ border-radius: 0px 4px 4px 0px;
                             <div class="panel-body">
                                 <select class="form-control url_type" id="url_type" name="url_type" >
                                     <option value="" >Choose URL Format</option>
-                                    <option value="mp4"   >MP4 URL</option>
-                                    <option value="embed"  >Embed URL</option>
-                                    <option value="live_stream_video"   >Live Stream Video</option>
+                                    <option value="mp4"> MP4/M3U8 URL </option>
+                                    <option value="embed"> Embed URL</option>
+                                    <option value="live_stream_video"> Live Stream Video</option>
                                     
                                     @foreach($Rtmp_urls as $key => $urls)
                                       @php     $number = $key+1;  @endphp

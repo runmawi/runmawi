@@ -26,23 +26,49 @@
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">General Information</h2> 
-                                    <div class="col-md-6">
-                                    <div class="form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-group col-md-6">
                                    <label>Age:</label>
-                                    <input type="text" id="age" name="age" required class="form-control">
+
+                                       <input type="checkbox" id="" name="age[]" value="18-24">
+                                          <label for=""> 18-24 </label>
+                                       <input type="checkbox" id="" name="age[]" value="25-34">
+                                          <label for=""> 25-34 </label>
+                                       <input type="checkbox" id="" name="age[]" value="35-44">
+                                             <label for=""> 35-44 </label>
+                                       <input type="checkbox" id="" name="age[]" value="45-54">
+                                             <label for=""> 45-54 </label>
+                                       <input type="checkbox" id="" name="age[]" value="55-64">
+                                             <label for="">55-64 </label>
+                                       <input type="checkbox" id="" name="age[]" value="65+">
+                                             <label for="">65+ </label>
+                                       <input type="checkbox" id="" name="age[]" value="unknown">
+                                             <label for="">unknown </label>
                                 </div>
+
                                 <div class="form-group">
                                    <label>Gender:</label>
-                                    <select class="form-control" name="gender">
+                                    <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" >
                                       <option value="male">Male</option>
                                       <option value="female">Female</option>
                                       <option value="kids">Kids</option>
                                    </select>
                                 </div>
+                              
                                 <div class="form-group">
-                                   <label>Household Income:</label>
-                                    <input type="text" id="household_income" name="household_income" required class="form-control">
-                                </div>
+                                   <p>Household Income:</p>
+
+                                 <input type="radio" class="household_income" name="household_income" value="1-10">
+                                 <label for="household_income_label" class="10">Top 10%</label>
+
+                                 <input type="radio" class="household_income"  name="household_income" value="11-20">
+                                 <label for="household_income_label" >11 - 20% </label>
+                                
+                                 <input type="radio" class="household_income"  name="household_income" value="21-30">
+                                 <label for="household_income_label" >21 - 30%</label>
+
+                              </div> 
+
                                 </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             <fieldset>
@@ -159,12 +185,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBROO3Md6_fZD5_fd1u8VTlRxd4VdJnAWU&libraries=places&sensor=false"></script>
-
+<script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBROO3Md6_fZD5_fd1u8VTlRxd4VdJnAWU&libraries=places&sensor=false"></script>
 
 <script>
 
- var input = document.getElementById('location');
+   var input = document.getElementById('location');
    var autocomplete = new google.maps.places.Autocomplete(input);
 
     google.maps.event.addListener(autocomplete, 'place_changed',   function () {
@@ -175,7 +200,9 @@
 
   });
 
-   </script>
+  $('.js-example-basic-multiple').select2();
+
+</script>
 
 <script type="text/javascript">
 <?php if(session('success')){ ?>
