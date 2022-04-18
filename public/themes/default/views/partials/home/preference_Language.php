@@ -114,8 +114,8 @@
                                     
                                     
                                    <div class="hover-buttons">
-                                       <a class="text-white d-flex" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
+                                         <img class="ply mr-1 " src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                     <!-- <div>
                                        <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_Languages->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>

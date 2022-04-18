@@ -25,7 +25,7 @@
   #home-slider .slick-bg { height: 100%; }
 }
 @media(max-width:991px) {
-  li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 10px; }
+  li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 12px; }
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }
   .r-mb-23 { margin-bottom: 23px; }
