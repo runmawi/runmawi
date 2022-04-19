@@ -644,7 +644,7 @@ class ApiAuthController extends Controller
       $videocategoryid = $videocategory['id'];
       $genre_image = $videocategory['image'];
      
-      $videos[]= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
       ->where('categoryvideos.category_id',$videocategoryid)
       ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
