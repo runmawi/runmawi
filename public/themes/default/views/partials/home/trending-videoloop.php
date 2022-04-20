@@ -20,8 +20,7 @@
                                       </video>
 
                                      <!-- PPV price -->
-                                         <div class="corner-text-wrapper">
-                                            <div class="corner-text">
+                                        
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>          
                                                 <?php  if(!empty($watchlater_video->ppv_price)){?>

@@ -21,8 +21,7 @@
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
-                                                <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                               
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" style="left:22px!important"><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
@@ -30,8 +29,7 @@
                                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
                                                     <p class="p-tag" style="left:22px!important"><?php echo "Free"; ?></p>
                                                     <?php } ?>
-                                                </div>
-                                            </div>
+                                              
                                         </div>
                                                 <!-- </div> -->
 
