@@ -156,8 +156,7 @@ if(isset($videos)) :
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>
                                     </a>
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
+                               
                                         <p class="p-tag1">
                                             
                                             <?php if(!empty($category_video->ppv_price)) {
@@ -170,7 +169,7 @@ if(isset($videos)) :
                                             ?>
                                         
                                         </p>
-                                    </div>
+                                   
                                 </div>
                                 <div class="block-description">
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
