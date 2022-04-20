@@ -19,8 +19,7 @@
                         </a>
 
                         <!-- PPV price -->
-                        <div class="corner-text-wrapper">
-                            <div class="corner-text">
+                        
                                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                 <?php  if(!empty($most_watched_video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
@@ -33,8 +32,7 @@
                             </div>
                         </div>
 
-                    </div>
-                </div>
+                  
 
                 <div class="block-description">
                     <div class="hover-buttons">
