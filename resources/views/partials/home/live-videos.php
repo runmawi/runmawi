@@ -38,7 +38,7 @@
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>
-                                                    </div>
+                                                 
                               
                              </div>
                           </a>
