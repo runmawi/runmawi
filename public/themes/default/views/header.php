@@ -142,7 +142,7 @@ $data = Session::all();
      <!-- Header -->
       <header id="main-header">
          <div class="main-header">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container" >
                <div class="row">
                   <div class="col-sm-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
