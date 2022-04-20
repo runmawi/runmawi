@@ -23,7 +23,7 @@
                                             <?php } ?>
                                         </div>
                                                   
-                                </div>
+                               
                                 <div class="block-description" style="top:40px !important;">
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
@@ -41,6 +41,7 @@
                                                  
                               
                              </div>
+                           </div>
                           </a>
                        </li>
 

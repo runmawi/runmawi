@@ -32,8 +32,7 @@
                             </video>
 
                             <!-- PPV price -->
-                            <div class="corner-text-wrapper">
-                                <div class="corner-text">
+                         
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <?php  if(!empty($category_video->ppv_price)){?>
                                     <p class="p-tag1"><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
@@ -43,8 +42,8 @@
                                     <p class="p-tag"><?php echo "Free"; ?></p>
                                     <?php } ?>
                                     <?php } ?>
-                                </div>
-                            </div>
+                                
+                            
                         </a>
                     </div>
                     <div class="block-description">
