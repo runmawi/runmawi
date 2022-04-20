@@ -62,8 +62,7 @@
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>-->
                                     </a>
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
+
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                         <p class="p-tag1">  
                                             <?php if(!empty($category_video->ppv_price)) {
@@ -76,7 +75,7 @@
                                             ?>
                                         </p>
                                     <?php }?>
-                                    </div>
+                                   
                                 </div>
                                 <div class="block-description">
 
