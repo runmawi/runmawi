@@ -57,7 +57,17 @@ class AdminSeriesController extends Controller
             {
                 return redirect('/home');
             }
-          
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
 
           $search_value = $request->get('s');
         
@@ -78,6 +88,7 @@ class AdminSeriesController extends Controller
             );
 
         return View::make('admin.series.index', $data);
+            }
     }
 
     /**
@@ -89,6 +100,17 @@ class AdminSeriesController extends Controller
     {
         $settings  = Setting::first();
         // dd($settings);
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $data = array(
             'settings ' => $settings,
             'headline' => '<i class="fa fa-plus-circle"></i> New Series',
@@ -104,6 +126,7 @@ class AdminSeriesController extends Controller
             
             );
         return View::make('admin.series.create_edit', $data);
+        }
     }
 
     /**

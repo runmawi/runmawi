@@ -57,7 +57,17 @@ class AdminVideosController extends Controller
             {
                 return redirect('/home');
             }
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
       // $search_value = Request::get('s');
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
@@ -83,6 +93,7 @@ class AdminVideosController extends Controller
             );
 
         return View('admin.videos.index', $data);
+            }
     }
 
     public function live_search(Request $request)
@@ -466,7 +477,17 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                 return redirect('/home');
             }
             $settings = Setting::first();
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
 
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -492,6 +513,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
 
         // return View::make('admin.videos.create_edit', $data);
+            }
     }
 
      /**
@@ -2007,7 +2029,18 @@ if(!empty($artistsdata)){
     }
 
     public function CPPVideosIndex()
-    {
+    {         
+       $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
 
         $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
         $videos =    Video::where('active', '=',0)
@@ -2019,6 +2052,7 @@ if(!empty($artistsdata)){
                 );
     
             return View('admin.videos.videoapproval.approval_index', $data);
+        }
        }
        public function CPPVideosApproval($id)
        {

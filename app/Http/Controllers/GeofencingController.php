@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Geofencing;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Setting as Setting;
+use App\User as User;
+use View;
 
 class GeofencingController extends Controller
 {
@@ -16,9 +18,20 @@ class GeofencingController extends Controller
      */
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $Geofencing=Geofencing::first();
         return view ('admin.Geofencing.create',compact('Geofencing',$Geofencing));
-        
+        }
     }
 
     /**

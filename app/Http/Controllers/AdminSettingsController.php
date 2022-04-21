@@ -17,14 +17,24 @@ use Image;
 use App\ThumbnailSetting;
 use App\RTMP;
 use Illuminate\Support\Facades\Storage;
-
+use View;
 
 //use Illuminate\Http\Request;
 
 class AdminSettingsController extends Controller
 {
     public function index() {
-        
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+          $settings = Setting::first();
+          $data = array(
+              'settings' => $settings,    
+      );
+          return View::make('admin.expired_dashboard', $data);
+      }else{
         $setting = Setting::first();
         $app_settings = AppSetting::first();          
         if(!empty($setting->transcoding_resolution)){
@@ -41,6 +51,7 @@ class AdminSettingsController extends Controller
 			  );
 
 	    	return \View::make('admin.settings.index', $data);
+      }
     }
     
     public function save_settings(Request $request){
@@ -333,7 +344,17 @@ class AdminSettingsController extends Controller
    
   public function playerui_index() {
     // $setting = Setting::first();
- 
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $playerui = Playerui::first();
 
     $data = array(
@@ -343,6 +364,7 @@ class AdminSettingsController extends Controller
     );
 
     return \View::make('admin.players.index', $data);
+  }
 
   }  
   public function playerui_settings() {
@@ -566,9 +588,21 @@ if($watermark != '') {
 
     public function ThumbnailSetting(Request $request)
     {
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+          $settings = Setting::first();
+          $data = array(
+              'settings' => $settings,    
+      );
+          return View::make('admin.expired_dashboard', $data);
+      }else{
       $thumbnail_setting = ThumbnailSetting::first();
 
       return view('admin.thumbnail.index',compact('thumbnail_setting',$thumbnail_setting));
+      } 
     }
 
     public function ThumbnailSetting_Store(Request $request){

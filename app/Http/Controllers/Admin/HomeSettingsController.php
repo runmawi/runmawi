@@ -12,15 +12,30 @@ use App\Setting as Setting;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use App\User as User;
+use View;
 
 class HomeSettingsController extends Controller
 {
     public function index(){
+        
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $settings = HomeSetting::first();   
         $data = array(
             "settings" =>$settings 
         );
         return view('admin.settings.homepage',$data);
+    }
     }
     public function save_settings(Request $request){
         
