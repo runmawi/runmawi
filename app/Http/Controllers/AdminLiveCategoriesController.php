@@ -26,6 +26,14 @@ class AdminLiveCategoriesController extends Controller
         // dd('test');
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+           
+            return view('admin.expired_dashboard');
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->get();
 
@@ -44,6 +52,7 @@ class AdminLiveCategoriesController extends Controller
         return view('blocked');
 
     }
+  }
   }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();

@@ -57,7 +57,17 @@ class AdminVideosController extends Controller
             {
                 return redirect('/home');
             }
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
       // $search_value = Request::get('s');
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
@@ -83,6 +93,7 @@ class AdminVideosController extends Controller
             );
 
         return View('admin.videos.index', $data);
+            }
     }
 
     public function live_search(Request $request)
@@ -466,7 +477,17 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                 return redirect('/home');
             }
             $settings = Setting::first();
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
 
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -492,6 +513,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
 
         // return View::make('admin.videos.create_edit', $data);
+            }
     }
 
      /**
@@ -926,8 +948,11 @@ if(!empty($artistsdata)){
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
             $active = 0;
+            $status = 0;
+
         }  else{
          $active = 1;
+         $status = 1;
         }
         
         
@@ -986,8 +1011,12 @@ if(!empty($artistsdata)){
                 }  
                 if(empty($data['active'])){
                     $active = 0;
+                    $status = 0;
+                    $draft = 1;
                     }else{
                     $active = 1;
+                    $status = 1;
+                    $draft = 1;
                     }  
             // if(empty($data['featured'])){
             //     $data['featured'] = 0;
@@ -1224,13 +1253,15 @@ if(!empty($artistsdata)){
          $video->publish_time = $request['publish_time'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
-         $video->active=1;
+        //  $video->active=1;
          $video->year = $year ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;
          $video->featured=$featured ;
          $video->active=$active ;
+         $video->status=$status ;
+         $video->draft=$draft ;
          $video->banner=$banner ;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
@@ -1986,7 +2017,18 @@ if(!empty($artistsdata)){
     }
 
     public function CPPVideosIndex()
-    {
+    {         
+       $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
 
         $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
         $videos =    Video::where('active', '=',0)
@@ -1998,6 +2040,7 @@ if(!empty($artistsdata)){
                 );
     
             return View('admin.videos.videoapproval.approval_index', $data);
+        }
        }
        public function CPPVideosApproval($id)
        {

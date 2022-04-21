@@ -21,11 +21,23 @@ use Image;
 use View;
 use DB;
 use Flash;
+use App\Setting;
 
 class AdminPaymentManagementController extends Controller
 {
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $revenue =  SubscriptionPlan::select(('subscription_plans.price'))
         ->join('subscriptions','subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
         ->get();
@@ -64,10 +76,23 @@ class AdminPaymentManagementController extends Controller
             );
 
         return View('admin.payment.charts', $data);
+
+        }
     }
     
     public function SubscriptionIndex()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
 
     //    $user = User::where('role', '!=' , 'admin')->get();
        $subscription = Subscription::select('subscriptions.*','users.*')
@@ -80,11 +105,22 @@ class AdminPaymentManagementController extends Controller
             'subscription' => $subscription,
             );
         return View('admin.payment.subscription_payment', $data);
-        
+        }
     }
 
     public function SubscriptionView($id)
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // dd($id);
         $subscription = Subscription::select('subscriptions.*','users.*')
         ->join('users', 'subscriptions.user_id', '=', 'users.id')
@@ -96,10 +132,22 @@ class AdminPaymentManagementController extends Controller
             'subscription' => $subscription,
             );
         return View('admin.payment.subscription_view', $data);
+        }
     }
 
     public function PayPerViewIndex()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
         ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
@@ -119,12 +167,23 @@ class AdminPaymentManagementController extends Controller
              'payperView' => $PayPerView,
              );
          return View('admin.payment.ppv_payment', $data);
+            }
     }
 
     public function PayPerView($id)
     {
         // dd($id);
- 
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
         ->join('users', 'ppv_purchases.user_id', '=', 'users.id')
@@ -136,6 +195,8 @@ class AdminPaymentManagementController extends Controller
             'payperView' => $PayPerView,
             );
         return View('admin.payment.ppv_view', $data);
+
+        }
     }
    
     public function Subscription_search(Request $request)

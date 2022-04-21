@@ -26,7 +26,17 @@ class AdminThemeSettingsController extends Controller
 {
     
 	public function theme_settings(){
-
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
 		$settings = SiteTheme::first();
 		$user = Auth::user();
 		$data = array(
@@ -34,6 +44,7 @@ class AdminThemeSettingsController extends Controller
 			'admin_user'	=> $user,
 			);
 		return View::make('admin.settings.theme_settings', $data);
+    }
 	}
 
 	public function theme_settings_form(){
@@ -179,11 +190,22 @@ class AdminThemeSettingsController extends Controller
  
     
       public function SliderEdit($id){
-         
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
             $categories = Slider::where('id', '=', $id)->get();
 
             $allCategories = Slider::all();
             return view('admin.sliders.edit',compact('categories','allCategories'));
+        }
         }  
     
     public function MobileSliderEdit($id){
@@ -293,12 +315,23 @@ class AdminThemeSettingsController extends Controller
  public function SliderIndex(){
           
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
           $allCategories = Slider::orderBy('order_position','ASC')->get();
           $data = array (
             'allCategories'=>$allCategories
           );
          return view('admin.sliders.index',$data);
+        }
       } 
     public function LanguageIndex(){
       $data = Session::all();
@@ -306,6 +339,17 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
@@ -320,6 +364,7 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }
+  }
   }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -334,6 +379,17 @@ class AdminThemeSettingsController extends Controller
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+          $settings = Setting::first();
+          $data = array(
+              'settings' => $settings,    
+      );
+          return View::make('admin.expired_dashboard', $data);
+      }else{
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
@@ -348,6 +404,7 @@ class AdminThemeSettingsController extends Controller
         return view('blocked');
 
     }      
+  }
   }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -557,6 +614,17 @@ class AdminThemeSettingsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = Language::where('id', '=', $id)->get();
             $allCategories = Language::all();
@@ -566,6 +634,7 @@ class AdminThemeSettingsController extends Controller
             return view('blocked');
     
         }
+      }
       }else{
         $system_settings = SystemSetting::first();
         $user = User::where('id','=',1)->first();
@@ -580,6 +649,17 @@ class AdminThemeSettingsController extends Controller
           $package_id = auth()->user()->id;
           $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;
+          $user =  User::where('id',1)->first();
+          $duedate = $user->package_ends;
+          $current_date = date('Y-m-d');
+          if ($current_date > $duedate)
+          {
+              $settings = Setting::first();
+              $data = array(
+                  'settings' => $settings,    
+          );
+              return View::make('admin.expired_dashboard', $data);
+          }else{
           if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = VideoLanguage::where('id', '=', $id)->get();
             $allCategories = VideoLanguage::all();
@@ -589,6 +669,7 @@ class AdminThemeSettingsController extends Controller
             return view('blocked');
     
         }
+      }
       }else{
         $system_settings = SystemSetting::first();
         $user = User::where('id','=',1)->first();

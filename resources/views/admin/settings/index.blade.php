@@ -403,7 +403,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-4">
                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                             style="width: ;">
-                            <div><label class="mt-1">Can Access Free Contrent: </label></div>
+                            <div><label class="mt-1">Can Access Free Content: </label></div>
                             <div class="d-flex justify-content-between">
                                 <div>ON</div>
                                 <div class="mt-1">
