@@ -5,7 +5,7 @@
        $session = session()->all();
 ?>
 <footer class="mb-0">
-         <div class="">
+         <div class="container">
             <div class="block-space">
                <div class="row justify-content-between">
                    <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
