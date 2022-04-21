@@ -11,7 +11,9 @@ use App\VideoCategory as VideoCategory;
 use App\SystemSetting as SystemSetting;
 use App\AudioCategory as AudioCategory;
 use App\AudioAlbums as AudioAlbums;
+use App\Setting as Setting;
 use Auth;
+use View;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
@@ -27,7 +29,17 @@ class AdminAudioCategoriesController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $categories = AudioCategory::where('parent_id', '=', 0)->get();
 
@@ -46,6 +58,7 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}
 }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -124,7 +137,17 @@ class AdminAudioCategoriesController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = AudioCategory::where('id', '=', $id)->get();
 
@@ -135,6 +158,7 @@ class AdminAudioCategoriesController extends Controller
             return view('blocked');
     
         }
+    }
     }else{
         $system_settings = SystemSetting::first();
         $user = User::where('id','=',1)->first();
@@ -256,7 +280,17 @@ class AdminAudioCategoriesController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $allAlbums = AudioAlbums::all();
         $allCategories = AudioCategory::all();
@@ -270,6 +304,7 @@ class AdminAudioCategoriesController extends Controller
         return view('blocked');
 
     }
+}
 }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -425,7 +460,17 @@ class AdminAudioCategoriesController extends Controller
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
         $categories = AudioAlbums::where('id', '=', $id)->get();
@@ -441,7 +486,7 @@ class AdminAudioCategoriesController extends Controller
     }else if($package == "Basic"){
 
         return view('blocked');
-
+    }
     }
 }else{
     $system_settings = SystemSetting::first();

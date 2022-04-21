@@ -25,13 +25,24 @@ use View;
 use Response;
 use App\Currency;
 use App\CurrencySetting;
+use App\Setting;
 use DB;
 
 class AdminCurrencySettings extends Controller
 {
     public function IndexCurrencySettings()
     {
-        
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
          $currency = Currency::get();
          $allCurrency = CurrencySetting::get();
 
@@ -43,6 +54,7 @@ class AdminCurrencySettings extends Controller
 
          );
         return view('admin.currency.index',$data);
+        }
     }
 
 
@@ -83,7 +95,17 @@ class AdminCurrencySettings extends Controller
 
     public function EditCurrencySettings($id)
     {
-        
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $allCurrency = CurrencySetting::where('id','=',$id)->first();
          $currency = Currency::get();
         
@@ -93,6 +115,7 @@ class AdminCurrencySettings extends Controller
 
          );
         return view('admin.currency.edit',$data);
+        }
     }
 
 

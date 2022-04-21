@@ -16,6 +16,7 @@ use DB;
 use App\SystemSetting as SystemSetting;
 use App\User as User;
 use Session;
+use App\Setting as Setting;
 
 
 class AdminArtistsController extends Controller
@@ -27,7 +28,17 @@ class AdminArtistsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
       $search_value = $request->get('s');
@@ -52,6 +63,7 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}
 }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -67,7 +79,17 @@ class AdminArtistsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Artist',
@@ -81,6 +103,7 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}
 }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();
@@ -143,7 +166,17 @@ class AdminArtistsController extends Controller
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         $artist = Artist::find($id);
 
@@ -161,6 +194,7 @@ class AdminArtistsController extends Controller
         return view('blocked');
 
     }
+}
 }else{
     $system_settings = SystemSetting::first();
     $user = User::where('id','=',1)->first();

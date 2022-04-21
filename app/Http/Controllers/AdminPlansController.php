@@ -25,9 +25,9 @@ use View;
 use Response;
 use App\PaylPlan;
 use App\Devices;
+use App\Setting;
 use App\PaymentSetting as PaymentSetting;
 use App\SubscriptionPlan as SubscriptionPlan;
-
 
 
 class AdminPlansController extends Controller
@@ -65,7 +65,17 @@ public function PaypalIndex()
 
     public function subscriptionindex()
     {
-        
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $slug = Str::slug('Laravel 5 Framework', '-');
         
         $plans_data = SubscriptionPlan::all();
@@ -82,8 +92,10 @@ public function PaypalIndex()
         	
         	);
          return view('admin.subscription_plans.index', $data);
+        }
     }
      public function edit($id) {
+         
     	 $edit_plan =  Plan::find($id);
          $permission = $edit_plan['devices'];
          $user_devices = explode(",",$permission);
@@ -113,7 +125,17 @@ public function PaypalIndex()
     }
     
     public function subscriptionedit($id) {
-    	 
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // $edit_plan = SubscriptionPlan::find($id);
         $edit_plan =  SubscriptionPlan::where('plans_name',$id)->get();
         $payment_settings = PaymentSetting::all();
@@ -135,6 +157,7 @@ public function PaypalIndex()
            'payment_settings' => $payment_settings,
            );
        return view('admin.subscription_plans.edit',$data);
+        }
 
    }
    
@@ -427,13 +450,24 @@ public function PaypalIndex()
 
     public function DevicesIndex()
     {
-        
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
          $devices = Devices::all();
         
          $data = array(
                    'devices' => $devices        	
          );
         return view('admin.devices.index',compact('devices'));
+        }
     }
 
     public function DevicesStore(Request $request) {
@@ -448,12 +482,25 @@ public function PaypalIndex()
     }
     
      public function DevicesEdit($id) {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
     	 $edit_devices =  Devices::where('id', '=', $id)->first();
          
          $data = array(
         	   'devices' => $edit_devices
         	);
         return view('admin.devices.edit',$data);
+
+        }
 
     }
     

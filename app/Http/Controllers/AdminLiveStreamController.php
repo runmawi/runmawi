@@ -37,7 +37,17 @@ class AdminLiveStreamController extends Controller
             $Stream_error =Session::get('Stream_error');
             $Rtmp_url = Session::get('Rtmp_url');
             $title = Session::get('title');
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
 
             if(!empty($search_value)):
                 $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
@@ -60,6 +70,7 @@ class AdminLiveStreamController extends Controller
                 );
 
             return View('admin.livestream.index', $data);
+            }
         }
     /**
      * Show the form for creating a new video
@@ -68,6 +79,17 @@ class AdminLiveStreamController extends Controller
      */
        public function create()
         {
+            $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('admin/livestream/store'),
@@ -81,6 +103,7 @@ class AdminLiveStreamController extends Controller
                 'Rtmp_urls' => RTMP::all(),
                 );
             return View::make('admin.livestream.create_edit', $data);
+        }
         }
     
        /**
@@ -636,6 +659,17 @@ class AdminLiveStreamController extends Controller
     public function CPPLiveVideosIndex()
     {
 
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
         $videos =    LiveStream::where('active', '=',0)
             // ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
@@ -647,6 +681,7 @@ class AdminLiveStreamController extends Controller
                 );
 
             return View('admin.livestream.livevideoapproval.live_video_approval', $data);
+        }
        }
        public function CPPLiveVideosApproval($id)
        {
