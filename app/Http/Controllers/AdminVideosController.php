@@ -926,8 +926,11 @@ if(!empty($artistsdata)){
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
             $active = 0;
+            $status = 0;
+
         }  else{
          $active = 1;
+         $status = 1;
         }
         
         
@@ -986,8 +989,12 @@ if(!empty($artistsdata)){
                 }  
                 if(empty($data['active'])){
                     $active = 0;
+                    $status = 0;
+                    $draft = 1;
                     }else{
                     $active = 1;
+                    $status = 1;
+                    $draft = 1;
                     }  
             // if(empty($data['featured'])){
             //     $data['featured'] = 0;
@@ -1224,13 +1231,15 @@ if(!empty($artistsdata)){
          $video->publish_time = $request['publish_time'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
-         $video->active=1;
+        //  $video->active=1;
          $video->year = $year ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;
          $video->featured=$featured ;
          $video->active=$active ;
+         $video->status=$status ;
+         $video->draft=$draft ;
          $video->banner=$banner ;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
