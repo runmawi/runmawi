@@ -24,7 +24,7 @@
                                         </div>
                                                   
                                
-                                <div class="block-description" style="top:40px !important;">
+                                <div class="block-description" >
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                                                           

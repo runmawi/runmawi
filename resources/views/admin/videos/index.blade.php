@@ -110,12 +110,11 @@ border-radius: 0px 4px 4px 0px;
                                    
                                     <?php if($video->draft == null){ ?>
                                      <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
-                                    <?php }elseif($video->draft == 1){ ?>
+                                    <?php }elseif($video->draft == 1 && $video->status == 1 && $video->active == 1){ ?>
                                      <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
-                                    <?php }elseif($video->draft == 0){ ?>
+                                    <?php }else{ ?>
                                      <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
-                                    <?php }?>
-
+                                     <?php }?>
                                     
                                     
                              
