@@ -32,7 +32,7 @@
                                             <?php } ?>
                                         <?php } ?>
                                             </div>
-                                        </div>
+                                        <!-- </div> -->
                                         <div class="block-description">
 
                                         <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
