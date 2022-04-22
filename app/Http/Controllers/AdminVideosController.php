@@ -1847,27 +1847,48 @@ if(!empty($artistsdata)){
             }
           
     
-             if(!empty( $files != ''  && $files != null)){
-            /*if($request->hasFile('subtitle_upload'))
-            {
-                $files = $request->file('subtitle_upload');*/
+            //  if(!empty( $files != ''  && $files != null)){
+            // /*if($request->hasFile('subtitle_upload'))
+            // {
+            //     $files = $request->file('subtitle_upload');*/
            
-                foreach ($files as $key => $val) {
-                    if(!empty($files[$key])){
+            //     foreach ($files as $key => $val) {
+            //         if(!empty($files[$key])){
                         
-                        $destinationPath ='public/uploads/subtitles/';
-                        $filename = $video->id. '-'.$shortcodes[$key].'.srt';
-                        $files[$key]->move($destinationPath, $filename);
-                        $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
-                        $subtitle_data['shortcode'] = $shortcodes[$key]; 
-                        $subtitle_data['movie_id'] = $id;
-                        $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                        $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
-                    }
+            //             $destinationPath ='public/uploads/subtitles/';
+            //             $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+            //             $files[$key]->move($destinationPath, $filename);
+            //             $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+            //             $subtitle_data['shortcode'] = $shortcodes[$key]; 
+            //             $subtitle_data['movie_id'] = $id;
+            //             $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+            //             $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+            //         }
+            //     }
+            // }
+            
+             if(!empty( $files != ''  && $files != null)){
+
+            foreach ($files as $key => $val) {
+
+                if(!empty($files[$key])){
+                    
+                    $destinationPath ='public/uploads/subtitles/';
+                    $filename = $id. '-'.$shortcodes[$key].'.srt';
+                    $files[$key]->move($destinationPath, $filename);
+                    $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+                    $subtitle_data['shortcode'] = $shortcodes[$key]; 
+                    $subtitle_data['movie_id'] = $id;
+                    $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+                    $video_subtitle = new MoviesSubtitles;
+                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->shortcode =   $shortcodes[$key];
+                    $video_subtitle->sub_language =  $languages[$key] ;
+                    $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
+                    $video_subtitle->save();
                 }
             }
-
-
+        }
      /*Advertisement Video update starts*/
              if($data['ads_id'] != 0){
                   
