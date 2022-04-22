@@ -22,6 +22,7 @@ use App\PaymentSetting;
 use App\CurrencySetting as CurrencySetting;
 use App\HomeSetting;
 use Theme;
+use Carbon\Carbon;
 
 
 use Illuminate\Support\Facades\Cache;
@@ -48,7 +49,6 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
         {
-        // dd($vid);
           $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
 
@@ -101,6 +101,12 @@ class LiveStreamController extends Controller
                     $publishable_key= null;
                 }        
              $currency = CurrencySetting::first();
+             if(!empty($categoryVideos->publish_time)){
+             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+             }else{
+              $new_date = null;
+             }
+
 
            $data = array(
                  'currency' => $currency,
@@ -110,7 +116,9 @@ class LiveStreamController extends Controller
                  'ppv_exist' => $ppv_exist,
                  'ppv_price' => $categoryVideos->ppv_price,
                  'watchlatered' => $watchlater,
-                 'mywishlisted' => $wishlisted
+                 'mywishlisted' => $wishlisted,
+                 'new_date' => $new_date
+
            );
 
            return Theme::view('livevideo', $data);
