@@ -5,11 +5,20 @@
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
+
+$default_ads_url    = App\Setting::pluck('default_ads_url')->first();
+$default_ads_status = App\Video::where('id',$video->id)->pluck('default_ads')->first(); 
+
+if($default_ads_url !=null && $default_ads_status == 1){
+    $default_ads = $default_ads_url ;
+}else{
+  $default_ads = null ;
+}
             
 if($ads_details != null){ 
   $ads_path = $ads_details; 
 }else{ 
-  $ads_path = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpreonlybumper&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&correlator='; 
+  $ads_path = $default_ads ; 
   }  ?>
 
 
@@ -714,8 +723,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <h4>Description</h4>
 <div class="text-white">
     <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <?php echo $artistsname; ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <?php echo $genres_name; ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
@@ -727,7 +736,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <h4>Links & details</h4>
 <div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
 <br>

@@ -1082,7 +1082,7 @@ if(!empty($artistsdata)){
               $Mobile_image =  'Mobile'.$filename ;
               $Tablet_image =  'Tablet'.$filename ;
               
-              Image::make($file)->fit(1080,1920)->save(base_path().'/public/uploads/images/'.$PC_image );
+              Image::make($file)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
               Image::make($file)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
               Image::make($file)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
 
@@ -1235,6 +1235,12 @@ if(!empty($artistsdata)){
               $video->url_linksec =  $startSec ;
               $video->urlEnd_linksec =  $startSec + 60 ;
           }
+
+          if(!empty($data['default_ads'])){
+            $video->default_ads = $data['default_ads'];
+        }else{
+            $video->default_ads = 0;
+        }
         
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
@@ -1474,7 +1480,6 @@ if(!empty($artistsdata)){
     
         public function fileupdate(Request $request)
         {
-
             if (!Auth::user()->role == 'admin')
              {
                 return redirect('/home');
@@ -1644,7 +1649,7 @@ if(!empty($artistsdata)){
                   $Tablet_image =  'Tablet'.$filename ;
 
                   
-                  Image::make($files)->fit(1080,1920)->save(base_path().'/public/uploads/images/'.$PC_image );
+                  Image::make($files)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
                   Image::make($files)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
                   Image::make($files)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
 
@@ -1769,6 +1774,12 @@ if(!empty($artistsdata)){
              $video->country =  $data['video_country'];
             $video->enable =  1;
 
+            if(!empty($data['default_ads'])){
+                $video->default_ads = $data['default_ads'];
+            }else{
+                $video->default_ads = 0;
+            }
+           
              $video->update($data);
             //  dd($video);
 
