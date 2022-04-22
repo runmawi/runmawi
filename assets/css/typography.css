@@ -244,7 +244,10 @@ Custom Column
 
 /*----------------------------------------------
 Select 2
-------------------------------------------------*/
+------------------------------------------------*/.fa, .fas {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 400!important;
+}
 .iq-custom-select .select2-container--bootstrap4 .select2-selection, .select2-dropdown { background-color: var(--iq-bg1); border: none; border-radius: 0; color: #fff; }
 .select2-dropdown { top: 0; box-shadow: 0 12px 34px 0 rgba(19, 10, 10, 1); }
 .iq-custom-select select { box-shadow: none; }
