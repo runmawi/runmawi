@@ -171,6 +171,9 @@ header .navbar ul li:last-child { margin-right: 0; }
 .main-title{
     padding-bottom: 15px;
 }
+.sta{
+    color: #3daae0;
+}
 .block-space { padding: 40px 0; }
 .s-margin { margin-top: 20px; }
 .iq-main-header { margin-bottom: 0px; }
