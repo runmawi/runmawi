@@ -578,15 +578,23 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
        </div>
        <!-- Year, Running time, Age --> 
+       <?php 
+       if(!empty($video->duration)){
+       $seconds = $video->duration;
+       $H = floor($seconds / 3600);
+       $i = ($seconds / 60) % 60;
+       $s = $seconds % 60;
+       $time = sprintf("%02dh %02dm", $H, $i);
+      }else{
+        $time = "Not Defined";
+      }
+      //  dd($time);
+       ?>
          <div class="d-flex align-items-center text-white text-detail">
-            <span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
-            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
-            <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-            <span class="trending-year"><?php
-            foreach($category_name as $value){
-              echo $value->categories_name. ',';  
-            }
-             ?></span>
+         <?php if($video->age_restrict){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
+          <?php if($time){ ?><span class="ml-3"><?php echo $time;?></span><?php } ?>
+          <?php if($video->year){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
+          <?php if($genres_name){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
 
          </div>
            
@@ -706,11 +714,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <h4>Description</h4>
 <div class="text-white">
     <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres :<span></span></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <?php echo $artistsname; ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <?php echo $genres_name; ?></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages :</p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
 </div></div>
 <?php  }?>
 <br>
