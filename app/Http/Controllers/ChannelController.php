@@ -301,7 +301,7 @@ class ChannelController extends Controller
            }else{
             $subtitles = "No Genres Added";
            }
-           dd($subtitles);
+          //  dd($subtitles);
 
            $category_id = CategoryVideo::where('video_id', $vid)->get();
            $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
