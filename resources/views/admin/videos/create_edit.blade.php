@@ -1100,7 +1100,7 @@ $(document).ready(function($){
 
    $('#error_video_Category').hide();
 
-   $('.Next3').on('keyup keypress blur change click', function(event) {
+   $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
       if($('#video_category_id').val() == null){
          $('#error_video_Category').show();
          $('#next3').attr('disabled','disabled');
