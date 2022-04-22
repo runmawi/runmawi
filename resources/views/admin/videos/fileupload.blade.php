@@ -375,8 +375,8 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                               <div class="col-12 form-group">
                                  <label class="m-0">Links &amp; Details:</label>
-                                 <textarea   rows="5" class="form-control mt-2" name="details" 
-                                    placeholder="Link , and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
+                                 <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
+                                    placeholder="Link , and details">@if(!empty($video->details)){{ strip_tags($video->details) }}@endif</textarea>
                               </div>
                            </div>
                             <div class="row">
@@ -1381,6 +1381,11 @@ $(document).ready(function($){
 <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script>
    CKEDITOR.replace( 'summary-ckeditor', {
+       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+       filebrowserUploadMethod: 'form'
+   });
+
+   CKEDITOR.replace( 'links-ckeditor', {
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
        filebrowserUploadMethod: 'form'
    });
