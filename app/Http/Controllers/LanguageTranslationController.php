@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use DB;
 use File;
 use App\Language;
+use App\Setting;
+use App\User;
+use View;
+
 
 class LanguageTranslationController extends Controller
 {
@@ -17,6 +21,17 @@ class LanguageTranslationController extends Controller
     */
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
    	  $languages = Language::get();
 
 
@@ -36,6 +51,7 @@ class LanguageTranslationController extends Controller
 
    	  return view('admin.languages', compact('languages','columns','columnsCount'));
     }   
+}
     /**
      * Remove the specified resource from storage.
      * @return Response

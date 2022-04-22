@@ -28,7 +28,7 @@
                                     <?php } ?>
                             
 
-                    </div>
+                    <!-- </div> -->
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">

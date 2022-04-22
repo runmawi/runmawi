@@ -12,6 +12,7 @@ use App\Menu as Menu;
 use App\VideosSubtitle as VideosSubtitle;
 use App\Language as Language;
 use App\Subtitle as Subtitle;
+use App\Setting as Setting;
 use App\Tag as Tag;
 use Auth;
 use Hash;
@@ -29,6 +30,17 @@ class AdminMenuController extends Controller
      */
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // $menu = json_decode(Menu::orderBy('order', 'ASC')->get()->toJson());
         $menu = Menu::orderBy('order', 'asc')->get();
         // dd($menu);
@@ -41,6 +53,7 @@ class AdminMenuController extends Controller
             );
 
         return View::make('admin.menu.index', $data);
+        }
     }
 
     public function store(Request $request){
@@ -68,7 +81,19 @@ class AdminMenuController extends Controller
     }
 
     public function edit($id){
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         return View::make('admin.menu.edit', array('menu' => Menu::find($id)));
+        }
     }
 
 

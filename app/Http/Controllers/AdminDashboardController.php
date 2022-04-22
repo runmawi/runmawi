@@ -35,6 +35,18 @@ class AdminDashboardController extends Controller
             {
                 return redirect('/home');
             }
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
+            
         $videocategory = VideoCategory::get();
         $categoryvideo = CategoryVideo::get();
         foreach($videocategory as $key => $category){
@@ -79,9 +91,22 @@ class AdminDashboardController extends Controller
         
 		return View::make('admin.dashboard', $data);
     }
+        
+    }
 
     public function Masterlist()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $Videos =  Video::orderBy('created_at', 'DESC')->get();
 
         $LiveStream = LiveStream::orderBy('created_at', 'DESC')->get();
@@ -102,5 +127,6 @@ class AdminDashboardController extends Controller
         );
 
        return View::make('admin.Masterlist.index', $data);
+    }
     }
 }

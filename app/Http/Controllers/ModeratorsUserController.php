@@ -67,7 +67,7 @@ use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
 use Session;
-
+use View;
 class ModeratorsUserController extends Controller
 {
 
@@ -80,6 +80,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
                 $moderatorsrole = ModeratorsRole::all();
@@ -102,6 +113,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -265,7 +277,17 @@ class ModeratorsUserController extends Controller
 
     public function PendingUsers()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
         $users = ModeratorsUser::where('status', '=', 0)->orderBy('created_at', 'DESC')
             ->paginate(9);
@@ -276,8 +298,20 @@ class ModeratorsUserController extends Controller
 
         return View('moderator.userapproval', $data);
     }
+    }
     public function CPPModeratorsApproval($id)
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $users = ModeratorsUser::findOrFail($id);
         $users->status = 1;
         $users->save();
@@ -289,16 +323,29 @@ class ModeratorsUserController extends Controller
         });
         return \Redirect::back()
             ->with('message', 'User Has Been Approved ');
+    }
 
     }
 
     public function CPPModeratorsReject($id)
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $users = ModeratorsUser::findOrFail($id);
         $users->status = 2;
         $users->save();
         return \Redirect::back()
             ->with('message', 'User Has Been Rejected');
+        }
 
     }
 
@@ -310,6 +357,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
                 $moderatorsrole = ModeratorsRole::all();
@@ -332,6 +390,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -415,6 +474,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
                 $moderators = ModeratorsUser::find($id);
@@ -444,6 +514,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -462,6 +533,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
 
@@ -494,6 +576,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -718,6 +801,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
                 $moderatorsrole = ModeratorsRole::all();
@@ -739,6 +833,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -756,6 +851,17 @@ class ModeratorsUserController extends Controller
             $package_id = auth()->user()->id;
             $user_package = DB::table('users')->where('id', $package_id)->first();
             $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
             if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
             {
 
@@ -780,6 +886,7 @@ class ModeratorsUserController extends Controller
 
             }
         }
+    }
         else
         {
             $system_settings = SystemSetting::first();
@@ -5048,13 +5155,24 @@ class ModeratorsUserController extends Controller
 
     public function Commission(Request $request)
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $commission = VideoCommission::first();
 
         $data = array(
             'commission' => $commission,
         );
         return view('moderator.commission', $data);
+    }
 
     }
 
@@ -5115,7 +5233,17 @@ class ModeratorsUserController extends Controller
 
     public function Revenue()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $settings = Setting::first();
 
         $total_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->join('moderators_users', 'ppv_purchases.moderator_id', '=', 'moderators_users.id')
@@ -5163,6 +5291,7 @@ class ModeratorsUserController extends Controller
             'moderators_users' => $moderators_users,
         );
         return view('admin.analytics.cpp_revenue', $data);
+    }
     }
 
     public function CPPStartDateRevenue(Request $request)
@@ -5429,7 +5558,17 @@ class ModeratorsUserController extends Controller
 
     public function Analytics()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $settings = Setting::first();
         $total_content = ModeratorsUser::leftjoin('videos', 'videos.user_id', '=', 'moderators_users.id')
             ->leftjoin('audio', 'audio.user_id', '=', 'moderators_users.id')
@@ -5458,6 +5597,7 @@ class ModeratorsUserController extends Controller
             'total_content' => $total_content,
         );
         return view('admin.analytics.cpp_analytics', $data);
+    }
     }
 
     public function CPPStartDateAnalytic(Request $request)

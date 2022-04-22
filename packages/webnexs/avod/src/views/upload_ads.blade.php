@@ -2,11 +2,12 @@
 
 <style>
    .row.ages {
-   padding: 2%;
+      padding: 2%;
    }
-.row.household_Income {
-   padding: 2%;
+   .row.household_Income {
+      padding: 2%;
    }
+
 </style>
     
         <div id="main-admin-content">
@@ -39,11 +40,15 @@
                                     <div class="form-group col-md-4">
                                    <label>Age:</label>
 
+                                   <p class="error-message" style="color:red">This filed is required</p>
+
                                    <div class="row ages">
                                     <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
                                     <div class="col-sm-4"> 
                                        <input type="checkbox" id="" class="age" name="age[]" value="18-24">
                                     </div>
+                                   <div>
+                                   </div>
                                  </div>
 
                                  <div class="row ages">
@@ -88,11 +93,11 @@
                                     </div>
                                  </div>
                                 </div>
-
-                               
                               
                                 <div class="form-group col-md-5">
                                  <label>Household Income:</label>
+
+                                 <p class="error-message" style="color:red">This filed is required</p>
 
                                    <div class="row household_Income">
                                     <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
@@ -146,14 +151,17 @@
 
                               <div class="form-group col-md-3">
                                  <label>Gender:</label>
-                                  <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" >
+
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
+                                  <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender" >
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                     <option value="kids">Kids</option>
                                  </select>
                               </div>
 
-                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
+                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" id="Next1" />
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -161,6 +169,9 @@
                                     <div class="col-md-6">
                                  <div class="form-group">
                                    <label>Ads Name:</label>
+
+                                   <p class="error-message" style="color:red">This filed is required</p>
+
                                     <input type="text" id="ads_name" name="ads_name" required class="form-control">
                                 </div>
                                  <div class="form-group">
@@ -174,6 +185,9 @@
 
                                 <div class="form-group">
                                  <label> Ads Play:</label>
+
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
                                  <select class="form-control" name="ads_position">
                                       <option value="pre">Pre</option>
                                       <option value="mid">Mid</option>
@@ -185,7 +199,9 @@
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
 
                               </div>
-                                </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> <input type="button" name="next" class="next action-button" value="Next Step" />
+                                </div> </div> 
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                 <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -200,6 +216,8 @@
                             </fieldset>
                            
                             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+
                         </form>
                     </div>
     </div>
@@ -366,7 +384,61 @@ $(".submit").click(function(){
 return false;
 })
 
+// validation
+
+window.onload=function(){
+     document.getElementById("Next1").disabled = true;
+     document.getElementById("Next2").disabled = true;
+     document.getElementsByClassName('error-message')[0].style.display = 'none';
+     document.getElementsByClassName('error-message')[1].style.display = 'none';
+     document.getElementsByClassName('error-message')[2].style.display = 'none';
+     document.getElementsByClassName('error-message')[3].style.display = 'none';
+     document.getElementsByClassName('error-message')[4].style.display = 'none';
+
+
+};
+
+      $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
+
+      var age_validation = $(".age").prop("checked");
+      var household_income_val = $(".household_income").prop("checked");
+      var gender_val = $("#gender").val();
+      var ads_name_val = $("#ads_name").val();
+      var ads_path_val = $("#ads_path").val();
+
+      
+      if(age_validation == true && household_income_val == true  && gender_val != null ){
+         document.getElementsByClassName("error-message")[0].style.display = "none";
+         document.getElementsByClassName('error-message')[1].style.display = 'none';
+         document.getElementsByClassName('error-message')[2].style.display = 'none';
+
+         document.getElementById("Next1").disabled = false;
+      }else{
+         document.getElementsByClassName('error-message')[0].style.display = 'block';
+         document.getElementsByClassName('error-message')[1].style.display = 'block';
+         document.getElementsByClassName('error-message')[2].style.display = 'block';
+
+         document.getElementById("Next1").disabled = true;
+      }
+
+      if(ads_name_val != '' && ads_path_val != ''){
+
+         document.getElementsByClassName("error-message")[3].style.display = "none";
+         document.getElementsByClassName('error-message')[4].style.display = 'none';
+
+         document.getElementById("Next2").disabled = false;
+      }else{
+
+         document.getElementsByClassName("error-message")[3].style.display = "block";
+         document.getElementsByClassName('error-message')[4].style.display = 'block';
+
+         document.getElementById("Next2").disabled = true;
+      }
+   });
+
 });
+
+
 </script>
   
 </body>

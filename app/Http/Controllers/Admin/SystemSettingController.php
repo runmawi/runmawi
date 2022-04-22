@@ -6,10 +6,24 @@ use App\Http\Controllers\Controller;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use App\SystemSetting as SystemSetting;
+use App\User as User;
+use App\Setting as Setting;
+use View;
 
 class SystemSettingController extends Controller
 {
    public function index(){
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
        $system = SystemSetting::first();
        $system_settings = \DB::table('system_settings')->get();
 
@@ -19,6 +33,7 @@ class SystemSettingController extends Controller
        
        
        return view('admin.systemsettings.index',$data);
+    }
    }
     public function save(Request $request){
         $data = $request->all();

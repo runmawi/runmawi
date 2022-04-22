@@ -7,6 +7,7 @@ use \App\User as User;
 use \Redirect as Redirect;
 use URL;
 use App\Video as Video;
+use App\Setting as Setting;
 use App\VideoCategory as VideoCategory;
 use Auth;
 use Hash;
@@ -17,7 +18,18 @@ class AdminVideoCategoriesController extends Controller
 {
       
       public function index(){
-          
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return view('admin.expired_dashboard', $data);
+        }else{
         $allCategories = VideoCategory::All();
           
           $data = array (
@@ -26,6 +38,7 @@ class AdminVideoCategoriesController extends Controller
           
 
         return view('admin.videos.categories.index',$data);
+        }
       }
     
       public function store(Request $request){

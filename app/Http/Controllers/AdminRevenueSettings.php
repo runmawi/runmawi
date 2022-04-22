@@ -68,13 +68,24 @@ use App\EmailTemplate;
 use App\RevenueSetting;
 use Session;
 use Redirect;
+use View;
 
 class AdminRevenueSettings extends Controller
 {   
 
       public function Index()
       {
-          
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         // $revenue_settings = RevenueSetting::get();
         // $data = array(
         //             'revenue_settings' => $revenue_settings  ,
@@ -85,6 +96,7 @@ class AdminRevenueSettings extends Controller
                      'revenue_settings' => $revenue_settings ,   
            );
           return view('admin.revenuesettings.edit',$data);
+        }
       }
   
   
@@ -123,12 +135,23 @@ class AdminRevenueSettings extends Controller
   
       public function Edit($id)
       {
-          
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
           $revenue_settings = RevenueSetting::where('id','=',$id)->first();          
            $data = array(
                      'revenue_settings' => $revenue_settings ,   
            );
           return view('admin.revenuesettings.edit',$data);
+        }
       }
   
   
