@@ -707,7 +707,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <div class="text-white">
     <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres :</p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres :<span></span></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles :</p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages :</p>
