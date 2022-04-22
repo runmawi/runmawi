@@ -165,8 +165,14 @@ header .navbar ul li:last-child { margin-right: 0; }
                       Pages Content
 -----------------------------------------------------------------------*/
 .main-content { padding-top: 40px; }
+#iq-favorites{
+    margin-top: 20px;
+}
+.main-title{
+    padding-bottom: 15px;
+}
 .block-space { padding: 40px 0; }
-.s-margin { margin-top: 15px; }
+.s-margin { margin-top: 20px; }
 .iq-main-header { margin-bottom: 0px; }
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}
@@ -1879,6 +1885,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     max-width: none;
     width: 100%;
 }
+
 
      a{
         text-decoration: none!important;  
