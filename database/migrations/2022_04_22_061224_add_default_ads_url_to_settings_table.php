@@ -14,7 +14,7 @@ class AddDefaultAdsUrlToSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->string('default_ads_url')->nullable();
+            $table->string('default_ads_url',400)->nullable();
         });
     }
 
