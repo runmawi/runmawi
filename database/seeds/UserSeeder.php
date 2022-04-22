@@ -23,9 +23,10 @@ class UserSeeder extends Seeder
                 $email_id = $Email->Domain_name;
                 $password = Hash::make($Email->password);
                 $package = ucwords($Email->package);
-                $trail_start = $Email->trial_starts_at;
-                $trail_end   = $Email->trail_End_at;
-                $trial_in    = 1;
+                $trail_start  = $Email->trial_starts_at;
+                $trail_end    = $Email->trail_End_at;
+                $trial_in     = 1;
+                $package_ends =  Carbon::parse($Email->trail_End_at)->toDateString();
             }else{
                 $email_id = 'admin@admin.com';
                 $password = '$2y$10$Z..MshqRRC17yUY32E6LKOItw2kTlrG2mwsrxHbGJ04LlOHOA7N9y';
@@ -33,6 +34,7 @@ class UserSeeder extends Seeder
                 $trail_start = null;
                 $trail_end   = null;
                 $trial_in    = 0;
+                $package_ends = Carbon::now()->addDays(7)->toDateString();
             }
 
         $User = [
@@ -85,6 +87,7 @@ class UserSeeder extends Seeder
                'trial_starts_at'  => $trail_start,
                'trial_ends_at' => $trail_end,
                'trial_in'      => $trial_in,
+               'package_ends'  => $package_ends,
                'created_at' => Carbon::now(),
                'updated_at' => null,
             ],

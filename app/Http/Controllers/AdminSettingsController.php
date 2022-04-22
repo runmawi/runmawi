@@ -56,7 +56,6 @@ class AdminSettingsController extends Controller
     
     public function save_settings(Request $request){
 
-      
         $input = $request->all();
         // transcoding_resolution
         // dd( $input);
@@ -335,8 +334,10 @@ class AdminSettingsController extends Controller
             Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
             $settings->default_video_image = $filename;
       }
-        
-        $settings->save();
+
+      $settings->default_ads_url = $request['default_ads_url'];
+   
+      $settings->save();
       
         return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
 
