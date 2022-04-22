@@ -287,7 +287,7 @@ if(!empty($request_url)){
                         <?php } ?>
                     </li>
                     <li>
-                        <div class="btn btn-default views">
+                        <div class="btn btn-default views text-white">
                             <span class="view-count"><i class="fa fa-eye"></i> 
                                 <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                             </span>
