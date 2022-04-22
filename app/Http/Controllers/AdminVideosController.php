@@ -1340,7 +1340,7 @@ if(!empty($artistsdata)){
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $id. '-'.$shortcodes[$key].'.srt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
@@ -1876,7 +1876,7 @@ if(!empty($artistsdata)){
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
-                    $filename = $id. '-'.$shortcodes[$key].'.srt';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
                     $files[$key]->move($destinationPath, $filename);
                     $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
