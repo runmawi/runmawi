@@ -714,8 +714,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <h4>Description</h4>
 <div class="text-white">
     <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <?php echo $artistsname; ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <?php echo $genres_name; ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
     <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
@@ -727,7 +727,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <h4>Links & details</h4>
 <div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
 <br>
