@@ -23,6 +23,18 @@
     left: 0;
     right: 0;
 }
+p {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+  color:red;
+}
+h2{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
+
 </style>
 <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 
@@ -49,6 +61,8 @@ $request_url = end($uri_parts);
 $rtmp_url = $video->rtmp_url;
 
 $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
+
+if(empty($new_date)){
 
 if(!Auth::guest()){
     
@@ -139,7 +153,14 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     </div>
                 </div>
             <?php } }
-        }else{  
+        }
+    }elseif(!empty($new_date)){ ?>
+<div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+    <h2> COMING SOON </h2>
+    <p id="demo"></p>
+    </div>
+   <?php }
+    else{  
         //   dd($settings);
 
                 if (Auth::guest() && empty($video->ppv_price)) { ?>
@@ -614,5 +635,37 @@ settings: "unslick" // destroys slick
 </script>
 <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
 
+
+<script>
+// Set the date we're counting down to
+var date = "<?= $new_date ?>";
+var countDownDate = new Date(date).getTime();
+// alert(date)
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 
 <?php include ('footer.blade.php'); ?>

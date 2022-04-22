@@ -367,7 +367,12 @@
                               @foreach($recent_views as $views)
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
+                                    // $int = (int)$video_detail->rating;
+                                    $float = (float)$video_detail->rating;
+                                    $rating = round($float, 0);
+                                 //  dd(is_numeric($float));
                                   $user_detail = App\User::find($views->user_id);
+                                  if($rating == $video_detail->rating ){
                                   if (isset($video_detail) && !empty($video_detail)) {
                                   ?>
                                  <tr>
@@ -382,11 +387,20 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                    <td>
+                                    <?php    
+                                    for($i=1; $i <= $video_detail->rating; $i++ ){ ?>
+                                       <span class="fa fa-star checked"></span> 
+                                        
+                                  
+                              
+                                       <?php  } // } ?>
+                                       <!-- <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>">
-                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"><!--{{ $video_detail->rating }}--></td>
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"> -->
+                                        <!--{{ $video_detail->rating }}--></td>
                                     <td>{{ @$video_detail->categories->name }}</td>
                                     <td>
                                        {{ $video_detail->views }}
@@ -394,8 +408,45 @@
                                     
                                     <!-- <td>21 July,2020</td> -->
                                     <td><i class="las la-heart text-primary"></i></td>
+                                  <?php } } else{ ?>
+<td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">{{ $video_detail->title }}</p>
+                                             <small>{{ $video_detail->duration }} </small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>
+                                    <?php    
+                                       $rating = round($video_detail->rating);
+                                       for($i=1; $i < $rating; $i++ ){ ?>
+                                          <span class="fa fa-star checked"></span> 
+                                          <span class="fa fa-star-half-o"></span> 
+                                       <?php  }   ?>
+                                 
+                                       
+
+                                       <?php // } } ?>
+                                       <!-- <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r1.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>">
+                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"> -->
+                                        <!--{{ $video_detail->rating }}--></td>
+                                    <td>{{ @$video_detail->categories->name }}</td>
+                                    <td>
+                                       {{ $video_detail->views }}
+                                    </td>
+                                    
+                                    <!-- <td>21 July,2020</td> -->
+                                    <td><i class="las la-heart text-primary"></i></td>
+                                    <?php }?>
                                  </tr>
-                                  <?php } ?>
+
                                  @endforeach
                               </tbody>
                            </table>
@@ -410,5 +461,9 @@
 
  
          </script>
-
+<style>
+   .fa {
+   color: yellow
+   }
+</style>
 @stop
