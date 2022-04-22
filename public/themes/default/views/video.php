@@ -538,7 +538,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
    <div class="container-fluid video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
-           <div class="row">
+           <div class="row align-items-center">
                <div class="col-sm-9 col-md-9 col-xs-12">
                    <h1 class="text-white  mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                        <!-- Category -->
@@ -546,7 +546,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     <li class="text-white"><?//= $videocategory ;?></li>
                    </ul>
                </div>
-               <div class="col-md-12">
+               <div class="col-md-3">
             <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
              <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
@@ -569,9 +569,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i>Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                    </div>
                </div>
@@ -579,7 +579,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        </div>
        <!-- Year, Running time, Age --> 
          <div class="d-flex align-items-center text-white text-detail">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
             <span class="trending-year"><?php
@@ -631,7 +631,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php } ?>
                    </li>
                    <li>
-                       <div class="btn btn-default views">
+                       <div class="btn btn-default views text-white text-right">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
