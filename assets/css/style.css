@@ -159,7 +159,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: transparent; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .slick-track{margin:unset!important;}
 .favorites-contens{
-    padding: 10px;
+   
 }
 /*---------------------------------------------------------------------
                       Pages Content
@@ -197,7 +197,7 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.1, 1.1, 1.1) 
 .block-description {bottom: 0;
     opacity: 0;
     color: var(--TEXT_COLOR_L0);
-    padding: 30px 5px 7px 10px;
+    padding: 30px 5px 30px 10px;
     position: absolute;
      width: 100%;
     z-index: 999;
@@ -810,17 +810,7 @@ border: none;
 padding: 20px 20px;
 }
 .iq-card .panel.panel-primary { padding: 10px 0 20px;}
-.block-description h6 {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    width: 10em !important;
-    font-size: 12px!important;
-}
-    .block-description{
-   
-    font-size: 12px!important;
-}
+
 .blink_me {animation: blinker 2s linear infinite;}
 @keyframes blinker {
     50% {
@@ -1911,3 +1901,6 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     flex-wrap: wrap!important;
 }
     } 
+.form-group h5{
+    font-size: 16px;
+}
