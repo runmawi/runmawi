@@ -591,10 +591,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       //  dd($time);
        ?>
          <div class="d-flex align-items-center text-white text-detail">
-         <?php if($video->age_restrict){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
-          <?php if($time){ ?><span class="ml-3"><?php echo $time;?></span><?php } ?>
-          <?php if($video->year){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
-          <?php if($genres_name){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
+         <?php if(!empty($video->age_restrict)){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
+          <?php if(!empty($time)){ ?><span class="ml-3"><?php echo $time;?></span><?php } ?>
+          <?php if(!empty($video->year)){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
+          <?php if(!empty($genres_name)){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
 
          </div>
            

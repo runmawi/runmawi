@@ -248,7 +248,7 @@ class ChannelController extends Controller
            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
            ->where('categoryvideos.video_id',$vid)
            ->get();
-           if(!empty($category_name)){
+           if(count($category_name) > 0){
             foreach($category_name as $value){
               $vals[]  = $value->categories_name;  
             }
@@ -262,7 +262,8 @@ class ChannelController extends Controller
            ->where('languagevideos.video_id',$vid)
            ->get();
 
-           if(!empty($lang_name)){
+           if(count($lang_name) > 0){
+
             foreach($lang_name as $value){
               $languagesvals[]  = $value->name;  
             }
@@ -276,7 +277,8 @@ class ChannelController extends Controller
            ->where('video_artists.video_id',$vid)
            ->get();
            
-           if(!empty($artists_name)){
+           if(count($artists_name) > 0){
+
             foreach($artists_name as $value){
               $artistsvals[]  = $value->name;  
             }
@@ -290,7 +292,8 @@ class ChannelController extends Controller
            ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
            ->where('movies_subtitles.movie_id',$vid)
            ->get();
-           if(!empty($subtitles_name)){
+          //  if(!empty($subtitles_name)){
+           if(count($subtitles_name) > 0){
             foreach($subtitles_name as $value){
               $subtitlesname[]  = $value->language;  
             }
@@ -298,7 +301,7 @@ class ChannelController extends Controller
            }else{
             $subtitles = "No Genres Added";
            }
-          //  dd($subtitles);
+           dd($subtitles);
 
            $category_id = CategoryVideo::where('video_id', $vid)->get();
            $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
