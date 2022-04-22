@@ -1,4 +1,14 @@
 @include('avod::ads_header')
+
+<style>
+   .row.ages {
+      padding: 2%;
+   }
+   .row.household_Income {
+      padding: 2%;
+   }
+
+</style>
     
         <div id="main-admin-content">
 
@@ -26,50 +36,132 @@
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">General Information</h2> 
-                                    <div class="col-md-12">
-                                    <div class="form-group col-md-6">
+                                    <div class="row col-md-12">
+                                    <div class="form-group col-md-4">
                                    <label>Age:</label>
 
-                                       <input type="checkbox" id="" name="age[]" value="18-24">
-                                          <label for=""> 18-24 </label>
-                                       <input type="checkbox" id="" name="age[]" value="25-34">
-                                          <label for=""> 25-34 </label>
-                                       <input type="checkbox" id="" name="age[]" value="35-44">
-                                             <label for=""> 35-44 </label>
-                                       <input type="checkbox" id="" name="age[]" value="45-54">
-                                             <label for=""> 45-54 </label>
-                                       <input type="checkbox" id="" name="age[]" value="55-64">
-                                             <label for="">55-64 </label>
-                                       <input type="checkbox" id="" name="age[]" value="65+">
-                                             <label for="">65+ </label>
-                                       <input type="checkbox" id="" name="age[]" value="unknown">
-                                             <label for="">unknown </label>
-                                </div>
+                                   <p class="error-message" style="color:red">This filed is required</p>
 
-                                <div class="form-group">
-                                   <label>Gender:</label>
-                                    <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" >
-                                      <option value="male">Male</option>
-                                      <option value="female">Female</option>
-                                      <option value="kids">Kids</option>
-                                   </select>
+                                   <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" id="" class="age" name="age[]" value="18-24">
+                                    </div>
+                                   <div>
+                                   </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 25-34 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="25-34">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 35-44 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="35-44">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for=""> 45-54 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="45-54">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for="">55-64 </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="55-64">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4">    <label for="">65+ </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="65+">
+                                    </div>
+                                 </div>
+
+                                 <div class="row ages">
+                                    <div class="col-sm-4"> <label for="">unknown </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="checkbox" class="age" id="" name="age[]" value="unknown">
+                                    </div>
+                                 </div>
                                 </div>
                               
-                                <div class="form-group">
-                                   <p>Household Income:</p>
+                                <div class="form-group col-md-5">
+                                 <label>Household Income:</label>
 
-                                 <input type="radio" class="household_income" name="household_income" value="1-10">
-                                 <label for="household_income_label" class="10">Top 10%</label>
+                                 <p class="error-message" style="color:red">This filed is required</p>
 
-                                 <input type="radio" class="household_income"  name="household_income" value="11-20">
-                                 <label for="household_income_label" >11 - 20% </label>
-                                
-                                 <input type="radio" class="household_income"  name="household_income" value="21-30">
-                                 <label for="household_income_label" >21 - 30%</label>
+                                   <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="1-10">
+                                    </div>
+                                 </div>
 
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" >11 - 20% </label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id=""  name="household_income" value="11-20">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" >21 - 30%</label> </div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="21-30">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">31 - 40%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="31-40">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">41 - 50%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="41-50">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Lower 50%</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="lower_50">
+                                    </div>
+                                 </div>
+
+                                 <div class="row household_Income">
+                                    <div class="col-sm-4"> <label for="household_income_label" class="10">Unknown</label></div>
+                                    <div class="col-sm-4"> 
+                                       <input type="radio" class="household_income" id="" name="household_income" value="unknown">
+                                    </div>
+                                 </div>
                               </div> 
 
-                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
+                              <div class="form-group col-md-3">
+                                 <label>Gender:</label>
+
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
+                                  <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender" >
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="kids">Kids</option>
+                                 </select>
+                              </div>
+
+                                </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" id="Next1" />
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -77,6 +169,9 @@
                                     <div class="col-md-6">
                                  <div class="form-group">
                                    <label>Ads Name:</label>
+
+                                   <p class="error-message" style="color:red">This filed is required</p>
+
                                     <input type="text" id="ads_name" name="ads_name" required class="form-control">
                                 </div>
                                  <div class="form-group">
@@ -90,6 +185,9 @@
 
                                 <div class="form-group">
                                  <label> Ads Play:</label>
+
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
                                  <select class="form-control" name="ads_position">
                                       <option value="pre">Pre</option>
                                       <option value="mid">Mid</option>
@@ -101,7 +199,9 @@
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
 
                               </div>
-                                </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> <input type="button" name="next" class="next action-button" value="Next Step" />
+                                </div> </div> 
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                 <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -116,6 +216,8 @@
                             </fieldset>
                            
                             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+
                         </form>
                     </div>
     </div>
@@ -282,7 +384,61 @@ $(".submit").click(function(){
 return false;
 })
 
+// validation
+
+window.onload=function(){
+     document.getElementById("Next1").disabled = true;
+     document.getElementById("Next2").disabled = true;
+     document.getElementsByClassName('error-message')[0].style.display = 'none';
+     document.getElementsByClassName('error-message')[1].style.display = 'none';
+     document.getElementsByClassName('error-message')[2].style.display = 'none';
+     document.getElementsByClassName('error-message')[3].style.display = 'none';
+     document.getElementsByClassName('error-message')[4].style.display = 'none';
+
+
+};
+
+      $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
+
+      var age_validation = $(".age").prop("checked");
+      var household_income_val = $(".household_income").prop("checked");
+      var gender_val = $("#gender").val();
+      var ads_name_val = $("#ads_name").val();
+      var ads_path_val = $("#ads_path").val();
+
+      
+      if(age_validation == true && household_income_val == true  && gender_val != null ){
+         document.getElementsByClassName("error-message")[0].style.display = "none";
+         document.getElementsByClassName('error-message')[1].style.display = 'none';
+         document.getElementsByClassName('error-message')[2].style.display = 'none';
+
+         document.getElementById("Next1").disabled = false;
+      }else{
+         document.getElementsByClassName('error-message')[0].style.display = 'block';
+         document.getElementsByClassName('error-message')[1].style.display = 'block';
+         document.getElementsByClassName('error-message')[2].style.display = 'block';
+
+         document.getElementById("Next1").disabled = true;
+      }
+
+      if(ads_name_val != '' && ads_path_val != ''){
+
+         document.getElementsByClassName("error-message")[3].style.display = "none";
+         document.getElementsByClassName('error-message')[4].style.display = 'none';
+
+         document.getElementById("Next2").disabled = false;
+      }else{
+
+         document.getElementsByClassName("error-message")[3].style.display = "block";
+         document.getElementsByClassName('error-message')[4].style.display = 'block';
+
+         document.getElementById("Next2").disabled = true;
+      }
+   });
+
 });
+
+
 </script>
   
 </body>

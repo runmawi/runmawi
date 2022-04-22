@@ -36,14 +36,24 @@ use App\Artist;
 use App\Videoartist;
 use App\EmailSetting;
 use App\EmailTemplate;
-
+use App\Setting;
 use GifCreator\GifCreator;
-
 
 class AdminEmailSettingsController extends Controller
 {
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $email_settings = EmailSetting::find(1);
         $email_template = EmailTemplate::get();
 
@@ -53,6 +63,7 @@ class AdminEmailSettingsController extends Controller
             );
 
         return View('admin.settings.emailsetting', $data);
+        }
     }
 
     public function store(Request $request)

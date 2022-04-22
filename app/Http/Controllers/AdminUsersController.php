@@ -59,7 +59,17 @@ class AdminUsersController extends Controller
 
     public function index(Request $request)
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $user = $request->user();
         //dd($user->hasRole('admin','editor')); // and so on
         // dd($user->can('permission-slug'));
@@ -104,6 +114,7 @@ class AdminUsersController extends Controller
             'top_rated_videos' => $top_rated_videos,
         );
         return \View::make('admin.users.index', $data);
+    }
     }
 
     public function Usersearch(Request $request)
@@ -196,7 +207,17 @@ class AdminUsersController extends Controller
 
     public function create()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $data = array(
             'post_route' => URL::to('admin/user/store') ,
             'admin_user' => Auth::user() ,
@@ -204,6 +225,7 @@ class AdminUsersController extends Controller
         );
 
         return \View::make('admin.users.create_edit', $data);
+    }
     }
     public function view($id)
     {
@@ -483,7 +505,17 @@ class AdminUsersController extends Controller
 
     public function edit($id)
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $user = User::find($id);
         $data = array(
             'user' => $user,
@@ -492,6 +524,7 @@ class AdminUsersController extends Controller
             'button_text' => 'Update User',
         );
         return View::make('admin.users.create_edit', $data);
+    }
     }
 
     public function myprofile()
@@ -775,6 +808,17 @@ class AdminUsersController extends Controller
 
     public function mobileapp()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $mobile_settings = MobileApp::get();
         $allCategories = MobileSlider::all();
         $welcome_screen = WelcomeScreen::all();
@@ -785,7 +829,7 @@ class AdminUsersController extends Controller
             'welcome_screen' => $welcome_screen,
         );
         return View::make('admin.mobile.index', $data);
-
+    }
     }
 
     public function mobileappupdate(Request $request)
@@ -1462,7 +1506,17 @@ class AdminUsersController extends Controller
 
     public function AnalyticsRevenue()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $registered_count = User::where('role', 'registered')->count();
         $subscription_count = User::where('role', 'subscriber')->count();
         $admin_count = User::where('role', 'admin')->count();
@@ -1484,7 +1538,7 @@ class AdminUsersController extends Controller
 
         );
         return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
-
+    }
     }
 
     public function ListUsers(Request $request)
@@ -2025,7 +2079,17 @@ class AdminUsersController extends Controller
 
     public function ViewsRegion()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $Country = Region::get();
 
         $data = array(
@@ -2033,10 +2097,21 @@ class AdminUsersController extends Controller
         );
         return \View::make('admin.analytics.views_by_region', $data);
     }
+    }
 
     public function RevenueRegion()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $Country = Region::get();
         $State = State::get();
         $City = City::get();
@@ -2048,6 +2123,7 @@ class AdminUsersController extends Controller
 
         );
         return \View::make('admin.analytics.revenue_by_region', $data);
+    }
     }
 
     public function RegionVideos(Request $request)
@@ -2129,6 +2205,7 @@ class AdminUsersController extends Controller
     // </td>
     public function AllRegionVideos(Request $request)
     {
+        
         if ($request->ajax())
         {
 
@@ -2544,7 +2621,17 @@ class AdminUsersController extends Controller
 
     public function UserRevenue()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $settings = Setting::first();
         $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
@@ -2600,6 +2687,7 @@ class AdminUsersController extends Controller
         );
         return view('admin.analytics.users_revenue_analytics', $data);
     }
+}
 
 
 
@@ -2607,7 +2695,17 @@ class AdminUsersController extends Controller
 
     public function PayPerviewRevenue()
     {
-
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $settings = Setting::first();
         $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
         ->groupBy('ppv_purchases.user_id')
@@ -2664,6 +2762,7 @@ class AdminUsersController extends Controller
         );
         return view('admin.analytics.payperview', $data);
     }
+}
     // Subscriber Revenue system 
 
     public function SubscriberRevenueStartDateRecord(Request $request)

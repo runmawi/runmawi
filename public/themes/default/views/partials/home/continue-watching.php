@@ -15,14 +15,13 @@
                              <!-- block-images -->
                                 <div class="img-box">
                                 
-                                   <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt=""> -->
-                                   <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
+                                  <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid" alt="">
+                                  <!--   <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
                                       </video>
                                      
                                 <!-- PPV price -->
-                                     <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <?php  if(!empty($cont_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol.' '.$cont_video->ppv_price; ?></p>
@@ -32,8 +31,7 @@
                                               <p class="p-tag"><?php echo "Free"; ?></p>
                                               <?php } ?>
                                           <?php } ?>
-                                        </div>
-                                    </div>
+                                       
                                 </div>
 
                                 <div class="block-description">
@@ -113,8 +111,8 @@
                                   </div>
 
                                   <div class="hover-buttons text-white">
-                                        <a class="text-white d-flex" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
-                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                        <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>  Watch Now
                                         </a>
                                   <div>
 

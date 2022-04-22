@@ -156,7 +156,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 5,
+			slidesToShow: 6,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
@@ -183,7 +183,7 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1
 				}
 			}

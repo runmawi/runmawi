@@ -5,10 +5,19 @@
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
 
-    if($ads_details != null){ 
+$default_ads_url    = App\Setting::pluck('default_ads_url')->first();
+$default_ads_status = App\Video::where('id',$video->id)->pluck('default_ads')->first(); 
+
+if($default_ads_url !=null && $default_ads_status == 1){
+    $default_ads = $default_ads_url ;
+}else{
+  $default_ads = null ;
+}
+
+if($ads_details != null){ 
       $ads_path = $ads_details; 
     }else{ 
-      $ads_path = null;
+      $ads_path = $default_ads ;
 }  ?>
 
 
@@ -228,7 +237,7 @@ if(!empty($request_url)){
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
-                    <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+                    <h1 class="trending-text text-white text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                         <!-- Category -->
                     <ul class="p-0 list-inline d-flex align-items-center movie-content">
                      <li class="text-white"><?//= $videocategory ;?></li>
@@ -289,7 +298,7 @@ if(!empty($request_url)){
                         <?php } ?>
                     </li>
                     <li>
-                        <div class="btn btn-default views">
+                        <div class="btn btn-default views text-white">
                             <span class="view-count"><i class="fa fa-eye"></i> 
                                 <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                             </span>

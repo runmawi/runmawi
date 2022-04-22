@@ -12,10 +12,10 @@
                     <div class="block-images position-relative">
                             <div class="img-box">
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid" alt=""> -->
-                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  data-play="hover" >
+                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid" alt=""> 
+                                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  data-play="hover" >
                                         <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4">
-                                    </video>
+                                    </video>-->
                                 </a>
 
                                 <!-- PPV price -->
@@ -113,8 +113,8 @@
                                </div>
 
                                <div class="hover-buttons">
-                                   <a class="text-white d-flex" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                   <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
+                                      <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                   </a>
                             </div>
                         </div>

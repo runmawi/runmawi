@@ -5,10 +5,10 @@
        $session = session()->all();
 ?>
 <footer class="mb-0">
-         <div class="container-fluid">
+         <div class="container">
             <div class="block-space">
-               <div class="row justify-content-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
+               <div class="row justify-content-between">
+                   <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
@@ -135,6 +135,9 @@
 						<?php endforeach; ?>
 					</ul>
 				</div>
+                   <div class="col-lg-2 col-md-2 p-0">
+                       <img class="w-80" src="<?php echo  URL::to('/assets/img/gplay.png')?>">
+                   </div>
                   
                    </div>
                </div>
@@ -333,7 +336,7 @@ function myFunction() {
                     }
         });
    }
-  else if(user_logged_out != "" && type == ''){
+  else if(user_logged_out == 1 && type == ''){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{
@@ -382,7 +385,7 @@ function myFunction() {
                       'pip',
                       'airplay',
                       'fullscreen',
-                      'capture'''],
+                      'capture'],
           i18n:{
                 capture: 'capture'
               },

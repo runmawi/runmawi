@@ -15,17 +15,16 @@
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid img-zoom" alt="">
                                  </a>      
-                                 <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                               
                                           <?php  if(!empty($video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                           <?php }elseif($video->ppv_price == null ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                         </div>
-                                    </div>                 
-                                </div>
-                                <div class="block-description" style="top:40px !important;">
+                                                  
+                               
+                                <div class="block-description" >
                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                 <i class="ri-play-fill"></i>
                              </a>                                                           
@@ -39,9 +38,10 @@
                           <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
                        </a>
                                    </div>
-                                                    </div>
+                                                 
                               
                              </div>
+                           </div>
                           </a>
                        </li>
 

@@ -14,11 +14,22 @@ use Session;
 use Auth;
 use DB;
 use ZanySoft\Zip\Zip;
+use View;
 
 class ThemeIntegrationController extends Controller
 {
     public function index(){
-
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+          $settings = Setting::first();
+          $data = array(
+              'settings' => $settings,    
+      );
+          return View::make('admin.expired_dashboard', $data);
+      }else{
         $Themes = ThemeIntegration::all();
         $active_Status = HomeSetting::first();
 
@@ -27,10 +38,21 @@ class ThemeIntegrationController extends Controller
             'active_Status' => $active_Status,
         );
         return view ('admin.Theme_Integration.index',$data);
+      }
     }
 
     public function create(Request $request){
-
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+          $settings = Setting::first();
+          $data = array(
+              'settings' => $settings,    
+      );
+          return View::make('admin.expired_dashboard', $data);
+      }else{
         $Themes = $request->all();
 
         $files_zip = $Themes['theme_zip'];
@@ -66,6 +88,8 @@ class ThemeIntegrationController extends Controller
 
         return Redirect::to('admin/ThemeIntegration')->with(array('message' => 'Successfully Updated  Settings!', 'note_type' => 'success') );
     }
+
+  }
 
     public function set_theme(Request $request){
 

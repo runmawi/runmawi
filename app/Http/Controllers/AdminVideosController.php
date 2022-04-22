@@ -57,7 +57,17 @@ class AdminVideosController extends Controller
             {
                 return redirect('/home');
             }
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
       // $search_value = Request::get('s');
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
@@ -83,6 +93,7 @@ class AdminVideosController extends Controller
             );
 
         return View('admin.videos.index', $data);
+            }
     }
 
     public function live_search(Request $request)
@@ -299,8 +310,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     $Mobile_image =  'Mobile-default_image.jpg' ;
                     $Tablet_image =  'Tablet-default_image.jpg' ;
                                 
-                    Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                    Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                    Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                 
                     $video->mobile_image  = $Mobile_image;
                     $video->tablet_image  = $Tablet_image;
@@ -358,8 +369,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                      $Mobile_image =  'Mobile-default_image.jpg' ;
                      $Tablet_image =  'Tablet-default_image.jpg' ;
                                  
-                     Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                     Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                     Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                     Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                  
                      $video->mobile_image  = $Mobile_image;
                      $video->tablet_image  = $Tablet_image;
@@ -419,8 +430,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     $Mobile_image =  'Mobile-default_image.jpg' ;
                     $Tablet_image =  'Tablet-default_image.jpg' ;
                                 
-                    Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                    Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                    Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                 
                     $video->mobile_image  = $Mobile_image;
                     $video->tablet_image  = $Tablet_image;
@@ -466,7 +477,17 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                 return redirect('/home');
             }
             $settings = Setting::first();
-
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,    
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
 
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -492,6 +513,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
 
         // return View::make('admin.videos.create_edit', $data);
+            }
     }
 
      /**
@@ -926,8 +948,11 @@ if(!empty($artistsdata)){
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
             $active = 0;
+            $status = 0;
+
         }  else{
          $active = 1;
+         $status = 1;
         }
         
         
@@ -986,8 +1011,12 @@ if(!empty($artistsdata)){
                 }  
                 if(empty($data['active'])){
                     $active = 0;
+                    $status = 0;
+                    $draft = 1;
                     }else{
                     $active = 1;
+                    $status = 1;
+                    $draft = 1;
                     }  
             // if(empty($data['featured'])){
             //     $data['featured'] = 0;
@@ -1053,9 +1082,9 @@ if(!empty($artistsdata)){
               $Mobile_image =  'Mobile'.$filename ;
               $Tablet_image =  'Tablet'.$filename ;
               
-              Image::make($file)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
-              Image::make($file)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-              Image::make($file)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+              Image::make($file)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
+              Image::make($file)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+              Image::make($file)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
 
              $video->image  = $PC_image;
              $video->mobile_image  = $Mobile_image;
@@ -1206,6 +1235,12 @@ if(!empty($artistsdata)){
               $video->url_linksec =  $startSec ;
               $video->urlEnd_linksec =  $startSec + 60 ;
           }
+
+          if(!empty($data['default_ads'])){
+            $video->default_ads = $data['default_ads'];
+        }else{
+            $video->default_ads = 0;
+        }
         
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
@@ -1224,13 +1259,15 @@ if(!empty($artistsdata)){
          $video->publish_time = $request['publish_time'];
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
-         $video->active=1;
+        //  $video->active=1;
          $video->year = $year ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;
          $video->featured=$featured ;
          $video->active=$active ;
+         $video->status=$status ;
+         $video->draft=$draft ;
          $video->banner=$banner ;
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
@@ -1302,12 +1339,10 @@ if(!empty($artistsdata)){
             }
         }
       
-         if(!empty( $files != ''  && $files != null)){
-        /*if($request->hasFile('subtitle_upload'))
-        {
-            $files = $request->file('subtitle_upload');*/
-       
+        if(!empty( $files != ''  && $files != null)){
+
             foreach ($files as $key => $val) {
+
                 if(!empty($files[$key])){
                     
                     $destinationPath ='public/uploads/subtitles/';
@@ -1317,7 +1352,12 @@ if(!empty($artistsdata)){
                     $subtitle_data['shortcode'] = $shortcodes[$key]; 
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                    $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+                    $video_subtitle = new MoviesSubtitles;
+                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->shortcode =   $shortcodes[$key];
+                    $video_subtitle->sub_language =  $languages[$key] ;
+                    $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
+                    $video_subtitle->save();
                 }
             }
         }
@@ -1440,7 +1480,6 @@ if(!empty($artistsdata)){
     
         public function fileupdate(Request $request)
         {
-
             if (!Auth::user()->role == 'admin')
              {
                 return redirect('/home');
@@ -1608,10 +1647,11 @@ if(!empty($artistsdata)){
                   $PC_image     =  'PC'.$filename ;
                   $Mobile_image =  'Mobile'.$filename ;
                   $Tablet_image =  'Tablet'.$filename ;
+
                   
-                  Image::make($files)->resize(720,1280)->save(base_path().'/public/uploads/images/'.$PC_image );
-                  Image::make($files)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                  Image::make($files)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                  Image::make($files)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
+                  Image::make($files)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                  Image::make($files)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
 
                  $video->mobile_image  = $Mobile_image;
                  $video->tablet_image  = $Tablet_image;
@@ -1734,6 +1774,12 @@ if(!empty($artistsdata)){
              $video->country =  $data['video_country'];
             $video->enable =  1;
 
+            if(!empty($data['default_ads'])){
+                $video->default_ads = $data['default_ads'];
+            }else{
+                $video->default_ads = 0;
+            }
+           
              $video->update($data);
             //  dd($video);
 
@@ -1815,27 +1861,47 @@ if(!empty($artistsdata)){
             }
           
     
-             if(!empty( $files != ''  && $files != null)){
-            /*if($request->hasFile('subtitle_upload'))
-            {
-                $files = $request->file('subtitle_upload');*/
+            //  if(!empty( $files != ''  && $files != null)){
+            // /*if($request->hasFile('subtitle_upload'))
+            // {
+            //     $files = $request->file('subtitle_upload');*/
            
-                foreach ($files as $key => $val) {
-                    if(!empty($files[$key])){
+            //     foreach ($files as $key => $val) {
+            //         if(!empty($files[$key])){
                         
-                        $destinationPath ='public/uploads/subtitles/';
-                        $filename = $video->id. '-'.$shortcodes[$key].'.srt';
-                        $files[$key]->move($destinationPath, $filename);
-                        $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
-                        $subtitle_data['shortcode'] = $shortcodes[$key]; 
-                        $subtitle_data['movie_id'] = $id;
-                        $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
-                        $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
-                    }
+            //             $destinationPath ='public/uploads/subtitles/';
+            //             $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+            //             $files[$key]->move($destinationPath, $filename);
+            //             $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+            //             $subtitle_data['shortcode'] = $shortcodes[$key]; 
+            //             $subtitle_data['movie_id'] = $id;
+            //             $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+            //             $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+            //         }
+            //     }
+            // }
+             if(!empty( $files != ''  && $files != null)){
+
+            foreach ($files as $key => $val) {
+
+                if(!empty($files[$key])){
+                    
+                    $destinationPath ='public/uploads/subtitles/';
+                    $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+                    $files[$key]->move($destinationPath, $filename);
+                    $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+                    $subtitle_data['shortcode'] = $shortcodes[$key]; 
+                    $subtitle_data['movie_id'] = $id;
+                    $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
+                    $video_subtitle = new MoviesSubtitles;
+                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->shortcode =   $shortcodes[$key];
+                    $video_subtitle->sub_language =  $languages[$key] ;
+                    $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
+                    $video_subtitle->save();
                 }
             }
-
-
+        }
      /*Advertisement Video update starts*/
              if($data['ads_id'] != 0){
                   
@@ -1873,8 +1939,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;
@@ -1920,8 +1986,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;
@@ -1972,8 +2038,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->resize(244,310)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->resize(120,190)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;
@@ -1997,7 +2063,18 @@ if(!empty($artistsdata)){
     }
 
     public function CPPVideosIndex()
-    {
+    {         
+       $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
 
         $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
         $videos =    Video::where('active', '=',0)
@@ -2009,6 +2086,7 @@ if(!empty($artistsdata)){
                 );
     
             return View('admin.videos.videoapproval.approval_index', $data);
+        }
        }
        public function CPPVideosApproval($id)
        {

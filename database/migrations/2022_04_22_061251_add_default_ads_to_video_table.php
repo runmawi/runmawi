@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddResolutionToConvertToUsersSettings extends Migration
+class AddDefaultAdsToVideoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddResolutionToConvertToUsersSettings extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            //
+        Schema::table('videos', function (Blueprint $table) {
+            $table->tinyInteger('default_ads')->default('0');
         });
     }
 
@@ -25,9 +25,8 @@ class AddResolutionToConvertToUsersSettings extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            //
+        Schema::table('videos', function (Blueprint $table) {
+            $table->dropColumn('default_ads');
         });
     }
 }
-

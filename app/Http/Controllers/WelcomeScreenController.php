@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\MobileSlider;
 use File;    
-
+use View;
 
 class WelcomeScreenController extends Controller
 {
@@ -83,9 +83,21 @@ class WelcomeScreenController extends Controller
 
     public function ChooseProfileScreen(){
 
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $screen=ChooseProfileScene::get();
 
         return view ('multiprofile.screen',compact('screen',$screen));
+        }
     }
 
     public function ChooseProfileScreen_store(Request $request){

@@ -16,12 +16,23 @@ use DB;
 use App\Adviews;
 use App\Adrevenue;
 use App\Adcampaign;
-
+use View;
 
 class AdminAdvertiserController extends Controller
 {
   public function advertisers()
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     // dd($setting);
     if($setting->ads_on_videos == 1){
@@ -33,9 +44,21 @@ class AdminAdvertiserController extends Controller
       return abort(404);
     }
   }
+  }
 
   public function advertisersEdit($id)
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     // dd($setting);
     if($setting->ads_on_videos == 1){
@@ -46,6 +69,7 @@ class AdminAdvertiserController extends Controller
     }else{
       return abort(404);
     }
+  }
   }
     public function advertisersDelete($id)
     {
@@ -82,6 +106,17 @@ class AdminAdvertiserController extends Controller
 
   public function ads_categories()
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     if($setting->ads_on_videos == 1){
       $data = array(
@@ -92,9 +127,21 @@ class AdminAdvertiserController extends Controller
       return abort(404);
     }
   }
+  }
 
   public function ads_list()
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     if($setting->ads_on_videos == 1){
       $data = array(
@@ -105,9 +152,22 @@ class AdminAdvertiserController extends Controller
       return abort(404);
     }
   }
+  }
 
   public function ads_Edit($id)
   {
+    
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     // dd($setting);
     if($setting->ads_on_videos == 1){
@@ -120,6 +180,7 @@ class AdminAdvertiserController extends Controller
     }else{
       return abort(404);
     }
+  }
   }
     public function ads_Delete($id)
     {
@@ -171,6 +232,17 @@ class AdminAdvertiserController extends Controller
 
   public function ads_plans()
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     if($setting->ads_on_videos == 1){
       $data = array(
@@ -180,6 +252,7 @@ class AdminAdvertiserController extends Controller
     }else{
       return abort(404);
     }
+  }
   }
 
   public function add_ads_category(Request $request)
@@ -193,6 +266,7 @@ class AdminAdvertiserController extends Controller
 
   public function edit_ads_category(Request $request)
   {
+    
     $data = $request->all();
     $id = $data['id'];
     $Adscategory = Adscategory::find($id);
@@ -262,6 +336,17 @@ class AdminAdvertiserController extends Controller
 
   public function ads_revenue()
   {
+    $user =  User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+    if ($current_date > $duedate)
+    {
+        $settings = Setting::first();
+        $data = array(
+            'settings' => $settings,    
+    );
+        return View::make('admin.expired_dashboard', $data);
+    }else{
     $setting = Setting::first();
     if($setting->ads_on_videos == 1){
       
@@ -283,6 +368,7 @@ class AdminAdvertiserController extends Controller
     }else{
       return abort(404);
     }
+  }
   }
 
   public function save_advertiser_status(Request $request)

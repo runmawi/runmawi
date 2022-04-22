@@ -403,7 +403,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-4">
                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                             style="width: ;">
-                            <div><label class="mt-1">Can Access Free Contrent: </label></div>
+                            <div><label class="mt-1">Can Access Free Content: </label></div>
                             <div class="d-flex justify-content-between">
                                 <div>ON</div>
                                 <div class="mt-1">
@@ -781,6 +781,16 @@ border-radius: 0px 4px 4px 0px;
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
                             </div>
+
+                              {{-- default URL --}}
+                            <div class="form-group ">
+                                <label>Default Ads url</label>
+                                <input id="default_ads" type="text" name="default_ads_url" class="form-control"
+                                placeholder="Default Ads in videos"
+                                value="@if(!empty($settings->default_ads_url)){{ $settings->default_ads_url }}@endif" />
+                            </div>
+
+
                             <div class="form-group add-profile-pic">
                                 <label>Featured Ad Pre Roll:</label>
                                 <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"

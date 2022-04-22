@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddResolutionToConvertToUsersSettings extends Migration
+class AddDefaultAdsUrlToSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddResolutionToConvertToUsersSettings extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            //
+            $table->string('default_ads_url',400)->nullable();
         });
     }
 
@@ -26,8 +26,7 @@ class AddResolutionToConvertToUsersSettings extends Migration
     public function down()
     {
         Schema::table('settings', function (Blueprint $table) {
-            //
+            $table->dropColumn('default_ads_url');
         });
     }
 }
-

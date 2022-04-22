@@ -498,12 +498,12 @@ border-radius: 0px 4px 4px 0px;
 
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">URL Link </label>
-                                 <input type="text" class="form-group" name="url_link" accept="" id="url_link" >
+                                 <input type="text" class="form-control" name="url_link" accept="" id="url_link" >
                               </div>
 
                               <div class="col-sm-6 form-group">
                                  <label class="m-0">URL Start Time <small>Format (HH:MM:SS)</small></label>
-                                 <input type="text" class="form-group" name="url_linktym" accept="" id="url_linktym" >
+                                 <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" >
                               </div>
                            </div>
                            <div class="row mt-5">
@@ -682,32 +682,42 @@ border-radius: 0px 4px 4px 0px;
                <fieldset>
                <div class="form-card">
                <div class="row">
-               <div class="col-7">
-               <h2 class="fs-title">ADS Management:</h2>
-               </div>
-               <div class="col-5">
-               <!-- <h2 class="steps">Step 3 - 4</h2> -->
-               </div>
 
-               <div class="col-sm-6 form-group mt-3">
-                  <label class="">Choose Ad Name</label>
-                  <select class="form-control" name="ads_id">
-                      <option value="0">Select Ads</option>
-                      @foreach($ads as $ad)
-                        <option value="{{$ad->id}}">{{$ad->ads_name}}</option>
-                      @endforeach
-                  </select>
-              </div>
-              
-              {{-- <div class="col-sm-6 form-group mt-3">
-                  <label class="">Choose Ad Roll</label>
-                  <select class="form-control" name="ad_roll">
-                     <option value="0">Select Ad Roll</option>
-                     <option value="1">Pre</option>
-                     <option value="2">Mid</option>
-                     <option value="3">Post</option>
-                  </select>
-               </div> --}}
+                  <div class="col-7">
+                     <h2 class="fs-title">ADS Management:</h2>
+                  </div>
+
+                  <div class="col-5">
+                     <!-- <h2 class="steps">Step 3 - 4</h2> -->
+                  </div>
+
+                  <div class="col-sm-6 form-group mt-3">
+                     <label class="">Choose Ad Name</label>
+                     <select class="form-control" name="ads_id">
+                        <option value="0">Select Ads</option>
+                        @foreach($ads as $ad)
+                           <option value="{{$ad->id}}">{{$ad->ads_name}}</option>
+                        @endforeach
+                     </select>
+                  </div>
+
+                  <div class="col-sm-6 form-group mt-3">
+                     <label class="">Default Ads</label>
+                     <label class="switch">
+                        <input name="default_ads" type="checkbox">
+                        <span class="slider round"></span>
+                     </label>
+                  </div>
+
+                  {{-- <div class="col-sm-6 form-group mt-3">
+                     <label class="">Choose Ad Roll</label>
+                     <select class="form-control" name="ad_roll">
+                        <option value="0">Select Ad Roll</option>
+                        <option value="1">Pre</option>
+                        <option value="2">Mid</option>
+                        <option value="3">Post</option>
+                     </select>
+                  </div> --}}
            
                </div> 
                @if(isset($video->id))
@@ -1175,7 +1185,7 @@ $(document).ready(function($){
 // video category
    $('#error_video_Category').hide();
 
-   $('.Next3').on('keyup keypress blur change click', function(event) {
+   $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
    if($('#video_category_id').val() == null){
       $('#error_video_Category').show();
       $('#next3').attr('disabled','disabled');

@@ -1,7 +1,7 @@
 <?php include('header.php'); ?>
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
@@ -17,8 +17,7 @@
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
                                    
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                   
                                           <?php  if(!empty($latest_video->ppv_price)){?>
                                           <p class="p-tag1" style="left:2px!important"><?php echo $currency->symbol.' '.$latest_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)){ ?>
@@ -26,9 +25,9 @@
                                             <?php }elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null ){ ?>
                                             <p class="p-tag" style="left:2px!important"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                     
                                 </div>
+                                 
                                     <div class="block-description">
                                        <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
                                        <div class="movie-time d-flex align-items-center pt-1">

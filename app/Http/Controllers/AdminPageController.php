@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
 use Response;
+use App\Setting as Setting;
 
 class AdminPageController extends Controller
 {
@@ -34,6 +35,17 @@ class AdminPageController extends Controller
      */
     public function index()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $pages = Page::orderBy('created_at', 'DESC')->paginate(10);
         $user = Auth::user();
 
@@ -44,6 +56,7 @@ class AdminPageController extends Controller
             );
 
         return View::make('admin.pages.index', $data);
+        }
     }
 
     /**
@@ -53,12 +66,24 @@ class AdminPageController extends Controller
      */
     public function create()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $data = array(
             'post_route' => URL::to('admin/pages/store'),
             'button_text' => 'Add New Page',
             'admin_user' => Auth::user()
             );
         return View::make('admin.pages.create_edit', $data);
+        }
     }
 
     /**
@@ -116,6 +141,17 @@ class AdminPageController extends Controller
      */
     public function edit($id)
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,    
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
         $page = Page::find($id);
 
         $data = array(
@@ -127,6 +163,7 @@ class AdminPageController extends Controller
             );
 
         return View::make('admin.pages.create_edit', $data);
+        }
     }
 
     /**
