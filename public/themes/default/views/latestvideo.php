@@ -1,7 +1,7 @@
 <?php include('header.php'); ?>
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
