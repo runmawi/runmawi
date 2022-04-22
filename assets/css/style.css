@@ -242,6 +242,9 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
 .trending-pills { background: rgb(0, 0, 0, 0.25); }
 .trending-info { padding: 60px 0; }
 .tab-title-info { z-index: 99; }
+.trending-info h1{
+    font-size: 35px;
+}
 .trending-content .tab-pane.fade { display: none; visibility: hidden; opacity: 0; }
 .trending-content .tab-pane.fade.active.show { display: block; visibility: visible; opacity: 1; }
 .trending-content .tab-pane { width: 100%; height: 100%; }
@@ -263,7 +266,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
 .slick-bg:before { /*background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(20, 20, 20, 0.9) 80%, rgba(83, 100, 141, 0) 100%); width: 100%;*/ z-index: -1; background-image: linear-gradient(to left, rgba(4,8,15,0)5%, var( --iq-body-bg1), var( --iq-body-bg1)); }
 .overlay-tab:before { content: ''; position: absolute; top: 0; left: 0; right: 0; width: 100%; height: 100%; background: rgba(36, 36, 36, 0.8); z-index: 1; }
 .trending-info { position: relative; z-index: 99; }
-.trending-info .trending-dec { margin-bottom: 30px; width: 35%; }
+.trending-info .trending-dec { margin-bottom: 30px; width: 35%;color:#8f8f8f!important; }
 .trending-info .block-social { height: 45px; width: 45px; line-height: 45px; text-align: center; background: rgba(255, 255, 255, 0.15); border-radius: 50%; margin-left: 15px; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; }
 .trending-info .block-social a { position: relative; display: block; height: 32px; width: 32px; line-height: 26px; font-size: 16px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .trending-info .block-social.social1 a { background: var(--iq-primary); color: var(--iq-white); }
