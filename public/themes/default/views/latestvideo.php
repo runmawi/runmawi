@@ -28,7 +28,7 @@
                                      
                                 </div>
                                  
-                                    <div class="block-description">
+                                    <div class="block-description" style="bottom:-38px!important;">
                                        <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
                                        <div class="movie-time d-flex align-items-center pt-1">
                                           <div class="badge badge-secondary p-1 mr-2">13+</div>
