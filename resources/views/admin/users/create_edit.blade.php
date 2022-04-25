@@ -206,7 +206,7 @@
 			mobile: "required",
 			password: "required",
 			active: "required",
-			avatar : "required",
+			// avatar : "required",
 			email: {
 				required: true,
 				email: true
