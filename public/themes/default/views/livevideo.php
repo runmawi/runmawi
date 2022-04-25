@@ -23,7 +23,7 @@
     left: 0;
     right: 0;
 }
-p {
+.countdown {
   text-align: center;
   font-size: 60px;
   margin-top: 0px;
@@ -154,12 +154,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 </div>
             <?php } }
         }
-    }elseif(!empty($new_date)){ ?>
-<div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-    <h2> COMING SOON </h2>
-    <p id="demo"></p>
-    </div>
-   <?php }
+    
     else{  
         //   dd($settings);
 
@@ -207,6 +202,12 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 </div>
            <?php }
             }
+            } elseif(!empty($new_date)){ ?>
+                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                    <h2> COMING SOON </h2>
+                    <p class="countdown" id="demo"></p>
+                    </div>
+                   <?php }
             ?>
             
             <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">

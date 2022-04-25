@@ -102,8 +102,9 @@ class LiveStreamController extends Controller
                 }        
              $currency = CurrencySetting::first();
              if(!empty($categoryVideos->publish_time)){
-             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
-             $currentdate = date("M d , y h:i:s");
+             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
+             $currentdate = date("M d , y H:i:s");
+
              if($currentdate < $new_date){
               $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
 
