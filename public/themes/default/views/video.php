@@ -578,8 +578,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div id="videoplay" class="btn btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                    </div>
@@ -647,13 +647,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <?php echo __('Rents');?> </button>
                        <?php } ?>
                    </li>
-                   <li>
+                   <!--<li>
                        <div class="btn btn-default views text-white text-right">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
                        </div>
-                   </li>
+                   </li>-->
                </ul>
            </div>
        </div>

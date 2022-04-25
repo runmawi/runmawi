@@ -193,7 +193,7 @@ if(!empty($request_url)){
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <div class="watchlater btn btn-primary text-white watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
                             <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                         <?php } ?>
                     </div>
@@ -245,7 +245,7 @@ if(!empty($request_url)){
                         <?php } ?>
                     </li>
                     <li>
-                        <div class="btn btn-default views">
+                        <div class="btn btn-default views text-white">
                             <span class="view-count"><i class="fa fa-eye"></i> 
                                 <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                             </span>
@@ -304,11 +304,12 @@ if(!empty($request_url)){
 
         <div class="logo_player"> </div>
         
-        <div class="text-white">
+        <div class="text-white col-md-7 p-0">
             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
         </div>
    <!-- Button trigger modal -->
 
+    <!-- Modal -->
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

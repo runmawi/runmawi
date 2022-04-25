@@ -160,8 +160,8 @@ Index Of Script
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class="ri-arrow-right-s-line"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class="ri-arrow-left-s-line"></i></a>',
 			responsive: [
 			{
 				breakpoint: 1200,
