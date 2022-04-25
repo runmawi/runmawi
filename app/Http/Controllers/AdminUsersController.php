@@ -300,7 +300,7 @@ class AdminUsersController extends Controller
         $user->ccode = $request['ccode'];
         $user->role = $request['role'];
         $user->activation_code = $string;
-
+        $user->active = $request->active;
         //  $user->terms = $request['terms'];
         $user->avatar = $file->getClientOriginalName();
         $user->password = $password;
