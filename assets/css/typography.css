@@ -138,7 +138,7 @@ Border Color
 .btn-hover:hover, .btn-hover:focus, .btn-hover:active { color:  #000000; }
 .btn-hover:focus { box-shadow: none !important; }
 .btn-hover:hover:before, .btn-hover:focus:before, .btn-hover:active:before { -webkit-transform: scaleX(0); transform: scaleX(0); }
-.btn-outline-primary { background: transparent; border: 2px solid var(--iq-primary); color: var(--iq-primary); transition: all 0.3s ease-out; -webkit-transition: all 0.3s ease-out; }
+.btn-outline-primary { background: transparent; border: 2px solid var(--iq-primary); color: var(--iq-primary); transition: all 0.3s ease-out; -webkit-transition: all 0.3s ease-out;border-radius: 5px!important; }
 .btn-outline-primary:hover { background: var(--iq-primary-hover) !important; border: 2px solid var(--iq-primary-hover); color: var(--iq-white); box-shadow: none; }
 .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus { box-shadow: none; }
 .btn-primary.focus, .btn-primary:focus { box-shadow: none; }
@@ -149,6 +149,7 @@ Border Color
 button:focus { outline: none; }
 .btn-link { background: transparent; color: var(--iq-white); }
 .btn-link:hover { color: var(--iq-primary); text-decoration: none; }
+.btn-outline-danger{border-radius: 5px!important;}
 #bd{
     border-radius: 10px!important;
     font-weight: 800;
