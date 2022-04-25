@@ -106,7 +106,7 @@
 
 
               <div class="mt-3 ml-3">
-                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/paypalplans') }}">Close</a>
+                <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/subscription-plans') }}">Close</a>
                 <input  type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
             </div>
            
