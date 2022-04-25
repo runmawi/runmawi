@@ -185,9 +185,6 @@
 
                                 <div class="form-group">
                                  <label> Ads Play:</label>
-
-                                 <p class="error-message" style="color:red">This filed is required</p>
-
                                  <select class="form-control" name="ads_position">
                                       <option value="pre">Pre</option>
                                       <option value="mid">Mid</option>
@@ -196,6 +193,8 @@
                               </div>
                               <div class="form-group">
                                  <label> Ad Tag Url:</label>
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
 
                               </div>
