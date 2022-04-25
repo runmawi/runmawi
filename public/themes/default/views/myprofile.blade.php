@@ -496,7 +496,7 @@ $uppercase =  ucfirst($request_url);
             <div class="row">
                 <div class="col-lg-4 mb-3">
                     <div class="sign-user_card text-center mb-3">
-                        <img class="rounded-circle img-fluid d-block mx-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                        <img class="rounded-circle img-fluid d-block mx-auto mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                         <a href="#updatepic" class="edit-icon text-primary">Edit</a>
                     </div>
@@ -505,76 +505,16 @@ $uppercase =  ucfirst($request_url);
        
          ?>
 
-        <div class="col-sm-12">
-            <div class="sign-user_card text-center mb-3">
-            <?php if ( Auth::user()->role != 'admin') { ?>
-                <div class="row">
-                    <?php if (Auth::user()->role == 'subscriber' && empty(Auth::user()->paypal_id)){ 
-                       ?>
-                        <h3> Plan Details:</h3>
-                        <!-- <p style="margin-left: 19px;margin-top: 8px"><?php if(!empty(Auth::user()->role == "subscriber")){ echo CurrentSubPlanName(Auth::user()->id); }else { echo "No Plan you were choosed   " ;} ?></p> -->
-                    <?php } ?>
-                        <div class="col-sm-12 col-xs-12 padding-top-30">
-                        <?php 
-                        $paypal_id = Auth::user()->paypal_id;
-                        if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
-                        $paypal_subscription = PaypalSubscriptionStatus();
-                        } else {
-                        $paypal_subscription = "";  
-                        }
-
-                        $stripe_plan = SubscriptionPlan();
-                        if ( $user->subscribed($stripe_plan)  || empty(Auth::user()->paypal_id) ) { 
-                           // dd($user->subscription($stripe_plan)->ended());->ended()
-                        if ($user->subscription($stripe_plan) ) { ?>
-                        <!-- <a href="<?=URL::to('/renew');?>" class="btn btn-primary noborder-radius margin-bottom-20" > Renew Subscription</a> -->
-                        <?php } elseif(Auth::user()->role == "subscriber") { ?>
-                        <a href="<?=URL::to('/cancelSubscription');?>" class="btn btn-danger noborder-radius margin-bottom-20" > Cancel Subscription</a>
-                        <!-- <a href="<?//URL::to('/cancelSubscription');?>" class="btn btn-primary" >Cancel Subscription</a> -->
-                        <?php  }else{ } } 
-                        elseif(!empty(Auth::user()->paypal_id) && $paypal_subscription !="ACTIVE" )
-                        {   ?><br>
-                            <!-- <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a> -->
-
-                        <?php } else { echo $paypal_subscription; ?>
-                        <!-- <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a> -->
-                        <?php } ?>
-                        </div>
-
-                        <div class="col-sm-12 col-xs-12 padding-top-30">
-                            <?php
-                            $billing_url = URL::to('/').'/paypal/billings-details';
-                            if (!empty(Auth::user()->paypal_id)){
-                            echo "<p><a href='".$billing_url."' class='plan-types'> <i class='fa fa-caret-right'></i> View Billing Details</a></p>";
-                            } 
-                            ?>
-                            <?php if ( $user->subscribed($stripe_plan) ) { 
-                            if ($user->subscription($stripe_plan)->ended()) { ?>
-                            <p><a href="<?=URL::to('/renew');?>" class="plan-types" ><i class="fa fa-caret-right"></i> Renew Subscription</a></p>
-                            <?php } else { ?>
-                            <!-- <p><a href="<?=URL::to('/upgrade-subscription');?>" class="btn btn-primary plan-types" ><i class="fa fa-caret-right"></i> Change Plan</a></p> -->
-                            <?php  } } ?>
-
-                            <?php if ($user->subscribed($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) { ?>
-                            <!-- <p><a href="<?=URL::to('/renew');?>" class="plan-types" > Renew Subscription</a></p> -->
-                            <?php } ?>
-
-                            <?php if ($user->subscribed($stripe_plan)) { ?>
-                            <!-- <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a> -->
-                            <?php } ?>
-                        </div>
-                    </div>
-            <?php } ?> 
-            </div>
-        </div>
+       
+            
 
         <div class="col-sm-12">
             <div class="sign-user_card text-center mb-3">
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
             </div>
         </div>
-</div>
-                </div>
+
+                    </div></div>
                 <div class="col-lg-8"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                     <div class="sign-user_card mb-3" id="personal_det">
                     <div class="col-md-12" >
@@ -744,7 +684,7 @@ $uppercase =  ucfirst($request_url);
                 </div>
                 <div class="col-lg-6 mb-3" id="updatepic">
                     <div class="sign-user_card mb-3">
-                        <h4 class="card-title mb-0">Manage Profile</h4>
+                        <h4 class="card-title mb-2">Manage Profile</h4>
                         <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
                         <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
@@ -764,7 +704,7 @@ $uppercase =  ucfirst($request_url);
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
-                      <div class="col-sm-9 form-group">
+                      <div class="col-sm-9 form-group p-0 mt-3">
                         <label><h5>Preference Language</h5></label>
                         <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($language as $preference_language)
@@ -773,7 +713,7 @@ $uppercase =  ucfirst($request_url);
                         </select>
                      </div>
    
-                     <div class="col-sm-9 form-group">
+                     <div class="col-sm-9 form-group p-0 mt-3">
                         <label><h5>Preference Genres</h5></label>
                         <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($videocategory as $preference_genres)
@@ -795,7 +735,9 @@ $uppercase =  ucfirst($request_url);
                       @forelse  ($profile_details as $profile)
                         <div class="">
                                  <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
-                                 <div class="circle">
+                                
+                                 <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                             <div class="circle">
                                     <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
                                            <i class="fa fa-pencil"></i> </a>
                                     @if($Multiuser == null)
@@ -803,7 +745,6 @@ $uppercase =  ucfirst($request_url);
                                        <i class="fa fa-trash"></i> </a> 
                                     @endif
                                  </div>
-                                 <div class="name">{{ $profile ? $profile->user_name : ''  }}</div>
                         </div>
                       @empty
                         <div class="col-sm-6">  <p class="name">No Profile</p>  </div>

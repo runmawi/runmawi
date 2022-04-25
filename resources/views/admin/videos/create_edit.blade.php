@@ -237,7 +237,7 @@ border-radius: 0px 4px 4px 0px;
                    </div>
                    <div class="col-12 form-group">
                         <label class="m-0">Links &amp; Details</label>
-                        <textarea   rows="5" class="form-control mt-2" name="details" 
+                        <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
                       placeholder="Link and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
                    </div>
                </div>
@@ -595,6 +595,16 @@ border-radius: 0px 4px 4px 0px;
                               @endforeach
                            </select>
                         </div>
+
+
+                        <div class="col-sm-6 form-group mt-3">
+                           <label class="">Default Ads</label>
+                              <label class="switch">
+                                 <input name="default_ads" type="checkbox" @if( $video->default_ads == "1") checked  @endif >
+                                 <span class="slider round"></span>
+                              </label>
+                        </div>
+                        
                         {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Roll</label>
                            <select class="form-control" name="ad_roll">
@@ -1100,7 +1110,7 @@ $(document).ready(function($){
 
    $('#error_video_Category').hide();
 
-   $('.Next3').on('keyup keypress blur change click', function(event) {
+   $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
       if($('#video_category_id').val() == null){
          $('#error_video_Category').show();
          $('#next3').attr('disabled','disabled');
@@ -1326,6 +1336,12 @@ $(document).ready(function($){
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
        filebrowserUploadMethod: 'form'
    });
+
+   CKEDITOR.replace( 'links-ckeditor', {
+       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+       filebrowserUploadMethod: 'form'
+   });
+   
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script>

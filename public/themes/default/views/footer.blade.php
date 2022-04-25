@@ -135,6 +135,9 @@
 						<?php endforeach; ?>
 					</ul>
 				</div>
+                   <div class="col-lg-2 col-md-2 p-0">
+                       <img class="w-80" src="<?php echo  URL::to('/assets/img/gplay.png')?>">
+                   </div>
                   
                    </div>
                </div>

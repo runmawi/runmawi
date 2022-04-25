@@ -397,7 +397,7 @@ $data = Session::all();
                                           echo  $subuser->user_name  ;
                                         }
                                         else{
-                                          echo Auth::user()->username.' '.'!'  ;
+                                          echo Auth::user()->username.' '  ;
                                         }
                                         
                                         ?> 

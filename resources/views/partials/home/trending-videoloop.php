@@ -19,8 +19,7 @@
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>
                                         
-                                         <div class="corner-text-wrapper">
-                                            <div class="corner-text">
+                                        
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
                                                 <?php  if(!empty($watchlater_video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>

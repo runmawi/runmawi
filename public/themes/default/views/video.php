@@ -5,11 +5,20 @@
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
+
+$default_ads_url    = App\Setting::pluck('default_ads_url')->first();
+$default_ads_status = App\Video::where('id',$video->id)->pluck('default_ads')->first(); 
+
+if($default_ads_url !=null && $default_ads_status == 1){
+    $default_ads = $default_ads_url ;
+}else{
+  $default_ads = null ;
+}
             
 if($ads_details != null){ 
   $ads_path = $ads_details; 
 }else{ 
-  $ads_path = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpreonlybumper&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&correlator='; 
+  $ads_path = $default_ads ; 
   }  ?>
 
 
@@ -70,6 +79,17 @@ div#url_linkdetails {
     left: 83%;
     font-size: x-large;
 }
+.countdown {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+  color:red;
+}
+h2{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
   </style>
 <?php
 
@@ -81,6 +101,8 @@ div#url_linkdetails {
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
+if(empty($new_date)){
+
 if(!Auth::guest()) {
   // dd(Auth::user()->role);
   // dd('test');
@@ -371,7 +393,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    </form>
  <?php endif; ?>
 </div>
-<?php } ?>
+<?php }
+}elseif(!empty($new_date)){ ?>
+  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+      <h2> COMING SOON </h2>
+      <p class="countdown" id="demo"></p>
+      </div>
+     <?php } ?>
 <!-- For Guest users -->      
  <?php if(Auth::guest()) {  ?>
    <div id="video" class="fitvid" style="margin: 0 auto;">
@@ -575,15 +603,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
    <div class="container-fluid video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
-           <div class="row">
+           <div class="row align-items-center">
                <div class="col-sm-9 col-md-9 col-xs-12">
-                   <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+                   <h1 class="text-white  mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                        <!-- Category -->
                    <ul class="p-0 list-inline d-flex align-items-center movie-content">
                     <li class="text-white"><?//= $videocategory ;?></li>
                    </ul>
                </div>
-               <div class="col-md-12">
+               <div class="col-md-3">
             <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
              <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
@@ -606,24 +634,32 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i>Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                    </div>
                </div>
            </div>
        </div>
        <!-- Year, Running time, Age --> 
+       <?php 
+       if(!empty($video->duration)){
+       $seconds = $video->duration;
+       $H = floor($seconds / 3600);
+       $i = ($seconds / 60) % 60;
+       $s = $seconds % 60;
+       $time = sprintf("%02dh %02dm", $H, $i);
+      }else{
+        $time = "Not Defined";
+      }
+      //  dd($time);
+       ?>
          <div class="d-flex align-items-center text-white text-detail">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
-            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
-            <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-            <span class="trending-year"><?php
-            foreach($category_name as $value){
-              echo $value->categories_name. ',';  
-            }
-             ?></span>
+         <?php if(!empty($video->age_restrict)){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
+          <?php if(!empty($time)){ ?><span class="ml-3"><?php echo $time;?></span><?php } ?>
+          <?php if(!empty($video->year)){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
+          <?php if(!empty($genres_name)){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
 
          </div>
            
@@ -668,7 +704,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php } ?>
                    </li>
                    <li>
-                       <div class="btn btn-default views">
+                       <div class="btn btn-default views text-white text-right">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
@@ -739,11 +775,16 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <!--End Intro Skip and Recap Skip -->
 
            <?php if(!empty($video->description) ) { ?>
-
+<div class="col-md-7 p-0">
 <h4>Description</h4>
 <div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-</div>
+    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
+</div></div>
 <?php  }?>
 <br>
 
@@ -751,7 +792,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <h4>Links & details</h4>
 <div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
+    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
 <br>
@@ -1321,5 +1362,37 @@ $(document).ready(function(){
 
 
    </div>
+   
+<script>
+// Set the date we're counting down to
+var date = "<?= $new_date ?>";
+var countDownDate = new Date(date).getTime();
+// alert(date)
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 <?php include('footer.blade.php');?>
 
