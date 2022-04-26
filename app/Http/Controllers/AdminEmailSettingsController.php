@@ -38,6 +38,8 @@ use App\EmailSetting;
 use App\EmailTemplate;
 use App\Setting;
 use GifCreator\GifCreator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 class AdminEmailSettingsController extends Controller
 {
@@ -48,10 +50,27 @@ class AdminEmailSettingsController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $email_settings = EmailSetting::find(1);
@@ -150,5 +169,6 @@ class AdminEmailSettingsController extends Controller
         }
        
     }
+    
 
 }   

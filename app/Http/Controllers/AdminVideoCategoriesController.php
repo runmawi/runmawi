@@ -13,6 +13,8 @@ use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 class AdminVideoCategoriesController extends Controller
 {
@@ -24,10 +26,27 @@ class AdminVideoCategoriesController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+          $client = new Client();
+          $url = "https://flicknexs.com/userapi/allplans";
+          $params = [
+              'userid' => 0,
+          ];
+  
+          $headers = [
+              'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+          ];
+          $response = $client->request('post', $url, [
+              'json' => $params,
+              'headers' => $headers,
+              'verify'  => false,
+          ]);
+  
+          $responseBody = json_decode($response->getBody());
+         $settings = Setting::first();
+         $data = array(
+          'settings' => $settings,
+          'responseBody' => $responseBody,
+  );
             return view('admin.expired_dashboard', $data);
         }else{
         $allCategories = VideoCategory::All();

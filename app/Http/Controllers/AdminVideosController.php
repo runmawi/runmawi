@@ -47,6 +47,8 @@ use App\LanguageVideo;
 use App\CategoryVideo;
 use Exception;
 use getID3;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 
 class AdminVideosController extends Controller
@@ -62,10 +64,27 @@ class AdminVideosController extends Controller
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
                 return View::make('admin.expired_dashboard', $data);
             }else{
       // $search_value = Request::get('s');
@@ -264,7 +283,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         $mp4_url = $data['file'];
         $settings = Setting::first();
 
-        if($mp4_url != '' && $pack != "Pro" ) {
+        if($mp4_url != '' && $pack != "Business" ) {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
             // $data['duration'] = $ffprobe->streams($request->file)
@@ -336,7 +355,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
             return $value;
         
-        }elseif($mp4_url != '' && $pack == "Pro" && $settings->transcoding_access  == 1) {
+        }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
 
             $rand = Str::random(16);
             $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -395,7 +414,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
               $value['video_title'] = $title;
               
               return $value;
-        }elseif($mp4_url != '' && $pack == "Pro"  && $settings->transcoding_access  == 0 ) {
+        }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
 
             $rand = Str::random(16);
             $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -482,10 +501,27 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
                 return View::make('admin.expired_dashboard', $data);
             }else{
 
@@ -1608,11 +1644,11 @@ if(!empty($artistsdata)){
                 $data['status'] = 1;    
             }
 
-                if(Auth::user()->role =='admin' &&  $pack != "Pro"  ){
+                if(Auth::user()->role =='admin' &&  $pack != "Business"  ){
                         $data['status'] = 1;    
-                    }elseif(Auth::user()->role =='admin' &&  $pack == "Pro" && $settings->transcoding_access == 1 ){
+                    }elseif(Auth::user()->role =='admin' &&  $pack == "Business" && $settings->transcoding_access == 1 ){
                         $data['status'] = 0;    
-                    }elseif(Auth::user()->role =='admin'&&  $pack == "Pro" && $settings->transcoding_access == 0 ){
+                    }elseif(Auth::user()->role =='admin'&&  $pack == "Business" && $settings->transcoding_access == 0 ){
                         $data['status'] = 1;    
                     }else{
                         $data['status'] = 1;    
@@ -2069,10 +2105,27 @@ if(!empty($artistsdata)){
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
 

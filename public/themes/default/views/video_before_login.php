@@ -37,6 +37,8 @@ if(!empty($request_url)){
 
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
+<input type="hidden" name="processed_low" id="processed_low" value="<?php echo  $video->processed_low;?>">
+
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo  $playerui_settings->watermark_logo ;?>">
 
@@ -52,7 +54,6 @@ if(!empty($request_url)){
   <?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)
      || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
      ) {
-    // dd(Auth::guest());
         ?>
     <div id="video_bg">
    <div class=" page-height">
@@ -80,7 +81,7 @@ if(!empty($request_url)){
              <?php } ?>
            </div>
         
-           <?php  elseif($video->type == ''): ?>
+           <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null ): ?>
            
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
@@ -103,6 +104,31 @@ if(!empty($request_url)){
                </video>
  
            </div>
+           <?php  elseif($video->type == ''&& $video->processed_low == 100 || $video->processed_low != null): ?>
+           
+             
+           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+         <!-- Current time: <div id="current_time"></div> -->
+         <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+            <source 
+              type="application/x-mpegURL" 
+              src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
+            >
+            <!-- </video> -->
+                    <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
+            <!-- Captions are optional -->
+            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "German"){ ?>
+                <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "Spanish"){ ?>
+                <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                <?php } if($value['sub_language'] == "Hindi"){ ?>
+                <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                <?php } } } else { }  ?>  
+            </video>
+
+     </div>
            <?php  elseif($video->type == 'mp4_url'): 
     // dd($video->type );
 
