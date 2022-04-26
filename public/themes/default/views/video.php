@@ -272,8 +272,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  
 
 
-  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
-   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
+  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
  if(!empty($video->path)){ 
     ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
@@ -283,7 +283,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
       >
-    </video>
+    <!-- </video> -->
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -597,8 +597,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                    </div>
@@ -666,13 +666,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <?php echo __('Rents');?> </button>
                        <?php } ?>
                    </li>
-                   <!--<li>
+                   <li>
                        <div class="btn btn-default views text-white text-right">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
                        </div>
-                   </li>-->
+                   </li>
                </ul>
            </div>
        </div>

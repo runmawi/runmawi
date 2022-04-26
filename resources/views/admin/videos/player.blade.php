@@ -75,7 +75,7 @@ input.skips{
 // dd($recomended);
 
 
-if(!Auth::guest() && $package != "Pro") {
+if(!Auth::guest() && $package != "Business") {
   // dd($video->access);
   // dd('test');
 if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
@@ -307,7 +307,7 @@ if( !empty($ppv_video_play) || Auth::user()->role == 'registered' ||  $video->gl
 </div>
 </div>
  <?php }
-}elseif($package == "Pro" && !Auth::guest()){ ?>
+}elseif($package == "Business" && !Auth::guest()){ ?>
 
 <div id="video sda" class="fitvid" style="margin: 0 auto;">
 

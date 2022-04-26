@@ -23,14 +23,16 @@ use App\LanguageVideo;
 use App\Episode;
 use App\LiveStream;
 use App\Audio;
-
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 class AdminDashboardController extends Controller
 {
    
     public function Index()
     {
-        // exit();
+
+
            if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
@@ -40,10 +42,30 @@ class AdminDashboardController extends Controller
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
+   
                 return View::make('admin.expired_dashboard', $data);
             }else{
             
@@ -101,10 +123,27 @@ class AdminDashboardController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $Videos =  Video::orderBy('created_at', 'DESC')->get();
@@ -128,5 +167,59 @@ class AdminDashboardController extends Controller
 
        return View::make('admin.Masterlist.index', $data);
     }
+    }
+    public function PlanPurchase($plan_name)
+    {
+        $client = new Client();
+        $url = "https://flicknexs.com/userapi/allplans";
+        $params = [
+            'userid' => 0,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('post', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+        if($plan_name == "Basic"){
+            $plandata = $responseBody->plandata[0];
+        }elseif($plan_name == "Pro"){
+            $plandata = $responseBody->plandata[1];
+
+        }elseif($plan_name == "Business"){
+            $plandata = $responseBody->plandata[2];
+
+        }else{
+            $plandata = " ";
+        }
+        // dd($plandata);
+        return redirect('/admin/flicknexs');
+    }
+    public function AdminFlicknexs()
+    {
+        $url = "https://flicknexs.com/login";
+        // dd($url);
+        return Redirect::intended($url);
+        return redirect()->away('https://flicknexs.com/login');
+
+    }
+    public function AdminFlicknexsMonthly($plan_slug)
+    {
+
+        $url = "https://flicknexs.com/upgrade/".$plan_slug;
+        return Redirect::intended($url);
+
+    }
+    public function AdminFlicknexsYearly($plan_slug)
+    {
+
+        $url = "https://flicknexs.com/upgrade/".$plan_slug.'/yearly';
+        return Redirect::intended($url);
+
     }
 }
