@@ -310,6 +310,7 @@
                            </div>
                         </div> -->
                      </div>
+<!--
                      <div class="iq-card-body row align-items-center">
                         <div class="col-lg-12">
                            <div class="row list-unstyled mb-0 pb-0">
@@ -339,6 +340,7 @@
                            <div id="view-chart-02" class="view-cahrt-02"></div>
                         </div>
                      </div>
+-->
                   </div>
                </div>
                <div class="col-sm-12 mt-4">
