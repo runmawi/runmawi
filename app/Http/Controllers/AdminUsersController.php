@@ -271,7 +271,9 @@ class AdminUsersController extends Controller
 
         $logo = $request['avatar'];
 
-        if ($logo != '')
+
+
+        if ($logo != ''  && $logo != null)
         {
             //code for remove old file
             if ($logo != '' && $logo != null)
@@ -285,6 +287,8 @@ class AdminUsersController extends Controller
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
+            $user->avatar = $file->getClientOriginalName();
+
             $file->move($path, $input['avatar']);
 
         }
@@ -292,19 +296,21 @@ class AdminUsersController extends Controller
 
         $password = Hash::make($request['passwords']);
 
-        $user = new User;
-        $user->username = $request['username'];
-        $user->email = $request['email'];
-        $user->mobile = $request['mobile'];
-        $password = Hash::make($request['passwords']);
-        $user->ccode = $request['ccode'];
-        $user->role = $request['role'];
-        $user->activation_code = $string;
+        DB::table('users')->insert(
+            [
+                'username' => $request['username'],
+                'email' => $request['email'],
+                'mobile' => $request['mobile'],
+                'ccode' => $request['ccode'],
+                'role' => $request['role'],
+                'activation_code' => $string,
+                'active' => $request->active,
+                //  terms = $request['terms'],
+                'password' => $password,
+        ]);
 
-        //  $user->terms = $request['terms'];
-        $user->avatar = $file->getClientOriginalName();
-        $user->password = $password;
-        $user->save();
+
+
         $settings = Setting::first();
 
         if ($input['role'] == "subscriber")
@@ -483,18 +489,20 @@ class AdminUsersController extends Controller
         {
             $avatar_image = $input['avatar'];;
         }
-        $user_update = User::find($id);
-        $user_update->username = $input['username'];
-        $user_update->email = $input['email'];
-        $user_update->ccode = $input['ccode'];
-        $user_update->mobile = $input['mobile'];
-        $user_update->password = Hash::make($input['passwords']);
-        $user_update->role = $input['role'];
-        $user_update->active = $active_status;
-        $user_update->terms = $input['terms'];
-        $user_update->avatar = $avatar_image;
-        $user_update->stripe_active = $input['stripe_active'];
-        $user_update->save();
+
+            DB::table('users')->where('id', $id)->update(
+                [
+                    'username' => $input['username'],
+                    'email' => $input['email'],
+                    'ccode' => $input['ccode'],
+                    'mobile' => $input['mobile'],
+                    'password' => Hash::make($input['passwords']),
+                    'role' => $input['role'],
+                    'active' => $active_status,
+                    'terms' => $input['terms'],
+                    'avatar' => $avatar_image,
+                    'stripe_active' => $input['stripe_active'],
+                ]);
 
         return Redirect::to('admin/users')
             ->with(array(
