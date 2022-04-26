@@ -47,6 +47,8 @@ use App\LanguageVideo;
 use App\CategoryVideo;
 use Exception;
 use getID3;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 
 class AdminVideosController extends Controller
@@ -62,10 +64,27 @@ class AdminVideosController extends Controller
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
                 return View::make('admin.expired_dashboard', $data);
             }else{
       // $search_value = Request::get('s');
@@ -482,10 +501,27 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
                 return View::make('admin.expired_dashboard', $data);
             }else{
 
@@ -2069,10 +2105,27 @@ if(!empty($artistsdata)){
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
 

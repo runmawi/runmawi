@@ -28,7 +28,7 @@ use App\Devices;
 use App\Setting;
 use App\PaymentSetting as PaymentSetting;
 use App\SubscriptionPlan as SubscriptionPlan;
-
+use GuzzleHttp\Client;
 
 class AdminPlansController extends Controller
 {
@@ -70,10 +70,27 @@ public function PaypalIndex()
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $slug = Str::slug('Laravel 5 Framework', '-');
@@ -130,10 +147,27 @@ public function PaypalIndex()
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         // $edit_plan = SubscriptionPlan::find($id);
@@ -455,10 +489,27 @@ public function PaypalIndex()
             $current_date = date('Y-m-d');
             if ($current_date > $duedate)
             {
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings,    
-            );
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
                 return View::make('admin.expired_dashboard', $data);
             }else{
          $devices = Devices::all();
@@ -487,10 +538,27 @@ public function PaypalIndex()
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
     	 $edit_devices =  Devices::where('id', '=', $id)->first();

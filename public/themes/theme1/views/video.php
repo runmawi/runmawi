@@ -282,7 +282,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
       >
-    </video>
+    <!-- </video> -->
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
