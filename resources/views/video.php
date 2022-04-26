@@ -241,8 +241,8 @@ if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || Auth
 
   </div>
 
-  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
-   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
+  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
  if(!empty($video->path)){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->

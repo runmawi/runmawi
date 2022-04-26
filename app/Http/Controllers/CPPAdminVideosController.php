@@ -253,7 +253,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             $pack = $package->package;
             $mp4_url = $data['file'];
             $settings = Setting::first();
-            if($mp4_url != '' && $pack != "Pro" ) {
+            if($mp4_url != '' && $pack != "Business" ) {
                 // $ffprobe = \FFMpeg\FFProbe::create();
                 // $disk = 'public';
                 // $data['duration'] = $ffprobe->streams($request->file)
@@ -323,7 +323,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
     
                 return $value;
             
-            }elseif($mp4_url != '' && $pack == "Pro" && $settings->transcoding_access  == 1) {
+            }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
     
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -382,7 +382,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                   $value['video_title'] = $title;
                   
                   return $value;
-            }elseif($mp4_url != '' && $pack == "Pro"  && $settings->transcoding_access  == 0 ) {
+            }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
     
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -1531,11 +1531,11 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             //            if(empty($data['path'])){
             //                $data['path'] = 0;
             //            }  
-            if($package != "Pro"  ){
+            if($package != "Business"  ){
                 $data['status'] = 1;    
-            }elseif(  $package == "Pro" && $settings->transcoding_access == 1 ){
+            }elseif(  $package == "Business" && $settings->transcoding_access == 1 ){
                 $data['status'] = 0;    
-            }elseif($package == "Pro" && $settings->transcoding_access == 0 ){
+            }elseif($package == "Business" && $settings->transcoding_access == 0 ){
                 $data['status'] = 1;    
             }else{
                 $data['status'] = 1;    
