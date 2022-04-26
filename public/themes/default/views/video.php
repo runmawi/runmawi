@@ -79,6 +79,17 @@ div#url_linkdetails {
     left: 83%;
     font-size: x-large;
 }
+.countdown {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+  color:red;
+}
+h2{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
   </style>
 <?php
 
@@ -90,6 +101,8 @@ div#url_linkdetails {
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
+if(empty($new_date)){
+
 if(!Auth::guest()) {
   // dd($video->access);
   // dd('test');
@@ -343,7 +356,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    </form>
  <?php endif; ?>
 </div>
-<?php } ?>
+<?php }
+}elseif(!empty($new_date)){ ?>
+  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+      <h2> COMING SOON </h2>
+      <p class="countdown" id="demo"></p>
+      </div>
+     <?php } ?>
 <!-- For Guest users -->      
  <?php if(Auth::guest()) {  ?>
    <div id="video" class="fitvid" style="margin: 0 auto;">
@@ -578,8 +597,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
                        <?php if($video->trailer != ''){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                           <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                           <div id="videoplay" class="btn btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="close_trailer" class="btn btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                    </div>
@@ -647,13 +666,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <?php echo __('Rents');?> </button>
                        <?php } ?>
                    </li>
-                   <li>
+                   <!--<li>
                        <div class="btn btn-default views text-white text-right">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
                        </div>
-                   </li>
+                   </li>-->
                </ul>
            </div>
        </div>
@@ -1306,5 +1325,37 @@ $(document).ready(function(){
 
 
    </div>
+   
+<script>
+// Set the date we're counting down to
+var date = "<?= $new_date ?>";
+var countDownDate = new Date(date).getTime();
+// alert(date)
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 <?php include('footer.blade.php');?>
 

@@ -46,7 +46,7 @@
                     </div>
 -->
                         <div class="block-description">
-                            <h3><?php echo __($video->title); ?></h3>
+                            <h6><?php echo __($video->title); ?></h6>
                             <div class="movie-time d-flex align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                 <span class="text-white"><i class="fa fa-clock-o"></i>

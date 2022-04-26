@@ -271,7 +271,9 @@ class AdminUsersController extends Controller
 
         $logo = $request['avatar'];
 
-        if ($logo != '')
+
+
+        if ($logo != ''  && $logo != null)
         {
             //code for remove old file
             if ($logo != '' && $logo != null)
@@ -285,6 +287,8 @@ class AdminUsersController extends Controller
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
+            $user->avatar = $file->getClientOriginalName();
+
             $file->move($path, $input['avatar']);
 
         }
@@ -300,9 +304,8 @@ class AdminUsersController extends Controller
         $user->ccode = $request['ccode'];
         $user->role = $request['role'];
         $user->activation_code = $string;
-
+        $user->active = $request->active;
         //  $user->terms = $request['terms'];
-        $user->avatar = $file->getClientOriginalName();
         $user->password = $password;
         $user->save();
         $settings = Setting::first();

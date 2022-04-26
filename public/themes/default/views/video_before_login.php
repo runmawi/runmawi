@@ -246,7 +246,7 @@ if(!empty($request_url)){
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-default watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
                             <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                         <?php } ?>
                     </div>
