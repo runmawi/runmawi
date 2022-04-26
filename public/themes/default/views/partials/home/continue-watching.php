@@ -53,7 +53,7 @@
                                           <?= gmdate('H:i:s', $cont_video->duration); ?>
                                       </span>
                                       <?php } ?>
-                                  </div>
+
 
                                   <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
                                     <div class="movie-time d-flex align-items-center pt-1">

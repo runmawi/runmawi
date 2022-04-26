@@ -86,7 +86,7 @@
                         <?php }else{ }?>
                      </ul>
                   </div>                  
-                  <div class="col-lg-3 col-md-4">
+                  <div class="col-lg-2 col-md-4">
                       <!-- <div class="row">
                      <ul class="f-link list-unstyled mb-0 catag"> -->
                         <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
@@ -115,8 +115,8 @@
                         <?php } ?>
 						<?php endforeach; ?>
 					</ul>-->
-				<!-- </div> -->
-                   <div class="col-lg-2 col-md-4 p-0">
+                        </div>
+                   <div class="col-lg-3 col-md-4 p-0">
                      <!--<ul class="f-link list-unstyled mb-0">
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Cotact Us</a></li>
@@ -134,11 +134,11 @@
                         <?php } ?>
 						<?php endforeach; ?>
 					</ul>
-				</div>
+                        </div>
                    <div class="col-lg-3 col-md-2 p-0 d-flex justify-content-center">
-                       <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                       <!-- <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
-                       <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
+                       <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;"> -->
                    </div>
                   
                    </div>
