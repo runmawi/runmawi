@@ -96,7 +96,7 @@ border-radius: 0px 4px 4px 0px;
 		</div>
 <!--        <div class="row">-->
 
-		<div class="panel panel-primary col-md-6 mt-3 p-0" data-collapsed="0"> <div class="panel-heading"> 
+		<div class="panel panel-primary col-md-12 mt-3 p-0" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title"><label>Logo <small>(Dimensions: 180px X 29px)</small></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 			<div class="panel-body" style="display: block;"> 
 				@if(!empty($settings->logo))
@@ -108,7 +108,7 @@ border-radius: 0px 4px 4px 0px;
 			</div> 
 		</div>
 
-		<div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0"> <div class="panel-heading"> 
+		<div class="panel panel-primary mt-3  p-0" data-collapsed="0"> <div class="panel-heading"> 
 			<div class="panel-title"><label>Favicon</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 			<div class="panel-body" style="display: block;"> 
 				@if(!empty($settings->favicon))
