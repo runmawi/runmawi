@@ -333,6 +333,7 @@ function myFunction() {
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path =  $('#ads_path').val();
+    var processed_low =  $('#processed_low').val();
     
     // alert(ads_path)
 
@@ -400,7 +401,8 @@ ads:{
                     tagUrl: ads_path 
                   }
         });
-       } else if(user_logged_out == 1 && type == ''){
+      //  } else if(user_logged_out == 1 && type == ''){
+  else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{

@@ -53,6 +53,7 @@ use App\PpvPurchase;
 use Theme;
 use Response;
 use File;
+use GuzzleHttp\Client;
 
 class AdminUsersController extends Controller
 {
@@ -64,10 +65,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $user = $request->user();
@@ -212,10 +230,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $data = array(
@@ -271,7 +306,9 @@ class AdminUsersController extends Controller
 
         $logo = $request['avatar'];
 
-        if ($logo != '')
+
+
+        if ($logo != ''  && $logo != null)
         {
             //code for remove old file
             if ($logo != '' && $logo != null)
@@ -285,6 +322,8 @@ class AdminUsersController extends Controller
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
+            $user->avatar = $file->getClientOriginalName();
+
             $file->move($path, $input['avatar']);
 
         }
@@ -292,19 +331,21 @@ class AdminUsersController extends Controller
 
         $password = Hash::make($request['passwords']);
 
-        $user = new User;
-        $user->username = $request['username'];
-        $user->email = $request['email'];
-        $user->mobile = $request['mobile'];
-        $password = Hash::make($request['passwords']);
-        $user->ccode = $request['ccode'];
-        $user->role = $request['role'];
-        $user->activation_code = $string;
+        DB::table('users')->insert(
+            [
+                'username' => $request['username'],
+                'email' => $request['email'],
+                'mobile' => $request['mobile'],
+                'ccode' => $request['ccode'],
+                'role' => $request['role'],
+                'activation_code' => $string,
+                'active' => $request->active,
+                //  terms = $request['terms'],
+                'password' => $password,
+        ]);
 
-        //  $user->terms = $request['terms'];
-        $user->avatar = $file->getClientOriginalName();
-        $user->password = $password;
-        $user->save();
+
+
         $settings = Setting::first();
 
         if ($input['role'] == "subscriber")
@@ -483,18 +524,20 @@ class AdminUsersController extends Controller
         {
             $avatar_image = $input['avatar'];;
         }
-        $user_update = User::find($id);
-        $user_update->username = $input['username'];
-        $user_update->email = $input['email'];
-        $user_update->ccode = $input['ccode'];
-        $user_update->mobile = $input['mobile'];
-        $user_update->password = Hash::make($input['passwords']);
-        $user_update->role = $input['role'];
-        $user_update->active = $active_status;
-        $user_update->terms = $input['terms'];
-        $user_update->avatar = $avatar_image;
-        $user_update->stripe_active = $input['stripe_active'];
-        $user_update->save();
+
+            DB::table('users')->where('id', $id)->update(
+                [
+                    'username' => $input['username'],
+                    'email' => $input['email'],
+                    'ccode' => $input['ccode'],
+                    'mobile' => $input['mobile'],
+                    'password' => Hash::make($input['passwords']),
+                    'role' => $input['role'],
+                    'active' => $active_status,
+                    'terms' => $input['terms'],
+                    'avatar' => $avatar_image,
+                    'stripe_active' => $input['stripe_active'],
+                ]);
 
         return Redirect::to('admin/users')
             ->with(array(
@@ -510,10 +553,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $user = User::find($id);
@@ -813,10 +873,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $mobile_settings = MobileApp::get();
@@ -1511,10 +1588,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $registered_count = User::where('role', 'registered')->count();
@@ -2084,10 +2178,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $Country = Region::get();
@@ -2106,10 +2217,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $Country = Region::get();
@@ -2626,10 +2754,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $settings = Setting::first();
@@ -2700,10 +2845,27 @@ class AdminUsersController extends Controller
         $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,    
-        );
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
             return View::make('admin.expired_dashboard', $data);
         }else{
         $settings = Setting::first();

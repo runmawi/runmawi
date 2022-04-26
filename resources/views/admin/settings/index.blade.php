@@ -119,7 +119,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Settings</a>
-                    <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Pro"){  ?>
+                    <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Settings</a>

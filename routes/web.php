@@ -7,7 +7,6 @@ use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
 
-
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function (){
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
@@ -16,6 +15,12 @@ Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
+Route::get('/admin/plan_purchase/{plan_slug}', 'AdminDashboardController@PlanPurchase');
+Route::get('/admin/flicknexs', 'AdminDashboardController@AdminFlicknexs');
+Route::get('/admin/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsMonthly');
+Route::get('/admin/yearly/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsYearly');
+
+
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 
 //////////// User analytics
