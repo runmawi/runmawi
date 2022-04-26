@@ -294,6 +294,7 @@
                      </div>
                   </div>
                </div>
+                {{--
                <div class="col-lg-7">
                   <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
@@ -310,16 +311,15 @@
                            </div>
                         </div> -->
                      </div>
-<!--
                      <div class="iq-card-body row align-items-center">
                         <div class="col-lg-12">
                            <div class="row list-unstyled mb-0 pb-0">
-                           <?php /*$all_category = App\VideoCategory::all();
+                           <?php $all_category = App\VideoCategory::all();
                                     foreach($all_category as $category) { 
                                        // $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
                                        $categoty_sum = App\CategoryVideo::select('videos.*')
                                        ->Join('videos', 'videos.id', '=', 'categoryvideos.video_id')
-                                       ->where("category_id","=",$category->id)->sum('videos.views');*/
+                                       ->where("category_id","=",$category->id)->sum('videos.views');
                                        ?>                                   
                               <div class="col-sm-6 col-md-5 col-lg-6 mb-3">
                                  <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
@@ -333,16 +333,15 @@
                                     </div>
                                  </div>
                               </div>
-                               <?php //} ?>
+                               <?php } ?>
                            </div>
                         </div>
                         <div class="col-lg-5">
                            <div id="view-chart-02" class="view-cahrt-02"></div>
                         </div>
                      </div>
--->
                   </div>
-               </div>
+               </div> --}}
                <div class="col-sm-12 mt-4">
                   <div class="">
                      <div class="iq-card-header d-flex justify-content-between">
