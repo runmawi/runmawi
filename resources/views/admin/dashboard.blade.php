@@ -294,7 +294,6 @@
                      </div>
                   </div>
                </div>
-                {{--
                <div class="col-lg-7">
                   <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
@@ -341,7 +340,7 @@
                         </div>
                      </div>
                   </div>
-               </div> --}}
+               </div>
                <div class="col-sm-12 mt-4">
                   <div class="">
                      <div class="iq-card-header d-flex justify-content-between">

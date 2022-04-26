@@ -27,7 +27,8 @@
         border-top: 0px !important;
     }
 </style>
-<div class="fluid">
+<div class="container">
+<div class="row">
 <div class="col-sm-12 overflow-hidden">
     <div class="iq-main-header d-flex align-items-center justify-content-between">
         <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
@@ -162,5 +163,6 @@
                      endif; endif; ?>
         </ul>
     </div>
+</div>
 </div>
 </div>
