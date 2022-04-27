@@ -1,4 +1,7 @@
 @extends('admin.master')
+
+@include('admin.favicon')
+
 <style>
        .form-control {
     background: #fff!important; */
