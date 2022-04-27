@@ -9,10 +9,10 @@
         
             if(title == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Title',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Title !',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_title.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -22,11 +22,10 @@
         var age      = $("#age").prop("checked");
             if(age == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Age',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Age',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_age.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -37,11 +36,10 @@
 
             if(rating == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Rating',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Rating',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_rating.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -52,11 +50,10 @@
 
             if(published_year == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Published Year',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Published Year',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_year.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -67,11 +64,10 @@
         var duration = $("#duration").prop("checked");
             if(duration == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Duration',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Duration',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_duration.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -82,11 +78,10 @@
         var featured = $("#featured").prop("checked");
             if(featured == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Featured',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Featured',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_featured.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -97,11 +92,10 @@
         var free_or_cost_label = $("#free_or_cost_label").prop("checked");
             if(free_or_cost_label == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Free or Cost Label',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Free or Cost Label',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_cost.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
@@ -111,11 +105,10 @@
         var category = $("#category").prop("checked");
             if(category == true){
                 Swal.fire({
-                    title: 'Thumbnail!',
-                    text: 'Thumbnail - Category',
-                    imageUrl: "{{ URL::to('/public/Thumbnai_images/thumbnail_title.png')}}" ,
-                    imageWidth: 400,
-                    imageHeight: 200,
+                    title: 'Thumbnail - Category',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_catogery.png')}}" ,
+                    imageWidth: 150,
+                    imageHeight: 250,
                     imageAlt: 'Custom image',
                 })
             }
