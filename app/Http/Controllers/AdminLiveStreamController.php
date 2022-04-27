@@ -281,6 +281,9 @@ class AdminLiveStreamController extends Controller
         if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
         }
+        else{
+            $data['slug'] = $this->createSlug($data['slug']);    
+        }
         if(empty($data['embed_url'])){
             $embed_url = null;
         }else{
@@ -558,6 +561,9 @@ class AdminLiveStreamController extends Controller
         if ($request->slug != '') {
             $slug = str_replace(' ', '_', $request->slug);
             $data['slug'] =$slug;
+            }
+            else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
 
         if($request->slug == ''){
