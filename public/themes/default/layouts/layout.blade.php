@@ -6,8 +6,10 @@
         <meta name="keywords" content="@get('keywords')">
         <meta name="description" content="@get('description')">
         <meta name="author" content="@get('author')">
+
+    {{-- favicon --}}
     
-        {{-- <title>@get('title')</title> --}}
+        <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
 
         @styles()
         

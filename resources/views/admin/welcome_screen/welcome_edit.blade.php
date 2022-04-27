@@ -1,5 +1,7 @@
 @extends('admin.master')
 
+@include('admin.favicon')
+
 @section('content')
 <div id="content-page" class="content-page">
     <div class="container-fluid">
