@@ -1,5 +1,8 @@
 @extends('admin.master')
 
+@include('admin.favicon')
+
+
     <head>
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>
@@ -769,10 +772,10 @@ border-radius: 0px 4px 4px 0px;
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-4 align-center">
+                    <div class="col-md-6 align-center">
                         <div class="row">
                             
-                            <p class="col-md-8 p1">Enable Advertisement on Videos:</p>
+                            <p class="col-md-12 p1">Enable Advertisement on Videos:</p>
 
                             <div class="form-group col-md-12">
                                 <div class="make-switch" data-on="success" data-off="warning">

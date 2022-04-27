@@ -332,7 +332,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        </div>
  <?php } } 
  else { ?>
- <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+ <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
   <div id="subscribers_only">
   <div class="clear"></div>
   <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
@@ -351,7 +351,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 </div>
  <?php }
 }elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
-<div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+<div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 
  <div id="subscribers_only">
  <h2 style ="margin-left:14%">Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
@@ -368,7 +368,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 </div>
 <?php }
 }elseif(!empty($new_date)){ ?>
-  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
       <h2> COMING SOON </h2>
       <p class="countdown" id="demo"></p>
       </div>

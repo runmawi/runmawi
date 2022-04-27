@@ -7,13 +7,30 @@
 * {
       box-sizing: border-box;
     }
-
+li.active {
+    color: #0993D2!important;
+    background-color: #F2F5FA;
+    padding: 10px;
+    border-radius: 20px;
+}
+    li{
+       
+    }
+    
     .columns {
       float: left;
       width: 25%;
       padding: 8px;
     }
-
+    .plan-card{
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        border-radius: 20px;
+    }
+    .plan-card:nth-child(2){
+        background-color: red;
+    }
     .price {
       list-style-type: none;
 
@@ -66,8 +83,13 @@
     .tab {
       overflow: hidden;    text-align: center;
     margin-bottom: 30px;
+       
+    border-radius: 20px;
+       
     }
-
+    .tab li{
+        background-color: #fafafa;
+    }
     /* Style the buttons inside the tab */
     .tab button {
       background-color: inherit;
@@ -159,12 +181,16 @@ h2{
 	width: 100%;
 	float: left;
 	margin-bottom: $base-margin;
+    
 }
 .tab-slider--tabs{
 	display: block;
 	float: left;
 	margin: 0;
 	padding: 0;
+     background-color: #fafafa!important;
+    border-radius: 20px;
+    padding: 8px;
 	list-style: none;
 	position: relative;
 	border-radius: $tab-border-radius;
@@ -182,6 +208,7 @@ h2{
 		left: 0;
 		transition: all 250ms ease-in-out;
 		border-radius: $tab-border-radius;
+       
 	}
 	&.slide:after{
 		left: 50%;
@@ -238,27 +265,30 @@ h2{
 			<div class="login-block">
                     <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body become-sub">
-                        <div class="tab" style="padding-left: 40%;">
+                         <div class="row justify-content-center">
+                             <div class="col-sm-3">
+                        <div class="tab" >
                         <div class="tab-slider--nav">
                             <ul class="tab-slider--tabs">
                                 <li class="tab-slider--trigger active" rel="tab1">Monthly</li>
-                                <li class="tab-slider--trigger" rel="tab2">Yearly</li>
+                                <li class="tab-slider--trigger " rel="tab2">Yearly</li>
                             </ul>
                         </div>
                         </div>
-
+                                 </div>
+</div>
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
 <div class="tab-slider--container">
 <div id="tab1" class="tab-slider--body">
 <div id="monthlyplans">
         <!-- <form action="<?php  //echo URL::to('/admin/plan/monthly');?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
                 <div id="AddPassport" >
-                    <div class="row">
+                    <div class="row justify-content-center">
                     <?php 
                     foreach($responseBody->plandata as $plan) {
                                   $plan_name = $plan->plan_name;
                             ?>
-                                         <div class="col-sm-3">
+                                         <div class="col-sm-4 text-center ">
                                         <div class="plan-card">
                                             <div class="header">
                                                 <h3 class="plan-head">
@@ -310,12 +340,12 @@ h2{
     <div id="yearlyplan">
         <!-- <form action="<?php  //echo URL::to('/admin/plan/yearly');?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
                 <div id="AddPassport" >
-                    <div class="row">
+                    <div class="row justify-content-center">
                     <?php 
                                     foreach($responseBody->plandata as $plan) {
                                         $plan_name = $plan->plan_name;
                                     ?>
-                                         <div class="col-sm-3">
+                                         <div class="col-sm-4 text-center">
                                         <div class="plan-card">
                                             <div class="header">
                                                 <h3 class="plan-head">
@@ -358,10 +388,9 @@ h2{
     </div>
 </div>
 </div>
-</div>
-
 
     </div>
+ </div>
    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 

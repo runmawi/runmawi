@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
+@php
+   $favicon_icon = App\Setting::pluck('favicon')->first();
+@endphp
+
 <head>
+
+<!-- Favicon -->
+   <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $favicon_icon; ?>" />
 
 <?php
 $uri_path = $_SERVER['REQUEST_URI']; 

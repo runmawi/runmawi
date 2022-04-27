@@ -272,7 +272,7 @@ if(!empty($request_url)){
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
+                            <!-- <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div> -->
                             <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
                         <?php } ?>
                     </div>
@@ -312,7 +312,7 @@ if(!empty($request_url)){
                     <li>
                         <?php     
                             $user = Auth::user(); 
-                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
+                            if (($user->role!="subscriber" && $user->role!="admin") ) { ?>
                                 <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                         <?php } ?>
                     </li>
@@ -359,13 +359,10 @@ if(!empty($request_url)){
     -->                 
                     <ul class="list-inline p-0 mt-4 rental-lists">
                     <!-- Subscribe -->
-                        <li>
+                    <?php if($video->access == "guest"){ ?> 
+                    <?php }elseif($video->access == "subscriber"){ ?> 
+                      <li>
                             <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                        </li>
-                        <!-- PPV button -->
-                        <li>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
-                                <?php echo __('Rent');?> </a>
                         </li>
                         <li>
                             <div class="btn btn-default views">
@@ -374,6 +371,24 @@ if(!empty($request_url)){
                                 </span>
                             </div>
                         </li>
+                    <?php }
+                    elseif($video->access == "ppv"){ ?> 
+                        <!-- PPV button -->
+                        <li>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-outline-primary rent-video"> 
+                                                                            <?php echo __('Rent');?> </span></a>
+                        </li>
+                        <li>
+                            <div class="btn btn-default views text-white">
+                                <span class="view-count"><i class="fa fa-eye"></i> 
+                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                                </span>
+                            </div>
+                        </li>
+                    <?php }else{ ?>
+
+                     <?php } ?>
+
                     </ul>
                 </div>
             </div>

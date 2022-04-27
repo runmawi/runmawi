@@ -1,5 +1,7 @@
 @extends('admin.master')
 
+@include('admin.favicon')
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 	<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
