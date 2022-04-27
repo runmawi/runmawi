@@ -1,6 +1,4 @@
-<style>
- .block-description {position: absolute; left:20px; top: 50px!important; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column; opacity: 0;font-size: 12px; }
-</style>
+
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">Recently Added Series</h4>                      
 </div>
