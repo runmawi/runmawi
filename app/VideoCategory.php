@@ -42,4 +42,8 @@ class VideoCategory extends Model
 
                 return $this->hasMany('App\Video', 'id');
         }
+        public function VideoCategory()
+        {
+            return $this->belongsTo('App\VideoCategory');
+        }
 }

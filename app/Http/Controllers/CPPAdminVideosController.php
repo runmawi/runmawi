@@ -897,6 +897,34 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
            $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
 
+
+
+           $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+           $image_path = public_path().'/uploads/images/';
+          
+           if($player_image != '') {   
+                //code for remove old file
+                if($player_image != ''  && $player_image != null){
+                     $file_old = $image_path.$player_image;
+                    if (file_exists($file_old)){
+                     unlink($file_old);
+                    }
+                }
+                
+                //upload new file
+                $file = $player_image;
+                $data['player_image']  = $file->getClientOriginalName();
+                $file->move($image_path, $data['player_image']);
+                $player_image = $file->getClientOriginalName();
+            //    $data['player_image'] = $video->image;
+  
+  
+           } else {
+               $player_image = $video->image;
+           }
+
+
+
             $path = public_path().'/uploads/videos/';
 
            if(!empty($trailer)) {   
@@ -1206,6 +1234,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->publish_type = $data['publish_type'];
          $video->publish_time = $data['publish_time'];
          $video->active=1;
+        $video->player_image = $player_image ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
          $video->embed_code=$embed_code ;
@@ -1472,6 +1501,35 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                        $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
                        $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
                     
+                    //    player_image 1280X720
+
+                       $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+
+                       $image_path = public_path().'/uploads/images/';
+                      
+                       if($player_image != '') {   
+                            //code for remove old file
+                            if($player_image != ''  && $player_image != null){
+                                 $file_old = $image_path.$player_image;
+                                if (file_exists($file_old)){
+                                 unlink($file_old);
+                                }
+                            }
+                            
+                            //upload new file
+                            $file = $player_image;
+                            $data['player_image']  = $file->getClientOriginalName();
+                            $file->move($image_path, $data['player_image']);
+                            $player_image = $file->getClientOriginalName();
+                        //    $data['player_image'] = $video->image;
+              
+              
+                       } else {
+                           $player_image = "default.png";
+                       }
+
+
+
                         if(empty($data['active'])){
                         $data['active'] = 0;
                         } 
@@ -1669,6 +1727,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->active = 1 ;
                     $video->publish_type = $data['publish_type'];
                     $video->publish_time = $data['publish_time'];
+                    $video->player_image =   $player_image ;
 
                     
                     $video->ppv_price =$data['ppv_price'];
