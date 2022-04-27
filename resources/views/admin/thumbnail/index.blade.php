@@ -1,5 +1,4 @@
-@extends('admin.master')
-
+@include('admin.master')
 
 @section('content')
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
@@ -158,7 +157,6 @@
                             <input type="submit" value="Update Settings" class="btn btn-primary " />
                         </div>
                     </form>
-<input type="hidden" value="manikandan" id="manikandna" >
                      </div>
                   </div>
                 </div>
@@ -167,9 +165,6 @@
     </div>
 </div>
 
-<style>
-    
-</style>
 
-{{-- @include('admin.thumbnail.Thumbnail_Script') --}}
+@include('admin.thumbnail.Thumbnail_Script')
 

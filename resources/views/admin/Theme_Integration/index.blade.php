@@ -1,5 +1,7 @@
 @extends('admin.master')
 
+@include('admin.favicon')
+
 @section('content')
 
 <style>

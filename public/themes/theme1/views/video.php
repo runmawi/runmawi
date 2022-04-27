@@ -360,7 +360,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <h2> COMING SOON </h2>
       <p class="countdown" id="demo"></p>
       </div>
-     <?php } ?> ?>
+     <?php } ?> 
 <!-- For Guest users -->      
  <?php if(Auth::guest()) {  ?>
    <div id="video" class="fitvid" style="margin: 0 auto;">
