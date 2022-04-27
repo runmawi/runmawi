@@ -402,7 +402,7 @@ ads:{
                   }
         });
       //  } else if(user_logged_out == 1 && type == ''){
-  else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
+      }else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{
