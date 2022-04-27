@@ -1,4 +1,6 @@
-@include('admin.master')
+@extends('admin.master')
+
+@include('admin.favicon')
 
 @section('content')
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
@@ -165,6 +167,11 @@
     </div>
 </div>
 
-
 @include('admin.thumbnail.Thumbnail_Script')
+
+<style>
+    .swal2-popup.swal2-modal.swal2-show {
+        width: 24% !important;
+    }
+</style>
 
