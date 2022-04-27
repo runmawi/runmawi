@@ -385,11 +385,11 @@
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.@$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video_detail->title }}</p>
-                                             <small>{{ $video_detail->duration }} </small>
+                                             <p class="mb-0">{{ @$video_detail->title }}</p>
+                                             <small>{{ @$video_detail->duration }} </small>
                                           </div>
                                        </div>
                                     </td>
@@ -420,7 +420,7 @@
 
                                     <td>
 
-                                       {{ $video_detail->views }}
+                                       {{ @$video_detail->views }}
                                     </td>
                                     
                                     <!-- <td>21 July,2020</td> -->
@@ -430,11 +430,11 @@
 <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.@$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video_detail->title }}</p>
-                                             <small>{{ $video_detail->duration }} </small>
+                                             <p class="mb-0">{{ @$video_detail->title }}</p>
+                                             <small>{{ @$video_detail->duration }} </small>
                                           </div>
                                        </div>
                                     </td>
@@ -457,7 +457,7 @@
                                         <!--{{ $video_detail->rating }}--></td>
                                     <td>{{ @$video_detail->categories->name }}</td>
                                     <td>
-                                       {{ $video_detail->views }}
+                                       {{ @$video_detail->views }}
                                     </td>
                                     
                                     <!-- <td>21 July,2020</td> -->
@@ -467,11 +467,11 @@
                                        <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
-                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.@$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video_detail->title }}</p>
-                                             <small>{{ $video_detail->duration }} </small>
+                                             <p class="mb-0">{{ @$video_detail->title }}</p>
+                                             <small>{{ @$video_detail->duration }} </small>
                                           </div>
                                        </div>
                                     </td>
@@ -480,7 +480,7 @@
                                     </td>
                                     <td>{{ @$video_detail->categories->name }}</td>
                                     <td>
-                                       {{ $video_detail->views }}
+                                       {{ @$video_detail->views }}
                                     </td>
                                     
                                     <!-- <td>21 July,2020</td> -->
