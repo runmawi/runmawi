@@ -204,8 +204,8 @@
         rules: {
 			username: "required",
 			mobile: "required",
-			password: "required",
-			active: "required",
+			passwords: "required",
+			// active: "required",
 			// avatar : "required",
 			email: {
 				required: true,
