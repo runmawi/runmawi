@@ -161,7 +161,7 @@
           <?php if ( count($featured_videos) > 0 ) { 
             include('partials/home/trending-videoloop.php');
           } else {  ?>
-            <p class="no_video"> No Video Found</p>
+            <!-- <p class="no_video"> No Video Found</p> -->
           <?php } ?>
         </div>
       </div>
@@ -1017,7 +1017,7 @@ endif; ?>
                         <?php if (count($videos) > 0) { 
                             include('partials/category-videoloop.php');
                         } else { ?>
-                        <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
+                        <p class="no_video"> <!--<?php //echo __('No Video Found');?>--></p>
                         <?php } ?>
                     <?php }?>
                 </div>
@@ -1041,7 +1041,7 @@ endif; ?>
                   <?php if (count($top_category_videos) > 0) { 
                      include('partials/home/most_Watched_category.blade.php');
                } else { ?>
-               <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
+               <p class="no_video"> <!--<?php //echo __('No Video Found');?>--></p>
                <?php } } ?>
         </section> 
 </div>

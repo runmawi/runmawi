@@ -29,7 +29,7 @@
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                             </div>
-                                        </div>
+                                        <!-- </div> -->
                                         <div class="block-description">
                                             <h6><?php echo __($watchlater_video->title); ?></h6>
                                             <div class="movie-time d-flex align-items-center">
