@@ -25,13 +25,14 @@ use App\LiveStream;
 use App\Audio;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Mail;
+use Laravel\Cashier\Invoice;
 
 class AdminDashboardController extends Controller
 {
    
     public function Index()
     {
-
 
            if (!Auth::user()->role == 'admin')
             {

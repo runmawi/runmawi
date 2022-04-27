@@ -368,7 +368,13 @@
                                   <?php 
                                   $video_detail = App\Video::find($views->video_id); 
                                     // $int = (int)$video_detail->rating;
-                                    $float = (float)$video_detail->rating;
+                                    if(!empty($video_detail->rating)){
+                                     $video_rating  = $video_detail->rating;
+                                    }else{
+                                       $video_rating = 0;
+                                    }
+                                    if($video_rating != 0){
+                                    $float = (float)$video_rating;
                                     $rating = round($float, 0);
                                  //  dd(is_numeric($float));
                                   $user_detail = App\User::find($views->user_id);
@@ -401,16 +407,16 @@
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"> -->
                                         <!--{{ $video_detail->rating }}--></td>
-                                    <!-- <td>{{ @$video_detail->categories->name }}</td> -->
-                                    @foreach($video_detail->videocategory as $name)
-                                       @foreach($name as $categoryname)
+                                    <td>{{ @$video_detail->categories->name }}</td>
+                                    <!-- @foreach($video_detail->videocategory as $name)
+                                       @foreach($name as $categoryname) -->
 
-                                    <td>
+                                    <!-- <td> -->
                                     <!-- {{ @$name->name }} -->
-                                    {{ @$video_detail->categories->name }}
-                                    </td>
-                                       @endforeach
-                                    @endforeach
+                                    <!-- {{ @$video_detail->categories->name }} -->
+                                    <!-- </td> -->
+                                       <!-- @endforeach
+                                    @endforeach -->
 
                                     <td>
 
@@ -419,7 +425,8 @@
                                     
                                     <!-- <td>21 July,2020</td> -->
                                     <td><i class="las la-heart text-primary"></i></td>
-                                  <?php } } else{ ?>
+                                  <?php } }
+                                   else{ ?>
 <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
@@ -455,7 +462,31 @@
                                     
                                     <!-- <td>21 July,2020</td> -->
                                     <td><i class="las la-heart text-primary"></i></td>
-                                    <?php }?>
+                                    <?php }
+                                    }else{ ?>
+                                       <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img src="{{ URL::to('/').'/public/uploads/images/'.$video_detail->image }}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0">{{ $video_detail->title }}</p>
+                                             <small>{{ $video_detail->duration }} </small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>
+                                       
+                                    </td>
+                                    <td>{{ @$video_detail->categories->name }}</td>
+                                    <td>
+                                       {{ $video_detail->views }}
+                                    </td>
+                                    
+                                    <!-- <td>21 July,2020</td> -->
+                                    <td><i class="las la-heart text-primary"></i></td>
+                                   <?php }
+                                       ?>
                                  </tr>
 
                                  @endforeach
