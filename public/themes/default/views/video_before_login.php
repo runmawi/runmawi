@@ -272,8 +272,8 @@ if(!empty($request_url)){
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div>
-                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                            <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                         <?php } ?>
                     </div>
                 </div>
@@ -360,15 +360,15 @@ if(!empty($request_url)){
                     <ul class="list-inline p-0 mt-4 rental-lists">
                     <!-- Subscribe -->
                         <li>
-                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-outline-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                         </li>
                         <!-- PPV button -->
                         <li>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
-                                <?php echo __('Rent');?> </a>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-outline-primary rent-video"> 
+                                                                            <?php echo __('Rent');?> </span></a>
                         </li>
                         <li>
-                            <div class="btn btn-default views">
+                            <div class="btn btn-default views text-white">
                                 <span class="view-count"><i class="fa fa-eye"></i> 
                                     <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                                 </span>

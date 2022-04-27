@@ -68,7 +68,7 @@ i.fa.fa-google-plus {
 }
 
 .sign-in-from{
-    width: 50% !important;
+   
     margin: 0 auto;
     display: block;
 }
