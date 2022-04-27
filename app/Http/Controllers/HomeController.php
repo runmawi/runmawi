@@ -257,7 +257,6 @@ class HomeController extends Controller
     }
     public function FirstLanging()
     {
-
         $data = Session::all();
         $settings = Setting::first();
         $multiuser = Session::get('subuser_id');
@@ -392,8 +391,7 @@ class HomeController extends Controller
                 'Kids_Mode' => $Kids_Mode = 2,
                 'ThumbnailSetting' => $ThumbnailSetting,
             );
-            return View::make('home', $data);
-
+            return Theme::view('home', $data);
         }
         else
         {
