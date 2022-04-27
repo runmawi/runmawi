@@ -168,6 +168,6 @@ return [
     | directives are not supported.
      */
     'php_ini_overrides'        => [
-        'memory_limit' => '256M',
+        'memory_limit' => '999M',
     ],
 ];
