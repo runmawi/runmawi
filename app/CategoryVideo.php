@@ -15,5 +15,12 @@ class CategoryVideo extends Model
 	public function categoryname(){
 		return $this->hasOne('App\VideoCategory','id','category_id');
 	}
-
+    public function VideoCategory()
+    {
+        return $this->belongsTo('App\Video');
+    }
+    public function categorynames()
+    {
+        return $this->belongsTo('App\Video','id','category_id');
+    }
 }
