@@ -43,7 +43,7 @@ $system_settings = App\SystemSetting::find(1);
     .nv{
         font-size: 14px;
        color: #fff;
-        margin-top: 25px;
+       
     }
     .km{
        text-align:center;
@@ -68,7 +68,7 @@ i.fa.fa-google-plus {
 }
 
 .sign-in-from{
-    width: 50% !important;
+  
     margin: 0 auto;
     display: block;
 }
@@ -77,13 +77,13 @@ i.fa.fa-google-plus {
  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
-      <div class="row  align-items-center height-self-center">
+      <div class="row  align-items-center justify-content-center height-self-center">
           <!-- <div class="col-lg-  col-md-6">
               <div class="" >
               <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div> -->
-         <div class="col-lg-12 col-md-12 align-self-center">
+         <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
@@ -135,11 +135,11 @@ i.fa.fa-google-plus {
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
+                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">SIGN IN</button>
                                                             
                            </div> 
                            <div class="clear"></div>
-                         <div class="custom-control custom-checkbox" align="left" style="" >
+                         <div class="custom-control custom-checkbox mt-3" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
@@ -150,7 +150,7 @@ i.fa.fa-google-plus {
                               </div>  
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
-                              <div class="d-flex justify-content-center links">
+                              <div class=" justify-content-center links">
                                  To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
                               </div>                        
                            </div>
