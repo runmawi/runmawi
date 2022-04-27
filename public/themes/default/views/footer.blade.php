@@ -270,6 +270,9 @@ function myFunction() {
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path =  $('#ads_path').val();
+    var processed_low =  $('#processed_low').val();
+    // alert(processed_low)
+
 
     // alert(ads_path);
     // alert(user_logged_out)
@@ -338,9 +341,7 @@ function myFunction() {
                     }
         });
    }
-  else if(user_logged_out == 1 && type == ''){
-    // alert('user_logged_out')
-
+  else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -372,6 +373,7 @@ function myFunction() {
         });
    }
    else if(hls == "hls"){
+     
         const player = new Plyr('#videoPlayer',{
           controls: [  'play-large',
                       'restart',

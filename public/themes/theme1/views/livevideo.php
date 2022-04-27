@@ -25,6 +25,17 @@
     left: 0;
     right: 0;
 }
+.countdown {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+  color:red;
+}
+h2{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
 </style>
 <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 
@@ -49,6 +60,7 @@ $request_url = end($uri_parts);
 // dd($request_url);
 // print_r ($request_url);
 // exit();
+if(empty($new_date)){
 
 if(!Auth::guest()){
     
@@ -186,6 +198,12 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 </div>
            <?php }
             }
+        } elseif(!empty($new_date)){ ?>
+            <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <h2> COMING SOON </h2>
+                <p class="countdown" id="demo"></p>
+                </div>
+               <?php }
             ?>
             
             <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">

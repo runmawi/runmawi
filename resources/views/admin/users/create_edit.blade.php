@@ -54,7 +54,7 @@
 
 	
 
-		<form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+		<form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
          <div class="row">
              <div class="col-md-6 mt-2">
 			<div id="user-badge">
@@ -165,12 +165,13 @@
 	
 	@section('javascript')
 
-
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tinymce/tinymce.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/jquery.mask.min.js' }}"></script>
 
 	<script type="text/javascript">
+
 
 	$ = jQuery;
 
@@ -196,6 +197,29 @@
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
+
+
+
+		$('form[id="update_profile_form"]').validate({
+        rules: {
+			username: "required",
+			mobile: "required",
+			password: "required",
+			active: "required",
+			// avatar : "required",
+			email: {
+				required: true,
+				email: true
+			},
+        },
+        messages: {
+            email: "This field is required",
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+
     })
 </script>
 	@stop

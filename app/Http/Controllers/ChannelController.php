@@ -416,7 +416,19 @@ class ChannelController extends Controller
             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
             $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
-  
+
+            if(!empty($categoryVideos->publish_time)){
+            $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
+            $currentdate = date("M d , y h:i:s");
+             if($currentdate < $new_date){
+              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+
+             }else{
+              $new_date = null;
+            }
+             }else{
+              $new_date = null;
+             }
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
@@ -432,6 +444,7 @@ class ChannelController extends Controller
                      'watched_time' => $watchtime,
                      'like_dislike' =>$like_dislike,
                      'ppv_rent_price' =>$ppv_rent_price,
+                     'new_date' =>$new_date,
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
                  'artists' => $artists,

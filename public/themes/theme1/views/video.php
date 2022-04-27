@@ -7,10 +7,22 @@ include('header.php'); ?>
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $video->id)->pluck('ads_path')->first(); 
 
+$default_ads_url    = App\Setting::pluck('default_ads_url')->first();
+$default_ads_status = App\Video::where('id',$video->id)->pluck('default_ads')->first(); 
+
+if($default_ads_url !=null && $default_ads_status == 1){
+    $default_ads = $default_ads_url ;
+}else{
+  $default_ads = null ;
+}
+
 if($ads_details != null){ 
   $ads_path = $ads_details; 
 }else{ 
-  $ads_path = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpreonlybumper&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&correlator='; }  ?>
+  $ads_path = $default_ads; 
+  } 
+   
+?>
 
 <?php
 $str = $video->m3u8_url;
@@ -68,6 +80,17 @@ div#url_linkdetails {
     left: 83%;
     font-size: x-large;
 }
+.countdown {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+  color:red;
+}
+h2{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
   </style>
 <?php
 
@@ -79,6 +102,8 @@ div#url_linkdetails {
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
+if(empty($new_date)){
+
 if(!Auth::guest()) {
   // dd($video->access);
   // dd('test');
@@ -247,8 +272,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php endif; ?>            
    </div>
  
-  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Pro" || Auth::user()->role == 'admin' && $pack == "Pro" || Auth::user()->role =="subscriber" && $pack == "Pro"
-   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Pro")) {
+  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
+   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
  if(!empty($video->path)){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
@@ -257,7 +282,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
       >
-    </video>
+    <!-- </video> -->
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -329,7 +354,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    </form>
  <?php endif; ?>
 </div>
-<?php } ?>
+<?php }
+}elseif(!empty($new_date)){ ?>
+  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+      <h2> COMING SOON </h2>
+      <p class="countdown" id="demo"></p>
+      </div>
+     <?php } ?> ?>
 <!-- For Guest users -->      
  <?php if(Auth::guest()) {  ?>
    <div id="video" class="fitvid" style="margin: 0 auto;">
@@ -1239,5 +1270,37 @@ $(document).ready(function(){
 <?php } ?>
 
    </div>
+      
+<script>
+// Set the date we're counting down to
+var date = "<?= $new_date ?>";
+var countDownDate = new Date(date).getTime();
+// alert(date)
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 <?php include('footer.blade.php');?>
 

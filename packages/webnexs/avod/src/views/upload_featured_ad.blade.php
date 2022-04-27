@@ -38,6 +38,7 @@
                                  <div class="row col-md-12">
                                     <div class="form-group col-md-4">
                                      <label>Age:</label>
+                                    <p class="error-message" style="color:red">This filed is required</p>
 
                                     <div class="row ages">
                                        <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
@@ -91,6 +92,7 @@
                                   
                                   <div class="form-group col-md-5">
                                      <label>Household Income:</label>
+                                     <p class="error-message" style="color:red">This filed is required</p>
 
                                     <div class="row household_Income">
                                        <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
@@ -145,6 +147,8 @@
 
                                   <div class="form-group col-md-3">
                                     <label>Gender:</label>
+                                   <p class="error-message" style="color:red">This filed is required</p>
+
                                     <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender">
                                        <option value="male">Male</option>
                                        <option value="female">Female</option>
@@ -152,7 +156,8 @@
                                     </select>
                                  </div>
 
-                               </div> </div> <input type="button" name="next" class="next action-button" value="Next Step" />
+                               </div> </div> 
+                               <input type="button" name="next" class="next action-button" value="Next Step" id="Next1" />
                             </fieldset>
                             <fieldset>
                                <div class="form-card">
@@ -160,6 +165,8 @@
                                  <div class="col-md-6">
                                     <div class="form-group">
                                      <label>Ads Name:</label>
+                                    <p class="error-message" style="color:red">This filed is required</p>
+
                                      <input type="text" id="ads_name" name="ads_name" required class="form-control">
                                   </div>
                                   <div class="form-group">
@@ -185,10 +192,13 @@
                               </div>
                                <div class="form-group">
                                  <label> Ad Tag Url:</label>
+                                 <p class="error-message" style="color:red">This filed is required</p>
+
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
 
                               </div>
-                           </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> <input type="button" name="next" class="next action-button" value="Next Step" />
+                           </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                           <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
                         </fieldset>
                         <fieldset>
                          <div class="form-card">
@@ -196,10 +206,13 @@
                            <div class="col-md-6">
                               <div class="form-group">
                                <label>Location:</label>
+                               <p class="error-message" style="color:red">This filed is required</p>
+
                                <input type="text" id="location" name="location" required class="form-control">
                             </div>
                          </div>
-                      </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />  <input type="button" name="next" class="next action-button" value="Next Step" />
+                      </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />  
+                      <input type="button" name="next" class="next action-button" value="Next Step"  id="Next3" />
                    </fieldset>
                    <fieldset>
                       <div class="form-card">
@@ -533,6 +546,7 @@ return false;
     
      var base_url = $('#base_url').val();
 $('body').on('click', '.buy_now', function(e){
+   
    var ads_name = $("#ads_name").val();
    var ads_category = $("#ads_category").find(":selected").val();
    var ads_position = $("#ads_position").val();
@@ -584,5 +598,63 @@ rzp1.open();
 e.preventDefault();
 });
 </script>
+
+
+<script>
+
+   window.onload=function(){
+     document.getElementById("Next1").disabled = true;
+     document.getElementById("Next2").disabled = true;
+     document.getElementById("Next3").disabled = true;
+     document.getElementsByClassName('error-message')[0].style.display = 'none';
+     document.getElementsByClassName('error-message')[1].style.display = 'none';
+     document.getElementsByClassName('error-message')[2].style.display = 'none';
+     document.getElementsByClassName('error-message')[3].style.display = 'none';
+     document.getElementsByClassName('error-message')[4].style.display = 'none';
+   };
+
+
+   $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
+
+      var household_income_val = $(".household_income").prop("checked");
+      var gender_val = $("#gender").val();
+      var age_validation = $(".age").prop("checked");
+      var ads_name_val = $("#ads_name").val();
+      var ads_path_val = $("#ads_path").val();
+      var location_val = $("#location").val().length;
+
+      if(age_validation == true && household_income_val == true  && gender_val != null ){
+            document.getElementsByClassName("error-message")[0].style.display = "none";
+            document.getElementsByClassName('error-message')[1].style.display = 'none';
+            document.getElementsByClassName('error-message')[2].style.display = 'none';
+            document.getElementById("Next1").disabled = false;
+         }else{
+            document.getElementsByClassName('error-message')[0].style.display = 'block';
+            document.getElementsByClassName('error-message')[1].style.display = 'block';
+            document.getElementsByClassName('error-message')[2].style.display = 'block';
+            document.getElementById("Next1").disabled = true;
+         }
+
+      if(ads_name_val != '' && ads_path_val != ''){
+            document.getElementsByClassName("error-message")[3].style.display = "none";
+            document.getElementsByClassName('error-message')[4].style.display = 'none';
+            document.getElementById("Next2").disabled = false;
+         }else{
+            document.getElementsByClassName("error-message")[3].style.display = "block";
+            document.getElementsByClassName('error-message')[4].style.display = 'block';
+            document.getElementById("Next2").disabled = true;
+         }
+
+      if(location_val != 0){
+         document.getElementsByClassName("error-message")[5].style.display = "none";
+         document.getElementById("Next3").disabled = false;
+      }else{
+         document.getElementsByClassName('error-message')[5].style.display = 'block';
+         document.getElementById("Next3").disabled = true;
+      }
+      
+   });
+
+   </script>
 </body>
 </html>

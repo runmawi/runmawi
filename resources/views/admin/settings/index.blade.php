@@ -119,7 +119,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Settings</a>
-                    <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Pro"){  ?>
+                    <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Settings</a>
@@ -781,6 +781,16 @@ border-radius: 0px 4px 4px 0px;
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
                             </div>
+
+                              {{-- default URL --}}
+                            <div class="form-group ">
+                                <label>Default Ads url</label>
+                                <input id="default_ads" type="text" name="default_ads_url" class="form-control"
+                                placeholder="Default Ads in videos"
+                                value="@if(!empty($settings->default_ads_url)){{ $settings->default_ads_url }}@endif" />
+                            </div>
+
+
                             <div class="form-group add-profile-pic">
                                 <label>Featured Ad Pre Roll:</label>
                                 <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"

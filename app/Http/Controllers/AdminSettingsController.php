@@ -18,6 +18,8 @@ use App\ThumbnailSetting;
 use App\RTMP;
 use Illuminate\Support\Facades\Storage;
 use View;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 //use Illuminate\Http\Request;
 
@@ -29,10 +31,27 @@ class AdminSettingsController extends Controller
       $current_date = date('Y-m-d');
       if ($current_date > $duedate)
       {
-          $settings = Setting::first();
-          $data = array(
-              'settings' => $settings,    
-      );
+        $client = new Client();
+        $url = "https://flicknexs.com/userapi/allplans";
+        $params = [
+            'userid' => 0,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('post', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+       $settings = Setting::first();
+       $data = array(
+        'settings' => $settings,
+        'responseBody' => $responseBody,
+);
           return View::make('admin.expired_dashboard', $data);
       }else{
         $setting = Setting::first();
@@ -56,7 +75,6 @@ class AdminSettingsController extends Controller
     
     public function save_settings(Request $request){
 
-      
         $input = $request->all();
         // transcoding_resolution
         // dd( $input);
@@ -335,8 +353,10 @@ class AdminSettingsController extends Controller
             Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
             $settings->default_video_image = $filename;
       }
-        
-        $settings->save();
+
+      $settings->default_ads_url = $request['default_ads_url'];
+   
+      $settings->save();
       
         return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
 
@@ -349,10 +369,27 @@ class AdminSettingsController extends Controller
     $current_date = date('Y-m-d');
     if ($current_date > $duedate)
     {
-        $settings = Setting::first();
-        $data = array(
-            'settings' => $settings,    
-    );
+      $client = new Client();
+      $url = "https://flicknexs.com/userapi/allplans";
+      $params = [
+          'userid' => 0,
+      ];
+
+      $headers = [
+          'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+      ];
+      $response = $client->request('post', $url, [
+          'json' => $params,
+          'headers' => $headers,
+          'verify'  => false,
+      ]);
+
+      $responseBody = json_decode($response->getBody());
+     $settings = Setting::first();
+     $data = array(
+      'settings' => $settings,
+      'responseBody' => $responseBody,
+);
         return View::make('admin.expired_dashboard', $data);
     }else{
     $playerui = Playerui::first();
@@ -593,10 +630,27 @@ if($watermark != '') {
       $current_date = date('Y-m-d');
       if ($current_date > $duedate)
       {
-          $settings = Setting::first();
-          $data = array(
-              'settings' => $settings,    
-      );
+        $client = new Client();
+        $url = "https://flicknexs.com/userapi/allplans";
+        $params = [
+            'userid' => 0,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('post', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+       $settings = Setting::first();
+       $data = array(
+        'settings' => $settings,
+        'responseBody' => $responseBody,
+);
           return View::make('admin.expired_dashboard', $data);
       }else{
       $thumbnail_setting = ThumbnailSetting::first();
