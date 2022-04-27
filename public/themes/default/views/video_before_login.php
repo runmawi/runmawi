@@ -360,15 +360,15 @@ if(!empty($request_url)){
                     <ul class="list-inline p-0 mt-4 rental-lists">
                     <!-- Subscribe -->
                         <li>
-                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-outline-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                         </li>
                         <!-- PPV button -->
                         <li>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
-                                <?php echo __('Rent');?> </a>
+                            <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-outline-primary rent-video"> 
+                                                                            <?php echo __('Rent');?> </span></a>
                         </li>
                         <li>
-                            <div class="btn btn-default views">
+                            <div class="btn btn-default views text-white">
                                 <span class="view-count"><i class="fa fa-eye"></i> 
                                     <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                                 </span>
