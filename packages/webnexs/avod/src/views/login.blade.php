@@ -86,7 +86,7 @@ $system_settings = App\SystemSetting::find(1);
                         <div class="sign-in-page-data">
                             <div class="sign-in-from  m-auto" align="center">
                                 <div align="center">
-                                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Advertiser Sign Up</h3>
+                                  <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Advertiser Sign Up</h3>
                               </div>
                                 <form method="POST" action="{{ url('advertiser/post-login') }}" class="mt-4" autocomplete="off">
                                     @csrf
