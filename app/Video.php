@@ -67,5 +67,8 @@ class Video extends Model
 		return $this->hasMany('App\Comment')->orderBy('id','desc');
 	}
 
-    
+	public function videocategory()
+    {
+        return $this->hasMany('App\CategoryVideo');
+    }
 }

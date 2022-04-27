@@ -401,8 +401,19 @@
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/r2.svg';  ?>"> -->
                                         <!--{{ $video_detail->rating }}--></td>
-                                    <td>{{ @$video_detail->categories->name }}</td>
+                                    <!-- <td>{{ @$video_detail->categories->name }}</td> -->
+                                    @foreach($video_detail->videocategory as $name)
+                                       @foreach($name as $categoryname)
+
                                     <td>
+                                    <!-- {{ @$name->name }} -->
+                                    {{ @$video_detail->categories->name }}
+                                    </td>
+                                       @endforeach
+                                    @endforeach
+
+                                    <td>
+
                                        {{ $video_detail->views }}
                                     </td>
                                     

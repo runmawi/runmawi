@@ -293,9 +293,15 @@ class AdminUsersController extends Controller
         $validatedData = $request->validate(['email' => 'required|max:255', 'username' => 'required|max:255', ]);
 
         $input = $request->all();
-        // echo "<pre>";
-        // print_r($input);
-        // exit();
+       
+
+        if(empty($input['active'])){
+            $active = 0 ;
+        }
+        else{
+            $active = 1 ;
+        }
+        
         $user = Auth::user();
 
         $path = public_path() . '/uploads/avatars/';
@@ -339,7 +345,7 @@ class AdminUsersController extends Controller
                 'ccode' => $request['ccode'],
                 'role' => $request['role'],
                 'activation_code' => $string,
-                'active' => $request->active,
+                'active' => $active,
                 //  terms = $request['terms'],
                 'password' => $password,
         ]);
