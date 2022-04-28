@@ -25,4 +25,30 @@
         @scripts()
     </body>
 
+
+    <style>
+
+    /*Button Bg color  */
+        button.btn.btn-hover.ab {
+                border: #f3ece0 !important ;
+                background-color: {{ button_bg_color() .'!important' }} ;
+            }
+
+        button.btn-hover:before {
+                border: #f3ece0 !important ;
+                background-color: {{ button_bg_color() .'!important' }} ;
+            }
+                /* sign up  */
+        button.btn.btn-hover.btn-primary.btn-block.signup {
+                border: #f3ece0 !important ;
+                background-color: {{ button_bg_color() .'!important' }} ;
+            }
+                /* profile page */
+        .btn{
+            border: #f3ece0 !important ;
+            background-color: {{ button_bg_color() .'!important' }} ;
+        }
+    
+    </style>
+
 </html>

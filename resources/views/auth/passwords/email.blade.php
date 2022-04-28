@@ -23,6 +23,12 @@ $settings = App\Setting::find(1);
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
         <style>
+        /*Button Bg color  */
+            .btn{
+                background-color:  {{ button_bg_color() .'!important' }} ;
+                border:   {{ '1px solid'. button_bg_color() .'!important' }};
+            }
+
 .container.page-height {
         padding-top: 80px !important;
 }
@@ -93,7 +99,7 @@ $settings = App\Setting::find(1);
                                     </span>
                                 @enderror
 								
-								<button type="submit" class="btn btn-primary btn-hover">
+								<button type="submit" class="btn btn-primary">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
                             </div>
