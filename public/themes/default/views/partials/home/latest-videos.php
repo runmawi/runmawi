@@ -37,7 +37,7 @@
 
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                   <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                     <h6><?php echo __($watchlater_video->title); ?></h6>
+                                     <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
                                   </a>
                                 <?php } ?> 
 

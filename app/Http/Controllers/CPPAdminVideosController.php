@@ -1161,7 +1161,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             }  
         if(!empty($data['slug'])){
             // dd($data['global_ppv']);
-            $video->slug =$data['slug'];
+            $video->slug = $this->createSlug($data['slug']);
             }else{
             } 
         if(empty($data['publish_type'])){
@@ -1495,6 +1495,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                             }  
                         if($request->slug == ''){
                             $data['slug'] = $this->createSlug($data['title']);    
+                        }else{
+                            $data['slug'] = $this->createSlug($data['slug']);    
                         }
                     
                        $image = (isset($data['image'])) ? $data['image'] : '';

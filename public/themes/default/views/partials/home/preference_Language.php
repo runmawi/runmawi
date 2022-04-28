@@ -39,7 +39,7 @@
 
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                         <h6><?php echo __($preference_Languages->title); ?></h6>
+                                         <h6><?php  echo (strlen($preference_Languages->title) > 17) ? substr($preference_Languages->title,0,18).'...' : $preference_Languages->title; ?></h6>
                                     </a>
                                 <?php } ?>   
 

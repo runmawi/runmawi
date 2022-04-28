@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <!-- Favicon -->
+     <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
+  
 <?php
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -41,8 +45,7 @@ $userrolepermissiom = Session::get('userrolepermissiom ');
   <script src="<?= THEME_URL .'/assets/admin/admin/js/vue.min.js'; ?>"></script>
   
   <script>$.noConflict();</script>-->
-   <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+   
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
     
