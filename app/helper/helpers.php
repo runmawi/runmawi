@@ -469,3 +469,15 @@ function get_video($vid,$field){
 function get_adurl(){
     // 
 }
+
+function button_bg_color()
+{
+    $button_color = App\SiteTheme::pluck('button_bg_color')->first();
+
+    if($button_color != null){
+        $button_bg_color =  $button_color ;
+    }else{
+        $button_bg_color =  '#006AFF' ;
+    }
+    return  $button_bg_color ;
+}
