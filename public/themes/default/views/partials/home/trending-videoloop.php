@@ -36,7 +36,7 @@
                                         <div class="block-description">
 
                                         <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                          <h6><?php echo __($watchlater_video->title); ?></h6>
+                                          <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
                                         <?php } ?>
 
                                         <div class="movie-time d-flex align-items-center pt-1">
