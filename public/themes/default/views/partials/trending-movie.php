@@ -11,7 +11,7 @@
                     <a class="flexlink" href="play_movie/<?= $movie->id;?>"><i class="fa fa-play" aria-hidden="true"></i></a>
                 </div>
                 <div style="width: 90%;">
-                    <h4><?= ucfirst($movie->title); ?></h4>
+                    <h4><?php  echo (strlen($movie->title) > 17) ? substr($movie->title,0,18).'...' : $movie->title; ?></h4>
                     <p style="margin-bottom: 30px;">
                         IMDb <?= $movie->rating;?> 
                         <span>(<?= $movie->views;?>)</span>
