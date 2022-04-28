@@ -954,6 +954,8 @@ if(!empty($artistsdata)){
             $video = Video::findOrFail($id);
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
+            }else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
         
            $image = (isset($data['image'])) ? $data['image'] : '';
@@ -1541,6 +1543,7 @@ if(!empty($artistsdata)){
     
         public function fileupdate(Request $request)
         {
+
             if (!Auth::user()->role == 'admin')
              {
                 return redirect('/home');
@@ -1593,8 +1596,10 @@ if(!empty($artistsdata)){
 
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
+            }else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
-            
+                        
             $image = (isset($data['image'])) ? $data['image'] : '';
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';

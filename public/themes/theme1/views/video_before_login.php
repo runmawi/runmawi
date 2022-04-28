@@ -356,10 +356,21 @@ if(!empty($request_url)){
                       </div>
     -->                 
                     <ul class="list-inline p-0 mt-4 rental-lists">
-                    <!-- Subscribe -->
-                        <li>
+                                      <!-- Subscribe -->
+                                      <?php if($video->access == "guest"){ ?> 
+                    <?php }elseif($video->access == "subscriber"){ ?> 
+                      <li>
                             <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                         </li>
+                        <li>
+                            <div class="btn btn-default views">
+                                <span class="view-count"><i class="fa fa-eye"></i> 
+                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                                </span>
+                            </div>
+                        </li>
+                    <?php }
+                    elseif($video->access == "ppv"){ ?> 
                         <!-- PPV button -->
                         <li>
                             <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
@@ -372,6 +383,10 @@ if(!empty($request_url)){
                                 </span>
                             </div>
                         </li>
+                    <?php }else{ ?>
+
+                     <?php } ?>
+
                     </ul>
                 </div>
             </div>
