@@ -13,21 +13,21 @@ use Mail;
 use Auth;
 use Laravel\Cashier\Invoice;
 
-class SubscriptionReminder extends Command
+class SubscriptionExpiry extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'renewalnotify:name';
+    protected $signature = 'command:name';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Renewal Notify ';
+    protected $description = 'Subscription Expiry description';
 
     /**
      * Create a new command instance.
@@ -53,18 +53,19 @@ class SubscriptionReminder extends Command
         ->where('role','subscriber')->get();
 
             foreach($users as $key => $user){
-                $end_to = date('Y-m-d', strtotime('-3 day', strtotime($user->end_date)));
+                $end_to = date('Y-m-d', strtotime('+1 day', strtotime($user->end_date)));
                 $end_date = date('Y-m-d',strtotime($user->end_date));
                 $current_date = date('Y-m-d');
 
-                if ($current_date <= $end_date){
-                    Mail::send('emails.renewalnotify', array(
+                if ($current_date == $end_to){
+
+                    Mail::send('emails.subscriptionsexpiry', array(
                             'name' => $plans->username,
                             'plan' => $plans->plans_name,
                             'price' => $plans->price,
                             'ends_at' => $to_date
                         ), function($message) use ($plans){
-                        $message->to($plans->email, $plans->username)->subject('Subscription Reminder Notification');
+                        $message->to($plans->email, $plans->username)->subject('Subscription Expiry Notification');
                     });
 
                 }else{
