@@ -145,14 +145,17 @@ class AdminThemeSettingsController extends Controller
     
     public function SaveTheme(Request $request){
         
-        $data = $request->all();
-        $theme_settings = SiteTheme::first();
-        $theme_settings->dark_bg_color = $request->dark_bg_color;
-		$theme_settings->light_bg_color = $request->light_bg_color;
-        
-         $path = public_path().'/uploads/settings/';
-         $dark_logo = $request->dark_mode_logo;
-         $light_logo = $request->light_mode_logo;
+          $data = $request->all();
+
+          $theme_settings = SiteTheme::first();
+          $theme_settings->dark_bg_color = $request->dark_bg_color;
+          $theme_settings->light_bg_color = $request->light_bg_color;
+          $theme_settings->button_bg_color = $request->button_bg_color;
+
+          $path = public_path().'/uploads/settings/';
+          $dark_logo = $request->dark_mode_logo;
+          $light_logo = $request->light_mode_logo;
+          
             if($dark_logo != '') {   
               //code for remove old file
               if($dark_logo != ''  && $dark_logo != null){
@@ -165,23 +168,25 @@ class AdminThemeSettingsController extends Controller
               $file = $dark_logo;
               $theme_settings->dark_mode_logo  = $file->getClientOriginalName();
               $file->move($path, $theme_settings->dark_mode_logo);
-            }   
-        if($light_logo != '') {   
-              //code for remove old file
-              if($light_logo != ''  && $light_logo != null){
-                   $file_old = $path.$light_logo;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
+            }  
+
+            if($light_logo != '') {   
+                  //code for remove old file
+                  if($light_logo != ''  && $light_logo != null){
+                      $file_old = $path.$light_logo;
+                      if (file_exists($file_old)){
+                      unlink($file_old);
+                      }
                   }
-              }
-              //upload new file
-              $file = $light_logo;
-              $theme_settings->light_mode_logo  = $file->getClientOriginalName();
-              $file->move($path, $theme_settings->light_mode_logo);
-            }
-        $theme_settings->save();       
+                  //upload new file
+                  $file = $light_logo;
+                  $theme_settings->light_mode_logo  = $file->getClientOriginalName();
+                  $file->move($path, $theme_settings->light_mode_logo);
+                }
+
+          $theme_settings->save();       
         
-        return Redirect::back()->with(array('note' => 'Successfully Updated Settings', 'note_type' => 'success') );
+          return Redirect::back()->with(array('note' => 'Successfully Updated Settings', 'note_type' => 'success') );
     }
 
 	private function createOrUpdateThemeSetting($theme_slug, $key, $value){
