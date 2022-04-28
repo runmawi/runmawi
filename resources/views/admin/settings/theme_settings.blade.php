@@ -24,6 +24,7 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+
 </style>
 @section('css')
     <style type="text/css">
@@ -102,6 +103,26 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
             </div> 
+
+
+            <div class="panel-heading mt-3"> 
+                <div class="panel-title"> 	
+                    <h4><i class="entypo-monitor"></i> Theme Settings for Default Button Color</h4> 
+                </div> 
+                <p>Button Background Color</p>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            
+            </div> 
+			   <div class="panel-body"> 
+                    <div class="row mt-3">
+                        <div class="col-sm-4">
+                             <div class="input-group color-picker" style="width: 50%;">
+                                <label class="mt-2">Color</label>
+                                <input type="color" class="form-control ml-1"  name="button_bg_color" data-format="hex" @if( $settings->button_bg_color != null) value="{{ $settings->button_bg_color }}" @else value="{{ '#006AFF' }}"  @endif  />
+                            </div>
+                        </div>
+                    </div>
+                </div> 
                 
         </div>
     <div class="panel-body" style="display: flex;
