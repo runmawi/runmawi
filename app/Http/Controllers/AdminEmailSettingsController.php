@@ -40,6 +40,7 @@ use App\Setting;
 use GifCreator\GifCreator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Mail;
 
 class AdminEmailSettingsController extends Controller
 {
@@ -169,6 +170,33 @@ class AdminEmailSettingsController extends Controller
         }
        
     }
-    
+
+    public function Testing_EmailSettting(Request $request)
+    {
+        EmailSetting::where("id", 1)->update(["TestEmail" => $request->test_mail]);
+
+        $username      = Setting::pluck('website_name')->first();
+        $Testing_email = $request->test_mail;
+
+        $data = array(
+            'email' => $Testing_email,
+            'username' => $username,
+        );
+
+        try {
+            Mail::send('admin.Email.TestingEmail', array('Testing_Email' => $username ), 
+            function($message) use ($data) {
+                $message->to($data['email'], $data['username'])->subject('Testing the Email');
+            });
+
+            return Redirect::to('admin/email_settings')->with(array('message' => 'Message has been sent successfully!', 'note_type' => 'success') );
+
+        }catch (\Exception $e) {
+
+            $Error_msg = "Mail Configuration or Enter Mail is Incorrect !";
+            $url = URL::to('/admin/email_settings');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
 
 }   
