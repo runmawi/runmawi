@@ -29,3 +29,23 @@
     </body>
 
 </html> --}}
+
+<style>
+
+    /*Button Bg color  */
+        button.btn.btn-hover.btn-primary.btn-block.signup {
+            border: #f3ece0 !important ;
+            background-color: {{ button_bg_color() .'!important' }} ;
+        }
+
+        button.transpar {
+            border: #f3ece0 !important ;
+            background-color:  {{ button_bg_color() .'!important' }} ;
+        }
+
+        button.btn.btn-primary{
+            border: #f3ece0 !important ;
+            background-color:  {{ button_bg_color() .'!important' }} ;
+        }
+
+</style>

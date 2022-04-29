@@ -5,7 +5,7 @@
        $session = session()->all();
 ?>
 <footer class="mb-0">
-         <div class="container-fluid">
+         <div class="container">
             <div class="block-space">
                <div class="row align-items-center">
                    <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
@@ -63,7 +63,7 @@
 
                      </div>
                   </div>
-                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
+                  <div class="col-lg-2 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
                         <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
                         <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
@@ -138,6 +138,11 @@
 						<?php endforeach; ?>
 					</ul>
 				</div>
+                   <div class="col-lg-3 col-md-2 p-0 d-flex justify-content-center">
+                       <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                       <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
+                       <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
+                   </div>
                   
                    </div>
                </div>
@@ -268,6 +273,9 @@ function myFunction() {
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path =  $('#ads_path').val();
+    var processed_low =  $('#processed_low').val();
+    // alert(processed_low)
+
 
     // alert(ads_path);
     // alert(user_logged_out)
@@ -277,29 +285,31 @@ function myFunction() {
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
-          controls: [
+          controls: ['play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'
+		                ],
+              i18n:{
+                   capture: 'capture'
+              },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+              ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
         });
    }else if(type != "" && request_url != 'm3u8'){
     // alert('m3u8')
@@ -326,13 +336,15 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
-
+},
+                ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
         });
    }
-  else if(user_logged_out != "" && type == ''){
-    // alert('user_logged_out')
-
+  else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -355,35 +367,41 @@ function myFunction() {
     i18n:{
     // your other i18n
     capture: 'capture'
-}
-
+},
+                  ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path 
+                    }
         });
    }
    else if(hls == "hls"){
+     
         const player = new Plyr('#videoPlayer',{
-          controls: [
+          controls: [  'play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'],
+          i18n:{
+                capture: 'capture'
+              },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+          ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
    }
 else{
@@ -430,28 +448,31 @@ else{
     // const player = new Plyr(video, defaultOptions);
     const player = new Plyr('#video',{
           controls: [
+                    'play-large',
+                    'restart',
+                    'rewind',
+                    'play',
+                    'fast-forward',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'pip',
+                    'airplay',
+                    'fullscreen',
+                    'capture'
+		              ],
+            i18n:{
+                capture: 'capture'
+              },
 
-      'play-large',
-			'restart',
-			'rewind',
-			'play',
-			'fast-forward',
-			'progress',
-			'current-time',
-			'mute',
-			'volume',
-			'captions',
-			'settings',
-			'pip',
-			'airplay',
-			'fullscreen',
-			'capture'
-		],
-    i18n:{
-    // your other i18n
-    capture: 'capture'
-}
-
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
         });
   }
 
