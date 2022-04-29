@@ -536,6 +536,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index');
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
+    Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting'); 
 
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');

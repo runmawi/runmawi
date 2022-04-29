@@ -2127,36 +2127,67 @@ class HomeController extends Controller
             $referred_user_id = null;
             $coupon_expired = '';
         }
-        // dd($referred_user_id);
-        $email_count = User::where('email', '=', $email)->count();
-        $string = Str::random(60);
-        if ($email_count == 0)
-        {
-            $new_user = new User();
-            $new_user->name = $name;
-            $new_user->username = $name;
-            $new_user->mobile = $mobile;
-            $new_user->ccode = $ccode;
-            $new_user->avatar = $avatar;
-            $new_user->role = 'registered';
-            $new_user->referral_token = $ref_token;
-            $new_user->referrer_id = $referred_user_id;
-            $new_user->coupon_expired = $coupon_expired;
-            $new_user->email = $email;
-            //   $new_user->password = $get_password;
-            $new_user->password = Hash::make($get_password);
-            $new_user->activation_code = $string;
-            $new_user->save();
-            $settings = Setting::first();
-            \Mail::send('emails.verify', array(
-                'activation_code' => $string,
-                'website_name' => $settings->website_name
-            ) , function ($message) use ($request)
+        $settings = Setting::first();
+        if($settings->activation_email == 1){
+        dd($settings);
+
+            $email_count = User::where('email', '=', $email)->count();
+            $string = Str::random(60);
+            if ($email_count == 0)
             {
-                $message->to($request->email, $request->name)
-                    ->subject('Verify your email address');
-            });
-            return redirect('/verify-request');
+                $new_user = new User();
+                $new_user->name = $name;
+                $new_user->username = $name;
+                $new_user->mobile = $mobile;
+                $new_user->ccode = $ccode;
+                $new_user->avatar = $avatar;
+                $new_user->role = 'registered';
+                $new_user->referral_token = $ref_token;
+                $new_user->referrer_id = $referred_user_id;
+                $new_user->coupon_expired = $coupon_expired;
+                $new_user->email = $email;
+                //   $new_user->password = $get_password;
+                $new_user->password = Hash::make($get_password);
+                $new_user->activation_code = $string;
+                $new_user->save();
+                $settings = Setting::first();
+                \Mail::send('emails.verify', array(
+                    'activation_code' => $string,
+                    'website_name' => $settings->website_name
+                ) , function ($message) use ($request)
+                {
+                    $message->to($request->email, $request->name)
+                        ->subject('Verify your email address');
+                });
+                return redirect('/verify-request');
+            }
+        }else{
+
+            $email_count = User::where('email', '=', $email)->count();
+        // dd($email_count );
+
+            $string = Str::random(60);
+            if ($email_count == 0)
+            {
+                $new_user = new User();
+                $new_user->name = $name;
+                $new_user->username = $name;
+                $new_user->mobile = $mobile;
+                $new_user->ccode = $ccode;
+                $new_user->avatar = $avatar;
+                $new_user->role = 'registered';
+                $new_user->referral_token = $ref_token;
+                $new_user->referrer_id = $referred_user_id;
+                $new_user->coupon_expired = $coupon_expired;
+                $new_user->email = $email;
+                $new_user->password = Hash::make($get_password);
+                $new_user->activation_code = null;
+                $new_user->active = 1;
+                $new_user->save();
+
+                session()->put('register.email',$email);
+                return redirect('/register2')->with('message', 'You have successfully verified your account. Please login below.');
+            }
         }
     }
 
