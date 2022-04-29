@@ -10,7 +10,12 @@ $discount_price = $discount_percentage;
 $available_coupon = ReferrerCount(Auth::user()->id)  - GetCouponPurchase(Auth::user()->id)  ?? '0';
 // dd($plan_details);
 ?>
-
+<style>
+            #card-element{
+                /* color: #fff !important; */
+                background-color: white; 
+                        }
+</style>
 
 <div class="row page-height" id="signup-form">
     
