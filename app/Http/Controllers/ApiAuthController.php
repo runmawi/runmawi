@@ -213,7 +213,7 @@ class ApiAuthController extends Controller
 
     }
     try {
-      if($settings->free_registration && $settings->activation_email){
+      if($settings->free_registration && $settings->activation_email == 1){
         $email = $input['email'];
         $uname = $input['username'];
         Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
