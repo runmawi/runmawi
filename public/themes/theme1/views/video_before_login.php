@@ -49,7 +49,7 @@ if(!empty($request_url)){
 <input type="hidden" name="processed_low" id="processed_low" value="<?php echo  $video->processed_low;?>">
 <!-- For Guest users -->      
 <?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)
-     || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
+    //  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
      ) {
     // dd(Auth::guest());
         ?>
