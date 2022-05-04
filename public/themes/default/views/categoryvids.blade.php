@@ -34,14 +34,60 @@
                                         </div>
                                                 <!-- </div> -->
 
-                                                <div class="block-description">
+                                            <div class="block-description">
                                                     
-                                                        <h6><?php echo __($category_video->title); ?></h6>
+                                                <?php if($data['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
+                                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                             <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
+                                                    </a>
+                                                <?php } ?>  
                                                     
+                                                <div class="movie-time d-flex align-items-center pt-1">
+                                                        <?php if($data['ThumbnailSetting']->age == 1) { ?>
+                                                        <!-- Age -->
+                                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
+                                                        <?php } ?>
+                
+                                                        <?php if($data['ThumbnailSetting']->duration == 1) { ?>
+                                                        <!-- Duration -->
+                                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $category_video->duration); ?></span>
+                                                        <?php } ?>
+                                                </div>
+
+
+                                                <?php if(($data['ThumbnailSetting']->published_year == 1) || ($data['ThumbnailSetting']->rating == 1)) {?>
                                                     <div class="movie-time d-flex align-items-center pt-1">
-                                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                                        <span class="text-white"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $category_video->duration); ?></span>
-                                                    </div>
+                                                        <?php if($data['ThumbnailSetting']->rating == 1) { ?>
+                                                            <!--Rating  -->
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                    <?php echo __($category_video->rating); ?>
+                                                                </span>
+                                                            </div>
+                                                        <?php } ?>
+                    
+                                                        <?php if($data['ThumbnailSetting']->published_year == 1) { ?>
+                                                            <!-- published_year -->
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                              <span class="text-white">
+                                                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                  <?php echo __($category_video->year); ?>
+                                                              </span>
+                                                            </div>
+                                                        <?php } ?>
+                    
+                                                        <?php if($data['ThumbnailSetting']->featured == 1 &&  $category_video->featured == 1) { ?>
+                                                            <!-- Featured -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                              <span class="text-white">
+                                                                <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                              </span>
+                                                            </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    <?php } ?>
+
                                                     <div class="hover-buttons">
                                                         <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                             <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
