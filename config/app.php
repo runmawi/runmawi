@@ -125,6 +125,8 @@ return [
     |
     */
 
+    'version' => '15.4.1',
+
     'key' => env('APP_KEY'),
 
 	'mail' => env('MAIL_MAILER') ?: 'smtp',

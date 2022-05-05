@@ -19,7 +19,8 @@ class SiteThemeTableseeder extends Seeder
             array(  'dark_bg_color' =>  "#a3a3a3",
                     'light_bg_color' =>  "#f5b55c",
                     'dark_mode_logo' =>  "WAKNEX NAME-8A Final.png", 
-                    'light_mode_logo' =>  "Logo-1.png", 
+                    'light_mode_logo' => "Logo-1.png", 
+                    'button_bg_color' => "#006AFF",
                     'created_at' => Carbon::now(),
                     'updated_at' => null,),
                 );

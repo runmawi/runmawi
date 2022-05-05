@@ -684,12 +684,19 @@ data: {
                             </div> 
                             <div class="row">
                             <div class="col-sm-6 form-group">
-                            <label>Video Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                            <input type="file" name="image" id="image" >
-                            @if(!empty($video->image))
-                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
-                            @endif
-                        </div>
+                              <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 720X1080px)</span></label><br>
+                                 <input type="file" name="image" id="image" >
+                                 @if(!empty($video->image))
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
+                                 @endif
+                              </div>
+                              <div class="col-sm-6 form-group">
+                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                              <input type="file" name="player_image" id="player_image" >
+                              @if(!empty($video->player_image))
+                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
+                              @endif
+                              </div>
                         </div>
 
                             <div class="row">

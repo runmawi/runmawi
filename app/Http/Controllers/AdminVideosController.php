@@ -55,6 +55,7 @@ class AdminVideosController extends Controller
 {
     public function index()
     {
+
            if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
@@ -953,12 +954,37 @@ if(!empty($artistsdata)){
             $video = Video::findOrFail($id);
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
+            }else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
         
            $image = (isset($data['image'])) ? $data['image'] : '';
            $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
            $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
            $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+           $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+           $image_path = public_path().'/uploads/images/';
+          
+           if($player_image != '') {   
+                //code for remove old file
+                if($player_image != ''  && $player_image != null){
+                     $file_old = $image_path.$player_image;
+                    if (file_exists($file_old)){
+                     unlink($file_old);
+                    }
+                }
+                
+                //upload new file
+                $file = $player_image;
+                $data['player_image']  = $file->getClientOriginalName();
+                $file->move($image_path, $data['player_image']);
+                $player_image = $file->getClientOriginalName();
+            //    $data['player_image'] = $video->image;
+  
+  
+           } else {
+               $player_image = $video->image;
+           }
 
         $path = public_path().'/uploads/videos/';
 
@@ -1296,6 +1322,7 @@ if(!empty($artistsdata)){
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
         //  $video->active=1;
+        $video->player_image = $player_image ;
          $video->year = $year ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
@@ -1516,6 +1543,7 @@ if(!empty($artistsdata)){
     
         public function fileupdate(Request $request)
         {
+
             if (!Auth::user()->role == 'admin')
              {
                 return redirect('/home');
@@ -1568,12 +1596,38 @@ if(!empty($artistsdata)){
 
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
+            }else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
-            
+                        
             $image = (isset($data['image'])) ? $data['image'] : '';
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
-            
+            $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+
+            $image_path = public_path().'/uploads/images/';
+           
+            if($player_image != '') {   
+                 //code for remove old file
+                 if($player_image != ''  && $player_image != null){
+                      $file_old = $image_path.$player_image;
+                     if (file_exists($file_old)){
+                      unlink($file_old);
+                     }
+                 }
+                 
+                 //upload new file
+                 $file = $player_image;
+                 $data['player_image']  = $file->getClientOriginalName();
+                 $file->move($image_path, $data['player_image']);
+                 $player_image = $file->getClientOriginalName();
+             //    $data['player_image'] = $video->image;
+   
+   
+            } else {
+                $player_image = "default.png";
+            }
+
             if(empty($data['active'])){
                 $data['active'] = 0;
             } 
@@ -1800,6 +1854,7 @@ if(!empty($artistsdata)){
              $video->draft = 1;
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;
+            $video->player_image =   $player_image ;
             $video->publish_type = $data['publish_type'];
             $video->publish_time = $data['publish_time'];
              $video->age_restrict =  $data['age_restrict'];

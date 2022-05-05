@@ -17,6 +17,9 @@ class Kernel extends ConsoleKernel
         Commands\LivestreamCron::class,
         Commands\VideostreamCron::class,
         Commands\Autodeploy::class,
+        Commands\SubscriptionReminder::class,
+        Commands\SubscriptionRenewal::class,
+        Commands\SubscriptionExpiry::class,
 
     ];
 
@@ -38,6 +41,14 @@ class Kernel extends ConsoleKernel
         $schedule->command('videostream:cron')
         ->everyMinute();
 
+        $schedule->command('SubscriptionReminder:cron')
+        ->everyMinute();
+
+        $schedule->command('SubscriptionRenewal:cron')
+        ->everyMinute();
+
+        $schedule->command('SubscriptionExpiry:cron')
+        ->everyMinute();
     }
 
     /**

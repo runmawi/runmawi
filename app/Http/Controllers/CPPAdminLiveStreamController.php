@@ -108,6 +108,7 @@ class CPPAdminLiveStreamController extends Controller
      */
     public function CPPstore(Request $request)
     {
+
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
@@ -221,12 +222,11 @@ class CPPAdminLiveStreamController extends Controller
             $ppv_price = null;
 
             }  
-            if ($request->slug != '') {
-                $data['slug'] = $this->createSlug($request->slug);
-                }
     
             if($request->slug == ''){
                     $data['slug'] = $this->createSlug($data['title']);    
+            }else{
+                $data['slug'] = $this->createSlug($data['slug']);    
             }
             if(empty($data['embed_url'])){
                 $embed_url = null;
@@ -465,6 +465,8 @@ class CPPAdminLiveStreamController extends Controller
 
         if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
+        }else{
+            $data['slug'] = $this->createSlug($data['slug']);    
         }
         
         if(empty($data['rating'])){

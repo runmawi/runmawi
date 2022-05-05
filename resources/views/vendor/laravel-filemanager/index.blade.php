@@ -1,5 +1,8 @@
 @extends('admin.master')
 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
   #content-page{
   padding-left: 20%;
@@ -7,7 +10,7 @@
 }
 </style>
   <!-- <title>{{ trans('laravel-filemanager::lfm.title-page') }}</title> -->
-  <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/unisharp/laravel-filemanager/public/img/72px color.png') }}">
+  <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.css">

@@ -1,5 +1,8 @@
 @extends('admin.master')
 
+@include('admin.favicon')
+
+
     <head>
 		<link rel="stylesheet" href="<?= URL::to('/'). '/assets/dist/css/styles.css';?>" />
 		<script src="<?= URL::to('/'). '/assets/dist/js/scripts.js';?>"></script>

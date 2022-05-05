@@ -126,7 +126,7 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="flex align-items-center list-user-action">
 
-                                       <?php if($video->draft != null && $video->draft == 1){ ?>
+                                       <?php if($video->draft != null && $video->draft == 1 && $video->status != null && $video->status == 1 && $video->active != null && $video->active == 1){ ?>
                                           <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                        <?php } else{?>

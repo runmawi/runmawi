@@ -72,7 +72,7 @@
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <!-- Title -->
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <h6><?php echo __($category_video->title); ?></h6>
+                        <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
                     </a>
                     <?php } ?>
 

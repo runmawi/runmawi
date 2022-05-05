@@ -10,7 +10,8 @@
   <meta name="author" content="webnexs" />
 
    <!-- Favicon -->
-    <link rel="shortcut icon" href="" />
+   <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
+
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
     

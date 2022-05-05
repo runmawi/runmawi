@@ -38,7 +38,7 @@
 
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                             <h6><?php echo __($Most_watched_countries->title); ?></h6>
+                                             <h6><?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
                                         </a>
                                     <?php } ?>  
 

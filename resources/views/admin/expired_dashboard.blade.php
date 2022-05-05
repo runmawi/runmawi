@@ -255,8 +255,9 @@ h2{
                         <div class="iq-header-title">
                            <!-- <h4 class="card-title text-center" style="color: #4295D2;">User's Of {{ GetWebsiteName() }}</h4> -->
                            <h5>Payment Declined!</h5>
-                           <p>Warning your account is pending deletion, Update your payment to resume service.</p>
-                        </div>
+                           <!-- <p>Warning your account is pending deletion, Update your payment to resume service.</p> -->
+                           <p>Your Services are up for renewal, Please ask your store owner / admin / accountant to renew now to enjoy streaming services!</p>                  
+                          </div>
                      </div>
                         <div>
                         <div class="row justify-content-center page-height" id="signup-form">  

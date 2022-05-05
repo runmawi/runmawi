@@ -1,5 +1,6 @@
 @extends('admin.master')
 
+@include('admin.favicon')
 
 @section('content')
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
@@ -33,7 +34,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="title" type="checkbox" @if( $thumbnail_setting->title == "1") checked  @endif >
+                                            <input name="title" class="title" id="title" type="checkbox" @if( $thumbnail_setting->title == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -46,7 +47,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="age" type="checkbox" @if( $thumbnail_setting->age == "1") checked  @endif >
+                                            <input name="age" id="age" class="age" type="checkbox" @if( $thumbnail_setting->age == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -60,7 +61,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="rating" type="checkbox" @if( $thumbnail_setting->rating == "1") checked  @endif >
+                                            <input name="rating" class="rating" id="rating" type="checkbox" @if( $thumbnail_setting->rating == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -73,7 +74,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="published_year" type="checkbox" @if( $thumbnail_setting->published_year == "1") checked  @endif >
+                                            <input name="published_year" class="published_year" id="published_year" type="checkbox" @if( $thumbnail_setting->published_year == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -87,7 +88,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="duration" type="checkbox" @if( $thumbnail_setting->duration == "1") checked  @endif >
+                                            <input name="duration" class="duration" id="duration" type="checkbox" @if( $thumbnail_setting->duration == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -101,7 +102,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="featured" type="checkbox" @if( $thumbnail_setting->featured == "1") checked  @endif >
+                                            <input name="featured" class="featured" id="featured" type="checkbox" @if( $thumbnail_setting->featured == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -115,7 +116,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="free_or_cost_label" type="checkbox" @if( $thumbnail_setting->free_or_cost_label == "1") checked  @endif >
+                                            <input name="free_or_cost_label" class="free_or_cost_label" id="free_or_cost_label" type="checkbox" @if( $thumbnail_setting->free_or_cost_label == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -145,7 +146,7 @@
                                 <td> 
                                     <div class="mt-1">
                                         <label class="switch">
-                                            <input name="category" type="checkbox" @if( $thumbnail_setting->category == "1") checked  @endif >
+                                            <input name="category" class="category" id="category" type="checkbox" @if( $thumbnail_setting->category == "1") checked  @endif >
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -158,7 +159,6 @@
                             <input type="submit" value="Update Settings" class="btn btn-primary " />
                         </div>
                     </form>
-
                      </div>
                   </div>
                 </div>
@@ -167,16 +167,11 @@
     </div>
 </div>
 
-<style>
-    
-</style>
+@include('admin.thumbnail.Thumbnail_Script')
 
-{{-- Jquery Table --}}
-@section('javascript')
-   <script>
-      $(document).ready( function () {
-               $('#Thumbnails').DataTable();
-      });
-   </script>
-@stop
+<style>
+    .swal2-popup.swal2-modal.swal2-show {
+        width: 24% !important;
+    }
+</style>
 
