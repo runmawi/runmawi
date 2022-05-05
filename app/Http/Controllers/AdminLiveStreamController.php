@@ -150,7 +150,7 @@ class AdminLiveStreamController extends Controller
     {
 
         $data = $request->all();
-        // dd($data);
+
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // // 'slug' => 'required|max:255',
@@ -201,7 +201,8 @@ class AdminLiveStreamController extends Controller
         
         if(empty($data['active'])){
             $data['active'] = 0;
-        }  
+        } 
+
         
         if(empty($data['mp4_url'])){
             $data['mp4_url'] = 0;
@@ -336,6 +337,13 @@ class AdminLiveStreamController extends Controller
             $movie->Rtmp_url = $data['Rtmp_url'];
         }
 
+             
+        if(empty($data['active'])){
+            $active = 0;
+        } else{
+            $active = 1;
+        }
+
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
         $movie->url_type =$url_type;
@@ -358,7 +366,7 @@ class AdminLiveStreamController extends Controller
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
         $movie->year =$data['year'];
-        $movie->active = 1 ;
+        $movie->active = $active ;
         $movie->user_id =Auth::User()->id;
         $movie->save();
 
@@ -481,6 +489,7 @@ class AdminLiveStreamController extends Controller
     {
 
         $data = $request->all();       
+
         $id = $data['id'];
         if($data['access'] == "ppv"){
             $ppv_price = $data['ppv_price'];
@@ -544,11 +553,7 @@ class AdminLiveStreamController extends Controller
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
         
-        if(empty($data['active']) && $video->active == null){
-            $data['active'] = 0;
-        }else{
-            $data['active'] = $video->active;
-        } 
+       
        
         if(empty($data['ppv_status'])){
             $data['ppv_status'] = 0;
@@ -590,8 +595,6 @@ class AdminLiveStreamController extends Controller
             $data['type'] = '';
         }
         
-
-
         
         $path = public_path().'/uploads/livecategory/';
         $image_path = public_path().'/uploads/images/';
@@ -627,7 +630,6 @@ class AdminLiveStreamController extends Controller
 
         //  $data['ppv_price'] = $ppv_price;
          $data['access'] = $request['access'];
-         $data['active'] = 1 ;
 
 
         $video->update($data);
@@ -641,6 +643,13 @@ class AdminLiveStreamController extends Controller
         }else{
             $url_type = $data['url_type'];
         }   
+
+        if(empty($data['active'])){
+            $active = 0;
+        }else{
+            $active = 1;
+        } 
+        
         $video->rating = $rating;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
@@ -648,6 +657,7 @@ class AdminLiveStreamController extends Controller
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
         $video->embed_url =     $embed_url;
+        $video->active = $active;
         $video->save();
 
         if(!empty($data['video_category_id'])){
