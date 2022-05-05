@@ -63,13 +63,72 @@
                                 </div>
                     </div>
                             <div class="mt-2">
-                    <h5><?php echo __($video->title); ?></h5>
-                            <div class="movie-time d-flex align-items-center my-2">
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                                <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                            </div>
+                   
+                                <div class="movie-time d-flex align-items-center my-2">
+                                    <?php if($ThumbnailSetting->title == 1) { ?>
+                                        <h6><?php  echo (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></h6>
+                                    <?php } ?>
+                                </div>
+
+                                <div class="movie-time my-2">
+                      
+                                       <!-- Duration -->
+                  
+                                       <?php if($ThumbnailSetting->duration == 1) { ?>
+                                       <span class="text-white">
+                                          <i class="fa fa-clock-o"></i>
+                                          <?= gmdate('H:i:s', $video->duration); ?>
+                                       </span>
+                                       <?php } ?>
+                  
+                                       <!-- Rating -->
+                  
+                                       <?php if($ThumbnailSetting->rating == 1 && $video->rating != null) { ?>
+                                       <span class="text-white">
+                                          <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                          <?php echo __($video->rating); ?>
+                                       </span>
+                                       <?php } ?>
+                  
+                                       <?php if($ThumbnailSetting->featured == 1 && $video->featured == 1) { ?>
+                                          <!-- Featured -->
+                                          <span class="text-white">
+                                             <i class="fa fa-flag" aria-hidden="true"></i>
+                                          </span>
+                                       <?php }?>
+                                    </div>
+                                     
+                                    <div class="movie-time my-2">
+                                          <!-- published_year -->
+                     
+                                          <?php  if ( ($ThumbnailSetting->published_year == 1) && ( $video->year != null ) ) { ?>
+                                          <span class="text-white">
+                                             <i class="fa fa-calendar" aria-hidden="true"></i>
+                                             <?php echo __($video->year); ?>
+                                          </span>
+                                          <?php } ?>
+                                    </div>
+
+                                    <div class="movie-time my-2">
+                                          <!-- Category Thumbnail  setting -->
+                                          <?php
+                                          $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                      ->where('categoryvideos.video_id',$video->video_id)
+                                                      ->pluck('video_categories.name');        
+                                          ?>
+                                          <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                          <span class="text-white">
+                                             <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                             <?php
+                                                $Category_Thumbnail = array();
+                                                      foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                      $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                      }
+                                                echo implode(','.' ', $Category_Thumbnail);
+                                             ?>
+                                          </span>
+                                          <?php } ?>
+                                    </div>
                             </div>
                    
                 </li>

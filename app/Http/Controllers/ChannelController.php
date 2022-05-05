@@ -44,6 +44,7 @@ use App\CategoryVideo as CategoryVideo;
 use App\LanguageVideo;
 use App\AdsVideo;
 use Theme;
+use App\ThumbnailSetting;
 
 
 class ChannelController extends Controller
@@ -79,6 +80,8 @@ class ChannelController extends Controller
       $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
       $userIp = $geoip->getip();    
       $countryName = $geoip->getCountry();
+      $ThumbnailSetting = ThumbnailSetting::first();
+
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -124,9 +127,9 @@ class ChannelController extends Controller
                 'category_title'=>$category_title[0],
                 'categoryVideos'=>$categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
+                'ThumbnailSetting' => $ThumbnailSetting,
 
             );
-
        return Theme::view('categoryvids',['data'=>$data]);
         
     } 
