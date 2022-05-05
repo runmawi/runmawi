@@ -115,7 +115,7 @@
                                                     <!-- Category Thumbnail  setting -->
                                                     <?php
                                                     $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                                ->where('categoryvideos.video_id',$category_video->id)
+                                                                ->where('categoryvideos.video_id',$category_video->video_id)
                                                                 ->pluck('video_categories.name');       
 
                                                     ?>
