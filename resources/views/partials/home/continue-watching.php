@@ -18,10 +18,9 @@
                                   <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazy" alt="">
                                   <!--   <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4">
-                                      </video>
+                                      </video>-->
                                      
-                                     <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                     
                                           <?php  if(!empty($cont_video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$cont_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
@@ -29,9 +28,9 @@
                                             <?php }elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                       
                                 </div>
+                              </div>
                                 <div class="block-description">
                                    <h6><?php echo __($cont_video->title); ?></h6>
                                    <div class="movie-time d-flex align-items-center">
@@ -60,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                             
                           </a>
                        </li>
                        <?php                     

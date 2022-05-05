@@ -2446,6 +2446,8 @@ class HomeController extends Controller
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
 
         $getfeching = Geofencing::first();
 
@@ -2509,6 +2511,7 @@ class HomeController extends Controller
             'latest_videos' => $latest_videos,
             'ppv_gobal_price' => $ppv_gobal_price,
             'currency' => $currency,
+            'ThumbnailSetting' => $ThumbnailSetting,
         );
 
         return Theme::view('latestvideo', $data);
@@ -2521,6 +2524,8 @@ class HomeController extends Controller
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
 
         $getfeching = Geofencing::first();
 
@@ -2552,8 +2557,10 @@ class HomeController extends Controller
         $data = array(
             'lang_videos' => $language_videos,
             'currency' => $currency,
+            'ThumbnailSetting' => $ThumbnailSetting
 
         );
+
 
         return Theme::View('languagevideo', $data);
     }

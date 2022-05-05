@@ -118,31 +118,7 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
-        $('.center').slick({
-  
-  centerPadding: '60px',
-  slidesToShow: 3,
-  responsive: [
-    {
-      breakpoint: 768,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 3
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 1
-      }
-    }
-  ]
-});
+       
 		$('#home-slider').slick({
             centerMode: true,
 			autoplay: false,

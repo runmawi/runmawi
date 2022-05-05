@@ -135,11 +135,12 @@
 						<?php endforeach; ?>
 					</ul>
 				</div>
-                   <div class="col-lg-3 col-md-2 p-0 d-flex justify-content-center">
+                   <div class="col-lg-3 col-md-2 p-0">
+                       <div >
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
                        <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
-                   </div>
+                   </div></div>
                   
                    </div>
                </div>
@@ -486,5 +487,20 @@ else{
 }
 
       </script>
+<script>
+  if ('loading' in HTMLImageElement.prototype) {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+      img.src = img.dataset.src;
+    });
+  } else {
+    // Dynamically import the LazySizes library
+    const script = document.createElement('script');
+    script.src =
+      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+    document.body.appendChild(script);
+  }
+</script>
+
 </body>
 </html>

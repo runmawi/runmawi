@@ -29,11 +29,58 @@
                                 </div>
                                  
                                     <div class="block-description" style="bottom:-38px!important;">
-                                       <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
-                                       <div class="movie-time d-flex align-items-center pt-1">
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
-                                       </div>
+                                    
+                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
+                                             <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
+                                        </a>
+                                    <?php } ?>  
+
+                                    <div class="movie-time d-flex align-items-center pt-1">
+                                        <?php if($ThumbnailSetting->age == 1) { ?>
+                                        <!-- Age -->
+                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <!-- Duration -->
+                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                        <?php } ?>
+                                    </div>
+
+
+                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                    <div class="movie-time d-flex align-items-center pt-1">
+                                        <?php if($ThumbnailSetting->rating == 1) { ?>
+                                        <!--Rating  -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                            <span class="text-white">
+                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                <?php echo __($latest_video->rating); ?>
+                                            </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                        <!-- published_year -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                              <i class="fa fa-calendar" aria-hidden="true"></i>
+                                              <?php echo __($latest_video->year); ?>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->featured == 1 &&  $latest_video->featured == 1) { ?>
+                                        <!-- Featured -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                          <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                <?php } ?>
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
                                           <span class="text-white">
