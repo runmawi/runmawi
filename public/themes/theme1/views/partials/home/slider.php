@@ -6,12 +6,12 @@
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:50% 100%;background-position:right; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:38% 100%;background-position:right; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-4 col-lg-12 col-md-12">
+                        <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
                         <?php echo __($slider_video->title); ?>
                     </h1>
@@ -21,22 +21,23 @@
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star"></span>
 <span class="fa fa-star"></span></div>
-                    
-                </div>
-                        <div class="col-xl-4 col-lg-12 col-md-6 mt-5 pt-5 b2">
-                        <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
-                           <a href="<?php echo $slider_video->link; ?>"
+                            <div class="p-0">
+                     <a href="<?php echo $slider_video->link; ?>"
                         class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
                              <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a>
+                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a></div>
+                </div>
+                        <div class="col-xl-2 col-lg-12 col-md-6 mt-5 pt-5 b2">
+                        <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
+                            data-delay-in="1.2">
+                          
                                
                             </div></div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                        <div class="">
+                        <!--<div class="">
                              <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp">Specials !</h2>
-                        </div></div>
+                            <h2 class="sp"></h2>
+                        </div>--></div>
                 </div>
 
             </div>
@@ -52,7 +53,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:50% 100%;background-position:right;  ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:right;  ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -123,7 +124,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:50% 100%;background-position:right; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:inherit;background-position:right 10%; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -146,22 +147,23 @@ endif; ?>
                         overflow: hidden;">
                         <?php echo __($videos->description); ?>
                         </div>
-                            
-                </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
-                        <div class="justify r-mb-23 mt-5" data-animation-in="fadeInUp"
+                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Watch Now</a>
                                 <a href="#vide
                                  o-trailer"
                             class="video-open playbtn btn bd ml-2"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>
-                            </div></div>
+                            </div>
+                            
+                </div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
+                        </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                        <div class="">
+                      <!--  <div class="">
                              <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp">Specials !</h2>
-                        </div></div>
+                            <h2 class="sp"></h2>
+                        </div>--></div>
                 </div>
               <!--  <div class="trailor-video">
                         <a href="#vide

@@ -17,9 +17,9 @@
                         </a>
                         
                       <!-- PPV price -->
-                        <div class="corner-text-wrapper">
+                       
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                            <div class="corner-text">
+                            
                                 <?php  if(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
@@ -27,9 +27,7 @@
                                 <?php } ?>
                             </div>
                          <?php } ?>   
-                        </div>
-
-                    </div>
+                       
                 </div>
                 <div class="block-description" style="top: 40px !important;"></div>
                
@@ -105,8 +103,8 @@
                     <?php } ?>
                     
                     <div class="hover-buttons">
-                        <a class="text-white d-flex" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img class="ply" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                        <a class="text-white d-flex align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <img class="ply mr-2" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                 Live Now
                         </a>
                     </div>
