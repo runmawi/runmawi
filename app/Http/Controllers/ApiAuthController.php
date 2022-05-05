@@ -651,6 +651,8 @@ class ApiAuthController extends Controller
       ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+
         return $item;
       });
       // $videos = $videos->get()->map(function ($item) {
