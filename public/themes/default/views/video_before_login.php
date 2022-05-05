@@ -26,7 +26,6 @@ if($ads_details != null){
 $str = $video->m3u8_url;
 if(!empty($str)){
 $request_url = 'm3u8';
-// dd($video->m3u8);  
 }
 if(!empty($request_url)){
 ?>
@@ -52,7 +51,7 @@ if(!empty($request_url)){
 
 <!-- For Guest users -->      
   <?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)
-     || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
+    //  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
      ) {
         ?>
     <div id="video_bg">

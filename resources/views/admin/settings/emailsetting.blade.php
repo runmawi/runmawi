@@ -65,87 +65,150 @@ border-radius: 0px 4px 4px 0px;
       <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
    </div>
    
-         <div class="container-fluid p-0">
-              <div class="iq-card">
-
-<div id="admin-container">
-	
-	<div class="admin-section-title">
-		<h4><i class="entypo-globe"></i> Email Settings</h4> 
-        <hr>
-	</div>
-	<div class="clear"></div>
-
-	
-
-	<form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Email_setting_form">
-		
-		<div class="row mt-4">
-			
-			<div class="col-md-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Admin Email</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="admin_email" id="admin_email" value="@if(!empty($email_settings->admin_email)){{ $email_settings->admin_email }}@endif"  />
-					</div> 
-				</div>
-			</div>
-
-			<div class="col-md-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Email Host</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="email_host" id="email_host" value="@if(!empty($email_settings->host_email)){{ $email_settings->host_email }}@endif"  />
-					</div> 
-				</div>
-			</div>
-			<div class="col-md-6 mt-3">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Email Port</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="email_port" id="email_port" value="@if(!empty($email_settings->email_port)){{ $email_settings->email_port }}@endif" />
-					</div> 
-				</div>
-			</div>
-			<div class="col-md-6 mt-3">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Secure </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-	<select id="secure" name="secure" class="form-control" required>
-		<option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'SSL'){{ 'selected' }}@endif> TRUE</option>
-		<option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'TLS'){{ 'selected' }}@endif >FALSE</option>
-	</select>
-					</div> 
-				</div>
-			</div>
-			<div class="col-md-6 mt-3">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Email User</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-						<input type="text" class="form-control" name="email_user" id="email_user" value="@if(!empty($email_settings->user_email)){{ $email_settings->user_email }}@endif" />
-					</div> 
-				</div>
-			</div>
-			<div class="col-md-6 mt-3">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-					<div class="panel-title"><label>Email Password</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-					<div class="panel-body" style="display: block;"> 
-					<input type="password" class="form-control" name="password" id="password" value="" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif"/>
-					</div> 
-				</div>
-			</div>
-			
-		</div>
-		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-		<div class="panel-body mt-3 ml-2" >
-<input type="submit" value="Update Email Settings" class="btn btn-primary " />
+   <div class="container-fluid p-0">
+      <div class="iq-card">
+         <div id="admin-container">
+            <div class="admin-section-title">
+               <h4><i class="entypo-globe"></i> Email Settings</h4> <hr>
             </div>
-	</form>
+	         <div class="clear"></div>
 
+            <form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Email_setting_form">
+               <div class="row mt-4">
+                  <div class="col-md-6">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Admin Email</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="admin_email" id="admin_email" value="@if(!empty($email_settings->admin_email)){{ $email_settings->admin_email }}@endif" />
+                           </div>
+                     </div>
                   </div>
-             </div>
-    </div>
+         
+                  <div class="col-md-6">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Email Host</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="email_host" id="email_host" value="@if(!empty($email_settings->host_email)){{ $email_settings->host_email }}@endif" />
+                           </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Email Port</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="email_port" id="email_port" value="@if(!empty($email_settings->email_port)){{ $email_settings->email_port }}@endif" />
+                           </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Secure </label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <select id="secure" name="secure" class="form-control" required>
+                                 <option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'SSL'){{ 'selected' }}@endif> TRUE</option>
+                                 <option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'TLS'){{ 'selected' }}@endif >FALSE</option>
+                              </select>
+                           </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Email User</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="email_user" id="email_user" value="@if(!empty($email_settings->user_email)){{ $email_settings->user_email }}@endif" />
+                           </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Email Password</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="password" class="form-control" name="password" id="password" value="" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif" />
+                           </div>
+                     </div>
+                  </div>
+               </div>
+               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+               <div class="panel-body mt-3 ml-2">
+                  <input type="submit" value="Update Email Settings" class="btn btn-primary" />
+               </div>
+            </form>
+     
+         </div>
+      </div>
+   </div>
+
+
+   <div class="container-fluid p-0">
+      <div class="iq-card">
+         <div id="admin-container">
+            <div class="admin-section-title">
+               <h4><i class="entypo-globe"></i> Test Email Settings</h4> <hr>
+            </div>
+	         <div class="clear"></div>
+
+            <form method="post" action="{{ URL::to('admin/Testing_EmailSettting') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+               <div class="row mt-4">
+                  <div class="col-md-6">
+                     <div class="panel panel-primary" data-collapsed="0">
+                           <div class="panel-heading">
+                              <div class="panel-title"><label>Email</label></div>
+                              <div class="panel-options">
+                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                              </div>
+                           </div>
+                           <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="test_mail" id="test_mail" required />
+                           </div>
+                     </div>
+                  </div>
+               </div>
+               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+               <div class="panel-body mt-3 ml-2">
+                  <button type="submit" class="btn btn-primary" > Send Mail</button>
+               </div>
+            </form>
+     
+         </div>
+      </div>
+   </div>
+
 </div>
+
 <div id="content-page" class="content-page">
          <div class="container-fluid">
             <div class="row">

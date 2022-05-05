@@ -13,6 +13,12 @@ $plan_price = $plan_details->price;
 $discount_percentage = DiscountPercentage();
 $discount_price = $discount_percentage;
 ?>
+<style>
+            #card-element{
+                /* color: #fff !important; */
+                background-color: white; 
+                        }
+</style>
 <input type="hidden" id="payment_type" name="payment_type" value="<?php echo $payment_type ;?>">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 
