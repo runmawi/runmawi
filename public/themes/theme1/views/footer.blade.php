@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
                     <p>Available on Play Store</p>
-                    <img src="<?php echo URL::to('assets/img/gp.png') ?> " alt="Play store" class="">
+                    <img src="<?php echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class="">
                 </div>
             </div>
         </div>
