@@ -133,7 +133,9 @@ Index Of Script
 						dots: true,
 						arrows: false,
 					}
-				}
+				},
+                
+                
 			]
 		}).slickAnimation();
 		$('.slick-nav').on('click touch', function (e) {
