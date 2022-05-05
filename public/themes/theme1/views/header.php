@@ -278,7 +278,7 @@ $data = Session::all();
                                               <div>
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search movies,series">
                                               </div>
                                             </form>
                                           </div>
@@ -301,7 +301,7 @@ $data = Session::all();
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="Type here to Search Videos">
+                                             placeholder="Search movies,series">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
@@ -389,7 +389,7 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" >Welcome
+                                        <p class="mt-3" >
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');

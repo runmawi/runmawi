@@ -50,13 +50,78 @@
 
                                  </div>
                                   <div>
+
+                                    <div class="mt-2 d-flex justify-content-between p-0">
+                                       <?php if($ThumbnailSetting->title == 1) { ?>
+                                           <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
+                                       <?php } ?>
+
+                                       <?php if($ThumbnailSetting->age == 1) { ?>
+                                           <div class="badge badge-secondary"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
+                                       <?php } ?>
+                                    </div>
+
+
+                                    <div class="movie-time my-2">
+                      
+                                       <!-- Duration -->
+                  
+                                       <?php if($ThumbnailSetting->duration == 1) { ?>
+                                       <span class="text-white">
+                                          <i class="fa fa-clock-o"></i>
+                                          <?= gmdate('H:i:s', $latest_video->duration); ?>
+                                       </span>
+                                       <?php } ?>
+                  
+                                       <!-- Rating -->
+                  
+                                       <?php if($ThumbnailSetting->rating == 1 && $latest_video->rating != null) { ?>
+                                       <span class="text-white">
+                                          <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                          <?php echo __($latest_video->rating); ?>
+                                       </span>
+                                       <?php } ?>
+                  
+                                       <?php if($ThumbnailSetting->featured == 1 && $latest_video->featured == 1) { ?>
+                                          <!-- Featured -->
+                                          <span class="text-white">
+                                             <i class="fa fa-flag" aria-hidden="true"></i>
+                                          </span>
+                                       <?php }?>
+                                    </div>
                                      
-                                       <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                            <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          
-                                       </div>
-                                      <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                    <div class="movie-time my-2">
+                                          <!-- published_year -->
+                     
+                                          <?php  if ( ($ThumbnailSetting->published_year == 1) && ( $latest_video->year != null ) ) { ?>
+                                          <span class="text-white">
+                                             <i class="fa fa-calendar" aria-hidden="true"></i>
+                                             <?php echo __($latest_video->year); ?>
+                                          </span>
+                                          <?php } ?>
+                                    </div>
+
+                                    <div class="movie-time my-2">
+                                          <!-- Category Thumbnail  setting -->
+                                          <?php
+                                          $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                      ->where('categoryvideos.video_id',$latest_video->id)
+                                                      ->pluck('video_categories.name');        
+                                          ?>
+                                          <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                          <span class="text-white">
+                                             <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                             <?php
+                                                $Category_Thumbnail = array();
+                                                      foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                      $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                      }
+                                                echo implode(','.' ', $Category_Thumbnail);
+                                             ?>
+                                          </span>
+                                          <?php } ?>
+                                    </div>
+                                     
                                   </div>
                               </a>
                            </li>
