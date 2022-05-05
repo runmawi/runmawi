@@ -1091,7 +1091,7 @@ public function verifyandupdatepassword(Request $request)
     // echo "<pre>"; print_r($livecategories);exit();
     $myData = array();
 
-      $videos= LiveStream::where('status','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $videos= LiveStream::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
