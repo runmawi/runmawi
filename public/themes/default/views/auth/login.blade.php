@@ -53,7 +53,7 @@ $system_settings = App\SystemSetting::find(1);
  }
     a.f-link {
     margin-bottom: 1rem;
-        margin-left: 15vw;
+       
         font-size: 14px;
     
 }
@@ -128,7 +128,7 @@ i.fa.fa-google-plus {
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-around links">
+                         <div class="d-flex justify-content-end links">
                       @if (Route::has('password.request'))
                      <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
                       @endif

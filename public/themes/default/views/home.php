@@ -20,7 +20,7 @@
 <!-- MainContent -->
 <div class="main-content">
     <section id="iq-continue">
-        <div class="container">
+        <div class="container-fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                   <?php include('partials/home/continue-watching.php'); ?>
@@ -32,7 +32,7 @@
 
     <?php if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <?php include('partials/home/Top_videos.blade.php'); ?>
@@ -45,7 +45,7 @@
 
     <?php if(count($most_watch_user) > 0){ ?>
        <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <?php include('partials/home/most_watched_user.blade.php'); ?>
@@ -59,7 +59,7 @@
    <?php 
       if(count($Most_watched_country) > 0){ ?>
        <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <?php include('partials/home/most_watched_country.php'); ?>
@@ -74,7 +74,7 @@
    <?php 
       if(($preference_genres) != null && count($preference_genres) > 0){ ?>
        <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <?php include('partials/home/preference_genres.php'); ?>
@@ -89,7 +89,7 @@
 
       if(($preference_Language) != null && count($preference_Language) > 0){ ?>
        <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <?php include('partials/home/preference_Language.php'); ?>
@@ -102,7 +102,7 @@
 
     <?php if($home_settings->latest_videos == 1){ ?>
       <section id="iq-favorites">
-         <div class="container">
+         <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12 overflow-hidden">
                   <?php include('partials/home/latest-videos.php'); ?>
@@ -115,7 +115,7 @@
 
 <?php if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
-        <div class="container">
+        <div class="container-fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <?php include('partials/home/live-videos.php'); ?>
@@ -128,7 +128,7 @@
 
 <?php if($home_settings->audios == 1){ ?>
     <section id="iq-favorites">
-        <div class="container">
+        <div class="container-fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <?php include('partials/home/latest-audios.php'); ?>
@@ -141,7 +141,7 @@
 
 <?php if($home_settings->albums == 1){ ?>
     <section id="iq-favorites">
-        <div class="container">
+        <div class="container-fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <?php include('partials/home/latest-albums.php'); ?>
@@ -154,7 +154,7 @@
 
 <?php if ( GetTrendingVideoStatus() == 1 ) { ?>
   <section id="iq-favorites">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <?php if ( count($featured_videos) > 0 ) { 
@@ -942,7 +942,7 @@ endif; ?>
         <section id="iq-tvthrillers" class="s-margin">
             <?php if ( GetCategoryVideoStatus() == 1 ) {  
                       ?>
-            <div class="container">
+            <div class="container-fluid">
                <?php
                      $getfeching = App\Geofencing::first();
                      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
