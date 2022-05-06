@@ -161,7 +161,7 @@ $data = Session::all();
      <!-- Header -->
       <header id="main-header">
          <div class="main-header">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container-fluid" >
                <div class="row">
                   <div class="col-sm-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -292,11 +292,7 @@ $data = Session::all();
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
-                                     
-                                 <i class="ri-search-line"></i>
-                                 </a>
-                                 <div class="search-box iq-search-bar d-search">
+                                  <div class="search-box iq-search-bar d-search">
                                     <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
@@ -306,6 +302,11 @@ $data = Session::all();
                                        </div>
                                     </form>
                                  </div>
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
+                                 <i class="ri-search-line"></i>
+                                 </a>
+                                 
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                        <div class="iq-card-body">
                                    <div id="search_list" class="search_list search-toggle device-search" >
@@ -398,7 +399,7 @@ $data = Session::all();
                                           echo  $subuser->user_name  ;
                                         }
                                         else{
-                                          echo Auth::user()->username.' '.'!'  ;
+                                          echo Auth::user()->username.' '.' '  ;
                                         }
                                         
                                         ?> 

@@ -63,8 +63,8 @@
 
                 </div>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p>Explore</p>
-                    <ul class="text-white p-0 mt-3">
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
+                    <ul class="text-white p-0 mt-3 ">
                         <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
                         <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
                         <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
@@ -77,7 +77,7 @@
                         <?php }else{ }?>
                     </ul>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p>Company</p>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
                     <ul class="text-white p-0 mt-3">
                        <?php 
                         $pages = App\Page::all();

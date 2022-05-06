@@ -615,11 +615,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php  }?>
              </div></div>
              <div class="col-sm-1 col-md-1 col-xs-12">
-                 <div class="btn btn-default views text-white">
+                 <!--<div class="btn btn-default views text-white">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
-                       </div>
+                       </div>-->
              </div>
              <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
@@ -713,11 +713,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <br>-->
 
 <?php if(!empty($video->details) ) { ?>
-
+<div class="col-sm-6 p-0">
 <h4>Links & details</h4>
 <div class="text-white">
     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
-</div>
+</div></div>
 <?php  }?>
 <br>
 
