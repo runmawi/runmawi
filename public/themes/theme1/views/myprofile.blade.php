@@ -111,6 +111,8 @@ $uppercase =  ucfirst($request_url);
             background-color: transparent;
             padding: 10px 40px;
             color:#fff;
+            width: 20%;
+            margin-left: 33vw;
         }
         .sig{
             background: #161617;
@@ -663,8 +665,9 @@ border-radius: 20px;
                 </div>
                 
                 <div class="col-md-8 targetDiv" id="div1">
-                    <div class="text-right">
-                     <img class="rounded-circle img-fluid d-block ml-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/ style="margin-right:30px;">
+                    
+                    <div class="col-sm-3 d-flex  justify-content-end flex-column ">
+                     <img class="rounded-circle img-fluid d-block ml-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/ style="">
                        
                     <button class="transpar">logout</button></div>
                    
