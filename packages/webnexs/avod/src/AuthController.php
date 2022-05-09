@@ -267,10 +267,18 @@ class AuthController extends Controller
         {
             $Ads->gender = json_encode($data['gender']);
         }
+        if($request->ads_video != null ){
+            $Ads_video = time().'_'.$request->ads_video->getClientOriginalName();  
+            $ads = $request->ads_video->move(public_path('uploads/AdsVideos'), $Ads_video);
+            $Ads->ads_video = $Ads_video;
+        }
+
         $Ads->save();
+
         $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
         $getdata->no_of_uploads += 1;
         $getdata->save();
+
         return Redirect::to('advertiser/ads-list');
     }
 
