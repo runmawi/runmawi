@@ -956,7 +956,7 @@ public function verifyandupdatepassword(Request $request)
         $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video : null ;
         $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : null;
 
-        $item['pre_position_time'] =$ads_videos ? '01'  : null;
+        $item['pre_position_time'] =$ads_videos ? $ads_Post_time  : null;
         $item['mid_position_time'] =$ads_videos ? $ads_mid_time  : null;
         $item['post_position_time'] =$ads_videos ? $ads_Post_time  : null;
      
