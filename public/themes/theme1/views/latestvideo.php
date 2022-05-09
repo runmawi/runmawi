@@ -17,7 +17,7 @@
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
+                                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
                                    
                                    
                                 </div>

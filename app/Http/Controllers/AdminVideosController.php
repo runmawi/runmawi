@@ -1138,15 +1138,15 @@ if(!empty($artistsdata)){
               //upload new file
               $file = $image;
               
-              $filename  = time().'_'.$file->getClientOriginalName();
+              $filename  = time().'.webp';
 
               $PC_image     =  'PC'.$filename ;
               $Mobile_image =  'Mobile'.$filename ;
               $Tablet_image =  'Tablet'.$filename ;
               
-              Image::make($file)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
-              Image::make($file)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-              Image::make($file)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+              Image::make($file)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
+              Image::make($file)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
+              Image::make($file)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
 
              $video->image  = $PC_image;
              $video->mobile_image  = $Mobile_image;
@@ -1732,16 +1732,16 @@ if(!empty($artistsdata)){
                   $file = $image;
                   $files = $data['image'];
 
-                  $filename  = time().'_'.$file->getClientOriginalName();
+                  $filename  = time().'.webp';
 
                   $PC_image     =  'PC'.$filename ;
                   $Mobile_image =  'Mobile'.$filename ;
                   $Tablet_image =  'Tablet'.$filename ;
 
                   
-                  Image::make($files)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image );
-                  Image::make($files)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                  Image::make($files)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                  Image::make($files)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
+                  Image::make($files)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
+                  Image::make($files)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
 
                  $video->mobile_image  = $Mobile_image;
                  $video->tablet_image  = $Tablet_image;
