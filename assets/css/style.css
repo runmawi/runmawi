@@ -200,7 +200,7 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.1, 1.1, 1.1) 
 .block-description {bottom: 0;
     opacity: 0;
     color: var(--TEXT_COLOR_L0);
-    padding: 30px 5px 30px 10px;
+    padding: 30px 5px 0px 10px;
     position: absolute;
      width: 100%;
     z-index: 999;
