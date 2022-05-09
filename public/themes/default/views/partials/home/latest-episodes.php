@@ -15,8 +15,7 @@
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
-                <div class="corner-text-wrapper">
-                  <div class="corner-text">
+               
                     <?php  if(!empty($latest_episode->ppv_price == 1)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$latest_episode->ppv_price; ?></p>
                     <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == 1)){ ?>
@@ -24,8 +23,7 @@
                       <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
                       <?php } ?>
-                  </div>
-              </div>
+                 
               </div>
               <div class="block-description">
               <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
