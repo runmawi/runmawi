@@ -194,10 +194,15 @@
                               <div class="form-group">
                                  <label> Ad Tag Url:</label>
                                  <p class="error-message" style="color:red">This filed is required</p>
-
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
-
                               </div>
+
+                              <div class="form-group">
+                                 <label> Ads Video Upload:</label>
+                                 <p class="error-message" style="color:red">This filed is required</p>
+                                 <input type="file" id="ads_video" name="ads_video" required class="form-control">
+                              </div>
+
                                 </div> </div> 
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                  <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
@@ -393,7 +398,7 @@ window.onload=function(){
      document.getElementsByClassName('error-message')[2].style.display = 'none';
      document.getElementsByClassName('error-message')[3].style.display = 'none';
      document.getElementsByClassName('error-message')[4].style.display = 'none';
-
+     document.getElementsByClassName('error-message')[5].style.display = 'none';
 
 };
 
@@ -404,7 +409,7 @@ window.onload=function(){
       var gender_val = $("#gender").val();
       var ads_name_val = $("#ads_name").val();
       var ads_path_val = $("#ads_path").val();
-
+      var ads_video_val = $("#ads_video").val();
       
       if(age_validation == true && household_income_val == true  && gender_val != null ){
          document.getElementsByClassName("error-message")[0].style.display = "none";
@@ -420,16 +425,18 @@ window.onload=function(){
          document.getElementById("Next1").disabled = true;
       }
 
-      if(ads_name_val != '' && ads_path_val != ''){
+      if(ads_name_val != '' && ads_path_val != '' && ads_video_val != '' ){
 
          document.getElementsByClassName("error-message")[3].style.display = "none";
          document.getElementsByClassName('error-message')[4].style.display = 'none';
+         document.getElementsByClassName('error-message')[5].style.display = 'none';
 
          document.getElementById("Next2").disabled = false;
       }else{
 
          document.getElementsByClassName("error-message")[3].style.display = "block";
          document.getElementsByClassName('error-message')[4].style.display = 'block';
+         document.getElementsByClassName('error-message')[5].style.display = 'block';
 
          document.getElementById("Next2").disabled = true;
       }
