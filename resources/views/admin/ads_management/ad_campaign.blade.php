@@ -1,15 +1,58 @@
 
 @extends('admin.master')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    table{
+        width: 100%;
+      
+        
+    }td,thead{
+        text-align: center;
+    }
+    .modal-body{
+        padding-left:30px!important;
+    }
+    .fc-widget-content{
+        height: 80px!important;
+    }
+    .fc-button-group{
+        margin-bottom: 10px;
+       
+    }
+    .fc-prev-button{
+         padding: 10px;
+        background-color: #000
+      
+    }
+    .fc-next-button{
+         padding: 10px;
+        float:right;
+         background-color: #000;
+    }
+    .fc-month-button{
+        background-color: red;
+        border: none;
+    }
+    .fc-agendaWeek-button{
+        background-color: green;
+        border: none;
+    }
+    .fc-agendaDay-button{
+        background-color: orange;
+        border: none;
+    }
+</style>
 @section('content')
 <div id="content-page" class="content-page">
+    <div class="iq-card">
+        <h2>Ads Campaign </h2>
  <div class="container-fluid">
-  <div class="row">
-    <h2>Ads Campaign </h2>
-    <div id='full_calendar_events'></div>
+  <div class="row mt-4 ml-5">
+    <div class="col-md-8">
+    <div id='full_calendar_events'></div></div>
 </div>
 </div>
-</div>
+</div></div>
 <!-- ADD EVENT MODAL -->
       
       <div class="modal fade" tabindex="-1" role="dialog" id="newEventModal">
