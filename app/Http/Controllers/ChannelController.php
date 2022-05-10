@@ -418,7 +418,7 @@ class ChannelController extends Controller
 
             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
 
-            $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
+            $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$vid)->get();
 
             if(!empty($categoryVideos->publish_time)){
             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');

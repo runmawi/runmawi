@@ -505,7 +505,7 @@ border-radius: 0px 4px 4px 0px;
 
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
-                                 <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
+                                 <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
                               </div>
 
                               <div class="col-sm-6 form-group">
