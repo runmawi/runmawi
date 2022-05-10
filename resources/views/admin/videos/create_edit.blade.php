@@ -373,11 +373,16 @@ border-radius: 0px 4px 4px 0px;
                </div>
                <div class="col-sm-4 form-group">
                    <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
-                   <input type="file" class="form-group" name="reels_videos" accept="video/mp4,video/x-m4v,video/*" id="" >
-                   @if(!empty($video->reelvideo) && $video->reelvideo != null )
-                        <video width="200" height="200" controls>
-                        <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $video->reelvideo }}" type="video/mp4">
-                   </video>
+                   <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
+
+                   @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
+                     <div class="d-flex">
+                           @foreach($Reels_videos as $reelsVideo)
+                              <video width="200" height="200" controls style="padding: 6px;">
+                                 <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                              </video>
+                           @endforeach
+                        </div>
                    @endif
                </div>
                </div>   

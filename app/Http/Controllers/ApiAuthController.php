@@ -953,17 +953,17 @@ public function verifyandupdatepassword(Request $request)
             $ads_Post_time  =  gmdate("H:i:s", $item->duration - 1) ;
         }
 
-        $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video : null ;
-        $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : null;
+        $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
+        $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
 
         if(  $ads_videos != null && $ads_videos->ads_position == 'pre' ){
-          $item['pre_position_time'] =$ads_videos ? $ads_Post_time  : null;
+          $item['pre_position_time'] =$ads_videos ? $ads_Post_time  : " ";
 
         }elseif(  $ads_videos != null  && $ads_videos->ads_position == 'mid' ){
-          $item['mid_position_time'] =$ads_videos ? $ads_mid_time  : null;
+          $item['mid_position_time'] =$ads_videos ? $ads_mid_time  : " ";
 
         }elseif($ads_videos != null  && $ads_videos->ads_position == 'post'  ){
-          $item['post_position_time'] =$ads_videos ? $ads_Post_time  : null;
+          $item['post_position_time'] =$ads_videos ? $ads_Post_time  : " ";
         }
      
         return $item;
