@@ -238,7 +238,7 @@ border-radius: 0px 4px 4px 0px;
                    <div class="col-12 form-group">
                         <label class="m-0">Links &amp; Details</label>
                         <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
-                      placeholder="Link and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
+                      placeholder="Link and details">@if(!empty($video->details)){{ strip_tags($video->details) }}@endif</textarea>
                    </div>
                </div>
                 <div class="row">
@@ -425,17 +425,20 @@ border-radius: 0px 4px 4px 0px;
                </fieldset>
                <fieldset>
                <div class="form-card">
-               <div class="row">
-               <div class="col-7">
-               <h2 class="fs-title">Video Access </h2>
-               </div>
-               </div> 
-               <div class="row">
-               <div class="col-md-4">
-               <label class="m-0">Recommendations</label>
-               <input type="text" class="form-control" id="Recommendation " name="Recommendation" value="@if(!empty($video->Recommendation)){{ $video->Recommendation }}@endif">
-               </div> 
-               </div>
+
+               {{-- <div class="row">
+                  <div class="col-7">
+                     <h2 class="fs-title">Video Access </h2>
+                  </div>
+               </div>  --}}
+
+               {{-- <div class="row">
+                  <div class="col-md-4">
+                     <label class="m-0">Recommendations</label>
+                     <input type="text" class="form-control" id="Recommendation " name="Recommendation" value="@if(!empty($video->Recommendation)){{ $video->Recommendation }}@endif">
+                  </div> 
+               </div> --}}
+
                <div class="row">
                    <div class="col-sm-12">
                     <h2 class="fs-title">Geo-location for Videos</h2>
