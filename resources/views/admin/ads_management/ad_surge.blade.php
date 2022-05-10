@@ -1,16 +1,62 @@
 
 @extends('admin.master')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    table{
+        width: 100%;
+      
+        
+    }td,thead{
+        text-align: center;
+    }
+    .modal-body{
+        padding-left:30px!important;
+    }
+    .fc-widget-content{
+        height: 80px!important;
+    }
+    .fc-button-group{
+        margin-bottom: 10px;
+       
+    }
+    .fc-prev-button{
+         padding: 10px;
+        background-color: #000
+      
+    }
+    .fc-next-button{
+         padding: 10px;
+        float:right;
+         background-color: #000;
+    }
+    .fc-month-button{
+        background-color: red;
+        border: none;
+    }
+    .fc-agendaWeek-button{
+        background-color: green;
+        border: none;
+    }
+    .fc-agendaDay-button{
+        background-color: orange;
+        border: none;
+    }
+</style>
+
 @section('content')
 <div id="content-page" class="content-page">
+     <div class="iq-card">
  <div class="container-fluid">
-  <div class="row">
-    <h2>Ads Surge Price </h2>
+     <h2>Ads Surge Price </h2>
     <p>Notes: Adding surge pricing will increase the price of the base by x times.</p>
-    <div id='full_calendar_events'></div>
+  <div class="row">
+      
+    
+      <div class="col-md-8">
+    <div id='full_calendar_events'></div></div>
 </div>
 </div>
-</div>
+    </div></div>
 @section('javascript')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
