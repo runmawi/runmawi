@@ -4,12 +4,12 @@
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
             <?php  if(isset($Reels_videos)) :
-                foreach($Reels_videos as $reel): 
+                foreach($Reels_videos as $key => $reel): 
             ?>
 
             <li class="slide-item">
                 <a href="<?php echo URL::to('home') ?>">
-                    <div class="block-images position-relative" data-toggle="modal" data-target="#Reels">
+                    <div class="block-images position-relative Reels_video_ir" data-toggle="modal" data-target="#Reels" id="">
                             <div class="img-box">
                                 <a>
                                     <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->image;  ?>"  data-play="hover" >
@@ -22,17 +22,15 @@
                     <div class="block-description">
                             <div class="hover-buttons">
                                 <a class="text-white btn-cl"  data-toggle="modal" data-target="#Reels">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>"></a>
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png'; ?>" data-name=<?php echo $reel->reels_videos ?> onclick="addvidoes(this)" ></a>
                             </div>
                     </div>
 
                     <div class="mt-2">
-                              <!-- <a  href="<?php //echo URL::to('Reals_videos') ?><?// '/videos/' . $reel->slug ?>">
-                                      </a> -->
-                                      <h6><?php echo __($reel->title); ?></h6>
-                                <div class="movie-time d-flex align-items-center my-2">
-                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $reel->age_restrict ?></div>
-                                </div>
+                            <h6><?php  echo (strlen($reel->reels_videos_slug) > 25) ? substr($reel->reels_videos_slug,0,26).'...' : $reel->reels_videos_slug; ?></h6>
+                            <div class="movie-time d-flex align-items-center my-2">
+                                 <input type="hidden" name="reals_videos_id" class="reals_videos_id" value=<?php echo $reel->reels_videos ?> >
+                            </div>
                     </div>
                 </a>
             </li>
@@ -48,7 +46,7 @@
       <div class="modal-content">
             <div class="modal-body" id="Reels_player"  >
                 <video>
-                    <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
+                    <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$reel->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
                 </video>
             </div>
 
@@ -61,14 +59,21 @@
 </div>
 </div>
 
+
 <!-- Reels Player -->
 
-<?php $ReelVideos = URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;  ?>
+<?php $ReelVideos = URL::to('public/uploads/reelsVideos').'/';  ?>
 <script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
 
 <script>
-    var Reels = <?php echo json_encode($ReelVideos); ?>;
-    var player = new Playerjs({id:"Reels_player", file:Reels,autoplay:1});
+
+    function addvidoes(ele) 
+        {
+            var Reels_videos = $(ele).attr('data-name');
+            var Reels_url = <?php echo json_encode($ReelVideos); ?>;
+            var Reels = Reels_url+Reels_videos;
+            var player = new Playerjs({id:"Reels_player", file:Reels,autoplay:1});
+        }
 
     $(document).ready(function(){
         $(".reelsclose").click(function(){
