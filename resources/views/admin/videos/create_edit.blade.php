@@ -86,7 +86,9 @@ border-radius: 0px 4px 4px 0px;
                         <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></div>
+                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
+                       <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
+                     </div>
 <div id="content-page" class="">
 <div class="container-fluid p-0">
 <div class="row">

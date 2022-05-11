@@ -118,21 +118,24 @@ class AdminDashboardController extends Controller
     }
 
     public function Masterlist()
+
     {
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
         if ($current_date > $duedate)
         {
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
             $params = [
-                'userid' => 0,
+                        'userid' => 0,
             ];
     
             $headers = [
                 'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
             ];
+
             $response = $client->request('post', $url, [
                 'json' => $params,
                 'headers' => $headers,
@@ -140,35 +143,38 @@ class AdminDashboardController extends Controller
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
+            $settings = Setting::first();
+            
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+                );
             return View::make('admin.expired_dashboard', $data);
-        }else{
-        $Videos =  Video::orderBy('created_at', 'DESC')->get();
+        }
+        else{
+                $Videos =  Video::orderBy('created_at', 'DESC')->get();
 
-        $LiveStream = LiveStream::orderBy('created_at', 'DESC')->get();
+                $LiveStream = LiveStream::orderBy('created_at', 'DESC')->get();
 
-        $audios = Audio::orderBy('created_at', 'DESC')->get();
+                $audios = Audio::orderBy('created_at', 'DESC')->get();
 
-        $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
-                    ->orderBy('created_at', 'DESC')->get();
+                $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
+                            ->orderBy('created_at', 'DESC')->get();
 
-        $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
+                $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
 
-        $data = array(
-            'Videos' => $Videos,
-            'LiveStream' => $LiveStream,
-            'audios'  => $audios,
-            'Episode' => $Episode,
-            'master_count' => $master_count,
-        );
+                $data = array(
+                    'Videos' => $Videos,
+                    'LiveStream' => $LiveStream,
+                    'audios'  => $audios,
+                    'Episode' => $Episode,
+                    'master_count' => $master_count,
+                );
 
-       return View::make('admin.Masterlist.index', $data);
+                return View::make('admin.Masterlist.index', $data);
+            }
     }
-    }
+
     public function PlanPurchase($plan_name)
     {
         $client = new Client();
@@ -221,6 +227,29 @@ class AdminDashboardController extends Controller
 
         $url = "https://flicknexs.com/upgrade/".$plan_slug.'/yearly';
         return Redirect::intended($url);
+
+    }
+
+    public function ActiveSlider(Request $request){
+
+      
+        $Active_Videos =  Video::where('banner',1)->orderBy('created_at', 'DESC')->get();
+
+        $Active_LiveStream = LiveStream::where('banner',1)->orderBy('created_at', 'DESC')->get();
+
+        $Active_Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
+                            ->where('episodes.banner',1)->orderBy('created_at', 'DESC')->get();
+
+        $Active_count = count($Active_Videos) +  count($Active_LiveStream) + count($Active_Episode);
+
+        $data = array(
+            'Videos' => $Active_Videos,
+            'LiveStream' => $Active_LiveStream,
+            'Episode' => $Active_Episode,
+            'Active_count' => $Active_count,
+            );
+
+         return View::make('admin.Videos.Active_slider', $data);
 
     }
 }
