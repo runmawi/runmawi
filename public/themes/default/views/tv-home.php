@@ -31,7 +31,7 @@ foreach( $errors->all() as $message ){ ?>
 
 <!-- free Contents videos -->
 <section id="iq-favorites">
-    <div class="fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <?php include('partials/home/free_content.blade.php'); ?>
@@ -42,7 +42,7 @@ foreach( $errors->all() as $message ){ ?>
 
 
 <section id="iq-favorites">
-    <div class="fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <?php include('partials/home/latest-series.php'); ?>
@@ -52,7 +52,7 @@ foreach( $errors->all() as $message ){ ?>
   </section>
 
   <section id="iq-favorites">
-    <div class="fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <?php include('partials/home/latest-episodes.php'); ?>
@@ -62,7 +62,7 @@ foreach( $errors->all() as $message ){ ?>
   </section>
 
   <section id="iq-favorites">
-    <div class="fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <?php include('partials/home/featured-episodes.php'); ?>
@@ -71,7 +71,7 @@ foreach( $errors->all() as $message ){ ?>
     </div>
   </section>
   <section id="iq-tvthrillers" class="s-margin">
-         <div class="fluid">
+         <div class="container-fluid">
         <?php
         $parentCategories = App\Genre::all();
         foreach($parentCategories as $category) {

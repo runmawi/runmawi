@@ -50,7 +50,7 @@
                     </div>
                     @foreach($permission as $permissions)
                                
-                               <div  class="col-md-4 d-flex" style="width: 33%; float:left;">
+                               <div  class="col-md-4 d-flex align-items-center justify-content-between" style="width: 33%; float:left;">
                                            
                                         <div>  <label  style="color:#000000!important;">{{$permissions->name}}</label></div>
                                            <label class="switch">
@@ -68,7 +68,7 @@
 
                     <br>
                                             <div class="form-group row mb-0">
-                                                <div class="col-md-12 offset-md-4">
+                                                <div class="col-md-12 offset-md-10">
                                                     <button type="submit" id ="submit" class="btn btn-primary">
                                                         {{ __('Register') }}
                                                     </button>
