@@ -93,6 +93,7 @@ use CPANEL;
 use App\Deploy;
 use App\LoggedDevice;
 use Razorpay\Api\Api;
+use App\AdsVideo;
 
 class ApiAuthController extends Controller
 {
@@ -917,11 +918,9 @@ public function verifyandupdatepassword(Request $request)
 
   public function videodetail(Request $request)
   {
-        
     $videoid = $request->videoid;
-        
-       
-        $current_date = date('Y-m-d h:i:s a', time()); 
+      
+    $current_date = date('Y-m-d h:i:s a', time()); 
     $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
@@ -930,6 +929,43 @@ public function verifyandupdatepassword(Request $request)
         $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
         $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
 
+        $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
+            ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
+            ->first();
+
+        $ads_time = gmdate("H:i:s", $item->duration/2) ;
+        $ads_mid = substr($ads_time, 0, 2); 
+        
+        if($ads_mid == '00'){
+            $ads_mid_time =  gmdate("i:s", $item->duration/2) ;
+        }
+        else{
+            $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
+        }
+
+        $post_ads_time = gmdate("H:i:s", $item->duration - 1) ;
+        $ads_post = substr($post_ads_time, 0, 2); 
+        
+        if($ads_post == '00'){
+            $ads_Post_time =  gmdate("i:s", $item->duration - 1) ;
+        }
+        else{
+            $ads_Post_time  =  gmdate("H:i:s", $item->duration - 1) ;
+        }
+
+        $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
+        $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
+
+        if(  $ads_videos != null && $ads_videos->ads_position == 'pre' ){
+          $item['pre_position_time'] =$ads_videos ? $ads_Post_time  : " ";
+
+        }elseif(  $ads_videos != null  && $ads_videos->ads_position == 'mid' ){
+          $item['mid_position_time'] =$ads_videos ? $ads_mid_time  : " ";
+
+        }elseif($ads_videos != null  && $ads_videos->ads_position == 'post'  ){
+          $item['post_position_time'] =$ads_videos ? $ads_Post_time  : " ";
+        }
+     
         return $item;
       });
       // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();

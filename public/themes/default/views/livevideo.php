@@ -69,7 +69,7 @@ if(!Auth::guest()){
  if(!empty($password_hash)){
 if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
-        <div class="container">
+        <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
             <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>

@@ -49,7 +49,7 @@ use Exception;
 use getID3;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
-
+use App\ReelsVideo;
 
 class AdminVideosController extends Controller
 {
@@ -891,6 +891,7 @@ if(!empty($artistsdata)){
         $ads_rolls = AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $id)->pluck('ad_roll')->first(); 
 
+        $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$id)->get();
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -911,6 +912,7 @@ if(!empty($artistsdata)){
             'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
             'page' => 'Edit',
+            'Reels_videos' => $Reels_videos,
             'ads_paths' => $ads_details ? $ads_details : 0 ,
             'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
             );
@@ -1270,17 +1272,34 @@ if(!empty($artistsdata)){
     // Reels videos
         $reels_videos= $request->reels_videos;
             
+
         if($reels_videos != null){
-            $reelvideo_name = time().'.'.$request->reels_videos->extension();  
-            $reelvideo_names = 'reels'.$reelvideo_name;
-            $reelvideo = $request->reels_videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
-        
-            $ffmpeg = \FFMpeg\FFMpeg::create();
-            $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
-            $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-            $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
-            $video->reelvideo =  $reelvideo_names;
+
+            ReelsVideo::where('video_id', $video->id)->delete();
+
+            foreach($reels_videos as $Reel_Videos)
+            {
+                $reelvideo_name = time().rand(1,50).".".$Reel_Videos->extension();  
+                $reel_videos_slug = substr($Reel_Videos->getClientOriginalName() , 0, strpos($Reel_Videos->getClientOriginalName() , '.'));
+                
+                $reelvideo_names = 'reels'.$reelvideo_name;
+                $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+
+                unlink($reelvideo);
+
+                    $Reels_videos = new ReelsVideo;
+                    $Reels_videos->video_id = $video->id;
+                    $Reels_videos->reels_videos = $reelvideo_names;
+                    $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                    $Reels_videos->save();
+            }
         }
+
     //URL Link
           $url_link = $request->url_link;
 
@@ -1808,20 +1827,34 @@ if(!empty($artistsdata)){
                 $video->pdf_files =  $pdf_files;
             }
 
-    //Reels videos
-            $reels_videos= $request->reels_videos;
+    // Reels videos
+    $reels_videos= $request->reels_videos;
             
-            if($reels_videos != null){
-                $reelvideo_name = time().'.'.$request->file('reels_videos')->extension();  
-                $reelvideo_names = 'reels'.$reelvideo_name;
-                $reelvideo =$request->file('reels_videos')->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+    if($reels_videos != null){
+
+        foreach($reels_videos as $Reel_Videos)
+        {
+            $reelvideo_name = time().rand(1,50).".".$Reel_Videos->extension();  
+            $reel_videos_slug = substr($Reel_Videos->getClientOriginalName() , 0, strpos($Reel_Videos->getClientOriginalName() , '.'));
+            $reelvideo_names = 'reels'.$reelvideo_name;
             
-                $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
-                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
-                $video->reelvideo =  $reelvideo_names;
-            }
+            $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+            $ffmpeg = \FFMpeg\FFMpeg::create();
+            $videos = $ffmpeg->open('public/uploads/reelsVideos'.'/'.$reelvideo_name);
+            $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+            $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos'.'/'.$reelvideo_names);
+
+            unlink($reelvideo);
+
+                $Reels_videos = new ReelsVideo;
+                $Reels_videos->video_id = $video->id;
+                $Reels_videos->reels_videos = $reelvideo_names;
+                $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                $Reels_videos->save();
+        }
+    }
 
     //URL Link
             $url_link = $request->url_link;

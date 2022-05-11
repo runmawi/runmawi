@@ -190,13 +190,19 @@
                                  <label> Featured Ad Cost:</label>
                                  <input type="text" value="{{$settings->featured_pre_ad}}" class="form-control" id="price">
                               </div>
-                               <div class="form-group">
+
+                              <div class="form-group">
                                  <label> Ad Tag Url:</label>
                                  <p class="error-message" style="color:red">This filed is required</p>
-
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
-
                               </div>
+
+                              <div class="form-group">
+                                 <label> Ads Video Upload:</label>
+                                 <p class="error-messages" style="color:red">This filed is required</p>
+                                 <input type="file" id="ads_video" name="ads_video" required class="form-control">
+                              </div>
+
                            </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                            <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
                         </fieldset>
@@ -611,6 +617,9 @@ e.preventDefault();
      document.getElementsByClassName('error-message')[2].style.display = 'none';
      document.getElementsByClassName('error-message')[3].style.display = 'none';
      document.getElementsByClassName('error-message')[4].style.display = 'none';
+     document.getElementsByClassName('error-message')[5].style.display = 'none';
+     document.getElementsByClassName('error-messages')[0].style.display = 'none';
+
    };
 
 
@@ -621,7 +630,9 @@ e.preventDefault();
       var age_validation = $(".age").prop("checked");
       var ads_name_val = $("#ads_name").val();
       var ads_path_val = $("#ads_path").val();
+      var ads_video_val = $("#ads_video").val();
       var location_val = $("#location").val().length;
+
 
       if(age_validation == true && household_income_val == true  && gender_val != null ){
             document.getElementsByClassName("error-message")[0].style.display = "none";
@@ -635,13 +646,15 @@ e.preventDefault();
             document.getElementById("Next1").disabled = true;
          }
 
-      if(ads_name_val != '' && ads_path_val != ''){
+      if(ads_name_val != '' && ads_path_val != '' && ads_video_val !='' ){
             document.getElementsByClassName("error-message")[3].style.display = "none";
             document.getElementsByClassName('error-message')[4].style.display = 'none';
+            document.getElementsByClassName('error-messages')[0].style.display = 'none';
             document.getElementById("Next2").disabled = false;
          }else{
             document.getElementsByClassName("error-message")[3].style.display = "block";
             document.getElementsByClassName('error-message')[4].style.display = 'block';
+            document.getElementsByClassName('error-messages')[0].style.display = 'block';
             document.getElementById("Next2").disabled = true;
          }
 
