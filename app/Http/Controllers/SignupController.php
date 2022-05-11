@@ -370,7 +370,9 @@ public function createStep2(Request $request)
                  return redirect('/')->with('message', 'You have successfully verified your account. Please login below.');
             }else{
                 $register = $request->session()->get('register');
-                return view('register.step2',compact('register'), compact('plans_data'));
+
+                return Theme::view('register.step2', compact(['register', 'plans_data']));
+
             }
 
     }

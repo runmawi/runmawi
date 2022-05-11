@@ -272,6 +272,11 @@ class AdminThemeSettingsController extends Controller
                      $request['slider'] = $category->slider;
               }
 
+          if (isset($request['player_image']) && !empty($request['player_image'])){
+                $player_image = $request['player_image']; 
+             } else {
+                 $request['player_image'] = $category->player_image;
+          }
              // $slug = $request['slug']; 
               if ( $in_home != '') {
                   $input['active']  = $request['active'];
@@ -290,6 +295,19 @@ class AdminThemeSettingsController extends Controller
                     $category->slider  = $file->getClientOriginalName();
                     $file->move($path,$category->slider);
               } 
+          $path = public_path().'/uploads/videocategory/';
+            if( isset($player_image) && $player_image!= '') {   
+              //code for remove old file
+              if ($player_image != ''  && $player_image != null) {
+                  $file_old = $path.$player_image;
+                  if (file_exists($file_old)){
+                        unlink($file_old);
+                  }
+              }
+              $file = $player_image;
+              $category->player_image  = $file->getClientOriginalName();
+              $file->move($path,$category->player_image);
+        } 
             $category->link  = $link;
             $category->trailer_link  = $trailer_link;
             $category->title  = $title;
@@ -514,6 +532,7 @@ class AdminThemeSettingsController extends Controller
             $slider = new Slider();
             $path = public_path().'/uploads/videocategory/';
             $image = $request['slider'];
+            $player_image = $request['player_image'];
             $link = $request['link'];
             $title = $request['title'];
             $acive = $request['acive']; 
@@ -529,13 +548,31 @@ class AdminThemeSettingsController extends Controller
               //upload new file
               $file = $image;
               $slider->slider  = $file->getClientOriginalName();
-              $slider->link  = $link;
-              $slider->trailer_link  = $trailer_link;
-              $slider->title  = $title;
-              $file->move($path, $slider->slider);
+              $file->move($path,$slider->slider);
+
            } 
+
+
+           $path = public_path().'/uploads/videocategory/';
+           if( isset($player_image) && $player_image!= '') {   
+             //code for remove old file
+             if ($player_image != ''  && $player_image != null) {
+                 $file_old = $path.$player_image;
+                 if (file_exists($file_old)){
+                       unlink($file_old);
+                 }
+             }
+             $file = $player_image;
+             $slider->player_image  = $file->getClientOriginalName();
+             $file->move($path,$slider->player_image);
+       } 
+          $slider->link  = $link;
+          $slider->trailer_link  = $trailer_link;
+          $slider->title  = $title;
+         
           
-          $input['slider']  = $file->getClientOriginalName();
+          // $input['slider']  = $file->getClientOriginalName();
+          // $input['player_image']  = $player_file->getClientOriginalName();
           $slider->active = $request['active'];
           $slider->save();
             return back()->with('success', 'New Category added successfully.');

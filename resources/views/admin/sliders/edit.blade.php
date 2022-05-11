@@ -40,6 +40,23 @@
                         @endif
                	 </div>
 			</div>
+			<br>
+			<div class="row">
+      			<div class="col-md-6">
+
+                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                        <label>Player Image:</label>
+						<p>Select the movie image (16:9 Ratio or 1280X720px):</p> 
+						<input type="file" name="player_image" id="player_image" >                     
+
+                    </div>
+                </div>
+				<div class="col-md-6">
+                        @if(!empty($categories[0]->slider))
+						<img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->player_image }}" class="movie-img" width="200"/>
+                        @endif
+               	 </div>
+			</div>
 
                        <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Target Link:</label>
