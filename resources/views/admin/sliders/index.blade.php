@@ -50,7 +50,12 @@
                         <label>Selece the Slider Image (1280x720 px or 16:9 ratio):</label>
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />
                     </div> 
-                        
+
+                    <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
+						<label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+						<input type="file" name="player_image" id="player_image" >
+					</div>
+
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
                         <label>Target Link:</label>
                         <input type="text" class="form-control" name="link" id="link" />
@@ -124,6 +129,7 @@
                 <tr class="table-header r1">
                     <th class="text-center">Slider Title</th>
                     <th class="text-center">Slider Image</th>
+                    <th class="text-center">Player Image</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Operation</th>
                 </tr>
@@ -131,12 +137,13 @@
                     <tr class="dd" id="{{ $category->id }}">
                         <td valign="bottom" class="text-center">{{ $category->title }}</td>
                          <td valign="bottom" class="text-center"> <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->slider }}" width="50" height="50"></td>
+                         <td valign="bottom" class="text-center"> <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->player_image }}" width="50" height="50"></td>
 
                         <td class="text-center"> <?php if( $category->active == 1 ) { echo "<span class='btn btn-success' value='Active'>Active</span>"; } else  { echo "<span class='btn btn-danger' value='Active'>Deactive</span>"; };?> </td>
                         <td class="text-center">
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/sliders/edit/') }}/{{$category->id}}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('admin/sliders/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
+											 onclick="return confirm('Are you sure?')" data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
                            
                         </td>
                     </tr>
