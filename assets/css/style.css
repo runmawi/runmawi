@@ -164,7 +164,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 /*---------------------------------------------------------------------
                       Pages Content
 -----------------------------------------------------------------------*/
-.main-content { /*padding-top: 40px;*/ }
+.main-content { /*padding-top: 40px;*/padding:15px;}
 #iq-favorites{
     margin-top: 30px;
 }
@@ -252,10 +252,13 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
 /*---------------------*/
 #trending-slider .tranding-block, .banner-wrapper { background-size: cover; background-position: top right; position: relative; }
 .trending-pills { background: rgb(0, 0, 0, 0.25); }
-.trending-info { padding: 60px 0; }
+.trending-info { padding: 60px 0;font-size: 30px!important; }
 .tab-title-info { z-index: 99; }
 .trending-info h1{
     font-size: 35px;
+}
+.series_title h1{
+    font-size: 30px;
 }
 .trending-content .tab-pane.fade { display: none; visibility: hidden; opacity: 0; }
 .trending-content .tab-pane.fade.active.show { display: block; visibility: visible; opacity: 1; }
