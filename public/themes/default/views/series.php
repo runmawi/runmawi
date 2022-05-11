@@ -5,6 +5,9 @@
        margin: 0 auto;
         align-items: center;
     }
+    .desc{
+        font-size: 14px;
+    }
 </style>
 
 <?php 
@@ -30,12 +33,13 @@ $series = $series_data ;
 						</select>
 					</div><br><br>
 					<div class="row p-2">
-						<p class="desc" style="color:#fff;"><?php echo $series->description;?></p>
+                        <div class="col-md-7">
+						<p class="desc" style="color:#fff;"><?php echo $series->description;?></p></div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3 text-center">
+		<div class="col-md-5 text-center">
 			<img src="<?= URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100">
 		</div>
 	</div>
@@ -82,11 +86,11 @@ $series = $series_data ;
                                     </div>
                                 <!-- </div> -->
 								</div>
-									<div class="col-md-7">
-										<h2><?= $episodes->title; ?></h2>
+									<div class="col-md-7 trending-info">
+										<h3><?= $episodes->title; ?></h3>
 										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                        <p class="date"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p><?= gmdate("H:i:s", $episodes->duration); ?></p>
+                                        <p class="date text-white"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+										<p class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></p>
 									</div>
 									<div class="col-md-2">
 									</div>
@@ -98,8 +102,7 @@ $series = $series_data ;
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
-										<div class="corner-text-wrapper">
-                                        <div class="corner-text">
+										
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
@@ -107,15 +110,14 @@ $series = $series_data ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                       
                                 <!-- </div> -->
 								</div>
-									<div class="col-md-7">
-										<h2><?= $episodes->title; ?></h2>
-										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                        <p class="date"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p><?= gmdate("H:i:s", $episodes->duration); ?></p>
+									<div class="col-md-7 ">
+										<h4><?= $episodes->title; ?></h4>
+										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
+                                        <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+										<p class="text-white desc">Duration: <?= gmdate("H:i:s", $episodes->duration); ?></p>
 									</div>
 									<div class="col-md-2">
 										

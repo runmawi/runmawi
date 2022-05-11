@@ -252,6 +252,7 @@ $series=App\series::first();
 				<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
 				</p>
+                  <div class="col-md-6"></div>
 				<p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
                 <!-- <div class="movie-time d-flex align-items-center my-2"> -->
                   <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
