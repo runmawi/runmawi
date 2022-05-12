@@ -87,7 +87,7 @@ $series = $series_data ;
                                 <!-- </div> -->
 								</div>
 									<div class="col-md-7 trending-info">
-										<h3><?= $episodes->title; ?></h3>
+										<h1><?= $episodes->title; ?></h1>
 										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
                                         <p class="date text-white"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
 										<p class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></p>
