@@ -6087,4 +6087,11 @@ public function Adstatus_upate(Request $request)
       'Message' => 'Ads status changed Successfully'], 200);
    }
 
+  public function homesetting()
+  {
+      $homesetting = HomeSetting::first();
+
+      return $homesetting;
+  }
+
 }

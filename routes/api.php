@@ -263,4 +263,7 @@ Route::group([
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
 
+// Home Setting Status
+    Route::get('homesetting', 'ApiAuthController@homesetting');
+
 });
