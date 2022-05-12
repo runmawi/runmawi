@@ -147,9 +147,9 @@ $series=App\series::first();
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
-	<div class="container series-details">
+	<div class="container-fluid series-details">
 	<div id="series_title">
-		<div class="container">
+		<div class="">
             <div class="row">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
@@ -225,7 +225,7 @@ $series=App\series::first();
 		<div class="next_url" style="display: none;"><?= $url ?></div>
 		<?php } ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
+		<div class="iq-main-header ">
   <h4 class="main-title">Season</h4>                      
 </div>
 <div class="favorites-contens">
@@ -234,16 +234,17 @@ $series=App\series::first();
 	foreach($season as $key => $seasons):
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
-        <li class="slide-item p-2">
+        <li class="slide-item">
 		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
 				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200">
 				<div class="details">
-				<h4><?= $episodes->title; ?> <span><br><?= gmdate("H:i:s", $episodes->duration); ?></span></h4>
+				<h6><?= $episodes->title; ?> </h6>
+                    <span class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></span>
 				</div></a>
               <div class="block-contents">
-			  <p class="date" style="color:#fff;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+			  <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
 				<?php elseif($episodes->access == 'subscriber'): ?>
@@ -265,15 +266,16 @@ $series=App\series::first();
                   </a>
                 </div> -->
 				<!-- </div> -->
-          <!-- </a> -->
+          <!-- </a> --></div>
         </li>
 		<?php endif; endforeach; ?>
       <?php endforeach; 
      ?>
   </ul>
-</div>
+
 </div>
  </div>
+</div>
 		<div class="clear">
 		<h2 id="tags">
 		<?php if(isset($episode->tags)) {
