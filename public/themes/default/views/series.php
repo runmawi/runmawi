@@ -8,12 +8,15 @@
     .desc{
         font-size: 14px;
     }
+    h1{
+        font-size: 27px!important;
+    }
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-<div class="container" >
+<div class="container-fluid" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3">
@@ -46,8 +49,8 @@ $series = $series_data ;
 </div>
 
 <section id="tabs" class="project-tab">
-	<div class="container">
-		<div class="row">
+	<div class="">
+		<div class="row m-5">
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
 					<div class="nav nav-tabs nav-fill " id="nav-tab" role="tablist">
@@ -199,12 +202,12 @@ $series = $series_data ;
                 <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-				</label><br>
+				<br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
 				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-			</label>
+			
 						<?php  } }else{
                             echo "Please Turn on Payment Mode to Purchase";
                             break;
@@ -221,7 +224,7 @@ $series = $series_data ;
            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
          </div>
        </div>
- </div>
+ </div></div>
 
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
@@ -359,5 +362,4 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-</div>
 <?php include('footer.blade.php'); ?>
