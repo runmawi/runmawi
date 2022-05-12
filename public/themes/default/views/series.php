@@ -137,7 +137,8 @@ $series = $series_data ;
 								Detail
 							</div>
 						</div>
-						
+            </div>
+        </div>
 
 		<?php else: ?>
 			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
@@ -159,7 +160,7 @@ $series = $series_data ;
         </div>
 				</div>
 				</div>
-			</div>
+		 
 		</section>
 		
 				<?php endif;?>
@@ -220,8 +221,8 @@ $series = $series_data ;
            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
          </div>
        </div>
-     </div>
-   </div>
+ </div>
+
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
 
@@ -358,4 +359,5 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php //include('footer.blade.php'); ?>
+</div>
+<?php include('footer.blade.php'); ?>
