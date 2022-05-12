@@ -94,6 +94,7 @@ use App\Deploy;
 use App\LoggedDevice;
 use Razorpay\Api\Api;
 use App\AdsVideo;
+use App\AdvertisementView;
 
 class ApiAuthController extends Controller
 {
@@ -689,6 +690,7 @@ class ApiAuthController extends Controller
         // "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
         'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
         "videos" => $videos
       );
     }
@@ -919,6 +921,7 @@ public function verifyandupdatepassword(Request $request)
   public function videodetail(Request $request)
   {
     $videoid = $request->videoid;
+
       
     $current_date = date('Y-m-d h:i:s a', time()); 
     $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
@@ -933,39 +936,17 @@ public function verifyandupdatepassword(Request $request)
             ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
             ->first();
 
-        $ads_time = gmdate("H:i:s", $item->duration/2) ;
-        $ads_mid = substr($ads_time, 0, 2); 
-        
-        if($ads_mid == '00'){
-            $ads_mid_time =  gmdate("i:s", $item->duration/2) ;
-        }
-        else{
-            $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
-        }
-
-        $post_ads_time = gmdate("H:i:s", $item->duration - 1) ;
-        $ads_post = substr($post_ads_time, 0, 2); 
-        
-        if($ads_post == '00'){
-            $ads_Post_time =  gmdate("i:s", $item->duration - 1) ;
-        }
-        else{
-            $ads_Post_time  =  gmdate("H:i:s", $item->duration - 1) ;
-        }
+        $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
+        $ads_Post_time  = "00:00:00" ;
+        $ads_pre_time   =  gmdate("H:i:s", $item->duration - 1) ;
 
         $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
         $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
 
-        if(  $ads_videos != null && $ads_videos->ads_position == 'pre' ){
-          $item['pre_position_time'] =$ads_videos ? $ads_Post_time  : " ";
-
-        }elseif(  $ads_videos != null  && $ads_videos->ads_position == 'mid' ){
-          $item['mid_position_time'] =$ads_videos ? $ads_mid_time  : " ";
-
-        }elseif($ads_videos != null  && $ads_videos->ads_position == 'post'  ){
-          $item['post_position_time'] =$ads_videos ? $ads_Post_time  : " ";
-        }
-     
+        $item['pre_position_time'] = $ads_videos != null && $ads_videos->ads_position == 'pre' ? $ads_pre_time  : "0";
+        $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
+        $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
+        $item['ads_seen_status'] = $item->ads_status;
         return $item;
       });
       // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();
@@ -6064,5 +6045,53 @@ public function LocationCheck(Request $request){
         'status'  => 'fails',
         'Message' => 'Subscription Updated cannot done for UPI payment'], 200);}
 }
+
+public function AdsView(Request $request)
+{
+    $ads_videos = AdsVideo::where('ads_videos.video_id',$request->videoid)
+    ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
+    ->first();
+
+    AdvertisementView::create([
+      'user_id'  => $request->user_id,
+      'video_id' => $request->videoid,
+      'ads_id' => $ads_videos->ads_id,
+    ]);
+
+      if($request->status == "seen"){
+
+        $Video = Video::find($request->videoid);
+        $Video->ads_status = '1';
+        $Video->update();
+
+        $message = 1;
+
+      }else{
+        $message = 0;
+      }
+
+    return response()->json([
+      'status'  => $message ,
+      'Message' => 'Ads video'], 200);
+  
+}
+
+public function Adstatus_upate(Request $request)
+{
+    $Video = Video::find($request->videoid);
+    $Video->ads_status = '0';
+    $Video->update();
+
+    return response()->json([
+      'status'  => 'true',
+      'Message' => 'Ads status changed Successfully'], 200);
+   }
+
+  public function homesetting()
+  {
+      $homesetting = HomeSetting::first();
+
+      return $homesetting;
+  }
 
 }

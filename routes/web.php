@@ -433,6 +433,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     /* Master List */
     Route::get('/Masterlist', 'AdminDashboardController@Masterlist'); 
+    Route::get('/ActiveSlider', 'AdminDashboardController@ActiveSlider'); 
+
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
