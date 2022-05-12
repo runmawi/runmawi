@@ -665,8 +665,8 @@ video.trail-vid{
 .tab-pane {
   color: #ffff;
   display: none;
-  padding: 50px;
-  text-align: left;
+    padding-top:30px;
+    text-align: left;
   height: 385px;
 }
 .iq-favorites{
