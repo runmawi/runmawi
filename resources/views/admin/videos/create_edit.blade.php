@@ -566,7 +566,7 @@ border-radius: 0px 4px 4px 0px;
                <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                <input type="file" name="player_image" id="player_image" >
                @if(!empty($video->player_image))
-               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
+               <img src="{{  $video->player_image }}" class="video-img" width="200" height="200"/>
                @endif
                </div>
                </div>
