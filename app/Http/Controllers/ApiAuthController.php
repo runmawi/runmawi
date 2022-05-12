@@ -690,6 +690,7 @@ class ApiAuthController extends Controller
         // "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
         'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
         "videos" => $videos
       );
     }
@@ -920,6 +921,7 @@ public function verifyandupdatepassword(Request $request)
   public function videodetail(Request $request)
   {
     $videoid = $request->videoid;
+
       
     $current_date = date('Y-m-d h:i:s a', time()); 
     $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
