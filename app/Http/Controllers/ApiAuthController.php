@@ -2814,6 +2814,8 @@ public function checkEmailExists(Request $request)
     $email = $input['email'];
     $user_url = $input['user_url'];
     $login_type = $input['login_type'];//Facebook or Google
+
+   
     /*Parameters*/
     /*Profile image move to avatar folder*/
     if($user_url != ''){
@@ -2850,6 +2852,7 @@ public function checkEmailExists(Request $request)
           'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
+          'active'   => 1 ,
           'role'     =>'registered',
           'password' =>'null'
         );
@@ -2879,6 +2882,7 @@ public function checkEmailExists(Request $request)
           'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
+          'active'   => 1 ,
           'role'     =>'registered',
           'password' =>'null'
         );
@@ -6087,6 +6091,16 @@ public function Adstatus_upate(Request $request)
       'Message' => 'Ads status changed Successfully'], 200);
    }
 
+
+   public function profileimage_default()
+{
+    $image_default = URL::to('/public/uploads/avatars/defaultprofile.png');
+  
+    return response()->json([
+      'status'  => 'true',
+      'Message' =>  $image_default], 200);
+   }
+   
   public function homesetting()
   {
       $homesetting = HomeSetting::first();
