@@ -182,7 +182,9 @@ class AdminThemeSettingsController extends Controller
                   $file = $light_logo;
                   $theme_settings->light_mode_logo  = $file->getClientOriginalName();
                   $file->move($path, $theme_settings->light_mode_logo);
-                }
+            }
+
+          $theme_settings->signup_theme = !empty( $data['signup_theme']) ? '1' : '0';
 
           $theme_settings->save();       
         
