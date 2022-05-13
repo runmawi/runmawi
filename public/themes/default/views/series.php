@@ -8,12 +8,15 @@
     .desc{
         font-size: 14px;
     }
+    h1{
+        font-size: 27px!important;
+    }
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-<div class="container" >
+<div class="container-fluid" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3">
@@ -46,8 +49,8 @@ $series = $series_data ;
 </div>
 
 <section id="tabs" class="project-tab">
-	<div class="container">
-		<div class="row">
+	<div class="">
+		<div class="row m-5">
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
 					<div class="nav nav-tabs nav-fill " id="nav-tab" role="tablist">
@@ -71,8 +74,7 @@ $series = $series_data ;
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
 										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
-										<div class="corner-text-wrapper">
-                                        <div class="corner-text">
+										
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                           <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
@@ -82,12 +84,11 @@ $series = $series_data ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                        
                                 <!-- </div> -->
 								</div>
 									<div class="col-md-7 trending-info">
-										<h3><?= $episodes->title; ?></h3>
+										<h1><?= $episodes->title; ?></h1>
 										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
                                         <p class="date text-white"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
 										<p class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></p>
@@ -101,7 +102,9 @@ $series = $series_data ;
 							<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
-										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
+                                        <div class="block-images position-relative">
+                                    <div class="img-box">
+										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250" >
 										
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
@@ -110,9 +113,9 @@ $series = $series_data ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                       
+                                            </div>
                                 <!-- </div> -->
-								</div>
+                                        </div></div>
 									<div class="col-md-7 ">
 										<h4><?= $episodes->title; ?></h4>
 										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
@@ -137,7 +140,8 @@ $series = $series_data ;
 								Detail
 							</div>
 						</div>
-						
+            </div>
+        </div>
 
 		<?php else: ?>
 			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
@@ -159,7 +163,7 @@ $series = $series_data ;
         </div>
 				</div>
 				</div>
-			</div>
+		 
 		</section>
 		
 				<?php endif;?>
@@ -198,12 +202,12 @@ $series = $series_data ;
                 <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-				</label><br>
+				<br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
 				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-			</label>
+			
 						<?php  } }else{
                             echo "Please Turn on Payment Mode to Purchase";
                             break;
@@ -220,8 +224,8 @@ $series = $series_data ;
            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
          </div>
        </div>
-     </div>
-   </div>
+ </div></div>
+
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
 
@@ -358,4 +362,4 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php //include('footer.blade.php'); ?>
+<?php include('footer.blade.php'); ?>

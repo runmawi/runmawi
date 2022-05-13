@@ -265,4 +265,7 @@ Route::group([
     Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
 
 
+// Home Setting Status
+    Route::get('homesetting', 'ApiAuthController@homesetting');
+
 });

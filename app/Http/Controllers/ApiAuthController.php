@@ -6096,4 +6096,12 @@ public function Adstatus_upate(Request $request)
       'status'  => 'true',
       'Message' =>  $image_default], 200);
    }
+   
+  public function homesetting()
+  {
+      $homesetting = HomeSetting::first();
+
+      return $homesetting;
+  }
+
 }
