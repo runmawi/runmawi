@@ -6087,4 +6087,13 @@ public function Adstatus_upate(Request $request)
       'Message' => 'Ads status changed Successfully'], 200);
    }
 
+
+   public function profileimage_default()
+{
+    $image_default = URL::to('/public/uploads/avatars/defaultprofile.png');
+  
+    return response()->json([
+      'status'  => 'true',
+      'Message' =>  $image_default], 200);
+   }
 }
