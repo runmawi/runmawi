@@ -690,6 +690,7 @@ class ApiAuthController extends Controller
         // "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
         'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
         "videos" => $videos
       );
     }
@@ -920,6 +921,7 @@ public function verifyandupdatepassword(Request $request)
   public function videodetail(Request $request)
   {
     $videoid = $request->videoid;
+
       
     $current_date = date('Y-m-d h:i:s a', time()); 
     $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
@@ -2812,6 +2814,8 @@ public function checkEmailExists(Request $request)
     $email = $input['email'];
     $user_url = $input['user_url'];
     $login_type = $input['login_type'];//Facebook or Google
+
+   
     /*Parameters*/
     /*Profile image move to avatar folder*/
     if($user_url != ''){
@@ -2848,6 +2852,7 @@ public function checkEmailExists(Request $request)
           'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
+          'active'   => 1 ,
           'role'     =>'registered',
           'password' =>'null'
         );
@@ -2877,6 +2882,7 @@ public function checkEmailExists(Request $request)
           'email'    =>$email,
           'user_type'=>$login_type,
           'avatar'   =>$name,
+          'active'   => 1 ,
           'role'     =>'registered',
           'password' =>'null'
         );
@@ -6084,5 +6090,22 @@ public function Adstatus_upate(Request $request)
       'status'  => 'true',
       'Message' => 'Ads status changed Successfully'], 200);
    }
+
+
+   public function profileimage_default()
+{
+    $image_default = URL::to('/public/uploads/avatars/defaultprofile.png');
+  
+    return response()->json([
+      'status'  => 'true',
+      'Message' =>  $image_default], 200);
+   }
+   
+  public function homesetting()
+  {
+      $homesetting = HomeSetting::first();
+
+      return $homesetting;
+  }
 
 }

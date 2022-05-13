@@ -73,6 +73,9 @@ input.skips,input#Recaps_Skip{
 #Auto_skip{
 	display: none;
 }
+      h4{
+          font-size:22px!important;
+      }
 div#url_linkdetails {
     position: absolute;
     top: 22%;
@@ -754,8 +757,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php if(!empty($video->details) ) { ?>
 
 <h4>Links & details</h4>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->details); ?></p>
+<div class="col-md-7 text-white p-0" style="font-size:18px;">
+    <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
 <br>

@@ -15,6 +15,9 @@
     .fc-widget-content{
         height: 80px!important;
     }
+    .fc-day-number{
+        color: #000;
+    }
     .fc-button-group{
         margin-bottom: 10px;
        

@@ -12,6 +12,9 @@
     .modal-body{
         padding-left:30px!important;
     }
+    .fc-day-number{
+        color: #000;
+    }
     .fc-widget-content{
         height: 80px!important;
     }

@@ -218,7 +218,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -446,7 +446,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -572,9 +572,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                 <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Calendar Events</span></a></li>
+                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
                 
-                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Ad Campaigns</span></a></li>
+                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Campaigns</span></a></li>
 
                 @endif
 
@@ -675,7 +675,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div >
                 
@@ -798,9 +798,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                 <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Ads Revenue</span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Calendar Events</span></a></li>
+                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
                 
-                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Ad Campaigns</span></a></li>
+                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Campaigns</span></a></li>
 
                 @endif
 
@@ -1024,9 +1024,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                 <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Calendar Events</span></a></li>
+                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
                 
-                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span> Ad Campaigns</span></a></li>
+                <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Campaigns</span></a></li>
 
                 @endif
 

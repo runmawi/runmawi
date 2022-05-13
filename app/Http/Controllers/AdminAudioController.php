@@ -740,9 +740,7 @@ class AdminAudioController extends Controller
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
                     }else{
                         $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
-                        // echo "<pre>";
-                        // print_r($audio_upload);
-                        // exit();  
+                     
                         FFMpeg::open($audio_upload->getClientOriginalName())
                         ->export()
                         ->inFormat(new \FFMpeg\Format\Audio\Mp3)
@@ -786,13 +784,10 @@ class AdminAudioController extends Controller
     public function audioupdate(Request $request)
     {
 
+    
         $input = $request->all();
       
         $id = $request->audio_id;
-        // echo"<pre>";
-        // print_r($input);
-        // exit();
-        // dd($settings);
 
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
@@ -935,6 +930,7 @@ class AdminAudioController extends Controller
 
             }
         }
-        return Redirect::back();
+
+        return Redirect::to('admin/audios/create')->with(array('message' => 'New Audio Successfully Added!', 'note_type' => 'success') );
     }
 }

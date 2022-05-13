@@ -223,7 +223,7 @@ Tab Pills
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link { color: var(--iq-white); background: transparent; }
 .nav-pills .nav-link:hover { color: var(--iq-primary); }
 .nav-tabs { border-bottom: 2px solid var(--iq-light-primary); margin-bottom: 15px; }
-.nav-tabs .nav-item { margin-bottom: -2px; }
+.nav-tabs .nav-item { margin-bottom: -2px;font-family: 'Roboto', sans-serif; }
 .nav-tabs .nav-item a { color: var(--iq-body-text); border: none; border-bottom: 2px solid transparent; }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active { border-bottom: 2px solid var(--iq-primary); color: var(--iq-primary); }
 

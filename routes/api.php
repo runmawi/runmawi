@@ -262,5 +262,10 @@ Route::group([
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
+    Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
+
+
+// Home Setting Status
+    Route::get('homesetting', 'ApiAuthController@homesetting');
 
 });

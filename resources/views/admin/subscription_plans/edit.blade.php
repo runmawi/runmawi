@@ -55,13 +55,14 @@
                         <label>Video Quality:</label>
                             <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
                         </div> 
-                            
-               </div>
-               <div class="col-md-6">
-                   <div class="form-group">
+                    <div class="form-group">
 		                        <label> Price:</label>
 		                        <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
                             </div>
+                            
+               </div>
+               <div class="col-md-6">
+                  
                         <div class="form-group">
                           <label>Payment Type:</label><br>
                           One Time Payment : 
@@ -82,13 +83,14 @@
                     <label> Devices :</label>
                     </div>
                     @foreach($devices as $val)
-                    <div class="col-md-4 d-flex justify-content-between align-items-center" style="width: 33%; float:left;">                                           
+                    <div class="col-md-7 p-0 d-flex justify-content-between align-items-center" style="float:left;">                                           
                     <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
+                        <div>
                         <label class="switch">
                     <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
                             <span class="slider round"></span>
                         </label>
-                    </div>
+                    </div></div>
                                     
                     @endForeach
 
