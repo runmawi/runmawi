@@ -218,7 +218,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -446,7 +446,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
                 
@@ -675,7 +675,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       
                    </li>
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
-                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
+                   <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div >
                 
