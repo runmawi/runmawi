@@ -13,7 +13,7 @@
     .theme_name {
         color: #c92727;
         text-align: center;
-        font-family: 'FontAwesome';
+       /* font-family: 'FontAwesome';*/
     }
     .active{
         color: #1ba31b;
@@ -76,10 +76,10 @@ border-radius: 0px 4px 4px 0px;
                                     <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
                                 </div>
                                 <div class="theme_name">
-                                    {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}
+                                   {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}
                                     @if( $theme_integration->theme_name == $active_Status->theme_choosen)
                                        <span class="active" >
-                                        <i class="far fa-check-circle"></i>  {{'Active'}}
+                                       <img  height="20" width="20" class="" src="<?php echo  URL::to('/assets/img/yes.png')?>">  {{'Active'}}
                                       </span>                                
                                     @endif
                                 </div>
