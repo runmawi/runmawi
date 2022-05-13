@@ -96,6 +96,13 @@ border-radius: 0px 4px 4px 0px;
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
              <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+
+{{-- Push Message --}}
+		@if (Session::has('message'))
+				<div id="successMessage" class="alert alert-info">{{ Session::get('Audio_message') }}</div>
+		@endif
+{{-- End Push Message --}}
+
 	<div class="container-fluid p-0">
 		<div class="row">
 			<div class="col-sm-12">

@@ -36,34 +36,37 @@ border-radius: 0px 4px 4px 0px;
     #video_upload .file form i {display: block; font-size: 50px;}
 </style>
 <div id="content-page" class="content-page">
-    <div class="d-flex">
-         <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
-        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
-        <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
-             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
+    	<div class="d-flex">
+         	<a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
+        	<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
+        	<a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
+            <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a>
+		</div>
+
+	{{-- Push Message --}}
+		@if (Session::has('message'))
+			<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+		@endif
+	{{-- End Push Message --}}	
+	
     <div class="container-fluid p-0">
         <div class="admin-section-title">
             <div class="iq-card">
                 <div class="row">
 					
-						
                     <div class="col-md-8" id="heading_option">
                         <h4> Add Audio </h4>
                     </div>
-					@if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
+				
                         @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
+							@foreach( $errors->all() as $message )
+								<div class="alert alert-danger display-hide" id="successMessage" >
+									<button id="successMessage" class="close" data-close="alert"></button>
+									<span>{{ $message }}</span>
+								</div>
+							@endforeach
                         @endif
 					
-
-                    
                 </div>
                     <div class="row">
                         <div class="col-md-12">
