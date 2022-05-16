@@ -129,16 +129,33 @@
 								@endif
 							</div>
 
-							<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label>Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+							<div class="row">
+								<div class="col-md-6">
+								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+								<div class="panel-title"><label class="mb-1">Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
-									<p class="p1">Select the audio image (1280x720 px or 16:9 ratio):</p> 
+									<p class="p1">Select the audio image(16:9 Ratio or 720X1080px):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 								</div> 
+							</div>
+								</div>
+								<div class="col-md-6">
+								<div class="col-sm-6 form-group">
+									
+							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+							<input type="file" name="player_image" id="player_image" >
+							@if(!empty($audio->player_image))
+								<div class="col-sm-8 p-0">
+							<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 mt-1" /></div>
+							@endif
+							</div>
+							
+								</div>
+
 							</div>
 
 							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 

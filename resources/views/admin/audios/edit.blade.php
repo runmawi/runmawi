@@ -167,7 +167,7 @@ border-radius: 0px 4px 4px 0px;
 								<div class="col-md-6">
 								<div class="col-sm-6 form-group">
 									
-							<label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
 							<input type="file" name="player_image" id="player_image" >
 							@if(!empty($audio->player_image))
 								<div class="col-sm-8 p-0">

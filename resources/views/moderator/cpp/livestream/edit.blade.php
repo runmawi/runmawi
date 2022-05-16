@@ -104,18 +104,48 @@
 			</div>
 		@endif
 
+		<div class="row">
+                <div class="col-md-6">
+                <div class="row mt-3">
+                            <div class="col-sm-6">
+                                <label class="m-0">Video Image Cover</label>
+                                <p class="p1">Select the video image (16:9 Ratio or 720X1080px):</p>
 
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Video Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-					@if(!empty($video->image))
-						<img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200"/>
-					@endif
-					<p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p> 
-					<input type="file" multiple="true" class="form-control" name="image" id="image" />
-					
-				</div> 
-			</div>
+                                <div class="panel-body">
+                                <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    @if(!empty($video->image))
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200"/>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-6">
+                <div class="row mt-3">
+                            <div class="col-sm-6">
+                                <label class="m-0">Player Image Cover</label>
+                                <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
+
+                                <div class="panel-body">
+                                <input type="file" multiple="true" class="form-control" name="player_image" id="player_image" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    @if(!empty($video->player_image))
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200"/>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
