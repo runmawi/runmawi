@@ -139,8 +139,9 @@ border-radius: 0px 4px 4px 0px;
 	<form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 	
             <!-- Page content wrapper-->
-           <div class="container-fluid" id="site" style="padding-left:10px;">
-        <div class="col-md-8">
+           <div class="container-fluid" id="site" style="padding-left:20px;">
+               <div class="row">
+        <div class="col-md-6">
             <div class="panel panel-primary" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Site Name</label></div>
@@ -154,8 +155,7 @@ border-radius: 0px 4px 4px 0px;
                         value="@if(!empty($settings->website_name)){{ $settings->website_name }}@endif" />
                 </div>
             </div>
-			</div>
-        <div class="col-md-12">
+			
             <div class="panel panel-primary" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Site Description</label></div>
@@ -168,9 +168,9 @@ border-radius: 0px 4px 4px 0px;
                         placeholder="Site Description"
                         value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
                 </div>
-            </div>
+            </div> </div>
             <!-- </div> -->
-            <div class="panel panel-primary col-md-12 mt-3 p-0" data-collapsed="0">
+           <div class="col-md-6">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Logo <small>(Dimensions: 180px X 29px)</small></label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -201,7 +201,8 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
-   
+   </div>
+           <div>
 	</div>
 
     <!-- Default Image Setting-->
@@ -213,9 +214,9 @@ border-radius: 0px 4px 4px 0px;
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12 align-center">
+                        <div class="">
                             <div class="row">
-                                <div>
+                                <div class="col-md-12">
                                     <div class="default_video_image" style="margin: auto;">
                                         @if(!empty($settings->default_video_image))
                                             <img src="{{ URL::to('/') . '/public/uploads/images/' . $settings->default_video_image }}" style="max-height: 25%; max-width: 25%" />
@@ -241,7 +242,7 @@ border-radius: 0px 4px 4px 0px;
         <div class="row">
             <input type="hidden" value="0" name="demo_mode" id="demo_mode" />
         </div>
-        <div class="container-fluid row mt-3" id="ppv">
+        <div class="container-fluid row align-items-center mt-3" id="ppv">
             <div class="col-sm-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -305,7 +306,8 @@ border-radius: 0px 4px 4px 0px;
 
 
             <!-- <div class="container-fluid" id="video" style=""> -->
-        <div  class="container-fluid row mt-3" id="videos_settings" style="">
+        <div  class="container-fluid  mt-3" id="videos_settings" style="">
+            <div class="row">
             <div class="col-sm-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -336,7 +338,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
-        </div>
+        </div></div>
     <!-- </div> -->
     <!-- Registration -->
 
@@ -345,12 +347,12 @@ border-radius: 0px 4px 4px 0px;
     <div class="container-fluid" id="registration">
         <div class="panel panel-primary mt-3" data-collapsed="0">
             <div class="panel-heading">
-                <div class="panel-title"><label>Registration</label></div>
+                <h5 class="panel-title mb-4">Registration</h5>
                 <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-10">
                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                             style="width: ;">
                             <div><label class="mt-1">Enable Free Registration </label></div>
@@ -371,10 +373,11 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-10">
                         <div class="input-group color-picker align-items-center justify-content-between"
                             style="width: ;">
-                            <div><label class="mt-1"> Require users to verify account by email: </label></div>
+                            <label class="mt-1"> Require users to verify account by email: </label>
+                            <div class="d-flex">
                             <div>ON</div>
                             <div class="mt-1">
                                 <label class="switch">
@@ -386,12 +389,12 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div>OFF</div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
+                        </div></div>
+                    <div class="col-sm-10">
                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                             style="width: ;">
-                            <div><label class="mt-1"> Enable registered users ability to upgrade to subscriber:</label>
-                            </div>
+                            <label class="mt-1"> Enable registered users ability to upgrade to subscriber:</label>
+                            <div class="d-flex">
                             <div>ON</div>
                             <div class="mt-1">
                                 <label class="switch">
@@ -402,9 +405,9 @@ border-radius: 0px 4px 4px 0px;
                                 </label>
                             </div>
                             <div>OFF</div>
-                        </div>
+                            </div></div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-10">
                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                             style="width: ;">
                             <div><label class="mt-1">Can Access Free Content: </label></div>
@@ -434,20 +437,22 @@ border-radius: 0px 4px 4px 0px;
 
     <!-- <div class="container-fluid" id="email"> -->
         <div class="container-fluid row mt-3 " id="email">
-            <div class="col-md-10">
+            <div class="row">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>System Email</label></div>
                         <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                         </div>
                     </div>
-                    <div class="panel-body" style="display: block;">
+                    
+                </div>
+                <div class="col-md-6">
+                <div class="panel-body" style="display: block;">
                         <p class="p1">Email address to be used to send system emails:</p>
                         <input type="text" class="form-control" name="system_email" id="system_email"
                             placeholder="Email Address"
                             value="@if(!empty($settings->system_email)){{ $settings->system_email }}@endif" />
                     </div>
-                </div>
                 <div class="panel panel-primary mt-3" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Google Analytics Tracking ID</label></div>
@@ -461,7 +466,8 @@ border-radius: 0px 4px 4px 0px;
                             placeholder="Google Analytics Tracking ID"
                             value="@if(!empty($settings->google_tracking_id)){{ $settings->google_tracking_id }}@endif" />
                     </div>
-                </div>
+                </div></div>
+                <div class="col-md-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title">
@@ -489,7 +495,7 @@ border-radius: 0px 4px 4px 0px;
                         <input type="checkbox" @if($settings->coupon_status == 1)checked="checked" value="1"@else
                         value="0"@endif name="coupon_status">
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
     <!-- </div> -->
@@ -505,6 +511,8 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
                 <div class="panel-body" style="display: block;">
 
                     <p class="p1">Facebook Page ID: ex. facebook.com/page_id (without facebook.com):</p>
@@ -526,7 +534,9 @@ border-radius: 0px 4px 4px 0px;
                     <input type="text" class="form-control" name="instagram_page_id" id="instagram_page_id"
                         placeholder="Instagram "
                         value="@if(!empty($settings->instagram_page_id)){{ $settings->instagram_page_id }}@endif" />
-                    <br />
+                    <br /></div>
+                </div>
+                    <div class="col-md-6">
                     <p class="p1"> Linkedin:</p>
                     <input type="text" class="form-control" name="linkedin_page_id" id="linkedin_page_id"
                         placeholder="Linkedin "
@@ -547,7 +557,7 @@ border-radius: 0px 4px 4px 0px;
                         value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
                 </div>
             </div>
-        </div>
+        </div></div>
     <!-- </div> -->
 
 
@@ -555,15 +565,15 @@ border-radius: 0px 4px 4px 0px;
 
     <!-- Series  Setting-->
     <div class="container-fluid" id="seasonsetting" style="">
-            <div class="panel panel-primary mt-3" data-collapsed="0">
+            <div class="" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Series Setting</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12 align-center">
-                            <div class="row">
+                        <div class="">
+                            
                                 <div>
                                  <div><label class="mt-1">Enable PPV Season</label></div>
                                  <div class="d-flex justify-content-between">
@@ -580,7 +590,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                                 <div>On</div>
                             </div>                                
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -651,12 +661,13 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col-sm-6">
+                    
                         <div class="panel-body" style="display: block;">
                             <label class="panel-title">Coupon Enable / Disable:</label>
                             <label><input type="checkbox" @if($settings->new_subscriber_coupon == 1)checked="checked"
                                 value="1"@else value="0"@endif name="new_subscriber_coupon"></label>
                         </div>
+                    <div class="col-sm-6">
                         <div class="panel-body mt-3" style="display: block;">
                             <label class="panel-title">Discount %:</label>
                             <div class="form-group add-profile-pic checkbox">
@@ -667,6 +678,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-sm-6 mt-3">
                         <div class="panel-body" style="display: block;">
                             <label class="panel-title">Coupon Code:</label>
@@ -683,7 +695,7 @@ border-radius: 0px 4px 4px 0px;
      
         <!-- <div class="container-fluid" id="login" style=""> -->
         <div class="container-fluid" id="login" style="">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Login Page Content Image</label></div>
@@ -697,7 +709,7 @@ border-radius: 0px 4px 4px 0px;
                             <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->login_content }}"
                                 style="max-height:100px" />
                             @endif
-                            <label>Cover Image:</label>
+                            
                             <input id="f02" type="file" name="login_content" placeholder="Upload Image" />
                             <p class="padding-top-20 p1">Must be JPEG, PNG, or GIF and cannot exceed 10MB.</p>
                         </div>
@@ -770,15 +782,15 @@ border-radius: 0px 4px 4px 0px;
             <div class="panel-heading">
                 <div class="panel-title"><label>Advertisement</label></div>
                 <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-            </div>
-            <div class="panel-body">
+            </div></div>
+            <div class="col-lg-12">
                 <div class="row">
-                    <div class="col-md-6 align-center">
-                        <div class="row">
+                 
+                       <div class="col-md-6">
                             
-                            <p class="col-md-12 p1">Enable Advertisement on Videos:</p>
+                            <p class="p1">Enable Advertisement on Videos:</p>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group ">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
@@ -812,13 +824,14 @@ border-radius: 0px 4px 4px 0px;
                                 <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control"
                                 placeholder="Featured Ad Post Roll"
                                 value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
-                            </div>
+                            </div></div> <div class="col-md-6">
                             <div class="form-group add-profile-pic">
                                 <label>Cost Per Click Advertiser:</label>
                                 <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
                                 placeholder="Cost Per Click Advertiser"
                                 value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
                             </div>
+                   
                             <div class="form-group add-profile-pic">
                                 <label>Cost Per Click Admin:</label>
                                 <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
@@ -837,22 +850,23 @@ border-radius: 0px 4px 4px 0px;
                                 placeholder="Cost Per View Admin"
                                 value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
                             </div>
-                        
+                        </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+          
+      
 
-    </div>
+   
+        <div class="d-flex justify-content-end">
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-    <input type="submit" id = "settingupdate" value="Update Settings" class="btn btn-primary pull-right" />
+    <input type="submit" id = "settingupdate" value="Update Settings" class="mt-3 btn btn-primary pull-right" /></div>
             </form>
 
 
 <div class="container-fluid" id="script" >
-<h5>APP Script:</h5>
-    <div class="row">
+<h5 class="mb-4">Header/Footer Scripts:</h5>
+    <div class="row p-0">
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
             <div class="col-md-12">
                 <h5>Header Script CDN:</h5>
@@ -874,13 +888,13 @@ border-radius: 0px 4px 4px 0px;
 <!-- </div> -->
 
     <div class="container-fluid" id="app" >
-        <h5>APP Setting:</h5>
+        <h5>App URL Settings for Playstore/Appstore:</h5>
         <div class="row">
             <form method="POST" action="{{ URL::to('admin/app_settings/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                 
                 <div class="row mt-4">
                     
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title"><label>Android URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                             <div class="panel-body" style="display: block;"> 
@@ -889,7 +903,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                             <div class="panel-title"><label>IOS URL</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                             <div class="panel-body" style="display: block;"> 
@@ -900,8 +914,8 @@ border-radius: 0px 4px 4px 0px;
 
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-                    <div class="col-md-12" style="display: flex; ">
-                        <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary " />
+                    <div class="d-flex justify-content-end mt-3" style=" ">
+                        <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary text-right" />
                     </div>
 
                 </div>
@@ -916,10 +930,10 @@ border-radius: 0px 4px 4px 0px;
         <div class="row">
             <form method="POST" action="{{ URL::to('admin/rtmp_setting/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Setting_rtmpURL">
                 
-                <div class="row mt-4">
-                    <div class="col-md-10">
-                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title ml-3" > 
+                <div class="row mt-4 p-0">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary p-0" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title ml-1" > 
                                 <label>RTMP URL</label> 
                             </div> 
 
@@ -947,8 +961,8 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                <div class="row mt-4">
-                    <div class="col-md-6" style="">
+                <div class="row mt-4 justify-content-end">
+                    <div class="col-md-6 " >
                         <input type="submit" id="appupdate" value="Update RTMP URL Settings" class="btn btn-primary ml-3 " />
                     </div>
                 </div>

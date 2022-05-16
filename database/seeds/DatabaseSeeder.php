@@ -50,6 +50,8 @@ class DatabaseSeeder extends Seeder
             AdvertiserWalletSeeder::class,
             FeaturedAddHistorySeeder::class,
             RTMLSeeder::class,
+            OrderHomepageTableSeeder::class,
+
         ]);
     
     }

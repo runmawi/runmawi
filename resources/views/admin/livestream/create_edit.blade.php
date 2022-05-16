@@ -108,25 +108,49 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
-
+                <div class="row">
+                    <div class="col-md-6">
                     <div class="row mt-3">
-                        <div class="col-sm-6">
-                            <label class="m-0">Video Image Cover</label>
-                            <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
+                                        <div class="col-sm-6">
+                                            <label class="m-0">Video Image Cover</label>
+                                            <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
 
-                            <div class="panel-body">
-                                <input type="file" multiple="true" class="form-group" name="image" id="image" />
-                            </div>
-                        </div>
+                                            <div class="panel-body">
+                                                <input type="file" multiple="true" class="form-group" name="image" id="image" />
+                                            </div>
+                                        </div>
 
-                        <div class="col-sm-6">
-                            <div class="panel-body">
-                                @if(!empty($video->image))
-                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
-                                @endif
-                            </div>
-                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="panel-body">
+                                                @if(!empty($video->image))
+                                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                     </div>
+                    <div class="col-md-6">
+                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="m-0">Player Image Cover</label>
+                                            <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
+
+                                            <div class="panel-body">
+                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="panel-body">
+                                                @if(!empty($video->player_image))
+                                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200" />
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                    </div>
+                </div>
+                                    
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
