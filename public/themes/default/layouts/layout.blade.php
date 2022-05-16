@@ -48,6 +48,31 @@
             border: #f3ece0 !important ;
             background-color: {{ button_bg_color() .'!important' }} ;
         }
+
+        .circle {
+               
+                stroke-dasharray: 650;
+                stroke-dashoffset: 650;
+                -webkit-transition: all 0.5s ease-in-out;
+                opacity: 0.3;
+                stroke: {{ button_bg_color() .'!important' }} ;
+        }
+
+        .playbtn:hover .triangle {
+                stroke-dashoffset: 0;
+                opacity: 1;
+                animation: trailorPlay 0.7s ease-in-out;
+                stroke: {{ button_bg_color() .'!important' }} ;
+        }
+
+        i.ri-settings-4-line.text-primary {
+            color: {{ button_bg_color() .'!important' }} ;
+        }
+
+        i.ri-logout-circle-line.text-primary{
+            color: {{ button_bg_color() .'!important' }} ;
+        }
+
     
     </style>
 
