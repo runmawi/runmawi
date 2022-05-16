@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddHeaderNameToOrderHomesettings extends Migration
+class AddDOBToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddHeaderNameToOrderHomesettings extends Migration
      */
     public function up()
     {
-        Schema::table('order_homesettings', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('header_name')->nullable();
+            $table->string('DOB')->nullable();
         });
     }
 
@@ -26,9 +26,9 @@ class AddHeaderNameToOrderHomesettings extends Migration
      */
     public function down()
     {
-        Schema::table('order_homesettings', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('header_name');
+            $table->dropColumn('DOB');
         });
     }
 }
