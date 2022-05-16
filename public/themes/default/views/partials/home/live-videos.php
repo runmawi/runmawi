@@ -17,17 +17,17 @@
                         </a>
 
                       <!-- PPV price -->
-                        <div class="corner-text-wrapper">
+                     
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                            <div class="corner-text">
+                        
                                 <?php  if(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                 <?php } ?>
-                            </div>
+                         
                          <?php } ?>   
-                        </div>
+                       
                     </div>
                     <div class="block-description" style="top: 40px !important;">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
