@@ -51,8 +51,12 @@ class HomeSettingsController extends Controller
             return View::make('admin.expired_dashboard', $data);
         }else{
         $settings = HomeSetting::first();   
+        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+
         $data = array(
-            "settings" =>$settings 
+            "settings" =>$settings ,
+            "order_settings" =>$order_settings ,
+
         );
         return view('admin.settings.homepage',$data);
     }

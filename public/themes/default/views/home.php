@@ -38,6 +38,8 @@ $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
     
     foreach($order_settings as $key => $value){
       //  if($value == ){}
+      if($value->video_name == 'Recommendation'){
+
     if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
             <div class="container-fluid">
@@ -105,7 +107,7 @@ $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
                </div>
             </div>
          </section>
-   <?php } ?>
+   <?php } } ?>
 
 
     <?php 
