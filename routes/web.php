@@ -271,6 +271,19 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');
 
+    Route::get('/order-home-settings', 'Admin\HomeSettingsController@Orderindex');
+    Route::get('/order-home-settings/order_save', 'Admin\HomeSettingsController@Ordersave_settings');
+    Route::get('/order_homepage/order_save', 'Admin\HomeSettingsController@Ordersave_settings');
+    Route::get('/order_homepage/edit/{id}', 'Admin\HomeSettingsController@OrderEdit_settings');
+    Route::get('/order_homepage/delete/{id}', 'Admin\HomeSettingsController@OrderDelete_settings');
+    Route::post('/order_homepage/update', 'Admin\HomeSettingsController@OrderUpdate_settings');
+    Route::post('/order_homepage/update_setting', 'Admin\HomeSettingsController@OrderUpdate');
+
+
+
+
+
+
     Route::get('/sliders', 'AdminThemeSettingsController@SliderIndex');
     Route::post('/sliders/store','AdminThemeSettingsController@SliderStore');
     Route::get('/sliders/edit/{id}', 'AdminThemeSettingsController@SliderEdit');

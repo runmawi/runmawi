@@ -13,6 +13,7 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use App\User as User;
+use App\OrderHomeSetting as OrderHomeSetting;
 use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
@@ -118,5 +119,110 @@ class HomeSettingsController extends Controller
 
         $settings->save();
         return redirect::to('/admin/home-settings');
+    }
+
+
+
+    public function Orderindex(){
+        
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+        // dd($order_settings); 
+        $data = array(
+            "order_settings" =>$order_settings 
+        );
+        return view('admin.settings.order_homepage',$data);
+    }
+    }
+    public function OrderEdit_settings($id){
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+        return View::make('admin.settings.order_edit_homepage', array('order_settings' => OrderHomeSetting::find($id)));
+        }
+    }
+
+
+    public function OrderDelete_settings($id){
+        OrderHomeSetting::destroy($id);
+         return Redirect::to('admin/order-home-settings')->with(array('note' => 'Successfully Deleted Menu Item', 'note_type' => 'success') );
+    }
+
+    public function OrderUpdate(Request $request){
+        $input = $request->all();
+        $menu = OrderHomeSetting::find($input['id'])->update($input);
+        if(isset($menu)){
+            return Redirect::to('admin/order-home-settings')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
+        }
+    }
+
+    public function OrderUpdate_settings(Request $request){
+
+        $post_categories = OrderHomeSetting::all();
+
+
+        foreach ($post_categories as $post) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $post->id) {
+                    $post->update(['order_id' => $order['position']]);
+                }
+            }
+        }
+        
+        return response('Update Successfully.', 200);
+    
+
     }
 }

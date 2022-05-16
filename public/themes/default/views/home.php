@@ -1,5 +1,9 @@
 <!-- Header Start -->
-<?php include('header.php'); ?>
+<?php include('header.php'); 
+
+$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+// dd($order_settings);
+?>
 <!-- Header End -->
 
 <!-- Slider Start -->
@@ -30,7 +34,11 @@
     </section>
 
 
-    <?php if(count($top_most_watched) > 0){ ?>
+    <?php 
+    
+    foreach($order_settings as $key => $value){
+      //  if($value == ){}
+    if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
             <div class="container-fluid">
                <div class="row">
@@ -100,7 +108,10 @@
    <?php } ?>
 
 
-    <?php if($home_settings->latest_videos == 1){ ?>
+    <?php 
+       if($value->video_name == 'latest_videos'){
+    
+    if($home_settings->latest_videos == 1){ ?>
       <section id="iq-favorites">
          <div class="container-fluid">
             <div class="row">
@@ -110,10 +121,13 @@
             </div>
          </div>
       </section>
-   <?php } ?>
+   <?php } }?>
 
 
-<?php if($home_settings->live_videos == 1){ ?>
+<?php 
+       if($value->video_name == 'live_videos'){
+
+if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="container-fluid">
            <div class="row">
@@ -123,10 +137,13 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } }?>
 
 
-<?php if($home_settings->audios == 1){ ?>
+<?php 
+       if($value->video_name == 'audios'){
+
+if($home_settings->audios == 1){ ?>
     <section id="iq-favorites">
         <div class="container-fluid">
            <div class="row">
@@ -136,10 +153,13 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } } ?>
 
 
-<?php if($home_settings->albums == 1){ ?>
+<?php 
+       if($value->video_name == 'albums'){
+
+if($home_settings->albums == 1){ ?>
     <section id="iq-favorites">
         <div class="container-fluid">
            <div class="row">
@@ -149,10 +169,13 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } } ?>
 
 
-<?php if ( GetTrendingVideoStatus() == 1 ) { ?>
+<?php 
+       if($value->video_name == 'featured_videos'){
+
+if ( GetTrendingVideoStatus() == 1 ) { ?>
   <section id="iq-favorites">
     <div class="container-fluid">
       <div class="row">
@@ -167,7 +190,7 @@
     </div>
   </section>
 
-<?php } ?>
+<?php } } ?>
  
   <?php /*<section id="iq-topten">
         <div class="container-fluid">
@@ -940,7 +963,10 @@ endif; ?>
          </section>*/ ?>
 
         <section id="iq-tvthrillers" class="s-margin">
-            <?php if ( GetCategoryVideoStatus() == 1 ) {  
+            <?php 
+       if($value->video_name == 'category_videos'){
+            
+            if ( GetCategoryVideoStatus() == 1 ) {  
                       ?>
             <div class="container-fluid">
                <?php
@@ -1031,7 +1057,7 @@ endif; ?>
                         <?php } ?>
                     <?php }?>
                 </div>
-                <?php } ?>
+                <?php }  } } ?>
 
 <!-- Most watched Videos - category -->
 
