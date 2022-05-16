@@ -232,6 +232,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
 
+
     
                             <!-- PPV  -->
 
@@ -1263,7 +1264,7 @@ border-radius: 0px 4px 4px 0px;
         $("#Defaut_image_setting").show();
         $("#ppv_setting").hide();
         $("#demo_mode").hide();
-        $("#Pay_Per_view_Hours").hide();
+        // $("#Pay_Per_view_Hours").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
@@ -1331,9 +1332,9 @@ border-radius: 0px 4px 4px 0px;
         $("#app").hide();
         // $("#season_setting").hide();
         $("#Defaut_image_setting").hide();
-        $("#ppv_setting").hide();
+        $("#ppv_setting").show();
         $("#demo_mode").hide();
-        $("#Pay_Per_view_Hours").hide();
+        // $("#Pay_Per_view_Hours").hide();
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").show();
