@@ -1079,7 +1079,14 @@ for (var i = 0; i < btns.length; i++) {
     });
 
 	
-    if(swal("Payment Failed!", "Your Payment is failed !", "warning")){ }
+    if( swal({
+        title: "Payment Failed!",
+        text: "Your Payment is failed",
+        type: "warning"
+        }).then(function() {
+            window.location = base_url+'/register2';
+        })
+    ){ }
     } else {
         	
             var plan_data = $("#plan_name").val();
