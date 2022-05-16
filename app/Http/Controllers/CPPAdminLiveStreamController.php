@@ -158,7 +158,29 @@ class CPPAdminLiveStreamController extends Controller
 
          } 
         
-       
+         $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
+
+         $path = public_path().'/uploads/livecategory/';
+         $image_path = public_path().'/uploads/images/';
+           
+          if($player_image != '') {   
+               //code for remove old file
+               if($player_image != ''  && $player_image != null){
+                    $file_old = $image_path.$player_image;
+                   if (file_exists($file_old)){
+                    unlink($file_old);
+                   }
+               }
+               //upload new file
+               $player_image = $player_image;
+               $data['player_image']  = $player_image->getClientOriginalName();
+               $player_image->move($image_path, $data['player_image']);
+               $player_image  = $player_image->getClientOriginalName();
+ 
+          } else{
+            $player_image = "Defualt.jpg";
+          }
+        
         // $data['user_id'] = Auth::user()->id;
         
 //        unset($data['tags']);
@@ -299,6 +321,7 @@ class CPPAdminLiveStreamController extends Controller
         $movie->mp4_url =$data['mp4_url'];
         $movie->year =$data['year'];
         $movie->active = 0 ;
+        $movie->player_image = $player_image;
         $movie->user_id = $user_id;
         $movie->save();
 
@@ -510,6 +533,30 @@ class CPPAdminLiveStreamController extends Controller
 
          } 
        
+         $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
+
+         $path = public_path().'/uploads/livecategory/';
+         $image_path = public_path().'/uploads/images/';
+           
+          if($player_image != '') {   
+               //code for remove old file
+               if($player_image != ''  && $player_image != null){
+                    $file_old = $image_path.$player_image;
+                   if (file_exists($file_old)){
+                    unlink($file_old);
+                   }
+               }
+               //upload new file
+               $player_image = $player_image;
+               $data['player_image']  = $player_image->getClientOriginalName();
+               $player_image->move($image_path, $data['player_image']);
+               $player_image  = $player_image->getClientOriginalName();
+
+ 
+          } else{
+              $player_image = $video->player_image;
+          }
+
          $data['mp4_url']  = $request->get('mp4_url');
 
          if(isset($data['duration'])){
@@ -589,6 +636,7 @@ class CPPAdminLiveStreamController extends Controller
         $video->embed_url =     $embed_url;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
+        $video->player_image = $player_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];

@@ -18,11 +18,15 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
 }else{
 
 }
-$users = App\User::find(Auth::User()->id);
-$date = date_create($users->created_at);
-$created_at = date_format($date,"Y-m-d");
-$filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
-$currentdate = date('Y-m-d');
+   if(!empty(Auth::User()->id)){
+      $id = Auth::User()->id;
+      $users = App\User::find($id);
+      $date = date_create($users->created_at);
+      $created_at = date_format($date,"Y-m-d");
+      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+      $currentdate = date('Y-m-d');
+   }
+
 // exit();UA-42534483-14
 $data = Session::all();
 

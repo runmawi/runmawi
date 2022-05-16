@@ -78,7 +78,9 @@ $settings  = App\Setting::first();?>
 				</div> 
 			</div>
             </div>
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="row">
+				<div class="col-md-6">
+				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
                     <p class="p1">Select the series image (1280x720 px or 16:9 ratio):</p> 
@@ -90,6 +92,23 @@ $settings  = App\Setting::first();?>
 					<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
 				</div> 
+			</div>
+			</div>
+			<div class="col-md-6">
+		<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+				<div class="panel-title font-weight-bold"><label class="m-0">Series Player Image </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
+                    <p class="p1">Select the Player image (16:9 Ratio or 1280X720px):</p> 
+					@if(!empty($series->player_image))
+						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
+					@endif
+					<input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+					{{-- for validate --}}
+					<input type="hidden" id="player_image" name="player_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+
+				</div> 
+			</div>
+			</div>
 			</div>
 
 
