@@ -25,6 +25,9 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
       $created_at = date_format($date,"Y-m-d");
       $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
       $currentdate = date('Y-m-d');
+   }else{
+      $currentdate = null ;
+      $filldate = null ;
    }
 
 // exit();UA-42534483-14
@@ -636,7 +639,7 @@ var DOB = "<?= $users->DOB ?>";
 // console.log(DOB);
 // console.log(currentdate);
 
-if(filldate == currentdate &&  !empty(DOB)){       
+if(filldate == currentdate &&  !empty(DOB)  &&  currentdate != null &&  filldate != null){       
 $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
 setTimeout(function() {
 $('.add_watch').slideUp('fast');
