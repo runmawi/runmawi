@@ -18,6 +18,16 @@
 <!-- Slider End -->
 
 <!-- MainContent -->
+<div class="main-content">
+    <section id="iq-continue">
+        <div class="container-fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                  <?php include('partials/home/continue-watching.php'); ?>
+              </div>
+           </div>
+        </div>
+    </section>
 
 
     <?php if(count($top_most_watched) > 0){ ?>
