@@ -3,7 +3,12 @@
    <head>
       
 <?php
-// dd(Auth::User()->role);
+$users = App\User::find(Auth::User()->id);
+$date = date_create($users->created_at);
+$created_at = date_format($date,"Y-m-d");
+$filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+$currentdate = date('Y-m-d');
+// dd($currentdate);
 
 $data = Session::all();
 
@@ -17,6 +22,7 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
 }else{
 
 }
+
 // exit();UA-42534483-14
 $data = Session::all();
 
@@ -605,6 +611,22 @@ $data = Session::all();
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
+
+$(document).ready(function(){
+var currentdate = "<?=  $currentdate ?>";
+var filldate = "<?= $filldate ?>";
+var DOB = "<?= $users->DOB ?>";
+
+// console.log(DOB);
+// console.log(currentdate);
+
+if(filldate == currentdate &&  !empty(DOB)){       
+$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+setTimeout(function() {
+$('.add_watch').slideUp('fast');
+}, 3000);
+}
+    });
           </script>
           <script>
               const toggle = document.getElementById('toggle');
@@ -619,6 +641,7 @@ toggle.addEventListener('input', (e) => {
     body.classList.remove('dark-theme');
   }
 });
+
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 <!-- 

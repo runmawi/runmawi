@@ -547,8 +547,13 @@ $uppercase =  ucfirst($request_url);
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
-
-                        </div> </div>
+                        </div> 
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-md-8">
+                                <span class="text-light font-size-13">DOB</span>
+                                <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                            </div>
+                        </div></div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -585,6 +590,11 @@ $uppercase =  ucfirst($request_url);
                             <div class="form-group">
 		                         <label> Phone:</label>
 		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                            </div>
+                            <div class="form-group">
+                            <label> DOB:</label>
+                            <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
+		                         <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
                             </div>
 
 				    </form>
