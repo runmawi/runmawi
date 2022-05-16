@@ -3,17 +3,19 @@
    <head>
       
 <?php
-if(!empty(Auth::User()->id)){
-$id = Auth::User()->id;
-$users = App\User::find($id);
-$date = date_create($users->created_at);
-$created_at = date_format($date,"Y-m-d");
-$filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
-$currentdate = date('Y-m-d');
-}else{
-   $currentdate = null ;
-   $filldate = null ;
-}
+   if(!empty(Auth::User()->id)){
+      $id = Auth::User()->id;
+      $users = App\User::find($id);
+      $date = date_create($users->created_at);
+      $created_at = date_format($date,"Y-m-d");
+      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+      $currentdate = date('Y-m-d');
+      $DOB = $users->DOB;
+   }else{
+      $currentdate = null ;
+      $filldate = null ;
+      $DOB = null;
+   }
 // dd($currentdate);
 
 $data = Session::all();
@@ -621,12 +623,12 @@ $data = Session::all();
 $(document).ready(function(){
 var currentdate = "<?=  $currentdate ?>";
 var filldate = "<?= $filldate ?>";
-var DOB = "<?= $users->DOB ?>";
+var DOB = "<?= $DOB ?>";
 
 // console.log(DOB);
 // console.log(currentdate);
 
-if(filldate == currentdate &&  !empty(DOB)  &&  currentdate != null &&  filldate != null){       
+if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
 $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
 setTimeout(function() {
 $('.add_watch').slideUp('fast');
