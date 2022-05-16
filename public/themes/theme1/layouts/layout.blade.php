@@ -33,7 +33,7 @@
 <style>
 
     /*Button Bg color  */
-        button.btn.btn-hover.btn-primary.btn-block.signup {
+    button.btn.signup {
             border: #f3ece0 !important ;
             background-color: {{ button_bg_color() .'!important' }} ;
         }

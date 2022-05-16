@@ -198,8 +198,7 @@ i.fa.fa-google-plus {
                   </div>
                         
                            <div class="sign-info mt-3">
-                              <button type="submit" class="btn btn-hover btn-primary btn-block signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
-                                                            
+                              <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
                            </div> 
                         
                          
