@@ -478,6 +478,26 @@ class AdminAudioController extends Controller
               $file->move($image_path, $data['image']);
         }
 
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
+        if(empty($data['player_image'])){
+            unset($data['player_image']);
+                $player_image = $audio->player_image;
+        } else {
+            $image = $data['player_image'];
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $player_image = $image;
+              $data['player_image']  = $player_image->getClientOriginalName();
+              $player_image->move($image_path, $data['player_image']);
+            $player_image =  $player_image->getClientOriginalName();
+
+                }
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -494,6 +514,8 @@ class AdminAudioController extends Controller
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
         $audio->ppv_status =  $data['ppv_status'];
+        $audio->player_image =  $player_image;
+
         $audio->save();
 
         if(!empty($data['artists'])){
@@ -837,6 +859,27 @@ class AdminAudioController extends Controller
               $file->move($image_path, $data['image']);
         }
 
+
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
+        if(empty($data['player_image'])){
+                $player_image ="Default.png";
+        } else {
+            $image = $data['player_image'];
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $player_image = $image;
+              $data['player_image']  = $player_image->getClientOriginalName();
+              $player_image->move($image_path, $data['player_image']);
+            $player_image =  $player_image->getClientOriginalName();
+
+                }
+
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -851,6 +894,7 @@ class AdminAudioController extends Controller
         }
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
+        $audio->player_image =  $player_image;
         $audio->status =  1;
         $audio->ppv_status =  $data['ppv_status'];
         $audio->save();
