@@ -124,6 +124,22 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div> 
                 
+            <div class="panel-heading mt-3"> 
+                <div class="panel-title"> 	
+                    <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> 
+                </div> 
+                    <p>{{ ucfirst(trans('signup page theme')) }}</p>
+              
+			   <div class="panel-body"> 
+                        <div class="col-sm-6">
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                </div> 
         </div>
     <div class="panel-body" style="display: flex;
     justify-content: flex-end;">
