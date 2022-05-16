@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\OrderHomeSetting;
 use Carbon\Carbon;
 
-class OrderHomepageTableSeeder extends Seeder
+class OrderHomeSettingSeeder extends Seeder
 {
     /**
      * Run the database seeds.

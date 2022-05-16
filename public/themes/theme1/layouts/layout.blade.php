@@ -48,4 +48,12 @@
             background-color:  {{ button_bg_color() .'!important' }} ;
         }
 
+        i.ri-settings-4-line.text-primary {
+            color: {{ button_bg_color() .'!important' }} ;
+        }
+
+        i.ri-logout-circle-line.text-primary{
+            color: {{ button_bg_color() .'!important' }} ;
+        }
+
 </style>

@@ -37,7 +37,16 @@ $uppercase =  ucfirst($request_url);
         background: rgba(255, 255, 255, 0.07);
         padding: 30px 30px;
     }
+
+    i.ri-settings-4-line.text-primary {
+        color: {{ button_bg_color() .'!important' }} ;
+    }
+
+    i.ri-logout-circle-line.text-primary{
+        color: {{ button_bg_color() .'!important' }} ;
+    }
 </style>
+
 <body>
 <div class="container">
 	<div class="row page-height">
