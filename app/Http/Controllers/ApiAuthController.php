@@ -1178,10 +1178,22 @@ public function verifyandupdatepassword(Request $request)
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
+      $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+        return $item;
+      });
+      $series_banner = Series::where('active','=',1)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+        return $item;
+      });
       $response = array(
         'status' => 'true',
         'sliders' => $sliders,
-        'banners' => $banners
+        'banners' => $banners,
+        'live_banner' => $live_banner,
+        'series_banner' => $series_banner,
       );
       return response()->json($response, 200);
      } 

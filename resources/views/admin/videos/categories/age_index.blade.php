@@ -90,7 +90,7 @@
 		</div>
 	</div>
     </div>
-    </div>
+    <!-- </div> -->
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="update-category">
