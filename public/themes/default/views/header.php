@@ -364,7 +364,7 @@ $data = Session::all();
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
-                                                <i class="ri-settings-4-line text-primary"></i>
+                                                <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signin.svg';?> ">
                                             </div>
                                             <div class="media-body ml-3">
                                                 <h6 class="mb-0 ">Signin</h6>
@@ -376,7 +376,7 @@ $data = Session::all();
                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
-                                           <i class="ri-logout-circle-line text-primary"></i>
+                                             <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signup.svg';?> ">
                                         </div>
                                         <div class="media-body ml-3">
                                            <h6 class="mb-0 ">Signup</h6>
@@ -415,7 +415,7 @@ $data = Session::all();
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                     
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/manage-profile.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -425,7 +425,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/watch-later.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -435,7 +435,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/my-whlist.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">My Wishlist</h6>
@@ -445,7 +445,7 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/pm.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
@@ -455,7 +455,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/lg.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -478,7 +478,7 @@ $data = Session::all();
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/manage-profile.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -488,7 +488,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                 <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> " width="25" height="21">
+                                                 <img src="<?php echo URL::to('/').'/assets/icons/watch-later.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -498,7 +498,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/my-whlist.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">My Wishlist</h6>
@@ -508,7 +508,7 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/pm.svg';?> " >
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
@@ -519,7 +519,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <img src="<?php echo URL::to('/').'/assets/icons/plan.svg';?> " width="25" height="21">
+                                                  <img src="<?php echo URL::to('/').'/assets/icons/pp.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Pricing Plan</h6>
@@ -530,7 +530,7 @@ $data = Session::all();
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/adm.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Admin</h6>
@@ -562,7 +562,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> " width="25" height="21">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/lg.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
