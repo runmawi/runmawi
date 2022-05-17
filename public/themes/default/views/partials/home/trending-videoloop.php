@@ -2,7 +2,7 @@
   
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">
-  <?php if ($order_settings[0]->header_name) { echo $order_settings[0]->header_name ;} else { echo "" ; } ?>
+  <?php if ($order_settings_list[0]->header_name) { echo $order_settings_list[0]->header_name ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h4>                      
                  </div>
