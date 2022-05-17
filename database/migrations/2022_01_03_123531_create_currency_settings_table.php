@@ -17,8 +17,7 @@ class CreateCurrencySettingsTable extends Migration
             $table->id();
             $table->string('symbol')->nullable();
             $table->string('country')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }
