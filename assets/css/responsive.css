@@ -130,6 +130,10 @@
     .btn{
         padding: 5px 10px!important;
     }
+    .km{
+        font-size: 40px!important;
+        text-align: center;
+    }
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
 }
