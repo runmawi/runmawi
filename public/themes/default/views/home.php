@@ -2,6 +2,8 @@
 <?php include('header.php'); 
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+$order_settings_list = App\OrderHomeSetting::get();  
+
 // dd($order_settings);
 ?>
 <!-- Header End -->

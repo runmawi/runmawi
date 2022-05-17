@@ -269,7 +269,7 @@ i.fa.fa-google-plus {
          </div>
       </div>
    </div>
-
+   
 <!-- Modal -->
 <style>
     .modal-content {

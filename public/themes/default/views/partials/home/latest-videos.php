@@ -4,7 +4,7 @@ if(count($latest_videos) > 0) : ?>
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php echo URL::to('/latest-videos') ?>">
-                    <?php if ($order_settings[1]->header_name) { echo $order_settings[1]->header_name ;} else { echo "" ; } ?>
+                    <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
                     </a></h4>                      
                  </div>
                  <div class="favorites-contens">

@@ -3,7 +3,7 @@
                     <h4 class="main-title">
                        <a href="<?php echo URL::to('/audios') ?>">
                        <!-- Audios -->
-                    <?php if ($order_settings[5]->header_name) { echo $order_settings[5]->header_name ;} else { echo "" ; } ?>
+                    <?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>
 
                      </a></h4>                      
                  </div>
