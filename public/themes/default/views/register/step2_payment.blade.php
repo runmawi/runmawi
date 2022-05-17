@@ -429,7 +429,13 @@ i.fa.fa-google-plus {
         padding: 10px;
         color: #000!important;
         background-color: #fff;
+       
     }
+
+    .actives {
+        border:5px solid #a5a093;
+    }
+   
         .dg:hover{
             padding: 10px;
             color: #000!important;
@@ -444,8 +450,6 @@ i.fa.fa-google-plus {
         background-color:  {{ button_bg_color() .'!important' }} ;
     }
     
-    
-
 </style>
 
 <style>
@@ -495,12 +499,12 @@ i.fa.fa-google-plus {
                         <div class="row">
                          @foreach($plans_data as $key => $plan) 
                              @php
-                             $plan_name = $plan[0]->plans_name;
+                                  $plan_name = $plan[0]->plans_name;
                              @endphp
 
-                             <div style="margin-top:20px;" class="col-md-6 plan_details"  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
+                             <div style="margin-top:20px;" class="col-md-6 plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
 
-                                 <div class="d-flex justify-content-between align-items-center dg ">
+                                 <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
                                      <div class="bgk">
                                          <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
                                          <p>{{ $plan[0]->plans_name  }} Membership</p>
@@ -513,6 +517,8 @@ i.fa.fa-google-plus {
                                  </div>
                              </div>
                           @endforeach
+
+                         
                         </div>
                     </div>
 
@@ -991,12 +997,16 @@ for (var i = 0; i < btns.length; i++) {
         var plans_id          = $(ele).attr('data-plan_id');
         var plan_payment_type = $(ele).attr('data-payment-type');
         var plan_price  = $(ele).attr('data-plan-price');
-
+        var plan_id_class = $(ele).attr('data-plan-id');
+        
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);
         $('.plan_price').append('$'+plan_price);
 
+        $('.dg' ).removeClass('actives');
+        $('#'+plan_id_class ).addClass('actives');
+      
     }    
     var base_url = $('#base_url').val();
     const stripe = Stripe('{{ env('STRIPE_KEY') }}');
@@ -1120,9 +1130,14 @@ for (var i = 0; i < btns.length; i++) {
             });
         }
     });
-   
+
 </script>
 
+<script>
+  window.onload = function(){ 
+        $('#active1' ).addClass('actives');
+    }
+</script>
 
 @include('footer')
 @endsection 
