@@ -130,7 +130,6 @@ class HomeController extends Controller
                 }
                 if (!empty($device_name))
                 {
-                    dd($device_name);
                     $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                         ->where('device_name', '=', $device_name)->first();
                     if (empty($devices_check))
@@ -2030,7 +2029,7 @@ class HomeController extends Controller
                     'Mode' => $Mode,
                     'ThumbnailSetting' => $ThumbnailSetting,
                 );
-                // dd($Mode);
+               
                 return Theme::view('home', $data);
             }
         }
@@ -2129,7 +2128,7 @@ class HomeController extends Controller
         }
         $settings = Setting::first();
         if($settings->activation_email == 1){
-        dd($settings);
+       
 
             $email_count = User::where('email', '=', $email)->count();
             $string = Str::random(60);
@@ -2164,7 +2163,7 @@ class HomeController extends Controller
         }else{
 
             $email_count = User::where('email', '=', $email)->count();
-        // dd($email_count );
+      
 
             $string = Str::random(60);
             if ($email_count == 0)

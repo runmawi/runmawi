@@ -59,7 +59,7 @@
   .device-margin { margin-top: 15px; }
   #home-slider h1.slider-text { font-size: 35px;}
   header .navbar ul li{display:block;}
-  .iq-main-slider{padding-top:60px!important;}
+  .iq-main-slider{/*padding-top:60px!important;*/}
   .m-profile {padding-top: 100px;padding-bottom: 60px;}
   .trending-info .trending-dec{width: 52%;}
 }
@@ -121,7 +121,15 @@
   .favorites-slider .slick-arrow,
   .favorites-slider .slick-arrow:hover,
   #trending-slider-nav .slick-arrow,
-  #trending-slider-nav .slick-arrow:hover{background: none;}
+  #trending-slider-nav .slick-arrow:hover{background: none;top:78px!important;}
+    .p-tag {font-size: 8px;
+    }
+     .p-tag1 {font-size: 8px;
+    }
+    .h-100 {height: 200px !important;}
+    .btn{
+        padding: 5px 10px!important;
+    }
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
 }

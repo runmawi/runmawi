@@ -1,6 +1,9 @@
 <?php  if(count($livetream) > 0) : ?>
   <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title">Live Videos</h4>
+    <h4 class="main-title">
+        <!-- Live Videos -->
+  <?php if ($order_settings[3]->header_name) { echo $order_settings[3]->header_name ;} else { echo "" ; } ?>
+    </h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -17,17 +20,17 @@
                         </a>
 
                       <!-- PPV price -->
-                        <div class="corner-text-wrapper">
+                     
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                            <div class="corner-text">
+                        
                                 <?php  if(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                 <?php } ?>
-                            </div>
+                         
                          <?php } ?>   
-                        </div>
+                       
                     </div>
                     <div class="block-description" style="top: 40px !important;">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">

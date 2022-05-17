@@ -327,6 +327,27 @@ class CPPAdminAudioController extends Controller
               $file->move($image_path, $data['image']);
         }
 
+
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
+        if(empty($data['player_image'])){
+                $player_image ="Default.png";
+        } else {
+            $image = $data['player_image'];
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $player_image = $image;
+              $data['player_image']  = $player_image->getClientOriginalName();
+              $player_image->move($image_path, $data['player_image']);
+            $player_image =  $player_image->getClientOriginalName();
+
+                }
+
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -337,6 +358,8 @@ class CPPAdminAudioController extends Controller
         $data['user_id'] = $user_id;
 
         $audio->update($data);
+        $audio->player_image =  $player_image;
+
 
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -662,6 +685,26 @@ class CPPAdminAudioController extends Controller
               $file->move($image_path, $data['image']);
         }
 
+        $path = public_path().'/uploads/audios/';
+        $image_path = public_path().'/uploads/images/';
+        if(empty($data['player_image'])){
+                $player_image ="Default.png";
+        } else {
+            $image = $data['player_image'];
+            if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+              //upload new file
+              $player_image = $image;
+              $data['player_image']  = $player_image->getClientOriginalName();
+              $player_image->move($image_path, $data['player_image']);
+            $player_image =  $player_image->getClientOriginalName();
+
+                }
+
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -674,6 +717,8 @@ class CPPAdminAudioController extends Controller
         $data['draft'] = 1;
 
         $audio->update($data);
+        $audio->player_image =  $player_image;
+
 
         $audio = Audio::findOrFail($id);
         $users = User::all();

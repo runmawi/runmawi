@@ -785,8 +785,7 @@ class AdminUsersController extends Controller
         // echo "<pre>";
         $input = $request->all();
 
-        // print_r($input);
-        // exit();
+      
         $id = $request['user_id'];
 
         $user = User::find($id);
@@ -804,7 +803,7 @@ class AdminUsersController extends Controller
         }
         else
         {
-            $input['password'] = $request['password'];
+            $input['password'] = Hash::make($request['password']);
         }
 
         $user_update = User::find($id);
@@ -812,6 +811,7 @@ class AdminUsersController extends Controller
         $user_update->password = Hash::make($input['password']);
         $user_update->mobile = $input['mobile'];
         $user_update->username = $input['username'];
+        $user_update->DOB = $input['DOB'];
         $user_update->save();
 
         return Redirect::back();
@@ -832,10 +832,20 @@ class AdminUsersController extends Controller
         //         ]);
         //        $user->fill($data);
         //        $user->save();
+        // dd($request->all());
+        if (empty($request['password']))
+        {
+            $input['password'] = $user->password;
+        }
+        else
+        {
+            $input['password'] = Hash::make($request['password']);
+        }
         $user = User::find(Auth::user()->id);
         $user->username = $request->get('name');
         $user->mobile = $request->get('mobile');
         $user->email = $request->get('email');
+        $user->DOB = $request->get('DOB');
         $user->ccode = $request->get('ccode');
         if (!empty($request->get('password')))
         {

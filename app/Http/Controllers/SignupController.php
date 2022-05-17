@@ -28,7 +28,7 @@ use App\SubscriptionPlan;
 use App\HomeSetting;
 use Session;
 use Theme;
-
+use App\SiteTheme;
 
 class SignupController extends Controller
 {
@@ -352,6 +352,9 @@ public function createStep2(Request $request)
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
+        $signup_checkout = SiteTheme::pluck('signup_theme')->first();
+
+
             if ($request->has('ref')) {
                 session(['referrer' => $request->query('ref')]);
             }
@@ -371,7 +374,18 @@ public function createStep2(Request $request)
             }else{
                 $register = $request->session()->get('register');
 
-                return Theme::view('register.step2', compact(['register', 'plans_data']));
+                if($signup_checkout == 1){
+
+                    $intent_stripe = User::where("email","=",$user_mail)->first();
+                    $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
+                    session()->put('intent_stripe_key',$intent_key);
+
+                    return Theme::view('register.step2_payment', compact(['register', 'plans_data','user_mail']));
+
+                }
+                else{
+                    return Theme::view('register.step2', compact(['register', 'plans_data']));
+                }
 
             }
 

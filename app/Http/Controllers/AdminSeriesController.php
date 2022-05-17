@@ -440,6 +440,28 @@ class AdminSeriesController extends Controller
                 $data['image'] = $series->image;
             }
 
+            $path = public_path().'/uploads/videos/';
+            $image_path = public_path().'/uploads/images/';
+           
+               $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+               if(!empty($player_image)){
+                   //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+                   if($player_image != ''  && $player_image != null){
+                          $file_old = $image_path.$player_image;
+                         if (file_exists($file_old)){
+                          unlink($file_old);
+                         }
+                     }
+                     //upload new file
+                     $player_image = $player_image;
+                     $data['player_image']  = $player_image->getClientOriginalName();
+                     $player_image->move($image_path, $data['player_image']);
+                     $player_image =  $player_image->getClientOriginalName();
+
+   
+               } else {
+                $player_image = $series->player_image;
+               }
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -474,7 +496,7 @@ class AdminSeriesController extends Controller
 
         
         
-        
+        $series->player_image = $player_image;
         $series->update($data);
         if(empty($data['ppv_status'])){
             $ppv_status = 0;

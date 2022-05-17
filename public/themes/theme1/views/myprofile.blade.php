@@ -715,8 +715,14 @@ border-radius: 20px;
                             </div>
                           
                         </div>
+                <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
+                     <div class="col-md-6 d-flex justify-content-between mt-2">
+                           <span class="text-light font-size-13">DOB</span>
+                           <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                        </div>
                 </div>
                 </div>
+
                 <hr style="color:#fff;">
                 <div class="col-md-8 targetDiv" id="div2">
                     <div class="d-flex justify-content-around text-white">
@@ -1102,6 +1108,11 @@ border-radius: 5px;padding:10px;">
                             <div class="form-group">
 		                         <label> Phone:</label>
 		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                            </div>
+                            
+                            <div class="form-group">
+                            <label> DOB:</label>
+                            <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                             </div>
 
 				    </form>
