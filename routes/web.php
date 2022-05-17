@@ -535,6 +535,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
     
 // Age Restrict    
+    Route::get('/age/index', 'AdminAgeController@index');
     Route::post('/age/store', 'AdminAgeController@store');
     Route::get('/age/edit/{id}', 'AdminAgeController@edit');
     Route::post('/age/update', 'AdminAgeController@update');

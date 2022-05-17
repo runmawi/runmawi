@@ -416,6 +416,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+          <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
@@ -646,6 +651,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/manage-live-cate.svg')?>">Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
@@ -874,6 +884,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div style="">
                   
                         <p class="lnk" >Audio </p></div>
