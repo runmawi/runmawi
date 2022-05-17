@@ -249,7 +249,7 @@ class AdminDashboardController extends Controller
             'Active_count' => $Active_count,
             );
 
-         return View ('admin.Videos.Active_slider', $data);
+         return View::make('admin.videos.Active_slider', $data);
 
     }
 }
