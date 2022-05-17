@@ -108,10 +108,10 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
-                <div class="row">
+                <div class="row mt-2 align-items-center">
                     <div class="col-md-6">
-                    <div class="row mt-3">
-                                        <div class="col-sm-6">
+                   
+                                        <div class="">
                                             <label class="m-0">Video Image Cover</label>
                                             <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
 
@@ -120,7 +120,7 @@ border-radius: 0px 4px 4px 0px;
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6">
+                                        <div class="mt-2 text-center">
                                             <div class="panel-body">
                                                 @if(!empty($video->image))
                                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
@@ -128,10 +128,10 @@ border-radius: 0px 4px 4px 0px;
                                             </div>
                                         </div>
                                     </div>
-                    </div>
+                    
                     <div class="col-md-6">
                     <div class="row mt-3">
-                                        <div class="col-sm-6">
+                                        <div class="">
                                             <label class="m-0">Player Image Cover</label>
                                             <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
 
@@ -140,7 +140,7 @@ border-radius: 0px 4px 4px 0px;
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6">
+                                        <div class="mt-2 text-center">
                                             <div class="panel-body">
                                                 @if(!empty($video->player_image))
                                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200" />
@@ -362,9 +362,10 @@ border-radius: 0px 4px 4px 0px;
                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                     <input type="hidden" name="ppv_price" id="price" value="$video->ppv_price" />
                     @endif
-
+                    
                     <input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
-                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary" />
+                    <div class="d-flex justify-content-end">
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary" /></div>
                 </form>
 
                 <div class="clear"></div>
