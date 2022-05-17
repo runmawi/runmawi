@@ -8,7 +8,7 @@
          <div class="container">
             <div class="block-space">
                <div class="row justify-content-between">
-                   <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
+                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
@@ -55,15 +55,15 @@
                           </a>
                       <?php } ?>
 
-                      <?php if(!empty($settings->google_page_id)){?>
+                     <!-- <?php if(!empty($settings->google_page_id)){?>
                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
                           <i class="fa fa-google-plus"></i>
                           </a>
-                      <?php } ?>
+                      <?php } ?>-->
 
                      </div>
                   </div>
-                  <div class="col-lg-2 col-md-4 col-sm-12 p-0">
+                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
                      <ul class="f-link list-unstyled mb-0">
 
                         <?php
@@ -116,7 +116,7 @@
 						<?php endforeach; ?>
 					</ul>-->
 				<!-- </div> -->
-                   <div class="col-lg-2 col-md-4 p-0">
+                   <div class="col-lg-3 col-md-4 p-0">
                      <!--<ul class="f-link list-unstyled mb-0">
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Cotact Us</a></li>
