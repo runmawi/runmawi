@@ -1064,7 +1064,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       <div class="iq-navbar-logo d-flex justify-content-between">
                          <a href="<?php echo URL::to('home') ?>" class="header-logo">
                             <div class="logo-title">
-                               <span class="text-primary text-uppercase"><?php $settings = App\Setting::first(); echo $settings->website_name;?></span>
+                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="200"  alt="" ></span>
                             </div>
                          </a>
                       </div>
