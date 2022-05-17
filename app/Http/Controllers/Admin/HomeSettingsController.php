@@ -52,10 +52,13 @@ class HomeSettingsController extends Controller
         }else{
         $settings = HomeSetting::first();   
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+        $order_settings_list = OrderHomeSetting::get();  
+
 
         $data = array(
             "settings" =>$settings ,
             "order_settings" =>$order_settings ,
+            "order_settings_list" =>$order_settings_list ,
 
         );
         return view('admin.settings.homepage',$data);
