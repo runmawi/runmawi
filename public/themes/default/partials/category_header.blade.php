@@ -3,7 +3,20 @@
    <head>
       
 <?php
-// dd(Auth::User()->role);
+   if(!empty(Auth::User()->id)){
+      $id = Auth::User()->id;
+      $users = App\User::find($id);
+      $date = date_create($users->created_at);
+      $created_at = date_format($date,"Y-m-d");
+      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+      $currentdate = date('Y-m-d');
+      $DOB = $users->DOB;
+   }else{
+      $currentdate = null ;
+      $filldate = null ;
+      $DOB = null;
+   }
+// dd($currentdate);
 
 $data = Session::all();
 
@@ -17,6 +30,7 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
 }else{
 
 }
+
 // exit();UA-42534483-14
 $data = Session::all();
 
@@ -85,8 +99,7 @@ $data = Session::all();
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <link rel="favicon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
@@ -96,10 +109,13 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+
    </head>
     <style>
         #main-header{ color: #fff; }
@@ -141,7 +157,7 @@ $data = Session::all();
      <!-- Header -->
       <header id="main-header">
          <div class="main-header">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container-fluid" >
                <div class="row">
                   <div class="col-sm-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -184,13 +200,16 @@ $data = Session::all();
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>
+                                           
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $cat as $category) { ?>
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                   <?php echo $category->name;?> 
                                                 </a>
+                                                  
                                               </li>
+                                               
                                               <?php } ?>
                                             </ul>
                                           </li>
@@ -345,7 +364,7 @@ $data = Session::all();
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
-                                                <i class="ri-settings-4-line text-primary"></i>
+                                                <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signin.svg';?> ">
                                             </div>
                                             <div class="media-body ml-3">
                                                 <h6 class="mb-0 ">Signin</h6>
@@ -357,7 +376,7 @@ $data = Session::all();
                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
-                                           <i class="ri-logout-circle-line text-primary"></i>
+                                             <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signup.svg';?> ">
                                         </div>
                                         <div class="media-body ml-3">
                                            <h6 class="mb-0 ">Signup</h6>
@@ -370,7 +389,7 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome
+                                        <p class="mt-3" style="font-size: 16px;">
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');
@@ -379,7 +398,7 @@ $data = Session::all();
                                           echo  $subuser->user_name  ;
                                         }
                                         else{
-                                          echo Auth::user()->username.' '.'!'  ;
+                                          echo Auth::user()->username.' '  ;
                                         }
                                         
                                         ?> 
@@ -396,7 +415,7 @@ $data = Session::all();
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                     
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/manage-profile.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -406,7 +425,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/watch-later.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -416,7 +435,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/my-whlist.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">My Wishlist</h6>
@@ -426,7 +445,7 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/pm.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
@@ -436,7 +455,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> ">
+                                                   <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/lg.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -459,7 +478,7 @@ $data = Session::all();
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/manage-profile.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Manage Profile</h6>
@@ -469,7 +488,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                 <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> " width="25" height="21">
+                                                 <img src="<?php echo URL::to('/').'/assets/icons/watch-later.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -479,7 +498,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/my-whlist.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">My Wishlist</h6>
@@ -489,7 +508,7 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
+                                                   <img width="30" height="30" src="<?php echo URL::to('/').'/assets/icons/pm.svg';?> " >
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
@@ -500,7 +519,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <img src="<?php echo URL::to('/').'/assets/icons/plan.svg';?> " width="25" height="21">
+                                                  <img src="<?php echo URL::to('/').'/assets/icons/pp.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Pricing Plan</h6>
@@ -511,7 +530,7 @@ $data = Session::all();
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/adm.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Admin</h6>
@@ -543,7 +562,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> " width="25" height="21">
+                                                   <img src="<?php echo URL::to('/').'/assets/icons/lg.svg';?> " width="30" height="30">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -600,6 +619,22 @@ $data = Session::all();
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
+
+$(document).ready(function(){
+var currentdate = "<?=  $currentdate ?>";
+var filldate = "<?= $filldate ?>";
+var DOB = "<?= $DOB ?>";
+
+// console.log(DOB);
+// console.log(currentdate);
+
+if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
+$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+setTimeout(function() {
+$('.add_watch').slideUp('fast');
+}, 3000);
+}
+    });
           </script>
           <script>
               const toggle = document.getElementById('toggle');
@@ -614,6 +649,7 @@ toggle.addEventListener('input', (e) => {
     body.classList.remove('dark-theme');
   }
 });
+
           </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 <!-- 
