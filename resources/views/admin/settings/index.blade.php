@@ -140,11 +140,17 @@ border-radius: 0px 4px 4px 0px;
 	
             <!-- Page content wrapper-->
            <div class="container-fluid" id="site" style="padding-left:20px;">
-               <div class="row">
+               <div class="row align-items-center">
+                    <div class="panel-heading">
+                    <div class="panel-title"><label>Site Name</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
         <div class="col-md-6">
             <div class="panel panel-primary" data-collapsed="0">
+               
                 <div class="panel-heading">
-                    <div class="panel-title"><label>Site Name</label></div>
+                    <div class="panel-title"><label>Site Description</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
                 </div>
@@ -156,27 +162,12 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 			
-            <div class="panel panel-primary" data-collapsed="0">
-                <div class="panel-heading">
-                    <div class="panel-title"><label>Site Description</label></div>
-                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                    </div>
-                </div>
-                <div class="panel-body" style="display: block;">
-                    <p class="p1">Enter Your Website Description Below:</p>
-                    <input type="text" class="form-control" name="website_description" id="website_description"
-                        placeholder="Site Description"
-                        value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
-                </div>
-            </div> </div>
-            <!-- </div> -->
-           <div class="col-md-6">
-                <div class="panel-heading">
+            <div class="panel panel-primary mt-4" data-collapsed="0">
+                 <div class="panel-heading">
                     <div class="panel-title"><label>Logo <small>(Dimensions: 180px X 29px)</small></label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
-                </div>
-                <div class="panel-body" style="display: block;">
+                     <div class="panel-body" style="display: block;">
                     @if(!empty($settings->logo))
                     <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}"
                         style="max-height:100px" />
@@ -184,7 +175,20 @@ border-radius: 0px 4px 4px 0px;
                     <p class="p1">Upload Your Site Logo:</p>
                     <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
                 </div>
-                <div class="panel panel-primary mt-3 col-md-6 p-0" data-collapsed="0">
+                </div>
+               
+            </div> </div>
+            <!-- </div> -->
+           <div class="col-md-6 mt-4">
+                <div class="panel-body" style="display: block;">
+                    <p class="p1">Enter Your Website Description Below:</p>
+                    <input type="text" class="form-control" name="website_description" id="website_description"
+                        placeholder="Site Description"
+                        value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
+                </div>
+               
+                
+                <div class=" mt-4 pt-3  p-0" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Favicon</label></div>
                         <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
