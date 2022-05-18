@@ -777,9 +777,9 @@ $uppercase =  ucfirst($request_url);
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                               <br>       
                            <h5 class="card-title mb-0">Available Specification :</h5><br>
-                              <h6> Video Quality : <p><?php echo $plans->video_quality; ?></p></h6>  
-                              <h6> Video Resolution : <p><?php echo $plans->resolution; ?></p></h6>                               
-                              <h6> Available Devices : <p><?php echo $devices_name; ?></p></h6>                              
+                           <h6> Video Quality : <p> {{ $plans ? $plans->video_quality : ''  }}</p></h6>  
+                           <h6> Video Resolution : <p>  {{ $plans ? $plans->resolution : ''  }} </p></h6>                               
+                           <h6> Available Devices : <p> {{ $plans ? $plans->devices_name : ''  }} </p></h6>                                                                                                                   
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
                            </div>
