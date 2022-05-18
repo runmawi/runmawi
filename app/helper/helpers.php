@@ -393,7 +393,7 @@ function TotalSubscribercount(){
 
 function TotalNewSubscribercount(){
 
-    $newsubscribercount = App\Subscription::whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+    $newsubscribercount = App\Subscription::whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
     
     return  $newsubscribercount; 
 }
