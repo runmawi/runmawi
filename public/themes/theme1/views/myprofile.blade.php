@@ -757,9 +757,9 @@ border-radius: 20px;
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                               <br>       
                            <h5 class="card-title mb-0">Available Specification :</h5><br>
-                           <h6> Video Quality : <p> {{ $plans ? $plans->video_quality : ''  }}</p></h6>  
-                           <h6> Video Resolution : <p>  {{ $plans ? $plans->resolution : ''  }} </p></h6>                               
-                           <h6> Available Devices : <p> {{ $plans ? $plans->devices_name : ''  }} </p></h6>                                                                                                                   
+                           <h6> Video Quality : <p> <?php if($plans != null ) {  $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6> Video Resolution : <p> <?php if($plans != null ) {  $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6> Available Devices : <p> <?php if($plans != null ) {  $plans->devices_name ; } else { ' ';} ?> </p></h6>
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
 
