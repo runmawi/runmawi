@@ -44,6 +44,8 @@ Route::group([
     Route::get('mobile_sliders', 'ApiAuthController@MobileSliders');
     Route::get('ppvvideos', 'ApiAuthController@ppvvideos');
     Route::post('ppvvideodetail', 'ApiAuthController@ppvvideodetail');
+    Route::post('PPVVideodetails', 'ApiAuthController@PPVVideodetails');
+
     Route::post('updateProfile', 'ApiAuthController@updateProfile');
     Route::post('addwishlist', 'ApiAuthController@addwishlist');
     Route::post('addfavorite', 'ApiAuthController@addfavorite');
