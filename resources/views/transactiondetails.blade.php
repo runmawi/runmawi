@@ -17,9 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div >
                         <h5 style="color: black;">Make payment</h5></div>
-                        <div>
-                            <a class="show">Show more transaction</a>
-                        </div>
+                        
                         
                     </div>
                 <div class="row mt-3 p-1" id="">

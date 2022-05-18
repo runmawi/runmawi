@@ -6142,4 +6142,20 @@ public function Adstatus_upate(Request $request)
       return $homesetting;
   }
 
+  public function PPVVideodetails(Request $request){
+
+    $ppv_videos = PpvPurchase::Join('videos','videos.id','=','ppv_purchases.video_id')
+                  ->where('ppv_purchases.user_id',$request->user_id)->get()->map(function ($item) {
+                        $item['video_image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                        $item['videoExpired_date'] = Carbon::parse($item->to_time)->format('d-m-Y');
+                        $item['videoExpired_time'] = Carbon::parse($item->to_time)->format('g:i:s A');
+                      return $item;
+                  });
+
+
+      return response()->json([
+        'status'  => 'true',
+        'PPVvideo' =>  $ppv_videos], 200);
+    }
+
 }
