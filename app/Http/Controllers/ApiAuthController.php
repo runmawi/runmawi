@@ -1157,13 +1157,15 @@ public function verifyandupdatepassword(Request $request)
             if ( $ppv_time_expire > $current_date ) {
   
                 $ppv_video_status = "can_view";
+              $ppv_video_status = "pay_now";
   
             } else {
                   $ppv_video_status = "expired";
             }
   
       } else {
-            $ppv_video_status = "pay_now";
+            // $ppv_video_status = "pay_now";
+            $ppv_video_status = "can_view";
       }
   
     $response = array(
