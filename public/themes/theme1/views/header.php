@@ -379,7 +379,7 @@ $data = Session::all();
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
-                                                <i class="ri-settings-4-line text-primary"></i>
+                                            <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signin.svg';?> ">
                                             </div>
                                             <div class="media-body ml-3">
                                                 <h6 class="mb-0 ">Signin</h6>
@@ -391,7 +391,7 @@ $data = Session::all();
                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
-                                           <i class="ri-logout-circle-line text-primary"></i>
+                                        <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signup.svg';?> ">
                                         </div>
                                         <div class="media-body ml-3">
                                            <h6 class="mb-0 ">Signup</h6>
