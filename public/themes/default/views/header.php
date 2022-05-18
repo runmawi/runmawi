@@ -122,27 +122,6 @@ $data = Session::all();
             height: 30px;
         widows: 30px;
         }
-        .st0{
-            fill:yellow!important;
-        }
-        .st0 {
-    fill: yellow!important;
-    stroke: yellow!important; 
-    stroke-width: 0.75;
-    stroke-miterlimit: 10;
-}
-        .st1 {
-     fill: yellow!important; 
-    stroke: yellow!important; 
-    stroke-width: 0.5;
-    stroke-miterlimit: 10;
-}
-        .st2{
-            fill:yellow!important;
-        }
-         .st3{
-           stroke: yellow!important;
-        }
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
         #videoPlayer{
@@ -389,7 +368,7 @@ $data = Session::all();
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
-                                                <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signin.svg';?> ">
+                                               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/><path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/></svg>
                                             </div>
                                             <div class="media-body ml-3">
                                                 <h6 class="mb-0 ">Signin</h6>
@@ -401,7 +380,7 @@ $data = Session::all();
                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
-                                             <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signup.svg';?> ">
+                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
                                         </div>
                                         <div class="media-body ml-3">
                                            <h6 class="mb-0 ">Signup</h6>
@@ -443,7 +422,7 @@ $data = Session::all();
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	
 </style>
 <g>
 	<path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
@@ -474,35 +453,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.75;stroke-miterlimit:10;}
-	.st1{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
-	.st2{fill:#198FCF;}
-	.st3{fill:none;stroke:#198FCF;stroke-width:2;stroke-miterlimit:10;}
-	.st4{fill:none;stroke:#000000;stroke-width:2.2;stroke-miterlimit:10;}
-</style>
-<g>
-	<path class="st0" d="M21.5,23.7h14c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4h-14c-0.2,0-0.3-0.2-0.3-0.4V24
-		C21.2,23.9,21.4,23.7,21.5,23.7z"/>
-	<path class="st0" d="M21.5,32h13.4c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.8
-		C21.2,32.2,21.4,32,21.5,32z"/>
-	<path class="st0" d="M21.5,40.3h23.1c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.7
-		C21.2,40.5,21.4,40.3,21.5,40.3z"/>
-	<path class="st0" d="M21.5,48.7h23.1c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.8
-		C21.2,48.8,21.4,48.7,21.5,48.7z"/>
-	<path class="st1" d="M48.4,37c-5.1,0-9.2-4.1-9.2-9.2s4.1-9.2,9.2-9.2s9.2,4.1,9.2,9.2S53.5,37,48.4,37z M48.4,20.3
-		c-4.2,0-7.5,3.3-7.5,7.5s3.3,7.5,7.5,7.5s7.5-3.3,7.5-7.5S52.6,20.3,48.4,20.3z"/>
-	<path class="st2" d="M52.1,28.7h-3.8c-0.4,0-0.7-0.3-0.7-0.7v-3.8c0-0.2,0.2-0.4,0.4-0.4h0.8c0.2,0,0.4,0.2,0.4,0.4v2.2
-		c0,0.4,0.3,0.7,0.7,0.7h2.2c0.2,0,0.4,0.2,0.4,0.4v0.8C52.6,28.5,52.4,28.7,52.1,28.7z"/>
-	<path class="st3" d="M54.3,34v20.1c0,1-0.8,1.9-1.9,1.9H17.3c-1,0-1.9-0.8-1.9-1.9V17.5c0-1,0.8-1.9,1.9-1.9h35.1l0,0
-		c1,0,1.9,0.8,1.9,1.9v4.2"/>
-	<path class="st4" d="M54.3,21.7"/>
-</g>
-</svg>
+                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -512,12 +463,11 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                  
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z"/>
@@ -548,12 +498,11 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                 
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
+	.st0{stroke-width:0.5;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
@@ -577,20 +526,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#1C8FCE;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<g>
-	<path class="st0" d="M53.4,33.7H30.7"/>
-	<path class="st0" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
-	<path class="st0" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
-		c-2.4-3.2-3.7-7.1-3.7-11.1c0-4,1.3-7.9,3.7-11.1c2.4-3.2,5.8-5.5,9.6-6.6c3.8-1.1,7.9-1,11.7,0.4c3.7,1.4,6.9,4,9.1,7.3"/>
-</g>
-</svg>
+                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
@@ -617,7 +553,7 @@ $data = Session::all();
                                                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
@@ -648,35 +584,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.75;stroke-miterlimit:10;}
-	.st1{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
-	.st2{fill:#198FCF;}
-	.st3{fill:none;stroke:#198FCF;stroke-width:2;stroke-miterlimit:10;}
-	.st4{fill:none;stroke:#000000;stroke-width:2.2;stroke-miterlimit:10;}
-</style>
-<g>
-	<path class="st0" d="M21.5,23.7h14c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4h-14c-0.2,0-0.3-0.2-0.3-0.4V24
-		C21.2,23.9,21.4,23.7,21.5,23.7z"/>
-	<path class="st0" d="M21.5,32h13.4c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.8
-		C21.2,32.2,21.4,32,21.5,32z"/>
-	<path class="st0" d="M21.5,40.3h23.1c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.7
-		C21.2,40.5,21.4,40.3,21.5,40.3z"/>
-	<path class="st0" d="M21.5,48.7h23.1c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4H21.5c-0.2,0-0.3-0.2-0.3-0.4v-0.8
-		C21.2,48.8,21.4,48.7,21.5,48.7z"/>
-	<path class="st1" d="M48.4,37c-5.1,0-9.2-4.1-9.2-9.2s4.1-9.2,9.2-9.2s9.2,4.1,9.2,9.2S53.5,37,48.4,37z M48.4,20.3
-		c-4.2,0-7.5,3.3-7.5,7.5s3.3,7.5,7.5,7.5s7.5-3.3,7.5-7.5S52.6,20.3,48.4,20.3z"/>
-	<path class="st2" d="M52.1,28.7h-3.8c-0.4,0-0.7-0.3-0.7-0.7v-3.8c0-0.2,0.2-0.4,0.4-0.4h0.8c0.2,0,0.4,0.2,0.4,0.4v2.2
-		c0,0.4,0.3,0.7,0.7,0.7h2.2c0.2,0,0.4,0.2,0.4,0.4v0.8C52.6,28.5,52.4,28.7,52.1,28.7z"/>
-	<path class="st3" d="M54.3,34v20.1c0,1-0.8,1.9-1.9,1.9H17.3c-1,0-1.9-0.8-1.9-1.9V17.5c0-1,0.8-1.9,1.9-1.9h35.1l0,0
-		c1,0,1.9,0.8,1.9,1.9v4.2"/>
-	<path class="st4" d="M54.3,21.7"/>
-</g>
-</svg>
+                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Watch Later</h6>
@@ -686,12 +594,11 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z"/>
@@ -722,12 +629,11 @@ $data = Session::all();
                                             <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                  
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
+	.st0{stroke-width:0.5;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
@@ -752,12 +658,11 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                 
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#1C8FCE;}
+	.st0{}
 </style>
 <path class="st0" d="M11.2,22.1v23.2c0,1.4,0.5,2.7,1.5,3.6c1,1,2.3,1.5,3.6,1.5h37.7c1.4,0,2.7-0.5,3.6-1.5c1-1,1.5-2.3,1.5-3.6
 	V22.1c0-1.4-0.5-2.7-1.5-3.6c-1-1-2.3-1.5-3.6-1.5H16.4c-1.4,0-2.7,0.5-3.6,1.5C11.8,19.5,11.2,20.8,11.2,22.1L11.2,22.1z
@@ -776,12 +681,11 @@ $data = Session::all();
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                                  
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#1C8FCE;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M52.5,37.8c-1.7,0-3.2,0.5-4.5,1.2c-2.4-2-5-3.7-8-4.6c4.5-3,7.2-8.2,6.4-13.8c-0.8-6.4-6.1-11.7-12.5-12.4
@@ -825,20 +729,7 @@ $data = Session::all();
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                  <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none!important;stroke:#1C8FCE;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<g>
-	<path class="st0" d="M53.4,33.7H30.7"/>
-	<path class="st0" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
-	<path class="st0" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
-		c-2.4-3.2-3.7-7.1-3.7-11.1c0-4,1.3-7.9,3.7-11.1c2.4-3.2,5.8-5.5,9.6-6.6c3.8-1.1,7.9-1,11.7,0.4c3.7,1.4,6.9,4,9.1,7.3"/>
-</g>
-</svg>
+                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Logout</h6>
