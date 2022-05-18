@@ -102,7 +102,12 @@
         .st5{fill:{{ button_bg_color() .'!important' }} ;
         }
         
-.st6{fill:none;stroke:{{ button_bg_color() .'!important' }} ;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+        .st6{fill:none;
+             stroke-width:3;
+             stroke-linecap:round;
+             stroke-linejoin:round;
+             stroke:{{ button_bg_color() .'!important' }}
+            }
     </style>
 
 </html>
