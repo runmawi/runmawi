@@ -137,6 +137,7 @@ class ChannelController extends Controller
       public function play_videos($slug)
     {
 
+
         $data['password_hash'] = "";
         $data = session()->all();
        
@@ -242,9 +243,20 @@ class ChannelController extends Controller
 
            $ppv_exist = PpvPurchase::where('video_id',$vid)
            ->where('user_id',$user_id)
-           ->where('to_time','<',$current_date)->count();
+           ->where('status','active')
+           ->where('to_time','>',$current_date)->count();
            $user_id = Auth::user()->id;
-                // dd($ppv_exist);
+          // if($ppv_exist > 0 && $get_video_id->views > 0 && $get_video_id->views != null){
+          //   $ppv_exist = 1;
+          // }elseif($ppv_exist > 0 && $get_video_id->views != null){
+          //   $ppv_exist = 1;
+          // }
+          // else{
+          //   $ppv_exist = 0;
+          // }
+          // dd($get_video_id->views);
+
+
 
            $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
            $category_name = CategoryVideo::select('video_categories.name as categories_name')

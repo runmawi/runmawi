@@ -1141,14 +1141,36 @@ public function verifyandupdatepassword(Request $request)
   public function livestreamdetail(Request $request)
   {
     $liveid = $request->liveid;
+    $user_id = $request->user_id;
     $livedetail = LiveStream::where('id',$liveid)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
+      $current_date = date('Y-m-d h:i:s a', time()); 
+      // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+      $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
+        
+      if ($ppv_exist > 0) {
+  
+            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time');
+  
+            if ( $ppv_time_expire > $current_date ) {
+  
+                $ppv_video_status = "can_view";
+  
+            } else {
+                  $ppv_video_status = "expired";
+            }
+  
+      } else {
+            $ppv_video_status = "pay_now";
+      }
+  
     $response = array(
       'status' => 'true',
       'shareurl' => URL::to('live').'/'.$liveid,
-      'livedetail' => $livedetail
+      'livedetail' => $livedetail,
+      'ppv_video_status' => $ppv_video_status
     );
     return response()->json($response, 200);
   }
