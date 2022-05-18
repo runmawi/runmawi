@@ -122,27 +122,6 @@ $data = Session::all();
             height: 30px;
         widows: 30px;
         }
-        .st0{
-            fill:yellow!important;
-        }
-        .st0 {
-    fill: yellow!important;
-    stroke: yellow!important; 
-    stroke-width: 0.75;
-    stroke-miterlimit: 10;
-}
-        .st1 {
-     fill: yellow!important; 
-    stroke: yellow!important; 
-    stroke-width: 0.5;
-    stroke-miterlimit: 10;
-}
-        .st2{
-            fill:yellow!important;
-        }
-         .st3{
-           stroke: yellow!important;
-        }
         #main-header{ color: #fff; }
         .svg{ color: #fff; } 
         #videoPlayer{
@@ -443,7 +422,7 @@ $data = Session::all();
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	
 </style>
 <g>
 	<path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
@@ -479,11 +458,11 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.75;stroke-miterlimit:10;}
-	.st1{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
+	.st0{stroke-width:0.75;stroke-miterlimit:10;}
+	.st1{stroke-width:0.5;stroke-miterlimit:10;}
 	.st2{fill:#198FCF;}
-	.st3{fill:none;stroke:#198FCF;stroke-width:2;stroke-miterlimit:10;}
-	.st4{fill:none;stroke:#000000;stroke-width:2.2;stroke-miterlimit:10;}
+	.st3{stroke-width:2;stroke-miterlimit:10;}
+	.st4{stroke-width:2.2;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M21.5,23.7h14c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4h-14c-0.2,0-0.3-0.2-0.3-0.4V24
@@ -517,7 +496,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z"/>
@@ -553,7 +532,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
+	.st0{stroke-width:0.5;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
@@ -582,12 +561,12 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#1C8FCE;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:none!important;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <g>
-	<path class="st0" d="M53.4,33.7H30.7"/>
-	<path class="st0" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
-	<path class="st0" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
+	<path class="st5" d="M53.4,33.7H30.7"/>
+	<path class="st1" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
+	<path class="st4" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
 		c-2.4-3.2-3.7-7.1-3.7-11.1c0-4,1.3-7.9,3.7-11.1c2.4-3.2,5.8-5.5,9.6-6.6c3.8-1.1,7.9-1,11.7,0.4c3.7,1.4,6.9,4,9.1,7.3"/>
 </g>
 </svg>
@@ -617,7 +596,7 @@ $data = Session::all();
                                                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
@@ -653,11 +632,11 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.75;stroke-miterlimit:10;}
-	.st1{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
-	.st2{fill:#198FCF;}
-	.st3{fill:none;stroke:#198FCF;stroke-width:2;stroke-miterlimit:10;}
-	.st4{fill:none;stroke:#000000;stroke-width:2.2;stroke-miterlimit:10;}
+	.st0{stroke-width:0.75;stroke-miterlimit:10;}
+	.st1{stroke-width:0.5;stroke-miterlimit:10;}
+	.st2{}
+	.st3{stroke-width:2;stroke-miterlimit:10;}
+	.st4{stroke-width:2.2;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M21.5,23.7h14c0.2,0,0.3,0.2,0.3,0.4v0.8c0,0.2-0.1,0.4-0.3,0.4h-14c-0.2,0-0.3-0.2-0.3-0.4V24
@@ -691,7 +670,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z"/>
@@ -727,7 +706,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#198FCF;stroke:#198FCF;stroke-width:0.5;stroke-miterlimit:10;}
+	.st0{stroke-width:0.5;stroke-miterlimit:10;}
 </style>
 <g>
 	<path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
@@ -757,7 +736,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#1C8FCE;}
+	.st0{}
 </style>
 <path class="st0" d="M11.2,22.1v23.2c0,1.4,0.5,2.7,1.5,3.6c1,1,2.3,1.5,3.6,1.5h37.7c1.4,0,2.7-0.5,3.6-1.5c1-1,1.5-2.3,1.5-3.6
 	V22.1c0-1.4-0.5-2.7-1.5-3.6c-1-1-2.3-1.5-3.6-1.5H16.4c-1.4,0-2.7,0.5-3.6,1.5C11.8,19.5,11.2,20.8,11.2,22.1L11.2,22.1z
@@ -781,7 +760,7 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#1C8FCE;}
+	.st0{}
 </style>
 <g>
 	<path class="st0" d="M52.5,37.8c-1.7,0-3.2,0.5-4.5,1.2c-2.4-2-5-3.7-8-4.6c4.5-3,7.2-8.2,6.4-13.8c-0.8-6.4-6.1-11.7-12.5-12.4
@@ -830,12 +809,12 @@ $data = Session::all();
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none!important;stroke:#1C8FCE;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:none!important;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <g>
-	<path class="st0" d="M53.4,33.7H30.7"/>
-	<path class="st0" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
-	<path class="st0" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
+	<path class="st5" d="M53.4,33.7H30.7"/>
+	<path class="st1" d="M36.4,28.1l-5.7,5.7l5.7,5.7"/>
+	<path class="st4" d="M50.5,43.7c-2.1,3.4-5.3,5.9-9.1,7.3c-3.7,1.4-7.8,1.6-11.7,0.4c-3.8-1.1-7.2-3.4-9.6-6.6
 		c-2.4-3.2-3.7-7.1-3.7-11.1c0-4,1.3-7.9,3.7-11.1c2.4-3.2,5.8-5.5,9.6-6.6c3.8-1.1,7.9-1,11.7,0.4c3.7,1.4,6.9,4,9.1,7.3"/>
 </g>
 </svg>

@@ -73,7 +73,29 @@
             color: {{ button_bg_color() .'!important' }} ;
         }
 
-    
+        /* Home page Admin icon */
+        .st0{
+            fill:{{ button_bg_color() .'!important' }} ;
+        }
+        .st0 {
+            stroke-width: 0.75;
+            stroke-miterlimit: 10;
+            fill: {{ button_bg_color() .'!important' }} ;
+            stroke: {{ button_bg_color() .'!important' }} ;
+         }
+        .st1 {
+            stroke-width: 0.5;
+            stroke-miterlimit: 10;
+            fill:{{ button_bg_color() .'!important' }} ;
+            stroke:{{ button_bg_color() .'!important' }} ;
+         }
+        .st2{
+            fill:{{ button_bg_color() .'!important' }} ;
+        }
+         .st3{
+           stroke: {{ button_bg_color() .'!important' }} ;
+        }
+
     </style>
 
 </html>
