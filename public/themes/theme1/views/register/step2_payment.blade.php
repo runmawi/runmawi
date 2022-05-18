@@ -1121,7 +1121,7 @@ for (var i = 0; i < btns.length; i++) {
 
                 function(data){
                         $('#loader').css('display','block');
-                            swal("Payment success!", "Your Payment done Successfully!", "success");
+                            swal("Subscription Purchased Successfully!", "Your Payment done Successfully!", "success");
                             $("#card-button").html('Pay Now');
                         setTimeout(function() {
                             window.location.replace(base_url+'/login');
