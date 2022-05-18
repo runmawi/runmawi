@@ -76,9 +76,14 @@ data-delay-in="1.2">
 <div class="trailor-video">
     <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
         class="video-open playbtn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+            <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
         <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10"
         points="73.5,62.5 148.5,105.8 73.5,149.1 " />
@@ -130,9 +135,14 @@ endif; ?>
                 <div class="trailor-video">
                         <a href="#video-trailer"
                             class="video-open playbtn">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
                             viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
                             <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
                             stroke-linejoin="round" stroke-miterlimit="10"
                             points="73.5,62.5 148.5,105.8 73.5,149.1 " />
@@ -264,9 +274,14 @@ data-delay-in="1.2">
 <div class="trailor-video">
     <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
         class="video-open playbtn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+            <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
         <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10"
         points="73.5,62.5 148.5,105.8 73.5,149.1 " />
