@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en-US">
    <head>
+
+<!-- Favicon -->
+   <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
       
 <?php
 $data = Session::all();
@@ -15,6 +18,20 @@ if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_
 }else{
 
 }
+   if(!empty(Auth::User()->id)){
+      $id = Auth::User()->id;
+      $users = App\User::find($id);
+      $date = date_create($users->created_at);
+      $created_at = date_format($date,"Y-m-d");
+      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+      $currentdate = date('Y-m-d');
+      $DOB = $users->DOB;
+   }else{
+      $currentdate = null ;
+      $filldate = null ;
+      $DOB = null;
+   }
+
 // exit();UA-42534483-14
 $data = Session::all();
 
@@ -79,7 +96,6 @@ $data = Session::all();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-    <!-- Favicon -->
 
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,8 +104,6 @@ $data = Session::all();
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <link rel="favicon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
@@ -112,6 +126,8 @@ $data = Session::all();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+
    </head>
     <style>
         #main-header{ color: #fff; }
@@ -159,7 +175,7 @@ $data = Session::all();
      <!-- Header -->
       <header id="main-header">
          <div class="main-header">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+            <div class="container-fluid" >
                <div class="row">
                   <div class="col-sm-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -276,7 +292,7 @@ $data = Session::all();
                                               <div>
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search movies,series">
                                               </div>
                                             </form>
                                           </div>
@@ -290,20 +306,21 @@ $data = Session::all();
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
-                                     
-                                 <i class="ri-search-line"></i>
-                                 </a>
-                                 <div class="search-box iq-search-bar d-search">
+                                  <div class="search-box iq-search-bar d-search">
                                     <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="Type here to Search Videos">
+                                             placeholder="Search movies,series">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
                                  </div>
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                     
+                                 <i class="ri-search-line"></i>
+                                 </a>
+                                 
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                        <div class="iq-card-body">
                                    <div id="search_list" class="search_list search-toggle device-search" >
@@ -362,7 +379,7 @@ $data = Session::all();
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
-                                                <i class="ri-settings-4-line text-primary"></i>
+                                            <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signin.svg';?> ">
                                             </div>
                                             <div class="media-body ml-3">
                                                 <h6 class="mb-0 ">Signin</h6>
@@ -374,7 +391,7 @@ $data = Session::all();
                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
-                                           <i class="ri-logout-circle-line text-primary"></i>
+                                        <img height="30" width="30" src="<?php echo URL::to('/').'/assets/icons/signup.svg';?> ">
                                         </div>
                                         <div class="media-body ml-3">
                                            <h6 class="mb-0 ">Signup</h6>
@@ -387,7 +404,7 @@ $data = Session::all();
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" >Welcome
+                                        <p class="mt-3" >
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');
@@ -396,7 +413,7 @@ $data = Session::all();
                                           echo  $subuser->user_name  ;
                                         }
                                         else{
-                                          echo Auth::user()->username.' '.'!'  ;
+                                          echo Auth::user()->username.' '.' '  ;
                                         }
                                         
                                         ?> 
@@ -524,6 +541,7 @@ $data = Session::all();
                                                 </div>
                                              </div>
                                           </a>
+                                         
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -615,6 +633,21 @@ $data = Session::all();
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
+$(document).ready(function(){
+var currentdate = "<?=  $currentdate ?>";
+var filldate = "<?= $filldate ?>";
+var DOB = "<?= $DOB ?>";
+
+// console.log(DOB);
+// console.log(currentdate);
+
+if(filldate == currentdate &&  DOB != null && !empty(DOB) &&  currentdate != null &&  filldate != null){       
+$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+setTimeout(function() {
+$('.add_watch').slideUp('fast');
+}, 3000);
+}
+    });
           </script>
           <script>
               const toggle = document.getElementById('toggle');
@@ -639,6 +672,4 @@ toggle.addEventListener('input', (e) => {
      
        <!-- MainContent End-->
      
-
-       
   
