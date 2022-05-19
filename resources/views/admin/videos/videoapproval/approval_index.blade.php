@@ -18,6 +18,8 @@ border-radius: 0px 4px 4px 0px;
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -44,11 +46,12 @@ border-radius: 0px 4px 4px 0px;
                      </div>
                      <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
-                           <table class="table text-center table-striped table-bordered table movie_table iq-card" style="width:100%">
+                           <table class="table text-center table-striped table-bordered table movie_table iq-card"id="videocpp" style="width:100%">
                               <thead>
                                  <tr>
                                      
                                     <th>Title</th>
+                                    <th>Video Uploaded By</th>
                                     <th>Video Type</th>
                                     <th>Rating</th>
                                     <th>Video Access</th>
@@ -71,6 +74,7 @@ border-radius: 0px 4px 4px 0px;
                                           </div>
                                        </div>
                                     </td>
+                                    <td>{{ $video->username }}</td>
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->rating }}</td>
                                     <td>{{ $video->access }}</td>
@@ -105,9 +109,11 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
+<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       
          <script>
 $(document).ready(function(){
+   $('#videocpp').DataTable();
 
  fetch_customer_data();
 

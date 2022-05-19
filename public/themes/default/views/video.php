@@ -987,6 +987,31 @@ $artists = [];
           //    videojs('videoPlayer');
           //  }, 2000);
           //  });
+          $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+       });
+   
+    $(document).ready(function(){
+
+      var vid = document.getElementById("videoPlayer");
+      var url= '<?= URL::to("purchase-videocount") ?>';
+      var _token= '<?=  csrf_token() ?>';
+      var videoid = $('#video_id').val();
+
+       $(vid).click(function(){
+        // alert(url);
+        $.post('<?= URL::to('purchase-videocount') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
+         function(data){
+                     //    toastr.success(data.success);
+                   });
+
+       })
+
+    });
+
+             var currentTime = vid.currentTime;
 
            var vid = document.getElementById("videoPlayer");
            vid.currentTime = $("#current_time").val();

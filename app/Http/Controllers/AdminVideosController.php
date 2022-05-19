@@ -50,6 +50,7 @@ use getID3;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\ReelsVideo;
+use App\PpvPurchase as PpvPurchase;
 
 class AdminVideosController extends Controller
 {
@@ -2224,7 +2225,7 @@ if(!empty($artistsdata)){
             $data = array(
                 'videos' => $videos,
                 );
-    
+    // dd($videos);
             return View('admin.videos.videoapproval.approval_index', $data);
         }
        }
@@ -2259,4 +2260,23 @@ if(!empty($artistsdata)){
              {
                  return Video::where('id', '=', $id)->first();
              } 
+             public function purchaseVideocount(Request $request)
+             {
+                $data = $request->all();
+                $user_id = Auth::user()->id;
+                $video_id = $data['video_id'];
+                // view_count
+                $purchase =  PpvPurchase::where('video_id',$video_id)->where('user_id',$user_id)->first();
+                if($purchase->view_count == null || $purchase->view_count < 0){
+                    // print_r('1');exit;
+                    $purchase->view_count = 1;
+                     $purchase->save();
+                    return 1;
+                }elseif($purchase->view_count > 0){
+                    // print_r('2');exit;
+                    return 2;
+                }else{
+                    return 3;
+                }
+             }
 }
