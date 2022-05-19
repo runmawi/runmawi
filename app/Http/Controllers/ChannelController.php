@@ -241,19 +241,32 @@ class ChannelController extends Controller
             $watchtime = 0;
           }
 
-           $ppv_exist = PpvPurchase::where('video_id',$vid)
-           ->where('user_id',$user_id)
-           ->where('status','active')
-           ->where('to_time','>',$current_date)->count();
+          $ppvexist = PpvPurchase::where('video_id',$vid)
+          ->where('user_id',$user_id)
+          // ->where('status','active')
+          // ->where('to_time','>',$current_date)
+          ->count();
+          $ppv_video = PpvPurchase::where('video_id',$vid)
+          ->where('user_id',$user_id)
+          ->first();
            $user_id = Auth::user()->id;
-          // if($ppv_exist > 0 && $get_video_id->views > 0 && $get_video_id->views != null){
-          //   $ppv_exist = 1;
-          // }elseif($ppv_exist > 0 && $get_video_id->views != null){
-          //   $ppv_exist = 1;
-          // }
-          // else{
-          //   $ppv_exist = 0;
-          // }
+          if($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null){
+            $ppv_exist = PpvPurchase::where('video_id',$vid)
+            ->where('user_id',$user_id)
+            ->where('status','active')
+            ->where('to_time','>',$current_date)->count();
+            // $ppv_exist = 1;
+          }elseif($ppvexist > 0 && $ppv_video->view_count == null){
+            $ppv_exist = PpvPurchase::where('video_id',$vid)
+            ->where('user_id',$user_id)
+            // ->where('status','active')
+            // ->where('to_time','>',$current_date)
+            ->count();
+            // $ppv_exist = 1;
+          }
+          else{
+            $ppv_exist = 0;
+          }
           // dd($get_video_id->views);
 
 

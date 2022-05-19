@@ -204,14 +204,14 @@ class HomeSettingsController extends Controller
 
     public function OrderDelete_settings($id){
         OrderHomeSetting::destroy($id);
-         return Redirect::to('admin/order-home-settings')->with(array('note' => 'Successfully Deleted Menu Item', 'note_type' => 'success') );
+         return Redirect::to('admin/home-settings')->with(array('note' => 'Successfully Deleted Menu Item', 'note_type' => 'success') );
     }
 
     public function OrderUpdate(Request $request){
         $input = $request->all();
         $menu = OrderHomeSetting::find($input['id'])->update($input);
         if(isset($menu)){
-            return Redirect::to('admin/order-home-settings')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
+            return Redirect::to('admin/home-settings')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
         }
     }
 

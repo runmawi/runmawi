@@ -269,5 +269,12 @@ Route::group([
 
 // Home Setting Status
     Route::get('homesetting', 'ApiAuthController@homesetting');
+    // audiocategory
+    Route::get('audiocategory', 'ApiAuthController@AudioCategory');
+    Route::post('ppv_videocount', 'ApiAuthController@PPVVideocount');
+    Route::post('ppv_videorent', 'ApiAuthController@PPVVideorent');
+    Route::get('homepage_order', 'ApiAuthController@HomepageOrder');
+
+
 
 });

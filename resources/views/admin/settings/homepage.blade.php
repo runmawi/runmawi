@@ -237,6 +237,9 @@ border-radius: 0px 4px 4px 0px;
 
 
 
+    <!-- --------------------------------------------------mobile setting--------------------------------------------------- -->
+
+
 
 			<div class="col-md-8 d-flex justify-content-between">
 				<h4><i class="entypo-list"></i> Order Home Page</h4>
