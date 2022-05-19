@@ -69,7 +69,7 @@
 			</div>
          <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 </div>
-<div class="container mt-2">
+<div class="container mt-2 mb-5">
 
 		<div class="block-space">
            <div class="row">

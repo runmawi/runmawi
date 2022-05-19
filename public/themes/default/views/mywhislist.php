@@ -47,7 +47,7 @@
                     </div>
 -->
                         <div class="block-description">
-                            <h3><?php echo __($video->title); ?></h3>
+                            <h5><?php echo __($video->title); ?></h5>
                             <div class="movie-time d-flex align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                 <span class="text-white"><i class="fa fa-clock-o"></i>
@@ -60,7 +60,7 @@
                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                 Watch Now
                                 </a>
-                                <div >
+                                <div>
                                     <a style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
                                         <i style="" <?php if(isset($video->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
                                     <div style="color:white;" id="<?= $video->id ?>">
