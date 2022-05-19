@@ -95,6 +95,9 @@ use App\LoggedDevice;
 use Razorpay\Api\Api;
 use App\AdsVideo;
 use App\AdvertisementView;
+use App\OrderHomeSetting;
+use App\MobileHomeSetting;
+
 
 class ApiAuthController extends Controller
 {
@@ -4714,20 +4717,83 @@ return response()->json($response, 200);
 
     public function albumlist(Request $request)
     {
-        $audiocategories_count = AudioCategory::get()->count();
-        if($audiocategories_count > 0){
-        $audiocategories = AudioCategory::all();
-        $response = array(
+      $audioalbums_count = AudioAlbums::get()->count();
+        if($audioalbums_count > 0){
+          $audioalbums = AudioAlbums::all();
+          foreach($audioalbums as $val){
+            $audio[$val->albumname] = Audio::where('album_id',$val->id)->get();
+              $response = array(
             'status'=>'true',
-            'audiocategories'=>$audiocategories
+            'audioalbums'=>$audioalbums,
+            'audio'=>$audio,
         );
+      }
       }else{
         $response = array(
           'status'=>'false',
-          'audiocategories'=> 'No Categories Added'
+          'audioalbums'=> 'No Albums Added',
+          'audio'=>'No Audio Albums Added',
       );
       }
         return response()->json($response, 200);
+    }
+
+
+    public function AudioCategory(Request $request)
+    {
+        $audiocategories_count = AudioCategory::get()->count();
+    
+
+        $audiocategories = AudioCategory::select('id','image')->get()->toArray();
+        $myData = array();
+        foreach ($audiocategories as $key => $audiocategory) {
+          $audiocategoryid = $audiocategory['id'];
+          $genre_image = $audiocategory['image'];
+          // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+
+          $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')->where('category_audios.category_id',$audiocategoryid)
+          ->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            // $item['auido_url'] = URL::to('/').'/storage/app/public/';
+            $item['category_name'] = AudioCategory::where('id',$item->category_id)->pluck('slug')->first();
+    
+            return $item;
+          });
+
+          $main_genre = CategoryAudio::Join('audio_categories','audio_categories.id','=','category_audios.category_id')
+          ->get('name');
+          foreach($main_genre as $value){
+            $category[] = $value['name']; 
+          }
+          if(!empty($category)){
+          $main_genre = implode(",",$category);
+          }else{
+            $main_genre = "";
+          }
+          if(count($audio) > 0){
+            $msg = 'success';
+          }else{
+            $msg = 'nodata';
+          }
+          $myData[] = array(
+            "message" => $msg,
+            'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
+            'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
+            "audio" => $audio
+          );
+        }
+    
+    
+        $response = array(
+          'status' => 'true',
+          'genre_movies' => $myData,
+          'main_genre' => $msg,
+          'main_genre' => $main_genre,
+    
+        );
+        return response()->json($response, 200);
+
+     
     }
 
     public function albumaudios(Request $request)
@@ -6159,5 +6225,123 @@ public function Adstatus_upate(Request $request)
         'status'  => 'true',
         'PPVvideo' =>  $ppv_videos], 200);
     }
+
+
+    public function PPVVideocount(Request $request){
+
+      $videoid =  $request->videoid;
+      $userid = $request->userid;
+      $purchase =  PpvPurchase::where('video_id',$videoid)->where('user_id',$userid)->first();
+      if($purchase->view_count == null || $purchase->view_count < 0){
+          // print_r('1');exit;
+          $purchase->view_count = 1;
+           $purchase->save();
+          $response = array(
+            'status'=>'false',
+            'video'=> 'Added',
+        );
+      }elseif($purchase->view_count > 0){
+          $response = array(
+            'status'=>'false',
+            'video'=> 'exit already',
+        );
+      }else{
+          $response = array(
+            'status'=>'false',
+            'video'=> 'exit already',
+        );
+      }
+  
+        return response()->json([
+          'status'  => 'true',
+          'PPVvideo' =>  $ppv_videos], 200);
+        return response()->json($response, 200);
+
+      }
+
+
+      public function PPVVideorent(Request $request){
+
+        $current_date = date('Y-m-d h:i:s a', time()); 
+
+        $videoid =  $request->videoid;
+        $userid = $request->userid;
+        $ppvexist = PpvPurchase::where('video_id',$videoid)
+        ->orderBy('created_at', 'DESC') 
+        ->where('user_id',$userid)
+        ->count();
+        $ppv_video = PpvPurchase::where('video_id',$videoid)
+        ->orderBy('created_at', 'DESC')
+        ->where('user_id',$userid)
+        ->first();
+        if($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null){
+          $ppv_exist = PpvPurchase::where('video_id',$videoid)
+          ->where('user_id',$userid)
+          ->where('status','active')
+          ->where('to_time','>',$current_date)
+          ->count();
+        
+                if($ppv_exist > 0){
+                  $ppv_data = PpvPurchase::where('video_id',$videoid)
+                  ->where('user_id',$userid)
+                    ->orderBy('created_at', 'DESC')
+                  ->first();
+                $to_time = $ppv_data->to_time;
+                $stop_date = date('Y-m-d', strtotime($to_time));
+                $currentdate = date('Y-m-d');
+                $days = (strtotime($stop_date) - strtotime($currentdate)) / (60 * 60 * 24);
+                $response = array(
+                  'status'=> true,
+                  'ppv_exist_status'=> $ppv_data,
+                  'days'=> $days,
+              );
+              }else{
+                $response = array(
+                  'status'=> true,
+                  'ppv_exist_status'=> $ppv_exist,
+                  'days'=> $days,
+              );
+              }
+        }elseif($ppvexist > 0 && $ppv_video->view_count == null){
+          $ppv_exist = PpvPurchase::where('video_id',$videoid)
+          ->where('user_id',$userid)
+            // ->where('status','active')
+            // ->where('to_time','>',$current_date)
+            ->orderBy('created_at', 'DESC')
+          ->first();
+          $createdat = $ppv_exist->created_at;
+          $date1 = date('Y-m-d',strtotime($createdat));
+          $to_time = $ppv_exist->to_time;
+          $stop_date = date('Y-m-d', strtotime($date1. ' + 7 day'));
+          $currentdate = date('Y-m-d');
+          $days = (strtotime($stop_date) - strtotime($currentdate)) / (60 * 60 * 24);
+            $response = array(
+            'status'=> true,
+            'ppv_exist_status'=> $ppv_exist,
+            'days'=> $days,
+        );
+        }
+        else{
+          $ppv_exist = 0;
+          $response = array(
+            'status'=>'false',
+            'ppv_exist_status'=> 'Pay Now',
+        );
+        }
+         
+         return response()->json($response, 200);
+  
+        }
+
+        public function HomepageOrder(Request $request){
+
+        $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
+        $mobile_homepage_ = MobileHomeSetting::first();
+            
+            return response()->json([
+              'status'  => 'true',
+              'homepage_order' =>  $homepage_order], 200);
+          }
+      
 
 }

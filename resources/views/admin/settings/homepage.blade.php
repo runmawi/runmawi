@@ -38,6 +38,7 @@ border-radius: 0px 4px 4px 0px;
 	.make-switch{
 		z-index:2;
 	}
+    
 	</style>
 @stop
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -45,6 +46,9 @@ border-radius: 0px 4px 4px 0px;
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 @section('content')
 <div id="content-page" class="content-page">
     <div class="d-flex">
@@ -63,11 +67,17 @@ border-radius: 0px 4px 4px 0px;
         <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
         <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
     </div>
+
             <div class="container-fluid p-0">
+            <div class="tab">
+  <button class="tablinks1" >Web Home Page</button>
+  <button class="tablinks2" >Mobile Home Page</button>
+</div>
+
+                <div id="webhomesetting">
                 <div class="iq-card">
 <div class="admin-section-title">
-    
-    
+
     <h4><i class="entypo-monitor"></i> Home Page Settings</h4> 
 </div>
 <div class="clear"></div>
@@ -234,8 +244,189 @@ border-radius: 0px 4px 4px 0px;
                 
 </form>
     </div>
+    </div>
+    </div>
+
+    </div>
+    
 
 
+    <!-- --------------------------------------------------mobile setting--------------------------------------------------- -->
+
+    <div id = "Mobilehomesetting">
+    <div class="iq-card">
+<div class="admin-section-title">
+    
+    
+    <h4><i class="entypo-monitor"></i> Mobile Home Page Settings</h4> 
+</div>
+<div class="clear"></div>
+
+
+<form action="{{ URL::to('/admin/mobile-home-settings/save')}}" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="panel panel-primary mt-3" data-collapsed="0">
+            <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                <div class="panel-body"> 
+                        <div class="row align-items-center p-2">
+                        <!-- <div class="row"> -->
+                            
+                           <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if ($order_settings_list[0]->header_name) {{ @$order_settings_list[0]->header_name }} @else {{ ""  }} @endif  </label></div>
+                              
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                          <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input name="featured_videos" type="checkbox"  @if ($mobilesettings->featured_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                         <div class="ml-2">ON</div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[1]->header_name) {{ @$order_settings_list[1]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->latest_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="latest_videos" id="latest_videos">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if ($order_settings_list[2]->header_name) {{ @$order_settings_list[2]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="category_videos"   @if ($mobilesettings->category_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[3]->header_name) {{ @$order_settings_list[3]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->live_videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_videos" id="live_videos">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[5]->header_name) {{ @$order_settings_list[5]->header_name }} @else {{ ""  }} @endif </label></div>
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->audios == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="audios" id="audios">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[6]->header_name) {{ @$order_settings_list[6]->header_name }} @else {{ ""  }} @endif </label></div>
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->albums == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="albums" id="albums">
+                                        <span class="slider round"></span>
+                                        </label>
+                                         <div class="ml-2">ON</div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[4]->header_name) {{ @$order_settings_list[4]->header_name }} @else {{ ""  }} @endif </label></div>
+                                
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->series == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="series" id="series">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                        
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  @if ($order_settings_list[7]->header_name) {{ @$order_settings_list[7]->header_name }} @else {{ ""  }} @endif  </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                           <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->Recommendation  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="Recommendation" id="Recommendation">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Auto Intro Skip  </label></div>
+                              
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($mobilesettings->AutoIntro_skip  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="AutoIntro_skip" id="AutoIntro_skip">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+
+                        <!-- </div> -->
+        </div>
+                        
+<div class="row ">
+    <div class="col-md-12 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
+    </div>
+</div>
+
+                
+</form>
+    </div>
+    </div>
+    </div>
+    </div>
 
 
 			<div class="col-md-8 d-flex justify-content-between">
@@ -391,7 +582,19 @@ border-radius: 0px 4px 4px 0px;
       });
     </script>
 		<script src="{{ URL::to ('/assets/admin/js/jquery.nestable.js') }}"></script>
-
+        <script>
+        $('#webhomesetting').show();
+        $('#Mobilehomesetting').hide();
+        
+    $('.tablinks1').click(function(){
+        $('#webhomesetting').show();
+        $('#Mobilehomesetting').hide();
+    });
+    $('.tablinks2').click(function(){
+        $('#webhomesetting').hide();
+        $('#Mobilehomesetting').show();
+    });
+</script>
 		<script type="text/javascript">
 
 		jQuery(document).ready(function($){

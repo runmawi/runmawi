@@ -66,7 +66,9 @@ $uppercase =  ucfirst($request_url);
     color: white;
     text-align: center;
 }
-
+        .bdr{
+            
+        }
 .circle {
     color: white;
     position: absolute;
@@ -77,6 +79,11 @@ $uppercase =  ucfirst($request_url);
 }
         svg{
             height: 30px;
+        }
+        .usk li{
+            list-style: none;
+            padding: 10px 10px;
+            cursor: pointer;
         }
     </style>
    <body>
@@ -591,70 +598,72 @@ $uppercase =  ucfirst($request_url);
 		<!--<hr />-->
     
         <!-- MainContent -->
-    <section class="m-profile setting-wrapper pt-0">        
+    <section class="m-profile  setting-wrapper pt-0 p-3">        
         <div class="container">
-            <h4 class="main-title mb-4">Account Setting</h4>
-            <div class="row">
-                <div class="col-lg-4 mb-3">
-                    <div class="sign-user_card text-center mb-3">
-                        <img class="rounded-circle img-fluid d-block mx-auto mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
-                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                        <a href="#updatepic" class="edit-icon text-primary">Edit</a>
+           
+             <div class="sign-user_card">
+            <div class="row align-items-center">
+               
+                <div class="col-lg-4 mb-3 bdr">
+                    <h3>Account Setting</h3>
+                    <div class="mt-5 text-white p-0">
+                        <ul class="usk" style="margin-left: -45px;">
+                            <li><a class="showSingle" target="1">User Settings</a></li>
+                            <li><a class="showSingle" target="2">Transaction details</a></li>
+                            <li><a class="showSingle" target="3">Plan details</a></li>
+                            <li><a class="showSingle" target="4">Manage Profile</a></li>
+                            <li><a class="showSingle" target="5">Preference for videos</a></li>
+                            <li><a class="showSingle" target="6">Profile</a></li>
+                            <li><a class="showSingle" target="7">Recently Viewd Items</a></li>
+                        </ul>
                     </div>
-<div class="row">
-<?php
-       
-         ?>
-
-       
-            
-
-        <div class="col-sm-12">
-            <div class="sign-user_card text-center mb-3">
-                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
-            </div>
-        </div>
-
-                    </div></div>
-                <div class="col-lg-8"> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
-                    <div class="sign-user_card mb-3" id="personal_det">
-                    <div class="col-md-12" >
+                </div>
+                <div class="col-lg-8 mb-3">
+                    <div class="targetDiv" id="div1">
+                    <div class=" d-flex justify-content-between mb-3">
+                        <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                        <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
+                         <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
+                    <div class="" id="personal_det">
+                    <div class="" >
                         <div class="d-flex align-items-baseline justify-content-between">
                         <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
                         <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
                             </div></div>
                         </div>
                         <div class="a-border"></div>
-                        <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-end mb-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Email</span>
                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                             </div>   
                         </div>
-                        <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-end mb-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Username</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div>   
                         </div>
-                        <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-end mb-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Password</span>
                                 <p class="mb-0">**********</p>
                             </div>
                         </div>
-                        <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-end mb-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
                         </div> 
-                        <div class="row align-items-center justify-content-between mb-3">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-end mb-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">DOB</span>
                                 <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
                             </div>
                         </div></div>
+                              <div class="a-border"></div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -708,6 +717,169 @@ $uppercase =  ucfirst($request_url);
 			</div>
 		</div>
 	</div>
+                        </div></div>
+<div class="row">
+<?php
+       
+         ?>
+
+       
+            
+
+        
+
+                    </div>
+                    
+             
+                    <div class="col-sm-12 targetDiv" id="div2">
+            <div class=" text-center mb-3">
+                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
+            </div>
+        </div>
+                    <div class="targetDiv" id="div3">
+                        <div class="row align-items-center justify-content-between mb-3 mt-3">
+                            <div class="col-sm-4">
+                       <?php  if($user_role == 'registered'){ ?>
+                              <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
+                              <h6>Subscription</h6>                                       
+                           <?php }elseif($user_role == 'subscriber'){ ?>
+                              <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                              <br>       
+                           <h5 class="card-title mb-0">Available Specification :</h5><br>
+                           <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                              <!--<h6>Subscription</h6>-->
+                           <?php } ?>
+                           </div>
+                            <div class="col-sm-6">
+                               <?php if(Auth::user()->role == "subscriber"){ ?>
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <?php }else{ ?>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="targetDiv" id="div4">
+                     <div class="mb-3" id="updatepic">
+                    <div class="">
+                        <h4 class="card-title mb-2">Manage Profile</h4>
+                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                        <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        @csrf
+						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                        <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
+                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                        <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                        </form>		
+                    </div>
+                </div>
+                    </div>
+                    <div class="targetDiv" id="div5">
+                        <div class=" mb-3">
+                      <h4 class="card-title mb-0">Preference for videos</h4>
+                      <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                      @csrf
+                      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+   
+                      <div class="col-sm-9 form-group p-0 mt-3">
+                        <label><h5>Preference Language</h5></label>
+                        <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
+                            @foreach($language as $preference_language)
+                                <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                            @endforeach
+                        </select>
+                     </div>
+   
+                     <div class="col-sm-9 form-group p-0 mt-3">
+                        <label><h5>Preference Genres</h5></label>
+                        <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
+                            @foreach($videocategory as $preference_genres)
+                                <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                            @endforeach
+                        </select>
+                     </div>
+   
+                      <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
+                      </form>		
+                  </div>
+                    </div>
+                    <div class="targetDiv" id="div6"><div class=" mb-3">
+               <h4 class="card-title mb-0 manage"> Profile</h4>
+                  <div class="col-md-12 profile_image">
+                      @forelse  ($profile_details as $profile)
+                        <div class="">
+                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                                
+                                 <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                             <div class="circle">
+                                    <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
+                                           <i class="fa fa-pencil"></i> </a>
+                                    @if($Multiuser == null)
+                                     <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                       <i class="fa fa-trash"></i> </a> 
+                                    @endif
+                                 </div>
+                        </div>
+                      @empty
+                        <div class="col-sm-6">  <p class="name">No Profile</p>  </div>
+                      @endforelse
+                  </div>    
+              </div> </div>
+                    <div class="targetDiv" id="div7">
+                        <div class="iq-card" id="recentviews" style="background-color:#191919;">
+                     <div class="iq-card-header d-flex justify-content-between" >
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Recently Viewd Items</h4>
+                        </div>
+                        
+                     </div>
+                      <div class="iq-card-body">
+                        <div class="table-responsive " >
+                           <table class="data-tables table movie_table recent_table" style="width:100%">
+                              <thead>
+                                 <tr>
+                                    <th style="width:20%;">Video</th>
+                                    <th style="width:10%;">Rating</th>
+                                    <th style="width:20%;">Category</th>
+                                    <th style="width:10%;">Views</th>
+                                   <!-- <th style="width:10%;">User</th>-->
+                                     <th style="width:20%;">Date</th> 
+                                    <th style="width:10%;"><i class="lar la-heart"></i></th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              @foreach($videos as $video)
+                              @foreach($video as $val)
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                          <a href="javascript:void(0);"><img
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $val->image }}"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>  </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0"></p>
+                                             <small> </small>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
+                                    <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
+                                    <td>{{ $val->views }}</td> 
+                                  
+                                     <td>{{ $val->created_at }}</td> 
+                                    <td><i class="las la-heart text-primary"></i></td>
+                                 </tr>
+                                 @endforeach                                                                     
+                                 @endforeach                                                                     
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                    </div>
+                </div>
 <style>
    .form-control {
    background-color: #F2F5FA;
@@ -722,6 +894,7 @@ $uppercase =  ucfirst($request_url);
     border-radius: 4px;
    }
 </style>
+                
 
 <!--
                         <div class="row align-items-center justify-content-between">
@@ -759,7 +932,7 @@ $uppercase =  ucfirst($request_url);
                                 <a href="#" class="text-body d-block">Download your person information</a>
                             </div>                            
                         </div>
--->
+
                     </div>
                 </div>
             </div>
@@ -780,7 +953,7 @@ $uppercase =  ucfirst($request_url);
                            <h6> Video Quality : <p> <?php if($plans != null ) {  $plans->video_quality ; } else { ' ';} ?></p></h6>  
                            <h6> Video Resolution : <p> <?php if($plans != null ) {  $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
                            <h6> Available Devices : <p> <?php if($plans != null ) {  $plans->devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
-                              <!--<h6>Subscription</h6>-->
+                              <!--<h6>Subscription</h6>
                            <?php } ?>
                            </div>
                             <div class="col-sm-6">
@@ -796,18 +969,18 @@ $uppercase =  ucfirst($request_url);
                 <div class="col-lg-6 mb-3" id="updatepic">
                     <div class="sign-user_card mb-3">
                         <h4 class="card-title mb-2">Manage Profile</h4>
-                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> 
                         <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" />  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
                         <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
                         </form>		
                     </div>
                 </div>
 
-      <!-- {{-- Preference for videos --}} -->
+      <!-- {{-- Preference for videos --}} 
                 <div class="col-lg-6 mb-3" id="">
                   <div class="sign-user_card mb-3">
                       <h4 class="card-title mb-0">Preference for videos</h4>
@@ -838,7 +1011,7 @@ $uppercase =  ucfirst($request_url);
                   </div>
               </div>
 
-<!-- {{-- Multiuser Profile --}} -->
+<!-- {{-- Multiuser Profile --}} 
          <div class="col-lg-6 mb-3" >
             <div class="sign-user_card mb-3">
                <h4 class="card-title mb-0 manage"> Profile</h4>
@@ -864,7 +1037,7 @@ $uppercase =  ucfirst($request_url);
               </div> 
             </div>
          </div>
-<!-- {{-- Multiuser Profile --}} -->
+<!-- {{-- Multiuser Profile --}} 
             </div>
        </div>
         </div>
@@ -907,7 +1080,7 @@ $uppercase =  ucfirst($request_url);
                     </div></div>
 
           </div>
--->
+
 
           <div class="row">
           <div class="col-md-12">
@@ -927,7 +1100,7 @@ $uppercase =  ucfirst($request_url);
                                     <th style="width:10%;">Rating</th>
                                     <th style="width:20%;">Category</th>
                                     <th style="width:10%;">Views</th>
-                                   <!-- <th style="width:10%;">User</th>-->
+                                   <!-- <th style="width:10%;">User</th>
                                      <th style="width:20%;">Date</th> 
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
@@ -1510,6 +1683,29 @@ var chart_01_lable = $('#chart_01_lable').val();
 });
 </script>
 <?php } ?>
+<script>
+            $(".targetDiv").hide(); 
+            $(".targetDiv#div1").show();
+            $(".showSingle .dimg").hide();
+            
+            
+        
+            
+          jQuery(function(){
+         jQuery('#showall').click(function(){
+               jQuery('.targetDiv').show();
+               jQuery('.showSingle .limg').show();
+                
+        });
+        jQuery('.showSingle').click(function(){
+              jQuery('.targetDiv').hide();
+              jQuery('.showSingle .dimg').hide();         
+              jQuery('#div'+$(this).attr('target')).show();
+        });
+});
+            
+        
+        </script>
 <script type="text/javascript">
 
 jQuery(document).ready(function($){
