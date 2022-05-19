@@ -179,7 +179,7 @@ body.loading .overlay{
                                foreach($plans_data as $plan) {
                                   $plan_name = $plan[0]->plans_name;
                             ?>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="plan-card">
                                             <div class="header">
                                                 <h3 class="plan-head">
