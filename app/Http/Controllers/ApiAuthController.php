@@ -96,6 +96,7 @@ use Razorpay\Api\Api;
 use App\AdsVideo;
 use App\AdvertisementView;
 use App\OrderHomeSetting;
+use App\MobileHomeSetting;
 
 
 class ApiAuthController extends Controller
@@ -6335,6 +6336,7 @@ public function Adstatus_upate(Request $request)
         public function HomepageOrder(Request $request){
 
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
+        $mobile_homepage_ = MobileHomeSetting::first();
             
             return response()->json([
               'status'  => 'true',
