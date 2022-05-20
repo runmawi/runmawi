@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             FeaturedAddHistorySeeder::class,
             RTMLSeeder::class,
             OrderHomeSettingSeeder::class,
-
+            MobileHomePageTableSeeder::class,
         ]);
     
     }

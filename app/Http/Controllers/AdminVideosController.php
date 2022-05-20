@@ -958,7 +958,7 @@ if(!empty($artistsdata)){
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }else{
-                $data['slug'] = $this->createSlug($data['slug']);    
+                $data['slug'] = $request->slug;    
             }
         
            $image = (isset($data['image'])) ? $data['image'] : '';
@@ -1623,29 +1623,27 @@ if(!empty($artistsdata)){
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
             $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-
-            $image_path = public_path().'/uploads/images/';
-           
-            if($player_image != '') {   
-                 //code for remove old file
-                 if($player_image != ''  && $player_image != null){
-                      $file_old = $image_path.$player_image;
-                     if (file_exists($file_old)){
-                      unlink($file_old);
-                     }
-                 }
-                 
-                 //upload new file
-                 $file = $player_image;
-                 $data['player_image']  = $file->getClientOriginalName();
-                 $file->move($image_path, $data['player_image']);
-                //  $player_image = $file->getClientOriginalName();
+           $image_path = public_path().'/uploads/images/';
+          
+           if($player_image != '') {   
+                //code for remove old file
+                if($player_image != ''  && $player_image != null){
+                     $file_old = $image_path.$player_image;
+                    if (file_exists($file_old)){
+                     unlink($file_old);
+                    }
+                }
+                
+                //upload new file
+                $file = $player_image;
+                $data['player_image']  = $file->getClientOriginalName();
+                $file->move($image_path, $data['player_image']);
                 $player_image = URL::to('/') . '/public/uploads/images/'.$file->getClientOriginalName();
-   
-   
-            } else {
-                $player_image = URL::to('/') . '/public/uploads/images/'."default.png";
-            }
+  
+  
+           } else {
+               $player_image = $video->image;
+           }
 
             if(empty($data['active'])){
                 $data['active'] = 0;

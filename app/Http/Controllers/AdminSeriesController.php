@@ -413,10 +413,14 @@ class AdminSeriesController extends Controller
         if ($request->slug != '') {
             $slug = str_replace(' ', '_', $request->slug);
             $data['slug'] =$slug;
+            }else{
+                $data['slug'] =$request->slug; 
             }
         if($request->slug == ''){
             $slug = str_replace(' ', '_', $request->title);
             $data['slug'] =$slug; 
+        }else{
+            $data['slug'] =$request->slug; 
         }
 
          $path = public_path().'/uploads/videos/';
