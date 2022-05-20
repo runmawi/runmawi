@@ -4718,8 +4718,13 @@ return response()->json($response, 200);
     public function albumlist(Request $request)
     {
       $audioalbums_count = AudioAlbums::get()->count();
+
         if($audioalbums_count > 0){
           $audioalbums = AudioAlbums::all();
+          $audioalbums = AudioAlbums::get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+            return $item;
+          });
           foreach($audioalbums as $val){
             // $audio[$val->albumname] = Audio::where('album_id',$val->id)->get();
             // $audioalbums= $val->albumname;
@@ -4734,7 +4739,7 @@ return response()->json($response, 200);
               $response = array(
             'status'=>'true',
             'audioalbums'=>$audioalbums,
-            'audio'=>$audio,
+            // 'audio'=>$audio,
         );
       }
       }else{
@@ -4747,7 +4752,39 @@ return response()->json($response, 200);
         return response()->json($response, 200);
     }
 
+    public function album_audios(Request $request)
+    {
 
+      $album_id = $request->album_id ;
+      $audioalbums_count = AudioAlbums::where('id' , $album_id)->get()->count();
+      if($audioalbums_count > 0){
+
+        $audioalbums = AudioAlbums::where('id' , $album_id)->first();
+        $genre_name = $audioalbums->albumname;
+        // print_r($audioalbums->albumname);exit;
+          $audio = Audio::where('album_id',$album_id)
+          ->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
+            return $item;
+          });
+
+            $response = array(
+          'genre_name'=>$genre_name,
+          'status'=>'true',
+          // 'audioalbums'=>$audioalbums,
+          'audio'=>$audio,
+      );
+    }else{
+      $response = array(
+        'status'=>'false',
+        'audioalbums'=> 'No Albums Added',
+        'audio'=>'No Audio Albums Added',
+    );
+    }
+    return response()->json($response, 200);
+
+    }
     public function AudioCategory(Request $request)
     {
         $audiocategories_count = AudioCategory::get()->count();
