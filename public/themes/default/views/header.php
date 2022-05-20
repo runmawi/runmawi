@@ -3,6 +3,7 @@
    <head>
       
 <?php
+
    if(!empty(Auth::User()->id)){
       $id = Auth::User()->id;
       $users = App\User::find($id);
