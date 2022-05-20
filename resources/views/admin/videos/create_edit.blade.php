@@ -1381,7 +1381,6 @@ $(document).ready(function($){
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
 <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
-<script src="plyr-plugin-capture.js"></script>
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
