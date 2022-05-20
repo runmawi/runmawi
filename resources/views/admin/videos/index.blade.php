@@ -119,11 +119,11 @@ border-radius: 0px 4px 4px 0px;
                                     
                                     
                              
-                                    <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> 
+                                    <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
-                                       <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>
-                                        {{ $video->views }} </i>
-                                    </td>-->
+                                       <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
+                                        {{ $video->views }}<i class="lar la-eye "></i>
+                                    </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
 
