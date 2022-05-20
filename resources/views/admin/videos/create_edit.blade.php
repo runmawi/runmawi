@@ -1469,14 +1469,6 @@ $(document).ready(function($){
    });
    }
    
-
-   
-
-
-
-
-
-
    function updateQuality(newQuality) {
    window.hls.levels.forEach((level, levelIndex) => {
      if (level.height === newQuality) {
