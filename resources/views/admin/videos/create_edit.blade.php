@@ -1391,28 +1391,22 @@ $(document).ready(function($){
    if(type != ""){
        const player = new Plyr('#videoPlayer',{
          controls: [
-   
-     'play-large',
-   'restart',
-   'rewind',
-   'play',
-   'fast-forward',
-   'progress',
-   'current-time',
-   'mute',
-   'volume',
-   'captions',
-   'settings',
-   'pip',
-   'airplay',
-   'fullscreen',
-   'capture'
-   ],
-   i18n:{
-   // your other i18n
-   capture: 'capture'
-   }
-   
+                     'play-large',
+                     'restart',
+                     'rewind',
+                     'play',
+                     'fast-forward',
+                     'progress',
+                     'current-time',
+                     'mute',
+                     'volume',
+                     'captions',
+                     'settings',
+                     'pip',
+                     'airplay',
+                     'fullscreen',
+                  ],
+  
        });
        $("#nextplayer").click(function(){
       player.stop();
