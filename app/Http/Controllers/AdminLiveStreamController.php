@@ -587,18 +587,18 @@ class AdminLiveStreamController extends Controller
         }else{
             $embed_url = $data['embed_url'];
         }
-        if ($request->slug != '') {
+        if ($request->slug == '') {
             $slug = str_replace(' ', '_', $request->slug);
             $data['slug'] =$slug;
             }
             else{
-                $data['slug'] = $this->createSlug($data['slug']);    
+                $data['slug'] =$video->slug;    
             }
 
-        if($request->slug == ''){
-                $slug = str_replace(' ', '_', $request->title);
-                $data['slug'] = $slug;    
-        }
+        // if($request->slug == ''){
+        //         $slug = str_replace(' ', '_', $request->title);
+        //         $data['slug'] = $slug;    
+        // }
         if(empty($data['rating'])){
             $data['rating'] = 0;
         }
