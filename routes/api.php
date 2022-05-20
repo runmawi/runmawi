@@ -273,6 +273,7 @@ Route::group([
     Route::get('audiocategory', 'ApiAuthController@AudioCategory');
     Route::post('ppv_videocount', 'ApiAuthController@PPVVideocount');
     Route::post('ppv_videorent', 'ApiAuthController@PPVVideorent');
+    Route::post('album_audios', 'ApiAuthController@album_audios');
     Route::get('homepage_order', 'ApiAuthController@HomepageOrder');
 
 
