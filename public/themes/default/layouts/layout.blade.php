@@ -110,6 +110,8 @@
             }
     </style>
 
+    
+
 
 <script>
 
@@ -120,11 +122,12 @@
        const isChecked = e.target.checked;
        
        if(isChecked) {
-          body.classList.add('dark-theme');
+          body.classList.add('light-theme');
        } else {
-          body.classList.remove('dark-theme');
+          body.classList.remove('light-theme');
        }
     });
+
  
  </script>
 
