@@ -4721,7 +4721,16 @@ return response()->json($response, 200);
         if($audioalbums_count > 0){
           $audioalbums = AudioAlbums::all();
           foreach($audioalbums as $val){
-            $audio[$val->albumname] = Audio::where('album_id',$val->id)->get();
+            // $audio[$val->albumname] = Audio::where('album_id',$val->id)->get();
+            // $audioalbums= $val->albumname;
+
+            $audio[$val->albumname] = Audio::where('album_id',$val->id)
+            ->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
+              return $item;
+            });
+
               $response = array(
             'status'=>'true',
             'audioalbums'=>$audioalbums,
