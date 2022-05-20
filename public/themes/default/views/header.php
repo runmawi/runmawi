@@ -107,6 +107,7 @@ $data = Session::all();
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
     <!-- Style -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />

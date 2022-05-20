@@ -75,9 +75,10 @@
                         <li><a href="<?php echo URL::to($language_href) ?>"><?php echo $lan->name; ?> </a></li>
 
                         <?php }}?>
-
+                         <li><a href="<?php echo URL::to('latest-videos') ?>">Latest Videos</a></li>
                         <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
                         <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
+                        <li><a href="<?php echo URL::to('live') ?>">Live</a></li>
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
@@ -147,7 +148,7 @@
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body text-white bb"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
          </div>
       </footer>
