@@ -1381,8 +1381,6 @@ $(document).ready(function($){
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
 <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
-<script src="plyr-plugin-capture.js"></script>
-<script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
@@ -1391,28 +1389,22 @@ $(document).ready(function($){
    if(type != ""){
        const player = new Plyr('#videoPlayer',{
          controls: [
-   
-     'play-large',
-   'restart',
-   'rewind',
-   'play',
-   'fast-forward',
-   'progress',
-   'current-time',
-   'mute',
-   'volume',
-   'captions',
-   'settings',
-   'pip',
-   'airplay',
-   'fullscreen',
-   'capture'
-   ],
-   i18n:{
-   // your other i18n
-   capture: 'capture'
-   }
-   
+                     'play-large',
+                     'restart',
+                     'rewind',
+                     'play',
+                     'fast-forward',
+                     'progress',
+                     'current-time',
+                     'mute',
+                     'volume',
+                     'captions',
+                     'settings',
+                     'pip',
+                     'airplay',
+                     'fullscreen',
+                  ],
+  
        });
        $("#nextplayer").click(function(){
       player.stop();
