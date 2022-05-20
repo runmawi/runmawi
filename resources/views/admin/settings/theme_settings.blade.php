@@ -63,7 +63,7 @@ border-radius: 0px 4px 4px 0px;
     
     @csrf
 		<div class="panel panel-primary" data-collapsed="0">
-            <div class="panel-heading"> <div class="panel-title"> <p>Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                <div class="panel-heading"> <div class="panel-title"> <p>Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
                         <div class="row mt-4">
                            <div class="col-sm-4">
@@ -76,6 +76,25 @@ border-radius: 0px 4px 4px 0px;
                                 <div class="input-group color-picker" style="width: 50%;">
                                     <label class="mt-2">Light Mode</label>
                                     <input type="color" class="form-control ml-1"  name="light_bg_color" data-format="hex" value="{{ $settings->light_bg_color}}" />
+                                </div>
+                            </div>
+                        </div>
+                </div> 
+
+
+                <div class="panel-heading"> <div class="panel-title"> <p>Site Text Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                <div class="panel-body"> 
+                        <div class="row mt-4">
+                           <div class="col-sm-4">
+                                <div class="input-group color-picker" style="width: 50%;">
+                                    <label class="mt-2"> Dark Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="dark_text_color" data-format="hex" value="{{ $settings->dark_text_color  }}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker" style="width: 50%;">
+                                    <label class="mt-2"> Light Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="light_text_color" data-format="hex" value="{{ $settings->light_text_color }}" />
                                 </div>
                             </div>
                         </div>
