@@ -151,6 +151,10 @@ class AdminThemeSettingsController extends Controller
           $theme_settings->dark_bg_color = $request->dark_bg_color;
           $theme_settings->light_bg_color = $request->light_bg_color;
           $theme_settings->button_bg_color = $request->button_bg_color;
+          
+          $theme_settings->dark_text_color = $request->dark_text_color;
+          $theme_settings->light_text_color = $request->light_text_color;
+
 
           $path = public_path().'/uploads/settings/';
           $dark_logo = $request->dark_mode_logo;

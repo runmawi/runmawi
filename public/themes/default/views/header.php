@@ -3,6 +3,7 @@
    <head>
       
 <?php
+
    if(!empty(Auth::User()->id)){
       $id = Auth::User()->id;
       $users = App\User::find($id);
@@ -163,6 +164,7 @@ $data = Session::all();
          color: black;
       }
 
+
     </style>
      
    <body>
@@ -192,10 +194,10 @@ $data = Session::all();
 
 
                         <!-- dark mode -->
-                        <!-- <div class="toggle">
+                        <div class="toggle">
                               <input type="checkbox" id="toggle" />
                               <label for="toggle"></label>
-                        </div> -->
+                        </div>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
@@ -823,21 +825,7 @@ $('.add_watch').slideUp('fast');
 }
     });
           </script>
-          <script>
-              const toggle = document.getElementById('toggle');
-const body = document.body;
 
-toggle.addEventListener('input', (e) => {
-  const isChecked = e.target.checked;
-  
-  if(isChecked) {
-    body.classList.add('dark-theme');
-  } else {
-    body.classList.remove('dark-theme');
-  }
-});
-
-          </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 <!-- 
   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.min.css';?>" />
@@ -853,20 +841,5 @@ toggle.addEventListener('input', (e) => {
      
        <!-- MainContent End-->
        
-<script>
 
-   const toggle = document.getElementById('toggle');
-   const body = document.body;
-
-   toggle.addEventListener('input', (e) => {
-      const isChecked = e.target.checked;
-      
-      if(isChecked) {
-         body.classList.add('dark-theme');
-      } else {
-         body.classList.remove('dark-theme');
-      }
-   });
-
-</script>
   
