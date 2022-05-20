@@ -216,8 +216,8 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-title"><label>Default Image</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
+                <div class="">
+                    <div class="">
                         <div class="">
                             <div class="row">
                                 <div class="col-md-12">
@@ -569,20 +569,20 @@ border-radius: 0px 4px 4px 0px;
 
     <!-- Series  Setting-->
     <div class="container-fluid" id="seasonsetting" style="">
-            <div class="" data-collapsed="0">
+            <div class="row" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Series Setting</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="">
+                        <div class="col-md-12">
                             
                                 <div>
-                                 <div><label class="mt-1">Enable PPV Season</label></div>
-                                 <div class="d-flex justify-content-between">
+                                 <div><p class="mt-1">Enable PPV Season</p></div>
+                                 <div class="d-flex align-items-center">
 
-                        <div>OFF</div>
+                        <div class="mr-2">OFF</div>
 
                                 <div class="mt-1">
                                     <label class="switch">
@@ -592,7 +592,7 @@ border-radius: 0px 4px 4px 0px;
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                                <div>On</div>
+                                <div class="ml-2">On</div>
                             </div>                                
                                
                             </div>
@@ -666,10 +666,10 @@ border-radius: 0px 4px 4px 0px;
                 </div>
                 <div class="row align-items-center">
                     
-                        <div class="panel-body" style="display: block;">
-                            <label class="panel-title">Coupon Enable / Disable:</label>
-                            <label><input type="checkbox" @if($settings->new_subscriber_coupon == 1)checked="checked"
-                                value="1"@else value="0"@endif name="new_subscriber_coupon"></label>
+                        <div class="panel-body d-flex align-items-baseline" style="display: block;">
+                            <p class="panel-title mr-2">Coupon Enable / Disable:</p>
+                           <input type="checkbox" @if($settings->new_subscriber_coupon == 1)checked="checked"
+                                value="1"@else value="0"@endif name="new_subscriber_coupon">
                         </div>
                     <div class="col-sm-6">
                         <div class="panel-body mt-3" style="display: block;">
@@ -787,11 +787,11 @@ border-radius: 0px 4px 4px 0px;
                 <div class="panel-title"><label>Advertisement</label></div>
                 <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
             </div></div>
-            <div class="col-lg-12">
+          
                 <div class="row">
                  
                        <div class="col-md-6">
-                            
+                            <div class="d-flex align-items-baseline">
                             <p class="p1">Enable Advertisement on Videos:</p>
 
                             <div class="form-group ">
@@ -801,7 +801,7 @@ border-radius: 0px 4px 4px 0px;
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
                             </div>
-
+</div>
                               {{-- default URL --}}
                             <div class="form-group ">
                                 <label>Default Ads url</label>
@@ -857,7 +857,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                         </div>
                     </div>
-                </div>
+               
           
       
 
