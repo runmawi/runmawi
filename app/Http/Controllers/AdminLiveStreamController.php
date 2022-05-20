@@ -592,7 +592,7 @@ class AdminLiveStreamController extends Controller
             $data['slug'] =$slug;
             }
             else{
-                $data['slug'] =$video->slug;    
+                $data['slug'] = $request->slug;    
             }
 
         // if($request->slug == ''){

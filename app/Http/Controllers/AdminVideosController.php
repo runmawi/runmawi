@@ -958,7 +958,7 @@ if(!empty($artistsdata)){
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }else{
-                $data['slug'] = $video->slug;    
+                $data['slug'] = $request->slug;    
             }
         
            $image = (isset($data['image'])) ? $data['image'] : '';

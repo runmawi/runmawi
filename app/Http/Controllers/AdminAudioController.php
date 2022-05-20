@@ -449,13 +449,13 @@ class AdminAudioController extends Controller
         if ($audio->slug != $request->slug) {
             $data['slug'] = $this->createSlug($request->slug, $id);
         }else{
-            $data['slug'] =  $audio->slug ;
+            $data['slug'] =  $request->slug;
         }
 
         if($request->slug == '' || $audio->slug == ''){
             $data['slug'] = $this->createSlug($data['title']);    
         }else{
-            $data['slug'] =  $audio->slug ;
+            $data['slug'] = $request->slug ;
         }
         if(isset($data['duration'])){
                 //$str_time = $data
