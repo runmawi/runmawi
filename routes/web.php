@@ -108,6 +108,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');
     Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
+    Route::post('theme-mode', 'HomeController@ThemeModeSave');
+
     
 
     Route::get('/home', 'HomeController@index')->name('home');
@@ -426,6 +428,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/theme_settings_form', 'AdminThemeSettingsController@theme_settings_form');
     Route::get('/theme_settings', 'AdminThemeSettingsController@theme_settings');
+
     Route::post('/theme_settings', array('before' => 'demo', 'uses' => 'AdminThemeSettingsController@update_theme_settings'));
 
     Route::post('/theme_settings/save','AdminThemeSettingsController@SaveTheme');
@@ -1365,4 +1368,7 @@ Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSub
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
+
+
+
 

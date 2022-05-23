@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
         $User = [
             [  'name' => 'Admin', 
                'username' => 'Admin',
-               'referrer_id' => '0',
+               'referrer_id' => null ,
                'coupon_expired' => null,
                'email' => $email_id,
                'email_verified_at' => null,
