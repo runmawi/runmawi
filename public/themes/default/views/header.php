@@ -4,6 +4,8 @@
       
 <?php
 
+   $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+
    if(!empty(Auth::User()->id)){
       $id = Auth::User()->id;
       $users = App\User::find($id);
@@ -156,13 +158,13 @@ $data = Session::all();
 
 
 /* Dark mode and light Mode */
-      body.dark-theme {
-	      background-color: #f9f3f3;
+      body.light-theme {
+	      background-color: <?php echo GetLightBg(); ?>;
       }
 
 
-      body.dark-theme h4, body.dark-theme p {
-         color: black;
+      body.light-theme h4, body.light-theme p {
+         color: <?php echo GetLightText(); ?>;
       }
 
 
@@ -196,7 +198,7 @@ $data = Session::all();
 
                         <!-- dark mode -->
                         <div class="toggle">
-                              <input type="checkbox" id="toggle" />
+                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                               <label for="toggle"></label>
                         </div>
 
@@ -564,10 +566,10 @@ $data = Session::all();
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                            <a class="p-0">
-                                               <!--<div class="toggle mt-3 text-right">
+                                               <!-- <div class="toggle mt-3 text-right">
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
-</div>-->
+</div> -->
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
@@ -780,16 +782,6 @@ $data = Session::all();
     $playerui_settings = App\Playerui::first();
     if($playerui_settings->watermark == 1){ ?>
     <style>
-          /* .plyr__video-wrapper::before  {
-                width: <?php echo $playerui_settings->watermar_width; ?>;
-                float: right;
-                position: absolute;
-                top:<?php echo $playerui_settings->watermark_top; ?>;
-                right: <?php echo $playerui_settings->watermark_right; ?>;
-                left:<?php echo $playerui_settings->watermark_left; ?>;
-                bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
-                transform: translate(-50%, 0%);
-            } */
             .plyr__video-wrapper::before {
             position: absolute;
             top: <?php echo $playerui_settings->watermark_top; ?>;
@@ -825,19 +817,48 @@ $('.add_watch').slideUp('fast');
 }, 3000);
 }
     });
-          </script>
 
-  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
-<!-- 
-  <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.min.css';?>" />
+</script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/2.0.13/plyr.css">
+<script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
-<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr-ads.css';?>" />
-<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/demo.css';?>" /> -->
+<script>
+$("#toggle").click(function(){
+
+   var theme_mode = $("#toggle").prop("checked");
+
+   $.ajax({
+   url: '<?php echo URL::to("theme-mode") ;?>',
+   method: 'post',
+   data: 
+      {
+         "_token": "<?php echo csrf_token(); ?>",
+         mode: theme_mode 
+      },
+      success: (response) => {
+         console.log(response);
+      },
+   })
+});
+
+</script>
+
+<!-- Dark Mode & Light Mode  -->
+<script>
+   let theme_modes = $("#toggle").val();
+
+   $(document).ready(function(){
+
+      if( theme_modes == 'light' ){
+
+         body.classList.add('light-theme');
+
+      }
+   });
+</script>
 
 
-      </header>
+</header>
       <!-- Header End -->
      
        <!-- MainContent End-->
