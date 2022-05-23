@@ -6309,7 +6309,7 @@ public function Adstatus_upate(Request $request)
   
         return response()->json([
           'status'  => 'true',
-          'PPVvideo' =>  $ppv_videos], 200);
+          'response' =>  $response], 200);
         return response()->json($response, 200);
 
       }
