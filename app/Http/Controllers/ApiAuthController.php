@@ -6263,6 +6263,15 @@ public function Adstatus_upate(Request $request)
                         $item['video_image'] = URL::to('/').'/public/uploads/images/'.$item->image;
                         $item['videoExpired_date'] = Carbon::parse($item->to_time)->format('d-m-Y');
                         $item['videoExpired_time'] = Carbon::parse($item->to_time)->format('g:i:s A');
+                        $video_exp = Carbon::now()->diffForHumans($item->to_time);
+                        $Exp = Str::contains($video_exp, 'after');
+                        if($Exp != 'true'){
+                          $videoExpired= Carbon::now()->diffForHumans($item->to_time);
+                          $item['videoExpired'] = "Expires in " . str_replace('before', '',  $videoExpired);
+                        }
+                        else{
+                          $item['videoExpired'] = 'Expired';
+                        }
                       return $item;
                   });
 

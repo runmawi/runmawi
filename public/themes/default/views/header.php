@@ -197,10 +197,10 @@ $data = Session::all();
 
 
                         <!-- dark mode -->
-                        <!-- <div class="toggle">
-                              <input type="checkbox" id="toggle"   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                        <div class="toggle">
+                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                               <label for="toggle"></label>
-                        </div> -->
+                        </div>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
@@ -843,21 +843,19 @@ $("#toggle").click(function(){
 
 </script>
 
+<!-- Dark Mode & Light Mode  -->
 <script>
-let theme_modes = $("#toggle").val();
+   let theme_modes = $("#toggle").val();
 
-console.log(theme_modes);
+   $(document).ready(function(){
 
-  $(document).ready(function(){
+      if( theme_modes == 'light' ){
 
-    if( theme_modes == 'on' ){
+         body.classList.add('light-theme');
 
-      body.classList.add('light-theme');
-
-    }
-  });
+      }
+   });
 </script>
-
 
 
 </header>
