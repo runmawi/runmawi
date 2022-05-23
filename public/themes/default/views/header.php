@@ -3,6 +3,13 @@
    <head>
       
 <?php
+// $search_value ="drama";
+//        $video_category = App\Video::select("videos.*")
+//        ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
+//        ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
+//        ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
+//        ->get();
+// dd($video_category);
 
    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
