@@ -6342,13 +6342,20 @@ public function Adstatus_upate(Request $request)
                     ->orderBy('created_at', 'DESC')
                   ->first();
                 $to_time = $ppv_data->to_time;
+
                 $stop_date = date('Y-m-d', strtotime($to_time));
                 $currentdate = date('Y-m-d');
                 $days = (strtotime($stop_date) - strtotime($currentdate)) / (60 * 60 * 24);
+                if(!empty($days)){
+                $remaining_count =  $days.' '.'days remaining';
+                }else{
+                  $remaining_count = '';
+                }
                 $response = array(
                   'status'=> true,
                   'ppv_exist_status'=> $ppv_data,
                   'days'=> $days,
+                  'remaining_count'=> $remaining_count,
               );
               }else{
                 $response = array(
@@ -6370,10 +6377,16 @@ public function Adstatus_upate(Request $request)
           $stop_date = date('Y-m-d', strtotime($date1. ' + 7 day'));
           $currentdate = date('Y-m-d');
           $days = (strtotime($stop_date) - strtotime($currentdate)) / (60 * 60 * 24);
+          if(!empty($days)){
+            $remaining_count =  $days.' '.'days remaining';
+            }else{
+              $remaining_count = '';
+            }
             $response = array(
             'status'=> true,
             'ppv_exist_status'=> $ppv_exist,
             'days'=> $days,
+            'remaining_count'=> $remaining_count,
         );
         }
         else{
@@ -6391,11 +6404,12 @@ public function Adstatus_upate(Request $request)
         public function HomepageOrder(Request $request){
 
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
-        $mobile_homepage_ = MobileHomeSetting::first();
+        $mobile_homepage = MobileHomeSetting::first();
             
             return response()->json([
               'status'  => 'true',
-              'homepage_order' =>  $homepage_order], 200);
+              'homepage_order' =>  $homepage_order,
+              'mobile_homepage' =>  $mobile_homepage], 200);
           }
       
 
