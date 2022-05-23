@@ -55,6 +55,7 @@ use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\RecentView;
 use App\ChooseProfileScene;
 use App\ThumbnailSetting;
+use App\SiteTheme;
 use Theme;
 
 class HomeController extends Controller
@@ -3154,6 +3155,24 @@ class HomeController extends Controller
         );
 
         return Theme::view('movie_description', $data);
+    }
+
+    public function ThemeModeSave(Request $request)
+    {
+
+        if($request->input('mode') == 'true'){
+            $theme_modes = "light";
+        }
+        elseif($request->input('mode') == 'false'){
+            $theme_modes = "dark";
+        }
+
+        $theme_mode = SiteTheme::first();
+        $theme_mode->theme_mode =  $theme_modes;
+        $theme_mode->update();
+
+        return $theme_modes;
+      
     }
 
 }
