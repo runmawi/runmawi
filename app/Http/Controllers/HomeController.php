@@ -2282,10 +2282,12 @@ class HomeController extends Controller
 
         if ($video_category_count > 0)
         {
-
-            $video_category = VideoCategory::where('name', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-                ->paginate(9);
-
+            $video_category = Video::select("videos.*")
+            ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
+            ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
+            ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
         }
         else
         {
@@ -2303,7 +2305,6 @@ class HomeController extends Controller
         {
             $ppv_category = 0;
         }
-
         $data = array(
             'videos' => $videos,
             'ppv_videos' => $ppv_videos,

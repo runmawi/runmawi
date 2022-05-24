@@ -3,6 +3,8 @@
    <head>
       
 <?php
+    
+// dd($video_category);
 
    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
