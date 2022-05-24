@@ -2,6 +2,7 @@
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
+$currency = App\CurrencySetting::first();
 
  $parentCategories = App\LiveCategory::get();
                    ?>
