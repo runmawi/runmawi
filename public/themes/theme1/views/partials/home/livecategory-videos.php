@@ -38,6 +38,8 @@
 
 $setting= \App\HomeSetting::first();
 // dd($live_videos);
+$currency = App\CurrencySetting::first();
+
  ?>
 <?php  if(count($live_videos) > 0) : ?>
 

@@ -73,7 +73,7 @@ class MenuTableSeeder extends Seeder
             [   'parent_id' => null, 
                 'user_id' => null,
                 'order' => 6,
-                'in_menu' => null ,
+                'in_menu' => 'live' ,
                 'name' => 'Live', 
                 'url' => '/live',
                 'created_at' => Carbon::now(),

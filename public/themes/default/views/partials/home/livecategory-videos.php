@@ -38,6 +38,8 @@
 
 $setting= \App\HomeSetting::first();
 // dd($live_videos);
+$currency = App\CurrencySetting::first();
+
  ?>
 <?php  if(count($live_videos) > 0) : ?>
 
@@ -47,7 +49,7 @@ $setting= \App\HomeSetting::first();
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
-                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
+                <a href="#" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php 

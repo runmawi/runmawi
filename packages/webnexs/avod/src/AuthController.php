@@ -668,5 +668,13 @@ class AuthController extends Controller
        echo "error";exit; 
    }
 
+   public function AdsList(Request $request)
+   {
+        $data = [
+             'ads' => 'ss',
+        ];
+       return view('avod::Adslist',$data);
+   }
+
 }
 ?>
