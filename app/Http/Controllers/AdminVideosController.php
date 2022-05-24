@@ -50,6 +50,8 @@ use getID3;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\ReelsVideo;
+use App\PpvPurchase as PpvPurchase;
+use App\Adscategory;
 
 class AdminVideosController extends Controller
 {
@@ -542,6 +544,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'countries' => CountryCode::all(),
             'video_artist' => [],
             'page' => 'Creates',
+            'ads_category' => Adscategory::all(),
             );
 
 
@@ -842,13 +845,13 @@ if(!empty($artistsdata)){
             
         }
          /*Advertisement Video update starts*/
-            if($data['ads_id'] != 0){
-                    $ad_video = new AdsVideo;
-                    $ad_video->video_id = $video->id;
-                    $ad_video->ads_id = $data['ads_id'];
-                    $ad_video->ad_roll = null;
-                    $ad_video->save();
-            }
+            // if($data['ads_id'] != 0){
+            //         $ad_video = new AdsVideo;
+            //         $ad_video->video_id = $video->id;
+            //         $ad_video->ads_id = $data['ads_id'];
+            //         $ad_video->ad_roll = null;
+            //         $ad_video->save();
+            // }
             /*Advertisement Video update ends*/ 
         
           return redirect('admin/videos')
@@ -891,6 +894,8 @@ if(!empty($artistsdata)){
         $ads_rolls = AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
             ->where('ads_videos.video_id', $id)->pluck('ad_roll')->first(); 
 
+        $ads_category = Adscategory::get();
+
         $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$id)->get();
 
         $data = array(
@@ -915,6 +920,7 @@ if(!empty($artistsdata)){
             'Reels_videos' => $Reels_videos,
             'ads_paths' => $ads_details ? $ads_details : 0 ,
             'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
+            'ads_category' => $ads_category,
             );
 
 
@@ -941,23 +947,23 @@ if(!empty($artistsdata)){
 
             $id = $data['id'];
             /*Advertisement Video update starts*/
-            if($data['ads_id'] != 0){
-                    $ad_video = AdsVideo::where('video_id',$id)->first();
+            // if($data['ads_id'] != 0){
+            //         $ad_video = AdsVideo::where('video_id',$id)->first();
 
-                    if($ad_video == null){
-                        $ad_video = new AdsVideo;
-                    }
-                    $ad_video->video_id = $id;
-                    $ad_video->ads_id = $data['ads_id'];
-                    $ad_video->ad_roll = null;
-                    $ad_video->save();
-                }
+            //         if($ad_video == null){
+            //             $ad_video = new AdsVideo;
+            //         }
+            //         $ad_video->video_id = $id;
+            //         $ad_video->ads_id = $data['ads_id'];
+            //         $ad_video->ad_roll = null;
+            //         $ad_video->save();
+            //     }
             /*Advertisement Video update ends*/ 
             $video = Video::findOrFail($id);
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }else{
-                $data['slug'] = $this->createSlug($data['slug']);    
+                $data['slug'] = $request->slug;    
             }
         
            $image = (isset($data['image'])) ? $data['image'] : '';
@@ -1321,7 +1327,8 @@ if(!empty($artistsdata)){
         }else{
             $video->default_ads = 0;
         }
-        
+
+         $video->ads_category =  $data['ads_category'];   
          $shortcodes = $request['short_code'];        
          $languages=$request['sub_language'];
          $video->mp4_url =  $data['mp4_url'];
@@ -1622,29 +1629,27 @@ if(!empty($artistsdata)){
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
             $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-
-            $image_path = public_path().'/uploads/images/';
-           
-            if($player_image != '') {   
-                 //code for remove old file
-                 if($player_image != ''  && $player_image != null){
-                      $file_old = $image_path.$player_image;
-                     if (file_exists($file_old)){
-                      unlink($file_old);
-                     }
-                 }
-                 
-                 //upload new file
-                 $file = $player_image;
-                 $data['player_image']  = $file->getClientOriginalName();
-                 $file->move($image_path, $data['player_image']);
-                //  $player_image = $file->getClientOriginalName();
+           $image_path = public_path().'/uploads/images/';
+          
+           if($player_image != '') {   
+                //code for remove old file
+                if($player_image != ''  && $player_image != null){
+                     $file_old = $image_path.$player_image;
+                    if (file_exists($file_old)){
+                     unlink($file_old);
+                    }
+                }
+                
+                //upload new file
+                $file = $player_image;
+                $data['player_image']  = $file->getClientOriginalName();
+                $file->move($image_path, $data['player_image']);
                 $player_image = URL::to('/') . '/public/uploads/images/'.$file->getClientOriginalName();
-   
-   
-            } else {
-                $player_image = URL::to('/') . '/public/uploads/images/'."default.png";
-            }
+  
+  
+           } else {
+               $player_image = $video->image;
+           }
 
             if(empty($data['active'])){
                 $data['active'] = 0;
@@ -1871,7 +1876,9 @@ if(!empty($artistsdata)){
                 $video->url_linksec =  $startSec ;
                 $video->urlEnd_linksec =  $startSec + 60 ;
             }
-// dd($reelvideo);
+
+            // Ads category
+
              $shortcodes = $request['short_code'];        
              $languages=$request['sub_language'];
              $video->video_category_id =  $category_id;
@@ -1881,6 +1888,8 @@ if(!empty($artistsdata)){
              $video->skip_intro =  $data['skip_intro'];
              $video->intro_start_time =  $data['intro_start_time'];
              $video->intro_end_time =  $data['intro_end_time'];   
+             $video->ads_category =  $data['ads_category'];   
+
 
              $video->description = strip_tags($data['description']);
              $video->draft = 1;
@@ -2026,14 +2035,14 @@ if(!empty($artistsdata)){
             }
         }
      /*Advertisement Video update starts*/
-             if($data['ads_id'] != 0){
+            //  if($data['ads_id'] != 0){
                   
-                    $ad_video = new AdsVideo;
-                    $ad_video->video_id = $video->id;
-                    $ad_video->ads_id = $data['ads_id'];
-                    $ad_video->ad_roll = null;
-                    $ad_video->save();
-            }
+            //         $ad_video = new AdsVideo;
+            //         $ad_video->video_id = $video->id;
+            //         $ad_video->ads_id = $data['ads_id'];
+            //         $ad_video->ad_roll = null;
+            //         $ad_video->save();
+            // }
      /*Advertisement Video update End*/
     
     
@@ -2224,7 +2233,7 @@ if(!empty($artistsdata)){
             $data = array(
                 'videos' => $videos,
                 );
-    
+    // dd($videos);
             return View('admin.videos.videoapproval.approval_index', $data);
         }
        }
@@ -2259,4 +2268,23 @@ if(!empty($artistsdata)){
              {
                  return Video::where('id', '=', $id)->first();
              } 
+             public function purchaseVideocount(Request $request)
+             {
+                $data = $request->all();
+                $user_id = Auth::user()->id;
+                $video_id = $data['video_id'];
+                // view_count
+                $purchase =  PpvPurchase::where('video_id',$video_id)->where('user_id',$user_id)->first();
+                if($purchase->view_count == null || $purchase->view_count < 0){
+                    // print_r('1');exit;
+                    $purchase->view_count = 1;
+                     $purchase->save();
+                    return 1;
+                }elseif($purchase->view_count > 0){
+                    // print_r('2');exit;
+                    return 2;
+                }else{
+                    return 3;
+                }
+             }
 }

@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             PlayeruiTableSeeder::class,
             VideoCommissionTableSeeder::class,
             HomesettingTableSeeder::class,
-            // UserSeeder::class,
+            UserSeeder::class,
             GeofencingTableSeeder::class,
             PaymentSettingsTableSeeder::class,
             MenuTableSeeder::class,
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             FeaturedAddHistorySeeder::class,
             RTMLSeeder::class,
             OrderHomeSettingSeeder::class,
-
+            MobileHomePageTableSeeder::class,
         ]);
     
     }

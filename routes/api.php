@@ -44,6 +44,8 @@ Route::group([
     Route::get('mobile_sliders', 'ApiAuthController@MobileSliders');
     Route::get('ppvvideos', 'ApiAuthController@ppvvideos');
     Route::post('ppvvideodetail', 'ApiAuthController@ppvvideodetail');
+    Route::post('PPVVideodetails', 'ApiAuthController@PPVVideodetails');
+
     Route::post('updateProfile', 'ApiAuthController@updateProfile');
     Route::post('addwishlist', 'ApiAuthController@addwishlist');
     Route::post('addfavorite', 'ApiAuthController@addfavorite');
@@ -267,5 +269,13 @@ Route::group([
 
 // Home Setting Status
     Route::get('homesetting', 'ApiAuthController@homesetting');
+    // audiocategory
+    Route::get('audiocategory', 'ApiAuthController@AudioCategory');
+    Route::post('ppv_videocount', 'ApiAuthController@PPVVideocount');
+    Route::post('ppv_videorent', 'ApiAuthController@PPVVideorent');
+    Route::post('album_audios', 'ApiAuthController@album_audios');
+    Route::get('homepage_order', 'ApiAuthController@HomepageOrder');
+
+
 
 });

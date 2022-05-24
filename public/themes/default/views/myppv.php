@@ -25,8 +25,7 @@
                                     <source src="<?php echo $watchlater_video->trailer; ?>" type="video/mp4">
                                       </video>
                                      </a>
-                                     <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                   
                                           <?php if (!empty($watchlater_video->ppv_price))
             { ?>
                                           <p class="p-tag1"><?php echo $currency->symbol . ' ' . $watchlater_video->ppv_price; ?></p>
@@ -42,8 +41,7 @@
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php
             } ?>
-                                        </div>
-                                    </div>
+                                      
                                 </div>
                                 <div class="block-description">
                                     <a  href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>">

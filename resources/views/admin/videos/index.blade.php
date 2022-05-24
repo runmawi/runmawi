@@ -122,7 +122,7 @@ border-radius: 0px 4px 4px 0px;
                                     <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
-                                        {{ $video->views }} </i>
+                                        {{ $video->views }}<i class="lar la-eye "></i>
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
@@ -141,6 +141,7 @@ border-radius: 0px 4px 4px 0px;
                                              data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
+                       
                                  </tr>
                                  @endforeach
 

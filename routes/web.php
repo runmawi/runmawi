@@ -76,6 +76,8 @@ Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
 Route::post('favorite', 'ThemeAudioController@add_favorite');
 Route::post('albumfavorite', 'ThemeAudioController@albumfavorite');
+Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
+
 
 Route::get('/updatecard', 'PaymentController@UpdateCard');
 Route::get('/my-refferals', 'PaymentController@MyRefferal');
@@ -108,6 +110,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');
     Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
+    Route::post('theme-mode', 'HomeController@ThemeModeSave');
+
     
 
     Route::get('/home', 'HomeController@index')->name('home');
@@ -220,6 +224,7 @@ Route::get('/live/{id}', 'LiveStreamController@Play');
 
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
+Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -270,6 +275,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');
+    Route::post('/mobile-home-settings/save', 'Admin\HomeSettingsController@mobilesave_settings');
+
 
     Route::get('/order-home-settings', 'Admin\HomeSettingsController@Orderindex');
     Route::get('/order-home-settings/order_save', 'Admin\HomeSettingsController@Ordersave_settings');
@@ -423,6 +430,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/theme_settings_form', 'AdminThemeSettingsController@theme_settings_form');
     Route::get('/theme_settings', 'AdminThemeSettingsController@theme_settings');
+
     Route::post('/theme_settings', array('before' => 'demo', 'uses' => 'AdminThemeSettingsController@update_theme_settings'));
 
     Route::post('/theme_settings/save','AdminThemeSettingsController@SaveTheme');
@@ -535,6 +543,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
     
 // Age Restrict    
+    Route::get('/age/index', 'AdminAgeController@index');
     Route::post('/age/store', 'AdminAgeController@store');
     Route::get('/age/edit/{id}', 'AdminAgeController@edit');
     Route::post('/age/update', 'AdminAgeController@update');
@@ -1361,4 +1370,7 @@ Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSub
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
+
+
+
 

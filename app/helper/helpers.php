@@ -326,6 +326,18 @@ function AdminMail()
 }
 
 //theme settings 
+
+function GetDarkText(){
+    $settings = App\SiteTheme::first();
+    return $settings->dark_text_color;
+}
+
+function GetLightText(){
+    $settings = App\SiteTheme::first();
+     return $settings->light_text_color;
+
+}
+
 function GetDarkBg()
 {
      $settings = App\SiteTheme::first();
@@ -393,7 +405,7 @@ function TotalSubscribercount(){
 
 function TotalNewSubscribercount(){
 
-    $newsubscribercount = App\Subscription::whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
+    $newsubscribercount = App\Subscription::whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->count();
     
     return  $newsubscribercount; 
 }
@@ -481,3 +493,4 @@ function button_bg_color()
     }
     return  $button_bg_color ;
 }
+

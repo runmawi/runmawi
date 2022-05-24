@@ -1,5 +1,9 @@
 <!-- Header Start -->
-<?php include('header.php'); ?>
+<?php include('header.php');
+
+$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+$order_settings_list = App\OrderHomeSetting::get();  
+?>
 <!-- Header End -->
 
 
@@ -32,7 +36,11 @@
     </section>
 
 <!-- Top Watched Videos -->
-    <?php if(count($top_most_watched) > 0){ ?>
+    <?php 
+        foreach($order_settings as $key => $value){
+         //  if($value == ){}
+         if($value->video_name == 'Recommendation'){
+    if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
             <div class="fluid">
                <div class="row">
@@ -100,11 +108,13 @@
                </div>
             </div>
          </section>
-   <?php } ?>
+   <?php } } ?>
 
 
 <!-- Recently Added Movies -->
-    <?php if($home_settings->latest_videos == 1){ ?>
+    <?php
+       if($value->video_name == 'latest_videos'){
+         if($home_settings->latest_videos == 1){ ?>
       <section id="iq-favorites">
          <div class="fluid">
             <div class="row">
@@ -114,10 +124,12 @@
             </div>
          </div>
       </section>
-   <?php } ?>
+   <?php } }?>
 
 <!-- Live Videos -->
-<?php if($home_settings->live_videos == 1){ ?>
+<?php
+ if($value->video_name == 'live_videos'){
+if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -127,10 +139,12 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } }?>
 
 
-<?php if($home_settings->audios == 1){ ?>
+<?php 
+       if($value->video_name == 'audios'){
+if($home_settings->audios == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -140,10 +154,12 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } } ?>
 
 
-<?php if($home_settings->albums == 1){ ?>
+<?php
+       if($value->video_name == 'albums'){
+if($home_settings->albums == 1){ ?>
     <section id="iq-favorites">
         <div class="fluid">
            <div class="row">
@@ -153,10 +169,12 @@
            </div>
         </div>
 </section>
-<?php } ?>
+<?php } }?>
 
 <!--  Featured Movies  -->
-<?php if ( GetTrendingVideoStatus() == 1 ) { ?>
+<?php
+       if($value->video_name == 'featured_videos'){
+if ( GetTrendingVideoStatus() == 1 ) { ?>
   <section id="iq-favorites">
     <div class="fluid">
       <div class="row">
@@ -165,13 +183,13 @@
             include('partials/home/trending-videoloop.php');
           } else {  ?>
             <!-- <p class="no_video"> No Video Found</p> -->
-          <?php } ?>
+          <?php }  ?>
         </div>
       </div>
     </div>
   </section>
 
-<?php } ?>
+<?php } }?>
  
   <?php /*<section id="iq-topten">
         <div class="container-fluid">
@@ -944,7 +962,9 @@ endif; ?>
          </section>*/ ?>
 
         <section id="iq-tvthrillers" class="s-margin">
-            <?php if ( GetCategoryVideoStatus() == 1 ) { ?>
+            <?php 
+       if($value->video_name == 'category_videos'){
+         if ( GetCategoryVideoStatus() == 1 ) { ?>
             <div class="fluid">
                <?php
                      $getfeching = App\Geofencing::first();
@@ -1026,9 +1046,9 @@ endif; ?>
                         } else { ?>
                         <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
                         <?php } ?>
-                    <?php }?>
+                    <?php } ?>
                 </div>
-                <?php } ?>
+                <?php } } }?>
 
 <!-- Most watched Videos - category -->
 

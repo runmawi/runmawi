@@ -187,7 +187,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
@@ -203,7 +203,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <?php }
                    } } else {  } ?>  
                </video>
- 
+
+               
+
+               
                <div class="playertextbox hide">
                    <!--<h2>Up Next</h2>-->
                    <p><?php if(isset($videonext)){ ?>
@@ -219,6 +222,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <?php } ?></p>
                </div>
            </div>
+
+
+
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
@@ -784,8 +790,9 @@ $artists = [];
            foreach($artists as $key => $artist){
           //  foreach($artist as $key => $value){
          ?>
+           <div class="mt-2 d-flex">
            <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
-           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>&nbsp;&nbsp;
+           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p></div>
     <?php } }  ?>
            
        <!-- <div class="text-white">
@@ -986,6 +993,31 @@ $artists = [];
           //    videojs('videoPlayer');
           //  }, 2000);
           //  });
+          $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+       });
+   
+    $(document).ready(function(){
+
+      var vid = document.getElementById("videoPlayer");
+      var url= '<?= URL::to("purchase-videocount") ?>';
+      var _token= '<?=  csrf_token() ?>';
+      var videoid = $('#video_id').val();
+
+       $(vid).click(function(){
+        // alert(url);
+        $.post('<?= URL::to('purchase-videocount') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
+         function(data){
+                     //    toastr.success(data.success);
+                   });
+
+       })
+
+    });
+
+             var currentTime = vid.currentTime;
 
            var vid = document.getElementById("videoPlayer");
            vid.currentTime = $("#current_time").val();
@@ -1304,6 +1336,58 @@ $(document).ready(function(){
 
 });
 </script>
+
+
+<!-- Ads -->
+
+<?php 
+  // $videoFile = 'http://localhost/flicknexs/storage/app/public/POeKx6MlJuECEHzu.mp4';
+  // $normalvideoFile = 'http://localhost/flicknexss/storage/app/public/7Z13lq2ZJAS5tKW8.mp4';
+?>
+
+<!-- <input type="text" id="ads_start_tym" class="ads_start_tym"  value='17'>
+<input type="text" id="" class="statusss"  value='1'> -->
+
+<script>
+  
+  // var videoads_tym    =  document.getElementById(videotypeId);
+  // var Ads_videos      = <?php echo json_encode($videoFile)  ;?>;
+  // var normal_videos   = <?php echo json_encode($normalvideoFile)  ;?>;
+  // var ads_end_tym     =  '10';
+
+  // this.videoads_tym.addEventListener('timeupdate', (e) => {
+
+  //       var ads_start_tym   =  $('.ads_start_tym').val();
+  //       var statusss  = $('.statusss').val();
+
+  //         if (ads_start_tym <= e.target.currentTime) {
+
+  //         if(statusss == 1){
+  //               $('.adstime_url').attr('src', Ads_videos);
+  //               videoId.play();
+  //               $('#ads_start_tym').replaceWith('<input type="text" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
+
+  //               $('.statusss').replaceWith('<input type="text" id="" class="statusss"  value="0">');
+
+  //           }
+  //           else if(statusss == 0){
+  //             $('.statusss').replaceWith('<input type="text" id="" class="statusss"  value="5">');
+
+  //             $('.adstime_url').attr('src', normal_videos);
+
+  //             document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+  //                 this.currentTime = 50;
+  //               }, true);
+
+  //               videoId.play();
+  //           }
+             
+  //         }
+
+  //       });
+
+</script>
+
 
 <?php
   $player_ui = App\Playerui::pluck('show_logo')->first();

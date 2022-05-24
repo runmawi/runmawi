@@ -137,6 +137,7 @@ class ChannelController extends Controller
       public function play_videos($slug)
     {
 
+
         $data['password_hash'] = "";
         $data = session()->all();
        
@@ -240,11 +241,35 @@ class ChannelController extends Controller
             $watchtime = 0;
           }
 
-           $ppv_exist = PpvPurchase::where('video_id',$vid)
-           ->where('user_id',$user_id)
-           ->where('to_time','<',$current_date)->count();
+          $ppvexist = PpvPurchase::where('video_id',$vid)
+          ->where('user_id',$user_id)
+          // ->where('status','active')
+          // ->where('to_time','>',$current_date)
+          ->count();
+          $ppv_video = PpvPurchase::where('video_id',$vid)
+          ->where('user_id',$user_id)
+          ->first();
            $user_id = Auth::user()->id;
-                // dd($ppv_exist);
+          if($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null){
+            $ppv_exist = PpvPurchase::where('video_id',$vid)
+            ->where('user_id',$user_id)
+            ->where('status','active')
+            ->where('to_time','>',$current_date)->count();
+            // $ppv_exist = 1;
+          }elseif($ppvexist > 0 && $ppv_video->view_count == null){
+            $ppv_exist = PpvPurchase::where('video_id',$vid)
+            ->where('user_id',$user_id)
+            // ->where('status','active')
+            // ->where('to_time','>',$current_date)
+            ->count();
+            // $ppv_exist = 1;
+          }
+          else{
+            $ppv_exist = 0;
+          }
+          // dd($get_video_id->views);
+
+
 
            $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
            $category_name = CategoryVideo::select('video_categories.name as categories_name')

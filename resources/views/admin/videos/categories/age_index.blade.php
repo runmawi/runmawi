@@ -90,7 +90,7 @@
 		</div>
 	</div>
     </div>
-    </div>
+    <!-- </div> -->
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="update-category">
@@ -138,10 +138,9 @@
                                         <td>
                                             <div class=" align-items-center list-user-action">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                                             data-original-title="Edit" href="{{ URL::to('admin/age/edit/') }}/{{$category->id}}" ><i class="ri-pencil-line"></i></a> 
+                                                             data-original-title="Edit" href="{{ URL::to('admin/age/edit/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
                                             <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-											onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/age/delete/') }}/{{$category->id}}" ><i
-                                                                class="ri-delete-bin-line"></i></a></div>
+											onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/age/delete/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
 
                                         </td>
                                     </tr>

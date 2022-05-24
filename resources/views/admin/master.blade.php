@@ -315,7 +315,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                      <li  data-tour="step: 4; title: System Setting; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>System Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
-                            <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
@@ -416,6 +416,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+          <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
@@ -540,7 +545,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
-                            <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
@@ -646,6 +651,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/manage-live-cate.svg')?>">Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div class="men" style="">
                   
                         <p class="lnk" >Audio </p></div>
@@ -767,7 +777,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/s1.svg')?>">Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/s2.svg')?>">HomePage Settings</a></li>
-                            <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/s3.svg')?>">Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/s4.svg')?>">Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/s5.svg')?>">Email Settings</a></li>
@@ -874,6 +884,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
+                  <div class="men" style=""> 
+          <p class="lnk" >Manage Age</p>
+            </div>
+            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
                     <div style="">
                   
                         <p class="lnk" >Audio </p></div>
@@ -995,7 +1010,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
-                            <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li>
+                            <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
@@ -1064,7 +1079,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       <div class="iq-navbar-logo d-flex justify-content-between">
                          <a href="<?php echo URL::to('home') ?>" class="header-logo">
                             <div class="logo-title">
-                               <span class="text-primary text-uppercase"><?php $settings = App\Setting::first(); echo $settings->website_name;?></span>
+                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="200"  alt="" ></span>
                             </div>
                          </a>
                       </div>

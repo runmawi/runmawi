@@ -21,10 +21,9 @@ use App\Language;
 use App\PaymentSetting;
 use App\CurrencySetting as CurrencySetting;
 use App\HomeSetting;
+use App\ThumbnailSetting;
 use Theme;
 use Carbon\Carbon;
-
-
 use Illuminate\Support\Facades\Cache;
 //use Image;
 use App\SystemSetting as SystemSetting;
@@ -41,9 +40,17 @@ class LiveStreamController extends Controller
         $live = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
         
         $vpp = VideoPerPage();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
         $data = array(
                      'videos' => $live,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+
          );
+
+                    // dd($live_videos);
+       return Theme::view('liveCategoryVideos',$data);
+
        return Theme::view('liveVideos',$data);
     }
     
@@ -136,4 +143,41 @@ class LiveStreamController extends Controller
           //   return view('auth.login',compact('system_settings'));
           // }
         }
+
+
+        public function channelVideos($cid)
+        {
+    
+          $getfeching = \App\Geofencing::first();
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+          $userIp = $geoip->getip();    
+          $countryName = $geoip->getCountry();
+          $ThumbnailSetting = ThumbnailSetting::first();
+          $parentCategories = LiveCategory::where('name',$cid)->first();
+          if(!empty($parentCategories)){
+            $parentCategories_id = $parentCategories->id;
+            $parentCategories_name = $parentCategories->name;
+            $live_videos = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+               ->where('livecategories.category_id','=',$parentCategories_id)
+               ->where('active', '=', '1')->get();
+          }else{
+            $parentCategories_id = '';
+            $parentCategories_name = '';
+            $live_videos = [];
+          }
+          // dd($live_videos);
+
+            $settings = Setting::first();
+
+             $currency = CurrencySetting::first();
+            
+            $data = array(
+                    'currency'=> $currency,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+                    'live_videos' => $live_videos,
+                    'parentCategories_name' => $parentCategories_name,
+                );
+           return Theme::view('livecategoryvids',$data);
+            
+        } 
 }

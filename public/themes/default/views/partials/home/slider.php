@@ -6,7 +6,8 @@
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-position: right;
+    background-position-y: top; ">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -37,7 +38,8 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-position: right;
+    background-position-y: top; ">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -76,9 +78,14 @@ data-delay-in="1.2">
 <div class="trailor-video">
     <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
         class="video-open playbtn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+            <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
         <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10"
         points="73.5,62.5 148.5,105.8 73.5,149.1 " />
@@ -102,7 +109,8 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>') no-repeat;background-position: right;
+    background-position-y: top;  ">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -130,9 +138,14 @@ endif; ?>
                 <div class="trailor-video">
                         <a href="#video-trailer"
                             class="video-open playbtn">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
                             viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
                             <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
                             stroke-linejoin="round" stroke-miterlimit="10"
                             points="73.5,62.5 148.5,105.8 73.5,149.1 " />
@@ -218,7 +231,8 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-position: right;
+    background-position-y: top; ">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -264,9 +278,14 @@ data-delay-in="1.2">
 <div class="trailor-video">
     <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
         class="video-open playbtn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+            <style type="text/css">
+                .gt{
+                    height: 60px!important;
+                }
+</style>
         <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10"
         points="73.5,62.5 148.5,105.8 73.5,149.1 " />

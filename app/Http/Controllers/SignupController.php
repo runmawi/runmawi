@@ -610,7 +610,6 @@ public function createStep3(Request $request)
         $payment_type = $plandetail->payment_type;
 
 
-
         if ( $payment_type == "recurring") {
             $user_email = $request->session()->get('register.email');
             $user = User::where('email',$user_email)->first();
@@ -619,7 +618,7 @@ public function createStep3(Request $request)
             $paymentMethods = $user->paymentMethods();
             $apply_coupon = NewSubscriptionCouponCode();
             $stripe_plan = SubscriptionPlan();
-            $plandetail = Plan::where('plan_id',$plan)->first();
+            $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
             if ( NewSubscriptionCoupon() == 1 ) {                      
                 try {
                      $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
@@ -681,6 +680,7 @@ public function createStep3(Request $request)
                     $user->active = 1;
                     $user->avatar = $avatar;
                     $user->save();
+                    $next_date = $plandetail->days;
                     $date = Carbon::parse($current_date)->addDays($next_date);
                     $subscription = Subscription::where('user_id',$user->id)->first();
                     $subscription->price = $plandetail->price;
@@ -703,7 +703,7 @@ public function createStep3(Request $request)
                 $user_id = $user->id;
                 $price = $request->amount;
                 $plan = $request->plan;              
-                $plan_details = Plan::where("plan_id","=",$plan)->first();
+                $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
                 $next_date = $plan_details->days;
                 $date = Carbon::parse($current_date)->addDays($next_date);
                 $sub_price = $plan_details->price;

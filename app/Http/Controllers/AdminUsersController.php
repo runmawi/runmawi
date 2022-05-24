@@ -641,7 +641,6 @@ class AdminUsersController extends Controller
                 // subscriptions.stripe_plan = subscription_plans.plan_id
                 // WHERE subscriptions.user_id = 601
                 
-
                 if (!empty($user_role[0]))
                 {
                     $role_plan = $user_role[0]->plans_name;
@@ -681,6 +680,8 @@ class AdminUsersController extends Controller
                 }
 
             }
+            // dd($devices_name);
+
             $user_role = Auth::user()->role;
 
             $user_details = User::find($user_id);
@@ -725,6 +726,7 @@ class AdminUsersController extends Controller
                 $video = [];
             }
             // $video = array_unique($videos);
+            // dd($plans);
             $data = array(
                 'videos' => $video,
                 'videocategory' => $videocategory,
