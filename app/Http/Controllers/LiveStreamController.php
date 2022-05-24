@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Cache;
 //use Image;
 use App\SystemSetting as SystemSetting;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\ThumbnailSetting;
 
 class LiveStreamController extends Controller
 {
@@ -41,9 +42,17 @@ class LiveStreamController extends Controller
         $live = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get();
         
         $vpp = VideoPerPage();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
         $data = array(
                      'videos' => $live,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+
          );
+
+                    // dd($live_videos);
+       return Theme::view('liveCategoryVideos',$data);
+
        return Theme::view('liveVideos',$data);
     }
     

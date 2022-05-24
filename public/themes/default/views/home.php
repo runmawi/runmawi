@@ -136,22 +136,24 @@ if($home_settings->live_videos == 1){ ?>
         <div class="container-fluid">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
-                 <?php //include('partials/home/live-videos.php'); 
-                     $parentCategories = App\LiveCategory::get();
+                 <?php 
+                 include('partials/home/live-videos.php'); 
+                     // $parentCategories = App\LiveCategory::get();
                    
-
-                     foreach($parentCategories as $category) {
-                        $live_videos = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
-                        ->where('livecategories.category_id','=',$category->id)
-                        ->where('active', '=', '1')->get();
+                     // foreach($parentCategories as $category) {
+                     //    $live_videos = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                     //    ->where('livecategories.category_id','=',$category->id)
+                     //    ->where('active', '=', '1')->get();
                         // ->where('status', '=', '1')
-                        if (count($live_videos) > 0) { 
-                           include('partials/home/livecategory-videos.php'); 
+                        // if (count($live_videos) > 0) { 
+                           // include('partials/home/livecategory-videos.php'); 
    
-                       } else { ?>
-                       <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
-                       <?php } 
-                     }
+                     //   } else { 
+                          ?>
+                       <!-- <p class="no_video"> <?php //echo __('No Video Found');?></p> -->
+                       <?php
+                     //    } 
+                     // }
                      // dd($live_videos);
                    
                  
