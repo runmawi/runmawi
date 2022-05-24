@@ -247,6 +247,23 @@ $data = Session::all();
                                               <?php } ?>
                                             </ul>
                                           </li>
+                                          <?php }elseif ( $menu->in_menu == "live") { 
+                                        $LiveCategory = App\LiveCategory::all();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
+                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                                      <?php echo $category->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
                                           <?php } else { ?>
                                           <li class="menu-item">
                                             <a href="<?php echo URL::to('/').$menu->url;?>">
