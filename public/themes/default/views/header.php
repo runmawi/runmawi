@@ -115,6 +115,8 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
+
     
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -223,6 +225,7 @@ $data = Session::all();
                                        //  $menus = App\Menu::all();
                                        $menus = App\Menu::orderBy('order', 'asc')->get();
                                         $languages = App\Language::all();
+                                        $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
@@ -256,6 +259,23 @@ $data = Session::all();
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
                                                       <?php echo $language->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "live") { 
+                                        $LiveCategory = App\LiveCategory::all();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
+                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                                      <?php echo $category->name;?> 
                                                     </a>
                                               </li>
                                               <?php } ?>

@@ -76,6 +76,8 @@ Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
 Route::post('favorite', 'ThemeAudioController@add_favorite');
 Route::post('albumfavorite', 'ThemeAudioController@albumfavorite');
+Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
+
 
 Route::get('/updatecard', 'PaymentController@UpdateCard');
 Route::get('/my-refferals', 'PaymentController@MyRefferal');
