@@ -605,7 +605,21 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-5">
                            <!-- <h2 class="steps">Step 3 - 4</h2> -->
                         </div>
+
+
+                  {{-- Ads Category--}}
                         <div class="col-sm-6 form-group mt-3">
+                           <label class="">Choose Ad Category</label>
+                           <select class="form-control" name="ads_category">
+                              <option value=" ">Select Category</option>
+                              @foreach($ads_category as $ad)
+                                 <option value="{{ $ad->id }}" @if( $video->ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
+                              @endforeach
+                           </select>
+                        </div>
+
+
+                        {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Name</label>
                            <select class="form-control" name="ads_id">
                               <option value="0">Select Ads</option>
@@ -613,16 +627,16 @@ border-radius: 0px 4px 4px 0px;
                                  <option value="{{$ad->id}}"  @if( $ads_paths == $ad->id ) {{ 'selected' }} @endif  >{{$ad->ads_name}}</option>
                               @endforeach
                            </select>
-                        </div>
+                        </div> --}}
 
 
-                        <div class="col-sm-6 form-group mt-3">
+                        {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Default Ads</label>
                               <label class="switch">
                                  <input name="default_ads" type="checkbox" @if( $video->default_ads == "1") checked  @endif >
                                  <span class="slider round"></span>
                               </label>
-                        </div>
+                        </div> --}}
                         
                         {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Roll</label>
