@@ -6356,12 +6356,16 @@ public function Adstatus_upate(Request $request)
                   'ppv_exist_status'=> $ppv_data,
                   'days'=> $days,
                   'remaining_count'=> $remaining_count,
+                  'can_view'=> 'can_view',
+
               );
               }else{
                 $response = array(
                   'status'=> true,
                   'ppv_exist_status'=> $ppv_exist,
                   'days'=> $days,
+                  'can_view'=> 'can_view',
+
               );
               }
         }elseif($ppvexist > 0 && $ppv_video->view_count == null){
@@ -6387,6 +6391,7 @@ public function Adstatus_upate(Request $request)
             'ppv_exist_status'=> $ppv_exist,
             'days'=> $days,
             'remaining_count'=> $remaining_count,
+            'can_view'=> 'can_view',
         );
         }
         else{
@@ -6394,6 +6399,8 @@ public function Adstatus_upate(Request $request)
           $response = array(
             'status'=>'false',
             'ppv_exist_status'=> 'Pay Now',
+            'pay_now'=> 'pay_now',
+
         );
         }
          
@@ -6417,44 +6424,110 @@ public function Adstatus_upate(Request $request)
             $audiocategoryid =  $request->audiocategoryid;
             $userid = $request->userid;
 
-            $audiocategories = AudioCategory::where('id',$audiocategoryid)->first();
-            if(!empty($audiocategories)){
-              $main_genre = $audiocategories->name;
-              $category_image = $audiocategories->image;
-            }else{
-              $main_genre = '';
-              $category_image = '';
-            }
-            $myData = array();
-              // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
-              $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
-              ->where('category_audios.category_id',$audiocategoryid)
-              ->get()->map(function ($item) {
-                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;       
-                return $item;
-              });
 
-              if(count($audio) > 0){
-                $msg = 'success';
-              }else{
-                $msg = 'nodata';
-              }
-              $myData[] = array(
-                "message" => $msg,
-                'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
-                'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
-                "audio" => $audio
-              );
+
+
+
+
+
+
+
+
+            
+    $audiocategories = AudioCategory::select('id','image')->where('id','=',$audiocategoryid)->get()->toArray();
+    $myData = array();
+
+    $audio_category= Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+    ->where('category_audios.category_id',$audiocategoryid)
+    // ->where('active','=',1)->where('status','=',1)
+    ->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      return $item;
+    });
+    
+    foreach ($audiocategories as $key => $audiocategory) {
+      $audiocategoryid = $audiocategory['id'];
+      $genre_image = $audiocategory['image'];
+      $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+      ->where('category_audios.category_id',$audiocategoryid)
+      // ->where('active','=',1)->where('status','=',1)
+      ->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $categorydetails = AudioCategory::where('id','=',$audiocategoryid)->first();
+
+      if(count($audio_category) > 0){
+        $msg = 'success';
+        $status = 'True';
+      }else{
+        $msg = 'nodata';
+        $status = 'False';
+      }
+      if(count($audio) > 0){
+        $msg = 'success';
+        $status = 'True';
+      }else{
+        $msg = 'nodata';
+        $status = 'False';
+      }
+      $myData[] = array(
+        "genre_name"   => $categorydetails->name,
+        "genre_id"   => $audiocategoryid,
+        "genre_image"   => URL::to('/').'/public/uploads/audios/'.$genre_image,
+        "message" => $msg,
+        "audio" => $audio,
+        "audio_category"   => $audio_category,
+      );
+
+    }
+
+    $AudioCategory = AudioCategory::where('id','=',$audiocategoryid)->first();
+
+    $response = array(
+      'status' => $status ,
+      'main_genre' => $AudioCategory->name,
+      'categoryaudio' => $audio
+    );
+    return response()->json($response, 200);
+            // $audiocategories = AudioCategory::where('id',$audiocategoryid)->first();
+            // if(!empty($audiocategories)){
+            //   $main_genre = $audiocategories->name;
+            //   $category_image = $audiocategories->image;
+            // }else{
+            //   $main_genre = '';
+            //   $category_image = '';
+            // }
+            // $myData = array();
+            //   // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+            //   $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+            //   ->where('category_audios.category_id',$audiocategoryid)
+            //   ->get()->map(function ($item) {
+            //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;       
+            //     return $item;
+            //   });
+
+            //   if(count($audio) > 0){
+            //     $msg = 'success';
+            //   }else{
+            //     $msg = 'nodata';
+            //   }
+            //   $myData[] = array(
+            //     "message" => $msg,
+            //     'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
+            //     'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
+            //     "audio" => $audio
+            //   );
         
         
-            $response = array(
-              'status' => 'true',
-              'genre_movies' => $myData,
-              'main_genre' => $msg,
-              'main_genre' => $main_genre,
+            // $response = array(
+            //   'status' => 'true',
+            //   'genre_movies' => $myData,
+            //   'main_genre' => $msg,
+            //   'main_genre' => $main_genre,
         
-            );
-            return response()->json($response, 200);
+            // );
+            // return response()->json($response, 200);
       
             }
 
