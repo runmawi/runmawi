@@ -728,7 +728,7 @@ class AuthController extends Controller
              'ads_category'   => Adscategory::all(),
             ];
 
-            return view('avod::Ads_Events',$data);
+            return view('avod::Ads_events',$data);
         }
 
 }
