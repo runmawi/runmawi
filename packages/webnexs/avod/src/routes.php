@@ -33,6 +33,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/buyrz_adcampaign', 'Webnexs\Avod\AuthController@buyrz_adcampaign')->name('buyrz_adcampaign'); 
 		Route::post('/buycampaign_stripe', 'Webnexs\Avod\AuthController@buycampaign_stripe')->name('buycampaign_stripe'); 
 		
-		Route::get('/AdsList', 'Webnexs\Avod\AuthController@AdsList')->name('AdsList'); 
+		Route::get('/Ads_Scheduled', 'Webnexs\Avod\AuthController@Ads_Scheduled')->name('Ads_Scheduled');
+		Route::post('AdsScheduleStore', 'Webnexs\Avod\AuthController@AdsScheduleStore')->name('AdsScheduleStore'); 
+		Route::get('Ads-Events', 'Webnexs\Avod\AuthController@AdsEvents')->name('AdsEvents'); 
+
 	});
 });
