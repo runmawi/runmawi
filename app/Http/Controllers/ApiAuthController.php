@@ -1215,12 +1215,21 @@ public function verifyandupdatepassword(Request $request)
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
+
+$array1 = array ( 'sliders'=> $sliders);
+$array2 = array ('video_banners'=> $banners);
+$array3 = array ('live_banner'=> $live_banner);
+$array4 = array ('series_banner'=> $series_banner);
+$final[] = array_merge($array1,$array2,$array3,$array4);
+// echo "<pre>";
+// print_r($final);exit;
       $response = array(
         'status' => 'true',
-        'sliders' => $sliders,
-        'banners' => $banners,
-        'live_banner' => $live_banner,
-        'series_banner' => $series_banner,
+        // 'sliders' => $sliders,
+        // 'banner' => $banners,
+        'banners' => $final,
+        // 'live_banner' => $live_banner,
+        // 'series_banner' => $series_banner,
       );
       return response()->json($response, 200);
      } 
@@ -6251,7 +6260,8 @@ public function Adstatus_upate(Request $request)
    
   public function homesetting()
   {
-      $homesetting = HomeSetting::first();
+      // $homesetting = HomeSetting::first();
+      $homesetting = MobileHomeSetting::first();
 
       return $homesetting;
   }
@@ -6408,15 +6418,23 @@ public function Adstatus_upate(Request $request)
   
         }
 
+       
         public function HomepageOrder(Request $request){
+          // HomepageOrder
 
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
         $mobile_homepage = MobileHomeSetting::first();
-            
-            return response()->json([
-              'status'  => 'true',
-              'homepage_order' =>  $homepage_order,
-              'mobile_homepage' =>  $mobile_homepage], 200);
+        $homesetting = HomeSetting::first();
+        // dd($homesetting );
+        $response = array(
+          'status'  => 'true',
+          'homesetting'=> $homesetting,
+          'mobile_homepage' =>  $mobile_homepage,
+          'homepage_order' =>  $homepage_order,
+      );
+      return $response;
+
+
           }
       
           public function audioscategory(Request $request){
@@ -6424,16 +6442,6 @@ public function Adstatus_upate(Request $request)
             $audiocategoryid =  $request->audiocategoryid;
             $userid = $request->userid;
 
-
-
-
-
-
-
-
-
-
-            
     $audiocategories = AudioCategory::select('id','image')->where('id','=',$audiocategoryid)->get()->toArray();
     $myData = array();
 
@@ -6490,46 +6498,114 @@ public function Adstatus_upate(Request $request)
       'categoryaudio' => $audio
     );
     return response()->json($response, 200);
-            // $audiocategories = AudioCategory::where('id',$audiocategoryid)->first();
-            // if(!empty($audiocategories)){
-            //   $main_genre = $audiocategories->name;
-            //   $category_image = $audiocategories->image;
-            // }else{
-            //   $main_genre = '';
-            //   $category_image = '';
-            // }
-            // $myData = array();
-            //   // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
-            //   $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
-            //   ->where('category_audios.category_id',$audiocategoryid)
-            //   ->get()->map(function ($item) {
-            //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;       
-            //     return $item;
-            //   });
-
-            //   if(count($audio) > 0){
-            //     $msg = 'success';
-            //   }else{
-            //     $msg = 'nodata';
-            //   }
-            //   $myData[] = array(
-            //     "message" => $msg,
-            //     'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
-            //     'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
-            //     "audio" => $audio
-            //   );
-        
-        
-            // $response = array(
-            //   'status' => 'true',
-            //   'genre_movies' => $myData,
-            //   'main_genre' => $msg,
-            //   'main_genre' => $main_genre,
-        
-            // );
-            // return response()->json($response, 200);
-      
+          
             }
 
             
+        public function LiveCategorylist(Request $request)
+        {
+          $LiveCategory_count = LiveCategory::get()->count();
+    
+            if($LiveCategory_count > 0){
+              $LiveCategory = LiveCategory::all();
+              $LiveCategory = LiveCategory::get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/livecategory/'.$item->image;
+                return $item;
+              });
+              foreach($LiveCategory as $val){
+    
+                $livestream[$val->name] = LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
+                ->where('livecategories.category_id',$val->id)
+                // ->where('active','=',1)->where('status','=',1)
+                ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
+                  return $item;
+                });
+    
+                  $response = array(
+                'status'=>'true',
+                'LiveCategory'=>$LiveCategory,
+                'livestream'=>$livestream,
+            );
+          }
+          }else{
+            $response = array(
+              'status'=>'false',
+              'LiveCategory'=> 'No Live Category Added',
+              'livestream'=>'No Live Stream Added',
+          );
+          }
+            return response()->json($response, 200);
+        }
+
+  public function livecategory(Request $request){
+
+      $live_category_id =  $request->live_category_id;
+      $userid = $request->userid;
+  
+      $livecategories = LiveCategory::select('id','image')->where('id','=',$live_category_id)->get()->toArray();
+      $myData = array();
+  
+      $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
+      ->where('livecategories.category_id',$live_category_id)
+      // ->where('active','=',1)->where('status','=',1)
+      ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+    //  count($live_category)
+      
+      foreach ($livecategories as $key => $livecategory) {
+        $livecategoryid = $livecategory['id'];
+        $genre_image = $livecategory['image'];
+        $livestream = LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
+        ->where('livecategories.category_id',$livecategoryid)
+        // ->where('active','=',1)->where('status','=',1)
+        ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+        $categorydetails = LiveCategory::where('id','=',$livecategoryid)->first();
+  
+        if(count($live_category) > 0){
+          $msg = 'success';
+          $status = 'True';
+        }else{
+          $msg = 'nodata';
+          $status = 'False';
+        }
+        if(count($livestream) > 0){
+          $msg = 'success';
+          $status = 'True';
+        }else{
+          $msg = 'nodata';
+          $status = 'False';
+        }
+        $myData[] = array(
+          "genre_name"   => $categorydetails->name,
+          "genre_id"   => $live_category_id,
+          "genre_image"   => URL::to('/').'/public/uploads/audios/'.$genre_image,
+          "message" => $msg,
+          "livestream" => $livestream,
+          "live_category"   => $live_category,
+        );
+  
+      }
+  
+      $LiveCategory = LiveCategory::where('id','=',$live_category_id)->first();
+  
+      $response = array(
+        'status' => $status ,
+        'main_genre' => $LiveCategory->name,
+        'categorylivestream' => $livestream
+      );
+      return response()->json($response, 200);
+            
+  }
+
+
+
+
+
 }
