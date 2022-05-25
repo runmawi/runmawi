@@ -1,5 +1,6 @@
 <!-- Header -->
 <?php 
+$currency = App\CurrencySetting::first();
 // include('header.php'); 
 ?><!-- Header End -->
     @php
@@ -28,9 +29,9 @@
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
+                                          <p class="p-tag1" ><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$data['currency']->symbol; ?></p>
+                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
                                                     <p class="p-tag"><?php echo "Free"; ?></p>
                                                     <?php } ?>
