@@ -6258,12 +6258,13 @@ public function Adstatus_upate(Request $request)
       'Message' =>  $image_default], 200);
    }
    
-  // public function homesetting()
-  // {
-  //     $homesetting = HomeSetting::first();
+  public function homesetting()
+  {
+      // $homesetting = HomeSetting::first();
+      $homesetting = MobileHomeSetting::first();
 
-  //     return $homesetting;
-  // }
+      return $homesetting;
+  }
 
   public function PPVVideodetails(Request $request){
 
@@ -6418,7 +6419,7 @@ public function Adstatus_upate(Request $request)
         }
 
        
-        public function homesetting(Request $request){
+        public function HomepageOrder(Request $request){
           // HomepageOrder
 
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
