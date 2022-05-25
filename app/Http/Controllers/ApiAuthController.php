@@ -6412,5 +6412,51 @@ public function Adstatus_upate(Request $request)
               'mobile_homepage' =>  $mobile_homepage], 200);
           }
       
+          public function audioscategory(Request $request){
 
+            $audiocategoryid =  $request->audiocategoryid;
+            $userid = $request->userid;
+
+            $audiocategories = AudioCategory::where('id',$audiocategoryid)->first();
+            if(!empty($audiocategories)){
+              $main_genre = $audiocategories->name;
+              $category_image = $audiocategories->image;
+            }else{
+              $main_genre = '';
+              $category_image = '';
+            }
+            $myData = array();
+              // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
+              $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+              ->where('category_audios.category_id',$audiocategoryid)
+              ->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;       
+                return $item;
+              });
+
+              if(count($audio) > 0){
+                $msg = 'success';
+              }else{
+                $msg = 'nodata';
+              }
+              $myData[] = array(
+                "message" => $msg,
+                'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
+                'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
+                "audio" => $audio
+              );
+        
+        
+            $response = array(
+              'status' => 'true',
+              'genre_movies' => $myData,
+              'main_genre' => $msg,
+              'main_genre' => $main_genre,
+        
+            );
+            return response()->json($response, 200);
+      
+            }
+
+            
 }
