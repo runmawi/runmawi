@@ -2995,7 +2995,7 @@ public function checkEmailExists(Request $request)
       $settings = Setting::first();
       $response = array(
         'series' => $series,
-        "settings"   => $settings,
+        // "settings"   => $settings,
 
         );
       return response()->json($response, 200);
