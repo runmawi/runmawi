@@ -470,6 +470,8 @@ i.fa.fa-google-plus {
 
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
+    $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
+
 @endphp
 
 <section class="flick">
@@ -557,14 +559,6 @@ i.fa.fa-google-plus {
                  <div class="bg-white mt-4 dgk">
                      <h4> Due today: <span class='plan_price'> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0' }} </span> </h4>
                  
-                     <div class="d-flex justify-content-between align-items-center mt-4">
-                         <div>
-                             <p>Free Trial</p>
-                         </div>
-                         <div>
-                             <p>7 Days Free</p>
-                         </div>
-                     </div>
 
                      <div class="d-flex justify-content-between align-items-center mt-2">
                          <div>
@@ -581,8 +575,7 @@ i.fa.fa-google-plus {
                  </div>
 
                  <p class="text-white mt-3 dp">
-                     By clicking the ‘Start Your Free Trial’ button below, you agree that after your 7-day free trial this subscription of $56.99 will be charged to your payment method on a reoccurring basis until you cancel. You may cancel at any time
-                     during your free trial and will not be charged. To cancel, go to Manage Account and click "Cancel Membership." There are no refunds or credits for partial months.
+                    {{ $signup_payment_content ? $signup_payment_content : "By Clicking on Paynow & Start" }}
                  </p>
              </div>
 
