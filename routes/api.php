@@ -276,6 +276,11 @@ Route::group([
     Route::post('album_audios', 'ApiAuthController@album_audios');
     Route::get('homepage_order', 'ApiAuthController@HomepageOrder');
 
+    Route::post('audioscategory', 'ApiAuthController@audioscategory');
+    Route::post('livecategory', 'ApiAuthController@livecategory');
+    Route::get('LiveCategorylist', 'ApiAuthController@LiveCategorylist');
+
+
 
 
 });

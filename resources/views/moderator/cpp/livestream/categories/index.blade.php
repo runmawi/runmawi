@@ -74,7 +74,11 @@
                         @endif
 
                     </div>
-
+					<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+						<label>Display In Home page:</label>
+						<input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1">Yes
+						<input type="radio" id="in_menu" name="in_menu" value="0">No
+					</div>
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label>Image:</label>
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />

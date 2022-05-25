@@ -70,7 +70,16 @@ class CPPAdminLiveCategoriesController extends Controller
               } else {
                    $input['slug']  = $request['name'];
               }
-
+              $order = LiveCategory::orderBy('id', 'DESC')->first();
+              // $last2 = DB::table('items')->orderBy('id', 'DESC')->first();
+  
+            //  dd($order);
+             if(!empty($order)){
+              $orderno = $order->order;
+              $order = $orderno + 1 ;
+             }else{
+              $order = 1;
+             }
           
            if($image != '') {   
              //code for remove old file
@@ -91,7 +100,22 @@ class CPPAdminLiveCategoriesController extends Controller
 
            $input['user_id']  = $user_id;
 
-            LiveCategory::create($input);
+           if ($input['in_menu'] == 1) {
+            $in_menu  = 1;
+        } else {
+          $in_menu  = 0;
+        }
+            // LiveCategory::create($input);
+            $LiveCategory  = new LiveCategory;
+          
+            $LiveCategory->name = $input['name'];
+            $LiveCategory->user_id = $input['user_id'];
+            $LiveCategory->order = $order;
+            $LiveCategory->slug = $input['slug'];
+            $LiveCategory->parent_id = $input['parent_id'];
+            $LiveCategory->image = $input['image'];
+            $LiveCategory->in_menu = $in_menu;
+            $LiveCategory->save();
             return back()->with('message', 'New Category added successfully.');
           }else{
             return Redirect::to('/blocked');
@@ -159,6 +183,7 @@ class CPPAdminLiveCategoriesController extends Controller
             
             $category->name = $request['name'];
             $category->slug = $request['slug'];
+            $category->in_menu = $request['in_home'];
             $category->parent_id = $request['parent_id'];
             
              if ( $category->slug != '') {

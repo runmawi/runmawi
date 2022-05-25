@@ -248,7 +248,8 @@ $data = Session::all();
                                             </ul>
                                           </li>
                                           <?php }elseif ( $menu->in_menu == "live") { 
-                                        $LiveCategory = App\LiveCategory::all();
+                                       //  $LiveCategory = App\LiveCategory::all();
+                                       $LiveCategory = App\LiveCategory::get();
                                         ?>
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  

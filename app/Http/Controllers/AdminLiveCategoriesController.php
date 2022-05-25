@@ -111,7 +111,11 @@ class AdminLiveCategoriesController extends Controller
               } else {
                    $input['slug']  = $request['name'];
               }
-
+              if ($input['in_menu'] == 1) {
+                $in_menu  = 1;
+            } else {
+              $in_menu  = 0;
+            }
           
            if($image != '') {   
              //code for remove old file
@@ -129,8 +133,28 @@ class AdminLiveCategoriesController extends Controller
          } else {
                $input['image']  = 'default.jpg';
            }
+            $order = LiveCategory::orderBy('id', 'DESC')->first();
+            // $last2 = DB::table('items')->orderBy('id', 'DESC')->first();
+
+          //  dd($order);
+           if(!empty($order)){
+            $orderno = $order->order;
+            $order = $orderno + 1 ;
+           }else{
+            $order = 1;
+           }
+            // LiveCategory::create($input);
+
+          $LiveCategory  = new LiveCategory;
           
-            LiveCategory::create($input);
+          $LiveCategory->name = $input['name'];
+          $LiveCategory->user_id = Auth::User()->id;
+          $LiveCategory->order = $order;
+          $LiveCategory->slug = $input['slug'];
+          $LiveCategory->parent_id = $input['parent_id'];
+          $LiveCategory->image = $input['image'];
+          $LiveCategory->in_menu = $in_menu;
+          $LiveCategory->save();
             return back()->with('message', 'New Category added successfully.');
           }else if($package == "Basic"){
 
@@ -213,6 +237,7 @@ class AdminLiveCategoriesController extends Controller
             
             
             $category->name = $request['name'];
+            $category->in_menu = $request['in_home'];
             $category->slug = $request['slug'];
             $category->parent_id = $request['parent_id'];
             

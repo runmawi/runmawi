@@ -34,7 +34,12 @@
                         @endif
 
                     </div>
-        
+                    <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
+                        <label class="m-0">Display In Home page:</label>
+                        <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_menu == 0) { echo "checked";} ?>> No
+
+                    </div>
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label>Image:</label>
                         @if(!empty($categories[0]->image))
