@@ -79,6 +79,10 @@ la la-cloud-upload iq-arrow-left"></i><span>Upload Featured Ad</span></a></li>
 la la-eye iq-arrow-left"></i><span>CPV</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/ads_campaign" class="iq-waves-effect"><i class="
 la la-list-alt iq-arrow-left"></i><span>Ads campaign</span></a></li>
+
+<li class=" "><a href="<?php echo URL::to('advertiser/Ads_Scheduled') ?>" class="iq-waves-effect"><i class="
+   la la-list-alt iq-arrow-left"></i><span>Ads Scheduled</span></a></li>
+
                    <div class="bod"></div>
                    <?php $activeplan =  App\Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count(); ?>
                    @if($activeplan != 0)
