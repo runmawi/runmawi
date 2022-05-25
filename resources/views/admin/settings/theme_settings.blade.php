@@ -149,7 +149,7 @@ border-radius: 0px 4px 4px 0px;
                 </div> 
                     <p>{{ ucfirst(trans('signup page theme')) }}</p>
               
-			   <div class="panel-body"> 
+			    <div class="panel-body"> 
                         <div class="col-sm-6">
                             <div class="mt-1">
                                 <label class="switch">
@@ -159,9 +159,16 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                 </div> 
+
+                <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
+			    <div class="panel-body"> 
+                        <div class="col-sm-6">
+                            <input type="text" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
+                        </div>
+                </div> 
+
         </div>
-    <div class="panel-body" style="display: flex;
-    justify-content: flex-end;">
+                <div class="panel-body" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
                 </div>
 </form>

@@ -31,7 +31,7 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 use Carbon\Carbon;
 use Mail; 
 use Illuminate\Support\Str;
-
+use App\AdsEvent;
 
 class AuthController extends Controller
 {
@@ -668,13 +668,68 @@ class AuthController extends Controller
        echo "error";exit; 
    }
 
-   public function AdsList(Request $request)
+   public function Ads_Scheduled(Request $request)
    {
-        $data = [
-             'ads' => 'ss',
-        ];
-       return view('avod::Adslist',$data);
+       
+    if($request->ajax()) {
+       
+        $data = AdsEvent::whereDate('start', '>=', $request->start)
+                  ->whereDate('end',   '<=', $request->end)
+                  ->get(['id', 'title', 'start', 'end','ads_category_id','color']);
+
+        return response()->json($data);
    }
+
+       return view('avod::Ads_Scheduled');
+   }
+
+   public function AdsScheduleStore(Request $request)
+   {
+
+        switch ($request->type) {
+            case 'add':
+            $event = AdsEvent::create([
+                'title' => $request->title,
+                'start' => $request->start,
+                'end' => $request->end,
+                'ads_category_id' => $request->ads_category,
+                'color' => $request->color ? $request->color : null,
+
+            ]);
+
+            return redirect('advertiser/Ads_Scheduled');
+            break;
+
+            case 'update':
+            $event = AdsEvent::find($request->id)->update([
+                'title' => $request->title,
+                'start' => $request->start,
+                'end' => $request->end,
+            ]);
+
+            return response()->json($event);
+            break;
+
+            case 'delete':
+            $event = AdsEvent::find($request->id)->delete();
+
+            return response()->json($event);
+            break;
+            
+            default:
+            # code...
+            break;
+        }
+    }
+
+    public function AdsEvents(Request $request)
+        {
+            $data=[
+             'ads_category'   => Adscategory::all(),
+            ];
+
+            return view('avod::Ads_Events',$data);
+        }
 
 }
 ?>
