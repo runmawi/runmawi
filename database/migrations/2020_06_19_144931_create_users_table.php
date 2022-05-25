@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
                 $table->string('name');
                 $table->string('username')->unique();
-                $table->integer('referrer_id')->unique()->nullable();
+                $table->integer('referrer_id')->nullable();
                 $table->string('coupon_expired')->nullable();
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();

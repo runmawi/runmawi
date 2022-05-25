@@ -150,12 +150,7 @@ class ApiAuthController extends Controller
             $referred_user = User::where('referral_token','=',$referrer_code)->first();
             $referred_user_id = $referred_user->id;
         } else {
-          $userreferred = User::where('referral_token','=',0)->order_by('id', 'desc')->first();
-          if(!empty($userreferred)){
-            $referred_id =  $userreferred->referrer_id; 
-            $referred_id = $referred_id + 1 ;
-            $referred_user_id = $referred_id;
-          }
+   
             $referred_user_id =0;
         }
 
