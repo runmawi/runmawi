@@ -1341,49 +1341,53 @@ $(document).ready(function(){
 <!-- Ads -->
 
 <?php 
-  // $videoFile = 'http://localhost/flicknexs/storage/app/public/POeKx6MlJuECEHzu.mp4';
-  // $normalvideoFile = 'http://localhost/flicknexss/storage/app/public/7Z13lq2ZJAS5tKW8.mp4';
+
+  // $AdsVideos =App\Advertisement::join('videos','videos.ads_category','=','advertisements.ads_category')
+  //   ->where('advertisements.status','1')->pluck('ads_video')->random();
+
+  // $AdsvideoFile = URL::to('public/uploads/AdsVideos/'.$AdsVideos);
+
+  // $normalvideoFile =  URL::to('storage/app/public/'.$video->path);
 ?>
 
-<!-- <input type="text" id="ads_start_tym" class="ads_start_tym"  value='17'>
-<input type="text" id="" class="statusss"  value='1'> -->
+<!-- <input type="hidden" id="ads_start_tym" class="ads_start_tym"  value='0'>
+<input type="hidden" id="" class="ads_show_status"  value='1'> -->
 
 <script>
   
   // var videoads_tym    =  document.getElementById(videotypeId);
-  // var Ads_videos      = <?php echo json_encode($videoFile)  ;?>;
-  // var normal_videos   = <?php echo json_encode($normalvideoFile)  ;?>;
-  // var ads_end_tym     =  '10';
+  // var Ads_videos      = <?php 
+  // echo json_encode($AdsvideoFile)  
+  ;?>;
+  // var normal_videos   = <?php 
+  // echo json_encode($normalvideoFile)  
+  ;?>;
+  // var ads_end_tym     =  '30';
 
   // this.videoads_tym.addEventListener('timeupdate', (e) => {
 
   //       var ads_start_tym   =  $('.ads_start_tym').val();
-  //       var statusss  = $('.statusss').val();
+  //       var ads_show_status  = $('.ads_show_status').val();
 
   //         if (ads_start_tym <= e.target.currentTime) {
 
-  //         if(statusss == 1){
+  //         if(ads_show_status == 1){
   //               $('.adstime_url').attr('src', Ads_videos);
   //               videoId.play();
-  //               $('#ads_start_tym').replaceWith('<input type="text" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
-
-  //               $('.statusss').replaceWith('<input type="text" id="" class="statusss"  value="0">');
-
+  //                 $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
+  //                 $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
   //           }
-  //           else if(statusss == 0){
-  //             $('.statusss').replaceWith('<input type="text" id="" class="statusss"  value="5">');
+  //           else if(ads_show_status == 0){
+  //                 $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="5">');
+  //                 $('.adstime_url').attr('src', normal_videos);
 
-  //             $('.adstime_url').attr('src', normal_videos);
-
-  //             document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-  //                 this.currentTime = 50;
-  //               }, true);
+  //                 document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+  //                     this.currentTime = 0;
+  //                   }, true);
 
   //               videoId.play();
   //           }
-             
   //         }
-
   //       });
 
 </script>
