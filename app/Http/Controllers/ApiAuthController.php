@@ -1215,12 +1215,21 @@ public function verifyandupdatepassword(Request $request)
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
+
+$array1 = array ( 'sliders'=> $sliders);
+$array2 = array ('video_banners'=> $banners);
+$array3 = array ('live_banner'=> $live_banner);
+$array4 = array ('series_banner'=> $series_banner);
+$final[] = array_merge($array1,$array2,$array3,$array4);
+// echo "<pre>";
+// print_r($final);exit;
       $response = array(
         'status' => 'true',
-        'sliders' => $sliders,
-        'banners' => $banners,
-        'live_banner' => $live_banner,
-        'series_banner' => $series_banner,
+        // 'sliders' => $sliders,
+        // 'banner' => $banners,
+        'banners' => $final,
+        // 'live_banner' => $live_banner,
+        // 'series_banner' => $series_banner,
       );
       return response()->json($response, 200);
      } 
@@ -6249,12 +6258,12 @@ public function Adstatus_upate(Request $request)
       'Message' =>  $image_default], 200);
    }
    
-  public function homesetting()
-  {
-      $homesetting = HomeSetting::first();
+  // public function homesetting()
+  // {
+  //     $homesetting = HomeSetting::first();
 
-      return $homesetting;
-  }
+  //     return $homesetting;
+  // }
 
   public function PPVVideodetails(Request $request){
 
@@ -6408,15 +6417,23 @@ public function Adstatus_upate(Request $request)
   
         }
 
-        public function HomepageOrder(Request $request){
+       
+        public function homesetting(Request $request){
+          // HomepageOrder
 
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
         $mobile_homepage = MobileHomeSetting::first();
-            
-            return response()->json([
-              'status'  => 'true',
-              'homepage_order' =>  $homepage_order,
-              'mobile_homepage' =>  $mobile_homepage], 200);
+        $homesetting = HomeSetting::first();
+        // dd($homesetting );
+        $response = array(
+          'status'  => 'true',
+          'homesetting'=> $homesetting,
+          'mobile_homepage' =>  $mobile_homepage,
+          'homepage_order' =>  $homepage_order,
+      );
+      return $response;
+
+
           }
       
           public function audioscategory(Request $request){
@@ -6424,16 +6441,6 @@ public function Adstatus_upate(Request $request)
             $audiocategoryid =  $request->audiocategoryid;
             $userid = $request->userid;
 
-
-
-
-
-
-
-
-
-
-            
     $audiocategories = AudioCategory::select('id','image')->where('id','=',$audiocategoryid)->get()->toArray();
     $myData = array();
 
@@ -6490,45 +6497,7 @@ public function Adstatus_upate(Request $request)
       'categoryaudio' => $audio
     );
     return response()->json($response, 200);
-            // $audiocategories = AudioCategory::where('id',$audiocategoryid)->first();
-            // if(!empty($audiocategories)){
-            //   $main_genre = $audiocategories->name;
-            //   $category_image = $audiocategories->image;
-            // }else{
-            //   $main_genre = '';
-            //   $category_image = '';
-            // }
-            // $myData = array();
-            //   // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
-            //   $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
-            //   ->where('category_audios.category_id',$audiocategoryid)
-            //   ->get()->map(function ($item) {
-            //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;       
-            //     return $item;
-            //   });
-
-            //   if(count($audio) > 0){
-            //     $msg = 'success';
-            //   }else{
-            //     $msg = 'nodata';
-            //   }
-            //   $myData[] = array(
-            //     "message" => $msg,
-            //     'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
-            //     'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
-            //     "audio" => $audio
-            //   );
-        
-        
-            // $response = array(
-            //   'status' => 'true',
-            //   'genre_movies' => $myData,
-            //   'main_genre' => $msg,
-            //   'main_genre' => $main_genre,
-        
-            // );
-            // return response()->json($response, 200);
-      
+          
             }
 
             
