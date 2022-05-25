@@ -266,7 +266,7 @@ $data = Session::all();
                                           </li>
                                           <?php }elseif ( $menu->in_menu == "live") { 
                                        //  $LiveCategory = App\LiveCategory::all();
-                                       $LiveCategory = App\LiveCategory::where('in_menu',1)->get();
+                                       $LiveCategory = App\LiveCategory::get();
 
                                         ?>
                                           <li class="dropdown menu-item">
