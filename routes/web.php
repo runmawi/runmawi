@@ -759,6 +759,8 @@ Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
 Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');
 
 Route::get('/emailvalidation', 'SignupController@EmailValidation');
+Route::get('/usernamevalidation', 'SignupController@UsernameValidation');
+
 
 // Paypal Controllers
 Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));
