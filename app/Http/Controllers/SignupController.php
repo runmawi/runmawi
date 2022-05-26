@@ -94,6 +94,21 @@ class SignupController extends Controller
         return $message;
 
     }
+
+    public function UsernameValidation(Request $request)
+    {
+        $username = $request->get('username');
+        
+        $user = User::where('username',$username)->first();
+
+        if( $user == null){
+              $message = "true";
+        }
+        else{
+          $message = "false";
+        }
+        return $message;
+    }
     
     
     

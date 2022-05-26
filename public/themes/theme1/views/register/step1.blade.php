@@ -917,6 +917,18 @@ $( "#stripe_plan" ).validate({
                     }
                 }
             },
+            username: {
+                    required: true,
+                    remote: {
+                        url:"{{ URL::to('/usernamevalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#username').val(); }
+                        }
+                    }
+                },
             email: {
                 required: true,
                 remote: {
@@ -937,6 +949,7 @@ $( "#stripe_plan" ).validate({
                 },
                 username: {
                      required: "Please Enter the Name",
+                     remote: "Name already in taken ! Please try another Username"
                 },
                 email: {
                     required: "Please Enter the Email Id",
