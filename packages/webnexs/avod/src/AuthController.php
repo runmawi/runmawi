@@ -218,6 +218,7 @@ class AuthController extends Controller
     }
 
     public function upload_ads() {
+        
         $data = [];
         $data['settings'] = Setting::first();
         $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
@@ -239,6 +240,21 @@ class AuthController extends Controller
 
             return Redirect::to("/advertiser")->withError('Opps! Your limit has completed.Please update your plan');
         }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
+
+            // Ads scheduling
+
+              $now = Carbon::now();
+
+              $data['Monday']    =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+              $data['Tuesday']   =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
+              $data['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
+              $data['Thrusday']  =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
+              $data['Friday']    =  $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+              $data['Saturday']  =  $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+              $data['Sunday']    =  $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+
+          //  End Scheduling
+
             $data['ads_category'] = Adscategory::all();
             return view('avod::upload_ads',$data);
         }

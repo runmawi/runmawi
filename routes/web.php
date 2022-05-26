@@ -593,6 +593,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
     Route::get('/list_total_cpc', 'AdminAdvertiserController@list_total_cpc'); 
     Route::get('/list_total_cpv', 'AdminAdvertiserController@list_total_cpv'); 
+    Route::get('/Ads-TimeSlot', 'AdminAdvertiserController@AdsTimeSlot'); 
+
     
     /*Ads Management ends*/
 

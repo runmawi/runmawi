@@ -19,6 +19,8 @@ use App\Adcampaign;
 use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Carbon\Carbon;
+
 
 class AdminAdvertiserController extends Controller
 {
@@ -620,6 +622,21 @@ class AdminAdvertiserController extends Controller
              # ...
              break;
         }
+    }
+
+    public function AdsTimeSlot()
+    {
+        $now = Carbon::now();
+
+        $data['Monday']    =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+        $data['Tuesday']   =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
+        $data['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
+        $data['Thrusday']  =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
+        $data['Friday']    =  $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+        $data['Saturday']  =  $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+        $data['Sunday']    =  $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+
+      return view('admin.ads_management.ads_time_slot',$data);
     }
 
 }
