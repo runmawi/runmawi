@@ -913,10 +913,10 @@ $artists = [];
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
-<?php }?>
+<?php } ?>
 <?php if(!empty($ads_path)){ ?>
   <input type="hidden" id="ads_path" name="ads_path" value="<?php echo $ads_path ?>">
-<?php }?>
+<?php } ?>
 
 
   </div>
@@ -929,6 +929,9 @@ $artists = [];
    <script src="https://checkout.stripe.com/checkout.js"></script>
    <div class="clear"></div>
        <script>
+
+
+
 // $('#myVideo2').show();
 // $(document).ready(function(){
 // $('#playVid').click(function(){
@@ -944,12 +947,20 @@ $artists = [];
 
            /*bufferedTimeRanges*/
 
-          // var video_Player = document.getElementById('videoPlayer');
+          var video_Player = document.getElementById('videoPlayer');
 
-          // var bufferedTimeRanges = video_Player.buffered;
-          // $('#videoPlayer').click(function(){
-          //   console.log(bufferedTimeRanges);
-          // });
+          var bufferedTimeRanges = video_Player.buffered;
+          $('#videoPlayer').click(function(){
+            console.log( video_Player.buffered.length);   // returns 2
+            console.log(video_Player.buffered.start(0)); // returns 0
+            console.log(video_Player.buffered.end(0));   // returns 5
+            console.log(video_Player.buffered.start(1)); // returns 15
+            console.log(video_Player.buffered.end(1));   // returns 19
+            console.log(bufferedTimeRanges);
+              var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
+              // console.log(bufferedTimeRanges);
+              console.log(seekableEnd);
+          });
 
 
            /*Watch trailer*/
