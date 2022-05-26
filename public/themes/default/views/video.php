@@ -945,23 +945,42 @@ $artists = [];
 
          $(document).ready(function () { 
 
-           /*bufferedTimeRanges*/
 
-          var video_Player = document.getElementById('videoPlayer');
 
-          var bufferedTimeRanges = video_Player.buffered;
-          $('#videoPlayer').click(function(){
-            console.log( video_Player.buffered.length);   // returns 2
-            console.log(video_Player.buffered.start(0)); // returns 0
-            console.log(video_Player.buffered.end(0));   // returns 5
-            console.log(video_Player.buffered.start(1)); // returns 15
-            console.log(video_Player.buffered.end(1));   // returns 19
-            console.log(bufferedTimeRanges);
-              var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
+
+          var vid = document.getElementById("videoPlayer");
+          var url= '<?= URL::to("player_analytics") ?>';
+          var _token= '<?=  csrf_token() ?>';
+          var videoid = $('#video_id').val();
+          var videotype= '<?= $video->type ?>';
+          // alert(videotype);
+          $(window).on("beforeunload", function() { 
+
+          var currentTime = vid.currentTime;
+          var videoPlayers = document.getElementById('videoPlayer');
+          var bufferedTimeRanges = videoPlayers.buffered;
+          var duration = vid.duration;
+          var bufferedTimeRangesLength = bufferedTimeRanges.length;
+          var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
               // console.log(bufferedTimeRanges);
               console.log(seekableEnd);
-          });
+            // console.log(duration);
+            // console.log(currentTime);
+            // console.log();
+            $.post('<?= URL::to('player_analytics') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
+         function(data){
+                     //    toastr.success(data.success);
+                   });
 
+       })   
+       })
+
+    });
+
+       
+
+
+   
 
            /*Watch trailer*/
           //  $(".watch_trailer").click(function() {
@@ -1044,7 +1063,7 @@ $artists = [];
      // localStorage.setItem('your_video_'+video_id, currentTime);
      return;
    }); 
-  });
+  // });
 
            //$(".share a").hide();
            $(".share").on("mouseover", function() {
