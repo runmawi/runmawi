@@ -444,7 +444,8 @@ class ApiAuthController extends Controller
     );
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
-      'otp' => $request->get('otp')
+      'otp' => $request->get('otp'),
+      'password' => $request->get('password')
     );
 
     if(!empty($users)){
@@ -778,7 +779,8 @@ public function verifyandupdatepassword(Request $request)
         $user_id = $userdetail->id;
         $user = User::find($user_id);
 
-        $user->password = $request->password;
+        // $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->save();
 
         $response = array(

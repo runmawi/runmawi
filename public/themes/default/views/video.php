@@ -913,10 +913,10 @@ $artists = [];
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
-<?php }?>
+<?php } ?>
 <?php if(!empty($ads_path)){ ?>
   <input type="hidden" id="ads_path" name="ads_path" value="<?php echo $ads_path ?>">
-<?php }?>
+<?php } ?>
 
 
   </div>
@@ -929,6 +929,9 @@ $artists = [];
    <script src="https://checkout.stripe.com/checkout.js"></script>
    <div class="clear"></div>
        <script>
+
+
+
 // $('#myVideo2').show();
 // $(document).ready(function(){
 // $('#playVid').click(function(){
@@ -942,15 +945,42 @@ $artists = [];
 
          $(document).ready(function () { 
 
-           /*bufferedTimeRanges*/
 
-          // var video_Player = document.getElementById('videoPlayer');
 
-          // var bufferedTimeRanges = video_Player.buffered;
-          // $('#videoPlayer').click(function(){
-          //   console.log(bufferedTimeRanges);
-          // });
 
+          var vid = document.getElementById("videoPlayer");
+          var url= '<?= URL::to("player_analytics") ?>';
+          var _token= '<?=  csrf_token() ?>';
+          var videoid = $('#video_id').val();
+          var videotype= '<?= $video->type ?>';
+          // alert(videotype);
+          $(window).on("beforeunload", function() { 
+
+          var currentTime = vid.currentTime;
+          var videoPlayers = document.getElementById('videoPlayer');
+          var bufferedTimeRanges = videoPlayers.buffered;
+          var duration = vid.duration;
+          var bufferedTimeRangesLength = bufferedTimeRanges.length;
+          var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
+              // console.log(bufferedTimeRanges);
+              console.log(seekableEnd);
+            // console.log(duration);
+            // console.log(currentTime);
+            // console.log();
+            $.post('<?= URL::to('player_analytics') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
+         function(data){
+                     //    toastr.success(data.success);
+                   });
+
+       })   
+       })
+
+    });
+
+       
+
+
+   
 
            /*Watch trailer*/
           //  $(".watch_trailer").click(function() {
@@ -1033,7 +1063,7 @@ $artists = [];
      // localStorage.setItem('your_video_'+video_id, currentTime);
      return;
    }); 
-  });
+  // });
 
            //$(".share a").hide();
            $(".share").on("mouseover", function() {
