@@ -779,7 +779,8 @@ public function verifyandupdatepassword(Request $request)
         $user_id = $userdetail->id;
         $user = User::find($user_id);
 
-        $user->password = $request->password;
+        // $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->save();
 
         $response = array(
