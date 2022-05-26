@@ -986,7 +986,7 @@ if(!empty($artistsdata)){
                 $file = $player_image;
                 $data['player_image']  = $file->getClientOriginalName();
                 $file->move($image_path, $data['player_image']);
-                $player_image = URL::to('/') . '/public/uploads/images/'.$file->getClientOriginalName();
+                $player_image = $file->getClientOriginalName();
   
   
            } else {
@@ -1644,7 +1644,7 @@ if(!empty($artistsdata)){
                 $file = $player_image;
                 $data['player_image']  = $file->getClientOriginalName();
                 $file->move($image_path, $data['player_image']);
-                $player_image = URL::to('/') . '/public/uploads/images/'.$file->getClientOriginalName();
+                $player_image = $file->getClientOriginalName();
   
   
            } else {
