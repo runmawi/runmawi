@@ -444,7 +444,8 @@ class ApiAuthController extends Controller
     );
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
-      'otp' => $request->get('otp')
+      'otp' => $request->get('otp'),
+      'password' => $request->get('password')
     );
 
     if(!empty($users)){
