@@ -166,7 +166,6 @@ $data = Session::all();
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
-
       body.light-theme h4, body.light-theme p {
          color: <?php echo GetLightText(); ?>;
       }
