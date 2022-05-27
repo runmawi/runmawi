@@ -20,6 +20,7 @@ use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Carbon\Carbon;
+use App\AdsTimeSlot;
 
 
 class AdminAdvertiserController extends Controller
@@ -626,17 +627,124 @@ class AdminAdvertiserController extends Controller
 
     public function AdsTimeSlot()
     {
-        $now = Carbon::now();
 
-        $data['Monday']    =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
-        $data['Tuesday']   =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
-        $data['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
-        $data['Thrusday']  =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
-        $data['Friday']    =  $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-        $data['Saturday']  =  $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-        $data['Sunday']    =  $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+      $data = [
+        'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
+        'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
+        'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
+        'Thursday_time' =>AdsTimeSlot::where('day','Thursday')->get(),
+        'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
+        'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
+        'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
+      ];
 
       return view('admin.ads_management.ads_time_slot',$data);
+    }
+
+    public function AdsTimeSlot_Save(Request $request)
+    {
+
+      if($request->Monday_Start_time  != null && $request->Monday_end_time  ){
+
+        $Monday_start_time = count($request['Monday_Start_time']);
+        AdsTimeSlot::where('day', 'Monday')->delete();
+
+        for ($i=0; $i<$Monday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['Monday_Start_time'][$i];
+                $AdsTimeSlot->end_time = $request['Monday_end_time'][$i];
+                $AdsTimeSlot->day = "Monday";
+                $AdsTimeSlot->save();
+        }
+      }
+
+      if($request->tuesday_start_time  != null && $request->Tuesday_end_time  ){
+
+        $tuesday_start_time = count($request['tuesday_start_time']);
+        AdsTimeSlot::where('day', 'Tuesday')->delete();
+
+        for ($i=0; $i<$tuesday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['tuesday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['Tuesday_end_time'][$i];
+                $AdsTimeSlot->day = "Tuesday";
+                $AdsTimeSlot->save();
+        }
+      }
+
+      if($request->wednesday_start_time  != null && $request->wednesday_end_time  ){
+
+        $wednesday_start_time = count($request['wednesday_start_time']);
+        AdsTimeSlot::where('day', 'Wednesday')->delete();
+
+        for ($i=0; $i<$wednesday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['wednesday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['wednesday_end_time'][$i];
+                $AdsTimeSlot->day = "Wednesday";
+                $AdsTimeSlot->save();
+        }
+      }
+
+      if($request->thursday_start_time  != null && $request->thursday_end_time  ){
+
+        $thursday_start_time = count($request['thursday_start_time']);
+        AdsTimeSlot::where('day', 'Thursday')->delete();
+
+        for ($i=0; $i<$thursday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['thursday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['thursday_end_time'][$i];
+                $AdsTimeSlot->day = "Thursday";
+                $AdsTimeSlot->save();
+        }
+      }
+
+      if($request->friday_start_time  != null && $request->friday_end_time  ){
+
+        $friday_start_time = count($request['friday_start_time']);
+        AdsTimeSlot::where('day', 'Friday')->delete();
+
+        for ($i=0; $i<$friday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['friday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['friday_end_time'][$i];
+                $AdsTimeSlot->day = "Friday";
+                $AdsTimeSlot->save();
+        }
+      }
+
+      if($request->saturday_start_time  != null && $request->saturday_end_time  ){
+
+        $saturday_start_time = count($request['saturday_start_time']);
+        AdsTimeSlot::where('day', 'Saturday')->delete();
+
+        for ($i=0; $i<$saturday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['saturday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['saturday_end_time'][$i];
+                $AdsTimeSlot->day = "Saturday";
+                $AdsTimeSlot->save();
+        }
+
+      }
+
+      if($request->sunday_start_time  != null && $request->sunday_end_time  ){
+
+        $sunday_start_time = count($request['sunday_start_time']);
+        AdsTimeSlot::where('day', 'Sunday')->delete();
+
+        for ($i=0; $i<$sunday_start_time; $i++){
+                $AdsTimeSlot = new AdsTimeSlot;
+                $AdsTimeSlot->start_time = $request['sunday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['sunday_start_time'][$i];
+                $AdsTimeSlot->day = "Sunday";
+                $AdsTimeSlot->save();
+        }
+      }
+     
+      return redirect('admin/Ads-TimeSlot');
+
     }
 
 }
