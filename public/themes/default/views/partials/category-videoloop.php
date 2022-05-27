@@ -80,7 +80,7 @@ if(isset($videos)) :
                                 
                                         <p class="p-tag1">   
                                             <?php if(!empty($top_category_video->ppv_price)) {
-                                                    echo $top_category_video->ppv_price.' '.$currency->symbol ; 
+                                                    echo $currency->symbol.' '.$top_category_video->ppv_price ; 
                                                     } elseif(!empty($top_category_video->global_ppv) && $top_category_video->ppv_price == null) {
                                                         echo $top_category_video->global_ppv .' '.$currency->symbol;
                                                     } elseif(empty($top_category_video->global_ppv) && $top_category_video->ppv_price == null) {
@@ -161,9 +161,9 @@ if(isset($videos)) :
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                         <p class="p-tag1">
                                             <?php if(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
+                                                   echo $currency->symbol.' '.$category_video->ppv_price ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv .' '.$currency->symbol;
+                                                    echo $currency->symbol .' '.$category_video->global_ppv;
                                                 } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo "Free"; 
                                                 }
