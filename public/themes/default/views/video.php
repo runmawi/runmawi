@@ -967,8 +967,7 @@ $artists = [];
                   var playercountvideoid = $('#video_id').val();
 
                 }
-                  alert(duration);
-                  alert(currentTimevideoPlayers);
+                 
 
        })
 
