@@ -643,11 +643,11 @@ class AdminAdvertiserController extends Controller
 
     public function AdsTimeSlot_Save(Request $request)
     {
+      AdsTimeSlot::truncate();
 
-      if($request->Monday_Start_time  != null && $request->Monday_end_time  ){
+      if($request->Monday_Start_time  != null && $request->Monday_end_time != null ){
 
         $Monday_start_time = count($request['Monday_Start_time']);
-        AdsTimeSlot::where('day', 'Monday')->delete();
 
         for ($i=0; $i<$Monday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -658,10 +658,9 @@ class AdminAdvertiserController extends Controller
         }
       }
 
-      if($request->tuesday_start_time  != null && $request->Tuesday_end_time  ){
+      if($request->tuesday_start_time  != null && $request->Tuesday_end_time  != null ){
 
         $tuesday_start_time = count($request['tuesday_start_time']);
-        AdsTimeSlot::where('day', 'Tuesday')->delete();
 
         for ($i=0; $i<$tuesday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -672,10 +671,9 @@ class AdminAdvertiserController extends Controller
         }
       }
 
-      if($request->wednesday_start_time  != null && $request->wednesday_end_time  ){
+      if($request->wednesday_start_time  != null && $request->wednesday_end_time  != null ){
 
         $wednesday_start_time = count($request['wednesday_start_time']);
-        AdsTimeSlot::where('day', 'Wednesday')->delete();
 
         for ($i=0; $i<$wednesday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -686,10 +684,9 @@ class AdminAdvertiserController extends Controller
         }
       }
 
-      if($request->thursday_start_time  != null && $request->thursday_end_time  ){
+      if($request->thursday_start_time  != null && $request->thursday_end_time  != null ){
 
         $thursday_start_time = count($request['thursday_start_time']);
-        AdsTimeSlot::where('day', 'Thursday')->delete();
 
         for ($i=0; $i<$thursday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -700,10 +697,9 @@ class AdminAdvertiserController extends Controller
         }
       }
 
-      if($request->friday_start_time  != null && $request->friday_end_time  ){
+      if($request->friday_start_time  != null && $request->friday_end_time  != null){
 
         $friday_start_time = count($request['friday_start_time']);
-        AdsTimeSlot::where('day', 'Friday')->delete();
 
         for ($i=0; $i<$friday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -714,10 +710,9 @@ class AdminAdvertiserController extends Controller
         }
       }
 
-      if($request->saturday_start_time  != null && $request->saturday_end_time  ){
+      if($request->saturday_start_time  != null && $request->saturday_end_time  != null  ){
 
         $saturday_start_time = count($request['saturday_start_time']);
-        AdsTimeSlot::where('day', 'Saturday')->delete();
 
         for ($i=0; $i<$saturday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
@@ -729,10 +724,9 @@ class AdminAdvertiserController extends Controller
 
       }
 
-      if($request->sunday_start_time  != null && $request->sunday_end_time  ){
+      if($request->sunday_start_time  != null && $request->sunday_end_time != null ){
 
         $sunday_start_time = count($request['sunday_start_time']);
-        AdsTimeSlot::where('day', 'Sunday')->delete();
 
         for ($i=0; $i<$sunday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;

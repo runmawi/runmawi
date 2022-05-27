@@ -1,5 +1,8 @@
 @include('avod::ads_header')
 
+{{-- Font Awesome --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
 <style>
    .row.ages {
       padding: 2%;
@@ -34,6 +37,48 @@
                                 <li id="payment"><strong>Ads Schedule</strong></li>
                             </ul>
 
+                            <fieldset>
+                                    <div class="col-md-6">
+                                            <label>Set your weekly hours</label>
+                        
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <input type="checkbox" id="Monday" class="date" name="date[]" value="Monday" @if(!empty($Monday_time['0'])) checked @endif/>
+                                                    <label for="">Monday</label>
+                                                    <span id="" class="Monday_add ">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </span>
+                                                </div>
+    
+                                                @forelse ($Monday_time as $Monday_times)
+                                                    <table class="table col-md-12" id=""> 
+                                                        <tr>
+                                                            <td>
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4 p-0 d-flex align-items-center">
+                                                                            <input type="time" name="Monday_Start_time[]" class="form-control" value={{  $Monday_times->start_time }} />
+                                                                            -</div>
+                                                                        <div class="col-md-4 p-0">
+                                                                            <input type="time" name="Monday_end_time[]" class="form-control" id="" value={{  $Monday_times->end_time }} />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                        </tr>
+                                                    </table>
+                                                @empty
+    
+                                                @endforelse
+    
+                                                <table class="table col-md-12" id="Monday_add"> </table>
+                                            </div>
+
+                                </div>
+                                <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
+                            </fieldset>
+                            
                            <!--General Information  fieldsets -->
                            <fieldset>
                               <div class="form-card">
@@ -367,6 +412,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBROO3Md6_fZD5_fd1u8VTlRxd4VdJnAWU&libraries=places&sensor=false"></script>
+
+<script>
+    var i = 0;
+
+    $(".Monday_add").click(function(){
+            ++i;
+            $('#Monday').prop('checked', true);
+            $("#Monday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="Monday_Start_time[]"   class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="Monday_end_time[]" class="form-control" id=""/> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+        });
+
+    $(".Tuesday_add").click(function(){
+            ++i;
+            $('#Tuesday').prop('checked', true);
+            $("#Tuesday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="tuesday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="Tuesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+        });
+
+   $(".wednesday_add").click(function(){
+       ++i;
+       $('#Wednesday').prop('checked', true);
+       $("#wednesday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="wednesday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="wednesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+   });
+
+   $(".thrusday_add").click(function(){
+       ++i;
+       $('#thrusday').prop('checked', true);
+       $("#thrusday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="thursday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="thursday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+   });
+
+   $(".friday_add").click(function(){
+       ++i;
+       $('#friday').prop('checked', true);
+       $("#friday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="friday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="friday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+   });
+
+   $(".saturday_add").click(function(){
+       ++i;
+       $('#saturday').prop('checked', true);
+       $("#saturday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="saturday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="saturday_end_time[]"  class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+   });
+
+   $(".sunday_add").click(function(){
+       ++i;
+       $('#sunday').prop('checked', true);
+       $("#sunday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="sunday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="sunday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+   });
+
+   $(document).on('click', '.remove-tr', function(){
+
+        if( $(this).closest('tr').is('tr:only-child') ) {
+
+            // $('#sunday').prop('checked', false);
+
+            $(this).closest('tr').remove();
+        }
+        else {
+            $(this).closest('tr').remove();
+        }
+
+   }); 
+ 
+</script>
 
 <script>
 

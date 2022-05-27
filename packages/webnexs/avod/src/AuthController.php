@@ -32,6 +32,7 @@ use Carbon\Carbon;
 use Mail; 
 use Illuminate\Support\Str;
 use App\AdsEvent;
+use App\AdsTimeSlot;
 
 class AuthController extends Controller
 {
@@ -252,6 +253,16 @@ class AuthController extends Controller
               $data['Friday']    =  $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
               $data['Saturday']  =  $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
               $data['Sunday']    =  $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+
+              $data = [
+                'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
+                'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
+                'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
+                'Thursday_time' =>AdsTimeSlot::where('day','Thursday')->get(),
+                'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
+                'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
+                'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
+              ];
 
           //  End Scheduling
 
