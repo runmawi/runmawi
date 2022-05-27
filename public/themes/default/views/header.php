@@ -170,8 +170,44 @@ $data = Session::all();
       body.light-theme h4, body.light-theme p {
          color: <?php echo GetLightText(); ?>;
       }
+        body.light-theme header#main-header{
+           background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme footer{
+            background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+                     box-shadow: 0 0 50px #ccc;
 
-
+        }
+        body.light-theme .copyright{
+             background-color: <?php echo GetLightBg(); ?>;
+            color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme .s-icon{
+           background-color: <?php echo GetLightBg(); ?>; 
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+            color: cornflowerblue!important;
+        }
+    body.light-theme .dropdown-menu.categ-head{
+             background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme .navbar-right .iq-sub-dropdown{
+           background-color: <?php echo GetLightBg(); ?>;  
+        }
+        body.light-theme .media-body h6{
+             color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme  header .navbar ul li{
+            font-weight: 400;
+        }
+        body.light-theme .slick-nav i{
+             color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>
