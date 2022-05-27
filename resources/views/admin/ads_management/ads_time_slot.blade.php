@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                             <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
-                         </fieldset>
+                        </fieldset>
                         </form>
                     </div>
                 </div>
