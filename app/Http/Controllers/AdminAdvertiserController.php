@@ -737,7 +737,7 @@ class AdminAdvertiserController extends Controller
         for ($i=0; $i<$sunday_start_time; $i++){
                 $AdsTimeSlot = new AdsTimeSlot;
                 $AdsTimeSlot->start_time = $request['sunday_start_time'][$i];
-                $AdsTimeSlot->end_time = $request['sunday_start_time'][$i];
+                $AdsTimeSlot->end_time = $request['sunday_end_time'][$i];
                 $AdsTimeSlot->day = "Sunday";
                 $AdsTimeSlot->save();
         }
