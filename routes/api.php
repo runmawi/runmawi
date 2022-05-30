@@ -283,5 +283,6 @@ Route::group([
     Route::get('andriod_slider', 'ApiAuthController@andriod_slider');
 
     
+    Route::get('/videos', 'Api\AdminVideosController@index');
 
 });
