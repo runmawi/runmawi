@@ -160,6 +160,65 @@ $data = Session::all();
          font-family: ui-rounded;
       }
 
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderk {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderk:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 20px;
+  left: 7px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderk {
+  background-color: #2196F3;
+}
+
+input:focus + .sliderk {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .sliderk:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderk.round {
+  border-radius: 34px;
+}
+
+.sliderk.round:before {
+  border-radius: 50%;
+}
 
 /* Dark mode and light Mode */
       body.light-theme {
@@ -237,10 +296,15 @@ $data = Session::all();
 
 
                         <!-- dark mode -->
-                        <div class="toggle">
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+</label>
+
+                       <!-- <div class="toggle">
                               <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                               <label for="toggle"></label>
-                        </div>
+                        </div>-->
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
