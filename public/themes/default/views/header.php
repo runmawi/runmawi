@@ -225,7 +225,6 @@ input:checked + .sliderk:before {
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
-
       body.light-theme h4, body.light-theme p {
          color: <?php echo GetLightText(); ?>;
       }
@@ -295,11 +294,11 @@ input:checked + .sliderk:before {
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
 
 
-                        <!-- dark mode -->
+                        <!-- dark mode 
                          <label class="switch toggle mt-3">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
-</label>
+</label>-->
 
                        <!-- <div class="toggle">
                               <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
@@ -564,10 +563,15 @@ input:checked + .sliderk:before {
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                                                          <!-- dark mode -->
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+</label>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                    
+                      
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
@@ -693,7 +697,12 @@ input:checked + .sliderk:before {
                                                <!-- <div class="toggle mt-3 text-right">
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
-</div> -->
+</div> -->                                                  <!-- dark mode -->
+                                               <div class="toggle mt-3 text-right">
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+                                               </label></div>
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
