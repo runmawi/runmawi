@@ -3,6 +3,8 @@
    <head>
       
 <?php
+    
+// dd($video_category);
 
    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
@@ -113,6 +115,8 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
+
     
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -158,16 +162,51 @@ $data = Session::all();
 
 
 /* Dark mode and light Mode */
-      body.dark-theme {
+      body.light-theme {
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
-
-      body.dark-theme h4, body.dark-theme p {
+      body.light-theme h4, body.light-theme p {
          color: <?php echo GetLightText(); ?>;
       }
+        body.light-theme header#main-header{
+           background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme footer{
+            background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+                     box-shadow: 0 0 50px #ccc;
 
-
+        }
+        body.light-theme .copyright{
+             background-color: <?php echo GetLightBg(); ?>;
+            color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme .s-icon{
+           background-color: <?php echo GetLightBg(); ?>; 
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+            color: cornflowerblue!important;
+        }
+    body.light-theme .dropdown-menu.categ-head{
+             background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme .navbar-right .iq-sub-dropdown{
+           background-color: <?php echo GetLightBg(); ?>;  
+        }
+        body.light-theme .media-body h6{
+             color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme  header .navbar ul li{
+            font-weight: 400;
+        }
+        body.light-theme .slick-nav i{
+             color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>
@@ -198,7 +237,7 @@ $data = Session::all();
 
                         <!-- dark mode -->
                         <div class="toggle">
-                              <input type="checkbox" id="toggle"   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                               <label for="toggle"></label>
                         </div>
 
@@ -221,6 +260,7 @@ $data = Session::all();
                                        //  $menus = App\Menu::all();
                                        $menus = App\Menu::orderBy('order', 'asc')->get();
                                         $languages = App\Language::all();
+                                        $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
@@ -254,6 +294,25 @@ $data = Session::all();
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
                                                       <?php echo $language->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "live") { 
+                                       //  $LiveCategory = App\LiveCategory::all();
+                                       $LiveCategory = App\LiveCategory::get();
+
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
+                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                                      <?php echo $category->name;?> 
                                                     </a>
                                               </li>
                                               <?php } ?>
@@ -843,6 +902,19 @@ $("#toggle").click(function(){
 
 </script>
 
+<!-- Dark Mode & Light Mode  -->
+<script>
+   let theme_modes = $("#toggle").val();
+
+   $(document).ready(function(){
+
+      if( theme_modes == 'light' ){
+
+         body.classList.add('light-theme');
+
+      }
+   });
+</script>
 
 
 </header>

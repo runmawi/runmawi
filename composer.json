@@ -13,6 +13,7 @@
         "aminyazdanpanah/php-ffmpeg-video-streaming": "^1.2",
         "amrshawky/laravel-currency": "^5.0",
         "cartalyst/stripe-laravel": "^12.0",
+        "doctrine/dbal": "^2.13",
         "facuz/laravel-themes": "^3.2",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
