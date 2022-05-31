@@ -7,6 +7,7 @@
       
 <?php
 $data = Session::all();
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -272,7 +273,21 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-
+         body.light-theme  .block-description h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme footer ul li{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .movie-time i{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme span{
+            color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>
