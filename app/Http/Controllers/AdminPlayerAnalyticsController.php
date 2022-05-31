@@ -28,7 +28,7 @@ class AdminPlayerAnalyticsController extends Controller
         $bufferedTime = $request->bufferedTimeRangesLength;
 
         $player = new PlayerAnalytic;
-        $player->playerid = $request->player_id;
+        $player->videoid = $request->video_id;
         $player->user_id = $user_id;
         $player->duration = $request->duration;
         $player->currentTime = $currentTime;
@@ -37,5 +37,24 @@ class AdminPlayerAnalyticsController extends Controller
         $player->bufferedTime = $request->bufferedTimeRangesLength;
         $player->save();
     }
+    
+    public function PlayerAnalyticsStore(Request $request){
+        $user_id = Auth::user()->id;
+        $videoid = $request->video_id;
+        $duration = $request->duration;
+        $currentTime  = $request->currentTime;
+        $watch_percentage = ($currentTime * 100 / $duration);
+        $seekTime = $request->seekableEnd;
+        $bufferedTime = $request->bufferedTimeRangesLength;
 
+        $player = new PlayerAnalytic;
+        $player->videoid = $request->video_id;
+        $player->user_id = $user_id;
+        $player->duration = $request->duration;
+        $player->currentTime = $currentTime;
+        $player->watch_percentage = $watch_percentage;
+        $player->seekTime = $request->seekableEnd;
+        $player->bufferedTime = $request->bufferedTimeRangesLength;
+        $player->save();
+    }
 }

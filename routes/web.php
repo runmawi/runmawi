@@ -226,6 +226,7 @@ Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
+Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');

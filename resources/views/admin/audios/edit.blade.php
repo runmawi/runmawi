@@ -158,7 +158,7 @@ border-radius: 0px 4px 4px 0px;
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
-									<p class="p1">Select the audio image(16:9 Ratio or 720X1080px):</p> 
+									<p class="p1">Select the audio image(9:16 Ratio or 720X1080px):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 								</div> 

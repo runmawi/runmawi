@@ -48,6 +48,14 @@
                         <input type="radio" id="footer" name="footer" value="1" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;
                         <input type="radio" id="footer" name="footer" value="0" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> No
                     </div>
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label>Display In Menu :</label>
+                        <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>>Yes
+                        <input type="radio" id="in_menu" name="in_menu" value="0"<?php if( $categories[0]->in_menu == 0) { echo "checked";} ?>>No
+                    </div>
+                    <div class="col-md-12">
+                    <div class="row">
+                    <div class="col-md-6">
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label class="m-0">Image:</label>
                         @if(!empty($categories[0]->image))
@@ -56,13 +64,27 @@
                     </div>
         
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                        <label class="m-0">Choose Category image (1280x720 px or 16:9 ratio):</label> 
+                        <label class="m-0">Choose Category image (1280x720 px or 9:16 ratio):</label> 
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
                     </div>
 
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                        <label class="m-0">Banner Image:</label>
+                        @if(!empty($categories[0]->banner_image))
+                        <img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->banner_image }}" class="movie-img" width="200"/>
+                        @endif
+                    </div>
+        
+                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                        <label class="m-0">Choose Category Banner Image (1280x720 px or 16:9 ratio):</label> 
+                        <input type="file" multiple="true" class="form-control" name="banner_image" id="banner_image" />
+                    </div>
 
-
-
+                    </div>
+                    </div>
+                    </div>
                     <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
 
                         <label class="m-0">Category:</label>
@@ -81,6 +103,11 @@
                         @endif
 
                     </div>
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label>Display In Home Banner:</label>
+                            <input type="checkbox" @if($categories[0]->banner == 1){{ 'checked' }} @endif id="banner"  id="banner" name="banner" value="1">
+                    </div>
+                                    
         <input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     </form>
@@ -103,14 +130,14 @@
 $('form[id="update-cat-form"]').validate({
 	rules: {
         name : 'required',
-	  image : 'required',
+	//   image : 'required',
       parent_id: {
                 required: true
             }
 	},
 	messages: {
         name: 'This field is required',
-	  image: 'This field is required',
+	//   image: 'This field is required',
       parent_id: {
                 required: 'This field is required',
             }
