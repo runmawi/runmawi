@@ -7,6 +7,7 @@
       
 <?php
 $data = Session::all();
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -166,6 +167,113 @@ $data = Session::all();
          font-style: italic;
          font-family: ui-rounded;
       }
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderk {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderk:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 20px;
+  left: 7px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderk {
+  background-color: #2196F3;
+}
+
+input:focus + .sliderk {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .sliderk:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderk.round {
+  border-radius: 34px;
+}
+
+.sliderk.round:before {
+  border-radius: 50%;
+}
+
+/* Dark mode and light Mode */
+      body.light-theme {
+	      background-color: <?php echo GetLightBg(); ?>;
+      }
+
+      body.light-theme h4, body.light-theme p {
+         color: <?php echo GetLightText(); ?>;
+      }
+        body.light-theme header#main-header{
+           background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme footer{
+            background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>;
+                     box-shadow: 0 0 50px #ccc;
+
+        }
+        body.light-theme .copyright{
+             background-color: <?php echo GetLightBg(); ?>;
+            color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme .s-icon{
+           background-color: <?php echo GetLightBg(); ?>; 
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+            color: cornflowerblue!important;
+        }
+    body.light-theme .dropdown-menu.categ-head{
+             background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme .navbar-right .iq-sub-dropdown{
+           background-color: <?php echo GetLightBg(); ?>;  
+        }
+        body.light-theme .media-body h6{
+             color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme  header .navbar ul li{
+            font-weight: 400;
+        }
+        body.light-theme .slick-nav i{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+
     </style>
      
    <body>
@@ -193,7 +301,7 @@ $data = Session::all();
                         </a>
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
 
-
+ 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
 <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
@@ -242,6 +350,24 @@ $data = Session::all();
                                               <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
                                                       <?php echo $language->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "live") { 
+                                       //  $LiveCategory = App\LiveCategory::all();
+                                       $LiveCategory = App\LiveCategory::get();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
+                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                                      <?php echo $category->name;?> 
                                                     </a>
                                               </li>
                                               <?php } ?>
@@ -553,10 +679,12 @@ $data = Session::all();
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                            <a class="p-0">
-                                               <!--<div class="toggle mt-3 text-right">
-  <input type="checkbox" id="toggle" />
-  <label for="toggle"></label>
-</div>-->
+                                               <div class=" mt-3 text-right">
+                                               <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+</label>
+</div>
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
@@ -808,23 +936,41 @@ $('.add_watch').slideUp('fast');
 }
     });
           </script>
-          <script>
-              const toggle = document.getElementById('toggle');
-const body = document.body;
+<script>
+$("#toggle").click(function(){
 
-toggle.addEventListener('input', (e) => {
-  const isChecked = e.target.checked;
-  
-  if(isChecked) {
-    body.classList.add('dark-theme');
-  } else {
-    body.classList.remove('dark-theme');
-  }
+   var theme_mode = $("#toggle").prop("checked");
+
+   $.ajax({
+   url: '<?php echo URL::to("theme-mode") ;?>',
+   method: 'post',
+   data: 
+      {
+         "_token": "<?php echo csrf_token(); ?>",
+         mode: theme_mode 
+      },
+      success: (response) => {
+         console.log(response);
+      },
+   })
 });
-          </script>
+
+</script>
+
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
-  
+  <script>
+   let theme_modes = $("#toggle").val();
+
+   $(document).ready(function(){
+
+      if( theme_modes == 'light' ){
+
+         body.classList.add('light-theme');
+
+      }
+   });
+</script>
 
       </header>
       <!-- Header End -->

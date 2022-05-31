@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             RTMLSeeder::class,
             OrderHomeSettingSeeder::class,
             MobileHomePageTableSeeder::class,
+            AdsTimeSlotSeeding::class,
         ]);
     
     }

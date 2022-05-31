@@ -7,6 +7,7 @@
       
 <?php
 $data = Session::all();
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -272,7 +273,21 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-
+         body.light-theme  .block-description h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme footer ul li{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .movie-time i{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme span{
+            color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>
@@ -679,8 +694,8 @@ input:checked + .sliderk:before {
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                            <a class="p-0">
                                                <div class=" mt-3 text-right">
-  <label class="switch toggle mt-3">
-  <input type="checkbox" id="toggle"  />
+                                               <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
 </label>
 </div>

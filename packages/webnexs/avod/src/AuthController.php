@@ -248,13 +248,11 @@ class AuthController extends Controller
 
               $now = Carbon::now();
 
-              
-
               $data = [
                 'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
                 'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
                 'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
-                'Thursday_time' =>AdsTimeSlot::where('day','Thursday')->get(),
+                'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
                 'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
                 'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
                 'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
@@ -280,7 +278,6 @@ class AuthController extends Controller
         
         $data = $request->all();   
     
-
         $Ads = new Advertisement;
         $Ads->advertiser_id = session('advertiser_id');
         $Ads->ads_name = $request->ads_name;
@@ -290,7 +287,14 @@ class AuthController extends Controller
         // $Ads->age = $request->age;
         // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
-        $Ads->location = $request->location;
+
+        if($request->location == "all_countries" || $request->location == "India" ){
+            $Ads->location = $request->location;
+        }
+        else{
+            $Ads->location = $request->locations;
+        }
+
         if (!empty($data['age']))
         {
             $Ads->age = json_encode($data['age']);
