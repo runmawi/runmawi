@@ -336,7 +336,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
     Route::get('/videos', 'AdminVideosController@index');
     Route::get('/videos/categories', 'AdminVideoCategoriesController@index');
-    Route::get('/videos/edit/{id}', 'AdminVideosController@edit');
+    Route::get('/videos/edit/{id}', 'AdminVideosController@edit'); 
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');
