@@ -249,6 +249,9 @@ input:checked + .sliderk:before {
              background-color: <?php echo GetLightBg(); ?>;
             color: <?php echo GetLightText(); ?>;
         }
+        body.light-theme .dropdown-item.cont-item{
+             color: <?php echo GetLightText(); ?>!important;
+        }
         body.light-theme .s-icon{
            background-color: <?php echo GetLightBg(); ?>; 
              box-shadow: 0 0 50px #ccc;
