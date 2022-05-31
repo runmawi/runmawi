@@ -276,7 +276,8 @@
                      <div class="iq-card-body p-0">
                         <!-- <div id="view-chart-03"></div> -->
                         <?php
-                        foreach(@ $video_category as $key => $value){ ?>
+                        if(count($video_category) > 0){
+                        foreach(@$video_category as $key => $value){ ?>
                            <div class="col-sm-6 col-md-4 col-lg-8 mb-3">
                            <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
@@ -290,6 +291,7 @@
                            </div>
                         </div>
                    <?php     }
+                   }
                         ?>
                      </div>
                   </div>
