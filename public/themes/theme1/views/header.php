@@ -7,6 +7,7 @@
       
 <?php
 $data = Session::all();
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
