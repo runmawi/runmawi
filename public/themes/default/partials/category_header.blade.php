@@ -160,6 +160,65 @@ $data = Session::all();
          font-family: ui-rounded;
       }
 
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderk {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderk:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 20px;
+  left: 7px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderk {
+  background-color: #2196F3;
+}
+
+input:focus + .sliderk {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .sliderk:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderk.round {
+  border-radius: 34px;
+}
+
+.sliderk.round:before {
+  border-radius: 50%;
+}
 
 /* Dark mode and light Mode */
       body.light-theme {
@@ -235,11 +294,16 @@ $data = Session::all();
                         <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
 
 
-                        <!-- dark mode -->
-                        <div class="toggle">
+                        <!-- dark mode 
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+</label>-->
+
+                       <!-- <div class="toggle">
                               <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                               <label for="toggle"></label>
-                        </div>
+                        </div>-->
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
@@ -499,10 +563,15 @@ $data = Session::all();
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                                                          <!-- dark mode -->
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+</label>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                    
+                      
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
@@ -628,7 +697,12 @@ $data = Session::all();
                                                <!-- <div class="toggle mt-3 text-right">
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
-</div> -->
+</div> -->                                                  <!-- dark mode -->
+                                               <div class="toggle mt-3 text-right">
+                         <label class="switch toggle mt-3">
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <span class="sliderk round"></span>
+                                               </label></div>
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">

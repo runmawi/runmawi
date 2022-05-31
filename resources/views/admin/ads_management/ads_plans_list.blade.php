@@ -27,7 +27,7 @@
                               <th>#</th>
                               <th>Plan Name</th>
                               <th>Plan Amount</th>
-                              <th>No of Ads</th>
+                              <th>No of Ads View Count</th>
                               <th>Created at</th>
                               <th>Action</th>
                            </tr>
@@ -74,8 +74,8 @@
                <input type="text" name="plan_name" id="plan_name" value="" class="form-control" placeholder="Ads Plan Name">
                <label>Plan Amount</label>
                <input type="text" name="plan_amount" id="plan_amount" value="" class="form-control" placeholder="Ads Plan Amount">
-               <label>No Of Ads</label>
-               <input type="text" name="no_of_ads" id="no_of_ads" value="" class="form-control" placeholder="No of Ads">
+               <label>No of Ads view count</label>
+               <input type="text" name="no_of_ads" id="no_of_ads" value="" class="form-control" placeholder="No of Ads view count">
             </div>
             <input type="submit" value="Submit" id="submit" class="btn btn-sm btn-info">
          </div>

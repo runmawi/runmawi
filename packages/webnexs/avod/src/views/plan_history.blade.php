@@ -13,7 +13,7 @@
                                  <th><label>#</label></th>
                                  <th><label>Plan Name</label></th>
                                  <th><label>Plan Amount</label></th>
-                                 <th><label>No of Ads</label></th>
+                                 <th><label>No of Ads View Count</label></th>
                                  <th><label>Status</label></th>
                               </tr>
                            </thead>
