@@ -176,7 +176,16 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale(1.1); transform-o
 .music-play-lists li { height: 30px; width: 30px; line-height: 35px; text-align: center; background: rgba(255, 255, 255, 0.30); border-radius: 50%;  display: flex;justify-content: space-around; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center;list-style: none; }
 .music-play-lists span { position: relative; display: block; height: 20px; width: 20px; line-height: 26px; font-size: 12px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
 .music-play-lists li:hover span { background: var(--iq-primary); color: var(--iq-white); transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
-.block-description {position: absolute; left:85px; top: 120px!important; bottom: 0;z-index: 999; opacity: 0;font-size: 12px; }
+.block-description {position: absolute;
+    left: 35%;
+    width: 100%;
+    top: 25%;
+    bottom: 0;
+    z-index: 999;
+    opacity: 0;
+    font-size: 12px;
+    color: var(--TEXT_COLOR_L0);
+    padding: 30px 5px 30px 10px;z-index: 999; opacity: 0;font-size: 12px; }
 .block-description > h6{font-size: 1.5em;}
 li.slide-item .block-images::before { }
 li.slide-item:hover .block-images::before { opacity: 1; z-index: 9; }
