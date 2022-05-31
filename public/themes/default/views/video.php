@@ -913,10 +913,10 @@ $artists = [];
 <?php } ?>
 <?php if(!empty($video->m3u8_url)){ ?>
   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->m3u8_url ?>">
-<?php }?>
+<?php } ?>
 <?php if(!empty($ads_path)){ ?>
   <input type="hidden" id="ads_path" name="ads_path" value="<?php echo $ads_path ?>">
-<?php }?>
+<?php } ?>
 
 
   </div>
@@ -929,6 +929,9 @@ $artists = [];
    <script src="https://checkout.stripe.com/checkout.js"></script>
    <div class="clear"></div>
        <script>
+
+
+
 // $('#myVideo2').show();
 // $(document).ready(function(){
 // $('#playVid').click(function(){
@@ -942,15 +945,38 @@ $artists = [];
 
          $(document).ready(function () { 
 
-           /*bufferedTimeRanges*/
+                var videotype= '<?= $video->type ?>';
+                if(videotype == "mp4_url" || videotype == "m3u8_url"){
+                  //  alert('test');
+                  var videoPlayers = document.getElementById('videoPlayer');
+                  var currentTimevideoPlayers = videoPlayers.currentTime;
+                  var bufferedTimeRanges = videoPlayers.buffered;
+                  var duration = videoPlayers.duration;
+                  var bufferedTimeRangesLength = bufferedTimeRanges.length;
+                  var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
+                  var playercountvideoid = $('#video_id').val();
 
-          // var video_Player = document.getElementById('videoPlayer');
+                  }else if(videotype == ""){
 
-          // var bufferedTimeRanges = video_Player.buffered;
-          // $('#videoPlayer').click(function(){
-          //   console.log(bufferedTimeRanges);
-          // });
+                  var videoPlayers = document.getElementById('video');
+                  var currentTimevideoPlayers = videoPlayers.currentTime;
+                  var bufferedTimeRanges = videoPlayers.buffered;
+                  var duration = videoPlayers.duration;
+                  var bufferedTimeRangesLength = bufferedTimeRanges.length;
+                  var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
+                  var playercountvideoid = $('#video_id').val();
 
+                }
+                 
+
+       })
+
+      //  $(videoPlayers).on("load",function(){
+      //   // alert(url);
+      //   alert(duration);
+      //             alert(currentTimevideoPlayers);
+      //  })
+          
 
            /*Watch trailer*/
           //  $(".watch_trailer").click(function() {
@@ -993,47 +1019,57 @@ $artists = [];
           //    videojs('videoPlayer');
           //  }, 2000);
           //  });
-          $.ajaxSetup({
-              headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-       });
+      //     $.ajaxSetup({
+      //         headers: {
+      //               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      //          }
+      //  });
    
-    $(document).ready(function(){
-
-      var vid = document.getElementById("videoPlayer");
-      var url= '<?= URL::to("purchase-videocount") ?>';
-      var _token= '<?=  csrf_token() ?>';
-      var videoid = $('#video_id').val();
-
-       $(vid).click(function(){
-        // alert(url);
-        $.post('<?= URL::to('purchase-videocount') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
-         function(data){
-                     //    toastr.success(data.success);
-                   });
-
-       })
-
-    });
-
-             var currentTime = vid.currentTime;
-
-           var vid = document.getElementById("videoPlayer");
-           vid.currentTime = $("#current_time").val();
+          
+                          
            $(window).on("beforeunload", function() { 
 
              var vid = document.getElementById("videoPlayer");
              var currentTime = vid.currentTime;
              var duration = vid.duration;
+             var videotype= '<?= $video->type ?>';
+             
              var videoid = $('#video_id').val();
              $.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
                      //    toastr.success(data.success);
-                   });
+            });
+ 
      // localStorage.setItem('your_video_'+video_id, currentTime);
      return;
    }); 
-  });
+
+
+  //  $(window).on("beforeunload", function() { 
+
+              
+  //                 $.post('<?= URL::to('player_analytics_create') ?>', { 
+  //                   video_id : playercountvideoid,bufferedTimeRangesLength : bufferedTimeRangesLength, 
+  //                   duration : duration,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRanges,
+  //                     currentTime : currentTimevideoPlayers,
+  //                    _token: '<?= csrf_token(); ?>' }, function(data){
+  //             //    toastr.success(data.success);
+  //           });
+        
+
+  //           return;
+  //  }); 
+
+       $(videoPlayers).click(function(){
+        // alert(url);
+        $.post('<?= URL::to('purchase-videocount') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
+         function(data){
+                     //    toastr.success(data.success);
+                   });
+                   return;
+
+       })
+
+  // });
 
            //$(".share a").hide();
            $(".share").on("mouseover", function() {

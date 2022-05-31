@@ -225,6 +225,7 @@ Route::get('/live/{id}', 'LiveStreamController@Play');
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
+Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -592,6 +593,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/save_advertiser_status', 'AdminAdvertiserController@save_advertiser_status'); 
     Route::get('/list_total_cpc', 'AdminAdvertiserController@list_total_cpc'); 
     Route::get('/list_total_cpv', 'AdminAdvertiserController@list_total_cpv'); 
+    Route::get('/Ads-TimeSlot', 'AdminAdvertiserController@AdsTimeSlot'); 
+    Route::post('/AdsTimeSlot_Save', 'AdminAdvertiserController@AdsTimeSlot_Save'); 
     
     /*Ads Management ends*/
 
@@ -759,6 +762,8 @@ Route::get('/cpp/verify-request', 'ModeratorsLoginController@VerifyRequest');
 Route::get('/cpp/verify/{activation_code}', 'ModeratorsLoginController@Verify');
 
 Route::get('/emailvalidation', 'SignupController@EmailValidation');
+Route::get('/usernamevalidation', 'SignupController@UsernameValidation');
+
 
 // Paypal Controllers
 Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));

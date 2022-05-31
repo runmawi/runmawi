@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
@@ -58,54 +60,13 @@ class AdminVideosController extends Controller
     public function index()
     {
 
-           if (!Auth::user()->role == 'admin')
-            {
-                return redirect('/home');
-            }
-            $user =  User::where('id',1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date('Y-m-d');
-            if ($current_date > $duedate)
-            {
-                $client = new Client();
-                $url = "https://flicknexs.com/userapi/allplans";
-                $params = [
-                    'userid' => 0,
-                ];
-        
-                $headers = [
-                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-                ];
-                $response = $client->request('post', $url, [
-                    'json' => $params,
-                    'headers' => $headers,
-                    'verify'  => false,
-                ]);
-        
-                $responseBody = json_decode($response->getBody());
-               $settings = Setting::first();
-               $data = array(
-                'settings' => $settings,
-                'responseBody' => $responseBody,
-        );
-                return View::make('admin.expired_dashboard', $data);
-            }else{
-      // $search_value = Request::get('s');
         if(!empty($search_value)):
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
         else:
-            // $videos = Video::orderBy('created_at', 'DESC')->paginate(9);
         $videos = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
 
         endif;
-        // $video = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
-        // echo "<pre>";
-        // foreach($videos as $key => $value){
-        //     print_r(@$value->category[$key]->categoryname->name);
 
-        // }
-        // exit();
-    // $video = Video::with('category.categoryname')->where('id',156)->get();
         $user = Auth::user();
 
         $data = array(
@@ -114,8 +75,8 @@ class AdminVideosController extends Controller
             'admin_user' => Auth::user()
             );
 
-        return View('admin.videos.index', $data);
-            }
+            return response()->json($data, 200);
+            
     }
 
     public function live_search(Request $request)

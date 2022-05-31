@@ -145,7 +145,6 @@ border-radius: 0px 4px 4px 0px;
         rules: {
             artist_name: "required",
             description: "required",
-            image: "required",
             parent_id: {
                 required: true,
             },
@@ -153,7 +152,6 @@ border-radius: 0px 4px 4px 0px;
         messages: {
             title: "This field is required",
             description: "This field is required",
-            image: "This field is required",
             parent_id: {
                 required: "This field is required",
             },

@@ -444,7 +444,8 @@ class ApiAuthController extends Controller
     );
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
-      'otp' => $request->get('otp')
+      'otp' => $request->get('otp'),
+      'password' => $request->get('password')
     );
 
     if(!empty($users)){
@@ -778,7 +779,8 @@ public function verifyandupdatepassword(Request $request)
         $user_id = $userdetail->id;
         $user = User::find($user_id);
 
-        $user->password = $request->password;
+        // $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->save();
 
         $response = array(
@@ -6605,8 +6607,37 @@ public function Adstatus_upate(Request $request)
             
   }
 
+  public function andriod_slider()
+  {
+    $sliders = Slider::where('active', '=', 1)->get()->map(function ($item) {
+      $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+      return $item;
+    });
+    $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['video_url'] = URL::to('/').'/storage/app/public/';
+      return $item;
+    });
+    $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      return $item;
+    });
+    $series_banner = Series::where('active','=',1)->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      return $item;
+    });
 
-
+    $response = array(
+      'status' => 'true',
+      'sliders' => $sliders,
+      'video_banner' => $banners,
+      'live_banner' => $live_banner,
+      'series_banner' => $series_banner,
+    );
+    return response()->json($response, 200);
+  }
 
 
 }

@@ -873,7 +873,19 @@ $(document).ready(function() {
                             return $('#email').val(); }
                         }
                     }
-                }
+                },
+                username: {
+                    required: true,
+                    remote: {
+                        url:"{{ URL::to('/usernamevalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#username').val(); }
+                        }
+                    }
+                },
             },
                 messages: {
                     mobile: {
@@ -882,10 +894,11 @@ $(document).ready(function() {
                     },
                     username: {
                          required: "Please Enter the Name",
+                         remote: "Name already in taken ! Please try another Username"
                     },
                     email: {
                         required: "Please Enter the Email Id",
-                        remote: "Email Id already in taken ! Please try another Mobile Number"
+                        remote: "Email Id already in taken ! Please try another Email ID"
                     },
                    
                    

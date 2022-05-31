@@ -56,6 +56,11 @@
             color: {{ button_bg_color() .'!important' }} ;
         }
 
+         /* price tag in homepage */
+         p.p-tag1 {
+                background-color: {{ button_bg_color() .'!important' }} ;
+        }
+        
 
           /* Home page Admin icon */
           .st0{

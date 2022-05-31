@@ -280,7 +280,9 @@ Route::group([
     Route::post('livecategory', 'ApiAuthController@livecategory');
     Route::get('LiveCategorylist', 'ApiAuthController@LiveCategorylist');
 
+    Route::get('andriod_slider', 'ApiAuthController@andriod_slider');
 
-
+    
+    Route::get('/videos', 'Api\AdminVideosController@index');
 
 });
