@@ -510,7 +510,9 @@ var vid = document.getElementById("video");
 var bufferedTimeRanges = vid.buffered;
 var bufferedTimeRangesLength = bufferedTimeRanges.length;
 var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
-  var videotype= '<?= $video->type ?>';
+  // var videotype= '<? //$video->type ?>';
+  var videotype= $('#video_type').val();
+
   var videoid = $('#video_id').val();
   $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
 });
@@ -556,7 +558,9 @@ var vid = document.getElementById("video");
 var bufferedTimeRanges = vid.buffered;
 var bufferedTimeRangesLength = bufferedTimeRanges.length;
 var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
-  var videotype= '<?= $video->type ?>';
+  // var videotype= '<? //$video->type ?>';
+  var videotype= $('#video_type').val();
+
   var videoid = $('#video_id').val();
   $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
 });
