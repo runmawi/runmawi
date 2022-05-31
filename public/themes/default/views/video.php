@@ -944,30 +944,7 @@ $artists = [];
 
 
          $(document).ready(function () { 
-
-                var videotype= '<?= $video->type ?>';
-                if(videotype == "mp4_url" || videotype == "m3u8_url"){
-                  //  alert('test');
-                  var videoPlayers = document.getElementById('videoPlayer');
-                  var currentTimevideoPlayers = videoPlayers.currentTime;
-                  var bufferedTimeRanges = videoPlayers.buffered;
-                  var duration = videoPlayers.duration;
-                  var bufferedTimeRangesLength = bufferedTimeRanges.length;
-                  var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
-                  var playercountvideoid = $('#video_id').val();
-
-                  }else if(videotype == ""){
-
-                  var videoPlayers = document.getElementById('video');
-                  var currentTimevideoPlayers = videoPlayers.currentTime;
-                  var bufferedTimeRanges = videoPlayers.buffered;
-                  var duration = videoPlayers.duration;
-                  var bufferedTimeRangesLength = bufferedTimeRanges.length;
-                  var seekableEnd = videoPlayers.seekable.end(videoPlayers.seekable.length - 1);
-                  var playercountvideoid = $('#video_id').val();
-
-                }
-                 
+    
 
        })
 
@@ -1044,22 +1021,31 @@ $artists = [];
    }); 
 
 
-  //  $(window).on("beforeunload", function() { 
+   $(window).on("beforeunload", function() { 
 
-              
-  //                 $.post('<?= URL::to('player_analytics_create') ?>', { 
-  //                   video_id : playercountvideoid,bufferedTimeRangesLength : bufferedTimeRangesLength, 
-  //                   duration : duration,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRanges,
-  //                     currentTime : currentTimevideoPlayers,
-  //                    _token: '<?= csrf_token(); ?>' }, function(data){
-  //             //    toastr.success(data.success);
-  //           });
-        
+            var videotype= '<?= $video->type ?>';
+          //   if(){
+          //     var vid = document.getElementById("videoPlayer");
 
-  //           return;
-  //  }); 
+          //   }else{
+          //  var vid = document.getElementById("video");
 
-       $(videoPlayers).click(function(){
+          //   }
+            var vid = document.getElementById("videoPlayer");
+
+             var currentTime = vid.currentTime;
+             var duration = vid.duration;
+            var bufferedTimeRanges = vid.buffered;
+            var bufferedTimeRangesLength = bufferedTimeRanges.length;
+            var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+             var videotype= '<?= $video->type ?>';
+             var videoid = $('#video_id').val();
+             $.post('<?= URL::to('player_analytics_create') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+            });
+            return;
+   }); 
+
+       $(vid).click(function(){
         // alert(url);
         $.post('<?= URL::to('purchase-videocount') ?>', { video_id : videoid,_token: '<?= csrf_token(); ?>' },
          function(data){
@@ -1068,6 +1054,24 @@ $artists = [];
                    return;
 
        })
+
+
+
+
+      //  $(window).on("beforeunload", function() { 
+
+      // var vid = document.getElementById("video");
+      //   var currentTime = vid.currentTime;
+      //   var duration = vid.duration;
+      // var bufferedTimeRanges = vid.buffered;
+      // var bufferedTimeRangesLength = bufferedTimeRanges.length;
+      // var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+      //   var videotype= '<?= $video->type ?>';
+      //   var videoid = $('#video_id').val();
+      //   $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+      // });
+      // return;
+      // }); 
 
   // });
 

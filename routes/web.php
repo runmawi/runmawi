@@ -226,6 +226,7 @@ Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
+Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -335,7 +336,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
     Route::get('/videos', 'AdminVideosController@index');
     Route::get('/videos/categories', 'AdminVideoCategoriesController@index');
-    Route::get('/videos/edit/{id}', 'AdminVideosController@edit');
+    Route::get('/videos/edit/{id}', 'AdminVideosController@edit'); 
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');

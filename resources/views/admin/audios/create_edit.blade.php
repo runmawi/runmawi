@@ -269,7 +269,7 @@ data: {
 															@if(!empty($audio->image))
 															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 															@endif
-															<p class="p1">Select the audio image (1280x720 px or 16:9 ratio):</p> 
+															<p class="p1">Select the audio image (1280x720 px or 9:16 ratio):</p> 
 															<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 														</div> 
