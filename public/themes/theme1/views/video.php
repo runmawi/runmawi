@@ -1269,6 +1269,25 @@ $(document).ready(function(){
     });
 
 });
+
+
+$(window).on("beforeunload", function() { 
+
+var videotype= '<?= $video->type ?>';
+
+var vid = document.getElementById("videoPlayer");
+
+ var currentTime = vid.currentTime;
+ var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+ var videotype= '<?= $video->type ?>';
+ var videoid = $('#video_id').val();
+ $.post('<?= URL::to('player_analytics_create') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
 </script>
 
 <?php

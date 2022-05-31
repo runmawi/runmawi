@@ -37,8 +37,6 @@
                                 <li id="payment"><strong>Ads Schedule</strong></li>
                             </ul>
 
-
-                            
                            <!--General Information  fieldsets -->
                            <fieldset>
                               <div class="form-card">
@@ -219,19 +217,36 @@
                           
                            <!--Location fieldsets -->
 
-                            <fieldset>
-                              <div class="form-card">
-                                  <h2 class="fs-title">Location Details</h2>
-                                  <div class="col-md-6">
-                                      <div class="form-group">
-                                          <label>Location:</label>
-                                          <input type="text" id="location" name="location" required class="form-control" />
-                                      </div>
-                                  </div>
+                        <fieldset>
+                            <div class="form-card">
+                                <h2 class="fs-title">Location Details</h2>
+
+
+                              <div class="row">
+                                <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="all_countries" /></div>
+                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('all countries & territories') }}</label></div>
                               </div>
-                              <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                              <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
-                           </fieldset>
+
+                              <div class="row">
+                                <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="India" /></div>
+                                <div class="col-sm-1"> <label for="" class="">India</label></div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-1"> <input type="radio" class="location-show" id="" name="location" value="enter_location" /></div>
+                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('enter the location') }}</label></div>
+                              </div>
+
+                                <div class="col-md-6 location_input">
+                                    <div class="form-group">
+                                        <input type="text" id="locations" name="locations"  class="form-control" placeholder="Enter the Location"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                            <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
+                        </fieldset>
+
 
                            <!--Schedule Ads Details fieldsets -->
                             <fieldset>
@@ -336,7 +351,7 @@
                                         <div class="col-sm-4 d-flex align-items-baseline">
                                             <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif />
                                             <label for=""> Thrusday </label>
-                                            <span id="add" class="thrusday_add ml-4">
+                                            <span id="add" class="thrusday_add">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span>
                                         </div>
@@ -400,7 +415,7 @@
                                         <div class="col-sm-4 d-flex align-items-baseline">
                                             <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif />
                                             <label for="">Saturday </label>
-                                            <span id="add" class="saturday_add ml-4">
+                                            <span id="add" class="saturday_add">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span>
                                         </div>
@@ -423,7 +438,7 @@
                                         @empty
                                         @endforelse
 
-                                        <table class="table" id="saturday_add ml-4"> </table>
+                                        <table class="table" id="saturday_add"> </table>
                                     </div>
                     
                                     <div class="row">
@@ -595,7 +610,18 @@
 
 <script>
 
-   var input = document.getElementById('location');
+    $(document).ready(function(){
+        $(".location-show").click(function(){
+            $('.location_input').show();
+    });
+    
+    $(".location-hide").click(function(){
+            $('.location_input').hide();
+    });
+    
+    });
+
+   var input = document.getElementById('locations');
    var autocomplete = new google.maps.places.Autocomplete(input);
 
     google.maps.event.addListener(autocomplete, 'place_changed',   function () {
@@ -607,6 +633,9 @@
   });
 
   $('.js-example-basic-multiple').select2();
+
+ 
+
 
 </script>
 
@@ -699,6 +728,7 @@ window.onload=function(){
      document.getElementsByClassName('error-message')[3].style.display = 'none';
      document.getElementsByClassName('error-message')[4].style.display = 'none';
      document.getElementsByClassName('error-message')[5].style.display = 'none';
+     $('.location_input').hide();
 
 };
 

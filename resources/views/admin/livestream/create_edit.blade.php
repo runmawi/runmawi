@@ -133,7 +133,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row mt-3">
                                         <div class="">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
+                                            <p class="p1">Select the video image(1280x720 px or 9:16 ratio):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />

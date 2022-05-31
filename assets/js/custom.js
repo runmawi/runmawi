@@ -130,7 +130,7 @@ Index Of Script
 				{
 					breakpoint: 992,
 					settings: {
-						dots: true,
+						dots: false,
 						arrows: false,
 					}
 				}

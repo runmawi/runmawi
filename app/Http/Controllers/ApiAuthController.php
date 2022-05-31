@@ -97,7 +97,7 @@ use App\AdsVideo;
 use App\AdvertisementView;
 use App\OrderHomeSetting;
 use App\MobileHomeSetting;
-
+use App\SiteTheme;
 
 class ApiAuthController extends Controller
 {
@@ -6639,5 +6639,23 @@ public function Adstatus_upate(Request $request)
     return response()->json($response, 200);
   }
 
+  public function theme_primary_color(Request $request)
+  {
+
+    $button_color = SiteTheme::pluck('button_bg_color')->first();
+
+    if($button_color != null){
+        $button_bg_color =  $button_color ;
+    }else{
+        $button_bg_color =  '#006AFF' ;
+    }
+    $response = array(
+      'status' => 'true' ,
+      'theme_primary_color' => $button_bg_color,
+     
+    );
+
+    return response()->json($response, 200);
+  }
 
 }
