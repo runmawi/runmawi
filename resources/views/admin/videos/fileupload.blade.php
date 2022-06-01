@@ -660,23 +660,58 @@ border-radius: 0px 4px 4px 0px;
                                  <!-- <h2 class="steps">Step 3 - 4</h2> -->
                               </div>
                            </div>
+
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 720X1080px)</span></label><br>
+                                 <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 720X1080px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  @if(!empty($video->image))
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
                                  @endif
                               </div>
+
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                              <input type="file" name="player_image" id="player_image" >
-                              @if(!empty($video->player_image))
-                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
-                              @endif
+                                 <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                                 <input type="file" name="player_image" id="player_image" >
+                                 @if(!empty($video->player_image))
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
+                                 @endif
                               </div>
                            </div>
-                           <div class="row">
+
+                           <div class="col-sm-6 form-group ">
+                              <label class="m-0">Video Trailer Type:</label>
+                              <select  class="trailer_type" style="width: 100%;" class="form-control" name="trailer_type" id="trailer_type">                              
+                                 <option value="video_mp4"> Video Upload </option>
+                                 <option value="m3u8_url">  m3u8 Url </option>
+                                 <option value="mp4_url">   mp4 Url</option>
+                                 <option value="embed_url">  Embed Code</option>
+                              </select>
+                           </div>
+
+                           <div class="row trailer_m3u8_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0"> Trailer m3u8 Url :</label>
+                                 <input type="text" class="form-control" name="m3u8_trailer" id="" value="">
+                              </div>
+                           </div>
+
+                           <div class="row trailer_mp4_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0"> Trailer mp4 Url :</label>
+                                 <input type="text" class="form-control" name="mp4_trailer" id="" value="">
+                              </div>
+                           </div>
+
+                           <div class="row trailer_embed_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0">Trailer Embed Code :</label>
+                                 <input type="text" class="form-control" name="embed_trailer" id="" value="">
+                              </div>
+                           </div>
+
+
+                           <div class="row trailer_video_upload">
                               <div class="col-sm-8 form-group">
                                  <label class="m-0">Upload Trailer :</label><br>
                                  <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
@@ -685,6 +720,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                               <span id="remove" class="danger">Remove</span>
                            </div>
+
                            <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                               <span id="remove" class="danger">Remove</span> -->
                            <div class="col-sm-4 form-group">
@@ -1570,6 +1606,48 @@ $(document).ready(function($){
    	  form.submit();
    	}
      });
+
+     $(document).ready(function(){
+
+         $('.trailer_video_upload').show();
+         $('.trailer_m3u8_url').hide();
+         $('.trailer_mp4_url').hide();
+         $('.trailer_embed_url').hide();
+
+
+      $(".trailer_type").change(function(){
+         var trailer_type = $('.trailer_type').val();
+
+        
+         if(trailer_type == 'video_mp4' ){
+            $('.trailer_video_upload').show();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
+         }
+         else if(trailer_type == 'm3u8_url'){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').show();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
+         }
+         else if(trailer_type == 'mp4_url'){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').show();
+            $('.trailer_embed_url').hide();
+         }
+         else if(trailer_type == 'embed_url'){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').show();
+         }
+      });
+      });
    
 </script>
 @stop
+
+
+
