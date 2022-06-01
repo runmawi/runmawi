@@ -934,6 +934,7 @@ if(!empty($artistsdata)){
      */
     public function update(Request $request)
     {
+
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -995,25 +996,44 @@ if(!empty($artistsdata)){
 
         $path = public_path().'/uploads/videos/';
 
-           if(!empty($trailer)) {   
-            //code for remove old file
-            if($trailer != ''  && $trailer != null){
-                 $file_old = $path.$trailer;
-                if (file_exists($file_old)){
-                 unlink($file_old);
+
+        $video->trailer_type = $data['trailer_type'];
+
+        // dd($data);
+
+        if($data['trailer_type'] == 'video_mp4'){
+            if(!empty($trailer)) {   
+                //code for remove old file
+                if($trailer != ''  && $trailer != null){
+                     $file_old = $path.$trailer;
+                    if (file_exists($file_old)){
+                     unlink($file_old);
+                    }
                 }
-            }
-            //upload new file
-            $randval = Str::random(16);
-            $file = $trailer;
-            $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
-            $file->move($path, $trailer_vid);
-            $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
-               $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
-            } else {
-                $data['trailer'] = $video->trailer;
-            }  
+                //upload new file
+                $randval = Str::random(16);
+                $file = $trailer;
+                $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                $file->move($path, $trailer_vid);
+                $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+                   $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+                } else {
+                    $data['trailer'] = $video->trailer;
+                }  
+
+                }elseif($data['trailer_type'] == 'm3u8_url'){
+                    $video->trailer = $data['m3u8_trailer'];
+                }
+                elseif($data['trailer_type'] == 'mp4_url'){
+                    $video->trailer = $data['mp4_trailer'];
+                }
+                elseif($data['trailer_type'] == 'embed_url'){
+                    $video->trailer = $data['embed_trailer'];
+                }
         
+
+
+           
            $update_mp4 = $request->get('video');
            if(empty($data['active'])){
             $active = 0;
@@ -1774,6 +1794,8 @@ if(!empty($artistsdata)){
                  $data['image'] = $video->image;
              }
             
+             $video->trailer_type = $data['trailer_type'];
+
             if($data['trailer_type'] == 'video_mp4'){
                 if($trailer != '') {   
                     //code for remove old file
