@@ -567,7 +567,7 @@ border-radius: 0px 4px 4px 0px;
                <input type="file" name="player_image" id="player_image" >
                @if(!empty($video->player_image))
                    <div class="col-sm-8 p-0">
-               <img src="{{ $video->player_image }}" class="video-img w-100 mt-1" /></div>
+               <img src="{{ $video->player_image }}" class="video-img w-100  mt-1" /></div>
                <!-- URL::to('/') . '/public/uploads/images/' .  -->
                @endif
                </div>
