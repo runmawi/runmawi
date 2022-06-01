@@ -107,10 +107,21 @@ border-radius: 0px 4px 4px 0px;
                                     <label>Display In Footer page:</label>
                                     <input type="radio" checked id="footer" name="footer" value="1">Yes
                                     <input type="radio" id="footer" name="footer" value="0">No
+                                    <!-- <input type="radio" id="footer" name="footer" value="0">No -->
+                                </div>
+                                <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                                    <label>Display In Menu :</label>
+                                    <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1">Yes
+                                    <input type="radio" id="in_menu" name="in_menu" value="0">No
                                 </div>
                                 <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                                     <label>Image:</label>
                                     <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                </div>
+
+                                <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                                    <label>Banner Image:</label>
+                                    <input type="file" multiple="true" class="form-control" name="banner_image" id="banner_image" />
                                 </div>
 
                                     <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
@@ -128,6 +139,11 @@ border-radius: 0px 4px 4px 0px;
                                             @endif
                                     </div>
 
+                                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                                        <label>Display In Home Banner:</label>
+                                            <input type="checkbox" id="banner"  id="banner" name="banner" value="1">
+                                    </div>
+                                    
                                          <div class="modal-footer form-group">
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary" id="submit-new-cat">Save changes</button>
@@ -285,14 +301,14 @@ border-radius: 0px 4px 4px 0px;
 $('form[id="new-cat-form"]').validate({
 	rules: {
 	  name : 'required',
-	  image : 'required',
+	//   image : 'required',
       parent_id: {
                 required: true
             }
 	},
 	messages: {
 	  title: 'This field is required',
-	  image: 'This field is required',
+	//   image: 'This field is required',
       parent_id: {
                 required: 'This field is required',
             }

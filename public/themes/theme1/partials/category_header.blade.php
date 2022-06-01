@@ -228,7 +228,7 @@ input:checked + .sliderk:before {
 }
 
 /* Dark mode and light Mode */
-      body.light-theme {
+       body.light-theme {
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
@@ -249,6 +249,9 @@ input:checked + .sliderk:before {
         body.light-theme .copyright{
              background-color: <?php echo GetLightBg(); ?>;
             color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme .dropdown-item.cont-item{
+             color: <?php echo GetLightText(); ?>!important;
         }
         body.light-theme .s-icon{
            background-color: <?php echo GetLightBg(); ?>; 
@@ -273,7 +276,21 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-
+         body.light-theme  .block-description h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme footer ul li{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .movie-time i{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme span{
+            color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>

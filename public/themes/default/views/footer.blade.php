@@ -441,6 +441,23 @@ else{
     hls.attachMedia(video);
     window.hls = hls;
 
+
+    $(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  // var videotype= '<? //$video->type ?>';
+  var videotype= $('#video_type').val();
+
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
     
   } else {
     // default options with no quality update in case Hls is not supported
@@ -473,6 +490,23 @@ else{
                   tagUrl: ads_path 
                 }
         });
+
+        $(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  // var videotype= '<? //$video->type ?>';
+  var videotype= $('#video_type').val();
+  
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
   }
 
   function updateQuality(newQuality) {
@@ -501,6 +535,12 @@ else{
       'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
     document.body.appendChild(script);
   }
+
+
+
+
+
+
 </script>
 
 </body>
