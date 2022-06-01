@@ -87,7 +87,6 @@ class AdminDashboardController extends Controller
         // ->where('videos.id','!=',$vid)
         ->limit(10)->get();
         
-        // dd($video_category);
 
          $settings = Setting::first();
         
