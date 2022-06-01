@@ -1774,25 +1774,36 @@ if(!empty($artistsdata)){
                  $data['image'] = $video->image;
              }
             
+            if($data['trailer_type'] == 'video_mp4'){
+                if($trailer != '') {   
+                    //code for remove old file
+                    if($trailer != ''  && $trailer != null){
+                         $file_old = $path.$trailer;
+                        if (file_exists($file_old)){
+                         unlink($file_old);
+                        }
+                    }
+                    //upload new file
+                    $randval = Str::random(16);
+                    $file = $trailer;
+                    $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                    $file->move($path, $trailer_vid);
+                    $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
+      
+               } else {
+                   $data['trailer'] = $video->trailer;
+               }  
+
+            }elseif($data['trailer_type'] == 'm3u8_url'){
+                $data['trailer'] = $data['m3u8_trailer'];
+            }
+            elseif($data['trailer_type'] == 'mp4_url'){
+                $data['trailer'] = $data['mp4_trailer'];
+            }
+            elseif($data['trailer_type'] == 'embed_url'){
+                $data['trailer'] = $data['embed_trailer'];
+            }
             
-            if($trailer != '') {   
-                  //code for remove old file
-                  if($trailer != ''  && $trailer != null){
-                       $file_old = $path.$trailer;
-                      if (file_exists($file_old)){
-                       unlink($file_old);
-                      }
-                  }
-                  //upload new file
-                  $randval = Str::random(16);
-                  $file = $trailer;
-                  $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
-                  $file->move($path, $trailer_vid);
-                  $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
-    
-             } else {
-                 $data['trailer'] = $video->trailer;
-             }  
             
              if(isset($data['duration'])){
                     //$str_time = $data
