@@ -82,6 +82,7 @@ class ChannelController extends Controller
       $countryName = $geoip->getCountry();
       $ThumbnailSetting = ThumbnailSetting::first();
 
+      try {
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -89,7 +90,7 @@ class ChannelController extends Controller
                               ->where('category_id','=',$category_id)->where('active', '=', '1')->count();
 
         if ($categoryVideos_count > 0) {
-    // blocked videos
+      // blocked videos
               $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
               if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
@@ -131,12 +132,16 @@ class ChannelController extends Controller
 
             );
        return Theme::view('categoryvids',['data'=>$data]);
+
+      } catch (\Throwable $th) {
+
+        return abort(404);
+      }
         
     } 
     
       public function play_videos($slug)
     {
-
 
         $data['password_hash'] = "";
         $data = session()->all();
@@ -145,9 +150,14 @@ class ChannelController extends Controller
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
 
-        $vid = $get_video_id->id;
+        try {
+          $vid = $get_video_id->id;
 
-        // echo "<pre>"; 
+        } catch (\Throwable $th) {
+
+          return abort(404);
+        }
+        
         $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
         ->select("artists.*")
         ->where("video_artists.video_id", "=", $vid)

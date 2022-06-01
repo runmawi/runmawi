@@ -567,7 +567,7 @@ border-radius: 0px 4px 4px 0px;
                <input type="file" name="player_image" id="player_image" >
                @if(!empty($video->player_image))
                    <div class="col-sm-8 p-0">
-               <img src="{{ $video->player_image }}" class="video-img w-100 mt-1" /></div>
+               <img src="{{ $video->player_image }}" class="video-img w-100  mt-1" /></div>
                <!-- URL::to('/') . '/public/uploads/images/' .  -->
                @endif
                </div>
@@ -583,7 +583,7 @@ border-radius: 0px 4px 4px 0px;
                </div>
                <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                   <span id="remove" class="danger">Remove</span> -->
-               <div class="col-sm-4 form-group">
+               <div class="col-sm-8 mt-5 form-group">
                <!--<p>Upload Trailer video</p>-->
                @if(!empty($video->trailer) && $video->trailer != '')
                <video width="200" height="200" controls>
