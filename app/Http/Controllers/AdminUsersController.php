@@ -593,7 +593,7 @@ class AdminUsersController extends Controller
     }
     }
 
-    public function myprofile()
+    public function SubscriberRevenueStartEndDateRecordofile()
     {
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -741,7 +741,7 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
             );
-            return Theme::view('myprofile', $data);
+            return Theme::view('SubscriberRevenueStartEndDateRecordofile', $data);
         }
     }
     public function ProfileImage(Request $request)

@@ -71,4 +71,8 @@ class Video extends Model
     {
         return $this->hasMany('App\CategoryVideo');
     }
+
+	public function player_analytic_videos(){
+		return $this->belongsTo('App\PlayerAnalytic','id','user_id');
+	}
 }
