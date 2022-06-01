@@ -650,6 +650,9 @@ border-radius: 0px 4px 4px 0px;
                         <input type="button" name="next" class="next action-button" value="Next" />
                         <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                      </fieldset>
+
+              {{-- Upload Image & Trailer --}}
+
                      <fieldset>
                         <div class="form-card">
                            <div class="row">
@@ -679,14 +682,16 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                            </div>
 
-                           <div class="col-sm-6 form-group ">
-                              <label class="m-0">Video Trailer Type:</label>
-                              <select  class="trailer_type" style="width: 100%;" class="form-control" name="trailer_type" id="trailer_type">                              
-                                 <option value="video_mp4"> Video Upload </option>
-                                 <option value="m3u8_url">  m3u8 Url </option>
-                                 <option value="mp4_url">   mp4 Url</option>
-                                 <option value="embed_url">  Embed Code</option>
-                              </select>
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <label class="m-0">Video Trailer Type:</label>
+                                 <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">                              
+                                    <option value="video_mp4"> Video Upload </option>
+                                    <option value="m3u8_url">  m3u8 Url </option>
+                                    <option value="mp4_url">   mp4 Url</option>
+                                    <option value="embed_url">  Embed Code</option>
+                                 </select>
+                              </div>
                            </div>
 
                            <div class="row trailer_m3u8_url">
