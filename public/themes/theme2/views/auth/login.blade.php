@@ -18,10 +18,10 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/responsive.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +39,8 @@ $system_settings = App\SystemSetting::find(1);
     h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;
+      
+
     }
     .links{
          color: #fff;
@@ -59,14 +61,17 @@ $system_settings = App\SystemSetting::find(1);
        
 font-size: 48px;
 line-height: 57px;
-        font-weight: 900;
+        font-weight: 600;
         color: #fff;
+        text-align: left;
+        font-family: 'Chivo';
+
 
 
     }
     	.input-icons i {
 			position: absolute;
-            left: 60px;
+            left: 20px;
 		}
 		
 		.input-icons {
@@ -102,7 +107,7 @@ line-height: 57px;
     display: block !important;
 }
 i.fa.fa-google-plus {
-    padding: 10px !important;
+   /* padding: 10px !important;*/
 }
     .demo_cred {
     background: #5c5c5c69;
@@ -114,15 +119,18 @@ i.fa.fa-google-plus {
    .form-control::-moz-placeholder {
   color: #fff!important;
   opacity: 1;
+         letter-spacing: 0.28em;
 }
 .form-control:-ms-input-placeholder {
   color: #999;
+      letter-spacing: 0.28em;
 }
 .form-control::-webkit-input-placeholder {
   color: #999;
+      letter-spacing: 0.28em;
 }
     .sign-in-page{
-        background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%)!important;
+        
         padding: 40px;
         padding-top: 100px;
         border-radius: 20px;
@@ -138,10 +146,10 @@ i.fa.fa-google-plus {
              <div class="text-center">
                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
              </div>
-            <div class="sign-user_card " style=" background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;">                    
+            <div class="sign-user_card">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                      <h1 class="in mt-3">SIGN IN</h1>
+                      <h1 class="in mt-3 text-center">LOGIN</h1>
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
@@ -175,6 +183,8 @@ i.fa.fa-google-plus {
 								<strong>{{ $message }}</strong>
 							</span>
 						@enderror
+                         <div class="row justify-content-center">
+                             <div class="col-lg-8">
                         <div class="form-group">  
                             <div class="input-icons">
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
@@ -197,11 +207,22 @@ i.fa.fa-google-plus {
 							
                   </div>
                         
-                           <div class="sign-info mt-3">
+                           <div class="sign-info mt-3 mb-3">
                               <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
                            </div> 
-                        
-                         
+                                  <div class="mt-3">
+                  <div class="d-flex justify-content-center  links">
+                      <p class="text-primary text-white mb-3"><a class="sig" href="{{ route('signup') }}" style="text-decoration: underline!important;"> Create your New Account Here </a></p>
+                      <p class="text-left agree">By continuing, you agree terms and conditions and privacy notes</p>
+                      
+                  </div>
+                  <div class="d-flex align-items-center mt-2 agree justify-content-strat">
+                          <input type="checkbox" id="" name="" value="" class="mb-2 mr-1">
+                    <label for="vehicle1"> Keep me signed in</label><br>
+                          </div>
+               </div>
+                        </div>
+                         </div>
                          <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
                          <div class="form-group row mb-0">
 						@if ( config('social.google') == 1 )
@@ -221,12 +242,7 @@ i.fa.fa-google-plus {
                </div>
                
             </div>
-             <div class="mt-3">
-                  <div class="d-flex justify-content-center  links">
-                     <p class="text-primary text-white ml-2">Not having an Account ? Click <a class="sig" href="{{ route('signup') }}" >Here</a> to Sign Up! </p>
-                  </div>
-                  
-               </div>
+            
          </div>
           
       </div>
@@ -245,7 +261,7 @@ i.fa.fa-google-plus {
 </body>
 
 @php
-    @include(public_path('themes\theme1\views\footer.blade.php'));
+    @include(public_path('themes\theme2\views\footer.blade.php'));
 @endphp
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
