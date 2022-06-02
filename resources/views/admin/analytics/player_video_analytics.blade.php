@@ -214,7 +214,7 @@
 
 
     var player_videos_count = '<?= $player_videos_count ?>';
-T
+
         if(player_videos_count > 0){
         // alert(player_videos_count);
 
