@@ -12,4 +12,17 @@ class PlayerAnalytic extends Model
 	
 	public static $rules = array();
 
+
+
+	public function videos(){
+
+        return $this->belongsTo('App\Video','id','videoid');
+		
+    }
+
+	public function users(){
+
+        return $this->belongsTo('App\User','id','user_id');
+
+    }
 }
