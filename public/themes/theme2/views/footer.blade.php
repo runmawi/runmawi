@@ -7,8 +7,74 @@
 ?>
 <footer class=" py-4 mt-auto">
         <div class="container-fluid px-5">
-            <div class="row  justify-content-between flex-column flex-sm-row">
-                <div class="col-sm-3">
+            <div class="row align-items-center  justify-content-between ">
+                <div class="col-sm-8 small m-0 text-white exp p-0">
+                    <ul class="text-white p-0 mt-3 d-flex">
+                       <?php 
+                        $pages = App\Page::all();
+                            foreach($pages as $page): ?>
+                            <?php if ( $page->slug != 'promotion' ){ ?>
+                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                            <?php } ?>
+						<?php endforeach; ?>
+                    </ul>
+                     <div class="mt-2 p-2">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4">
+<p>Social :</p>
+                    <?php if(!empty($settings->facebook_page_id)){?>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
+                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->skype_page_id)){?>
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="">
+                        <i class="fa fa-skype"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
+                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
+                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->linkedin_page_id)){?>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
+                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+
+                    <?php if(!empty($settings->whatsapp_page_id)){?>
+                      <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-whatsapp"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->youtube_page_id)){?>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->google_page_id)){?>
+                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                    <?php } ?>
+
+                </div>
+                         <p>2022 flicknexs Networks India Pvt. Ltd.</p>
+                    </div></div>
+             <!--   <div class="col-sm-3">
                     <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
                     <div class="d-flex p-0 text-white icon mt-4">
 
@@ -62,8 +128,8 @@
                     <?php } ?>
 
                 </div>
-                </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
+                </div>-->
+               <!-- <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
                     <ul class="text-white p-0 mt-3 ">
                         <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
                         <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
@@ -78,7 +144,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
-                    <ul class="text-white p-0 mt-3">
+                    <ul class="text-white p-0 mt-3 list-inline">
                        <?php 
                         $pages = App\Page::all();
                             foreach($pages as $page): ?>
@@ -87,10 +153,10 @@
                             <?php } ?>
 						<?php endforeach; ?>
                     </ul>
-                </div>
-                <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
+                </div>-->
+                <div class="col-sm-4 small m-0 text-white text-right"><h3 class="font-weight-bold mb-2">Download App</h3>
                     <p>Available on Play Store</p>
-                    <img src="<?php echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class="">
+                    <img src="<?php echo URL::to('assets/img/gp2.png') ?> " alt="Play store" class="w-50">
                 </div>
             </div>
         </div>
@@ -209,13 +275,13 @@
                   
                    </div>
                </div>
-            </div>-->
+            </div>
          <div class="copyright py-2">
             <div class="container-fluid">
                <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
-         </div>
-      </footer>
+        
+      </footer>-->
 
           <!-- back-to-top End -->
      <!-- back-to-top End -->
