@@ -145,6 +145,14 @@ class ChannelController extends Controller
 
         $data['password_hash'] = "";
         $data = session()->all();
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $cityName = $geoip->getcity();
+        $stateName = $geoip->getregion();
+
+        // dd($geoip->getregion());
        
         if(!empty($data['password_hash'])){
 
@@ -486,7 +494,7 @@ class ChannelController extends Controller
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
                  'artists' => $artists,
-    		'ppv_video_play' => $ppv_video_play,
+    		      'ppv_video_play' => $ppv_video_play,
             'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
             'category_name'=> $category_name,
             'langague_Name' => $langague_Name,

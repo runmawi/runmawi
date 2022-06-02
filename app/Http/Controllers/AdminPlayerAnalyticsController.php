@@ -15,10 +15,22 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use DB;
+use App\CountryCode as CountryCode;
+use App\City as City;
+use App\State as State;
 
 class AdminPlayerAnalyticsController extends Controller
 {
     public function PlayerAnalyticsCreate(Request $request){
+
+
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $cityName = $geoip->getcity();
+        $stateName = $geoip->getregion();
+
         $user_id = Auth::user()->id;
         $videoid = $request->video_id;
         $duration = $request->duration;
@@ -26,21 +38,32 @@ class AdminPlayerAnalyticsController extends Controller
         $watch_percentage = ($currentTime * 100 / $duration);
         $seekTime = $request->seekableEnd;
         $bufferedTime = $request->bufferedTimeRangesLength;
-
-        $player = new PlayerAnalytic;
-        $player->videoid = $request->video_id;
-        $player->user_id = $user_id;
-        $player->duration = $request->duration;
-        $player->currentTime = $currentTime;
-        $player->watch_percentage = $watch_percentage;
-        $player->seekTime = $request->seekableEnd;
-        $player->bufferedTime = $request->bufferedTimeRangesLength;
-        $player->save();
-
+        
+        if($currentTime != 0){
+            $player = new PlayerAnalytic;
+            $player->videoid = $request->video_id;
+            $player->user_id = $user_id;
+            $player->duration = $request->duration;
+            $player->currentTime = $currentTime;
+            $player->watch_percentage = $watch_percentage;
+            $player->seekTime = $request->seekableEnd;
+            $player->bufferedTime = $request->bufferedTimeRangesLength;
+            $player->country_name = $countryName;
+            $player->state_name = $cityName;
+            $player->city_name = $stateName;
+            $player->save();
+        }
         return 1 ;
     }
     
     public function PlayerAnalyticsStore(Request $request){
+
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $cityName = $geoip->getcity();
+        $stateName = $geoip->getregion();
         
         $user_id = Auth::user()->id;
         $videoid = $request->video_id;
@@ -49,17 +72,20 @@ class AdminPlayerAnalyticsController extends Controller
         $watch_percentage = ($currentTime * 100 / $duration);
         $seekTime = $request->seekableEnd;
         $bufferedTime = $request->bufferedTimeRangesLength;
-
-        $player = new PlayerAnalytic;
-        $player->videoid = $request->video_id;
-        $player->user_id = $user_id;
-        $player->duration = $request->duration;
-        $player->currentTime = $currentTime;
-        $player->watch_percentage = $watch_percentage;
-        $player->seekTime = $request->seekableEnd;
-        $player->bufferedTime = $request->bufferedTimeRangesLength;
-        $player->save();
-
+        if($currentTime != 0){
+            $player = new PlayerAnalytic;
+            $player->videoid = $request->video_id;
+            $player->user_id = $user_id;
+            $player->duration = $request->duration;
+            $player->currentTime = $currentTime;
+            $player->watch_percentage = $watch_percentage;
+            $player->seekTime = $request->seekableEnd;
+            $player->bufferedTime = $request->bufferedTimeRangesLength;
+            $player->country_name = $countryName;
+            $player->state_name = $cityName;
+            $player->city_name = $stateName;
+            $player->save();
+        }
         return 1 ;
 
     }
@@ -257,5 +283,297 @@ class AdminPlayerAnalyticsController extends Controller
 
 
 
+    public function RegionVideoAnalytics(Request $request){
 
+        $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
+        $CountryCode = CountryCode::get();
+        $State = State::get();
+        $City = City::get();
+
+        $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+        ->groupBy('player_analytics.country_name')
+        ->orderBy('player_analytics.created_at')
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+        'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
+        DB::raw('sum(player_analytics.duration) as duration') ,
+         DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+         DB::raw('(player_analytics.seekTime) as seekTime') ,
+         DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+         DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+         \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+         \DB::raw("COUNT(player_analytics.videoid) as count"),
+         \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+        ]);
+        //    dd($player_videos);
+
+        $player_videos_count =  count($player_videos);
+
+        $data = array(
+            'player_videos' => $player_videos,
+            'player_videos_count' => $player_videos_count,
+            'Country' => $CountryCode,
+            'City' => $City,
+            'State' => $State,
+        );
+        return \View::make('admin.analytics.video_by_region', $data);
+
+    }
+
+
+    public function RegionVideoAllCountry(Request $request)
+    {
+        if ($request->ajax())
+        {
+
+            $output = '';
+            $query = $request->get('query');
+
+            if ($query != '')
+            {
+
+                // $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                //     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                //     ->paginate(9);
+
+            }
+            else
+            {
+
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
+        <tr>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
+        </tr>
+        ';
+                }
+            }
+            else
+            {
+                $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
+
+            echo json_encode($data);
+        }
+    }
+
+    public function RegionVideoState(Request $request)
+    {
+        if ($request->ajax())
+        {
+
+            $output = '';
+            $query = $request->get('query');
+            // print_r($query);exit;
+            if ($query != '')
+            {
+                $CountryCode = CountryCode::get();
+                $State = State::get();
+                $City = City::get();
+                $Statename = State::where('id',$query)->first(); 
+                if(!empty($Statename)){
+                    $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+                    ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                    ->groupBy('player_analytics.state_name')
+                    ->orderBy('player_analytics.created_at')
+                    ->where('player_analytics.state_name','=',$Statename->name)
+                    ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                    'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
+                    DB::raw('sum(player_analytics.duration) as duration') ,
+                     DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                     DB::raw('(player_analytics.seekTime) as seekTime') ,
+                     DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                     DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                     \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                     \DB::raw("COUNT(player_analytics.videoid) as count"),
+                     \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                    ]);
+                }
+            }
+            else
+            {
+
+            }
+            $output = '';
+            $i = 1;
+    
+            $total_row = $player_videos->count();
+            if (!empty($player_videos))
+            {
+                foreach ($player_videos as $key => $row)
+                {
+                    if(!empty($playervideo->bufferedTime))  { $bufferedTime = $row->bufferedTime; } else { $bufferedTime = 'No Buffer'; }
+                    
+                    $output .= '
+                  <tr>
+                  <td>' . $i++ . '</td>
+                  <td>' . $row->title . '</td>
+                  <td>' . $row->count . '</td>    
+                  <td>' . $row->watchpercentage . '</td>  
+                  <td>' . $row->seekTime . '</td>    
+                  <td>' . $row->bufferedTime . '</td>  
+                  <td>' . $row->country_name . '</td>     
+                  <td>' . $row->state_name . '</td>
+                  <td>' . $row->city_name . '</td>     
+
+
+                  </tr>
+                  ';
+    
+                }
+            }
+            else
+            {
+                $output = '
+              <tr>
+               <td align="center" colspan="5">No Data Found</td>
+              </tr>
+              ';
+            }
+            $value = array(
+                'table_data' => $output,
+                'total_data' => $total_row,
+                'total_Revenue' => $player_videos,
+            );
+    
+            return $value;          
+        }
+    }
+
+    public function RegionVideoCity(Request $request)
+    {
+        if ($request->ajax())
+        {
+
+            $output = '';
+            $query = $request->get('query');
+
+            if ($query != '')
+            {
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->where('subscriptions.cityname', '=', $query)->paginate(9);
+                // echo "<pre>"; print_r($data);exit();
+                
+            }
+            else
+            {
+
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
+        <tr>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
+        </tr>
+        ';
+                }
+            }
+            else
+            {
+                $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
+
+            echo json_encode($data);
+        }
+    }
+
+    public function RegionVideoAllCity(Request $request)
+    {
+        if ($request->ajax())
+        {
+
+            $output = '';
+            $query = $request->get('query');
+
+            if ($query != '')
+            {
+
+                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                    ->paginate(9);
+
+            }
+            else
+            {
+
+            }
+            $i = 1;
+            $total_row = $data->count();
+            if ($total_row > 0)
+            {
+                foreach ($data as $row)
+                {
+                    $output .= '
+        <tr>
+        <td>' . $i++ . '</td>
+        <td>' . $row->username . '</td>
+         <td>' . $row->plans_name . '</td>
+        </tr>
+        ';
+                }
+            }
+            else
+            {
+                $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+            );
+
+            echo json_encode($data);
+        }
+    }
+
+    public function RegionGetState (Request $request)
+    {
+        $data['states'] = State::where("country_id", $request->country_id)
+            ->get(["name", "id"]);
+        return response()
+            ->json($data);
+    }
+    public function RegionGetCity(Request $request)
+    {
+        $data['cities'] = City::where("state_id", $request->state_id)
+            ->get(["name", "id"]);
+        return response()
+            ->json($data);
+    }
+
+    
 }
