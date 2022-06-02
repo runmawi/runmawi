@@ -599,7 +599,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
              <div class="col-sm-6 col-md-6 col-xs-12">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
-            <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+            <?php if (empty($video->year)) { ?>  <?php } else { ?><span class="trending-year"> <?php echo $video->year;} ?></span>
             <span class="trending-year"><?php
             foreach($category_name as $value){
               echo $value->categories_name. ',';  

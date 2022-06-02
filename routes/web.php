@@ -691,7 +691,10 @@ Route::get('/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
 Route::get('/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
 Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
 
-
+Route::get('/analytics/PlayerVideoAnalytics', 'AdminPlayerAnalyticsController@PlayerVideoAnalytics');
+Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsController@PlayerVideosStartDateRecord');
+Route::post('/analytics/playervideos_end_date_url', 'AdminPlayerAnalyticsController@PlayerVideosEndDateRecord');
+// Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
 
 
 Route::get('/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
