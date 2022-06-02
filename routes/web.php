@@ -696,6 +696,14 @@ Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsContr
 Route::post('/analytics/playervideos_end_date_url', 'AdminPlayerAnalyticsController@PlayerVideosEndDateRecord');
 // Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
 
+Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@RegionVideoAnalytics');
+
+Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');
+Route::get('/analytics/VideoAllCity', 'AdminPlayerAnalyticsController@RegionVideoAllCity');
+Route::get('/analytics/Videostate', 'AdminPlayerAnalyticsController@RegionVideoState');
+Route::get('/analytics/Videocity', 'AdminPlayerAnalyticsController@RegionVideoCity');
+Route::post('/analytics/getState', 'AdminPlayerAnalyticsController@RegionGetState');
+Route::post('/analytics/RegionGetCity', 'AdminPlayerAnalyticsController@RegionGetCity');
 
 Route::get('/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
 Route::post('/currency/store', 'AdminCurrencySettings@StoreCurrencySettings');

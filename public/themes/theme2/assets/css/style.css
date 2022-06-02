@@ -189,15 +189,18 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale(1.1); transform-o
 .music-play-lists span { position: relative; display: block; height: 20px; width: 20px; line-height: 26px; font-size: 12px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
 .music-play-lists li:hover span { background: var(--iq-primary); color: var(--iq-white); transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .block-description {position: absolute;
-    left: 35%;
+    left: 0;
     width: 100%;
-    top: 6%;
-    bottom: 0;
+    height: 75%;
+    top: 0;
+   display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 999;
     opacity: 0;
     font-size: 12px;
     color: var(--TEXT_COLOR_L0);
-    padding: 30px 5px 30px 10px;z-index: 999; opacity: 0;font-size: 12px; }
+  }
 .block-description > h6{font-size: 1.5em;}
 li.slide-item .block-images::before { }
 li.slide-item:hover .block-images::before { opacity: 1; z-index: 9; }
@@ -341,7 +344,7 @@ border-radius: 10px!important;
 .col-form-label{
      color: #fff!important;
 }
-footer { background: rgba(20, 20, 20, 0.5) !important;color: #fff; }
+footer { background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);color: #fff; }
 ul.f-link li { margin-bottom: 4px; }
 ul.f-link li a { margin-bottom: 4px; color: var(--iq-body-text);padding: 10px 10px; }
 ul.f-link li a:hover { color: var(--iq-primary);!important }
@@ -514,11 +517,11 @@ video { display: block; width: 100%; height: 100%; }
 -----------------------------------------------------------------------*/
 #sign-in-page-box { background: #fff; border-radius: 10px; position: relative; width: 100%; min-height: 480px;  margin: 15px auto; box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); -webkit-box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); }
 .sign-in-detail { color: var(--iq-white); }
-.sign-in-page {  padding-top: 80px; padding: 30px; background: url(../img/Landban.png) no-repeat scroll 0 0; background-size: cover; 
+.sign-in-page {  background: linear-gradient(180deg, rgba(196,196,196,0.2) 0%, rgba(196, 196, 196, 0) 100%); padding-top: 80px; padding: 30px;  background-size: cover; 
 }
 .sign-in-page .height-self-center { border-radius: 15px; }
 .sign-in-page-data { border-radius: 15px; }
-.sign-in-page-data h3 { color: #fff!important;font-size: 60px; }
+.sign-in-page-data h3 { color: #fff!important;font-size: 60px;font-weight: 600; }
 .sign-in-detail { padding: 50px 80px; }
 .sign-in-logo { display: inline-block; width: 100%; }
 .sign-in-logo img {  }
@@ -529,7 +532,10 @@ video { display: block; width: 100%; height: 100%; }
 .iq-social-media li a { height: 30px; width: 30px; text-align: center; font-size: 18px; line-height: 30px; display: inline-block; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; background: var(--iq-light-primary); color: var(--iq-primary) !important; }
 .iq-social-media li a:hover { text-decoration: none; }
 .sign-in-page .btn { padding: 12px 35px; /*border-radius: 30px !important; */}
-.sign-user_card {  border-radius: 20px; /* -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);*/ padding: 25px;  background: #161617; box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); display: block; margin: 0 auto; }
+.sign-user_card { background: linear-gradient(180deg, rgba(196,196,196,0.2) 0%, rgba(196, 196, 196, 0) 100%);
+
+
+border-radius: 20px; display: block; margin: 0 auto; }
 .sign-user_logo { position: absolute; top: -56px; border-radius: 50%; padding: 10px; text-align: center; }
 .sign-user_logo img { height: 100px; width: 100px; border-radius: 50%; border: 2px solid white; }
 .sign-in-page .form-control, .m-profile .form-control { color:#fff; }
@@ -768,7 +774,6 @@ footer, .home footer {
     position: relative;
     height: auto;
     width: 100%;
-  background: rgba(20, 20, 20, 0.5) !important;
 }
 /*
 .navbar-nav.navbar-left li a {
@@ -1501,11 +1506,12 @@ td{
     margin-left: 480px;
 }
 .sign-user_card input{
-   background-color: rgb(66 66 66 / 51%) !important;
+  background: rgba(196,196,196,0.2);
     outline: none;
     color: gray;
     border:none; 
-    border-radius: initial;
+  border-radius: 5px;
+
 }
 
 .ab{
@@ -1926,7 +1932,7 @@ background-size: cover;
     font-size: 20px;
 }
 body{
-    background: #161617;
+  background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);
     
 }
 .checked {
@@ -1954,8 +1960,7 @@ body{
       -moz-box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
       box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
       padding: 20px;
-      background: #161617;
-
+     
   }
   ul li{
       list-style:none ;
@@ -2338,14 +2343,33 @@ text-align: center;
 
 }
 .sig{
-color: #007bff!important;
-     font-family: Chivo!important;
-   /* font-weight: bold;*/
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 24px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+text-align: center;
+text-decoration: underline!important;
+
+color: #FFFFFF;
 }
 .sig:hover{
     text-decoration: underline!important;
 }
 
 
-height: 29px;
-    width: 150px;
+.agree{
+    font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 17px;
+display: flex;
+align-items: center;
+color: rgba(255, 255, 255, 0.5);
+
+}

@@ -597,7 +597,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                
                   <!-- Ads Menu ends -->
-                  <?php }elseif(  $package == "Business" && auth()->user()->role == "admin" || $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered"){ ?>
+                  <?php }elseif(  $package == "Business" && auth()->user()->role == "admin" || $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered" || $package == "Pro" && auth()->user()->role == "admin"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 <!-- Sidebar 3-->
       <div class="iq-sidebar">
@@ -772,6 +772,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/view-reg.svg')?>">Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Revenue by Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Player Video Analytics</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Region Video Analytics</a></li>
+
                      </ul>
                   </li>
                   <div >

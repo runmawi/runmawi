@@ -30,15 +30,9 @@
                                            <div>
                                            <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
                      </div>
-                                       </div>
-                                       <div>
-                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $latest_video->id;?>">
-                                                <span class="text-center thumbarrow-sec">
-                                                   <!-- <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">-->
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                       </div></div>
+                                      
+                                    
 
                                    <!-- <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
