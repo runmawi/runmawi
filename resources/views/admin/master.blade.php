@@ -773,6 +773,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Revenue by Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Player Video Analytics</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Region Video Analytics</a></li>
+                         <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/rev-reg.svg')?>">Player User Analytics</a></li>
 
                      </ul>
                   </li>
