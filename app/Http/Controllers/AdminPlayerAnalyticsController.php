@@ -50,8 +50,8 @@ class AdminPlayerAnalyticsController extends Controller
             $player->seekTime = $request->seekableEnd;
             $player->bufferedTime = $request->bufferedTimeRangesLength;
             $player->country_name = $countryName;
-            $player->state_name = $cityName;
-            $player->city_name = $stateName;
+            $player->state_name = $stateName;
+            $player->city_name = $cityName;
             $player->save();
         }
         return 1 ;
@@ -83,8 +83,8 @@ class AdminPlayerAnalyticsController extends Controller
             $player->seekTime = $request->seekableEnd;
             $player->bufferedTime = $request->bufferedTimeRangesLength;
             $player->country_name = $countryName;
-            $player->state_name = $cityName;
-            $player->city_name = $stateName;
+            $player->state_name = $stateName;
+            $player->city_name = $cityName;
             $player->save();
         }
         return 1 ;
