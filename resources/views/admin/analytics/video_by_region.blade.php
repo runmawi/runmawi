@@ -209,7 +209,7 @@ $('#state-dropdown').on('change', function() {
 var state_id = this.value;
 $("#city-dropdown").html('');
 $.ajax({
-url:"{{ url::to('admin/Analytics/RegionGetCity')}}",
+url:"{{ url::to('admin/analytics/RegionGetCity')}}",
 type: "POST",
 data: {
 state_id: state_id,
@@ -311,6 +311,33 @@ $.ajaxSetup({
     $('#player_table').DataTable();
 
 
+// ('#google-line-chart').hide();
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+var data = google.visualization.arrayToDataTable([
+    ['Month Name', 'Player Videos'],
+
+        @php
+        foreach($player_videos as $key => $d) {
+            echo "['".$d->month_name."', ".$d->count."],";
+        }
+        @endphp
+]);
+
+var options = {
+  title: 'Player Videos',
+  curveType: 'function',
+  legend: { position: 'bottom' }
+};
+
+  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+  chart.draw(data, options);
+}
+
 
    }
     });
@@ -340,6 +367,33 @@ $.ajaxSetup({
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
     $('#player_table').DataTable();
+
+// ('#google-line-chart').hide();
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+var data = google.visualization.arrayToDataTable([
+    ['Month Name', 'Player Videos'],
+
+        @php
+        foreach($player_videos as $key => $d) {
+            echo "['".$d->month_name."', ".$d->count."],";
+        }
+        @endphp
+]);
+
+var options = {
+  title: 'Player Videos',
+  curveType: 'function',
+  legend: { position: 'bottom' }
+};
+
+  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+  chart.draw(data, options);
+}
 
 
 
