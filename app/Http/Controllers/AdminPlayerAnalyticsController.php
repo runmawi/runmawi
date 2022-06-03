@@ -18,6 +18,7 @@ use DB;
 use App\CountryCode as CountryCode;
 use App\City as City;
 use App\State as State;
+use App\UserLogs as UserLogs;
 
 class AdminPlayerAnalyticsController extends Controller
 {
@@ -701,6 +702,183 @@ class AdminPlayerAnalyticsController extends Controller
             ->get(["name", "id"]);
         return response()
             ->json($data);
+    }
+
+
+    public function PlayerUserAnalytics()
+    {
+        $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
+
+        $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+        ->groupBy('player_analytics.user_id')
+        ->orderBy('player_analytics.created_at')
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+        DB::raw('sum(player_analytics.duration) as duration') ,
+         DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+         DB::raw('(player_analytics.seekTime) as seekTime') ,
+         DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+         DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+         \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+         \DB::raw("COUNT(player_analytics.videoid) as count"),
+         \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+        ]);
+
+        $player_videos_count =  count($player_videos);
+        $UserLogs_count = UserLogs::get()->count(); 
+       
+        $data = array(
+            'player_videos' => $player_videos,
+            'player_videos_count' => $player_videos_count,
+            'UserLogs_count' => $UserLogs_count,
+        );
+        return \View::make('admin.analytics.player_user_analytics', $data);
+
+
+    }
+
+
+
+    public function PlayerUsersStartDateRecord(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+    
+        //    dd($player_videos);
+            $player_videos_count =  count($player_videos);
+
+       }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $player_videos->count();
+        if (!empty($player_videos))
+        {
+            foreach ($player_videos as $key => $row)
+            {
+                if(!empty($playervideo->bufferedTime))  { $bufferedTime = $row->bufferedTime; } else { $bufferedTime = 'No Buffer'; }
+
+                 $output .= '
+               <tr>
+               <td>' . $i++ . '</td>
+               <td>' . $row->username . '</td>
+               <td>' . $row->count . '</td>    
+               <td>' . $row->watchpercentage . '</td>  
+               <td>' . $row->seekTime . '</td>    
+               <td>' . $bufferedTime . '</td>    
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_Revenue' => $player_videos,
+
+        );
+
+        return $value;
+
+    }
+
+    public function PlayerUsersEndDateRecord(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+        if (!empty($start_time) && !empty($end_time))
+        {
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+    
+        //    dd($player_videos);
+            $player_videos_count =  count($player_videos);
+        }
+
+        $output = '';
+        $i = 1;
+
+        $total_row = $player_videos->count();
+        if (!empty($player_videos))
+        {
+            foreach ($player_videos as $key => $row)
+            {
+                if(!empty($playervideo->bufferedTime))  { $bufferedTime = $row->bufferedTime; } else { $bufferedTime = 'No Buffer'; }
+                
+                $output .= '
+              <tr>
+              <td>' . $i++ . '</td>
+              <td>' . $row->username . '</td>
+              <td>' . $row->count . '</td>    
+              <td>' . $row->watchpercentage . '</td>  
+              <td>' . $row->seekTime . '</td>    
+              <td>' . $bufferedTime . '</td>     
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_Revenue' => $player_videos,
+        );
+
+        return $value;
     }
 
     
