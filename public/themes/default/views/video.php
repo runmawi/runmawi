@@ -34,7 +34,6 @@ if(!empty($request_url)){
 <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 <?php } ?>
 
-<input type="hidden" name="ads_path" id="ads_path" value="<?php echo  $ads_path;?>">
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
@@ -1387,29 +1386,38 @@ $(document).ready(function(){
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-    // ->whereTime('start', '<=', $current_time)
-    // ->whereTime('end', '>=', $current_time)
-    // ->where('ads_events.status',1)
-    // ->where('advertisements.status',10)
+    ->whereTime('start', '<=', $current_time)
+    ->whereTime('end', '>=', $current_time)
+    ->where('ads_events.status',1)
+    ->where('advertisements.status',10)
     ->where('videos.ads_category',$video->ads_category)
     ->where('ads_position','pre')
     ->get();
-
-
 
     if( count($AdsVideos) >= 1){
       $AdsVideoss = $AdsVideos->random();
 
       $AdsvideoFile = URL::to('public/uploads/AdsVideos/'.$AdsVideoss->ads_video);
 
-      $getID3           = new getID3;
-      $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);       
-      $Ads_duration     = $getID3->analyze($Ads_store_path);
-      $Ads_duration_Sec = $Ads_duration['playtime_seconds'];
-      
+
+      if($AdsVideoss->ads_video != null ){
+
+        $getID3           = new getID3;
+        $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);       
+        $Ads_duration     = $getID3->analyze($Ads_store_path);
+        $Ads_duration_Sec = $Ads_duration['playtime_seconds'];
+        $ads_path_tag     = null ;
+      }
+      else{
+        $Ads_duration_Sec = null;
+        $ads_path_tag     = $AdsVideoss->ads_path ;
+      }
+
       $advertiser_id    =  $AdsVideoss->advertiser_id ; 
       $ads_id           =  $AdsVideoss->ads_id ;
       $ads_position     =  $AdsVideoss->ads_position ;
+      $ads_path_tag     =  $AdsVideoss->ads_path;
+      $ads_type         =  $AdsVideoss->ads_video ;
 
     }else{
 
@@ -1418,7 +1426,8 @@ $(document).ready(function(){
       $advertiser_id    =  null ; 
       $ads_id           =  null ; 
       $ads_position     =  null ;
-
+      $ads_path_tag     =  null ;
+      $ads_type         =  null ;
     }
 
 
@@ -1434,6 +1443,7 @@ $(document).ready(function(){
 
 ?>
 
+  <input type="hidden" name="ads_path_tag" id="ads_path_tag" value="<?php echo  $ads_path_tag;?>">
   <input type="hidden" id="ads_start_tym" class="ads_start_tym"  value='<?php  echo $ads_start_tym  ; ?>'>
   <input type="hidden" id="" class="ads_show_status"  value='1'>
   <input type="hidden" id="Ads_vies_count" onclick="Ads_vies_count()"> 
@@ -1443,10 +1453,12 @@ $(document).ready(function(){
   var videoads_tym    =  document.getElementById(videotypeId);
   var Ads_videos      = <?php echo json_encode($AdsvideoFile)  ;?>;
   var normal_videos   = <?php  echo json_encode($normalvideoFile)  ;?>;
-  var ads_end_tym     =  <?php  echo json_encode($Ads_duration_Sec)  ;?>;
-  var Ads_count      = <?php echo count($AdsVideos); ?> ;
+  var ads_end_tym     = <?php  echo json_encode($Ads_duration_Sec)  ;?>;
+  var Ads_count       = <?php echo count($AdsVideos); ?> ;
+  var Ads_type        = <?php echo json_encode($ads_type); ?> ;
 
-  if( Ads_count >= 1){
+
+  if( Ads_count >= 1 && Ads_type != null){
 
   this.videoads_tym.addEventListener('timeupdate', (e) => {
 

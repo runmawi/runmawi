@@ -6,10 +6,10 @@
   $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-    // ->whereTime('start', '<=', $current_time)
-    // ->whereTime('end', '>=', $current_time)
-    // ->where('ads_events.status',1)
-    // ->where('advertisements.status',10)
+    ->whereTime('start', '<=', $current_time)
+    ->whereTime('end', '>=', $current_time)
+    ->where('ads_events.status',1)
+    ->where('advertisements.status',10)
     ->where('advertisements.ads_position','mid')
     ->where('videos.ads_category',$video->ads_category)
     ->get();
@@ -20,29 +20,40 @@
 
       $AdsvideoFileMid = URL::to('public/uploads/AdsVideos/'.$AdsVideossMid->ads_video);
 
-      $getID3               = new getID3;
-      $Ads_store_path_mid   = public_path('/uploads/AdsVideos/'.$AdsVideossMid->ads_video);       
-      $Ads_duration_mid     = $getID3->analyze($Ads_store_path_mid);
-      $Ads_duration_Sec_mid = $Ads_duration_mid['playtime_seconds'];
+      if($AdsVideossMid->ads_video != null ){
+
+        $getID3               = new getID3;
+        $Ads_store_path_mid   = public_path('/uploads/AdsVideos/'.$AdsVideossMid->ads_video);       
+        $Ads_duration_mid     = $getID3->analyze($Ads_store_path_mid);
+        $Ads_duration_Sec_mid = $Ads_duration_mid['playtime_seconds'];
+        $ads_path_tag          = null ;
+        
+      }else{
+        $Ads_duration_Sec_mid = null;
+        $ads_path_tag     = $AdsVideossMid->ads_path ;
+      }
       
       $advertiser_id_mid    =  $AdsVideossMid->advertiser_id ; 
       $ads_id_mid           =  $AdsVideossMid->ads_id ;
       $ads_position_mid     =  $AdsVideossMid->ads_position ;
-
+      $ads_path_tag         =  $AdsVideossMid->ads_path;
+      $ads_type_mid         =  $AdsVideossMid->ads_video ;
     }else{
 
-      $AdsvideoFileMid      = null ;
-      $Ads_duration_Sec_mid = null ;
-      $advertiser_id_mid        =  null ; 
-      $ads_id_mid               =  null ; 
-      $ads_position_mid         =  null ;
+      $AdsvideoFileMid        = null ;
+      $Ads_duration_Sec_mid  = null ;
+      $advertiser_id_mid   =  null ; 
+      $ads_id_mid          =  null ; 
+      $ads_position_mid    =  null ;
+      $ads_path_tag        =  null ;
+      $ads_type_mid         =  null ;
 
     }
 
 
-    if($ads_position_mid !=null && $ads_position_mid == 'mid'){
+    if( $ads_position_mid !=null && $ads_position_mid == 'mid'){
 
-        $ads_start_tym_mid = '40';
+        $ads_start_tym_mid = '0.1';
 
     }else{
         $ads_start_tym_mid = ' ';
@@ -63,8 +74,10 @@
   var normal_videos_mid   = <?php  echo json_encode($normalvideoFileMid)  ;?>;
   var ads_end_tym_mid     =  <?php  echo json_encode($Ads_duration_Sec_mid)  ;?>;
   var Ads_count_mid       = <?php echo count($AdsVideosMid); ?> ;
+  var Ads_type_mid        = <?php echo json_encode($ads_type_mid); ?> ;
 
-  if( Ads_count_mid >= 1){
+
+  if( Ads_count_mid >= 1 &&  Ads_type_mid != null ){
 
   this.videoads_tym_mid.addEventListener('timeupdate', (e) => {
 
