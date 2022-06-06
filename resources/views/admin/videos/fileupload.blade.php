@@ -1615,7 +1615,7 @@ $(document).ready(function($){
 
      $(document).ready(function(){
 
-         $('.trailer_video_upload').show();
+         $('.trailer_video_upload').hide();
          $('.trailer_m3u8_url').hide();
          $('.trailer_mp4_url').hide();
          $('.trailer_embed_url').hide();
@@ -1648,6 +1648,12 @@ $(document).ready(function($){
             $('.trailer_m3u8_url').hide();
             $('.trailer_mp4_url').hide();
             $('.trailer_embed_url').show();
+         }
+         else if(trailer_type == 'null' ){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
          }
       });
       });

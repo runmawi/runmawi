@@ -1387,12 +1387,14 @@ $(document).ready(function(){
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-    ->whereTime('start', '<=', $current_time)
-    ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)
-    ->where('advertisements.status',10)
+    // ->whereTime('start', '<=', $current_time)
+    // ->whereTime('end', '>=', $current_time)
+    // ->where('ads_events.status',1)
+    // ->where('advertisements.status',10)
     ->where('videos.ads_category',$video->ads_category)
+    ->where('ads_position','pre')
     ->get();
+
 
 
     if( count($AdsVideos) >= 1){
@@ -1411,8 +1413,8 @@ $(document).ready(function(){
 
     }else{
 
-      $AdsvideoFile     = null ;
-      $Ads_duration_Sec = null ;
+      $AdsvideoFile     =  null ;
+      $Ads_duration_Sec =  null ;
       $advertiser_id    =  null ; 
       $ads_id           =  null ; 
       $ads_position     =  null ;
@@ -1422,15 +1424,8 @@ $(document).ready(function(){
 
     if($ads_position !=null && $ads_position == 'pre'){
 
-        $ads_start_tym = '1';
+        $ads_start_tym = '0.1';
 
-    }elseif($ads_position !=null && $ads_position == "mid"){
-
-      $ads_start_tym = '30';
-
-    }elseif($ads_position !=null && $ads_position == "post" ){
-
-      $ads_start_tym = '50';
     }else{
       $ads_start_tym = ' ';
     }
@@ -1501,6 +1496,9 @@ $(document).ready(function(){
 		}
 
 </script>
+
+
+<?php include('AdsvideoMid.php'); ?>
 
 
 <?php

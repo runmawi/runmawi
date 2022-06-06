@@ -1612,6 +1612,12 @@ else if(trailer_type == 'embed_url'){
    $('.trailer_mp4_url').hide();
    $('.trailer_embed_url').show();
 }
+else if(trailer_type == 'null' ){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
+         }
 });
 });
 
