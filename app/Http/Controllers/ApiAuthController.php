@@ -98,6 +98,8 @@ use App\AdvertisementView;
 use App\OrderHomeSetting;
 use App\MobileHomeSetting;
 use App\SiteTheme;
+use App\PlayerAnalytic;
+
 
 class ApiAuthController extends Controller
 {
@@ -6654,6 +6656,56 @@ public function Adstatus_upate(Request $request)
       'theme_primary_color' => $button_bg_color,
      
     );
+
+    return response()->json($response, 200);
+  }
+
+
+
+  public function PlayerAnalytics(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $videoid =  $request->videoid;
+    $duration =  $request->duration;
+    $currentTime = $request->currentTime;
+    $bufferedTime = $request->bufferedTime;
+    $seekTime = $request->seekTime;
+    $countryName = $request->country_name;
+    $state_name = $request->state_name;
+    $city_name = $request->city_name;
+    $watch_percentage = ($currentTime * 100 / $duration);
+
+
+    if($currentTime != 0){
+
+      $player = new PlayerAnalytic;
+      $player->videoid = $videoid;
+      $player->user_id = $user_id;
+      $player->duration = $duration;
+      $player->currentTime = $currentTime;
+      $player->watch_percentage = $watch_percentage;
+      $player->seekTime = $seekTime;
+      $player->bufferedTime = $bufferedTime;
+      $player->country_name = $countryName;
+      $player->state_name = $state_name;
+      $player->city_name = $city_name;
+      $player->save();
+        
+    $response = array(
+      'status' => 'true' ,
+      'message' => 'Added to Analytics',
+     
+    );
+  }else{
+
+    $response = array(
+      'status' => 'false' ,
+      'message' => 'not added',
+     
+    );
+  }
+
 
     return response()->json($response, 200);
   }

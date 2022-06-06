@@ -25,13 +25,13 @@ $uppercase =  ucfirst($request_url);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/bootstrap.min.css') ?>" />
 
     <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" />
          
     <!-- Style -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
   
     <!-- font awesome Icon -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -141,26 +141,36 @@ $uppercase =  ucfirst($request_url);
     line-height: 45px;
     background-color: transparent!important;
         letter-spacing: 0px!important;
-    border: 1px solid var(--iq-body-text);
+    
     font-size: 14px;
     color: var(--iq-white) !important;
     border-radius: 0;
     margin-bottom: 1rem !important;
     border: none!important;
-    border-bottom: 1px solid #fff!important;
+  font-family: 'Proxima Nova';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
        
 }
+    input[type=file]::file-selector-button{
+        background-color: #282828;
+        outline: none;
+        color: #fff;
+        border: none;
+    }
 .phselect{
-    width: 120px !important;
-    height: 45px !important;
-    background: transparent !important;
+   width: 140px;
+   background: rgba(40, 40, 40, 1) !important;
     color: var(--iq-white) !important;
     border:none;
 }
-    .form-control{
-        padding-left: 4px;
-        padding-top: 20px;
-    }
+    
 .form-control {
     height: 45px;
     line-height: 45px;
@@ -186,14 +196,14 @@ $uppercase =  ucfirst($request_url);
 }
 /*input[type="file"] {
     display: none;
-    }*/.lab{
+    }.lab{
         background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:6px;color: #fff!important
-    }
+    }*/
     .catag {
     padding-right: 150px !important;
 }
     .sign-user_card input{
-        background-color: transparent!important;
+       background: rgba(196, 196, 196, 0.2)!important;
     }
 i.fa.fa-google-plus {
     padding: 10px !important;
@@ -203,21 +213,21 @@ i.fa.fa-google-plus {
 }
     .reveal{
         margin-left: -92px !important;
-        margin-top: 10px;
+        margin-top: 18px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
         position: absolute;
     }
     .sign-in-page{
-        background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%)!important;
+        
         padding: 40px;
         border-radius: 20px;
         
     } 
-    ::placeholder { color: #fff!important; opacity: 1; word-spacing: 9px !important;font-size: 16px!important;letter-spacing: 2px;font-weight: 100!important;text-transform: uppercase;}
-:-ms-input-placeholder { color: #d9d5d5 !important;  word-spacing: 9px !important;}
-::-ms-input-placeholder { color: #d9d5d5 !important;  word-spacing: 9px !important;}
+    ::placeholder { color: #fff!important; opacity: 1; font-size: 14px!important;letter-spacing: 1px;font-weight: 400!important;text-transform: uppercase; }
+:-ms-input-placeholder { color: #d9d5d5 !important;  }
+::-ms-input-placeholder { color: #d9d5d5 !important; }
 
 </style>
 
@@ -374,10 +384,12 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                               <h3 class="mb-3 text-center text-white">ACCOUNT</h3>
+                               <h3 class="mb-3 text-center text-white">SIGNUP</h3>
                       </div>
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
+                          <div class="row justify-content-center">
+                              <div class="col-lg-10">
                             <div class="form-group">
                                 <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
 
@@ -403,17 +415,17 @@ i.fa.fa-google-plus {
                                 @enderror
                             </div>
                                  <div class="col-md-12 mt-3">
-                                            <div class="row p-0 justify-content-between">
+                                            <div class="row p-0 ">
                                
-                           <div class="col-sm-4 p-0 lab">
-                              <select class="phselect" name="ccode" id="ccode" >
+                           <div class="col-sm-4 ">
+                              <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                  <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option> 
                                 @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-8 lab">
+                            <div class="col-sm-8">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Moblie') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
@@ -539,7 +551,9 @@ i.fa.fa-google-plus {
 							</div>
 						</div>
                         
-                    </form>
+                    </div>
+                          </div>
+                                  </form>
                   </div>
                </div>    
                <div class="mt-3">
@@ -981,7 +995,8 @@ $( "#stripe_plan" ).validate({
       <script src="assets/js/custom.js"></script>
 
 
-
-@include('footer')
+@php
+    @include(public_path('themes\theme2\views\footer.blade.php'));
+@endphp
 
 @endsection 
