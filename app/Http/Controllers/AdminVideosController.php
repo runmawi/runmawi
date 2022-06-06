@@ -332,8 +332,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     $Mobile_image =  'Mobile-default_image.jpg' ;
                     $Tablet_image =  'Tablet-default_image.jpg' ;
                                 
-                    Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                    Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                    Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                 
                     $video->mobile_image  = $Mobile_image;
                     $video->tablet_image  = $Tablet_image;
@@ -391,8 +391,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                      $Mobile_image =  'Mobile-default_image.jpg' ;
                      $Tablet_image =  'Tablet-default_image.jpg' ;
                                  
-                     Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                     Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                     Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                     Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                  
                      $video->mobile_image  = $Mobile_image;
                      $video->tablet_image  = $Tablet_image;
@@ -452,8 +452,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     $Mobile_image =  'Mobile-default_image.jpg' ;
                     $Tablet_image =  'Tablet-default_image.jpg' ;
                                 
-                    Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                    Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                    Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                    Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                 
                     $video->mobile_image  = $Mobile_image;
                     $video->tablet_image  = $Tablet_image;
@@ -1171,9 +1171,9 @@ if(!empty($artistsdata)){
               $Mobile_image =  'Mobile'.$filename ;
               $Tablet_image =  'Tablet'.$filename ;
               
-              Image::make($file)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
-              Image::make($file)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
-              Image::make($file)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
+              Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
+              Image::make($file)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
+              Image::make($file)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
 
              $video->image  = $PC_image;
              $video->mobile_image  = $Mobile_image;
@@ -1782,9 +1782,9 @@ if(!empty($artistsdata)){
                   $Tablet_image =  'Tablet'.$filename ;
 
                   
-                  Image::make($files)->fit(720,1080)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
-                  Image::make($files)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
-                  Image::make($files)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
+                  Image::make($files)->save(base_path().'/public/uploads/images/'.$PC_image,80 );
+                  Image::make($files)->save(base_path().'/public/uploads/images/'.$Mobile_image,80 );
+                  Image::make($files)->save(base_path().'/public/uploads/images/'.$Tablet_image,80 );
 
                  $video->mobile_image  = $Mobile_image;
                  $video->tablet_image  = $Tablet_image;
@@ -2104,8 +2104,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;
@@ -2151,8 +2151,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;
@@ -2203,8 +2203,8 @@ if(!empty($artistsdata)){
                 $Mobile_image =  'Mobile-default_image.jpg' ;
                 $Tablet_image =  'Tablet-default_image.jpg' ;
                                             
-                Image::make($PC_image_path)->fit(720,1440)->save(base_path().'/public/uploads/images/'.$Mobile_image );
-                Image::make($PC_image_path)->fit(360,960)->save(base_path().'/public/uploads/images/'.$Tablet_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Mobile_image );
+                Image::make($PC_image_path)->save(base_path().'/public/uploads/images/'.$Tablet_image );
                             
                 $video->mobile_image  = $Mobile_image;
                 $video->tablet_image  = $Tablet_image;

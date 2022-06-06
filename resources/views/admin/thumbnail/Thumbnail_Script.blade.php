@@ -114,6 +114,32 @@
             }
     });
 
+    $('.reels_videos').on('change', function(event) {
+        var reels_videos = $("#reels_videos").prop("checked");
+            if(reels_videos == true){
+                Swal.fire({
+                    title: 'Thumbnail - Reels Videos',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_reels_videos.png')}}" ,
+                    imageWidth: 300,
+                    imageHeight: 250,
+                    imageAlt: 'Custom image',
+                })
+            }
+    });
+
+    $('.trailer').on('change', function(event) {
+        var trailer = $("#trailer").prop("checked");
+            if(trailer == true){
+                Swal.fire({
+                    title: 'Thumbnail - Trailer',
+                    imageUrl: "{{ URL::to('/public/Thumbnai_images/Thumbail_trailer.png')}}" ,
+                    imageWidth: 320,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                })
+            }
+    });
+
 </script>
 
 @stop

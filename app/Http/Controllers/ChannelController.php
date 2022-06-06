@@ -151,6 +151,7 @@ class ChannelController extends Controller
         $countryName = $geoip->getCountry();
         $cityName = $geoip->getcity();
         $stateName = $geoip->getregion();
+        $ThumbnailSetting = ThumbnailSetting::first();
 
         // dd($geoip->getregion());
        
@@ -504,7 +505,7 @@ class ChannelController extends Controller
             'artistsname'  => $artistsname,
             'lang_name'  => $lang_name,
             'subtitles_name'  => $subtitles,
-
+            'ThumbnailSetting' => $ThumbnailSetting,
 
 
                  );
@@ -570,6 +571,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
             );
 
@@ -653,6 +655,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
                  );
              
@@ -689,6 +692,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
             );
 
