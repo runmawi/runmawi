@@ -54,7 +54,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="m-0">Episode Image Cover</label>
-                        <p class="p1">Select the episodes image (1280x720 px or 16:9 ratio)</p>
+                        <p class="p1">Select the episodes image (1280x720 px or 9:16 ratio)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->image))
@@ -64,15 +64,32 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
+                        <label class="m-0">Episode Player Image</label>
+                        <p class="p1">Select the player image (16:9 Ratio or 1280X720px)</p>
+
+                        <div class="panel-body">
+                            @if(!empty($episodes->player_image))
+                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
+                            @endif
+                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+
+                <div class="col-sm-6">
                         <label class="m-0">Episode Ratings</label>
                         <p class="p1">IMDb Ratings 10 out of 10</p>
 
                         <div class="panel-body">
                             <input class="form-control" name="rating" id="rating" value="@if(!empty($episodes->rating)){{ $episodes->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" />
                         </div>
+                            <div class="col-sm-6">
+                            </div>
+
                     </div>
-                </div>
-                
+                    </div>
+
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="m-0">Episode Source</label>
