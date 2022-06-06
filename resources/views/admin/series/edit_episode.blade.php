@@ -1,4 +1,5 @@
 @extends('admin.master') @section('css')
+
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">

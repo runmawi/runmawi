@@ -4435,16 +4435,17 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
-
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             return $item;
         });
 
+
         if ( isset($request->user_id) && $request->user_id != '' ) { 
             $user_id = $request->user_id;
       //Wishlilst
+
             $cnt = Wishlist::select('audio_id')->where('user_id','=',$user_id)->where('audio_id','=',$audio_id)->count();
             $wishliststatus =  ($cnt == 1) ? "true" : "false";
       //Watchlater
@@ -4463,6 +4464,7 @@ return response()->json($response, 200);
             $like = ($like_data == 1) ? "true" : "false";
             $dislike = ($dislike_data == 1) ? "true" : "false";
         } else{
+
             $wishliststatus = 'false';
             $watchlaterstatus = 'false';
             $favoritestatus = 'false';
@@ -4478,11 +4480,18 @@ return response()->json($response, 200);
         $audio_cat_id = Audio::where('id','=',$audio_id)->pluck('audio_category_id');
 
         $audio_cat = AudioCategory::where('id','=',$audio_cat_id)->get();
+        // print_r(count($audio_cat));exit;
+
+        if(count($audio_cat) > 0){
+         $main_genre = $audio_cat[0]->name;
+        }else{
+          $main_genre = '';
+        }
 
         $response = array(
             'status' => $status,
             'wishlist' => $wishliststatus,
-            'main_genre' => $audio_cat[0]->name,
+            'main_genre' => $main_genre,
             'watchlater' => $watchlaterstatus,
             'favorite' => $favoritestatus,
             'userrole' => $userrole,

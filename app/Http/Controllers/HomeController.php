@@ -57,6 +57,7 @@ use App\ChooseProfileScene;
 use App\ThumbnailSetting;
 use App\SiteTheme;
 use Theme;
+use App\Series;
 
 class HomeController extends Controller
 {
@@ -1902,6 +1903,8 @@ class HomeController extends Controller
                 $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
                     ->orderBy('created_at', 'DESC')
                     ->get();
+                $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                    ->get();
                 $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
                 $trendings = $trendings->merge($trending_videos);
                 $trendings = $trendings->merge($trending_movies);
@@ -2029,6 +2032,7 @@ class HomeController extends Controller
                     'Kids_Mode' => $Kids_Mode,
                     'Mode' => $Mode,
                     'ThumbnailSetting' => $ThumbnailSetting,
+                    'latest_series' => $latest_series,
                 );
                
                 return Theme::view('home', $data);
