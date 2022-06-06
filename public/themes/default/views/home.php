@@ -197,6 +197,23 @@ if($home_settings->albums == 1){ ?>
 <?php } } ?>
 
 
+
+<?php 
+       if($value->video_name == 'series'){
+         if($home_settings->series == 1){ ?>
+    <section id="iq-favorites">
+        <div class="container-fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <?php include('partials/home/latest-series.php'); ?>
+              </div>
+           </div>
+        </div>
+</section>
+<?php } } ?>
+
+
+
 <?php 
        if($value->video_name == 'featured_videos'){
 
@@ -217,6 +234,10 @@ if ( GetTrendingVideoStatus() == 1 ) { ?>
 
 <?php } } ?>
  
+
+
+ 
+
   <?php /*<section id="iq-topten">
         <div class="container-fluid">
             <div class="row">

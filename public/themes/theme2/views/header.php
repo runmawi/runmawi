@@ -140,9 +140,9 @@ $data = Session::all();
         margin: 20px auto;
     }
         .media h6{
-            font-family: Chivo;
+           /* font-family: Chivo;
     font-style: normal;
-    font-weight: normal;
+    font-weight: normal;*/
     font-size: 18px;
     line-height: 29px;
         }
@@ -168,7 +168,7 @@ $data = Session::all();
         .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 50px;
   height: 20px;
 }
 
@@ -193,10 +193,10 @@ $data = Session::all();
 .sliderk:before {
   position: absolute;
   content: "";
-  height: 12px;
-  width: 20px;
-  left: 7px;
-  bottom: 4px;
+  height: 15px;
+  width: 15px;
+  left: 5px;
+  bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
