@@ -1208,6 +1208,7 @@ public function verifyandupdatepassword(Request $request)
       $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
       $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
