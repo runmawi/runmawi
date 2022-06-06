@@ -938,6 +938,29 @@ class AdminSeriesController extends Controller
         } else {
             $data['image'] = 'placeholder.jpg';
         }
+
+        
+        $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+
+        if($request->hasFile('player_image')){
+
+            if($player_image != ''  && $player_image != null){
+                $file_old = $image_path.$player_image;
+               if (file_exists($file_old)){
+                unlink($file_old);
+               }
+           }
+
+           //upload new file
+           $file = $player_image;
+           $data['player_image']  = $file->getClientOriginalName();
+           $file->move($image_path, $data['player_image']);
+           $player_image = $file->getClientOriginalName();
+
+         } else {
+            $player_image = $episode->player_image;
+
+         }
         
         if(empty($data['active'])){
             $data['active'] = 0;
@@ -1042,6 +1065,7 @@ class AdminSeriesController extends Controller
             $episodes->duration =  $data['duration'];
             $episodes->access =  $data['access'];
             $episodes->active =  $active;
+            $episodes->player_image =  $player_image;
             $episodes->series_id =  $data['series_id'];
             $episodes->season_id =  $data['season_id'];
             $episodes->image =  $data['image'];
@@ -1102,6 +1126,17 @@ class AdminSeriesController extends Controller
             $image = (isset($input['image'])) ? $input['image'] : '';
 
         }
+
+        if(empty($input['player_image']) && !empty($episode->player_image)){
+            $player_image = $episode->player_image ;
+        // dd('$player_image');
+
+        }else{
+            // $player_image = $input['player_image'] ;
+            $player_image = (isset($input['player_image'])) ? $input['player_image'] : '';
+            // dd($player_image);
+
+        }
        
         $settings =Setting::first();
         if(!empty($input['ppv_price'])){
@@ -1115,7 +1150,6 @@ class AdminSeriesController extends Controller
           
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
-        
         if(empty($data['ppv_status'])){
             $data['ppv_status'] = 0;
         }else{
@@ -1157,6 +1191,29 @@ class AdminSeriesController extends Controller
                 $data['image'] = $episode->image ;
             }
 
+
+            if($request->hasFile('player_image')){
+
+                if($player_image != ''  && $player_image != null){
+                    $file_old = $image_path.$player_image;
+                   if (file_exists($file_old)){
+                    unlink($file_old);
+                   }
+               }
+
+               //upload new file
+               $file = $player_image;
+               $data['player_image']  = $file->getClientOriginalName();
+               $file->move($image_path, $data['player_image']);
+               $player_image = $file->getClientOriginalName();
+
+             } else {
+                $player_image = $episode->player_image;
+
+             }
+
+        // dd('$player_image');
+             
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -1212,9 +1269,11 @@ class AdminSeriesController extends Controller
         $episode->intro_start_time =  $data['intro_start_time'];
         $episode->intro_end_time =  $data['intro_end_time'];
         $episode->ppv_price =  $ppv_price;
+        $episode->player_image =  $player_image;
         $episode->ppv_status =  $data['ppv_status'];
         $episode->status =  1;
         $episode->save();
+
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
     
