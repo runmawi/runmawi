@@ -50,8 +50,8 @@ $series=App\series::first();
 						</div>
 					<?php  elseif($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
-						<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
+						 <video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
 							<source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
 							<source src="<?= $episode->ogg_url; ?>" type='video/ogg' label='auto' >
@@ -64,7 +64,7 @@ $series=App\series::first();
 						</div>
 					<?php  else: ?>                                  
 						<div id="series_container">
-						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                            
 							<source src="<?php echo URL::to('/storage/app/public/').'/'.'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
 								<source src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
@@ -100,7 +100,7 @@ $series=App\series::first();
 
 			<?php else: ?>
 
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<h2>Sorry, this series is only available to <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 					<div class="clear"></div>
 					<?php if(!Auth::guest() && $series->access == 'subscriber'): ?>
@@ -117,7 +117,7 @@ $series=App\series::first();
 			<?php endif; 
 			}else{  	//dd($season);	?>
 			<div id="series_container">
-			<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $episode->image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+			<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 				<source src="<?= $season[0]->trailer; ?>" type='video/mp4' label='auto' >
 				<?php  if(isset($episodesubtitles)){
 				foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
@@ -125,7 +125,7 @@ $series=App\series::first();
 				<?php } } ?>
 			</video>
 
-                <!-- <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <!-- <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<div id="ppv">
 				<h2>Purchase to Watch the Episodes <?php if($episode->access == 'subscriber'): ?>Subscribers<?php elseif($episode->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 				<div class="clear"></div>
@@ -309,7 +309,7 @@ $series=App\series::first();
        <div class="modal-content">
          <div class="modal-header">
            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
-           <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->image ?>" alt=""width="50" height="60">
+           <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" alt=""width="50" height="60">
          </div>
          <div class="modal-body">
              <div class="row">

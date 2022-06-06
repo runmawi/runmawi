@@ -287,5 +287,7 @@ Route::group([
 
     // Theme Primary Color
     Route::get('theme_primary_color', 'ApiAuthController@theme_primary_color');
+    Route::post('PlayerAnalytics', 'ApiAuthController@PlayerAnalytics');
+
 
 });

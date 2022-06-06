@@ -766,7 +766,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="">
                         <h4 class="card-title mb-2">Manage Profile</h4>
                         <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
-                        <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                         <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />

@@ -29,7 +29,7 @@ $series = $series_data ;
 				<div class="container">
 					<span class="label"></span> <h1><?= $series->title ?></h1><br><br>
 					<div class="col-md-6 p-0">
-						<select class="form-control">
+						<select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
@@ -42,8 +42,9 @@ $series = $series_data ;
 				</div>
 			</div>
 		</div>
-		<div class="col-md-5 text-center">
-			<img src="<?= URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100">
+		<div class="col-md-5 text-center" id="theDiv">
+			<!-- <img id="myImage" src="<? //URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100"> -->
+			<img id="myImage" class="w-100" >
 		</div>
 	</div>
 </div>
@@ -247,6 +248,39 @@ var publishable_key = $('#publishable_key').val();
 // alert(livepayment);
 
 $(document).ready(function () {  
+
+	var imageseason = '<?= $season ?>' ;
+// console.log(imageseason)
+
+
+var obj = JSON.parse(imageseason);
+// console.log(obj)
+var season_id = $('#season_id').val();
+
+$.each(obj, function(i, $val)
+{
+if('season_'+$val.id == season_id){
+	// console.log('season_'+$val.id)
+	$("#myImage").attr("src", $val.image);
+}
+});
+
+$('#season_id').change(function(){
+	var season_id = $('#season_id').val();
+// alert($('#season_id').val())	
+$.each(obj, function(i, $val)
+{
+if('season_'+$val.id == season_id){
+	console.log('season_'+$val.id)
+	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
+	$("#myImage").attr("src", $val.image);
+}
+});
+
+})
+
+
+
 $.ajaxSetup({
 headers: {
 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

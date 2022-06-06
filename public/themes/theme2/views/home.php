@@ -171,6 +171,24 @@ if($home_settings->albums == 1){ ?>
 </section>
 <?php } }?>
 
+<!--  Series  -->
+
+
+<?php 
+       if($value->video_name == 'series'){
+         if($home_settings->series == 1){ ?>
+    <section id="iq-favorites">
+        <div class="container-fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <?php include('partials/home/latest-series.php'); ?>
+              </div>
+           </div>
+        </div>
+</section>
+<?php } } ?>
+
+
 <!--  Featured Movies  -->
 <?php
        if($value->video_name == 'featured_videos'){
