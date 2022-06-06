@@ -125,7 +125,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
 
                                     <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
-                                            <label>Category:</label>
+                                            <label>{{ ucwords('genre:')  }}</label>
                                             <select id="parent_id" name="parent_id" class="form-control">
                                                 <option value="0">Select</option>
                                                 @foreach($allCategories as $rows)

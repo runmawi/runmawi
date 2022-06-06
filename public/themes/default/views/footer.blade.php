@@ -271,12 +271,12 @@ function myFunction() {
     var video_video = $('video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
-    var ads_path =  $('#ads_path').val();
+    var ads_path_tag =  $('#ads_path_tag').val();
     var processed_low =  $('#processed_low').val();
-    // alert(processed_low)
+    // alert(ads_path_tag)
 
 
-    // alert(ads_path);
+    // alert(ads_path_tag);
     // alert(user_logged_out)
 
 
@@ -307,7 +307,7 @@ function myFunction() {
               ads:{ 
                       enabled: true, 
                       publisherId: '', 
-                      tagUrl: ads_path 
+                      tagUrl: ads_path_tag 
                     }
         });
    }else if(type != "" && request_url != 'm3u8'){
@@ -339,7 +339,7 @@ function myFunction() {
                 ads:{ 
                       enabled: true, 
                       publisherId: '', 
-                      tagUrl: ads_path 
+                      tagUrl: ads_path_tag 
                     }
         });
    }
@@ -370,7 +370,7 @@ function myFunction() {
                   ads:{ 
                       enabled: true, 
                       publisherId: '', 
-                      tagUrl: ads_path 
+                      tagUrl: ads_path_tag 
                     }
         });
    }
@@ -399,7 +399,7 @@ function myFunction() {
           ads:{ 
                   enabled: true, 
                   publisherId: '', 
-                  tagUrl: ads_path 
+                  tagUrl: ads_path_tag 
                 }
         });
    }
@@ -487,7 +487,7 @@ return;
             ads:{ 
                   enabled: true, 
                   publisherId: '', 
-                  tagUrl: ads_path 
+                  tagUrl: ads_path_tag 
                 }
         });
 

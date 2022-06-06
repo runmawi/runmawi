@@ -544,58 +544,119 @@ border-radius: 0px 4px 4px 0px;
                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
   
                </fieldset>
+
                <fieldset>
-               <div class="form-card">
-               <div class="row">
-               <div class="col-7">
-               <h2 class="fs-title">Image Upload:</h2>
-               </div>
-               <div class="col-5">
-               <!-- <h2 class="steps">Step 3 - 4</h2> -->
-               </div>
-               </div> 
-               <div class="row">
-               <div class="col-sm-6 form-group">
-               <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 720X1080px)</span></label><br>
-               <input type="file" name="image" id="image" >
-               @if(!empty($video->image))
-               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
-               @endif
-               </div>
-               <div class="col-sm-6 form-group">
-               <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-               <input type="file" name="player_image" id="player_image" >
-               @if(!empty($video->player_image))
-                   <div class="col-sm-8 p-0">
-               <img src="{{ $video->player_image }}" class="video-img w-100  mt-1" /></div>
-               <!-- URL::to('/') . '/public/uploads/images/' .  -->
-               @endif
-               </div>
-               </div>
-               <div class="row">
-               <div class="col-sm-8 form-group">
-               <label class="m-0">Upload Trailer :</label><br>
-               <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
-               <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer">
-               <p style="font-size: 14px!important;">Drop and drag the video file</p>
-               </div>
-               <!-- <span id="remove" class="danger">Remove</span> -->
-               </div>
-               <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                  <span id="remove" class="danger">Remove</span> -->
-               <div class="col-sm-8 mt-5 form-group">
-               <!--<p>Upload Trailer video</p>-->
-               @if(!empty($video->trailer) && $video->trailer != '')
-               <video width="200" height="200" controls>
-               <source src="{{ $video->trailer }}" type="video/mp4">
-               </video>
-               @endif
-               </div>
-               </div>
-               </div> 
-               <input type="button" name="next" class="next action-button" value="Next" />
-               <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               </fieldset>
+                  <div class="form-card">
+                      <div class="row">
+                          <div class="col-7">
+                              <h2 class="fs-title">Image Upload:</h2>
+                          </div>
+                          <div class="col-5">
+                              <!-- <h2 class="steps">Step 3 - 4</h2> -->
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-6 form-group">
+                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 720X1080px)</span></label><br />
+                              <input type="file" name="image" id="image" />
+                              @if(!empty($video->image))
+                              <div class="col-sm-8 p-0">
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
+                              </div>
+                              @endif
+                          </div>
+                          <div class="col-sm-6 form-group">
+                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
+                              <input type="file" name="player_image" id="player_image" />
+                              @if(!empty($video->player_image))
+                              <div class="col-sm-8 p-0">
+                                  <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->player_image }}" class="video-img w-100 mt-1" />
+                              </div>
+                              <!-- URL::to('/') . '/public/uploads/images/' .  -->
+                              @endif
+                          </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                           <label class="m-0">Video Trailer Type:</label>
+                           <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
+                              <option   value="null"> Select the Video Trailer Type </option>
+                              <option {{ $video->trailer_type == 'video_mp4' ? 'selected' : '' }}  value="video_mp4"> Video Upload </option>
+                              <option {{ $video->trailer_type == 'm3u8_url' ? 'selected'  : '' }}   value="m3u8_url">  m3u8 Url </option>
+                              <option {{ $video->trailer_type == 'mp4_url' ? 'selected'   : '' }}   value="mp4_url">   mp4 Url</option>
+                              <option {{ $video->trailer_type == 'embed_url' ? 'selected' : '' }}   value="embed_url">  Embed Code</option>
+                           </select>
+                        </div>
+                     </div>
+
+                        <div class="row trailer_m3u8_url">
+                           <div class="col-sm-6 form-group" >
+                              <label class="m-0"> Trailer m3u8 Url :</label>
+                              <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+
+                              @if(!empty($video->trailer) && $video->trailer != '')
+                                 <video width="560" height="315" controls>
+                                    <source src="{{ $video->trailer }}" type="application/x-mpegURL">
+                              </video>
+                              @endif
+
+                           </div>
+                        </div>
+
+                    
+                        <div class="row trailer_mp4_url">
+                           <div class="col-sm-6 form-group" >
+                              <label class="m-0"> Trailer mp4 Url :</label>
+                              <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+
+                              @if(!empty($video->trailer) && $video->trailer != '')
+                                 <video width="560" height="315" controls>
+                                    <source src="{{ $video->trailer }}" type="video/mp4" />
+                                 </video>
+                              @endif
+
+                           </div>
+                        </div>
+
+                        <div class="row trailer_embed_url">
+                           <div class="col-sm-6 form-group" >
+                              <label class="m-0">Trailer Embed Code :</label>
+                              <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+
+                              @if(!empty($video->trailer) && $video->trailer != '')
+                                 <iframe width="560" height="315"  src="{{ $video->trailer }}" frameborder="0" allowfullscreen></iframe>
+                              @endif
+
+                           </div>
+                        </div>
+
+
+                       <div class="row trailer_video_upload">
+                          <div class="col-sm-8 form-group">
+                              <label class="m-0">Upload Trailer :</label><br />
+                              <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
+                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
+                                  <p style="font-size: 14px !important;">Drop and drag the video file</p>
+                              </div>
+                              <!-- <span id="remove" class="danger">Remove</span> -->
+                          </div>
+                          <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                <span id="remove" class="danger">Remove</span> -->
+                          <div class="col-sm-8 mt-5 form-group">
+                              <!--<p>Upload Trailer video</p>-->
+                              @if(!empty($video->trailer) && $video->trailer != '')
+                              <video width="200" height="200" controls>
+                                  <source src="{{ $video->trailer }}" type="video/mp4" />
+                              </video>
+                              @endif
+                          </div>
+                      </div>
+                  </div>
+                  <input type="button" name="next" class="next action-button" value="Next" />
+                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+              </fieldset>
+              
                <fieldset>
                   <div class="form-card">
                      <div class="row">
@@ -1501,6 +1562,64 @@ $(document).ready(function($){
    // console.log(path);
    }
 
+
+   
+   $(document).ready(function(){
+         $('.trailer_video_upload').hide();
+         $('.trailer_m3u8_url').hide();
+         $('.trailer_mp4_url').hide();
+         $('.trailer_embed_url').hide();
+
+      var trailer_types = <?php echo json_encode($video['trailer_type']); ?>;
+
+      if( trailer_types == 'video_mp4'){
+         $('.trailer_video_upload').show();
+
+      }else if(trailer_types == 'm3u8_url'){
+         $('.trailer_m3u8_url').show();
+
+      }else if(trailer_types == 'mp4_url'){
+         $('.trailer_mp4_url').show();
+      }
+      else if(trailer_types == 'embed_url'){
+         $('.trailer_embed_url').show();
+      }
+
+$(".trailer_type").change(function(){
+var trailer_type = $('.trailer_type').val();
+
+if(trailer_type == 'video_mp4' ){
+   $('.trailer_video_upload').show();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'm3u8_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').show();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'mp4_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').show();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'embed_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').show();
+}
+else if(trailer_type == 'null' ){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
+         }
+});
+});
 
      
 </script>
