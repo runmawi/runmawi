@@ -781,24 +781,28 @@ $artists = [];
                 <?php  foreach($payment_type as $payment){
                           if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
                           if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
                 <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
                 <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
 			      	<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
                 <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label><br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
 				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
-						<?php  } }else{
+						<?php  } }elseif($payment->payment_type == 'Razorpay'){ ?>
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
+                <?php if($payment->payment_type == 'Razorpay'){ echo $payment->payment_type ; }else{ echo $payment->payment_type ; } ?>
+            <?php }
+            else{
                             echo "Please Turn on Payment Mode to Purchase";
                             break;
                          }
