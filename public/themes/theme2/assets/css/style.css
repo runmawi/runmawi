@@ -95,7 +95,7 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
                        Navigation
 --------------------------------------------------------------*/
 header#main-header.menu-sticky { -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.4); }
-header#main-header.menu-sticky { position: fixed; top: 0; width: 100%; background: rgba(20, 20, 20, 0.9) !important; -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); z-index: 999; }
+header#main-header.menu-sticky { position: fixed; top: 0; width: 100%; background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%) !important; -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1); z-index: 999; }
 header .navbar .menu-header-menu-container, header .navbar .menu-all-pages-container, header .navbar .menu-testing-menu-container, header .navbar .menu-short-container, header .navbar .menu-main-menu-container { display: inline-block; width: 100%; }
 header .navbar ul.navbar-nav { display: block; text-align: center; }
 header .navbar ul li { list-style: none;/* margin-right: 18px;*/ position: relative; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; display: inline-block;padding: 10px; }
@@ -159,7 +159,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .playbtn:hover .circle { stroke-dashoffset: 0; opacity: 1; }
 .w-trailor { font-size: 17px; letter-spacing: 3.5px; font-weight: 600; color: var(--iq-white); margin-left: 5px; }
 .slider-inner{position: relative;overflow: hidden;width: 100%;}
-.big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: transparent; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: #fff; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; /*-webkit-text-fill-color: transparent; */}
 .slick-track{margin:unset!important;width: 0 auto!important;}
 .favorites-contens{
     padding: 10px;
@@ -277,7 +277,7 @@ border-radius: 10px!important;
 .trending-pills.nav-pills .nav-item a:hover { color: var(--iq-primary); }
 .trending-content { padding: 0px 50px; display: flex; }
 .p-btns { display: flex; align-items: center; }
-.trending-info .trending-text { font-size: 60px; line-height: 60px; margin: 15px 0; }
+.trending-info .trending-text { font-size: 30px; line-height: 60px; margin: 15px 0; }
 .trending-info .text-detail { font-size: 20px; font-weight: 500; letter-spacing: 0.7px; margin-bottom: 30px; }
 .trending-info .text-detail .badge { font-size: 20px; }
 .badge.badge-trend { background: rgb(0, 0, 0, 0.42); }
@@ -1450,7 +1450,7 @@ li.list-group-item {width: 375px;}
     width: 35px;
 }
 #video_container{
-    padding-top: 10px;
+   
 }
 
 .you-may-like{

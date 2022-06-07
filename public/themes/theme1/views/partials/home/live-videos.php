@@ -16,7 +16,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" />
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
                         </a>
                         
                       <!-- PPV price -->
@@ -32,7 +32,7 @@
                          <?php } ?>   
                        
                 </div>
-                <div class="block-description" style="top: 40px !important;"></div>
+                <div class="block-description" ></div>
                
                 <div class="hover-buttons">
                     <div class="d-flex align-items-center justify-content-between">
