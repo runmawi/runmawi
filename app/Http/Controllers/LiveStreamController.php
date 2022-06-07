@@ -124,7 +124,7 @@ class LiveStreamController extends Controller
              }
 
              $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
-             $Razorpay_payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->first();
+             $Razorpay_payment_setting = PaymentSetting::where('status',1)->first();
 
 
            $data = array(
