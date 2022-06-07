@@ -640,6 +640,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php } ?>
                         <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
+
+                        <?php
+                           $user = Auth::user(); 
+
+                         if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                              <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn1 btn-secondary btn-lg btn-block  mt-3 rent-video ">
+                              <?php echo __('Rents');?> </button>
+                            <?php } ?>
                    </div> 
                </div></div>
            </div>
@@ -808,10 +816,13 @@ $artists = [];
              </div>                    
          </div>
          <div class="modal-footer">
-         <a onclick="pay(<?php echo PvvPrice();?>)">
-                <button type="button" class="btn btn-primary" >Continue</button>
-                    </a>
-           <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button> -->
+            <!-- script Button -->
+                <a onclick="pay(<?php echo PvvPrice();?>)">
+                    <button type="button" class="btn btn-primary" >Continue</button>
+                </a>
+
+             <!-- Razorpay Button -->
+                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn btn-primary" >Continue</button>
          </div>
        </div>
      </div>

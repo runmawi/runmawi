@@ -148,6 +148,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                                 <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
                                 <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+
+                                <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+
                             </div>
                         </div>
                     </div>
@@ -641,7 +644,6 @@ settings: "unslick" // destroys slick
 // Set the date we're counting down to
 var date = "<?= $new_date ?>";
 var countDownDate = new Date(date).getTime();
-// alert(date)
 // Update the count down every 1 second
 var x = setInterval(function() {
 

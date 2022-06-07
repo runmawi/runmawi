@@ -813,54 +813,62 @@ $artists = [];
                    <span id="paypal-button"></span> 
                  </div>
                  
-                 <div class="col-sm-4">
-                 <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
-                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
-                <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
-                <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
-                <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
-                 <label for="method"><h3>Payment Method</h3></label>
+                  <div class="col-sm-4">
+                  <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
+                  <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+                  <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
+                  <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
+                  <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
+                  <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                  <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
+                  <label for="method"><h3>Payment Method</h3></label>
                  
                  <?php $payment_type = App\PaymentSetting::get(); ?>
 
-                <label class="radio-inline">
-                <?php  foreach($payment_type as $payment){
-                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
-		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-              </label>
-                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
-                <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
-			      	<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                  <label class="radio-inline">
+                  <?php  foreach($payment_type as $payment){
+                            if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
+                            if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                            <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                  <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
-                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
-		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-              </label><br>
-                          <?php 
-						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
-				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-              </label>
-						<?php  } }else{
-                            echo "Please Turn on Payment Mode to Purchase";
-                            break;
-                         }
-                         }?>
+                  <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                  <label class="radio-inline">
+                  <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                  </label>
+                  <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                  <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+              <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label><br>
+                            <?php 
+              }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+                  <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+          <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                </label>
+              <?php  } }
+              else{
+                      echo "Please Turn on Payment Mode to Purchase";
+                        break;
+                  }
+                          }?>
 
-                 </div>
-             </div>                    
-         </div>
-         <div class="modal-footer">
-         <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                <button type="button" class="btn btn-primary" >Continue</button>
-                    </a>
-           <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button> -->
-         </div>
+                  </div>
+              </div>                    
+          </div>
+          <div class="modal-footer">
+            <!-- script Button -->
+                <a onclick="pay(<?php echo $video->ppv_price;?>)">
+                      <button type="button" class="btn btn-primary" >Continue</button>
+                </a>
+
+            <!-- Razorpay Button -->
+                <?php 
+                    $razorpay_rent = 'RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price ;
+                ?>
+      
+                <button onclick="location.href ='<?= URL::to($razorpay_rent) ?>' ;" id="" class="btn btn-primary" >Continue</button>
+          </div>
        </div>
      </div>
    </div>
