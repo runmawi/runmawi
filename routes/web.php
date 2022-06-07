@@ -463,6 +463,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
 
+
+    // Footer Link
+    Route::get('/footer_link', 'AdminSettingsController@footer_link')->name('footer_link'); 
+    Route::post('/footer_link_store', 'AdminSettingsController@footer_link_store'); 
+
+
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
@@ -1396,6 +1402,10 @@ Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptio
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
 
+Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
+Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
 
+Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
+Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
 
 
