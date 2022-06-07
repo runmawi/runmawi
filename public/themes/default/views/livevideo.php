@@ -318,7 +318,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                             </li>
                             <!-- PPV button -->
                             <li>
-                                <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
+                                <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                                     <?php echo __('Rent');?> </a>
                             </li>
                         </ul>

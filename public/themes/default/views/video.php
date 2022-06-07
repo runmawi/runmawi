@@ -54,11 +54,7 @@ if(!empty($request_url)){
 .vjs-seek-to-live-control {
            display: none !important;
        }
-.intro_skips,.Recap_skip {
-    position: absolute;
-    top: -19%;
-    left: 79%;
-}
+
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
@@ -80,6 +76,13 @@ div#url_linkdetails {
     top: 22%;
     left: 83%;
     font-size: x-large;
+    display: none;
+}
+      .intro_skips,.Recap_skip {
+    position: absolute;
+    top: -19%;
+    left: 79%;
+          display: none;
 }
 .countdown {
   text-align: center;

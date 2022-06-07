@@ -19,18 +19,19 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
-              </div> </div>
-              
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
+              </div> 
+               </div>
               <div class="block-description">
                
                 <div class="hover-buttons d-flex">
                   <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                   
                   </a>
                 </div>
               </div>
+              
               <div class="mt-2">
                   
                 <div class="movie-time d-flex align-items-center justify-content-between my-2">
@@ -43,7 +44,7 @@
                 </div>
                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>
               </div>
-           
+          
           </a>
         </li>
       <?php endforeach; 
