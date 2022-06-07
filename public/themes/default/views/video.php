@@ -825,28 +825,43 @@ $artists = [];
                  
                  <?php $payment_type = App\PaymentSetting::get(); ?>
 
+                 <!-- Stripe -->
                   <label class="radio-inline">
-                  <?php  foreach($payment_type as $payment){
-                            if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                            if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                            <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
-                  <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-                </label>
-                  <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
-                  <label class="radio-inline">
-                  <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
-                <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                     <?php  foreach($payment_type as $payment){
+
+                            if( $payment->payment_type == "Razorpay"  || $payment->stripe_status == 1 || $payment->paypal_status == 1 ){ 
+                              if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                                <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}"  data-value="stripe">
+                                <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
                   </label>
+                  
+                <!-- paypal -->
+                  <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+
+                  <label class="radio-inline" >
+                     <input type="radio" class="payment_btn"  id="important" name="payment_method" value="{{ $payment->payment_type }}"  data-value="paypal" >
+                      <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                  </label>
+
                   <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                  <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
-              <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
+                      <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}"  data-value="stripe" >
+                      <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label><br>
+
                             <?php 
-              }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                  <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
-          <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
+                  }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+                      <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $payment->payment_type }}"  data-value="paypal" >
+                      <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
-              <?php  } }
+              <?php  }
+              // Razorpay
+              elseif( $payment->payment_type == "Razorpay"  ){ ?>
+                <label class="radio-inline" >
+                    <input type="radio" class="payment_btn" id="important" name="payment_method" value=""  data-value="Razorpay" >
+                    <?php  echo $payment->payment_type ;  ?>
+                </label>
+            <?php
+              } }
               else{
                       echo "Please Turn on Payment Mode to Purchase";
                         break;
@@ -857,17 +872,18 @@ $artists = [];
               </div>                    
           </div>
           <div class="modal-footer">
-            <!-- script Button -->
+            <!-- Stripe Button -->
+            <div class="Stripe_button">
                 <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                      <button type="button" class="btn btn-primary" >Continue</button>
+                          <button type="button" class="btn btn-primary" >Continue</button>
                 </a>
-
+            </div>
+               
             <!-- Razorpay Button -->
-                <?php 
-                    $razorpay_rent = 'RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price ;
-                ?>
+              <div class="Razorpay_button">
+                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn btn-primary" > Continue</button>
+              </div>
       
-                <button onclick="location.href ='<?= URL::to($razorpay_rent) ?>' ;" id="" class="btn btn-primary" >Continue</button>
           </div>
        </div>
      </div>
@@ -1576,5 +1592,27 @@ var x = setInterval(function() {
   }
 }, 1000);
 </script>
+
+<script>
+  window.onload = function(){ 
+       $('.Razorpay_button').hide();
+    }
+
+    $(".payment_btn").click(function(){
+      var payment_mode = $(this).data('value')
+
+      if(payment_mode == "Razorpay"){
+        $('.Razorpay_button').show();
+        $('.Stripe_button').hide();
+
+      }else{
+        $('.Razorpay_button').hide();
+        $('.Stripe_button').show();
+      }
+    });
+
+
+</script>
+
 <?php include('footer.blade.php');?>
 

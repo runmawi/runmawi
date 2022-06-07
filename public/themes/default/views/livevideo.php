@@ -147,10 +147,15 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                             <div class="ppv-block">
                                 <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
-                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
 
-                                <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                               
+                    <!-- Stripe Button -->
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Stripe Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
 
+                    <!-- Razorpay Button -->
+                    <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                            <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                    <?php } ?>
                             </div>
                         </div>
                     </div>
