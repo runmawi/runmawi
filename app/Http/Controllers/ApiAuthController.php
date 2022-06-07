@@ -4145,21 +4145,21 @@ return response()->json($response, 200);
         return $item;
       });
       $response = array(
-        $status = "true",
+        'status' => "true",
         'videos'=> $videos,
       );
     }else{
       $response = array(
-        $status = "false",
+        'status' => "false",
         'videos'=> [],
       );
     }
 
   
-    $response = array(
-        'status'=>$status,
-        'videos'=> $videos
-      );
+    // $response = array(
+    //     'status'=>$status,
+    //     'videos'=> $videos
+    //   );
     return response()->json($response, 200);
 
 
