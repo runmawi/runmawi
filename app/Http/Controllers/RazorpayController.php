@@ -408,7 +408,7 @@ dd($carbon);
             'address'        =>   null ,
         );
 
-        return view('Razorpay.live_rent_checkout',compact('response'),$response);
+        return view('Razorpay.Live_rent_checkout',compact('response'),$response);
     }
 
     public function RazorpayLiveRent_Payment(Request $request)

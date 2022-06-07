@@ -56,11 +56,7 @@ if(!empty($request_url)){
 .vjs-seek-to-live-control {
            display: none !important;
        }
-.intro_skips,.Recap_skip {
-    position: absolute;
-    top: -19%;
-    left: 79%;
-}
+
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
@@ -79,6 +75,13 @@ div#url_linkdetails {
     top: 22%;
     left: 83%;
     font-size: x-large;
+    display: none;
+}
+      .intro_skips,.Recap_skip {
+    position: absolute;
+    top: -19%;
+    left: 79%;
+          display: none;
 }
 .countdown {
   text-align: center;
@@ -161,7 +164,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            <?php } if($value['sub_language'] == "Hindi"){ ?>
            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
            <?php } } } else { }  ?>  
-</video>
+
 <div class="playertextbox hide">
                    <!--<h2>Up Next</h2>-->
                    <p><?php if(isset($videonext)){ ?>
@@ -724,11 +727,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php if(!empty($video->details) ) { ?>
 <div class="col-sm-6 p-0">
 <h4>Links & details</h4>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->details); ?></p>
+<div class="text-white ">
+    <p class="trending-dec  mb-0 text-white"><?php echo __($video->details); ?></p>
 </div></div>
 <?php  }?>
-<br>
+
 
 <?php if(!empty($video->pdf_files) ) { ?>
 <h4>E-Paper</h4>
