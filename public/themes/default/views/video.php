@@ -34,7 +34,6 @@ if(!empty($request_url)){
 <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 <?php } ?>
 
-<input type="hidden" name="ads_path" id="ads_path" value="<?php echo  $ads_path;?>">
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo  $video->id;?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
@@ -605,7 +604,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     </div> -->
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     style="margin-left: 371%;">     
-                       <?php if($video->trailer != ''){ ?>
+                       <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
                            <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
@@ -830,24 +829,28 @@ $artists = [];
                 <?php  foreach($payment_type as $payment){
                           if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
                           if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
                 <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
                 <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
 			      	<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
                 <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label><br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
 				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
-						<?php  } }else{
+						<?php  } }elseif($payment->payment_type == 'Razorpay'){ ?>
+                <input type="radio" id="important" name="payment_method" value="<?php $payment->payment_type ?>">
+                <?php if($payment->payment_type == 'Razorpay'){ echo $payment->payment_type ; }else{ echo $payment->payment_type ; } ?>
+            <?php }
+            else{
                             echo "Please Turn on Payment Mode to Purchase";
                             break;
                          }
@@ -890,7 +893,7 @@ $artists = [];
 -->
        
 
-<?php if(count($Reels_videos) > 0){ ?>
+<?php if(count($Reels_videos) > 0 && $ThumbnailSetting->reels_videos == 1 ){ ?>
     <div class="video-list you-may-like">
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/home/Reels-video.php');?>
@@ -1392,45 +1395,50 @@ $(document).ready(function(){
     ->where('ads_events.status',1)
     ->where('advertisements.status',10)
     ->where('videos.ads_category',$video->ads_category)
+    ->where('ads_position','pre')
     ->get();
-
 
     if( count($AdsVideos) >= 1){
       $AdsVideoss = $AdsVideos->random();
 
       $AdsvideoFile = URL::to('public/uploads/AdsVideos/'.$AdsVideoss->ads_video);
 
-      $getID3           = new getID3;
-      $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);       
-      $Ads_duration     = $getID3->analyze($Ads_store_path);
-      $Ads_duration_Sec = $Ads_duration['playtime_seconds'];
-      
+
+      if($AdsVideoss->ads_video != null ){
+
+        $getID3           = new getID3;
+        $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);       
+        $Ads_duration     = $getID3->analyze($Ads_store_path);
+        $Ads_duration_Sec = $Ads_duration['playtime_seconds'];
+        $ads_path_tag     = null ;
+      }
+      else{
+        $Ads_duration_Sec = null;
+        $ads_path_tag     = $AdsVideoss->ads_path ;
+      }
+
       $advertiser_id    =  $AdsVideoss->advertiser_id ; 
       $ads_id           =  $AdsVideoss->ads_id ;
       $ads_position     =  $AdsVideoss->ads_position ;
+      $ads_path_tag     =  $AdsVideoss->ads_path;
+      $ads_type         =  $AdsVideoss->ads_video ;
 
     }else{
 
-      $AdsvideoFile     = null ;
-      $Ads_duration_Sec = null ;
+      $AdsvideoFile     =  null ;
+      $Ads_duration_Sec =  null ;
       $advertiser_id    =  null ; 
       $ads_id           =  null ; 
       $ads_position     =  null ;
-
+      $ads_path_tag     =  null ;
+      $ads_type         =  null ;
     }
 
 
     if($ads_position !=null && $ads_position == 'pre'){
 
-        $ads_start_tym = '1';
+        $ads_start_tym = '0.1';
 
-    }elseif($ads_position !=null && $ads_position == "mid"){
-
-      $ads_start_tym = '30';
-
-    }elseif($ads_position !=null && $ads_position == "post" ){
-
-      $ads_start_tym = '50';
     }else{
       $ads_start_tym = ' ';
     }
@@ -1439,6 +1447,7 @@ $(document).ready(function(){
 
 ?>
 
+  <input type="hidden" name="ads_path_tag" id="ads_path_tag" value="<?php echo  $ads_path_tag;?>">
   <input type="hidden" id="ads_start_tym" class="ads_start_tym"  value='<?php  echo $ads_start_tym  ; ?>'>
   <input type="hidden" id="" class="ads_show_status"  value='1'>
   <input type="hidden" id="Ads_vies_count" onclick="Ads_vies_count()"> 
@@ -1448,10 +1457,12 @@ $(document).ready(function(){
   var videoads_tym    =  document.getElementById(videotypeId);
   var Ads_videos      = <?php echo json_encode($AdsvideoFile)  ;?>;
   var normal_videos   = <?php  echo json_encode($normalvideoFile)  ;?>;
-  var ads_end_tym     =  <?php  echo json_encode($Ads_duration_Sec)  ;?>;
-  var Ads_count      = <?php echo count($AdsVideos); ?> ;
+  var ads_end_tym     = <?php  echo json_encode($Ads_duration_Sec)  ;?>;
+  var Ads_count       = <?php echo count($AdsVideos); ?> ;
+  var Ads_type        = <?php echo json_encode($ads_type); ?> ;
 
-  if( Ads_count >= 1){
+
+  if( Ads_count >= 1 && Ads_type != null){
 
   this.videoads_tym.addEventListener('timeupdate', (e) => {
 
@@ -1501,6 +1512,9 @@ $(document).ready(function(){
 		}
 
 </script>
+
+
+<?php include('AdsvideoMid.php'); ?>
 
 
 <?php

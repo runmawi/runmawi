@@ -153,6 +153,34 @@
                                 </td>
                             </tbody>
 
+
+                            <tbody>
+                                <td> {{ '10'}} </td>
+                                <td> {{ 'Trailer'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="trailer" id="trailer" class="trailer" type="checkbox" @if( $thumbnail_setting->trailer == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
+
+                            <tbody>
+                                <td> {{ '11'}} </td>
+                                <td> {{ 'Reels Videos'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="reels_videos" id="reels_videos" class="reels_videos" type="checkbox" @if( $thumbnail_setting->reels_videos == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
                         </table>
 
                         <div class="col-md-12 form-group" align="right">
