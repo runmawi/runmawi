@@ -73,8 +73,10 @@ border-radius: 0px 4px 4px 0px;
 
 	
     <p><h3>Stripe Payment</h3></p>
-
 	<form method="POST" action="{{ URL::to('admin/payment_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+    
+    @if(!empty($payment_settings))
+
 	<div class="row">
 			<!-- <div class="col-md-12"> -->
 		<!-- <div class="row mt-4"> -->
@@ -148,7 +150,7 @@ border-radius: 0px 4px 4px 0px;
 			</div>
             <br>
             <br>
-
+            @endif
 
 {{-- Razorpay --}}
 
@@ -302,6 +304,8 @@ border-radius: 0px 4px 4px 0px;
 		
             </div>
 		</div>
+    @Endif
+
 		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
         
 		<div class="panel-body mt-3" >
@@ -311,7 +315,6 @@ border-radius: 0px 4px 4px 0px;
 
             
 	</form>
-    @Endif
                   </div>
              </div>
     </div>

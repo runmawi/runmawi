@@ -132,6 +132,22 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="col-sm-6">
+                        <label class="m-0">Episode Player Image</label>
+                        <p class="p1">Select the player image (16:9 Ratio or 1280X720px)</p>
+
+                        <div class="panel-body">
+                            @if(!empty($episodes->player_image))
+                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
+                            @endif
+                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                        </div>
+                    </div>
+                        
+                    </div>
+
+                    <div class="row mt-3">
                         <div class="col-sm-6">
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading">
