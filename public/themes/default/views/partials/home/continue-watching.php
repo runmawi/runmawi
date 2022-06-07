@@ -84,8 +84,9 @@
                                           </span>
                                         </div>
                                         <?php }?>
+                                    </div>
+
                                   <?php } ?>
-                                  </div>
 
 
                                   <div class="movie-time d-flex align-items-center pt-1">
@@ -121,7 +122,7 @@
                        </li>
                        <?php                     
                         endforeach; 
-                                   endif; ?>
+                        endif; ?>
                     </ul>
                  </div>
                  <?php endif; ?>
