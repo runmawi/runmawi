@@ -4144,17 +4144,22 @@ return response()->json($response, 200);
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
         return $item;
       });
-      $status = "true";
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
     }else{
-            $status = "false";
-            $videos = [];
+      $response = array(
+        'status' => "false",
+        'videos'=> [],
+      );
     }
 
   
-    $response = array(
-        'status'=>$status,
-        'videos'=> $videos
-      );
+    // $response = array(
+    //     'status'=>$status,
+    //     'videos'=> $videos
+    //   );
     return response()->json($response, 200);
 
 

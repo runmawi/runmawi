@@ -76,7 +76,7 @@ h3, .h3 { font-size: 1.953em;font-family: 'Chivo'; }
 h4, .h4 { font-size: 1.400em; font-family: 'Chivo';}
 h5, .h5 { font-size: 1.200em; font-family: 'Chivo';}
 h6, .h6 { font-size: 1.0em; }
-.container-fluid { padding: 0 80px; }
+.container-fluid { padding: 0 50px; }
 .fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
     top: 0;
     left: 0;

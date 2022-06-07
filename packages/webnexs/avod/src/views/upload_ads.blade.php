@@ -198,16 +198,26 @@
                                               <option value="post">Post</option>
                                           </select>
                                       </div>
+
                                       <div class="form-group">
+                                        <label> Ads upload Type:</label>
+                                        <p class="error-message" style="color: red;">This filed is required</p>
+                                        <select class="form-control ads_type" name="">
+                                            <option value="null">select Ads Type </option>
+                                            <option value="tag_url">Ad Tag Url </option>
+                                            <option value="ads_video_upload">Ads Video Upload </option>
+                                           
+                                        </select>
+                                    </div>
+
+                                      <div class="form-group tag_url">
                                           <label> Ad Tag Url:</label>
-                                          <p class="error-message" style="color: red;">This filed is required</p>
-                                          <input type="text" id="ads_path" name="ads_path" required class="form-control" />
+                                          <input type="text" id="ads_path" name="ads_path"  class="form-control" />
                                       </div>
                           
-                                      <div class="form-group">
+                                      <div class="form-group ads_video_upload">
                                           <label> Ads Video Upload:</label>
-                                          <p class="error-message" style="color: red;">This filed is required</p>
-                                          <input type="file" id="ads_video" name="ads_video" required class="form-control" />
+                                          <input type="file" id="ads_video" name="ads_video"  class="form-control" />
                                       </div>
                                   </div>
                               </div>
@@ -727,9 +737,9 @@ window.onload=function(){
      document.getElementsByClassName('error-message')[2].style.display = 'none';
      document.getElementsByClassName('error-message')[3].style.display = 'none';
      document.getElementsByClassName('error-message')[4].style.display = 'none';
-     document.getElementsByClassName('error-message')[5].style.display = 'none';
      $('.location_input').hide();
-
+     $('.ads_video_upload').hide();
+     $('.tag_url').hide();
 };
 
       $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
@@ -740,6 +750,7 @@ window.onload=function(){
       var ads_name_val = $("#ads_name").val();
       var ads_path_val = $("#ads_path").val();
       var ads_video_val = $("#ads_video").val();
+      var Ads_type   = $(".ads_type").val();
       
       if(age_validation == true && household_income_val == true  && gender_val != null ){
          document.getElementsByClassName("error-message")[0].style.display = "none";
@@ -755,22 +766,39 @@ window.onload=function(){
          document.getElementById("Next1").disabled = true;
       }
 
-      if(ads_name_val != '' && ads_path_val != '' && ads_video_val != '' ){
+      if(ads_name_val != '' && Ads_type != 'null' ){
 
          document.getElementsByClassName("error-message")[3].style.display = "none";
          document.getElementsByClassName('error-message')[4].style.display = 'none';
-         document.getElementsByClassName('error-message')[5].style.display = 'none';
 
          document.getElementById("Next2").disabled = false;
       }else{
 
          document.getElementsByClassName("error-message")[3].style.display = "block";
          document.getElementsByClassName('error-message')[4].style.display = 'block';
-         document.getElementsByClassName('error-message')[5].style.display = 'block';
 
          document.getElementById("Next2").disabled = true;
       }
    });
+
+
+
+   $(".ads_type").change(function(){
+         var ads_type = $('.ads_type').val();
+        
+         if(ads_type == 'tag_url' ){
+            $('.tag_url').show();
+            $('.ads_video_upload').hide();
+           
+         }else if(ads_type == 'ads_video_upload'){
+            $('.tag_url').hide();
+            $('.ads_video_upload').show();
+         }
+         else if(ads_type == 'null' ){
+            $('.tag_url').hide();
+            $('.ads_video_upload').hide();
+         }
+      });
 
 });
 

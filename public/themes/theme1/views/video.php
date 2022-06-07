@@ -56,11 +56,7 @@ if(!empty($request_url)){
 .vjs-seek-to-live-control {
            display: none !important;
        }
-.intro_skips,.Recap_skip {
-    position: absolute;
-    top: -19%;
-    left: 79%;
-}
+
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
@@ -79,6 +75,14 @@ div#url_linkdetails {
     top: 22%;
     left: 83%;
     font-size: x-large;
+    display: none;
+    
+}
+      .intro_skips,.Recap_skip {
+    position: absolute;
+    top: -19%;
+    left: 79%;
+          display:none;
 }
 .countdown {
   text-align: center;
@@ -633,13 +637,21 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  <div class="row justify-content-end">
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                    <div class=" d-flex justify-content-end">     
-                       <?php if($video->trailer != ''){ ?>
+                       <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1  ){ ?>
                            <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
                         <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
+
+                        <?php
+                           $user = Auth::user(); 
+
+                         if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                              <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn1 btn-secondary btn-lg btn-block  mt-3 rent-video ">
+                              <?php echo __('Rents');?> </button>
+                            <?php } ?>
                    </div> 
                </div></div>
            </div>
@@ -781,24 +793,28 @@ $artists = [];
                 <?php  foreach($payment_type as $payment){
                           if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
                           if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>" data-value="stripe">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
                 <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
                 <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php $payment->payment_type ?>" data-value="paypal">
 			      	<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
                 <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="<?php $payment->payment_type ?>" data-value="stripe">
 		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
               </label><br>
                           <?php 
 						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
+                <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php $payment->payment_type ?>" data-value="paypal">
 				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
               </label>
-						<?php  } }else{
+						<?php  } }elseif($payment->payment_type == 'Razorpay'){ ?>
+                <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php $payment->payment_type ?>" data-value="Razorpay">
+                <?php if($payment->payment_type == 'Razorpay'){ echo $payment->payment_type ; }else{ echo $payment->payment_type ; } ?>
+            <?php }
+            else{
                             echo "Please Turn on Payment Mode to Purchase";
                             break;
                          }
@@ -808,11 +824,18 @@ $artists = [];
              </div>                    
          </div>
          <div class="modal-footer">
-         <a onclick="pay(<?php echo PvvPrice();?>)">
-                <button type="button" class="btn btn-primary" >Continue</button>
-                    </a>
-           <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button> -->
-         </div>
+            <!-- script Button -->
+            <div class="Stripe_button">
+                <a onclick="pay(<?php echo PvvPrice();?>)">
+                    <button type="button" class="btn btn-primary" >Continue</button>
+                </a>
+            </div>
+
+             <!-- Razorpay Button -->
+             <div class="Razorpay_button">
+                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn btn-primary" >Continue</button>
+            </div>
+          </div>
        </div>
      </div>
    </div>
@@ -841,7 +864,7 @@ $artists = [];
 -->
        
 
-<?php if(count($Reels_videos) > 0){ ?>
+<?php if(count($Reels_videos) > 0 && $ThumbnailSetting->reels_videos == 1){ ?>
     <div class="video-list you-may-like">
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/home/Reels-video.php');?>
@@ -1344,5 +1367,28 @@ var x = setInterval(function() {
   }
 }, 1000);
 </script>
+
+
+<script>
+  window.onload = function(){ 
+       $('.Razorpay_button').hide();
+    }
+
+    $(".payment_btn").click(function(){
+      var payment_mode = $(this).data('value')
+
+      if(payment_mode == "Razorpay"){
+        $('.Razorpay_button').show();
+        $('.Stripe_button').hide();
+
+      }else{
+        $('.Razorpay_button').hide();
+        $('.Stripe_button').show();
+      }
+    });
+
+
+</script>
+
 <?php include('footer.blade.php');?>
 

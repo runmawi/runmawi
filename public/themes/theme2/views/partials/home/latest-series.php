@@ -5,8 +5,8 @@
   ?>
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <!-- <h4 class="main-title"> -->
-    Recently Added Series
+   <h4 class="main-title">
+    Recently Added 
     <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
   </h4>                      
 </div>
@@ -19,7 +19,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
               </div> </div>
               
               <div class="block-description">
