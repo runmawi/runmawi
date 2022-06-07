@@ -56,6 +56,7 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
         {
+
           $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
 
@@ -122,6 +123,9 @@ class LiveStreamController extends Controller
               $new_date = null;
              }
 
+             $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
+             $Razorpay_payment_setting = PaymentSetting::where('status',1)->first();
+
 
            $data = array(
                  'currency' => $currency,
@@ -132,8 +136,9 @@ class LiveStreamController extends Controller
                  'ppv_price' => $categoryVideos->ppv_price,
                  'watchlatered' => $watchlater,
                  'mywishlisted' => $wishlisted,
-                 'new_date' => $new_date
-
+                 'new_date' => $new_date,
+                 'payment_setting' => $payment_setting,
+                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
            );
 
            return Theme::view('livevideo', $data);

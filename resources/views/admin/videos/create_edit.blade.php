@@ -17,6 +17,9 @@
    [data-tip] {
    position:relative;
    }
+    #video{
+        width: 100%;
+    }
    .subtitle1{
    display: flex;
    justify-content: space-between;
@@ -145,8 +148,8 @@ border-radius: 0px 4px 4px 0px;
                             <label for=""><h3 class="fs-title m-0">Player Embed Link:</h3></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                         </div>
-                     </div>
-                      <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                     
+                      <div id="video_container" class="fitvid" atyle="z-index: 9999;" >
                         @if($video->type == 'mp4_url')
                            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4">
                               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
@@ -174,6 +177,7 @@ border-radius: 0px 4px 4px 0px;
                         
                         @endif
                         </div>
+                         </div>
 <!--
                           <div class="col-6 text-center">
                               <p>@if(!empty($video->title)){{ $video->title }}@endif</p>

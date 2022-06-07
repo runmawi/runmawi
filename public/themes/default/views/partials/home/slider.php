@@ -105,6 +105,7 @@ endif; ?>
 <!-- Video Sliders -->
 
 <?php if(isset($video_banners)) :
+//dd('test');
     foreach($video_banners as $key => $videos): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
@@ -281,11 +282,7 @@ data-delay-in="1.2">
         <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-            <style type="text/css">
-                .gt{
-                    height: 60px!important;
-                }
-</style>
+           
         <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10"
         points="73.5,62.5 148.5,105.8 73.5,149.1 " />

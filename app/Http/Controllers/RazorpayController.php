@@ -19,6 +19,13 @@ use App\User;
 use App\ThemeIntegration;
 use App\PaymentSetting;
 use URL;
+use App\ModeratorsUser;
+use App\VideoCommission;
+use App\PpvPurchase;
+use App\Video;
+use App\Setting;
+use App\LivePurchase;
+use App\LiveStream;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
@@ -264,5 +271,232 @@ dd($carbon);
         return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
 
- 
+    public function RazorpayVideoRent(Request $request,$video_id,$amount){
+
+        $recept_id = Str::random(10);
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->amount * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->amount * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'video_id'       =>  $request->video_id,
+            'user_id'        =>  Auth::user()->id ,
+            'description'    =>   null,
+            'address'        =>   null ,
+        );
+
+        return view('Razorpay.video_rent_checkout',compact('response'),$response);
+    }
+
+    public function RazorpayVideoRent_Payment(Request $request)
+    {
+
+       $setting = Setting::first();  
+       $ppv_hours = $setting->ppv_hours;
+
+       $d = new \DateTime('now');
+       $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+       $now = $d->format('Y-m-d h:i:s a');
+       $time = date('h:i:s', strtotime($now));
+       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+
+        try {
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            
+            $attributes  = array(
+                'razorpay_signature'   => $request->rzp_signature,  
+                'razorpay_payment_id'  => $request->rzp_paymentid ,  
+                'razorpay_order_id'    => $request->rzp_orderid
+            );
+            $order  = $api->utility->verifyPaymentSignature($attributes);
+
+
+            $video = Video::where('id','=',$request->video_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = $commssion->percentage; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = null; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = $request->user_id ;
+            $purchase->video_id     = $request->video_id ;
+            $purchase->total_amount = $request->amount /100 ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            $respond=array(
+                'status'  => 'true',
+            );
+        
+            return view('Razorpay.Rent_message',compact('respond'),$respond);
+
+        } catch (\Exception $e) {
+
+            $respond=array(
+                'status'  => 'false',
+            );
+
+            return view('Razorpay.Rent_message',compact('respond'),$respond); 
+        }
+    }
+
+    public function RazorpayLiveRent(Request $request,$live_id,$amount){
+
+        $recept_id = Str::random(10);
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->amount * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+
+        
+        $razorpayOrder = $api->order->create($orderData);   
+
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->amount * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'live_id'        =>  $request->live_id,
+            'user_id'        =>  Auth::user()->id ,
+            'description'    =>   null,
+            'address'        =>   null ,
+        );
+
+        return view('Razorpay.Live_rent_checkout',compact('response'),$response);
+    }
+
+    public function RazorpayLiveRent_Payment(Request $request)
+    {
+
+       $setting = Setting::first();  
+       $ppv_hours = $setting->ppv_hours;
+
+       $d = new \DateTime('now');
+       $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+       $now = $d->format('Y-m-d h:i:s a');
+       $time = date('h:i:s', strtotime($now));
+       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+
+        try {
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            
+            $attributes  = array(
+                'razorpay_signature'   => $request->rzp_signature,  
+                'razorpay_payment_id'  => $request->rzp_paymentid ,  
+                'razorpay_order_id'    => $request->rzp_orderid
+            );
+            $order  = $api->utility->verifyPaymentSignature($attributes);
+
+
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = $request->user_id ;
+            $purchase->live_id     = $request->live_id ;
+            $purchase->total_amount = $request->get('amount')/100 ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id = $request->user_id;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount = $request->get('amount')/100 ;
+            $livepurchase->status = 1;
+            $livepurchase->save();
+
+            $respond=array(
+                'status'  => 'true',
+            );
+        
+            return view('Razorpay.Rent_message',compact('respond'),$respond);
+
+        } catch (\Exception $e) {
+
+            $respond=array(
+                'status'  => 'false',
+            );
+
+            return view('Razorpay.Rent_message',compact('respond'),$respond); 
+        }
+    }
 }

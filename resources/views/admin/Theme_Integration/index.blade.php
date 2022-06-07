@@ -7,11 +7,18 @@
 <style>
     .theme_image:hover {
         border: 2px solid rgb(64, 172, 37);
-        padding: 10px;
+     
         border-radius: 25px;
+    }
+    .theme_image{
+       padding: 10px; 
+          border: 2px solid #ddd;
+         border-radius: 25px;
+        margin: 0 15px;
     }
     .theme_name {
         color: #c92727;
+        
         text-align: center;
        /* font-family: 'FontAwesome';*/
     }
@@ -66,12 +73,13 @@ border-radius: 0px 4px 4px 0px;
             </div>
             
 		</div>
-    <div class="col-md-12" style="padding:30px;">
+    <div class="col-md-12 mt-5" >
                 <div class="sign-in-from  m-auto" >
 
                 <div class="row data">
+                    
                         @foreach ($Themes as $theme_integration)
-                            <div class="theme_image col-md-4">
+                            <div class="theme_image col-md-3">
                                 <div class="zoom themes">
                                     <img class="theme_img w-100" src="{{URL::asset('public/uploads/settings/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
                                 </div>
