@@ -759,4 +759,22 @@ class AdminAdvertiserController extends Controller
     
     }
 
+    public function ads_viewcount_mid(Request $request)
+    {
+
+      try {
+          Adviews::create([
+            'video_id'       => $request->video_id,
+            'ad_id'          => $request->ads_id,
+            'advertiser_id'  => $request->advertiser_id, 
+            'views_count'    => 1 ,
+          ]);
+          return 'success' ;
+      } 
+      catch (\Exception $e) { 
+        return 'false' ;
+      }
+    
+    }
+
 }

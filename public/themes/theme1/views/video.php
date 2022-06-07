@@ -633,7 +633,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  <div class="row justify-content-end">
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                    <div class=" d-flex justify-content-end">     
-                       <?php if($video->trailer != ''){ ?>
+                       <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1  ){ ?>
                            <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
@@ -841,7 +841,7 @@ $artists = [];
 -->
        
 
-<?php if(count($Reels_videos) > 0){ ?>
+<?php if(count($Reels_videos) > 0 && $ThumbnailSetting->reels_videos == 1){ ?>
     <div class="video-list you-may-like">
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/home/Reels-video.php');?>

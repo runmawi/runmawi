@@ -685,6 +685,8 @@ if($watermark != '') {
         $Thumbnail->category           =  $request->has('category') ? 1 : 0 ?? 0;   
         $Thumbnail->featured           =  $request->has('featured') ? 1 : 0 ?? 0; 
         $Thumbnail->free_or_cost_label =  $request->has('free_or_cost_label') ? 1 : 0 ?? 0; 
+        $Thumbnail->reels_videos       =  $request->has('reels_videos') ? 1 : 0 ?? 0; 
+        $Thumbnail->trailer            =  $request->has('trailer') ? 1 : 0 ?? 0; 
         $Thumbnail->save();  
 
         return redirect()->route('ThumbnailSetting');

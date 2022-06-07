@@ -443,7 +443,7 @@ input:checked + .sliderk:before {
                         </div>
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
-                              <li class="nav-item nav-icon">
+                              <!-- <li class="nav-item nav-icon">
                                  <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
                                      
                                  <i class="ri-search-line"></i>
@@ -462,7 +462,7 @@ input:checked + .sliderk:before {
                                        <div class="iq-card-body">
                                    <div id="search_list" class="search_list search-toggle device-search" >
                                            </div> </div></div>
-                              </li>
+                              </li> -->
                               <li class="nav-item nav-icon">
                                  <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
@@ -698,12 +698,15 @@ input:checked + .sliderk:before {
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
 </div> -->                                                  <!-- dark mode -->
-                                               <div class="toggle mt-3 text-right">
-                         <label class="switch toggle mt-3">
-  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-  <span class="sliderk round"></span>
-                                               </label></div>
+                           <div class="toggle mt-3 text-right">
+                              <label class="switch toggle mt-3">
+                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                 <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                 <span class="sliderk round"></span>
+                              </label>
+                           </div>
                                            </a>
+
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">

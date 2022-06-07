@@ -98,9 +98,7 @@ $data = Session::all();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+     <link href="http://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet">
 
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -110,9 +108,9 @@ $data = Session::all();
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
-       <link href="<?php echo URL::to('public/themes/theme1/assets/css/typography.css') ?>" rel="stylesheet">
-       <link href="<?php echo URL::to('public/themes/theme1/assets/css/responsive.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
 
        <!-- Icon - Remixicon & fontawesome  -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -142,9 +140,9 @@ $data = Session::all();
         margin: 20px auto;
     }
         .media h6{
-            font-family: Chivo;
+           /* font-family: Chivo;
     font-style: normal;
-    font-weight: normal;
+    font-weight: normal;*/
     font-size: 18px;
     line-height: 29px;
         }
@@ -170,7 +168,7 @@ $data = Session::all();
         .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 50px;
   height: 20px;
 }
 
@@ -195,10 +193,10 @@ $data = Session::all();
 .sliderk:before {
   position: absolute;
   content: "";
-  height: 12px;
-  width: 20px;
-  left: 7px;
-  bottom: 4px;
+  height: 15px;
+  width: 15px;
+  left: 5px;
+  bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -228,7 +226,7 @@ input:checked + .sliderk:before {
 }
 
 /* Dark mode and light Mode */
-       body.light-theme {
+      body.light-theme {
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
@@ -451,7 +449,7 @@ input:checked + .sliderk:before {
                         </div>
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
-                              <li class="nav-item nav-icon">
+                              <!-- <li class="nav-item nav-icon">
                                   <div class="search-box iq-search-bar d-search">
                                     <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
@@ -471,7 +469,7 @@ input:checked + .sliderk:before {
                                        <div class="iq-card-body">
                                    <div id="search_list" class="search_list search-toggle device-search" >
                                            </div> </div></div>
-                              </li>
+                              </li> -->
                               <li class="nav-item nav-icon">
                                  <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
