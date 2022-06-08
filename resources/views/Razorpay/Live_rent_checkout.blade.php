@@ -28,6 +28,12 @@ var options = {
     },
     "theme": {
         "color": "#F37254"
+    },
+
+    "modal": {
+    "ondismiss": function(){
+        window.location.href = "{{ URL::to('/live/'.$response['live_slug']) }} "
+        },
     }
 };
 var rzp1 = new Razorpay(options);
