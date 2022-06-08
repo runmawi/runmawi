@@ -467,6 +467,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     // Footer Link
     Route::get('/footer_link', 'AdminSettingsController@footer_link')->name('footer_link'); 
     Route::post('/footer_link_store', 'AdminSettingsController@footer_link_store'); 
+    Route::post('/footer_order_update', 'AdminSettingsController@footer_order_update'); 
+    Route::get('/footer_delete/{id}', 'AdminSettingsController@footer_delete'); 
+
+    //Select video delete
+    Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
