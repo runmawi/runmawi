@@ -286,6 +286,8 @@ dd($carbon);
         
         $razorpayOrder = $api->order->create($orderData);
 
+        $Video_slug = Video::where('id',$request->video_id)->pluck('slug')->first();
+
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
@@ -296,6 +298,7 @@ dd($carbon);
             'user_id'        =>  Auth::user()->id ,
             'description'    =>   null,
             'address'        =>   null ,
+            'Video_slug'     => $Video_slug ,
         );
 
         return view('Razorpay.video_rent_checkout',compact('response'),$response);
@@ -393,6 +396,7 @@ dd($carbon);
             'payment_capture' => 1 ,
         ];
 
+        $live_slug = LiveStream::where('id',$request->live_id)->pluck('slug')->first();
         
         $razorpayOrder = $api->order->create($orderData);   
 
@@ -406,6 +410,7 @@ dd($carbon);
             'user_id'        =>  Auth::user()->id ,
             'description'    =>   null,
             'address'        =>   null ,
+            'live_slug'      =>  $live_slug,
         );
 
         return view('Razorpay.Live_rent_checkout',compact('response'),$response);
