@@ -2326,10 +2326,12 @@ if(!empty($artistsdata)){
         try {
             $video_id = $request->video_id;
             Video::whereIn('id',explode(",",$video_id))->delete();
-            return 'true';
+
+            return response()->json(['message'=>"true"]);
+          
 
         } catch (\Throwable $th) {
-            return 'false';
+            return response()->json(['message'=>"false"]);
         }
       
     }
