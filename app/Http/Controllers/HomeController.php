@@ -3013,7 +3013,7 @@ class HomeController extends Controller
             'screen' => $screen,
             'subcriber_user' => $subcriber_user
         );
-        return view('Multipleprofile', $data);
+        return Theme::view('Multipleprofile', $data);
 
     }
 
