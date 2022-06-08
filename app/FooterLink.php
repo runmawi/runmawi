@@ -11,6 +11,8 @@ class FooterLink extends Model
     protected $fillable = [
         'name',
         'link',
+        'order',
+        'column_position',
         'created_at',
         'updated_at',
     ];

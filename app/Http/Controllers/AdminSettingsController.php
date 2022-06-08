@@ -730,31 +730,42 @@ if($watermark != '') {
 
       else
       {
-            $FooterLink = FooterLink::get();
+            $FooterLink = FooterLink::orderBy('order')->get();
             return view('admin.footer.index',compact('FooterLink',$FooterLink));
       }     
     }
 
     public function footer_link_store(Request $request)
     {
+        $FooterLink  =FooterLink::create([
+          'name'   => $request->footer_name ,
+          'link'   => $request->footer_link ,
+          'column_position'  => $request->column_position ,
+        ]);
 
-      // $post_categories = Menu::all();
+        $FooterLink->order = $FooterLink->id;
+        $FooterLink->save();
 
-        foreach ($post_categories as $post) {
+        return redirect()->route('footer_link');
+    }
+
+    public function footer_order_update(Request $request){
+
+        $footer_order = FooterLink::all();
+
+        foreach ($footer_order as $post) {
             foreach ($request->order as $order) {
                 if ($order['id'] == $post->id) {
                     $post->update(['order' => $order['position']]);
                 }
             }
         }
-        
         return response('Update Successfully.', 200);
+    }
 
-        FooterLink::create([
-          'name' => $request->footer_name ,
-          'link' => $request->footer_link ,
-        ]);
-
+    public function footer_delete($id)
+    {
+        FooterLink::destroy($id);
         return redirect()->route('footer_link');
     }
 }

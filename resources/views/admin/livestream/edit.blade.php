@@ -515,7 +515,18 @@ $(document).ready(function(){
 						return false;
 					}
 				}
-			}
+			},
+
+            ppv_price: {
+                required: function (element) {
+                    var ppv_price = $("#access").val();
+                    if (ppv_price == "ppv") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            },
 		},
 	messages: {
 	  title: 'This field is required',
