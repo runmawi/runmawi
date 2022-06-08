@@ -446,9 +446,10 @@ class AdminSeriesController extends Controller
 
             $path = public_path().'/uploads/videos/';
             $image_path = public_path().'/uploads/images/';
-           
                $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-               if(!empty($player_image)){
+        //    dd($data['player_image']);
+
+               if(!empty($player_image) && $data['player_image'] != 'validate'){
                    //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
                    if($player_image != ''  && $player_image != null){
                           $file_old = $image_path.$player_image;

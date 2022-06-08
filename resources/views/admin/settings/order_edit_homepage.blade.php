@@ -24,7 +24,7 @@
 <div class="modal-footer">
 	
 	<button type="button" class="btn btn-primary" id="submit-update-menu">Update</button>
-    <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/menu') }}">Close</a>
+    <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/home-settings') }}">Close</a>
 </div>
 
     </div></div>
