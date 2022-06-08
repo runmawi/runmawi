@@ -44,7 +44,7 @@ $currency = App\CurrencySetting::first();
 <?php  if(count($live_videos) > 0) : ?>
 
 
-<div class="">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
