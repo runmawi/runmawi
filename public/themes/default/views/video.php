@@ -765,7 +765,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php if(!empty($video->details) ) { ?>
 
 <h4>Links & details</h4>
-<div class="col-md-7 text-white p-0" style="font-size:18px;">
+           
+<div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
+      <?php    $details = html_entity_decode($video->details) ; 
+                        $detail = strip_tags($details); ?>
     <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
