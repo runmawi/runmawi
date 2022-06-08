@@ -470,6 +470,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/footer_order_update', 'AdminSettingsController@footer_order_update'); 
     Route::get('/footer_delete/{id}', 'AdminSettingsController@footer_delete'); 
 
+    //Select video delete
+    Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
+
+
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');

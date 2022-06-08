@@ -51,6 +51,9 @@ border-radius: 0px 4px 4px 0px;
                              <div class="form-group mr-2">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                     </div>
+                    
+                    <button style="margin-bottom: 10px" class="btn btn-primary delete_all" data-url="{{ url('myproductsDeleteAll') }}">Delete All Selected</button>
+
                            <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
                         </div>
                      </div>
@@ -59,6 +62,7 @@ border-radius: 0px 4px 4px 0px;
                            <table class="table text-center table-striped table-bordered table movie_table iq-card " style="width:100%">
                               <thead>
                                  <tr class="r1">
+                                    <th width="50px"><input type="checkbox" id="select_all"></th>
                                     <th>Title</th>
                                     <th>Rating</th>
                                     <!-- <th>Category</th> -->
@@ -75,7 +79,9 @@ border-radius: 0px 4px 4px 0px;
                               </thead>
                               <tbody>
                               @foreach($videos as $key => $video)
-                                 <tr>
+                                 <tr id="tr_{{$video->id}}" >
+                                   
+                                       <td><input type="checkbox" class="sub_chk" data-id="{{$video->id}}"></td>
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
@@ -236,6 +242,54 @@ $('#cpp_user_videos').change(function(){
 });
 	
 </script>
+
+
+<script type="text/javascript">
+   $(document).ready(function () {
+
+       $('#select_all').on('click', function(e) {
+            if($(this).is(':checked',true))  
+            {
+               $(".sub_chk").prop('checked', true);  
+            } else {  
+               $(".sub_chk").prop('checked',false);  
+            }  
+       });
+
+
+       $('.delete_all').on('click', function(e) {
+
+           var allVals = [];  
+            $(".sub_chk:checked").each(function() {  
+                  allVals.push($(this).attr('data-id'));
+            });  
+
+            if(allVals.length <=0)  
+            {  
+                  alert("Please select row.");  
+            }  
+            else 
+            {  
+               var check = confirm("Are you sure you want to delete this row?");  
+               if(check == true){  
+                   var join_selected_values =allVals.join(","); 
+
+                   $.ajax({
+                     url: '{{ URL::to('admin/VideoBulk_delete') }}',
+                     type: "get",
+                     data:{ 
+                        _token: "{{csrf_token()}}" ,
+                        video_id: join_selected_values, 
+                     }
+                  });
+               }  
+            }  
+       });
+
+   });
+</script>
+
+
 	@stop
 
 @stop
