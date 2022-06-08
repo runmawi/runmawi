@@ -11,7 +11,7 @@
 .btn.btn-default.views {color: #fff !important;}
 .pay-live{
     vertical-align: middle; 
-    padding: 150px 0;
+    /*padding: 150px 0;*/
     text-align: center;
 }
     .text-detail{
