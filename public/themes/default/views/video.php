@@ -819,7 +819,7 @@ $artists = [];
                    <span id="paypal-button"></span> 
                  </div>
                  
-                  <div class="col-sm-4">
+                  <div class="col-sm-10">
                   <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
                   <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
