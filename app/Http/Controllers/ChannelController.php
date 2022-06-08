@@ -466,16 +466,30 @@ class ChannelController extends Controller
 
             if(!empty($categoryVideos->publish_time)){
             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
-            $currentdate = date("M d , y h:i:s");
+            $currentdate = date("M d , y H:i:s");
+            date_default_timezone_set('Asia/Kolkata');
+            $current_date = Date("M d , y H:i:s");
+            // $current_date = date("Y-m-d");
+            $date=date_create($current_date);
+            $currentdate = date_format($date,"M d ,y H:i:s");
              if($currentdate < $new_date){
+              // echo "<pre>";
+              // print_r($new_date);
+              // echo "<pre>";
+
+              // print_r($currentdate);exit;
+
               $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
 
              }else{
+            //  print_r($currentdate);exit;
+
               $new_date = null;
             }
              }else{
               $new_date = null;
              }
+            //  print_r($new_date);exit;
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
