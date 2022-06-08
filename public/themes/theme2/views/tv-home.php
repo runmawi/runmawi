@@ -1,5 +1,6 @@
 <!-- Header Start -->
 <?php include('header.php'); ?>
+
 <?php  if (Session::has('message')){ ?>
 <div id="successMessage" class="alert alert-info"><?php echo Session::get('message'); ?></div>
 <?php }
@@ -13,6 +14,7 @@ foreach( $errors->all() as $message ){ ?>
 }
 }
 ?>
+
 <!-- Header End -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
