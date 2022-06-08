@@ -2320,4 +2320,17 @@ if(!empty($artistsdata)){
                     return 3;
                 }
              }
+
+    public function VideoBulk_delete(Request $request)
+    {
+        try {
+            $video_id = $request->video_id;
+            Video::whereIn('id',explode(",",$video_id))->delete();
+            return 'true';
+
+        } catch (\Throwable $th) {
+            return 'false';
+        }
+      
+    }
 }

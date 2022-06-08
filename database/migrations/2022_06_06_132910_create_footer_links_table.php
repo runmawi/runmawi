@@ -18,6 +18,7 @@ class CreateFooterLinksTable extends Migration
             $table->string('name',100)->nullable();
             $table->string('link',200)->nullable();
             $table->integer('order')->nullable();
+            $table->integer('column_position')->nullable();
             $table->timestamps();
         });
     }
