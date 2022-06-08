@@ -419,6 +419,9 @@ border-radius: 0px 4px 4px 0px;
             title: "required",
             image: "required",
             url_type: "required",
+            'language[]': {
+                required: true
+            },
 
             mp4_url: {
                 required: function (element) {
