@@ -763,6 +763,26 @@ if($watermark != '') {
         return response('Update Successfully.', 200);
     }
 
+    public function footer_edit($id)
+    {
+
+      $footer = FooterLink::where('id',$id)->first();
+      return view('admin.footer.edit',compact('footer',$footer));
+    }
+
+    public function footer_update(Request $request)
+    {
+
+     $footer_menu = FooterLink::find($request->id);
+     $footer_menu->name = $request->get('footer_name');
+     $footer_menu->link = $request->get('footer_link');
+     $footer_menu->column_position = $request->get('column_position');
+     $footer_menu->update();
+
+     return redirect()->route('footer_link');
+
+    }
+
     public function footer_delete($id)
     {
         FooterLink::destroy($id);

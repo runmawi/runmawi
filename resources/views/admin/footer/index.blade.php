@@ -4,6 +4,7 @@
    
 @section('content')
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="content-page" class="content-page">
     <div class="container-fluid">
         <div class="admin-section-title">
@@ -119,6 +120,7 @@
 </div>
 
 
+<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
 @section('javascript')
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
