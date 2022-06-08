@@ -69,16 +69,17 @@ border-radius: 0px 4px 4px 0px;
     </div>
 
             <div class="container-fluid p-0">
-            <div class="tab">
-  <button class="tablinks1" >Web Home Page</button>
-  <button class="tablinks2" >Mobile Home Page</button>
-</div>
+           
 
                 <div id="webhomesetting">
                 <div class="iq-card">
-<div class="admin-section-title">
+                     <div class="tab">
+  <button class="tablinks1 btn btn-light" >Web Home Page</button>
+  <button class="tablinks2 btn btn-light" >Mobile Home Page</button>
+</div>
+<div class="admin-section-title mt-3">
 
-    <h4><i class="entypo-monitor"></i> Home Page Settings</h4> 
+    <h4><i class="entypo-monitor"></i> Home Page Menu Settings</h4> 
 </div>
 <div class="clear"></div>
 
@@ -86,7 +87,7 @@ border-radius: 0px 4px 4px 0px;
 <form action="{{ URL::to('/admin/home-settings/save')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+            <div class="panel-heading">  <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
                         <div class="row align-items-center p-2">
                         <!-- <div class="row"> -->
@@ -255,7 +256,11 @@ border-radius: 0px 4px 4px 0px;
 
     <div id = "Mobilehomesetting">
     <div class="iq-card">
-<div class="admin-section-title">
+         <div class="tab">
+  <button class="tablinks1 btn btn-light" >Web Home Page</button>
+  <button class="tablinks2 btn btn-light" >Mobile Home Page</button>
+</div>
+<div class="admin-section-title mt-3">
     
     
     <h4><i class="entypo-monitor"></i> Mobile Home Page Settings</h4> 
@@ -266,7 +271,7 @@ border-radius: 0px 4px 4px 0px;
 <form action="{{ URL::to('/admin/mobile-home-settings/save')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading"> <div class="panel-title"><label>Listing Home Page video</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+            <div class="panel-heading">  <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                 <div class="panel-body"> 
                         <div class="row align-items-center p-2">
                         <!-- <div class="row"> -->
