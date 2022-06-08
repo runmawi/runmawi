@@ -114,7 +114,7 @@ border-radius: 0px 4px 4px 0px;
 					</div>
 					<div class="iq-card-body">
 						<h5>Audio Info Details</h5>
-						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+						<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="audio_edit">
 
 							<div class="row mt-3">
 								<div class="col-md-6">
@@ -513,7 +513,31 @@ border-radius: 0px 4px 4px 0px;
 
 $('#duration').mask('00:00:00');
 	</script>
+
+
+
 	@section('javascript')
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+	<script>
+		$('form[id="audio_edit"]').validate({
+			rules: {
+			title : 'required',
+			image : 'required',
+			album_id : 'required',
+			'language[]': {
+				required: true
+			},
+			},
+			
+	
+			submitHandler: function(form) {
+			form.submit();
+			}
+		});
+	
+	</script>
+
 	@stop
 
 	@stop
