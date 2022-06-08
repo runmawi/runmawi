@@ -423,20 +423,15 @@ data: {
 											<div class="panel-title"><label>Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
 												<p class="p1">Select a Audio Language Below:</p>
-												<!-- <select class="form-control" id="language" name="language">
+												<select class="form-control js-example-basic-multiple" id="language" name="language[]"  style="width: 100%;" multiple="multiple" >
 													@foreach($languages as $language)
-													<option value="{{ $language->id }}" @if(!empty($audio->language) && $audio->language == $language->id)selected="selected"@endif>{{ $language->language }}</option>
+														@if(in_array($language->id, $languages_id))
+															<option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
+														@else
+															<option value="{{ $language->id }}" >{{ $language->name }}</option>					
+														@endif 
 													@endforeach
-												</select> -->
-											<select class="form-control js-example-basic-multiple" id="language" name="language[]"  style="width: 100%;" multiple="multiple" >
-												@foreach($languages as $language)
-												@if(in_array($language->id, $languages_id))
-												<option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
-												@else
-												<option value="{{ $language->id }}" >{{ $language->name }}</option>					
-												@endif 
-												@endforeach
-											</select>
+												</select>
 											</div> 
 										</div>
 									</div>
@@ -690,13 +685,12 @@ $('form[id="audio_form"]').validate({
 	  title : 'required',
 	  image : 'required',
 	  album_id : 'required',
+	  'language[]': {
+        required: true
+    },
 	},
-	messages: {
-	  title: 'This field is required',
-	  image: 'This field is required',
-	  album_id: 'This field is required',
-	  
-	},
+	
+
 	submitHandler: function(form) {
 	  form.submit();
 	}

@@ -366,6 +366,8 @@ border-radius: 0px 4px 4px 0px;
                @endif 
                @endforeach
                </select>
+               <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+
                </div> 
                <div class="col-sm-4 form-group">
                     <label class="m-0">E-Paper: <small>(Upload your PDF file)</small> </label>
@@ -1206,18 +1208,23 @@ $(document).ready(function($){
       }
    });
 
-   $('#error_video_Category').hide();
+  // video category and language validation
+  $('#error_video_Category').hide();
+   $('#error_language').hide();
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
-      if($('#video_category_id').val() == null){
-         $('#error_video_Category').show();
-         $('#next3').attr('disabled','disabled');
-      }  
-      else{
-         $('#error_video_Category').hide();
-         $('#next3').removeAttr('disabled');
-      }
-   });
+
+   if($('#video_category_id').val() == null || $('#language').val() == null  ){
+      $('#error_video_Category').show();
+      $('#error_language').show();
+      $('#next3').attr('disabled','disabled');
+   }  
+   else{
+      $('#error_video_Category').hide();
+      $('#error_language').hide();
+      $('#next3').removeAttr('disabled');
+   }
+});
 
   
 });

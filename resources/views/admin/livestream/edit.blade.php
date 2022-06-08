@@ -494,6 +494,9 @@ $(document).ready(function(){
 	rules: {
 	  title: 'required',
 	  url_type: 'required',
+      'language[]': {
+                required: true
+            },
 	 
 		mp4_url: {
 		required : function(element) {
