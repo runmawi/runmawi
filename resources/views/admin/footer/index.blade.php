@@ -48,6 +48,11 @@
                                             <td>{{ 'Column '.$footermenu->column_position }}</td> 
 
                                             <td> 
+
+                                                <a href="{{ URL::to('/admin/footer_menu_edit/') }}/{{ $footermenu->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                                    data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>">
+                                                </a>
+
                                                 <a href="{{ URL::to('/admin/footer_delete/') }}/{{ $footermenu->id }}"  class="iq-bg-danger ml-2"
                                                     data-toggle="tooltip"  onclick="return confirm('Are you sure?')" data-placement="top" title="" data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>">
                                                 </a> 
