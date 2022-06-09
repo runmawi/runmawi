@@ -27,8 +27,8 @@ class AdminPaymentSettingsController extends Controller
 		$data = array(
 			'admin_user' => Auth::user(),
 			'settings' => Setting::first(),
-			'payment_settings' => PaymentSetting::where('payment_type','=','Stripe')->first(),
-			'paypal_payment_settings' => PaymentSetting::where('payment_type','=','PayPal')->first(),
+			'payment_settings' => PaymentSetting::first(),
+			'paypal_payment_settings' => PaymentSetting::where('id','=',2)->first(),
 			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
 			);
 

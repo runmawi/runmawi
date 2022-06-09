@@ -708,7 +708,6 @@ class AdminLiveStreamController extends Controller
         $video->publish_time = $request['publish_time'];
         $video->embed_url =     $embed_url;
         $video->active = $active;
-        $video->access = $request->access;
         $video->save();
 
         if(!empty($data['video_category_id'])){
