@@ -249,11 +249,11 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 $publishdate = date('d F Y', strtotime($originalDate));
                }
              ?>
-                <div class="d-flex align-items-center text-white text-detail">
-                <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class=" align-items-center text-white text-detail p-0">
+                <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
+                <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
+                <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>
+                <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
              
                   </div>
                 
