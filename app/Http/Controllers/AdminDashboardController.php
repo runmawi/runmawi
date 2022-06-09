@@ -72,18 +72,24 @@ class AdminDashboardController extends Controller
             
         $videocategory = VideoCategory::get();
         $categoryvideo = CategoryVideo::get();
-        foreach($videocategory as $key => $category){
-            // $video_category['name_category'] = $category->name;
-            $video_category[$category->name] = CategoryVideo::where('category_id','=',$category->id)->count();
-            // $video_category[$category->name] = Video::where('video_category_id','=',$category->id)->count();
+        if(count($videocategory) >= 1 ){
+            foreach($videocategory as $key => $category){
+                $video_category[$category->name] = CategoryVideo::where('category_id','=',$category->id)->count();
+                // $video_category['name_category'] = $category->name;
+                // $video_category[$category->name] = Video::where('video_category_id','=',$category->id)->count();
+            }
+
         }
+        else{
+            $video_category = [] ;
+        }
+       
         $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
         // ->where('videos.id','!=',$vid)
         ->limit(10)->get();
         
-        // dd($video_category);
 
          $settings = Setting::first();
         
