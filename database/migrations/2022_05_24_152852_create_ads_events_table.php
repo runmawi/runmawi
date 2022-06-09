@@ -16,8 +16,8 @@ class CreateAdsEventsTable extends Migration
         Schema::create('ads_events', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('start')->nullable();
-            $table->string('end')->nullable();
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->string('color')->nullable();
             $table->integer("ads_category_id")->nullable();
             $table->timestamps();

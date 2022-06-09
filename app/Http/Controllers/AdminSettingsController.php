@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Storage;
 use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
-use App\FooterLink;
 
 //use Illuminate\Http\Request;
 
@@ -686,106 +685,9 @@ if($watermark != '') {
         $Thumbnail->category           =  $request->has('category') ? 1 : 0 ?? 0;   
         $Thumbnail->featured           =  $request->has('featured') ? 1 : 0 ?? 0; 
         $Thumbnail->free_or_cost_label =  $request->has('free_or_cost_label') ? 1 : 0 ?? 0; 
-        $Thumbnail->reels_videos       =  $request->has('reels_videos') ? 1 : 0 ?? 0; 
-        $Thumbnail->trailer            =  $request->has('trailer') ? 1 : 0 ?? 0; 
         $Thumbnail->save();  
 
         return redirect()->route('ThumbnailSetting');
 
-    }
-
-    public function footer_link(Request $request)
-    {
-      $user =  User::where('id',1)->first();
-      $duedate = $user->package_ends;
-      $current_date = date('Y-m-d');
-
-      if ($current_date > $duedate)
-      {
-          $client = new Client();
-          $url = "https://flicknexs.com/userapi/allplans";
-          $params = [
-              'userid' => 0,
-          ];
-
-          $headers = [
-              'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-          ];
-
-          $response = $client->request('post', $url, [
-            'json' => $params,
-            'headers' => $headers,
-            'verify'  => false,
-          ]);
-
-          $responseBody = json_decode($response->getBody());
-          $settings = Setting::first();
-
-          $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-          );
-          return View::make('admin.expired_dashboard', $data);
-        }
-
-      else
-      {
-            $FooterLink = FooterLink::orderBy('order')->get();
-            return view('admin.footer.index',compact('FooterLink',$FooterLink));
-      }     
-    }
-
-    public function footer_link_store(Request $request)
-    {
-        $FooterLink  =FooterLink::create([
-          'name'   => $request->footer_name ,
-          'link'   => $request->footer_link ,
-          'column_position'  => $request->column_position ,
-        ]);
-
-        $FooterLink->order = $FooterLink->id;
-        $FooterLink->save();
-
-        return redirect()->route('footer_link');
-    }
-
-    public function footer_order_update(Request $request){
-
-        $footer_order = FooterLink::all();
-
-        foreach ($footer_order as $post) {
-            foreach ($request->order as $order) {
-                if ($order['id'] == $post->id) {
-                    $post->update(['order' => $order['position']]);
-                }
-            }
-        }
-        return response('Update Successfully.', 200);
-    }
-
-    public function footer_edit($id)
-    {
-
-      $footer = FooterLink::where('id',$id)->first();
-      return view('admin.footer.edit',compact('footer',$footer));
-    }
-
-    public function footer_update(Request $request)
-    {
-
-     $footer_menu = FooterLink::find($request->id);
-     $footer_menu->name = $request->get('footer_name');
-     $footer_menu->link = $request->get('footer_link');
-     $footer_menu->column_position = $request->get('column_position');
-     $footer_menu->update();
-
-     return redirect()->route('footer_link');
-
-    }
-
-    public function footer_delete($id)
-    {
-        FooterLink::destroy($id);
-        return redirect()->route('footer_link');
     }
 }

@@ -632,7 +632,7 @@ class AdminAdvertiserController extends Controller
         'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
         'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
         'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
-        'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
+        'Thursday_time' =>AdsTimeSlot::where('day','Thursday')->get(),
         'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
         'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
         'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
@@ -739,42 +739,6 @@ class AdminAdvertiserController extends Controller
      
       return redirect('admin/Ads-TimeSlot');
 
-    }
-
-    public function ads_viewcount(Request $request)
-    {
-
-      try {
-          Adviews::create([
-            'video_id'       => $request->video_id,
-            'ad_id'          => $request->ads_id,
-            'advertiser_id'  => $request->advertiser_id, 
-            'views_count'    => 1 ,
-          ]);
-          return 'success' ;
-      } 
-      catch (\Exception $e) { 
-        return 'false' ;
-      }
-    
-    }
-
-    public function ads_viewcount_mid(Request $request)
-    {
-
-      try {
-          Adviews::create([
-            'video_id'       => $request->video_id,
-            'ad_id'          => $request->ads_id,
-            'advertiser_id'  => $request->advertiser_id, 
-            'views_count'    => 1 ,
-          ]);
-          return 'success' ;
-      } 
-      catch (\Exception $e) { 
-        return 'false' ;
-      }
-    
     }
 
 }

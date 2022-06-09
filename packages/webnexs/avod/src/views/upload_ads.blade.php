@@ -37,6 +37,48 @@
                                 <li id="payment"><strong>Ads Schedule</strong></li>
                             </ul>
 
+                            <fieldset>
+                                    <div class="col-md-6">
+                                            <label>Set your weekly hours</label>
+                        
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <input type="checkbox" id="Monday" class="date" name="date[]" value="Monday" @if(!empty($Monday_time['0'])) checked @endif/>
+                                                    <label for="">Monday</label>
+                                                    <span id="" class="Monday_add ">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </span>
+                                                </div>
+    
+                                                @forelse ($Monday_time as $Monday_times)
+                                                    <table class="table col-md-12" id=""> 
+                                                        <tr>
+                                                            <td>
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4 p-0 d-flex align-items-center">
+                                                                            <input type="time" name="Monday_Start_time[]" class="form-control" value={{  $Monday_times->start_time }} />
+                                                                            -</div>
+                                                                        <div class="col-md-4 p-0">
+                                                                            <input type="time" name="Monday_end_time[]" class="form-control" id="" value={{  $Monday_times->end_time }} />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                        </tr>
+                                                    </table>
+                                                @empty
+    
+                                                @endforelse
+    
+                                                <table class="table col-md-12" id="Monday_add"> </table>
+                                            </div>
+
+                                </div>
+                                <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
+                            </fieldset>
+                            
                            <!--General Information  fieldsets -->
                            <fieldset>
                               <div class="form-card">
@@ -198,26 +240,16 @@
                                               <option value="post">Post</option>
                                           </select>
                                       </div>
-
                                       <div class="form-group">
-                                        <label> Ads upload Type:</label>
-                                        <p class="error-message" style="color: red;">This filed is required</p>
-                                        <select class="form-control ads_type" name="">
-                                            <option value="null">select Ads Type </option>
-                                            <option value="tag_url">Ad Tag Url </option>
-                                            <option value="ads_video_upload">Ads Video Upload </option>
-                                           
-                                        </select>
-                                    </div>
-
-                                      <div class="form-group tag_url">
                                           <label> Ad Tag Url:</label>
-                                          <input type="text" id="ads_path" name="ads_path"  class="form-control" />
+                                          <p class="error-message" style="color: red;">This filed is required</p>
+                                          <input type="text" id="ads_path" name="ads_path" required class="form-control" />
                                       </div>
                           
-                                      <div class="form-group ads_video_upload">
+                                      <div class="form-group">
                                           <label> Ads Video Upload:</label>
-                                          <input type="file" id="ads_video" name="ads_video"  class="form-control" />
+                                          <p class="error-message" style="color: red;">This filed is required</p>
+                                          <input type="file" id="ads_video" name="ads_video" required class="form-control" />
                                       </div>
                                   </div>
                               </div>
@@ -227,265 +259,89 @@
                           
                            <!--Location fieldsets -->
 
-                        <fieldset>
-                            <div class="form-card">
-                                <h2 class="fs-title">Location Details</h2>
-
-
-                              <div class="row">
-                                <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="all_countries" /></div>
-                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('all countries & territories') }}</label></div>
+                           <fieldset>
+                              <div class="form-card">
+                                  <h2 class="fs-title">Location Details</h2>
+                                  <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label>Location:</label>
+                                          <input type="text" id="location" name="location" required class="form-control" />
+                                      </div>
+                                  </div>
                               </div>
-
-                              <div class="row">
-                                <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="India" /></div>
-                                <div class="col-sm-1"> <label for="" class="">India</label></div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-sm-1"> <input type="radio" class="location-show" id="" name="location" value="enter_location" /></div>
-                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('enter the location') }}</label></div>
-                              </div>
-
-                                <div class="col-md-6 location_input">
-                                    <div class="form-group">
-                                        <input type="text" id="locations" name="locations"  class="form-control" placeholder="Enter the Location"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                            <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
-                        </fieldset>
-
+                              <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                              <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
+                           </fieldset>
 
                            <!--Schedule Ads Details fieldsets -->
-                            <fieldset>
-                                <div class="col-md-6">
-                                    <label>Set your weekly hours</label>
-                
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" id="Monday" class="date" name="date[Monday]" value="{{ $Monday }}" @if(!empty($Monday_time['0'])) checked @endif/>
-                                            <label for="">Monday</label>
-                                            <span id="" class="Monday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
 
-                                        @forelse ($Monday_time as $Monday_times)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center">
-                                                                    <input type="time" name="Monday_Start_time[]" class="form-control" value={{  $Monday_times->start_time }} />
-                                                                    -</div>
-                                                                <div class="col-md-4 p-0">
-                                                                    <input type="time" name="Monday_end_time[]" class="form-control" id="" value={{  $Monday_times->end_time }} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
+                           <fieldset>
+                              <div class="form-card">
+                                  <h2 class="fs-title">Schedule Ads Details</h2>
+                                  <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label>Set your weekly hours</label>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for=""> Monday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" id="" class="date" name="date[]" value="Monday" />
+                                              </div>
+                                              <div></div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for=""> Tuesday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="Tuesday" />
+                                              </div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for=""> Wednesday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="Wednesday" />
+                                              </div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for=""> Thrusday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="Thrusday" />
+                                              </div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for="">Friday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="Friday" />
+                                              </div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for="">Saturday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="Saturday" />
+                                              </div>
+                                          </div>
+                          
+                                          <div class="row dates">
+                                              <div class="col-sm-4"><label for="">Sunday </label></div>
+                                              <div class="col-sm-4">
+                                                  <input type="checkbox" class="date" id="" name="date[]" value="unknown" />
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                              {{-- <input type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" /> --}}
+                           </fieldset>
 
-                                        @endforelse
+                           
+                           <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-                                        <table class="table col-md-12" id="Monday_add"> </table>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" id="Tuesday" class="date" name="date[Tuesday]" value="{{ $Tuesday }}" @if(!empty($Tuesday_time['0'])) checked @endif />
-                                            <label for=""> Tuesday </label>
-                                            <span id="" class="Tuesday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Tuesday_time as $tuesday_tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="tuesday_start_time[]" class="form-control" value="{{ $tuesday_tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="Tuesday_end_time[]" class="form-control" id="" value="{{ $tuesday_tym->end_time }}" /></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                            
-                                        @endforelse
-
-                                        <table class="table col-md-12" id="Tuesday_add"> </table>
-                                    </div>
-                    
-                                    <div class="row">
-                                        <div class="col-sm-5 d-flex align-items-baseline">
-                                            <input type="checkbox" class="date" id="Wednesday" name="date[Wednesday]" value="{{ $Wednesday }}" @if(!empty($Wednesday_time['0'])) checked @endif />
-                                            <label for=""> Wednesday </label>
-                                            <span  class="wednesday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Wednesday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="wednesday_start_time[]" class="form-control" value= "{{ $tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="wednesday_end_time[]" class="form-control" id=""  value= "{{ $tym->end_time }}" /></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                        @endforelse
-
-                                        <table class="table col-md-12" id="wednesday_add"> </table>
-                                    </div>
-                    
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif />
-                                            <label for=""> Thrusday </label>
-                                            <span id="add" class="thrusday_add">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Thursday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="thursday_start_time[]" class="form-control" value= "{{ $tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="thursday_end_time[]" class="form-control" id=""  value= "{{ $tym->end_time }}" /></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                        @endforelse
-
-                                        <table class="table col-md-12" id="thrusday_add"> </table>
-                                    </div>
-                    
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" class="date" id="friday" name="date[friday]" value="{{ $Friday }}"  @if(!empty($Friday_time['0'])) checked @endif />
-                                            <label for="">Friday </label>
-                                            <span id="add" class="friday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Friday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center">
-                                                                    <input type="time" name="friday_start_time[]" class="form-control" value= "{{ $tym->start_time }}" />-
-                                                                </div>
-                                                                <div class="col-md-4 p-0">
-                                                                    <input type="time" name="friday_end_time[]" class="form-control" id=""  value= "{{ $tym->end_time }}" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                        @endforelse
-
-                                        <table class="table" id="friday_add"> </table>
-                                    </div>
-                    
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif />
-                                            <label for="">Saturday </label>
-                                            <span id="add" class="saturday_add">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Saturday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="saturday_start_time[]" class="form-control" value= "{{ $tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="saturday_end_time[]" class="form-control" id=""  value= "{{ $tym->end_time }}" /></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                        @endforelse
-
-                                        <table class="table" id="saturday_add"> </table>
-                                    </div>
-                    
-                                    <div class="row">
-                                        <div class="col-sm-4 d-flex align-items-baseline">
-                                            <input type="checkbox" class="date" id="sunday" name="date[sunday]" value="{{ $Sunday }}"  @if(!empty($Sunday_time['0'])) checked @endif/>
-                                            <label for="">Sunday </label>
-                                            <span id="add" class="sunday_add">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </div>
-
-                                        @forelse ($Sunday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
-                                                <tr>
-                                                    <td>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="sunday_start_time[]" class="form-control" value= "{{ $tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="sunday_end_time[]" class="form-control" id=""  value= "{{ $tym->end_time }}" /></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
-                                                </tr>
-                                            </table>
-                                        @empty
-                                        @endforelse
-
-                                        <table class="table" id="sunday_add"> </table>
-                                        </div>
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                                    <input type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" />
-                                </div>
-                            </fieldset>
-                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         </form>
                     </div>
     </div>
@@ -620,18 +476,7 @@
 
 <script>
 
-    $(document).ready(function(){
-        $(".location-show").click(function(){
-            $('.location_input').show();
-    });
-    
-    $(".location-hide").click(function(){
-            $('.location_input').hide();
-    });
-    
-    });
-
-   var input = document.getElementById('locations');
+   var input = document.getElementById('location');
    var autocomplete = new google.maps.places.Autocomplete(input);
 
     google.maps.event.addListener(autocomplete, 'place_changed',   function () {
@@ -643,9 +488,6 @@
   });
 
   $('.js-example-basic-multiple').select2();
-
- 
-
 
 </script>
 
@@ -737,9 +579,8 @@ window.onload=function(){
      document.getElementsByClassName('error-message')[2].style.display = 'none';
      document.getElementsByClassName('error-message')[3].style.display = 'none';
      document.getElementsByClassName('error-message')[4].style.display = 'none';
-     $('.location_input').hide();
-     $('.ads_video_upload').hide();
-     $('.tag_url').hide();
+     document.getElementsByClassName('error-message')[5].style.display = 'none';
+
 };
 
       $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
@@ -750,7 +591,6 @@ window.onload=function(){
       var ads_name_val = $("#ads_name").val();
       var ads_path_val = $("#ads_path").val();
       var ads_video_val = $("#ads_video").val();
-      var Ads_type   = $(".ads_type").val();
       
       if(age_validation == true && household_income_val == true  && gender_val != null ){
          document.getElementsByClassName("error-message")[0].style.display = "none";
@@ -766,39 +606,22 @@ window.onload=function(){
          document.getElementById("Next1").disabled = true;
       }
 
-      if(ads_name_val != '' && Ads_type != 'null' ){
+      if(ads_name_val != '' && ads_path_val != '' && ads_video_val != '' ){
 
          document.getElementsByClassName("error-message")[3].style.display = "none";
          document.getElementsByClassName('error-message')[4].style.display = 'none';
+         document.getElementsByClassName('error-message')[5].style.display = 'none';
 
          document.getElementById("Next2").disabled = false;
       }else{
 
          document.getElementsByClassName("error-message")[3].style.display = "block";
          document.getElementsByClassName('error-message')[4].style.display = 'block';
+         document.getElementsByClassName('error-message')[5].style.display = 'block';
 
          document.getElementById("Next2").disabled = true;
       }
    });
-
-
-
-   $(".ads_type").change(function(){
-         var ads_type = $('.ads_type').val();
-        
-         if(ads_type == 'tag_url' ){
-            $('.tag_url').show();
-            $('.ads_video_upload').hide();
-           
-         }else if(ads_type == 'ads_video_upload'){
-            $('.tag_url').hide();
-            $('.ads_video_upload').show();
-         }
-         else if(ads_type == 'null' ){
-            $('.tag_url').hide();
-            $('.ads_video_upload').hide();
-         }
-      });
 
 });
 
