@@ -384,20 +384,30 @@ border-radius: 0px 4px 4px 0px;
                         </span>
                    @endif
                </div>
-               <div class="col-sm-4 form-group">
-                   <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
-                   <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
+                  <div class="col-sm-6 form-group">
+                     <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
+                     <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
 
-                   @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
-                     <div class="d-flex">
-                           @foreach($Reels_videos as $reelsVideo)
-                              <video width="200" height="200" controls style="padding: 6px;">
-                                 <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
-                              </video>
-                           @endforeach
-                        </div>
-                   @endif
-               </div>
+                     @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
+                        <div class="d-flex">
+                              @foreach($Reels_videos as $reelsVideo)
+                                 <video width="200" height="200" controls style="padding: 6px;">
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                                 </video>
+                              @endforeach
+                           </div>
+                     @endif
+                  </div>
+
+                  <div class="col-sm-6 form-group">
+                     <label class="m-0">Reels Thumbnail: <small>(9:16 Ratio or 720X1080px)</small></label>
+                     <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
+
+                        @if($video->reels_thumbnail != null )
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
+                        @endif
+                  </div>
+
                </div>   
 
             
@@ -1221,13 +1231,11 @@ $(document).ready(function($){
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
 
-   if($('#video_category_id').val() == null || $('#language').val() == null  ){
-      $('#error_video_Category').show();
+   if($('#language').val() == null  ){
       $('#error_language').show();
       $('#next3').attr('disabled','disabled');
    }  
    else{
-      $('#error_video_Category').hide();
       $('#error_language').hide();
       $('#next3').removeAttr('disabled');
    }

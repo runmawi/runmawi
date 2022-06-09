@@ -513,6 +513,11 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
+                                 <label class="m-0">Reels Thumbnail: <small>(9:16 Ratio or 720X1080px)</small></label>
+                                 <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
+                              </div>
+
+                              <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">URL Link </label>
                                  <input type="text" class="form-control" name="url_link" accept="" id="url_link" >
                               </div>
@@ -1265,13 +1270,11 @@ $(document).ready(function($){
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
 
-   if($('#video_category_id').val() == null || $('#language').val() == null  ){
-      $('#error_video_Category').show();
+   if( $('#language').val() == null  ){
       $('#error_language').show();
       $('#next3').attr('disabled','disabled');
    }  
    else{
-      $('#error_video_Category').hide();
       $('#error_language').hide();
       $('#next3').removeAttr('disabled');
    }

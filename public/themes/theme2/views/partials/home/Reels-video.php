@@ -12,7 +12,7 @@
                     <div class="block-images position-relative Reels_video_ir" data-toggle="modal" data-target="#Reels" id="">
                             <div class="img-box">
                                 <a>
-                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->image;  ?>"  data-play="hover" >
+                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->reels_thumbnail ;  ?>"  data-play="hover" >
                                         <source src="<?php echo $reel->trailer;  ?>" type="video/mp4">
                                     </video>
                                 </a>
