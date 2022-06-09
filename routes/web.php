@@ -337,6 +337,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/videos', 'AdminVideosController@index');
     Route::get('/videos/categories', 'AdminVideoCategoriesController@index');
     Route::get('/videos/edit/{id}', 'AdminVideosController@edit'); 
+    Route::get('/videos/editvideo/{id}', 'AdminVideosController@editvideo'); 
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');
@@ -621,6 +622,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/embededcode',  'AdminVideosController@Embededcode');
     Route::post('/mp4url',  'AdminVideosController@Mp4url');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
+    Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
+
 
 
     /*Audio Uploads */
