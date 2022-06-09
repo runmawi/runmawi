@@ -16,7 +16,7 @@
     text-align: center;
 }
 #video_bg_dim{
-    background: rgb(0 0 0 / 45%);
+    /*background: rgb(0 0 0 / 45%);*/
     position: absolute;
     top: 0;
     bottom: 0;
@@ -31,8 +31,9 @@
 }
 h2{
   text-align: center;
-  font-size: 60px;
+  font-size: 35px;
   margin-top: 0px;
+    font-weight: 400;
 }
 
 </style>
@@ -140,7 +141,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
             </div>
 
             <?php  } else {  ?>       
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
@@ -150,7 +151,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 
                                
                     <!-- Stripe Button -->
-                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Stripe Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
 
                     <!-- Razorpay Button -->
                     <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
@@ -196,7 +197,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
             </div>
 
             <?php  } else { ?>       
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
@@ -211,7 +212,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
            <?php }
             }
             } elseif(!empty($new_date)){ ?>
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <h2> COMING SOON </h2>
                     <p class="countdown" id="demo"></p>
                     </div>
