@@ -828,31 +828,19 @@ class AdminUsersController extends Controller
     public function profileUpdate(User $user, Request $request)
     {
 
-        //         $data = $request->validate([
-        //            'name' => 'required',
-        //             'email' => 'required|email|unique:users',
-        //         ]);
-        //        $user->fill($data);
-        //        $user->save();
-        // dd($request->all());
-        if (empty($request['password']))
-        {
-            $input['password'] = $user->password;
-        }
-        else
-        {
-            $input['password'] = Hash::make($request['password']);
-        }
         $user = User::find(Auth::user()->id);
         $user->username = $request->get('name');
         $user->mobile = $request->get('mobile');
         $user->email = $request->get('email');
         $user->DOB = $request->get('DOB');
         $user->ccode = $request->get('ccode');
-        if (!empty($request->get('password')))
+        $user->username = $request->get('username');
+
+        if ($request->get('password') != null)
         {
-            $user->password = $request->get('password');
+            $user->password =Hash::make($request->get('password'));
         }
+
         $path = public_path() . '/uploads/avatars/';
         $image_path = public_path() . '/uploads/avatars/';
 
@@ -862,8 +850,7 @@ class AdminUsersController extends Controller
 
         if ($image != '')
         {
-            //code for remove old file
-            if ($image != '' && $image != null)
+            if ($image != '' && $image != null)    //code for remove old file
             {
                 $file_old = $image_path . $image;
                 if (file_exists($file_old))
@@ -871,16 +858,11 @@ class AdminUsersController extends Controller
                     unlink($file_old);
                 }
             }
-            //upload new file
-            $file = $image;
+            $file = $image;                         //upload new file
             $user->avatar = $file->getClientOriginalName();
             $file->move($image_path, $user->avatar);
-
         }
-
         $user->save();
-
-        //Flash::message('Your account has been updated!');
         return back();
     }
 
@@ -2730,8 +2712,6 @@ class AdminUsersController extends Controller
             $system_settings = SystemSetting::first();
 
             return Theme::view('auth.login', compact('system_settings'));
-
-            // return View::make('auth.login', $data);
             
         }
         else
@@ -2807,18 +2787,20 @@ class AdminUsersController extends Controller
                 ->get();
             $recent_view = $recent_videos->unique('video_id');
 
+
             foreach ($recent_view as $key => $value)
             {
                 $videos[] = Video::Where('id', '=', $value->video_id)
                     ->take(10)
                     ->get();
             }
-            // dd($videos);
+
+
             // $recent_view = $videos->unique('slug');
             $videocategory = VideoCategory::all();
             $language = Language::all();
 
-            // Multiuser profile details
+         // Multiuser profile details
             $Multiuser = Session::get('subuser_id');
 
             if ($Multiuser != null)
@@ -2834,8 +2816,8 @@ class AdminUsersController extends Controller
                     ->first();
                 $profile_details = Multiprofile::where('parent_id', $users)->get();
             }
-            // $video = "";
-            if (!empty($video))
+
+            if (!empty($videos))
             {
                 $video = array_unique($videos);
             }
@@ -2843,7 +2825,6 @@ class AdminUsersController extends Controller
             {
                 $video = [];
             }
-            // $video = array_unique($videos);
             $data = array(
                 'videos' => $video,
                 'videocategory' => $videocategory,
@@ -2858,6 +2839,7 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
             );
+
             return Theme::view('myprofile', $data);
         }
     }

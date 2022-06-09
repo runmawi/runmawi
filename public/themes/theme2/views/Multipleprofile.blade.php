@@ -1,41 +1,43 @@
 @extends('layouts.app')
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+    <link href="http://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <title> {{ $Website_name ? $Website_name->website_name : 'Website Name' }} </title>
     <style>
         li{list-style:none;}
-        body{background: #0e0e0e;padding: 20px;vertical-align: middle;height: 100%;}
+        body{background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);padding: 20px;vertical-align: middle;height: 100%;}
 
     </style>
 </head>
       
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 align-items-center" style=" padding-top: 140px;">
+    <div class="row justify-content-center">
+       
   
                  
-<div class="col-md-4">
-    <div class="row1">
+
+    <div class="col-md-5">
+        <div class="row1">
     <h1 class="mt-5">Who's Watching ?</h1>
-                    <div class="row-data" style="display:flex; " >
+            <p class="text-center">You can setup up to 5 profiles for your <br> family or friends</p>
+                    <div class="row-data row justify-content-around"  >
                       
                     
-                        <div class="member ">
+                        <div class="member col-md-4">
                             <a  href="{{ route('home')}}">
-                                <img src="{{URL::asset('public/multiprofile/chooseimage.jpg')}}" alt="user" class="multiuser_img" style="width:120px">
+                                <img src="{{URL::asset('public/multiprofile/chooseimage.jpg')}}" alt="user" class="multiuser_img" width="120">
                             </a> 
 
                             <div class="name text-center">{{ $subcriber_user ? $subcriber_user->username : ''  }}</div>
                         </div>
 
                             @foreach ($users as $profile)
-                                <div class="member">
+                                <div class="member col-md-4">
                                     <a  href="{{ route('subuser', $profile->id)}}">
                                         <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
                                     </a> 
@@ -56,36 +58,43 @@
                 </div>
         </div>
     </div>
-</div>
+
 </div>
  @endsection
-
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
  <style>
      .row1{
-         background-color: #151515;
+       background: linear-gradient(180deg, rgba(21, 30, 41, 0.85) 0%, rgba(21, 30, 41, 0) 100%);
+mix-blend-mode: hard-light;
+border-radius: 10px;
          border-radius:30px;
-         padding: 20px;
-        width: 60%;
-         margin: 0 auto;
+         padding: 20px;   margin: 80px auto;
+
      }
      .row1 h1{
          text-align: center;
           color: white;
-         font-family: 'Chivo';
+        font-family: 'Proxima Nova';
      }
      h2{
         text-align: center;
-        font-family: 'Chivo';
+      font-family: 'Proxima Nova';
         font-family: cursive;
         color: white;
      }
      .multiuser_img{
-        padding: 5px;
+        padding: 10px;
         transition: 0.3s;
          border-radius: 20px;
+         background: rgba(196, 196, 196, 0.2);
+
         
      }
      .multiuser_img:hover {
+         background: rgba(196, 196, 196, 0.2);
+border-radius: 30px;
+
         -ms-transform: scale(1.1); /* IE 9 */
         -webkit-transform: scale(1.1); /* Safari 3-8 */
         transform: scale(1.1); 
@@ -106,7 +115,7 @@
     .name{
 
         font-size: larger;
-       font-family: 'Chivo';
+     font-family: 'Proxima Nova';
         color: white;
         text-align: center;
     }
@@ -150,6 +159,20 @@ a.fa.fa-edit {
     justify-content: space-around;
     align-items: center;
    
+     }
+     p{
+         font-family: 'Proxima Nova';
+font-style: normal;
+font-weight: 400;
+font-size: 15px;
+line-height: 20px;
+/* or 154% */
+
+
+text-align: center;
+
+color: #FFFFFF;
+
      }
      a{
         text-decoration: none!important;  
